@@ -11,7 +11,7 @@ const config = defineConfig({
           // Add your navbar configs here
         ],
         sidebar,
-        github: 'https://github.com/Blackman99/sveltepress',
+        github: 'https://github.com/Cyfrin/web3education.dev',
         logo: '/Web3Dev.Education-no-text.png',
       }),
       siteConfig: {

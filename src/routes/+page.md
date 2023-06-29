@@ -8,8 +8,12 @@ actions:
     to: https://github.com/Cyfrin/web3education.dev
     external: true
 features:
+  - title: "Get Started"
+    description: "Learn how to get started with Web3Education.dev"
+    link: /get-started/
   - title: "Blockchain Basics"
-    description: Understand the basics of Blockchain - You MUST start here!
+    description: Understand the basics of Blockchain
+    link: /blockchain-basics/
   - title: "Solidity Introduction"
     description: The most popular smart contract programming langauge
     link: /solidity/remix/lesson-2-welcome-to-remix/

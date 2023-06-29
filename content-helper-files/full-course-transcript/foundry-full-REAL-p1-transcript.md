@@ -86,6 +86,8 @@ But if you already know the basics of blockchain, feel free to jump into lesson 
 
 I'm so excited for you to embark on this journey with us, and I'm looking forward to seeing you on the other side, just like the thousands of other developers who have taken these courses and have emerged the other side triumphant. So it all starts with blockchain basics. Let's get froggy.
 
+<!-- L1-1 -->
+
 Now since you're here, you've probably heard of Bitcoin before. Bitcoin was one of the first protocols to use this revolutionary technology called blockchain. Bitcoin White paper was created by the pseudo anonymous Satoshi Nakamoto, and it outlined how Bitcoin can make peer-to-peer transactions in a decentralized network.
 
 This network was powered by cryptography and decentrally and allowed people to engage in censorship resistant finance in a decentralized manner due to its features, which we'll talk about in a little bit. People took to this as a superior digital store of value, a better store of value over something like gold, for example.
@@ -145,6 +147,8 @@ What is the real value add of these smart contracts before we look under the hoo
 In my mind, a technology is really only as good as the problem that it solves. If it doesn't solve a problem, a then why bother mark contracts, blockchain, web three, cryptocurrencies, those are all just different words that encapsulate the idea of what we're doing in such a unique paradigm. I think the easiest way to sum up what these smart contracts do is that they create trust minimized agreements.
 
 And if you might be scratching your head to that, a much easier way to think about it is just they give rise to unbreakable promises. Yes, you heard that, right? Unbreakable agreements and promises. Additionally, they give rise to speed, efficiency and transparency and a number of other things. I made a video pretty recently about exactly this, so let's dive in and take a listen to the purpose, the undeniable value of smart contracts.
+
+<!-- L1-2 -->
 
 Cryptocurrencies fundamentally re landscape markets and agreements as we know them. Unfortunately, you've probably only been bombarded with people screaming about MFTs and money. Now, some of the memes are fun, but let's forget the bullshit and get down to the essence of this space. If you're already in web three, this is the video to send to your friends to explain why you're so excited about this space and explain why we're here.
 
@@ -240,6 +244,9 @@ These smart contracts and decentralized applications can access and interact wit
 
 Now, these digital currencies like Ethereum and Bitcoin have value. Even without the smart contract part, having a censorship resistant decentralized store of value is measurably powerful in its own right. We have some links in the GitHub repository that'll teach you how this decentralized store of value flips traditional finance on its head, and it's another one of the great reasons for building smart contracts.
 
+<!-- L1-3 -->
+
+
 But again, the easiest way to boil it down is trust minimized agreements or unbreakable promises. But let's also go into some of these other features that smart contracts have over our traditional environment. The first feature, of course, is that they're decentralized and they have no centralized intermediary.
 
 The different individuals that run one of these blockchains are known as node operators, and it's the combination of all these thousands of node operators running the same software, running these algorithms, running these smart contracts that make the network decentralized. We'll dive deeper into how that works later.
@@ -283,6 +290,8 @@ And yes, of course, we have lessons showing you how to create and interact with 
 You've learned so much already, but now that we've learned a lot of this high level information, let's finally jump in and let's make your first transaction and let's get you set up to interact with this new world. In this next section, we're gonna get you a wallet and we're gonna show you a exactly what a transaction looks like and feels like.
 
 Let's dive in.
+
+<!-- L1-4 -->
 
 This is the Ethereum website, ethereum.org. We are going to make a transaction on a test Ethereum blockchain. I'll explain what that means in a little bit. This is gonna be our first ever transaction that's made on the blockchain, and this process of making a transaction is gonna work the exact same across all E VM compatible blockchains and layer twos like arbitra, Ethereum, ZK Sync, and et cetera.
 
@@ -396,7 +405,11 @@ This is the only transaction in the entire blockchain that will have this transa
 
 We can see the timestamp, which of course is when this transaction occurred. We can see the from and to who initialized the transaction and who it was sent to. If we select this from and open this in a new tab, we can see some details about who actually sent us this test E. And if we go back to the transaction detail and keep going, we can see the value here, which again, if we roll over, it's the value of Ether or Testnet Ether.
 
-And then in parentheses, the fiat value or the dollar value, which of course, since this is a test net, it's always going to be zero. The value of this transaction was 0.1 eth. Now what's underneath this value thing, this transaction fee and this gas price thing. What are these? If we zoom in a lot more to these pieces here and we roll over transaction fee, we can see it says it's the amount paid to the block producer for processing the transaction.
+And then in parentheses, the fiat value or the dollar value, which of course, since this is a test net, it's always going to be zero. The value of this transaction was 0.1 eth.
+
+<!-- L1-5 -->
+
+ Now what's underneath this value thing, this transaction fee and this gas price thing. What are these? If we zoom in a lot more to these pieces here and we roll over transaction fee, we can see it says it's the amount paid to the block producer for processing the transaction.
 
 And then gas price is going to be the cost per unit of gas specified for the transaction in Ether or G gu. The higher the gas price, the higher the chance of getting included in a block. I'm gonna explain that in a little bit, but if we scroll down even more, let's zoom back out and we click Click to show more.
 
