@@ -1,6 +1,10 @@
 # The Current Smart Contract Landscape
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/umepbfKp5rI?&t=2660s" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+You can follow along with this section of the course here. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/q9UzRyWRPcY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="the current smart contract landscape"></iframe>
+
+Or watch the [full video](https://www.youtube.com/watch?v=umepbfKp5rI).
 
 ## Features of Smart Contracts
 

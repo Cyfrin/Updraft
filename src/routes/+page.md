@@ -16,15 +16,15 @@ features:
     link: /blockchain-basics/
   - title: "Solidity Introduction"
     description: The most popular smart contract programming langauge
-    link: /solidity/remix/lesson-2-welcome-to-remix/
-  - title: "Vyper Introduction"
-    description: The Pythonic smart contract programming langauge
-  - title: "Foundry"
-    description: The fastest smart contract framework.
-  - title: "Hardhat"
-    description: The most popular smart contract framework. 
-  - title: "Smart Contract Auditing & Security"
-    description: How to become a security & smart contract auditor
-  - title: "Web3 Full-stack"
-    description: Learn how to build a full-stack website end-to-end for web3
+    link: /solidity/remix/1-simple-storage/
+  # - title: "Vyper Introduction"
+  #   description: The Pythonic smart contract programming langauge
+  # - title: "Foundry"
+  #   description: The fastest smart contract framework.
+  # - title: "Hardhat"
+  #   description: The most popular smart contract framework. 
+  # - title: "Smart Contract Auditing & Security"
+  #   description: How to become a security & smart contract auditor
+  # - title: "Web3 Full-stack"
+  #   description: Learn how to build a full-stack website end-to-end for web3
 ---
