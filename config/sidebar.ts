@@ -71,22 +71,35 @@ export default {
                 {
                     title: 'Blockchain Fundamentals',
                     to: '/blockchain-basics/9-blockchain-fundamentals/'
+                },
+                {
+                    title: 'Congratulations!',
+                    to: '/blockchain-basics/10-basics-completed/'
                 }
             ]
         }
     ],
     '/solidity/remix': [
         {
-            title: 'Lesson 2 - Remix Simple Storage',
+            title: "🔙 Back to All Courses",
+            to: '/',
+        },
+        {
+            title: 'Welcome to Coding with Remix',
             collapsible: true,
             items: [
                 {
                     title: 'Introduction',
-                    to: '/solidity/remix/lesson-2-welcome-to-remix/1-introduction/',
+                    to: '/solidity/remix/1-simple-storage/1-introduction/',
                 },
-                { title: 'Setting up Your First Contract' }
+                {
+                    title: 'Setting up Your First Contract',
+                    to: '/solidity/remix/1-simple-storage/2-setting-up-your-first-contract/'
+
+                }
             ],
         },
+
     ],
     '/solidity': [],
 
