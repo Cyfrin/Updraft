@@ -1,19 +1,38 @@
 ---
-title: Introduction
+title: Repository Access and Navigation
 ---
 
 *If you'd like, you can follow along with the course here.*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/umepbfKp5rI?&t=7842s" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/nzeR4vWsAz8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
-# Introduction
+## Introduction
 
-To get started, we want to open up <a href="https://remix.ethereum.org/" target="_blank" style="color: blue; text-decoration: underline;">remix</a>. When you open it up, you'll be greeted with a site that looks like this.
+To get started, navigate to our [GitHub repository](https://github.com/Cyfrin/foundry-full-course-f23) 
 
-<img src="/solidity/remix/remix-screenshot.png" style="width: 100%; height: auto;">
+<img src="/solidity/remix/lesson-2/section-1/1.png" style="width: 100%; height: auto;">
 
-You may select "Accept" or just ignore. 
+
+The interface might look slightly different when you first access it, but no need to worry. What you're looking for is the repository associated specifically with this lesson. This repository will contain all the code required for this stage of the course, together with a `README` section. The `README` will provide you with a wealth of notes on how to work with the code.
+
+## Usage of the repository
+
+The repository serves two main purposes:
+
+- **Access and Clone:** It provides easy access to all lesson codes, allowing you to clone them effortlessly.
+
+- **Discussion Section:** Engage with fellow students, ask questions, and participate in collaborative learning.
+
+Make the most of this repository by accessing and cloning lesson codes quickly, while also taking part in interactive discussions with your peers. Happy learning!
+
+## Asking Questions
+
+Throughout your journey, you'll likely have queries that you'd need answers to. We recommend using the Questions section provided. We'll guide you on how to ask questions such that they have the highest chance of receiving an answer from the community, an AI, or a forum.
+
+<img src="/solidity/remix/lesson-2/section-1/lesson-2-section-1-quoute.png" style="width: 100%; height: auto;">
+
+
 
 ## Setting Up
 
@@ -23,65 +42,26 @@ Before we dive into coding, it is essential that you have access to the code rep
 2. If you face any issues or want to participate in discussions, use the discussions tab on GitHub instead of creating issues.
 
 Also, I recommend creating accounts on the following platforms if you haven't already:
-- GitHub
-- Stack Exchange Ethereum
-- Chat JBT (but remember it might not always provide accurate information)
+- [GitHub](https://github.com/)
+- [Stack Exchange Ethereum](https://ethereum.stackexchange.com/)
+- [Chat GPT](https://openai.com/blog/chatgpt) (but remember it might not always provide accurate information).
 
-## Asking Questions
+## Let's Start Coding!
 
-In the questions section, we'll guide you on how to ask questions effectively. A well-framed question is more likely to be answered by the community, AI, or forum.
+Now, comes the exciting part — we're actually going to be building and deploying your first smart contract!
 
-## Using Remix IDE
 
-Remix IDE is a powerful tool used for developing smart contracts in Solidity. In this section, we will be creating our smart contract and deploying it on a blockchain.
+We're going to be utilizing a tool called an IDE — specifically, Remix, for deploying and interacting with this smart contract. The best way to get the most out of this guide is to code along with me. You're encouraged to change the speed on the tutorial video to match your coding pace. Remember, repetition is critical to building a new skill and we want to make sure that you come out on the other side armed with it!
 
-1. Open Remix IDE by either searching on Google or visiting the link provided in the GitHub repository.
-2. If it's your first time using Remix, it will provide you a tutorial walkthrough of its features. You can choose to go through it.
-3. Clean the environment by right-clicking and deleting the existing folders (optional).
-4. Create a new file by clicking on the "create new file" button and give it a name, e.g., SimpleStorage.sol. The `.sol` extension indicates it is a Solidity file.
+## The Deployment Tool: Remix
 
-```solidity
-// Your first line in SimpleStorage.sol
-pragma solidity ^0.8.0;
-```
+<img src="/solidity/remix/remix-screenshot.png" style="width: 100%; height: auto;">
 
-This line specifies the version of Solidity you are using. The caret (^) symbol specifies that the code is compatible with the mentioned version and any new version till (but not including) 0.9.0.
 
-## SPDX License Identifier
+To plunge into coding, we're going to be using [Remix](https://remix.ethereum.org/). You can either Google search it or access it directly from the link provided.
 
-It's a good practice to start your smart contract with an SPDX License Identifier. Though it's not mandatory, it helps in making licensing and sharing code easier from a legal perspective.
+So, let's jump right in and start deploying your first smart contract! By the end of this lesson, you'll have deployed your first smart contract and written your first bit of Solidity code. We can't wait to get through this exciting journey with you!
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-```
 
-MIT is known as one of the most permissive licenses which means anybody can use this code and pretty much do whatever they want with it.
 
-## Writing the Smart Contract
-
-Start by writing your contract using the keyword `contract`. Give it a name, e.g., SimpleStorage. Everything inside the curly brackets will be considered part of this contract.
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-contract SimpleStorage {
-
-}
-```
-
-## Compiling the Contract
-
-1. In Remix IDE, select the Solidity Compiler.
-2. Choose the version of the compiler that matches the version specified in your Solidity file.
-3. Hit the `Compile` button.
-
-Compiling your code means taking human-readable code and transforming it into computer-readable code or bytecode.
-
-If you see a green checkmark, it means your compilation was successful. If there is any error, Remix will point out where the error is, and you can debug it accordingly.
-
-## Conclusion
-
-By the end of this lesson, you should have deployed your first smart contract, written your first bit of Solidity, and compiled it successfully. Make sure to follow along by coding as this will help ingrain the knowledge.
 
