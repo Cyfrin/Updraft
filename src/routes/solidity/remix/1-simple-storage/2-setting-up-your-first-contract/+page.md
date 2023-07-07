@@ -29,7 +29,7 @@ Remix IDE is a powerful tool used for developing smart contracts in Solidity. In
 
 ```js
 // Your first line in SimpleStorage.sol
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.18;
 ```
 
 This line specifies the version of Solidity you are using. The caret (^) symbol specifies that the code is compatible with the mentioned version and any new version till (but not including) 0.9.0.
