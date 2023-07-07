@@ -51,7 +51,7 @@ Start by writing your contract using the keyword `contract`. Give it a name, e.g
 
 ```js
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.18;
 
 contract SimpleStorage {
 
