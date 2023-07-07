@@ -89,7 +89,7 @@ export default {
             collapsible: true,
             items: [
                 {
-                    title: 'Introduction',
+                    title: 'Repository Access and Navigation',
                     to: '/solidity/remix/1-simple-storage/1-introduction/',
                 },
                 {

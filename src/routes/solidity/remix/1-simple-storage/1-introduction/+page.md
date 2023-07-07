@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: Repository Access and Navigation
 ---
 
 *If you'd like, you can follow along with the course here.*
@@ -7,16 +7,24 @@ title: Introduction
 <iframe width="560" height="315" src="https://www.youtube.com/embed/nzeR4vWsAz8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
-## Repository Access and Navigation
+## Introduction
 
-To get started, navigate to our [GitHub repository](https://github.com/Cyfrin/foundry-full-course-f23#lesson-2-welcome-to-remix---remix-simple-storage) and scroll down to Lesson 2.
+To get started, navigate to our [GitHub repository](https://github.com/Cyfrin/foundry-full-course-f23) 
 
 <img src="/solidity/remix/lesson-2/section-1/1.png" style="width: 100%; height: auto;">
 
 
 The interface might look slightly different when you first access it, but no need to worry. What you're looking for is the repository associated specifically with this lesson. This repository will contain all the code required for this stage of the course, together with a `README` section. The `README` will provide you with a wealth of notes on how to work with the code.
 
+## Usage of the repository
 
+The repository serves two main purposes:
+
+- **Access and Clone:** It provides easy access to all lesson codes, allowing you to clone them effortlessly.
+
+- **Discussion Section:** Engage with fellow students, ask questions, and participate in collaborative learning.
+
+Make the most of this repository by accessing and cloning lesson codes quickly, while also taking part in interactive discussions with your peers. Happy learning!
 
 ## Asking Questions
 
