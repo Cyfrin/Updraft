@@ -4,7 +4,7 @@ title: Setting Up Your First Contract
 
 *If you'd like, you can follow along with the course here.*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/umepbfKp5rI?&t=8200s" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1VYYhX7AXdI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
 # Introduction
@@ -29,7 +29,7 @@ Remix IDE is a powerful tool used for developing smart contracts in Solidity. In
 
 ```js
 // Your first line in SimpleStorage.sol
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.19;
 ```
 
 This line specifies the version of Solidity you are using. The caret (^) symbol specifies that the code is compatible with the mentioned version and any new version till (but not including) 0.9.0.
@@ -40,7 +40,7 @@ It's a good practice to start your smart contract with an SPDX License Identifie
 
 ```js
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.19;
 ```
 
 MIT is known as one of the most permissive licenses which means anybody can use this code and pretty much do whatever they want with it.
@@ -51,7 +51,7 @@ Start by writing your contract using the keyword `contract`. Give it a name, e.g
 
 ```js
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.19;
 
 contract SimpleStorage {
 
@@ -68,7 +68,7 @@ Compiling your code means taking human-readable code and transforming it into co
 
 If you see a green checkmark, it means your compilation was successful. If there is any error, Remix will point out where the error is, and you can debug it accordingly.
 
-## Conclusion
+## Congratulations
 
-By the end of this lesson, you should have deployed your first smart contract, written your first bit of Solidity, and compiled it successfully. Make sure to follow along by coding as this will help ingrain the knowledge.
+Technically, you just drafted your first Smart Contract. It's a straightforward operation and the script doesn't do anything yet. However, we're well on our way.
 
