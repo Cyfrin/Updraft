@@ -40,7 +40,7 @@ It's a good practice to start your smart contract with an SPDX License Identifie
 
 ```js
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.18;
 ```
 
 MIT is known as one of the most permissive licenses which means anybody can use this code and pretty much do whatever they want with it.
@@ -51,7 +51,7 @@ Start by writing your contract using the keyword `contract`. Give it a name, e.g
 
 ```js
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.18;
 
 contract SimpleStorage {
 
