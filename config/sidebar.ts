@@ -96,6 +96,19 @@ export default {
                     title: 'Setting up Your First Contract',
                     to: '/solidity/remix/1-simple-storage/2-setting-up-your-first-contract/'
 
+                },
+                {
+                    title: 'Basic Solidity Types',
+                    to: '/solidity/remix/1-simple-storage/3-basic-types/'
+                },
+                {
+                    title: 'Function & Deployment',
+                    to: '/solidity/remix/1-simple-storage/4-functions/'
+                },
+                {
+                    title: 'Solidity Arrays & Structs',
+                    to: '/solidity/remix/1-simple-storage/5-arrays-and-structs/'
+
                 }
             ],
         },
