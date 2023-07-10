@@ -108,7 +108,10 @@ export default {
                 {
                     title: 'Solidity Arrays & Structs',
                     to: '/solidity/remix/1-simple-storage/5-arrays-and-structs/'
-
+                },
+                {
+                    title: 'Errors and Warnings',
+                    to: '/solidity/remix/1-simple-storage/6-errors-and-warnings/'
                 }
             ],
         },
