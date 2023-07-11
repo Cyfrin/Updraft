@@ -112,6 +112,22 @@ export default {
                 {
                     title: 'Errors and Warnings',
                     to: '/solidity/remix/1-simple-storage/6-errors-and-warnings/'
+                },
+                {
+                    title: 'Memory, Storage and Calldata',
+                    to: '/solidity/remix/1-simple-storage/7-memory-storage-calldata/'
+                },
+                {
+                    title: 'Solidity Mappings',
+                    to: '/solidity/remix/1-simple-storage/8-mappings/'
+                },
+                {
+                    title: 'Deploying a Contract',
+                    to: '/solidity/remix/1-simple-storage/9-deploying/'
+                },
+                {
+                    title: 'Recap & Congratulations',
+                    to: '/solidity/remix/1-simple-storage/10-evm-recap/'
                 }
             ],
         },

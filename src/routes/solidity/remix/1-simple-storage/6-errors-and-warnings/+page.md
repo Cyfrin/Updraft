@@ -42,40 +42,37 @@ To recap:
 
 In situations when the errors or warnings remain cryptic, we can turn to online resources for assistance. Suppose you encounter an error message that leaves you bewildered. In such cases, copying the error message and performing a Google search, or using resources highlighted in this course – such as Chat GPT, GitHub Discussions, Ethereum Stack Exchange – can make the situation clearer. Each of these resources has its strengths and weaknesses, which we will discuss later in the course.
 
-### Utilizing Find – The AI Search Engine for Developers
+### Utilizing Phind – The AI Search Engine for Developers
 
-For instance, using **Find** can prove beneficial. **Find** is an AI-powered search engine for developers. It operates by first conducting a Google search based on your query, then parsing the results to give you a contextual response.
+For instance, using [Phind](https://www.phind.com/) can prove beneficial. **Phind** is an AI-powered search engine for developers. It operates by first conducting a Google search based on your query, then parsing the results to give you a contextual response.
 
-```markdown
-> I am getting this compiler error in Solidity. How do I fix it?
-```
+<img src="/solidity/remix/lesson-2/errors-warnings/questions.png" style="width: 100%; height: auto;">
+
 
 We can enter the compiler error under the drop-down selection, then execute the search. The result is a detailed insight into why the error occurred and how to fix it.
 
-Alternatively, you can even copy your entire code base, paste it under the drop-down, hit research, and the AI will analyze it for you.
 
-```python
-'''code'''
-```
+<img src="/solidity/remix/lesson-2/errors-warnings/phind-answer.png" style="width: 100%; height: auto;">
 
-It's common practice to use three back-ticks before and after the code block in programming languages.
 
-![](https://cdn.videotap.com/czSDuQK1iCooXwGBLKYi-198.68.png)After intensive AI analysis, **Find** suggests that a simple addition of a semicolon where the new person is being pushed onto the dynamic 'people' array list, can resolve the issue.
 
-The AI suggestions can be a bit verbose at times; hitting the "concise" button shortens this.
+After intensive AI analysis, **Phind** suggests that a simple addition of a semicolon where the new person is being pushed onto the dynamic 'people' array list, can resolve the issue.
+
+
 
 ## Other Key Online Developer Resources
 
 Several AI tools are still in their developmental stages so they may not always render the perfect solution.
 
-Other remarkable communities include **GitHub discussions, Stack Exchange**, and **Piranha** among others.
+Other remarkable communities include **GitHub discussions, Stack Exchange** among others.
 
-> One of the key pieces of being a really good software engineer or a good prompt engineer is less about actually knowing the information and more about knowing where to find the information.
+<img src="/solidity/remix/lesson-2/errors-warnings/quote1.png" style="width: 100%; height: auto;">
 
-I encourage you to actively use these resources, as they can significantly enhance your understanding and skill.
+
+We encourage you to actively use these resources, as they can significantly enhance your understanding and skill.
 
 In later parts of this course, we will take a closer look at posing effective questions, AI prompting, structuring your questions, as well as searching and learning more.
 
-Should you receive a less than satisfactory answer from Find or Chat GBT, feel free to use the GitHub discussions for course-specific queries. For broader questions about Solidity or Foundry, there are several other resources at your disposal.
+Should you receive a less than satisfactory answer from Find or Chat GPT, feel free to use the GitHub discussions for course-specific queries. For broader questions about Solidity or Foundry, there are several other resources at your disposal.
 
-Congratulations! You've just taken your first steps into the domain of prompt engineering.
+Congratulations! You've just taken your first steps into the domain of prompt engineering and the understanding to face errors and warnings head-on. In the next lesson, we will take a closer look at the Solidity and more advanced features of Remix.
