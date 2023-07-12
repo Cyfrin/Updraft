@@ -28,7 +28,7 @@ For the purposes of this post, we will focus on three principal ones: Call Data,
 <img src="/solidity/remix/lesson-2/memory/memory1.jpg" style="width: 100%; height: auto;">
 
 
-In Solidity, `call data` and `memory` relate to temporary variables that only exist during the execution of a function. If you run a function with a variable name for once, you can access it only for that particular function execution. If you try to retrieve the variable in the next function execution, you will fail because it was stored temporarily.
+In Solidity, `calldata` and `memory` relate to temporary variables that only exist during the execution of a function. If you run a function with a variable name for once, you can access it only for that particular function execution. If you try to retrieve the variable in the next function execution, you will fail because it was stored temporarily.
 
 Example:
 
