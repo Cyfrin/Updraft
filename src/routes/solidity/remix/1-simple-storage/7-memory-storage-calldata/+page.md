@@ -47,7 +47,7 @@ So far, so right, but why do we have two variants of temporary variables? Let's 
 <img src="/solidity/remix/lesson-2/memory/calldata.png" style="width: 100%; height: auto;">
 
 
-Now, If we replace `memory` with `call data` and try to compile it, we receive an error message. This occurred because, unlike `memory` variables, `call data` variables can't be manipulated – they are read-only.
+Now, If we replace `memory` with `calldata` and try to compile it, we receive an error message. This occurred because, unlike `memory` variables, `calldata` variables can't be manipulated – they are read-only.
 
 ## Storage: Permanent Variables
 
