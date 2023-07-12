@@ -51,7 +51,7 @@ Now, If we replace `memory` with `calldata` and try to compile it, we receive an
 
 ## Storage: Permanent Variables
 
-While `call data` and `memory` are designated for temporary variables, `storage` is for permanent variables that can be altered.
+While `calldata` and `memory` are designated for temporary variables, `storage` is for permanent variables that can be altered.
 
 <img src="/solidity/remix/lesson-2/memory/memory2.jpg" style="width: 100%; height: auto;">
 
