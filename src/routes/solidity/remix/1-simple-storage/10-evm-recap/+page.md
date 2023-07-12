@@ -51,7 +51,7 @@ The real magic happens when we start creating functions in Solidity that can mod
 
 ## Data Locations and Memory
 
-We can specify different data locations in our parameters. Notice that this only applies to particular types like strings, structs, and arrays. The terms `call data` and `memory` are used to denote temporary variables that exist only for the duration of a function call. On the other hand, `storage` variables are permanent and remain in the contract forever.
+We can specify different data locations in our parameters. Notice that this only applies to particular types like strings, structs, and arrays. The terms `calldata` and `memory` are used to denote temporary variables that exist only for the duration of a function call. On the other hand, `storage` variables are permanent and remain in the contract forever.
 
 An important caveat is that function parameters can't be `storage` variables, as they will only exist for the duration of the function call.
 
