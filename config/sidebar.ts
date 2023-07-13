@@ -85,52 +85,90 @@ export default {
             to: '/',
         },
         {
-            title: 'Welcome to Coding with Remix',
+            title: '1. Welcome to Coding with Remix',
             collapsible: true,
             items: [
                 {
-                    title: 'Repository Access and Navigation',
+                    title: '1. Repository Access and Navigation',
                     to: '/solidity/remix/1-simple-storage/1-introduction/',
                 },
                 {
-                    title: 'Setting up Your First Contract',
+                    title: '2. Setting up Your First Contract',
                     to: '/solidity/remix/1-simple-storage/2-setting-up-your-first-contract/'
 
                 },
                 {
-                    title: 'Basic Solidity Types',
+                    title: '3. Basic Solidity Types',
                     to: '/solidity/remix/1-simple-storage/3-basic-types/'
                 },
                 {
-                    title: 'Function & Deployment',
+                    title: '4. Function & Deployment',
                     to: '/solidity/remix/1-simple-storage/4-functions/'
                 },
                 {
-                    title: 'Solidity Arrays & Structs',
+                    title: '5. Solidity Arrays & Structs',
                     to: '/solidity/remix/1-simple-storage/5-arrays-and-structs/'
                 },
                 {
-                    title: 'Errors and Warnings',
+                    title: '6.Errors and Warnings',
                     to: '/solidity/remix/1-simple-storage/6-errors-and-warnings/'
                 },
                 {
-                    title: 'Memory, Storage and Calldata',
+                    title: '7. Memory, Storage and Calldata',
                     to: '/solidity/remix/1-simple-storage/7-memory-storage-calldata/'
                 },
                 {
-                    title: 'Solidity Mappings',
+                    title: '8. Solidity Mappings',
                     to: '/solidity/remix/1-simple-storage/8-mappings/'
                 },
                 {
-                    title: 'Deploying a Contract',
+                    title: '9. Deploying a Contract',
                     to: '/solidity/remix/1-simple-storage/9-deploying/'
                 },
                 {
-                    title: 'Recap & Congratulations',
+                    title: '10. Recap & Congratulations',
                     to: '/solidity/remix/1-simple-storage/10-evm-recap/'
                 }
             ],
         },
+        {
+            title: '2. Remix Storage Factory',
+            collapsible: true,
+            items: [
+                {
+                    title: '1. Introduction',
+                    to: '/solidity/remix/2-storage-factory/1-factory-introduction/',
+                },
+                {
+                    title: '2. Setting up',
+                    to: '/solidity/remix/2-storage-factory/2-setting-up-the-factory/'
+                },
+                {
+                    title: '3. Deploying a Contract from a Contract (Factory)',
+                    to: '/solidity/remix/2-storage-factory/3-deploying-a-contract-from-a-contract/'
+                },
+                {
+                    title: '4. Solidity Imports',
+                    to: '/solidity/remix/2-storage-factory/4-solidity-imports/'
+                },
+                {
+                    title: '5. AI Help II',
+                    to: '/solidity/remix/2-storage-factory/5-ai-help-ii/'
+                },
+                {
+                    title: '6. Interacting with Contracts ABI',
+                    to: '/solidity/remix/2-storage-factory/6-interacting-with-contracts-abi/'
+                },
+                {
+                    title: '7. Inheritance in Solidity',
+                    to: '/solidity/remix/2-storage-factory/7-inheritance-in-solidity/'
+                },
+                {
+                    title: '8. Summary and Recap',
+                    to: '/solidity/remix/2-storage-factory/8-summary-and-recap/'
+                }
+            ],
+        }
 
     ],
     '/solidity': [],
