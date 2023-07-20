@@ -174,7 +174,7 @@ export default {
       items: [
         {
           title: "1. Introduction",
-          to: "/solidity/remix/3-fund-me/1-introduction/",
+          to: "/solidity/remix/3-fund-me/1-fund-me-intro/",
         },
         {
           title: "2. Project Setup",
