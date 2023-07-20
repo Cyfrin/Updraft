@@ -181,8 +181,8 @@ export default {
           to: "/solidity/remix/3-fund-me/2-setup/",
         },
         {
-          title: "3. Sending ETH trough a function",
-          to: "/solidity/remix/3-fund-me/3-sending-eth-trough-a-function/",
+          title: "3. Sending ETH through a function",
+          to: "/solidity/remix/3-fund-me/3-sending-eth-through-a-function/",
         },
         {
           title: "4. Solidity Reverts",
