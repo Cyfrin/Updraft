@@ -32,7 +32,7 @@ Once the transaction has completed, the contract balance will update to display 
 
 ### Practically Speaking....
 
-We can go trough the process using 0.1 ether as an example. After input the amount to be sent, and hit the `fund` button, confirm the transaction using my connected wallet (in this case, MetaMask), and the balance of the contract will show as zero. After a while, once the transaction has been completed, we will see a balance of 0.1 ETH appearing on Etherscan and Remix. The slight delay merely reflects transaction processing times.
+We can go through the process using 0.1 ether as an example. After input the amount to be sent, and hit the `fund` button, confirm the transaction using my connected wallet (in this case, MetaMask), and the balance of the contract will show as zero. After a while, once the transaction has been completed, we will see a balance of 0.1 ETH appearing on Etherscan and Remix. The slight delay merely reflects transaction processing times.
 
 Following this, we can give permission to the contract owner to withdraw the funds. Since in this case, we are also the owner of the contract, the balance will be transferred back into our account. The balance can also be returned to MetaMask if kept open for long enough. 
  
