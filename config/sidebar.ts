@@ -274,6 +274,30 @@ export default {
         },
       ],
     },
+    {
+      title: "4. Ai Prompting & Forums",
+      collapsible: true,
+      items: [
+        {
+          title: "1. AI Prompting & Forums",
+          to: "/solidity/remix/4-ai-prompting/1-ai-and-forums/",
+        },
+        {
+          title: "2. Setting up GitHub",
+          to: "/solidity/remix/4-ai-prompting/2-setting-up-github/",
+        },
+        {
+          title: "3. Formatting a Question",
+          to: "/solidity/remix/4-ai-prompting/3-formatting-a-question/",
+        },
+        {
+          title: "4. SpeedRun Ethereum",
+          to: "/solidity/remix/4-ai-prompting/4-speedrun/",
+        },
+      ],
+    },
   ],
+
+  "/foundry": [],
   "/solidity": [],
 };
