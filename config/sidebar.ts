@@ -298,6 +298,109 @@ export default {
     },
   ],
 
-  "/foundry": [],
+  "/foundry": [
+    {
+      title: "🔙 Back to All Courses",
+      to: "/",
+    },
+    {
+      title: "1. Foundry Simple Storage",
+      collapsible: true,
+      items: [
+        {
+          title: "1. Introduction to Foundry Simple Storage",
+          to: "/foundry/1-foundry-simple-storage/1-introduction-foundry-simple-storage/",
+        },
+        {
+          title: "2. Mac & Linux Installation",
+          to: "/foundry/1-foundry-simple-storage/2-Mac-Linux-Install/",
+        },
+        {
+          title: "3. Windows Installation",
+          to: "/foundry/1-foundry-simple-storage/3-Windows-Install/",
+        },
+        {
+          title: "4 Gitpod Setup",
+          to: "/foundry/1-foundry-simple-storage/4-gitpod/",
+        },
+        {
+          title: "5. Foundry Install",
+          to: "/foundry/1-foundry-simple-storage/5-foundry-install/",
+        },
+        {
+          title: "6. VSCode Setup II",
+          to: "/foundry/1-foundry-simple-storage/6-vscode-setup-ii/",
+        },
+        {
+          title: "7. Foundry Setup",
+          to: "/foundry/1-foundry-simple-storage/7-foundry-setup/",
+        },
+        {
+          title: "8. Formatting Solidity in VSCode",
+          to: "/foundry/1-foundry-simple-storage/8-formatting-solidity/",
+        },
+        {
+          title: "9. Compiling in Foundry",
+          to: "/foundry/1-foundry-simple-storage/9-compiling-in-foundry/",
+        },
+        {
+          title: "10. Deploying to a Local Blockchain",
+          to: "/foundry/1-foundry-simple-storage/10-deploying-locally/",
+        },
+        {
+          title: "11. Adding another Network to Metamask",
+          to: "/foundry/1-foundry-simple-storage/11-adding-network-metamask/",
+        },
+        {
+          title: "12. Deploying to a Local Blockchain II",
+          to: "/foundry/1-foundry-simple-storage/12-deploying-locally-ii/",
+        },
+        {
+          title: "13. Private Key Safety",
+          to: "/foundry/1-foundry-simple-storage/13-private-key-safety/",
+        },
+        {
+          title: "14. Deploying to a local Blockchain III",
+          to: "/foundry/1-foundry-simple-storage/14-deploying-locally-iii/",
+        },
+        {
+          title: "15. What is a Transaction? But Actually",
+          to: "/foundry/1-foundry-simple-storage/15-what-is-a-transaction/",
+        },
+        {
+          title: "16. Private Key Safety II",
+          to: "/foundry/1-foundry-simple-storage/16-private-key-safety-ii/",
+        },
+        {
+          title: "17. Third Web Deploy",
+          to: "/foundry/1-foundry-simple-storage/17-thirdweb-deploy/",
+        },
+        {
+          title: "18. Cast Send",
+          to: "/foundry/1-foundry-simple-storage/18-cast-send/",
+        },
+        {
+          title: "19. Deploying to a Testnet",
+          to: "/foundry/1-foundry-simple-storage/19-deploying-to-a-testnet/",
+        },
+        {
+          title: "20. Manual Verification",
+          to: "/foundry/1-foundry-simple-storage/20-manual-verification/",
+        },
+        {
+          title: "21. Cleaning up",
+          to: "/foundry/1-foundry-simple-storage/21-cleaning-up/",
+        },
+        {
+          title: "22. Alchemy & The Mempool",
+          to: "/foundry/1-foundry-simple-storage/22-alchemy-mempool/",
+        },
+        {
+          title: "23. Summary & Congratulations",
+          to: "/foundry/1-foundry-simple-storage/23-summary-congratulations/",
+        },
+      ],
+    },
+  ],
   "/solidity": [],
 };
