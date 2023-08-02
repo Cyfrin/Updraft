@@ -2,7 +2,7 @@
 title: AI prompting and Forums
 ---
 
-_Follow along with the video below._
+_Follow along the course with this video._
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Y4HylRGK6Rk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 

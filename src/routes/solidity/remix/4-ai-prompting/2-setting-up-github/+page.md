@@ -2,7 +2,7 @@
 title: Setting up GitHub
 ---
 
-_Follow along with the video below._
+_Follow along the course with this video._
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Tmv2cggeqGE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 

@@ -21,6 +21,7 @@ features:
   #   description: The Pythonic smart contract programming langauge
   - title: "Foundry Introduction"
     description: The fastest smart contract framework.
+    link: /foundry/1-foundry-simple-storage/1-introduction-foundry-simple-storage/
   # - title: "Hardhat"
   #   description: The most popular smart contract framework.
   # - title: "Smart Contract Auditing & Security"
