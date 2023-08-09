@@ -401,6 +401,100 @@ export default {
         },
       ],
     },
+    {
+      title: "2. Foundry Fund Me",
+      collapsible: true,
+      items: [
+        {
+          title: "1. Welcome & Setup",
+          to: "/foundry/2-foundry-fund-me/1-fund-me-setup/",
+        },
+        {
+          title: "2. Testing Introduction",
+          to: "/foundry/2-foundry-fund-me/2-testing-introduction/",
+        },
+        {
+          title: "3. Setup Continued",
+          to: "/foundry/2-foundry-fund-me/3-setup-continued/",
+        },
+        {
+          title: "4. Testing",
+          to: "/foundry/2-foundry-fund-me/4-tests/",
+        },
+        {
+          title: "5. Debugging Tests",
+          to: "/foundry/2-foundry-fund-me/5-debugging-tests/",
+        },
+        {
+          title: "6. Advanced Deploy Scripts",
+          to: "/foundry/2-foundry-fund-me/6-advanced-deploy-scripts/",
+        },
+        {
+          title: "7. Forked Tests",
+          to: "/foundry/2-foundry-fund-me/7-forked-tests/",
+        },
+        {
+          title: "8. Refactoring I - Testing Deploy Scripts",
+          to: "/foundry/2-foundry-fund-me/8-refactoring-testing/",
+        },
+        {
+          title: "9. Refactoring II - Refactoring II - Helper Config",
+          to: "/foundry/2-foundry-fund-me/9-refactoring-helper/",
+        },
+        {
+          title: "10. Refactoring III - Mocks",
+          to: "/foundry/2-foundry-fund-me/10-refactoring-mocks/",
+        },
+        {
+          title: "11. Magic Numbers",
+          to: "/foundry/2-foundry-fund-me/11-magic-numbers/",
+        },
+        {
+          title: "12. Refactoring III - Mocks (continued)",
+          to: "/foundry/2-foundry-fund-me/12-refactoring-mocks-2/",
+        },
+        {
+          title: "13. More CheatCodes",
+          to: "/foundry/2-foundry-fund-me/13-more-cheatcodes/",
+        },
+        {
+          title: "14. More Coverage",
+          to: "/foundry/2-foundry-fund-me/14-more-coverage/",
+        },
+        {
+          title: "15. Chisel",
+          to: "/foundry/2-foundry-fund-me/15-chisel/",
+        },
+        {
+          title: "16. Cheaper Withdraw",
+          to: "/foundry/2-foundry-fund-me/16-cheaper-withdraw/",
+        },
+        {
+          title: "17. Storage",
+          to: "/foundry/2-foundry-fund-me/17-storage/",
+        },
+        {
+          title: "18. Cheaper Withdraw (Continued)",
+          to: "/foundry/2-foundry-fund-me/18-cheaper-withdraw-ii/",
+        },
+        {
+          title: "19. Interactions.s.sol",
+          to: "/foundry/2-foundry-fund-me/19-interactions/",
+        },
+        {
+          title: "20. Makefile",
+          to: "/foundry/2-foundry-fund-me/20-makefile/",
+        },
+        {
+          title: "21. Pushing to Github",
+          to: "/foundry/2-foundry-fund-me/21-pushing-to-github/",
+        },
+        {
+          title: "22. Recap & Congratulations",
+          to: "/foundry/2-foundry-fund-me/22-recap/",
+        },
+      ],
+    },
   ],
   "/solidity": [],
 };
