@@ -495,6 +495,30 @@ export default {
         },
       ],
     },
+
+    {
+      title: "4. HTML Fund Me",
+      collapsible: true,
+      items: [
+        {
+          title: "1. Setup",
+          to: "/foundry/3-html-fund-me/1-setup/",
+        },
+        {
+          title: "2. How MetaMask works with the Browser",
+          to: "/foundry/3-html-fund-me/2-metamask/",
+        },
+        {
+          title: "3. Function Selectors Introduction",
+          to: "/foundry/3-html-fund-me/3-function-selectors/",
+        },
+        {
+          title: "4. Summary",
+          to: "/foundry/3-html-fund-me/4-summary/",
+        },
+      ],
+    },
+
   ],
   "/solidity": [],
 };
