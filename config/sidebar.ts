@@ -495,6 +495,7 @@ export default {
         },
       ],
     },
+
     {
       title: "4. HTML Fund Me",
       collapsible: true,
@@ -517,6 +518,7 @@ export default {
         },
       ],
     },
+
   ],
   "/solidity": [],
 };
