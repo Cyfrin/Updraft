@@ -518,6 +518,7 @@ export default {
         },
       ],
     },
+
     {
       title: "5. Foundry Smart Contract Lottery",
       collapsible: true,
@@ -672,6 +673,7 @@ export default {
         },
       ],
     },
+
   ],
   "/solidity": [],
 };
