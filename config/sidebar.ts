@@ -602,6 +602,74 @@ export default {
           title: "20. Testing Events",
           to: "/foundry/4-smart-contract-lottery/20-testing-events/",
         },
+        {
+          title: "21. VM.Roll and VM.Warp",
+          to: "/foundry/4-smart-contract-lottery/21-vm-roll-warp/",
+        },
+        {
+          title: "22. Create Subscriptions",
+          to: "/foundry/4-smart-contract-lottery/22-create-subscriptions/",
+        },
+        {
+          title: "23. Create Subscription UI",
+          to: "/foundry/4-smart-contract-lottery/23-subscription-ui/",
+        },
+        {
+          title: "24. Fund Subscription",
+          to: "/foundry/4-smart-contract-lottery/24-fund-subscription/",
+        },
+        {
+          title: "25. Add Consumer",
+          to: "/foundry/4-smart-contract-lottery/25-add-consumer/",
+        },
+        {
+          title: "26. More Tests",
+          to: "/foundry/4-smart-contract-lottery/26-more-tests/",
+        },
+        {
+          title: "27. Perform Upkeep",
+          to: "/foundry/4-smart-contract-lottery/27-perform-upkeep/",
+        },
+        {
+          title: "28. Getting Event Data Into Foundry",
+          to: "/foundry/4-smart-contract-lottery/28-event-data/",
+        },
+        {
+          title: "29. Intro to Fuzz Testing",
+          to: "/foundry/4-smart-contract-lottery/29-intro-fuzz-testing/",
+        },
+        {
+          title: "30. One Big Test",
+          to: "/foundry/4-smart-contract-lottery/30-one-big-test/",
+        },
+        {
+          title: "31. Passing the Private Key in",
+          to: "/foundry/4-smart-contract-lottery/31-passing-private-key/",
+        },
+        {
+          title: "32. Integration Tests",
+          to: "/foundry/4-smart-contract-lottery/32-integration-tests/",
+        },
+        {
+          title: "33. Testnet Demo with a Makefile",
+          to: "/foundry/4-smart-contract-lottery/33-testnet-demo/",
+        },
+        {
+          title: "34. Testnet Demo.. The Demo",
+          to: "/foundry/4-smart-contract-lottery/34-the-demo/",
+        },
+        {
+          title: "35. Console.log Debugging",
+          to: "/foundry/4-smart-contract-lottery/35-console-log-debug/",
+        },
+        {
+          title: "36. Forge Test --Debug",
+          to: "/foundry/4-smart-contract-lottery/36-forge-test-debug/",
+        },
+        {
+          title: "37. Recap & Congratulations",
+          to: "/foundry/4-smart-contract-lottery/37-recap/",
+        },
       ],
     },
   ],
