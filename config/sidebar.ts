@@ -673,7 +673,15 @@ export default {
         },
       ],
     },
-
   ],
-  "/solidity": [],
+  "Advanced Foundry": [],
+  "/solidity": [
+    {
+      title: "🔙 Back to All Courses",
+      to: "/",
+    },
+    {
+      // LESSON 10 ROUTES HERE.
+    },
+  ],
 };
