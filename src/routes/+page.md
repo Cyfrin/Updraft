@@ -22,6 +22,10 @@ features:
   - title: "Foundry Introduction"
     description: The fastest smart contract framework.
     link: /foundry/1-foundry-simple-storage/1-introduction-foundry-simple-storage/
+
+  - title: "Advanced Foundry"
+    description: Learn how to use Foundry to build more advanced smart contracts
+    link: /advanced-foundry/
   # - title: "Hardhat"
   #   description: The most popular smart contract framework.
   # - title: "Smart Contract Auditing & Security"
