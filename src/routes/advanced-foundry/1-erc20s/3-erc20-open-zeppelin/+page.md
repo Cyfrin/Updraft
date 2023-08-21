@@ -24,7 +24,7 @@ Additionally, OpenZeppelin offers a contract wizard, streamlining the contract c
 
 Rather than manual implementations, let's craft a new token named 'OurToken'. Here's an outline of our token's structure:
 
-```solidity
+```javascript
 // OurToken.sol
 SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
@@ -50,13 +50,13 @@ Upon successful installation, you'll find the OpenZeppelin contracts in your pro
 
 After accessing the OpenZeppelin contracts, you can now import and inherit from them. To do this, we first need to remap the OpenZeppelin contracts in our foundry.toml file:
 
-```toml
-[remappings] = "@openzeppelin-contracts=lib/openzeppelin-contracts"
+```javascript
+[remappings] = "@openzeppelin-contracts=lib/openzeppelin-contracts";
 ```
 
 Then, simply import and inherit from ERC20.sol in our 'OurToken.sol' file like this:
 
-```solidity
+```javascript
 SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 

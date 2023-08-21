@@ -18,7 +18,7 @@ Let's dive into some practical examples, with a bit of humor, to illustrate. Yes
 
 Our focus for the test would be `TokenTest.t.sol`, create this file in your test folder. We will start by crafting the basic structure for our testing contract. This would include SPDX license identifier, pragma solidity version, and a declaration of the contract:
 
-```solidity
+```javascript
 SPDX license identifier: MIT
 pragma solidity ^0.8.18;
 
@@ -35,7 +35,7 @@ Also note the need to import forge's `forge-std/Test.sol` for `Test`, OurToken f
 
 In our setup,we have something like:
 
-```solidity
+```javascript
 contract OurTokenTest is Test {
     OurToken public ourToken;
     DeployOurToken public deployer;
@@ -49,14 +49,14 @@ contract OurTokenTest is Test {
 
 With that done, let’s add some addresses allowing interaction with people. This time, we’ll be involving Bob and Alice in the mix:
 
-```solidity
+```javascript
 address bob = makeAddr("bob");
 address alice = makeAddr("alice");
 ```
 
 Next, we’ll simulate a transfer of Tokens to Bob from our Token owner. We'll check Bob's Token balance afterward and ensure it equals the transferred Token amount.
 
-```solidity
+```javascript
 contract OurTokenTest is Test {
     OurToken public ourToken;
     DeployOurToken public deployer;

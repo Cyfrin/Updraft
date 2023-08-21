@@ -18,7 +18,7 @@ To initiate this, we're going to deploy OurToken.sol. Now, you might be asking w
 
 Let's start with a simple script to keep things light and compact:
 
-```solidity
+```javascript
 SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
@@ -33,13 +33,13 @@ contract DeployOurToken is Script {
 
 We'll need to import our token like so:
 
-```solidity
-import {Script} from "forge-std/Script.sol";
+```javascript
+import { Script } from "forge-std/Script.sol";
 ```
 
 Next, let's create a function, run, that will be external. Within the run function, we’ll do `vm.startBroadcast()`. In our run function, we need to initiate the VM broadcast as shown, we'll need to give it an initial supply too, say 1000 ether. That’s right, our token needs an initial amount to start with and finally, we'll want to return OurToken, for use later:
 
-```solidity
+```javascript
 SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 

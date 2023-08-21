@@ -46,7 +46,7 @@ Let's start by creating a new Solidity file named `OurToken.sol`. Right click th
 
 The inception of our token begins with some basic instructions for the Ethereum virtual machine — where our contract code will live, breathe, and operate.
 
-```solidity
+```javascript
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 contract OurToken{}
@@ -56,20 +56,20 @@ The `SPDX-License` specifies the type of license our code carries, while `pragma
 
 Ensuing this, we set forth to define several properties that will shape our token's identity. The ERC20 standard necessitates the definition of a `name`, `totalSupply`, and a `decimals` property. In our contract, this translates to:
 
-```solidity
+```javascript
     string public name = "OurToken";
     uint256 public totalSupply = 100000000000000000000;
 ```
 
 The decimals property signifies the number of decimal points that can be used in our token. Given that the Ethereum network operates in Wei (the smallest denomination of Ether), it's a good practice to use 18 decimal places for interoperability with other token contracts.
 
-```solidity
+```javascript
     uint8 public decimals = 18;
 ```
 
 Reaching this stage of our token creation, our contract should look something like this:
 
-```solidity
+```javascript
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -87,13 +87,13 @@ Our token also needs some internal structure and mechanisms to function, chiefly
 
 First, we use a Solidity mapping data structure to connect user addresses with their token balances. This balance tracking mapping looks like:
 
-```solidity
+```javascript
     mapping (address => uint256) private _balances;
 ```
 
 Next, we functionally implement the ability for anyone to view their current token balance via the `balanceOf` method.
 
-```solidity
+```javascript
     function balanceOf(address account) public view returns (uint256) {
         return _balances[account];
     }
@@ -105,7 +105,7 @@ Juxtaposed against the backdrop of token balance mapping, the `balanceOf` method
 
 Our token is still a bit static. Let's bring it to life by implementing the `transfer` function which helps users send tokens to other addresses:
 
-```solidity
+```javascript
     function transfer(address recipient, uint256 amount) public returns (bool) {
         uint256 senderBalance = _balances[msg.sender];
         require(senderBalance >= amount, "ERC20: transfer amount exceeds balance");
