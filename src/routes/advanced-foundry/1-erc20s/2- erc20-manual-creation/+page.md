@@ -71,7 +71,7 @@ Reaching this stage of our token creation, our contract should look something li
 
 ```javascript
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.18;
 
 contract OurToken{
     string public name = "OurToken";
