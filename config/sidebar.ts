@@ -674,14 +674,36 @@ export default {
       ],
     },
   ],
-  "Advanced Foundry": [],
-  "/solidity": [
+  "/advanced-foundry": [
     {
       title: "🔙 Back to All Courses",
       to: "/",
     },
     {
-      // LESSON 10 ROUTES HERE.
+      title: "1. ERC20s",
+      collapsible: true,
+      items: [
+        {
+          title: "1. ERC20 Basics",
+          to: "/advanced-foundry/1-erc20s/1-erc20-basics/",
+        },
+        {
+          title: "2. ERC20 Manual Creation",
+          to: "/advanced-foundry/1-erc20s/2-erc20-manual-creation/",
+        },
+        {
+          title: "3. Open Zeppelin",
+          to: "/advanced-foundry/1-erc20s/3-erc20-open-zeppelin/",
+        },
+        {
+          title: "4. Deploy Script",
+          to: "/advanced-foundry/1-erc20s/4-erc20-deploy-script/",
+        },
+        {
+          title: "5. ERC20 Tests and Recap",
+          to: "/advanced-foundry/1-erc20s/5-erc20-ai-tests-and-recap/",
+        },
+      ],
     },
   ],
 };
