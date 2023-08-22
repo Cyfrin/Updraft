@@ -705,5 +705,39 @@ export default {
         },
       ],
     },
+    {
+      title: "2. NFTs",
+      collapsible: true,
+      items: [
+        {
+          title: "1. NFTs",
+          to: "/advanced-foundry/2-nfts/1-nfts/",
+        },
+        {
+          title: "2. What is a NFT?",
+          to: "/advanced-foundry/2-nfts/2-what-is-a-nft/",
+        },
+        {
+          title: "3. Foundry Setup",
+          to: "/advanced-foundry/2-nfts/3-foundry-setup/",
+        },
+        {
+          title: "4. IPFS",
+          to: "/advanced-foundry/2-nfts/4-ipfs/",
+        },
+        {
+          title: "5. Using IPFS",
+          to: "/advanced-foundry/2-nfts/5-using-ipfs/",
+        },
+        {
+          title: "6. Deploy Script",
+          to: "/advanced-foundry/2-nfts/6-deploy-script/",
+        },
+        {
+          title: "7. Basic NFT Tests",
+          to: "/advanced-foundry/2-nfts/7-basic-nft-tests/",
+        },
+      ],
+    },
   ],
 };
