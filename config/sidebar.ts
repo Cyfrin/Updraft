@@ -737,6 +737,42 @@ export default {
           title: "7. Basic NFT Tests",
           to: "/advanced-foundry/2-nfts/7-basic-nft-tests/",
         },
+        {
+          title: "8. Basic NFT Interactions",
+          to: "/advanced-foundry/2-nfts/8-basic-interactions/",
+        },
+        {
+          title: "9. Basic NFT Testnet Demo",
+          to: "/advanced-foundry/2-nfts/9-testnet-demo/",
+        },
+        {
+          title: "10. The issue with IPFS vs HTTPS",
+          to: "/advanced-foundry/2-nfts/10-ipfs-https/",
+        },
+        {
+          title: "11. What is an SVG?",
+          to: "/advanced-foundry/2-nfts/11-what-is-svg/",
+        },
+        {
+          title: "12. SVG NFT Intro",
+          to: "/advanced-foundry/2-nfts/12-svg-nft/",
+        },
+        {
+          title: "13.SVG NFT Encoding",
+          to: "/advanced-foundry/2-nfts/13-svg-nft-encoding/",
+        },
+        {
+          title: "14. SVG NFT Flipping the Mood",
+          to: "/advanced-foundry/2-nfts/14-svg-nft-flipping/",
+        },
+        {
+          title: "15. SVG NFT Deploy Script",
+          to: "/advanced-foundry/2-nfts/15-svg-deploy/",
+        },
+        {
+          title: "16. SVG NFT Debugging Practice",
+          to: "/advanced-foundry/2-nfts/16-svg-debug/",
+        },
       ],
     },
   ],
