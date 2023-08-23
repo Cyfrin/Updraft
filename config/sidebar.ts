@@ -773,6 +773,38 @@ export default {
           title: "16. SVG NFT Debugging Practice",
           to: "/advanced-foundry/2-nfts/16-svg-debug/",
         },
+        {
+          title: "17. SVG NFT Anvil Demo",
+          to: "/advanced-foundry/2-nfts/17-svg-anvil/",
+        },
+        {
+          title: "18. Filecoin & Arweave",
+          to: "/advanced-foundry/2-nfts/18-filecoin-arweave/",
+        },
+        {
+          title: "19. Advanced EVM - Opcodes, Calling and Encoding",
+          to: "/advanced-foundry/2-nfts/19-advanced-evm/",
+        },
+        {
+          title: "20. Advanced EVM - Encoding functions directly",
+          to: "/advanced-foundry/2-nfts/20-evm-encoding/",
+        },
+        {
+          title: "21. Advanced EVM - Encoding functions Recap",
+          to: "/advanced-foundry/2-nfts/21-evm-recap/",
+        },
+        {
+          title: "22. Advanced EVM - Encoding Sinatures & Selectors",
+          to: "/advanced-foundry/2-nfts/22-evm-signatures-selectors/",
+        },
+        {
+          title: "23. Verifying MetaMask transactions",
+          to: "/advanced-foundry/2-nfts/23-verifying-metamask/",
+        },
+        {
+          title: "24. Recap & Congratulations",
+          to: "/advanced-foundry/2-nfts/24-recap/",
+        },
       ],
     },
   ],
