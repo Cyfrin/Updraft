@@ -815,6 +815,34 @@ export default {
           title: "1. Upgradeable Smart Contracts & Proxies",
           to: "/advanced-foundry/4-upgradeable/1-upgradeable/",
         },
+        {
+          title: "2. Delegate Call",
+          to: "/advanced-foundry/4-upgradeable/2-delegate-call/",
+        },
+        {
+          title: "3. EIP 1967 Proxy",
+          to: "/advanced-foundry/4-upgradeable/3-eip-1967/",
+        },
+        {
+          title: "4. UUPS Setup",
+          to: "/advanced-foundry/4-upgradeable/4-uups/",
+        },
+        {
+          title: "5. UUPS Deploy",
+          to: "/advanced-foundry/4-upgradeable/5-uups-deploy/",
+        },
+        {
+          title: "6. UUPS Upgrade",
+          to: "/advanced-foundry/4-upgradeable/6-uups-upgrade/",
+        },
+        {
+          title: "7. UUPS Tests",
+          to: "/advanced-foundry/4-upgradeable/7-uups-tests/",
+        },
+        {
+          title: "8. Testnet Demo",
+          to: "/advanced-foundry/4-upgradeable/8-testnet-demo/",
+        },
       ],
     },
   ],
