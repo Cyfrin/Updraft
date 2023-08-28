@@ -807,5 +807,15 @@ export default {
         },
       ],
     },
+    {
+      title: "4. Upgradeable Smart Contracts",
+      collapsible: true,
+      items: [
+        {
+          title: "1. Upgradeable Smart Contracts & Proxies",
+          to: "/advanced-foundry/4-upgradeable/1-upgradeable/",
+        },
+      ],
+    },
   ],
 };
