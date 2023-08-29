@@ -107,4 +107,4 @@ Now head off for some well-deserved rest or a little celebration – you've earn
 
 For those still shading in the gaps, don't hesitate to head over to the GitHub repo for some valuable insights to fast-track your learning. The thrill of learning awaits you in the next session. See you then! Bye!
 
-<img src="/foundry-erc20s/erc20-ai-tests-and-recap/erc20-ai-tests-and-recap1.PNG" style="width: 100%; height: auto;">
+<img src="/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap1.PNG" style="width: 100%; height: auto;">

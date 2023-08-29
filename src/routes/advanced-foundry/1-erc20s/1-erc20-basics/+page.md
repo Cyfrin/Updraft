@@ -10,25 +10,25 @@ _Follow along the course with this video._
 
 Welcome back! We're about to dive deep into the fascinating world of ERC20 tokens.
 
-<img src="/foundry-erc20s/erc20-basics/erc20-basics1.PNG" style="width: 100%; height: auto;">
+<img src="/foundry-erc20s/1-erc20-basics/erc20-basics1.PNG" style="width: 100%; height: auto;">
 
 Before we plunge into building an ERC20 token, let's first explore what it is, and understand the concepts of EIP (Ethereum Improvement Proposals) and ERC (Ethereum Request for Comments).
 
 ## What is an ERC? What is an EIP?
 
-<img src="/foundry-erc20s/erc20-basics/erc20-basics3.PNG" style="width: 100%; height: auto;">
+<img src="/foundry-erc20s/1-erc20-basics/erc20-basics3.PNG" style="width: 100%; height: auto;">
 
 Both Ethereum and other blockchains like Avalanche, Binance, and Polygon have mechanisms for improving their protocols, known as 'improvement proposals'. In Ethereum's ecosystem, these are called Ethereum Improvement Proposals or EIPs.
 
 Developers submit ideas to enhance Ethereum or other layer one protocols like Polygon, Matic or Avalanche on GitHub or other open source repositories. These improvements range from core blockchain updates to broad, best practice standards for the community to adopt.
 
-> Once an EIP gains enough traction, it also spawns an ERC, which stands for Ethereum Request for Comments.
+<img src="/foundry-erc20s/1-erc20-basics/erc20-basics5.PNG" style="width: 100%; height: auto;">
 
 In other blockchains, these proposals and request for comments are tagged differently (for example, BEP, PEP, etc), but they contain the same types of information. Interestingly, the numbers following ERC or EIP (like in ERC20 or EIP20), are chronological and shared between the two, signifying the order in which they were introduced. For real-time updates on the process of new EIPs, check out [EIPS Ethereum.org](https://eips.ethereum.org/).
 
 ## What is the ERC20 Token Standard?
 
-<img src="/foundry-erc20s/erc20-basics/erc20-basics4.PNG" style="width: 100%; height: auto;">
+<img src="/foundry-erc20s/1-erc20-basics/erc20-basics4.png" style="width: 100%; height: auto;">
 
 Among these EIPs and ERCs, the ERC20, or Token Standard for smart contracts, is one of the most significant. It delineates how to create tokens within smart contracts.
 
@@ -38,7 +38,7 @@ Notable examples of ERC20 tokens include Tether, Chainlink, Uni Token, and Dai. 
 
 ## Why Create an ERC20 Token?
 
-<img src="/foundry-erc20s/erc20-basics/erc20-basics2.PNG" style="width: 100%; height: auto;">
+<img src="/foundry-erc20s/1-erc20-basics/erc20-basics2.PNG" style="width: 100%; height: auto;">
 
 There are multiple applications of ERC20 tokens. They are used for governance, securing an underlying network, or creating synthetic assets, among other things.
 

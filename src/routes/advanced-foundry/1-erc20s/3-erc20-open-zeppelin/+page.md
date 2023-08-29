@@ -12,7 +12,7 @@ _Follow along the course with this video._
 
 Welcome back! Creating your own smart contracts can be a complex task. As your experience grows, you might find yourself creating similar contracts repeatedly. In such cases, wouldn't it be more convenient to use pre-deployed, audited, and ready-to-go contracts? In this section, I'll guide you on using the OpenZeppelin framework to achieve this.
 
-> **Note:** OpenZeppelin is renowned for its Smart Contracts framework, offering a vast repository of audited contracts readily integratable into your codebase.
+<img src="/foundry-erc20s/3-erc20-open-zeppelin/erc20-open-zeppelin2.PNG" style="width: 100%; height: auto;">
 
 ## OpenZeppelin Framework
 
@@ -81,7 +81,7 @@ forge build
 
 If everything went smoothly, the output should indicate that your contract has been successfully compiled, something like this:
 
-<img src="/foundry-erc20s/erc20-open-zeppelin/erc20-open-zeppelin1.PNG" style="width: 100%; height: auto;">
+<img src="/foundry-erc20s/3-erc20-open-zeppelin/erc20-open-zeppelin1.PNG" style="width: 100%; height: auto;">
 
 ---
 
