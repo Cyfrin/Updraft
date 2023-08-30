@@ -12,7 +12,7 @@ If you've ever wondered how to deploy a token, and more importantly, test it and
 
 ## Initiating the Deployment
 
-<img src="/foundry-erc20s/erc20-deploy-script/erc20-deploy-script1.PNG" style="width: 100%; height: auto;">
+<img src="/foundry-erc20s/4-erc20-deploy-script/erc20-deploy-script1.png" style="width: 100%; height: auto;">
 
 To initiate this, we're going to deploy OurToken.sol. Now, you might be asking why we don't need a helper config here - what about those special contracts that we would need to interact with? Well, this deployment is unlike any other because our token will be identical across all chains. No special contracts or config will be needed!
 
@@ -64,7 +64,7 @@ Following this, we'll deploy our token using the initial supply because, remembe
 
 ## Adding the Final Touches
 
-<img src="/foundry-erc20s/erc20-deploy-script/erc20-deploy-script2.PNG" style="width: 100%; height: auto;">
+<img src="/foundry-erc20s/4-erc20-deploy-script/erc20-deploy-script2.png" style="width: 100%; height: auto;">
 
 For the final touches, we can use a nifty trick. We can borrow from our previous projects or directly from the git repo that corresponds with this tutorial. We'll generate a Makefile for this. Create this new file in your project's root directory. We'll visit foundry-erc20-f23 and just put everything into this Makefile. Guess what, we can just copy the whole thing!
 
@@ -74,6 +74,6 @@ Once you’ve copied over the Makefile, you can simply run the command `make dep
 
 The compiler should now run successfully and your token is officially deployed to your anvil chain. Congratulations, you have just deployed your token!
 
-<img src="/foundry-erc20s/erc20-deploy-script/erc20-deploy-script3.PNG" style="width: 100%; height: auto;">
+<img src="/foundry-erc20s/4-erc20-deploy-script/erc20-deploy-script3.PNG" style="width: 100%; height: auto;">
 
 By following these steps, you have simplified the process of deploying and testing a token. Who'd have thought it could be this straightforward and efficient?
