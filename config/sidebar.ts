@@ -959,5 +959,69 @@ export default {
         },
       ],
     },
+    {
+      title: "5. DAOs & Governance",
+      collapsible: true,
+      items: [
+        {
+          title: "1. DAOs & Governance Introduction",
+          to: "/advanced-foundry/5-daos/1-intro/",
+        },
+        {
+          title: "2. Aragon",
+          to: "/advanced-foundry/5-daos/2-aragon/",
+        },
+        {
+          title: "3. Setup",
+          to: "/advanced-foundry/5-daos/3-setup/",
+        },
+        {
+          title: "4. Governance Tokens",
+          to: "/advanced-foundry/5-daos/4-governance-tokens/",
+        },
+        {
+          title: "5. Governor Contract",
+          to: "/advanced-foundry/5-daos/5-governor-contract/",
+        },
+        {
+          title: "6. Tests",
+          to: "/advanced-foundry/5-daos/6-tests/",
+        },
+        {
+          title: "7. Wrap up & Gas Tips",
+          to: "/advanced-foundry/5-daos/7-wrap-up/",
+        },
+      ],
+    },
+    {
+      title: "6. Security & Auditing",
+      collapsible: true,
+      items: [
+        {
+          title: "1. Security & Auditing Introduction",
+          to: "/advanced-foundry/6-security/1-intro/",
+        },
+        {
+          title: "2. What is a Smart Contract Audit?",
+          to: "/advanced-foundry/6-security/2-what-is/",
+        },
+        {
+          title: "3. Top Tools used by Security Professionals",
+          to: "/advanced-foundry/6-security/3-top-tools/",
+        },
+        {
+          title: "4. Manual Review",
+          to: "/advanced-foundry/6-security/4-manual-review/",
+        },
+        {
+          title: "5. Formal Verification",
+          to: "/advanced-foundry/6-security/5-formal-verification/",
+        },
+        {
+          title: "6. Congratulations",
+          to: "/advanced-foundry/6-security/6-congratulations/",
+        },
+      ],
+    },
   ],
 };
