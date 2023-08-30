@@ -706,7 +706,109 @@ export default {
       ],
     },
     {
-      title: "2. DeFi",
+      title: "2. NFTs",
+      collapsible: true,
+      items: [
+        {
+          title: "1. NFTs",
+          to: "/advanced-foundry/2-nfts/1-nfts/",
+        },
+        {
+          title: "2. What is a NFT?",
+          to: "/advanced-foundry/2-nfts/2-what-is-a-nft/",
+        },
+        {
+          title: "3. Foundry Setup",
+          to: "/advanced-foundry/2-nfts/3-foundry-setup/",
+        },
+        {
+          title: "4. IPFS",
+          to: "/advanced-foundry/2-nfts/4-ipfs/",
+        },
+        {
+          title: "5. Using IPFS",
+          to: "/advanced-foundry/2-nfts/5-using-ipfs/",
+        },
+        {
+          title: "6. Deploy Script",
+          to: "/advanced-foundry/2-nfts/6-deploy-script/",
+        },
+        {
+          title: "7. Basic NFT Tests",
+          to: "/advanced-foundry/2-nfts/7-basic-nft-tests/",
+        },
+        {
+          title: "8. Basic NFT Interactions",
+          to: "/advanced-foundry/2-nfts/8-basic-interactions/",
+        },
+        {
+          title: "9. Basic NFT Testnet Demo",
+          to: "/advanced-foundry/2-nfts/9-testnet-demo/",
+        },
+        {
+          title: "10. The issue with IPFS vs HTTPS",
+          to: "/advanced-foundry/2-nfts/10-ipfs-https/",
+        },
+        {
+          title: "11. What is an SVG?",
+          to: "/advanced-foundry/2-nfts/11-what-is-svg/",
+        },
+        {
+          title: "12. SVG NFT Intro",
+          to: "/advanced-foundry/2-nfts/12-svg-nft/",
+        },
+        {
+          title: "13.SVG NFT Encoding",
+          to: "/advanced-foundry/2-nfts/13-svg-nft-encoding/",
+        },
+        {
+          title: "14. SVG NFT Flipping the Mood",
+          to: "/advanced-foundry/2-nfts/14-svg-nft-flipping/",
+        },
+        {
+          title: "15. SVG NFT Deploy Script",
+          to: "/advanced-foundry/2-nfts/15-svg-deploy/",
+        },
+        {
+          title: "16. SVG NFT Debugging Practice",
+          to: "/advanced-foundry/2-nfts/16-svg-debug/",
+        },
+        {
+          title: "17. SVG NFT Anvil Demo",
+          to: "/advanced-foundry/2-nfts/17-svg-anvil/",
+        },
+        {
+          title: "18. Filecoin & Arweave",
+          to: "/advanced-foundry/2-nfts/18-filecoin-arweave/",
+        },
+        {
+          title: "19. Advanced EVM - Opcodes, Calling and Encoding",
+          to: "/advanced-foundry/2-nfts/19-advanced-evm/",
+        },
+        {
+          title: "20. Advanced EVM - Encoding functions directly",
+          to: "/advanced-foundry/2-nfts/20-evm-encoding/",
+        },
+        {
+          title: "21. Advanced EVM - Encoding functions Recap",
+          to: "/advanced-foundry/2-nfts/21-evm-recap/",
+        },
+        {
+          title: "22. Advanced EVM - Encoding Sinatures & Selectors",
+          to: "/advanced-foundry/2-nfts/22-evm-signatures-selectors/",
+        },
+        {
+          title: "23. Verifying MetaMask transactions",
+          to: "/advanced-foundry/2-nfts/23-verifying-metamask/",
+        },
+        {
+          title: "24. Recap & Congratulations",
+          to: "/advanced-foundry/2-nfts/24-recap/",
+        },
+      ],
+    },
+    {
+      title: "3. DeFi",
       collapsible: true,
       items: [
         {
@@ -818,6 +920,45 @@ export default {
           to: "/advanced-foundry/2-defi/27-defi-lens-protocol/",
         }
       ],
-    }
+    },
+    {
+      title: "4. Upgradeable Smart Contracts",
+      collapsible: true,
+      items: [
+        {
+          title: "1. Upgradeable Smart Contracts & Proxies",
+          to: "/advanced-foundry/4-upgradeable/1-upgradeable/",
+        },
+        {
+          title: "2. Delegate Call",
+          to: "/advanced-foundry/4-upgradeable/2-delegate-call/",
+        },
+        {
+          title: "3. EIP 1967 Proxy",
+          to: "/advanced-foundry/4-upgradeable/3-eip-1967/",
+        },
+        {
+          title: "4. UUPS Setup",
+          to: "/advanced-foundry/4-upgradeable/4-uups/",
+        },
+        {
+          title: "5. UUPS Deploy",
+          to: "/advanced-foundry/4-upgradeable/5-uups-deploy/",
+        },
+        {
+          title: "6. UUPS Upgrade",
+          to: "/advanced-foundry/4-upgradeable/6-uups-upgrade/",
+        },
+        {
+          title: "7. UUPS Tests",
+          to: "/advanced-foundry/4-upgradeable/7-uups-tests/",
+        },
+        {
+          title: "8. Testnet Demo",
+          to: "/advanced-foundry/4-upgradeable/8-testnet-demo/",
+        },
+      ],
+    },
+
   ],
 };
