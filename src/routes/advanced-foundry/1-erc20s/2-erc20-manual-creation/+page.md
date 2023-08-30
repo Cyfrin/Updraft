@@ -40,7 +40,7 @@ Having cleared the playing field, it's time to layer the groundwork for our ERC2
 
 Let's start by creating a new Solidity file named `OurToken.sol`. Right click the `src` folder in the left navigation panel and select `new File`.
 
-<img src="/foundry-erc20s/erc20-manual-creation/erc20-manual-creation1.PNG" style="width: 100%; height: auto;">
+<img src="/foundry-erc20s/2-erc20-manual-creation/erc20-manual-creation1.PNG" style="width: 100%; height: auto;">
 
 ## Paving the Way for Your Custom Token
 

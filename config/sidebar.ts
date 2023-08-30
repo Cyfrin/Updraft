@@ -808,6 +808,120 @@ export default {
       ],
     },
     {
+      title: "3. DeFi",
+      collapsible: true,
+      items: [
+        {
+          title: "1. Introduction",
+          to: "/advanced-foundry/3-defi/1-defi-introduction/",
+        },
+        {
+          title: "2. Code Walkthrough",
+          to: "/advanced-foundry/3-defi/2-defi-code-walkthrough/",
+        },
+        {
+          title: "3. Stablecoins, but actually",
+          to: "/advanced-foundry/3-defi/3-defi-stablecoins-but-actually/",
+        },
+        {
+          title: "4. Decentralized Stablecoin",
+          to: "/advanced-foundry/3-defi/4-defi-decentralized-stablecoin/",
+        },
+        {
+          title: "5. DSCEngine Setup",
+          to: "/advanced-foundry/3-defi/5-defi-dscengine-setup/",
+        },
+        {
+          title: "6. Deposit Collateral",
+          to: "/advanced-foundry/3-defi/6-defi-deposit-collateral/",
+        },
+        {
+          title: "7. Mint DSC",
+          to: "/advanced-foundry/3-defi/7-defi-mint-dsc/",
+        },
+        {
+          title: "8. Health Factor",
+          to: "/advanced-foundry/3-defi/8-defi-health-factor/",
+        },
+        {
+          title: "9. Minting the DSC",
+          to: "/advanced-foundry/3-defi/9-defi-minting-the-dsc/",
+        },
+        {
+          title: "10. Deploy Script",
+          to: "/advanced-foundry/3-defi/10-defi-deploy-script/",
+        },
+        {
+          title: "11. Tests",
+          to: "/advanced-foundry/3-defi/11-defi-tests/",
+        },
+        {
+          title: "12. Deposit and Mint",
+          to: "/advanced-foundry/3-defi/12-defi-deposit-and-mint/",
+        },
+        {
+          title: "13. Redeem Collateral",
+          to: "/advanced-foundry/3-defi/13-defi-redeem-collateral/",
+        },
+        {
+          title: "14. Liquidation Setup",
+          to: "/advanced-foundry/3-defi/14-defi-liquidation-setup/",
+        },
+        {
+          title: "15. Liquidation Refactor",
+          to: "/advanced-foundry/3-defi/15-defi-liquidation-refactor/",
+        },
+        {
+          title: "16. Leveling Up Testing",
+          to: "/advanced-foundry/3-defi/16-defi-leveling-up-testing/",
+        },
+        {
+          title: "17. Open Fuzz Tests",
+          to: "/advanced-foundry/3-defi/17-defi-open-fuzz-tests/",
+        },
+        {
+          title: "18. Handler Fuzz Tests",
+          to: "/advanced-foundry/3-defi/18-defi-handler-fuzz-tests/",
+        },
+        {
+          title: "19. Handler Stateful Tests",
+          to: "/advanced-foundry/3-defi/19-defi-handler-stateful-fuzz-tests/",
+        },
+        {
+          title: "20. Handler Redeeming Collateral",
+          to: "/advanced-foundry/3-defi/20-defi-handler-redeeming-collateral/",
+        },
+        {
+          title: "21. Handler Minting DSC",
+          to: "/advanced-foundry/3-defi/21-defi-handler-minting-dsc/",
+        },
+        {
+          title: "22. Handler Fuzz Debugging",
+          to: "/advanced-foundry/3-defi/22-defi-handler-fuzz-debugging/",
+        },
+        {
+          title: "23. Price Feed Handling",
+          to: "/advanced-foundry/3-defi/23-defi-price-feed-handling/",
+        },
+        {
+          title: "24. Oracle Lib",
+          to: "/advanced-foundry/3-defi/24-defi-oracle-lib/",
+        },
+        {
+          title: "25. Audit Prep",
+          to: "/advanced-foundry/3-defi/25-defi-audit-prep/",
+        },
+        {
+          title: "26. Recap",
+          to: "/advanced-foundry/3-defi/26-defi-recap/",
+        },
+        {
+          title: "27. Lens Protocol",
+          to: "/advanced-foundry/3-defi/27-defi-lens-protocol/",
+        },
+      ],
+    },
+    {
       title: "4. Upgradeable Smart Contracts",
       collapsible: true,
       items: [
