@@ -1,12 +1,12 @@
-# Introduction to Gas
+---
+title: Introduction to Gas
+---
 
 You can follow along with this section of the course here. 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/DOCwvTT0mUM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="introduction to gas video"></iframe>
 
-Or watch the [full video](https://www.youtube.com/watch?v=umepbfKp5rI).
-
-# Introduction to Gas
+---
 
 Welcome to our comprehensive guide on understanding Ethereum transactions. Here, we will discuss important concepts ranging from transaction fees and gas prices, mining incentives, computational measures in transactions, to hands-on experience of sending a transaction in Ethereum’s test network.
 

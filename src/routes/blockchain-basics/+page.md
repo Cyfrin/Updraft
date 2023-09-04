@@ -1,6 +1,9 @@
-# Blockchain Basics
+---
+title: Blockchain Basics
+---
 
 This is known as Lesson 1, where **everyone** should start after going through the [Best Practices](/get-started/best-practices) section.
+
 
 In this course, you'll learn about:
 

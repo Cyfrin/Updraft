@@ -1,6 +1,6 @@
-<!-- TODO: Add badass design/thing at the top of the page -->
-
-## Welcome
+---
+title: Welcome
+---
 
 Welcome to the Ultimate Smart Contract, Web3, Blockchain, and Cryptocurrency Developer (And non-developer!) Education Platform - Web3Education.dev! This platform is aimed at anyone interested in blockchain and smart contract development, regardless of prior experience level. 
 
@@ -22,9 +22,9 @@ Some of the **most skilled engineers in web3** have come through this course!
 <!-- TODO: Make a carousel of testimonials  -->
 Including:
 - Top ranked smart contract auditors on earth
-- <a href="https://www.openzeppelin.com/" target="_blank" style="color: blue; text-decoration: underline;">Openzeppelin</a> Smart Contract Engineers
-- <a href="https://www.trailofbits.com/" target="_blank" style="color: blue; text-decoration: underline;">Trail Of Bits</a> Security Engineers
-- <a href="https://worldcoin.org/" target="_blank" style="color: blue; text-decoration: underline;">Worldcoin</a> Smart Contract Engineers
+-  [Openzeppelin](https://www.openzeppelin.com/) Smart Contract Engineers
+-  [Trail Of Bits](https://www.trailofbits.com/) Security Engineers
+-  [Worldcoin](https://worldcoin.org/) Smart Contract Engineers
 - Project Managers
 - DeFi Founders
 
