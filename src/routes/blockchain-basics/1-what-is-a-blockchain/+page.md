@@ -1,6 +1,6 @@
-<!-- TODO: How do we put the "next" button at the top of the page??? -->
-
-# What is a Blockchain? 
+---
+title: What is a Blockchain?
+---
 
 You can follow along with this section of the course here. 
 
@@ -9,12 +9,12 @@ You can follow along with this section of the course here.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/bbBbq7T9Jjs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="what is a blockchain?"></iframe>
 
-Or watch the [full video](https://www.youtube.com/watch?v=umepbfKp5rI).
+
 
 
 ## Bitcoin and Blockchain
 
-You might be familiar with **Bitcoin**, which is one of the first protocols to utilize the revolutionary blockchain technology. The Bitcoin Whitepaper, authored by the pseudonymous Satoshi Nakamoto, described how Bitcoin could facilitate peer-to-peer transactions within a decentralized network using cryptography. This gave rise to censorship-resistant finance and presented Bitcoin as a superior digital store of value, often referred to as *digital gold*. There is a fixed amount of Bitcoin, similar to the scarcity of gold. You can learn more about this in the <a href="https://bitcoin.org/bitcoin.pdf" target="_blank" style="color: blue; text-decoration: underline;">Bitcoin Whitepaper</a> available in the course's GitHub repository.
+You might be familiar with **Bitcoin**, which is one of the first protocols to utilize the revolutionary blockchain technology. The Bitcoin Whitepaper, authored by the pseudonymous Satoshi Nakamoto, described how Bitcoin could facilitate peer-to-peer transactions within a decentralized network using cryptography. This gave rise to censorship-resistant finance and presented Bitcoin as a superior digital store of value, often referred to as *digital gold*. There is a fixed amount of Bitcoin, similar to the scarcity of gold. You can learn more about this in the [Bitcoin Whitepaper](https://bitcoin.org/bitcoin.pdf) available in the course's GitHub repository. 
 
 ## Ethereum and Smart Contracts
 

@@ -1,10 +1,11 @@
-# The Purpose Of Smart Contracts
+---
+title: The Purpose Of Smart Contracts
+---
 
 You can follow along with this section of the course here. 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/M0lgomFbaP4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="the purpose of smart contracts"></iframe>
 
-Or watch the [full video](https://www.youtube.com/watch?v=umepbfKp5rI).
 
 ## The Essence of Blockchain and Smart Contracts
 

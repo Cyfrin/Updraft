@@ -1,4 +1,6 @@
-# Best Practices
+---
+title: Best Practices
+---
 
 ## YouTube Edition
 
@@ -14,7 +16,7 @@ The above includes:
 
 ## Discussions
 
-- Inside the GitHub repository, there is a <a href="https://github.com/Cyfrin/web3education.dev/discussions" target="_blank" style="color: blue; text-decoration: underline;"> Discussions </a> tab where you can ask questions and interact with fellow students and members.
+- Inside the GitHub repository, there is a [Discussions](https://github.com/Cyfrin/foundry-full-course-f23/discussions) tab where you can ask questions and interact with fellow students and members.
 
 ## Course Tips
 
@@ -31,9 +33,9 @@ The above includes:
 We will teach you best practices for working with Artificial Intelligence tools to become more efficient. However, always fact-check information with reliable human sources as AI can sometimes be incorrect. It is recommended you get an AI buddy to work with you during this course.
 
 Some AI buddies might be:
-- <a href="https://chat.openai.com/" target="_blank" style="color: blue; text-decoration: underline;">ChatGPT</a>
-- <a href="https://www.phind.com/" target="_blank" style="color: blue; text-decoration: underline;">Phind</a>
-- <a href="https://bard.google.com/" target="_blank" style="color: blue; text-decoration: underline;">Bard</a>
+- [ChatGPT](https://chat.openai.com)
+- [Phind](https://www.phind.com/)
+- [Bard](https://bard.google.com/)
 
 ## Understanding Blockchain and Smart Contracts
 

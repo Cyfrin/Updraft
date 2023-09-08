@@ -46,7 +46,7 @@ export default {
         },
         {
           title: "The Current Smart Contract Landscape",
-          to: "/blockchain-basics/3-the-current-smart-contract-landscape/",
+          to: "/blockchain-basics/3-current-smart-contract-landscape/",
         },
         {
           title: "Making your first transaction",
