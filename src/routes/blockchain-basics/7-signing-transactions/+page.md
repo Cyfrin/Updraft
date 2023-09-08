@@ -1,17 +1,16 @@
-# Signing Transactions
+---
+title: Signing Transactions
+---
 
-You can follow along with this section of the course here. 
+You can follow along with this section of the course here.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/gmMZ1N3xP7o" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="signing transactions"></iframe>
-
-Or watch the [full video](https://www.youtube.com/watch?v=umepbfKp5rI).
 
 # Understanding Blockchain Transaction Signatures, Private and Public Keys
 
 The beauty and security of blockchain technology revolve around the privacy and secure nature of transactions. In this blog post, we will demystify this concept by digging deeper into how transaction signing, private and public keys, and other cryptographic pieces lend credence to blockchain transactions.
 
 <img src="/blockchain-basics/public-private-key.png" style="width: 100%; height: auto;" alt="public private key">
-
 
 ## What are Private and Public Keys?
 
@@ -52,7 +51,6 @@ Anyone with access to the private key can perform and sign transactions, consequ
 ## The Ethereum Address and your Private Key
 
 <img src="/blockchain-basics/sign-a-tx.png" style="width: 100%; height: auto;" alt="sign a tx">
-
 
 Interestingly, the Ethereum address is a part of your public key. It's derived from hashing the public key via the Ethereum hashing algorithm and extracting the last 20 bytes. While the procedure may differ from one blockchain to another, the principle remains the same - the address is a derivative of the public key.
 

@@ -1,10 +1,10 @@
-# High Level Blockchain Fundamentals
+---
+title: High Level Blockchain Fundamentals
+---
 
-You can follow along with this section of the course here. 
+You can follow along with this section of the course here.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/NgHe7yuhyhU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-Or watch the [full video](https://www.youtube.com/watch?v=umepbfKp5rI).
 
 ## Understanding Cryptography and Blockchain
 
@@ -15,7 +15,6 @@ In the traditional sense, when we interact with an application or a server, such
 In the realm of blockchain, the term `node` takes on a special significance, emerging as the heartbeat of the decentralized system. Imagine it this way - each `node` represents an individual user's server, pulsating with the rhythmic cadence of blockchain technology. When these nodes sync and engage with each other, they weave together an intricate and robust blockchain network. The real magic, however, lies in its democratic essence. In this decentralized universe, anyone armed with the right hardware and software can join the network, embodying the true spirit of decentralization. This is not just a technological concept; it's a silent revolution celebrating inclusivity and accessibility.
 
 For those eager to participate, Websites like GitHub offer the opportunity to set up your own Ethereum node in a matter of seconds!
-
 
 ## Blockchain: A Decentralized Powerhouse Resilient to Disruptions
 
@@ -53,4 +52,3 @@ Blockchain developers have devised two key options in response to this limitatio
 2. `Layer 2` solutions: These are applications added on top of a layer one, like [Chainlink](https://chain.link/) or [Arbitrum](https://arbitrum.io/).
 
 Options like Arbitrum, for instance, use a "roll-up" approach where transactions are processed in bulk and then rolled up into a Layer 1 blockchain. This increases the effective capacity of a Layer 1 blockchain, allowing it to absorb more transactions, effectively easing the scalability issue.
-
