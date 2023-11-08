@@ -497,7 +497,7 @@ export default {
     },
 
     {
-      title: "4. HTML Fund Me",
+      title: "3. HTML Fund Me",
       collapsible: true,
       items: [
         {
@@ -520,7 +520,7 @@ export default {
     },
 
     {
-      title: "5. Foundry Smart Contract Lottery",
+      title: "4. Foundry Smart Contract Lottery",
       collapsible: true,
       items: [
         {
