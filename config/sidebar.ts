@@ -1029,5 +1029,41 @@ export default {
       title: "🔙 Back to All Courses",
       to: "/",
     },
-  ]
+    {
+      title: "1. Welcome and Introduction",
+      collapsible: true,
+      items: [
+        {
+          title: "1. Trailer",
+          to: "/security/0-introduction/1-trailer/",
+        },
+        {
+          title: "2. Welcome",
+          to: "/security/0-introduction/2-welcome/",
+        },
+        {
+          title: "3. The current state of Web3 security",
+          to: "/security/0-introduction/3-current-state/",
+        },
+      ],
+    },
+    {
+      title: "2. Review (Don't Skip)",
+      collapsible: true,
+      items: [
+        {
+          title: "1. Tooling Pre-requisites",
+          to: "/security/1-review/1-tooling-requisites/",
+        },
+        {
+          title: "2. Solidity Pre-requisites",
+          to: "/security/1-review/2-solidity-requisites/",
+        },
+        {
+          title: "3. Fuzzing and Invariants",
+          to: "/security/1-review/3-fuzzing-and-invariants/",
+        },
+      ],
+    },
+  ],
 };
