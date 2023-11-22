@@ -26,6 +26,10 @@ features:
   - title: "Advanced Foundry"
     description: Learn how to use Foundry to build more advanced smart contracts.
     link: /advanced-foundry/1-erc20s/1-erc20-basics/
+
+  - title: "Security Course"
+    description: The ultimate DeFi and Smart contract security course.
+    link: /security/0-introduction/1-trailer/
   # - title: "Hardhat"
   #   description: The most popular smart contract framework.
   # - title: "Smart Contract Auditing & Security"

@@ -1024,4 +1024,10 @@ export default {
       ],
     },
   ],
+  "/security": [
+    {
+      title: "🔙 Back to All Courses",
+      to: "/",
+    },
+  ]
 };
