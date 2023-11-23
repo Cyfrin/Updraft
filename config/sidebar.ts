@@ -1063,6 +1063,46 @@ export default {
           title: "3. Fuzzing and Invariants",
           to: "/security/1-review/3-fuzzing-and-invariants/",
         },
+        {
+          title: "4. Common EIPs/ERCs",
+          to: "/security/1-review/4-common-eips/",
+        },
+        {
+          title: "5. What is an ERC20/EIP20?",
+          to: "/security/1-review/5-what-is-erc20/",
+        },
+        {
+          title: "6. What is an ERC721/NFT?",
+          to: "/security/1-review/6-what-is-erc721/",
+        },
+        {
+          title: "7. Advanced Solidity Pre-requisites",
+          to: "/security/1-review/7-advanced-solidity-requisites/",
+        },
+        {
+          title: "8. Storage",
+          to: "/security/1-review/8-storage/",
+        },
+        {
+          title: "9. Fallback & Receive",
+          to: "/security/1-review/9-fallback-and-receive/",
+        },
+        {
+          title: "10. Abi.encode & Abi.encodePacked",
+          to: "/security/1-review/10-abi-encode/",
+        },
+        {
+          title: "11. Introduction to Enconding Function Calls Directly",
+          to: "/security/1-review/11-encoding-function/",                  
+        },
+        {
+          title: "12. Upgradeable Contracts",
+          to: "/security/1-review/12-upgradeable-contracts/",
+        },
+        {
+          title: "13. Small Proxy Example",
+          to: "/security/1-review/13-small-proxy/",
+        },
       ],
     },
   ],
