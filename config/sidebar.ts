@@ -1103,6 +1103,14 @@ export default {
           title: "13. Small Proxy Example",
           to: "/security/1-review/13-small-proxy/",
         },
+        {
+          title: "14. Self Destruct",
+          to: "/security/1-review/14-self-destruct/",
+        },
+        {
+          title: "15. Fork Tests & Congrats",
+          to: "/security/1-review/15-fork-tests/",
+        },
       ],
     },
   ],
