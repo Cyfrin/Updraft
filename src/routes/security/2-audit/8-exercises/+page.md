@@ -42,4 +42,4 @@ Before we jump into our first audit, make sure to take a break and prepare to gi
 
 ---
 
-End of post - See you next time when we begin our journey into the world of smart contract auditing together!
+End of lesson - See you next time when we begin our journey into the world of smart contract auditing together!

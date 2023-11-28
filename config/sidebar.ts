@@ -1151,5 +1151,48 @@ export default {
         },
       ],
     },
+    {
+      title: "3. Your First Audit (Security Review) | PasswordStore Audit",
+      collapsible: true,
+      items: [
+        {
+          title: "1. Your First Security Review",
+          to: "/security/3-first-audit/1-first-review",
+        },
+        {
+          title: "2. Scoping Raw Etherscan",
+          to: "/security/3-first-audit/2-etherscan/",
+        },
+        {
+          title: "3. Nailing the Audit Details",
+          to: "/security/3-first-audit/3-details/",
+        },
+        {
+          title: "4. Scoping CLOC",
+          to: "/security/3-first-audit/4-cloc/",
+        },
+        {
+          title: "5. Recap I",
+          to: "/security/3-first-audit/5-recap-i/",
+        },
+        {
+          title: "6. The Audit Process with Tincho",
+          to: "/security/3-first-audit/6-process-tincho/",
+        },
+        {
+          title: "7. Recon: Getting Context",
+          to: "/security/3-first-audit/7-context/",
+        },
+        {
+          title: "8. Recon: Understanding the Code",
+          to: "/security/3-first-audit/8-understanding-the-code/",
+        },
+        {
+          title: "9. Exploit Acce"
+        },
+
+      ],
+      
+    },
   ],
 };
