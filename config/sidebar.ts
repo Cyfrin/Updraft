@@ -1048,7 +1048,7 @@ export default {
       ],
     },
     {
-      title: "2. Review (Don't Skip)",
+      title: "1. Review (Don't Skip)",
       collapsible: true,
       items: [
         {
@@ -1110,6 +1110,44 @@ export default {
         {
           title: "15. Fork Tests & Congrats",
           to: "/security/1-review/15-fork-tests/",
+        },
+      ],
+    },
+    {
+      title: "2. What is a smart contract audit (Security Review)",
+      collapsible: true,
+      items: [
+        {
+          title: "1. What is a smart contract audit (Security Review)",
+          to: "/security/2-audit/1-what-is-an-audit/",
+        },
+        {
+          title: "2. The Audit (Security Review Process)",
+          to: "/security/2-audit/2-the-audit/",
+        },
+        {
+          title: "3. Rekt Test",
+          to: "/security/2-audit/3-rekt-test/",
+        },
+        {
+          title: "4. What tools do we use in Security Reviews?",
+          to: "/security/2-audit/4-tools/",
+        },
+        {
+          title: "5. What if I do an Security Review and the protocol gets hacked?",
+          to: "/security/2-audit/5-hacked/",
+        },
+        {
+          title: "6. Top kind of Attacks in Web3 Today",
+          to: "/security/2-audit/6-attacks/",
+        },
+        {
+          title: "7. Lesson 2 Recap",
+          to: "/security/2-audit/7-recap/",
+        },
+        {
+          title: "8. Exercises",
+          to: "/security/2-audit/8-exercises/",
         },
       ],
     },
