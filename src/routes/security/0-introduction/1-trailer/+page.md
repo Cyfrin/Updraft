@@ -4,8 +4,6 @@ title: Security Course Trailer
 
 _Follow along with this video_
 
----
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/yq3a3-w8oAI?si=YFKVY17X13slXG3n" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
