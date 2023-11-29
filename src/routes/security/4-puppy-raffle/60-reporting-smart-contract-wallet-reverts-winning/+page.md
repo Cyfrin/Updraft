@@ -4,23 +4,15 @@ title: Reporting - Smart Contract Wallet Reverts Winning
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889508030?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
-# Auditing Randomness and its Impacts
-
-Today, we will delve into the fascinating world of randomness audit and delve into the implications that come along with it. In the process, we will understand how this randomness is bundled with another finding and the implications it has when things go wrong.
-
-## Understanding Audit Randomness
+## Understanding The Issue
 
 When it comes to the risky and uncertain world of audits, people can often revert the transaction until they achieve a win. Yes, you got it right. We discussed this topic lightly in our previous talks about randomness; they can be seen as two contrasting findings merged into one.
 
 An intriguing part to note here is that the winner might not get the money if their fallback is messed up. You're thinking the right way if you consider it as a finding; because it most definitely is one!
-
-```js
-    function fallbackError() {// This is a fallback function that reverts if something is not set up correctlyrequire(somethingCoolIsSetUp);}
-```
 
 ## The Impact: Medium
 
@@ -54,8 +46,4 @@ A plausible recommendation here would be to create a map of addresses to payout 
 
 This method is particularly efficient and considered as a best practice. By pulling their money out, users avoid any issues that arise from money being pushed to them, such as reversion.
 
-This audit randomness discovery has been an intriguing journey, one that has strengthened our understanding of blockchain verification and smart contracts. Stay tuned for more!
-
-```js
-    function claimPrize() {// Pull over Push pattern is the best practice in this scenariorequire(winners[msg.sender] > 0);uint256 amount = winners[msg.sender];winners[msg.sender] = 0;msg.sender.transfer(amount);}
-```
+This audit discovery has been an intriguing journey, one that has strengthened our understanding of blockchain verification and smart contracts. Stay tuned for more!

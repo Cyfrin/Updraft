@@ -4,7 +4,7 @@ title: DoS - Reporting
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://youtu.be/GP4Fto4u5dQ" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
@@ -40,7 +40,7 @@ The looping mechanism in `PuppyRaffle` causes a rise in gas costs for every addi
 At this point, let's delve deep into our DoS finding and write a meticulous and articulate description.
 
 ```markdown
-## Description: The 'PuppyRaffle' function in the 'enterRaffle' function loops through the players array to check for duplicates. As the length of the 'players' array increases, the gas costs and the number of checks a new player must carryout also increase. This issue has the potential to deter players that enter later due to the remarkably higher gas costs.
+## Description: The 'enterRaffle' function loops through the players array to check for duplicates. As the length of the 'players' array increases, the gas costs and the number of checks a new player must carryout also increase. This issue has the potential to deter players that enter later due to the remarkably higher gas costs.
 ```
 
 ## Light upon the Impact

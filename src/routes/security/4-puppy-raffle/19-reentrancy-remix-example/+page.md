@@ -4,7 +4,7 @@ title: Reentrancy - Remix Example
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889508290?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
@@ -12,15 +12,25 @@ _Follow along with this video:_
 
 When designing Ethereum Smart Contracts, one area that requires vigilance is the handling of user balances. A simple change in the sequences of function calls could open the door to a reentrancy attack, causing unexpected behavior and potentially wiping out users' funds.
 
-![](https://cdn.videotap.com/1J27BMPtiIfHtQifcabU-6.42.png)## Understanding the Problem
+![](https://cdn.videotap.com/1J27BMPtiIfHtQifcabU-6.42.png)
 
-The main issue that makes smart contracts vulnerable to reentrancy attacks relates to the order in which we update the user balance. The problematic sequence looks like this:
+## Understanding the Problem
+
+The main issue that makes smart contracts vulnerable to reentrancy attacks relates to the order in which we update the user balance. The problematic sequence in pseudocode looks like this:
 
 ```javascript
-...// some contract code...// function to withdraw fundsfunction withdraw() {var withdrawAmount = userBalance;userBalance = 0;user.transfer(withdrawAmount);}...// more contract code...
+...
+// some contract code...//
+function withdraw(uint withdraw_amount) {
+    require(userBalance >= withdraw_amount, "Insufficient funds for withdraw request.");
+    user.transfer(withdraw_amount);
+    userBalance = userBalance - withdraw_amount;
+}
+...
+// more contract code...
 ```
 
-In a situation where a malicious contract reenters the `withdraw` function before the user balance was updated—`userBalance = 0`—the smart contract would transfer the same amount again, despite the fact that the balance should have been reduced to zero.
+In a situation where a malicious contract reenters the `withdraw` function before the user balance was updated—`userBalance = userBalance - withdraw_amount`—the smart contract would transfer the same amount again, despite the fact that the balance should have been reduced.
 
 Quote:
 
@@ -54,7 +64,15 @@ The result is the same as predicted. The victim's balance goes to zero, while th
 How then can we prevent such disastrous scenarios? The solution lies in adjusting the sequence of how the user balance is updated. Just move the `userBalance = 0;` line before the withdraw function. Here's the updated function:
 
 ```javascript
-...// updated contract code...// function to withdraw fundsfunction withdraw() {userBalance = 0;var withdrawAmount = userBalance;user.transfer(withdrawAmount);}...// more updated contract code...
+...
+// some contract code...//
+function withdraw(uint withdraw_amount) {
+    require(userBalance >= withdraw_amount, "Insufficient funds for withdraw request.");
+    userBalance = userBalance - withdraw_amount; // note the order of these lines
+    user.transfer(withdraw_amount); // note the order of these lines
+}
+...
+// more contract code...
 ```
 
 This way, even if the attacker reenters the function, the updated zero balance will not allow it to withdraw any funds.

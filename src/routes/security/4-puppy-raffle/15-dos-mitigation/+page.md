@@ -4,7 +4,7 @@ title: DoS - Mitigation
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://youtu.be/NpCFoZeXp8E" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
@@ -28,8 +28,19 @@ Users, if they want, can create new wallet addresses at will. In light of this, 
 
 If the creators of the protocol insist on maintaining the check for duplicates, we suggest using a mapping to do this check. This strategy would grant constant time lookups to ascertain whether a user has already entered or not. Let's take a look at how we could change the existing code to implement this functionality:
 
-```python
-// Original Code:for (let i = 0; i < player.length; i++) {if (player[i] == _address)return true;}// Some Modification:mapping(address => bool) entered;if (entered[_address])return true;entered[_address] = true;
+Original Code:
+
+```js
+for (let i = 0; i < player.length; i++) {
+  if (player[i] == _address) return true;
+}
+```
+
+Some Modification:
+
+```js
+mapping(address => bool) entered;
+if (entered[_address])return true;
 ```
 
 With this mapping in place, the smart contract instantly reviews duplicates from only new players instead of traversing the whole array of players, thereby averting potential risks related to time complexity.
@@ -38,8 +49,16 @@ With this mapping in place, the smart contract instantly reviews duplicates from
 
 Here's our last recommendation. An alternative technique could be to utilize OpenZeppelin's Enumerable library.
 
-```python
-import "@openzeppelin/contracts/access/Enumerable.sol";class SomeContract {using Enumerable for Enumerable.Set;Enumerable.Set private players;// In some function….if (players.contains(_address))return true;players.add(_address);}
+```js
+import "@openzeppelin/contracts/access/Enumerable.sol";
+
+contract SomeContract {
+    using Enumerable for Enumerable.Set;
+    Enumerable.Set private players;
+    // In some function…
+    // if (players.contains(_address))return true;
+    // players.add(_address);
+    }
 ```
 
 This option might be a viable solution, improving both performance and security of the protocol.

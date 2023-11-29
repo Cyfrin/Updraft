@@ -4,7 +4,7 @@ title: Weak Randomness - Case Study
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889508573?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
@@ -14,7 +14,9 @@ In today's post, we're going to delve into an intriguing case study that involve
 
 Our guest lecturer and fellow YouTuber, Andy Lee from Sigma Prime, is here to break everything down for us, from the details of the exploit itself to how it was eventually resolved.
 
-![](https://cdn.videotap.com/xkbChTamuPnibRHVXkei-35.55.png)Remember, periodically conducting post mortems like this greatly contributes towards honing your skills as a security researcher. Moreover, it complements the effort of strengthening the overall security of your projects and applications by acquainting you with the past exploits to forestall future vulnerabilities.
+![](https://cdn.videotap.com/xkbChTamuPnibRHVXkei-35.55.png)
+
+Remember, periodically conducting post mortems like this greatly contributes towards honing your skills as a security researcher. Moreover, it complements the effort of strengthening the overall security of your projects and applications by acquainting you with the past exploits to forestall future vulnerabilities.
 
 ## A Deep Dive Into The Meebits Exploit
 
@@ -31,21 +33,27 @@ Let's discuss how the attack unfolded. The attacker:
 
 The metadata disclosure in the contract was found on line 129, which led to an IPFS hash with a JSON Blob. This JSON Blob outlined the rarity of the types of Meebits, ranking from the rarest to the least rare.
 
-![](https://cdn.videotap.com/CEWoGF9o6n51CYYJGpOx-177.73.png)Besides, the Meebit Website provided further information on the rarity by using the token URL function. By entering the token ID, you could see the specific trait your Meebit had.
+![](https://cdn.videotap.com/CEWoGF9o6n51CYYJGpOx-177.73.png)
+
+Besides, the Meebit Website provided further information on the rarity by using the token URL function. By entering the token ID, you could see the specific trait your Meebit had.
 
 For instance, token 16647 had a 'visitor' trait type, currently ranking second in rarity.
 
 ## Analysing the Mint Function and Attack Contract
 
-The smart contract had an external function, 'mint with punk or Glyph', that verified whether the caller owned a Crypto Punk or Glyph. Upon confirmation, the user was allowed to mint a free NFT. This function assigns a random index to the ID; this random index is then assigned to the owner who requested the Meiba NFT.
+The smart contract had an external function, `mintWithPunkOrGlyph`, that verified whether the caller owned a Crypto Punk or Glyph. Upon confirmation, the user was allowed to mint a free NFT. This function assigns a random index to the ID; this random index is then assigned to the owner who requested the Meebit NFT.
 
-![](https://cdn.videotap.com/bBOd0ojIlu3ppLIWpKQg-236.97.png)> "To understand the exploitability, we need to consider the attack contract and its transactions."
+![](https://cdn.videotap.com/bBOd0ojIlu3ppLIWpKQg-236.97.png)
+
+> "To understand the exploitability, we need to consider the attack contract and its transactions."
 
 On Etherscan, you can see the transactions where the attacker deployed a contract and repeatedly called a function on the attack contract until they succeeded in minting the NFT they wanted.
 
 The attack contract is essentially a blob of bytecode, unlike the Meebits contract, which was verified. By putting this code into a bytecode decompiler, we can pinpoint how it was exploited.
 
-![](https://cdn.videotap.com/VDFDeR5qbb6lh1CXHZBw-308.06.png)The attack function reveals that the contract calls 'mint with punk or Glyph', and if the Mebit random index wasn't as per the user's wish, the transaction would revert, allowing the attacker to try again.
+![](https://cdn.videotap.com/VDFDeR5qbb6lh1CXHZBw-308.06.png)
+
+The attack function reveals that the contract calls `mintWithPunkOrGlyph`, and if the Meebit random index wasn't as per the user's wish, the transaction would revert, allowing the attacker to try again.
 
 One can use Tenderly to trace what exactly transpired during the transaction process.
 

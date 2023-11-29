@@ -4,7 +4,7 @@ title: Reporting - Reentrancy
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889507747?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
@@ -14,19 +14,17 @@ Hello everyone! Today, we'll be delving into understanding and documenting a ree
 
 ## The Impact Assessment
 
-Hold your hats folks, this one's a whopper! I ran a test and discovered I could call the `refund()` function repeatedly, effectively siphoning money out of the contract the whole time! The [impacts](https://en.wikipedia.org/wiki/Risk_impact) are significant. By exploiting this vulnerability, I could effectively drain the entire contract of funds. In terms of assessment, this is a high on both the Impact and Likelihood scales.
+Hold your hats folks, this one's a whopper! I ran a test and discovered I could call the `refund()` function repeatedly, effectively siphoning money out of the contract the whole time! The impacts are significant. By exploiting this vulnerability, I could effectively drain the entire contract of funds. In terms of assessment, this is a high on both the Impact and Likelihood scales.
 
 Let's unravel this!
 
 ## Exploring the Vulnerability: Puppy Raffle Refund
 
-![](https://cdn.videotap.com/o0EiNXj1ffsPqR9o05L4-50.52.png)Here's our culprit, the Puppy Raffle `refund()` function. In its bare form, it does not follow the prescribed pattern of **Checks-Effects-Interactions** that defends against reentrancy. As a result, it enables participants to drain the contract balance.
+![](https://cdn.videotap.com/o0EiNXj1ffsPqR9o05L4-50.52.png)
 
-```javascript
-// Copy of the relying Puppy Raffle refund function.// Removed some comments for cleaner illustration.function PuppyRaffle.refund(){// some code here...// Pay attention to these two lines!}
-```
+Here's our culprit, the Puppy Raffle `refund()` function. In its bare form, it does not follow the prescribed pattern of **Checks-Effects-Interactions** that defends against reentrancy. As a result, it enables participants to drain the contract balance.
 
-Very interesting! Allow me to point out the core issue. The Puppy Raffle `refund()` function first makes an external call to the sender’s address (`msg.sender.transfer()`). Following that, it updates the `puppyRafflePlayers` array. The flaw lies in this sequence of operations, leading to our famous reentrancy vulnerability.
+Very interesting! Allow me to point out the core issue. The Puppy Raffle `refund()` function first makes an external call to the sender’s address (`msg.sender`). Following that, it updates the Puppy Raffle `Players` array. The flaw lies in this sequence of operations, leading to our famous reentrancy vulnerability.
 
 ## Play by Play: Exploiting the Vulnerability
 
@@ -43,19 +41,33 @@ Here's a quick rundown of the potential exploit sequence:
 Now that we understand the mechanics, let's do a dry run. Here's the detailed methodology for our test case. Mind you, for the sake of a rigorous demonstration, I'll go ahead and showcase the full test suite.
 
 ```markdown
-SUMMARY=====1. A user enters the raffle (Credits to ChattGbt for the idea).2. Attacker sets up a contract with a fallback function that calls `puppyRaffle.refund()`.3. Attacker enters the raffle.4. Attacker calls `puppyRaffle.refund()` from their attack contract, draining the contract balance.CODE=====
-```
+SUMMARY=====
 
-_The source code that depicts the process would go here, essentially copy-pasting the exact steps outlined in the summary._
+1. A user enters the raffle (Credits to ChatGPT for the idea).
+2. Attacker sets up a contract with a fallback function that calls `puppyRaffle.refund()`.
+3. Attacker enters the raffle.4. Attacker calls `puppyRaffle.refund()` from their attack contract, draining the contract balance.
+   CODE=====
+```
 
 ## Mitigating the Attack
 
-![](https://cdn.videotap.com/xXoG7dcQXxHHyvPl96re-370.48.png)To seal this vulnerability, the `puppyRaffle.refund()` function should update the `puppyRafflePlayers` array _before_ making the external call. It's also advisable that we move up the event emission due to an associated audit loophole.
+![](https://cdn.videotap.com/xXoG7dcQXxHHyvPl96re-370.48.png)
+
+To seal this vulnerability, the `puppyRaffle.refund()` function should update the `Players` array _before_ making the external call. It's also advisable that we move up the event emission due to an associated audit loophole.
 
 Here's a quick diff to illustrate the required changes:
 
 ```diff
-function PuppyRaffle.refund(){+ [INSERT REQUIRED CODE HERE]// some code here...- [REMOVE VULNERABLE CODE HERE]}
+    function refund(uint256 playerIndex) public {
+        address playerAddress = players[playerIndex];
+        require(playerAddress == msg.sender, "PuppyRaffle: "Only the Player can refund.");
+        require(playerAddress != address(0), "PuppyRaffle: "Player already refunded or is not active.");
++       players[playerIndex] = address(0);
++       emit RaffleRefunded(playerAddress);
+        payable(msg.sender).sendValue(entranceFee);
+-       players[playerIndex] = address(0);
+-       emit RaffleRefunded(playerAddress);
+    }
 ```
 
 Voila! We have successfully written up an audit for this reentrancy attack.

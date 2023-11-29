@@ -4,13 +4,13 @@ title: CodeHawks
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889509171/00b0223b86?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
 # Starting Your Flight in Bug Hunting: An Easy Guide
 
-Hello, everyone! Today, let's dive into the process of participating in your first code auditing competition, or as we like to call it - First Flight. Also, it's the perfect time for you to put your bug-finding skills to the test, thanks to an ongoing 'First Flight' code review competition. So, without further ado, let's kick things off.
+Hello, everyone! Today, let's dive into the process of participating in your first code auditing competition, or as we like to call it - First Flight. Also, it's the perfect time for you to put your bug-finding skills to the test, thanks to an ongoing 'First Flight' code review competition. So, without further adeui, let's kick things off.
 
 ## Your Ticket into the Flight
 
@@ -26,14 +26,14 @@ Be it the desire to learn, or the adrenaline pushing you to compete in a live, c
 
 **Signing Up on The Platform**
 
-To participate in a First Flight, you need to sign up for the platform. In our example, we're using Code Hawks.
+To participate in a First Flight, you need to sign up for the CodeHawks platform.
 
 Follow the simple steps below:
 
-1. Navigate to Code Hawks
-2. Click on 'become a Hawk'
+1. Navigate to CodeHawks
+2. Click on 'Become a Hawk'
 3. You have a variety of options to sign up with. We're going to use MetaMask, but feel free to choose what suits you.
-4. After signing in, create your profile. A wallet address is required since Codehawks pays out in USDC on the Arbitrum chain.
+4. After signing in, create your profile. A wallet address is required since CodeHawks pays out in USDC on the Arbitrum chain.
 5. Discord is the primary communication hub where you can ask sponsors questions. Telegram can be ignored.
 6. If you wish for people to reach out through Twitter, LinkedIn, or Github, ensure to link them.
 7. After filling up the details, hit 'sign up'.![](https://cdn.videotap.com/B7E2KwVjnd1XFN3KOGF0-96.07.png)
@@ -47,4 +47,4 @@ Now that you're signed up, navigate to the 'Puppy Raffle' First Flight, scroll d
 
 Here, you will find all relevant data, including payouts, statistics, details about the First Flight - everything you need to participate effectively.
 
-Enjoy the journey of embarking on your first flight and gaining those valuable bug-hunting skills. We wish you the best of luck in finding those pesky bugs and the amazing opportunity to submit a finding. Happy hunting!
+Enjoy the journey of embarking on your First Flight and gaining those valuable bug-hunting skills. We wish you the best of luck in finding those pesky bugs and the amazing opportunity to submit a finding. Happy hunting!

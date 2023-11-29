@@ -4,7 +4,7 @@ title: Reporting - Templates
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889509223/4613f5e9ef?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
@@ -22,7 +22,7 @@ However, besides this, there are numerous other templates in the repository that
 
 ## The Power of Audit Repo Cloner
 
-Now, some of you might remember our good friend, the _"Audit Repo Cloner"_. This handy tool developed by our enthusiastic Cypher team, takes clone of a repo and prepares it automatically for Cypher audit report generation. In order to streamline our audits, instead of amassing all of our findings on a markdown, we use issues or projects on the repo and generate the entire report directly from GitHub.
+Now, some of you might remember our good friend, the _"Audit Repo Cloner"_. This handy tool developed by our enthusiastic Cyfrin team, takes clone of a repo and prepares it automatically for Cyfrin audit report generation. In order to streamline our audits, instead of amassing all of our findings on a markdown, we use issues or projects on the repo and generate the entire report directly from GitHub.
 
 ## The Report Generator Template
 
@@ -42,7 +42,9 @@ When collaborating with your team, instead of attempting to merge everyone's mar
 
 Learning to write audit reports in this manner is a step towards mastering report-writing. However, since we're still honing our skills, we'll continue writing in one markdown file and then generate them with the help of our audit report templating codebase.
 
-![](https://cdn.videotap.com/Qf7EAUCbvffD1C79xCLb-100.43.png)## Mastering the Art of Report Writing
+![](https://cdn.videotap.com/Qf7EAUCbvffD1C79xCLb-100.43.png)
+
+## Mastering the Art of Report Writing
 
 Since report writing is an indispensable skill for auditors, it's time to practice writing an audit report. Not every audit will require a meticulous report; sometimes a simple Markdown summary of your findings will suffice. But as part of your training, you must not neglect to practice and perfect your writing skills.
 

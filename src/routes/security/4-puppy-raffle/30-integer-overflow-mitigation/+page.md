@@ -4,15 +4,17 @@ title: Integer Overflow - Mitigation
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889508666?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
 # Optimizing Solidity Code: Fixes and Best Practices
 
-Welcome to another entry in our blog series on Ethereum development where we delve into common issues. This blog will be focusing on how to optimize your solidity code by handling arithmetic issues, using newer solidity versions, and selecting appropriate sized unsigned integers.
+In this section we will be focusing on how to optimize your solidity code by handling arithmetic issues, using newer solidity versions, and selecting appropriate sized unsigned integers.
 
-![](https://cdn.videotap.com/JQFvqTTQx9NSt5trIsy4-5.2.png)## Updating to Newer Versions of Solidity
+![](https://cdn.videotap.com/JQFvqTTQx9NSt5trIsy4-5.2.png)
+
+## Updating to Newer Versions of Solidity
 
 First on our agenda - Newer solidity versions. They are the very first fix we will be discussing. Given the critical importance of versioning, it's surprising how many audits reveal that projects are still on outdated solidity versions, leaving them susceptible to unchecked errors.
 
@@ -26,9 +28,7 @@ Moving onto our next topic, let's talk about choosing the right size for your un
 
 Choosing the right integer type can significantly optimize your contracts' gas efficiency, as smaller integer types use less gas.
 
-```
-"Why are you using a UN 64? Don't do that. That's silly."
-```
+> "Why are you using a uint64? Don't do that. That's silly."
 
 In my experience, oversized or undersized integer types is a common issue that arises in solidity audits. For example, using a uint64 when you're likely to end up surpassing that limit is a move that could potentially lead to disastrous results.
 
@@ -38,11 +38,13 @@ But how do you identify this?
 
 Newcomers might rely on intuition or guesswork, when actually, a much more straightforward method is at our disposal. Tools such as Chisel, which come with your foundry, can help check if your program is using integers appropriately.
 
-A simple command 'uint64 max' can give you the maximum value for a uint64. This then allows you to gauge if the values you're dealing with are within the specified range of uint64 and therefore, giving you the ability to decide if using a uint64 is judicious or ill-advised.
+A simple command `uint64 max` can give you the maximum value for a uint64. This then allows you to gauge if the values you're dealing with are within the specified range of uint64 and therefore, giving you the ability to decide if using a uint64 is judicious or ill-advised.
 
 Say, hypothetically if your protocol generates over 18 ETH in fees, it's going to surpass the uint64 limit, causing an integer overflow which could lead to severe consequences.
 
-![](https://cdn.videotap.com/rBscGeCrMNlRHNKG4K02-46.8.png)Therefore, it is crucial to be mindful of the ranges of each integer type to avoid such issues. Regularly auditing and checking your code for such issues, can save you countless hours of debugging and problem-solving down the road.
+![](https://cdn.videotap.com/rBscGeCrMNlRHNKG4K02-46.8.png)
+
+Therefore, it is crucial to be mindful of the ranges of each integer type to avoid such issues. Regularly auditing and checking your code for such issues, can save you countless hours of debugging and problem-solving down the road.
 
 In summary, It's all about having the foresight to see potential problems and nip them in the bud.
 

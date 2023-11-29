@@ -4,19 +4,13 @@ title: Reporting - Missing Events And Remove Dead Code
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889508106?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
-# Unearthing Audit Findings in Code: An Adventure in Debugging
+## Highlighting Missed Events
 
-Welcome! Today, let's delve into the labyrinth of code debugging and optimization - an essential, yet sometimes daunting, aspect of any software development life cycle. We'll be identifying issues, seeking optimal solutions, and enhancing the efficiency of our program.
-
-## Door to the Maze: The Scenario
-
-"**Missing Events**" An exclamation that we, developers, often find ourselves exclaiming during a casual or intense debugging session. Now, imagine such a situation. So, what would be our next move? We'd definitely document it in the findings - that’s always step one!
-
-![](https://cdn.videotap.com/zp5mNIar5lB4Y3OaVHnR-8.png)## Highlighting Missed Events
+![](https://cdn.videotap.com/zp5mNIar5lB4Y3OaVHnR-8.png)
 
 When implementing state change in a code framework, it's absolutely necessary to emit appropriate events for accurate tracking. However, there are instances when this isn't done, leading to missed events.
 
@@ -26,7 +20,9 @@ I6: State changes are missing events
 
 A plethora of tools are available in the bustling code-tools market that can help us keep track of these events. Yet, sometimes, they slip through the cracks.
 
-![](https://cdn.videotap.com/GMx8kM6vB9arnwQhLFYV-20.png)> "Anytime you change the state, you really want to emit an event." - A friendly piece of advice from any competent code auditor.
+![](https://cdn.videotap.com/GMx8kM6vB9arnwQhLFYV-20.png)
+
+> "Anytime you change the state, you really want to emit an event." - A friendly piece of advice from any competent code auditor.
 
 ## Indices and their Mysterious Absence
 
@@ -38,21 +34,25 @@ I6(a): Events are missing index fields
 
 These findings, along with meticulous details, are included in the comprehensive audit report located in our trusty GitHub repository.
 
-![](https://cdn.videotap.com/W1YshpXSv8o0UmmhuNi1-38.png)Though I won't be jotting down the specifics about this finding in this blog, I ensure you that it's well-detailed in the report.
+![](https://cdn.videotap.com/W1YshpXSv8o0UmmhuNi1-38.png)
+
+Though I won't be jotting down the specifics about this finding in this blog, I ensure you that it's well-detailed in the report.
 
 ## The Ghost Code
 
-Now, we move onto a curious scenario. We stumble across a function called `Puppy raffle is active player` only to discover it’s just sitting idly in our code - not being used at all. This infamous phenomenon, dear readers, is referred to as "dead code".
+Now, we move onto a curious scenario. We stumble across a function called `isActivePlayer` only to discover it’s just sitting idly in our code - not being used at all. This infamous phenomenon, dear readers, is referred to as "dead code".
 
 It’s like a phantom, haunting our codebase, and it can be effortlessly picked up by popular code-analysis tools. One we found effective was `Slither`.
 
 ```markdown
-I7: Function “Puppy raffle is active player” is never used and should be removed.
+I7: Function “isActivePlayer” is never used and should be removed.
 ```
 
 You may have been deceived into thinking that dead code is harmless, but, in fact, it can affect computational performance by causing wastage of resources or increasing execution time. Hence, dead code can impact gas optimization in blockchain applications, or be just an informational note that triggers an urge to tidy up the code.
 
-![](https://cdn.videotap.com/Q7TwomNJdyWc4hcSJeU1-54.png)I'll let you in on an insider tip - explaining what impact our ghost code might have on our overall framework reinstates the necessity and urgency of removing it.
+![](https://cdn.videotap.com/Q7TwomNJdyWc4hcSJeU1-54.png)
+
+I'll let you in on an insider tip - explaining what impact our ghost code might have on our overall framework reinstates the necessity and urgency of removing it.
 
 ## Parting Words
 

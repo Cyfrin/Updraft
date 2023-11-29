@@ -4,13 +4,13 @@ title: Weak Randomness - Mitigation
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889508604?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
 # **Bringing Trustworthy Randomness into the Blockchain with Chainlink VRF**
 
-A prevalent challenge that many encounter in the blockchain space is finding reliable ways to generate random numbers off-chain. Lucky for you and I, this conundrum has a solution. In this post, we will delve into how the Chainlink Verifiable Random Function (VRF) provides a solution that furnishes verifiable and cryptographically credible random numbers. Primarily, it is decidedly the most popular tool and is widely trusted for its cryptographic guarantees.
+A prevalent challenge that many encounter in the blockchain space is finding reliable ways to generate random numbers off-chain. Lucky for you and I, this conundrum has a solution. In this post, we will delve into how the Chainlink Verifiable Randomness Function (VRF) provides a solution that furnishes verifiable and cryptographically credible random numbers. Primarily, it is decidedly the most popular tool and is widely trusted for its cryptographic guarantees.
 
 You might be asking, "Why is this such a major concern?" So let's begin to unravel this issue.
 
@@ -22,7 +22,9 @@ Why is that so? It boils down to the pivotal concept of **trust** in the blockch
 
 So how do we counteract this fear? The answer is Chainlink VRF.
 
-![](https://cdn.videotap.com/JDtC3sTSaBwZXHXKhNvg-26.1.png)In essence, Chainlink VRF operates as a verifiable random number generator. What sets it above others is a series of cryptographic guarantees that enforce and ensure that the produced numbers are truthful and random.
+![](https://cdn.videotap.com/JDtC3sTSaBwZXHXKhNvg-26.1.png)
+
+In essence, Chainlink VRF operates as a verifiable random number generator. What sets it above others is a series of cryptographic guarantees that enforce and ensure that the produced numbers are truthful and random.
 
 This isn't conjecture. It's mathematical. Chainlink VRF integrates advanced cryptographic proofs that enable users to validate the process's integrity, thereby instilling an invaluable level of trust.
 
@@ -30,7 +32,9 @@ This isn't conjecture. It's mathematical. Chainlink VRF integrates advanced cryp
 
 Potentially, you might not be familiar with Chainlink VRF initially. But don't worry, we've got you covered.
 
-![](https://cdn.videotap.com/eHq7O6rojE6kw9gbagQV-40.6.png)To get started, make your way to [Chainlink Docs](https://docs.chain.link/docs/chainlink-vrf/). This comprehensive documentation provides an exhaustive breakdown of all things Chainlink VRF. Right from the basics to solve more complex issues, it has everything you need to know.
+![](https://cdn.videotap.com/eHq7O6rojE6kw9gbagQV-40.6.png)
+
+To get started, make your way to [Chainlink Docs](https://docs.chain.link/docs/chainlink-vrf/). This comprehensive documentation provides an exhaustive breakdown of all things Chainlink VRF. Right from the basics to solve more complex issues, it has everything you need to know.
 
 Assuming this catches your interest, and you wish to dive even deeper, I’d highly recommend you to check out my Foundry course. This covers Chainlink VRF in exquisite detail.
 

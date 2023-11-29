@@ -4,7 +4,7 @@ title: Test Coverage
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889509090/1c0940f929?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
@@ -14,14 +14,9 @@ Are you looking to pass an audit with your code? If so, code coverage is an esse
 
 Let's walk through my most recent analysis.
 
-## Code Review: Adarin and Slither
+## Code Review: Aderyn and Slither
 
-I recently reviewed two applications: Adarin and Slither. After completing the review, it was time to study their code coverage. Here is the result.
-
-```bash
-Adarin- Code Coverage: Done.Slither- Code Coverage: Done.
-```
-
+I recently reviewed two applications: Aderyn and Slither. After completing the review, it was time to study their code coverage.
 Let's delve deeper into the specifics and dissect how much of the code was actually "covered" under the tests.
 
 ## Forge Tool for Calculating Code Coverage
@@ -29,14 +24,12 @@ Let's delve deeper into the specifics and dissect how much of the code was actua
 To measure the code coverage, I used Forge, a widely recognized tool for just this purpose. The result was not as expected.
 
 ```bash
-Run command: `Forge Coverage`
+forge coverage
 ```
 
-![](https://cdn.videotap.com/H1yW7XuzYltnhAiHdcLP-13.37.png)The outcome was somewhat disheartening.
+![](https://cdn.videotap.com/H1yW7XuzYltnhAiHdcLP-13.37.png)
 
-```
-Code coverage: Not very good.
-```
+The outcome was somewhat disheartening.
 
 What did the above result imply? It screamed out loud, "Ta DA, it's pretty bad". In simpler words, the code coverage was in a pitiful state.
 
@@ -50,13 +43,11 @@ For a **private audit**, the level of code coverage obtained would necessitate c
 
 For competitive audits, code coverage doesn't usually play as significant a role. However, that doesn't mean it’s entirely negligible.
 
-```bash
-Audit Result: InformationalReason- Code Coverage could be better.
-```
+![](https://cdn.videotap.com/9BEXZYZjamdFNyvfe0tl-28.8.png)
 
-![](https://cdn.videotap.com/9BEXZYZjamdFNyvfe0tl-28.8.png)## The Need for Higher Code Coverage
+## The Need for Higher Code Coverage
 
-Discussing this further, with the code base's simplicity, particularly for apps like Adarin and Slither, maximum code coverage should be relatively easier to achieve. But the reality depicted a gloomy picture.
+Discussing this further, with the code base's simplicity, particularly for apps like Aderyn and Slither, maximum code coverage should be relatively easier to achieve. But the reality depicted a gloomy picture.
 
 This code coverage was somewhat "abysmal", as I put it mildly.
 

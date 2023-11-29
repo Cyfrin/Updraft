@@ -4,23 +4,15 @@ title: Reporting - getActivePlayerIndex Incorrect For Edge Case
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889507790?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
-# Understanding Smart Contract Audits – A Journey through 'puppy raffle'
+## Error: Index Zero
 
-Let's deep dive into the world of smart contract auditing with an illustrative example: the 'puppy raffle'. It's a simple, randomly chosen, yet incredibly engaging piece of code to illustrate the challenging task of spotting potential issues that could affect protocol functionality or even threaten the security of the whole system.
+Let's kick things off with `getActivePlayerIndex`. For some context: **if a player is at index zero, 'puppy raffle' returns zero too**. You might ask, so what? Well, here's a thing: playing with indexes can often get dicey and bring unexpected results.
 
-## Baseball Error: Index Zero
-
-Let's kick things off with first error we encounter in the analysis. For some context: **if a player is at index zero, 'puppy raffle' returns zero too**. You might ask, so what? Well, here's a thing: playing with indexes can often get dicey and bring unexpected results.
-
->
-
-"You audit, if the player is at index zero, it'll return zero and a player might think they are not active."
-
->
+> "If the player is at index zero, it'll return zero and a player might think they are not active."
 
 Interesting, right? And now to discuss **how impactful this finding is**. To get a full picture, let's try and see some potential outcomes.
 
@@ -28,7 +20,9 @@ Interesting, right? And now to discuss **how impactful this finding is**. To get
 
 Does this issue cause any funds to be lost? Well, not so much. It does, however, impact the protocol rather severely. When players see that they are not active, they may try to enter the lottery again, which can be wasteful.
 
-![](https://cdn.videotap.com/niK93K7C7GGxiHEpocIL-74.4.png)Considering the possible outcomes, we shall term **the potential impact of this as low to medium**. The tricky thing here is to assess the likelihood of this happening, given its unexpected nature.
+![](https://cdn.videotap.com/niK93K7C7GGxiHEpocIL-74.4.png)
+
+Considering the possible outcomes, we shall term **the potential impact of this as low to medium**. The tricky thing here is to assess the likelihood of this happening, given its unexpected nature.
 
 ## Assessing the Severity
 
@@ -38,11 +32,7 @@ The subjective nature of this assessment comes into play here and different pers
 
 ## Reporting and Fixing The Problem
 
->
-
-"I would argue that this is a low. I think it would be understandable if somebody said it was a medium."
-
->
+> "I would argue that this is a low. I think it would be understandable if somebody said it was a medium."
 
 Having reported the issue, we now set out to explain it like we would to a five-year-old.
 

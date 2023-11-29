@@ -4,7 +4,7 @@ title: Reporting - Unchanged State Variables Should Be Immutable Or Constant
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889509299/cf34d0751c?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
@@ -14,7 +14,9 @@ Keeping a keen eye on your smart contracts' gas usage can significantly improve 
 
 In this post, we'll go over an audit focused on gas optimization. By the end, you'll understand why specific variables in your smart contract need to be set as constant or immutable and learn how it affects the gas usage and elevates your smart contract's efficiency.
 
-![](https://cdn.videotap.com/w2OveccwS4ZLVJV3AAGV-5.63.png)## Defining the Audit Scope
+![](https://cdn.videotap.com/w2OveccwS4ZLVJV3AAGV-5.63.png)
+
+## Defining the Audit Scope
 
 We'll start our audit with a neat organization. First, we'll craft a Findings section—an overview of the areas we intend to audit.
 
@@ -36,8 +38,8 @@ For instance, when auditing a contract regarding a raffle, we came across a vari
 
 Here's an example:
 
-```solidity
-immutable uint256 public raffleDuration;
+```js
+uint256 public immutable raffleDuration;
 ```
 
 Here, we'll note in our audit findings:
@@ -60,8 +62,9 @@ Our next audit target is a seemingly innocuous but incredibly significant featur
 
 When re-auditing the same 'Puppy Raffle' contract, we found three variables that should ideally be declared as **constant**:
 
-```solidity
-string public constant rareImageURI;string public constant legendaryURI;
+```js
+string public constant rareImageURI;
+string public constant legendaryURI;
 ```
 
 Now, we'll update our audit findings table:

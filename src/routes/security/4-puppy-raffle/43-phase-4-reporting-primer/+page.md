@@ -4,7 +4,7 @@ title: Phase 4 Reporting - Primer
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889509109/5c621acd49?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
@@ -18,13 +18,15 @@ Once you are reasonably satisfied with the code inspection phase, it's time to e
 
 > It's the end of our code review and our job now, is to report our findings effectively. This is pivotal to our work as a security researcher and we should strive to do it right.
 
-![](https://cdn.videotap.com/rURmYlf7Mj8v8mjNSpls-34.png)## Venturing into Competitive Audits
+![](https://cdn.videotap.com/rURmYlf7Mj8v8mjNSpls-34.png)
+
+## Venturing into Competitive Audits
 
 One of the first steps post-review would be to perform a competitive audit. Here, we will compare our findings to those of other security researchers, providing us perspective and reassurance about our work.
 
 > Doing a competitive audit can supercharge our careers. It reinforces our learning and encourages us to be better. We will prepare a submission detailing our findings.
 
-## Writing the Comprehensive Report
+## Writing a Comprehensive Report
 
 We will then delve into the crux of our task - the full report for the Puppy Raffle code we've been working on.
 
@@ -34,7 +36,9 @@ We will then delve into the crux of our task - the full report for the Puppy Raf
 
 In this journey, we will also be writing a lot of Proof of Concepts (PoCs). This is vital to your ongoing development as a security researcher, so practicing along is highly recommended.
 
-![](https://cdn.videotap.com/7JHE8CMtsqxXQyAAdWxB-97.14.png)## Pause to Reflect and Recover
+![](https://cdn.videotap.com/7JHE8CMtsqxXQyAAdWxB-97.14.png)
+
+## Pause to Reflect and Recover
 
 If this has been a whirlwind so far, don't worry—you're not alone. I've packed your brain with loads of information, and it's now time to take it slow. As a thumb rule, it's best not to over-exert yourself. Doing so might lead to cognitive overloads and information fatigue.
 

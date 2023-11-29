@@ -4,7 +4,7 @@ title: Slither Walkthrough
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889508991/756b18afe1?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
@@ -16,9 +16,11 @@ Let's deep dive into the code and uncover the treasures this utility can offer u
 
 ## Starting From The Extremes
 
-![](https://cdn.videotap.com/NQHSIHFaGFwd07Cdj3aB-77.3.png)To effectively dissect your code, it's beneficial to begin with the most extreme areas and then continue downwards. Going through an example, I started my process with a function named `withdrawFees` and investigated its command for sending ETH (Ethereum's primary cryptocurrency) to an arbitrary user.
+![](https://cdn.videotap.com/NQHSIHFaGFwd07Cdj3aB-77.3.png)
 
-```anon
+To effectively dissect your code, it's beneficial to begin with the most extreme areas and then continue downwards. Going through an example, I started my process with a function named `withdrawFees` and investigated its command for sending ETH (Ethereum's primary cryptocurrency) to an arbitrary user.
+
+```js
 function withdrawFees...
 ```
 
@@ -32,9 +34,7 @@ Here, you'll find extensive information about the severity ratings, confidence l
 
 Remember, while the high confidence level indicates a bug has likely been detected, a medium confidence level means it could be a false positive. Always cross-check your findings to insist on precision.
 
-```block
-"The severity is high, the confidence is medium here. Confidence being medium means that the tool is medium sure."
-```
+> "The severity is high, the confidence is medium here. Confidence being medium means that the tool is medium sure."
 
 ## Slithering Around False Positives
 
@@ -42,7 +42,7 @@ One exciting feature of Slither is how you can customize its priorities. Specifi
 
 To do this, simply follow the formatting in the Slither documentation.
 
-```anon
+```js
 /* slither-disable-next-line arbitrary-send-eth */
 ```
 
@@ -50,11 +50,11 @@ By incorporating this command directly into your code, you can ensure that Slith
 
 ## And The Winner Is...
 
-![](https://cdn.videotap.com/9tgDlvKbmj5arMTdT1ql-425.15.png)Moving on to another common piece of Solidity code—the "Select Winner" function. In this scenario, Slither identified a weakness in the PRNG (Pseudorandom Number Generator) being used. This tool is regularly used in Solidity contracts to simulate a fair lottery, but it's critical you use a robust PRNG to avoid potential exploitation. If a developer can predict the randomly selected winner, they can manipulate the result, which relegates the fairness of the lottery to a mere illusion.
+![](https://cdn.videotap.com/9tgDlvKbmj5arMTdT1ql-425.15.png)
 
-```anon
-"Slither picked out the weak randomness as well. "
-```
+Moving on to another common piece of Solidity code—the `selectWinner` function. In this scenario, Slither identified a weakness in the PRNG (Pseudorandom Number Generator) being used. This tool is regularly used in Solidity contracts to simulate a fair lottery, but it's critical you use a robust PRNG to avoid potential exploitation. If a developer can predict the randomly selected winner, they can manipulate the result, which relegates the fairness of the lottery to a mere illusion.
+
+> "Slither picked out the weak randomness as well. "
 
 Slither can detect this particular issue automatically, allowing your team to correct the PRNG weakness straightforwardly, saving valuable time that manual review processes would soak up.
 
@@ -72,7 +72,9 @@ For this reason, I've developed a rule of thumb whereby if an event can be manip
 
 ## Unearth Old Versions and Low-Level Calls
 
-![](https://cdn.videotap.com/jqNTpIqXL1SPGiYnAfl6-657.05.png)Slither isn't just a guardian against dangerous codes; it's also an adviser for better coding practices. The tool diligently points out outdated Solidity version usage, encouraging the adoption of up-to-date versions. Moreover, it raises an alarm on the usage of low-level calls, guiding the programmer towards safer coding habits.
+![](https://cdn.videotap.com/jqNTpIqXL1SPGiYnAfl6-657.05.png)
+
+Slither isn't just a guardian against dangerous codes; it's also an adviser for better coding practices. The tool diligently points out outdated Solidity version usage, encouraging the adoption of up-to-date versions. Moreover, it raises an alarm on the usage of low-level calls, guiding the programmer towards safer coding habits.
 
 This particularly aids in learning best practices from the community and serves as a yardstick measuring the overall code quality. Following such leads can be beneficial in the long run, not only for overall security but also for smoother audits.
 

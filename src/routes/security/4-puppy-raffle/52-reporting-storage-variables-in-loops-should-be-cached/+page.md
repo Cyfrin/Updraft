@@ -4,7 +4,7 @@ title: Reporting - Storage Variables In Loops Should Be Cached
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="VIDEO_LINK" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://vimeo.com/889507707?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
@@ -28,33 +28,24 @@ Here is an informed approach to tackle this: Instead of continually reading from
 
 Let's take an example, where we denote our storage variable as `G2`. This variable should be cached, but before caching it, we should check if its value is not double but triple.
 
-```python
-G2 = triple
-```
-
 Having ensured our variable meets the requirements, we can now see how to cache our storage variable.
 
 1. First, we need to create a diff.
 
    - A `diff` is a representation of changes between two sets of data. It is commonly used in version control systems to show the changes between two commits.
 
-2. Now, let's grab the original line, and paste it into our diff. Here, we're trying to replace an inefficient line of code with a more optimized one.
+2. Now, let's grab the original line, and paste it into our diff. Here, we're trying to replace an inefficient line of code with a more optimized one. The diff set should look like this:
 
    ```diff
-   - uint256 playersLength = players.length;
+   + uint256 playersLength = players.length;
+   - for (uint256 i=0; i < players.length -1; i++){
+   + for (uint256 i=0; i< playersLength - 1; i++){
+   -  for (uint256 j=i+1; j <players.length; j++){
+   +  for (uint256 j=i+1; j <playersLength; j++){
+         require(players[i] != players[j], "PuppyRaffle: Duplicate Player!")
+      }
+   }
    ```
-
-3. After grabbing that line, we should add the optimized line that caches our variable instead of reading from storage:
-
-   ```diff
-   + uint256 playersCountInMemory = players.length;
-   ```
-
-The diff set should look like this:
-
-```diff
-- uint256 playersLength = players.length;+ uint256 playersCountInMemory = players.length;
-```
 
 ## Why Diff?
 
@@ -66,4 +57,6 @@ In conclusion, by reducing the constant reading from storage and instead caching
 
 Following such simple steps in your Smart Contract development will force you to think about optimization from the get-go, which is an excellent best practice to embed into your workflow. Smart contract optimization is a deep, complex field, with much to explore and learn. The deeper you go, the more intricate nuances you'll uncover!
 
-![](https://cdn.videotap.com/k6t5NpVGN2ClB6xkBj6O-74.45.png)Remember, when it comes to Ethereum, gas is more than the cost of doing something. It's the very bread and butter of the operations of your smart contracts. The more effective you are with using gas, the better your contracts will be. With the focus on performance and optimization, high gas costs can be a thing of the past! Happy coding!
+![](https://cdn.videotap.com/k6t5NpVGN2ClB6xkBj6O-74.45.png)
+
+Remember, when it comes to Ethereum, gas is more than the cost of doing something. It's the very bread and butter of the operations of your smart contracts. The more effective you are with using gas, the better your contracts will be. With the focus on performance and optimization, high gas costs can be a thing of the past! Happy coding!
