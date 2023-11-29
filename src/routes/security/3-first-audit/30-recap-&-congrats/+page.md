@@ -4,7 +4,7 @@ title: Recap & Congrats
 
 _Follow along with this video:_
 
-Pending
+<iframe width="560" height="315" src="https://www.youtube.com/embed/V3oR3TsNHzk?si=UpUV3ODOrl5Of4yQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
