@@ -4,8 +4,9 @@ title: Solidity Pre-requisites
 
 _Follow along with this video_
 
---- 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vNr-b6u503M?si=b6bZEA4KJbyA-TeE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
+---
 
 Whipping up Solidity contracts seems daunting? Or you're simply new to Foundry? Don't fret, we've got you covered. Before we venture into the wonderful and wild world of Security, it's important to get a strong foundation. The Foundry full course is a fantastic resource to embark on, if you haven't took that course yet don't forget to check that out here at Cyfrin Updraft.
 
@@ -36,7 +37,6 @@ $ forge test
 The basic test setup contains two distinct test types, a regular test (assert equal) and a Fuzz test.
 
 <img src="/security-section-1/2-solidity-req/sol-req1.png" style="width: 100%; height: auto;" alt="block fee">
-
 
 ## Exploring Test Types: Regular Test and Fuzz Test
 
@@ -71,4 +71,3 @@ On to the next level – **stateful fuzzing**, also popular as invariant tests i
 Prep up and get ready to dive into the exciting world of fuzzing, stateful fuzzing, and invariant tests. Let's dig deeper and explore this advanced but rewarding aspect of Smart Contracts design in Foundry.
 
 Are you ready to swim with the big fishes in the Solidity sea? Let’s dive into the deep together.
-

@@ -4,6 +4,8 @@ title: Advanced Solidity Pre-requisites
 
 _Follow along the with the video_
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Mek5xKplxuM?si=sQiYFZxspTwIfYBa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ---
 
 Welcome back, dear students! After laying the foundation and getting acquainted with the preliminary nuances of smart contracts in our previous lessons, it's time to venture into slightly deeper waters. Expect the unexpected and brace yourselves as we delve into the finer aspects of smart contracts that I'd expect you to grasp in the course of your blockchain learning journey.

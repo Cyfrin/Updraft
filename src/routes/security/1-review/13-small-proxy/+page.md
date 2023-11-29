@@ -4,6 +4,8 @@ title: Small Proxy Example
 
 _Follow along with the video_
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rJZ-Gy4bAP0?si=-H5nFY7_ifTGvHea" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ---
 
 In this lesson, we are going to heat things up by looking into a minimal proxy example in Ethereum smart contracts. We'll show you how a contract can be used as a singular address, yet the underlying code can change significantly. All the code we will be diving into can be found in the `hardhat upgrades,sublesson` [smallproxy.sol](https://github.com/PatrickAlphaC/hardhat-upgrades-fcc) file which you can use for a seamless follow-along.

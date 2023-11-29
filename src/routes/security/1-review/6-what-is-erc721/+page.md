@@ -4,6 +4,8 @@ title: What is an ERC721/NFT?
 
 _Follow along the with the video_
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/516bzGbgYak?si=AyWisOyxF7Tjy7zP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ---
 
 The buzz around non-fungible tokens (NFTs) or ERC 720 Ones lately is becoming impossible to ignore, especially within the spheres of art and blockchain technology. NFTs, originally authored on the Ethereum platform, present a unique form of digital asset that holds the potential to revolutionize the world of art, gaming and beyond. But what exactly are they?

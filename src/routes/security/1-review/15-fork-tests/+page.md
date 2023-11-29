@@ -4,6 +4,8 @@ title: Fork Tests & Congrats!
 
 _follow along with the video_
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/emQTINQDalU?si=0aXzA4jV4GgtD3wj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ---
 
 Welcome to our in-depth guide on how to run fork tests or mainnet fork tests. In a nutshell, fork tests help us create a simulated local version of mainnet to execute tests, thereby eliminating the need to include all contract addresses. Today, our walkthrough will show you how to accomplish this smoothly.

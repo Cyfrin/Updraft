@@ -4,6 +4,8 @@ title: Stateless Fuzzing, Stateful Fuzzing And Invariants/Properties
 
 _Follow along the video_
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jCO69E5BfEM?si=lvtaPqCUcXONK8P9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ---
 
 You might be looking at your code, wondering, "Is it time for my code to be deployed?" Only to realize you're prone to flash loan attacks. In such moments, don't panic, _adjust_. This might involve returning to the drawing board to rethink and tweak your contract. Often, hacks result from scenarios you didn't anticipate or consider for testing. But what if you could write a test that checks for every possible scenario, not just one? Welcome to the world of **Fuzz testing**.
