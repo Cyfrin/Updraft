@@ -4,7 +4,7 @@ title: Info and Gas Findings
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://vimeo.com/889508945/1dc2165b9d?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://youtu.be/WycVutSWjlM" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
