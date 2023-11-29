@@ -4,7 +4,7 @@ title: Reporting - Missing Events And Remove Dead Code
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://vimeo.com/889508106?share=copy" title="vimeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## <iframe width="560" height="315" src="https://youtu.be/IBlx6kEs5AA" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
