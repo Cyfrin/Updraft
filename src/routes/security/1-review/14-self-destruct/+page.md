@@ -4,6 +4,8 @@ title: Self-destruct
 
 _follow along with the video_
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9i8RgnEo9l4?si=PDzs9HcklpeJHbxn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ---
 
 In the course of analyzing Solidity - the creation language for Ethereum smart contracts - the `selfdestruct` term is a very crucial concept, initially taught in the Foundry Fill course but might be quickly glossed over. As Ethereum enthusiasts, understanding these key terminologies and functionalities allows us to maximize the possibilities Ethereum offers. The `selfdestruct` is a keyword in Solidity that removes or deletes a contract. But there's something extra special about it.

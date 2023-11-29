@@ -4,6 +4,8 @@ title: Fallback and Receive
 
 _Follow along with the video_
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/pTn0Kfp9JHg?si=C_BCMPCQJFhpuCrf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ---
 
 In the world of Solidity smart contracts, it's important to understand the fallback and receive functions. By default, Solidity smart contracts reject any Ether (ETH) sent to them. Want your smart contract to accept ETH? Let's dive into the functionality and practical instances of the fallback and receive functions.

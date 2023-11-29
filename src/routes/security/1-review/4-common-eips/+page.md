@@ -4,6 +4,8 @@ title: Common EIPs/ERCs.
 
 _Follow along the with the video_
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/C9lGaBMfXmA?si=R4tmAHJGuGnuT2wD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ---
 
 Let's delve into a nugget of smart contract creation, fuzz testing, and the illustrious ERCs. But before we do, let's touch base on where we stand. By now, you're expected to have some familiarity with concepts like fuzz testing and invariance. So, bear in mind, we will roll out more details on fuzz testing and stateful fuzzing in our forthcoming sessions.
