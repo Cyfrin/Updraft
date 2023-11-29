@@ -4,7 +4,7 @@ title: Welcome to the ultimate Solidity Course
 
 _Follow along with this video_
 
-Video Here
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kJW7TAzyg98?si=UeOsfU47xje477Mp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ---
 
