@@ -6,8 +6,6 @@ title: Phase 2 Recon - Reading the Docs
 
 ---
 
-# **Correct Video Link https://youtu.be/ZolEhNT2wMk** Update coming to embed soon 🙏
-
 # Thunder Loans: In-depth Dive into Flash Loan Protocols
 
 Welcome to this comprehensive deep dive into flash loan protocols. In particular, we will be focusing on the Thunder Loan protocol heavily based on Aave and Compound.
