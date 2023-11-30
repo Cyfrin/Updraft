@@ -23,9 +23,10 @@ It's always enriching to learn from the best, and this guide takes care of that 
 1. Jocelyn from Trail of Bits
 2. Owen from Guardian Audience
 3. Andy from Sigma Prime
-4. Johnny Time from Gingersec Pashov
-5. Hans, one of the top competitive auditors.
-6. Tincho, the former lead auditor at Openzeppelin.
+4. Johnny Time from Gingersec
+5. Pashov, legendary security researcher.
+6. Hans, one of the top competitive auditors.
+7. Tincho, the former lead auditor at Openzeppelin.
 
 With these experts by your side, not only will you gain in-depth insights, but also get to explore extensive and carefully curated code samples. A special shout-out to Tincho, who has been actively supporting the development and auditing of the codes that will be discussed in detail.
 
