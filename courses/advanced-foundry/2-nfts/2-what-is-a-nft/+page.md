@@ -12,7 +12,7 @@ Hello dear students! Today, we'll be diving deep into Non-Fungible Tokens (NFTs)
 
 ## Defining NFTs
 
-NFTs, called `ERC720` Ones, are the latest craze in the digital world as they are considered a prized possession on the Ethereum platform. For the uninitiated, NFT stands for Nonfungible token and is a token standard similar to ERC 20. You might recognize `ERC20s` by familiar names like Link, Ave Maker, which are found on the Ethereum chain.
+NFTs, called `ERC721`s, are the latest craze in the digital world as they are considered a prized possession on the Ethereum platform. For the uninitiated, NFT stands for Nonfungible token and is a token standard similar to ERC 20. You might recognize `ERC20s` by familiar names like Link, Ave Maker, which are found on the Ethereum chain.
 
 <img src="/foundry-nfts/2-what-is/whatis1.png" style="width: 100%; height: auto;">
 
