@@ -8,7 +8,7 @@ _Follow along with this video_
 
 ---
 
-### The Future of Web3: A focus on Security
+## The Future of Web3: A focus on Security
 
 Welcome to the future of Web3 security; welcome to what is possibly the most comprehensive course on this subject ever created! As smart contract developers continue to bloom, it becomes imperative to ensure that the security scene keeps up. That’s the core focus of this guide - to level up the game and ensure a safer environment in the Web3 space.
 
@@ -18,7 +18,7 @@ With multiple detailed courses delivered in the past, dedicated to helping novic
 
 This guide, however, is not for the newcomers. It's an advanced course aimed at those familiar with smart contracts and comfortable with terms like _storage_, _self-destruct_, _fallback functions_, and _ERC20s_. A refresher will be offered at the beginning, but the primary focus will be to provide learners with intensive training in smart contract auditing and research.
 
-### Expert Opinions Matter
+## Expert Opinions Matter
 
 It's always enriching to learn from the best, and this guide takes care of that too. Featuring guest lecturers who are renowned experts in smart contract development:
 
