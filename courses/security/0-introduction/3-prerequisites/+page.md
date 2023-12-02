@@ -8,8 +8,6 @@ _Follow along with this video_
 
 ---
 
----
-
 ## Pre-requisites for the Smart Contract Security Course
 
 ### Introduction

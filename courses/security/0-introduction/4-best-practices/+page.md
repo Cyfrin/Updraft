@@ -8,6 +8,8 @@ _Follow along with this video_
 
 ---
 
+## Best Practices
+
 Welcome to our Smart Contract Security course! I'm super excited to guide you through this journey. Let’s make sure you get the absolute best out of it.
 
 Essential Resources:
