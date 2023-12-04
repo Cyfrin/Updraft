@@ -4,7 +4,7 @@ title: Upgradeable Contracts
 
 _Follow along with the video_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Vy9p6PgNPWg?si=Qw1kSvL9n5DH85C3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

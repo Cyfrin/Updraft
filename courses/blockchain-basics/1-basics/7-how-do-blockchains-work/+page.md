@@ -4,7 +4,7 @@ title: How do blockchains work?
 
 You can follow along with this section of the course here.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/gRnebrIHMGM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="how do blockchains work"></iframe>
+
 
 In this in-depth tutorial, we're going to immerse ourselves in the complex yet captivating world of blockchain technology. Specifically, we're going to break down the process and the technology itself using a widely-praised and accessible demo available [here](https://andersbrownworth.com/blockchain/).
 

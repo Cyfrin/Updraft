@@ -4,7 +4,7 @@ title: UUPS Deploy
 
 _**Follow along with this video.**_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Jl0NpeHVoww?si=2LA7SY8H0RVWZ-kU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

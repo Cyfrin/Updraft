@@ -4,7 +4,7 @@ title: What is an ERC721/NFT?
 
 _Follow along the with the video_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/516bzGbgYak?si=AyWisOyxF7Tjy7zP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

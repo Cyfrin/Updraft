@@ -4,7 +4,7 @@ title: Tooling - Solidity Visual Developer
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/sIb_geciuiU" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## 
 
 ---
 

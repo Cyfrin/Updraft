@@ -4,7 +4,7 @@ title: Exercises
 
 _Follow along with this video:_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/jXDA-a6Fh14?si=CfpXoCVa5dajwd7f" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

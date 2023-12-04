@@ -4,7 +4,7 @@ title: Phase 1: Scoping
 
 _Follow along with the video lesson:_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/OGv8-uhUcDw?si=Gnvn1YprrK4MXy1V" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

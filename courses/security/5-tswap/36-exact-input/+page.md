@@ -2,7 +2,7 @@
 title: T-Swap Manual Review T-Swap Pool - Swap Exact Input
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/jou1PCLlwFI?si=yZHgHK-2mLRyGwFv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

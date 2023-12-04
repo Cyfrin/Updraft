@@ -4,7 +4,7 @@ title: What if I do a Security Review and the protocol gets hacked?
 
 _Follow along with this video:_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/oHER_x1vshM?si=Hgh5HtGl2DpiENx5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

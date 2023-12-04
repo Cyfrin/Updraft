@@ -4,7 +4,7 @@ title: Recap & Congratulations
 
 _Follow along this chapter with the video bellow_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/GjTUKo7k9HY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 We've ventured into the advanced realm of Solidity, and it has been an enlightening journey, to say the least. Brace yourselves, because we're about to dig deeper. However, we're not using Remix this time around. We are migrating to a code editor for a more comprehensive view and working process of Solidity. And as we transition into advanced sections, let's pat ourselves on the back for mastering the majority of Solidity basics!
 

@@ -4,7 +4,7 @@ title: Rekt Test
 
 _Follow along with this video:_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/D9RdC-3jX9M?si=giBMcNv4NueD_a00" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

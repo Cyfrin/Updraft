@@ -4,7 +4,7 @@ title: Welcome to the course!
 
 You can follow along with this section of the course here. 
 
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=oF4TsyFH3Yw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Welcome to the course!"></iframe>
+
 
 *Quick tip, we will be constantly using resources from the [GitHub Repo](https://github.com/Cyfrin/foundry-full-course-f23/)*
 

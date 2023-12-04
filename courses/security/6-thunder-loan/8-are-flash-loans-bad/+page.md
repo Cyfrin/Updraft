@@ -2,7 +2,7 @@
 title: Are Flash Loans Bad?
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/9RDPIdTk3Tc?si=5eAh8RqTc1t2yHwe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

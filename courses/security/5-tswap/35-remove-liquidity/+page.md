@@ -2,7 +2,7 @@
 title: T-Swap Manual Review T-Swap Pool - Remove Liquidity
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Ulr_b-0WjmM?si=Pk5pcC9zCTZyq3rB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

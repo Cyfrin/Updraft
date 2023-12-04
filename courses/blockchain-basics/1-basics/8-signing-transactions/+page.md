@@ -4,7 +4,7 @@ title: Signing Transactions
 
 You can follow along with this section of the course here.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/gmMZ1N3xP7o" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="signing transactions"></iframe>
+
 
 # Understanding Blockchain Transaction Signatures, Private and Public Keys
 

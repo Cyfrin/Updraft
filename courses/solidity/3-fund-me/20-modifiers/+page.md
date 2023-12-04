@@ -4,7 +4,7 @@ title: Modifiers
 
 _Follow along this chapter with the video bellow_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/FfBPHTBSzk0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 In an earlier lesson, we looked at Solidity and how to create smart contracts on the Ethereum blockchain. One of the most useful aspects of Solidity, especially when dealing with functions that should only be called by a certain administrator or contractor, are its modifiers. In this piece, we are going to dive deep into how modifiers can simplify our code and boost productivity.
 

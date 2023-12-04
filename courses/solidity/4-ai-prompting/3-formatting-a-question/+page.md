@@ -4,7 +4,7 @@ Formatting a Question
 
 _Follow along the course with this video._
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/LYVXiIFwLTQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 Hello awesome coders! Today, we are going deep into a universal quandary every programmer undergoes: asking good questions in a code discussion. Sometimes, we might find ourselves in a situation where the issues we encounter in our code might befuddle us to an extent where we start panicking and spout out poorly crafted questions, which are often met with equally poor responses. Within the scope of this post, we'll explore ways we can craft our queries better using GitHub and reap the benefits of effective communication.
 

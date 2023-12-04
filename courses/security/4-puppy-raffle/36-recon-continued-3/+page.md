@@ -4,7 +4,7 @@ title: Recon Continued 3
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/J-y62QDKEAA" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## 
 
 ---
 

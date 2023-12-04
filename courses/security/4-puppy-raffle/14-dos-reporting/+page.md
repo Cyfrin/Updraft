@@ -4,7 +4,7 @@ title: DoS - Reporting
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/GP4Fto4u5dQ" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## 
 
 ---
 

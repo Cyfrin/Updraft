@@ -7,7 +7,7 @@ You can follow along with this section of the course here.
 <!-- TODO update these all with their respective YouTube video -->
 You can follow along with this section of the course here. 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/bbBbq7T9Jjs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="what is a blockchain?"></iframe>
+
 
 
 

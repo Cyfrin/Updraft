@@ -4,7 +4,7 @@ title: For Loop
 
 _Follow along this chapter with the video bellow_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/HSCJFwoi6ew" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 Hey there, awesome learners! In the previous lesson, we've managed to get the basics of the math for our `FundMe` contract. Up to now, people can send us money and we keep track of them - a crucial foundation for our contract. Now, we are ready to move to the next step of our project: withdrawing the accumulated funds. After withdrawing, we'll also reset all the mappings back to zero. We'll accomplish this using a concept known as a for loop.
 

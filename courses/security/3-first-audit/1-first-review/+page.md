@@ -4,7 +4,7 @@ title: Your First Security Review
 
 _Follow along with this video:_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/tTu_9DW_9n8?si=slhTfB3XXHbWi9BO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

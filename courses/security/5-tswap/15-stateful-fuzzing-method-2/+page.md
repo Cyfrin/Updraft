@@ -4,7 +4,7 @@ title: Stateful Fuzzing Method 2
 
 _Follow along with the video:_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/kB3CIfSXetc?si=o3nPT71dAc2i7YrQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

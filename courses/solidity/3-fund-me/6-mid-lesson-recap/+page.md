@@ -4,7 +4,7 @@ title: Mid Lesson Recap
 
 _Follow along this chapter with the video bellow_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/BnwxhJsa7so" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 <!-- <img src="/solidity/remix/lesson-4/datafeeds/datafeed3.png" style="width: 100%; height: auto;"> -->
 

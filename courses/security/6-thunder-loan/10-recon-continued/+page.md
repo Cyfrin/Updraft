@@ -2,7 +2,7 @@
 title: Recon (continued)
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/fTi9rI6qWlQ?si=t4Ir8p4WtT_HQloZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

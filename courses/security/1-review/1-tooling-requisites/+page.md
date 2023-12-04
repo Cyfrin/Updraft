@@ -4,7 +4,7 @@ title: Tooling Pre-requisites
 
 _Follow along with this video_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/J1uE6YX71yI?si=0hPEy_V2VE456rY9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

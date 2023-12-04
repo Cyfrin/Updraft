@@ -2,7 +2,7 @@
 title: Write up Weird ERC20 You Try This
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/uRah95okGiY?si=4PW9L8fUJOzVxZal" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

@@ -3,7 +3,7 @@ title: Project Set up
 ---
 *Follow along this chapter with the video bellow*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/_chLEeWR210" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 On this chapter, we are going to delve into the heart of the Ethereum Blockchain - smart contracts. We'll start to code 'FundMe.' It will be a simple contract that allows users to send funds into it, and later, an owner can withdraw the funds from it. But you already know that, let's start by cleaning up our Remix IDE workspace.
 

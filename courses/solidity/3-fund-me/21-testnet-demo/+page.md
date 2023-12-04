@@ -4,7 +4,7 @@ title: Testnet Demo
 
 _Follow along this chapter with the video bellow_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Xt7tzGhMMII" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 In this lesson, we'll explore end-to-end testing of a Solidity contract deployment and execution without actually deploying to a testnet. However, if you wish to follow along and deploy on a testnet, feel free to do so.
 

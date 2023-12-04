@@ -4,7 +4,7 @@ title: Getting Prices from Chainlink
 
 *Follow along this chapter with the video bellow*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/fQVIYzZxv1c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 
 When it comes to blockchain development and interaction with smart contracts, JSON RPC interfaces and Application Binary Interfaces (ABIs) play an essential role. One such interface is the Aggregator V3, which provides a minimalistic ABI for developers to interact with their contracts. Today, we'll explore how to extract requested pricing information using Solidity.

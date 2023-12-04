@@ -4,7 +4,7 @@ title: DeFi Code Walkthrough
 
 _Follow along the course with this video._
 
-<iframe width="560" height="315" src="https://youtube.com/embed/G0e-BP0fFjo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 # Diving into the Codebase for a Decentralized Stablecoin
 

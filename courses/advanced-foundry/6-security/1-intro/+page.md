@@ -4,7 +4,7 @@ title: Security & Auditing Introduction
 
 _Follow along with this video._
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/7H_bvaMsbLM?si=hms0G7T1syzQK3EC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

@@ -2,7 +2,7 @@
 title: Fuzzing Recap
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/d4VI69rhcfg?si=tDvCX3pr84l1h2gT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

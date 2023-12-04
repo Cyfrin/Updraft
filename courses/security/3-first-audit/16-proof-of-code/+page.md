@@ -4,7 +4,7 @@ title: Proof of Code
 
 _Follow along with this video:_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/LhsdSF5IaA4?si=-NRwe_A4LSsmdPH6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 
