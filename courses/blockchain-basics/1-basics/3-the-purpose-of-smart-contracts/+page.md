@@ -2,10 +2,9 @@
 title: The Purpose Of Smart Contracts
 ---
 
-You can follow along with this section of the course here. 
+You can follow along with this section of the course here.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/M0lgomFbaP4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="the purpose of smart contracts"></iframe>
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/yPzY4ifyGjY?si=VB_lEqevsU9MF_qn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## The Essence of Blockchain and Smart Contracts
 
@@ -52,7 +51,7 @@ More industries are adopting smart contracts and blockchain due to the numerous 
 
 ### Beyond Trust Minimization
 
-It is important to note that blockchain, smart contracts, and cryptocurrencies are not just about trust-minimized agreements. They offer security benefits, uptime advantages, execution speed, and much more. 
+It is important to note that blockchain, smart contracts, and cryptocurrencies are not just about trust-minimized agreements. They offer security benefits, uptime advantages, execution speed, and much more.
 
 ### Caution: Not All Are Equal
 
@@ -66,7 +65,3 @@ As an emerging developer or user in this space, it's important to discern betwee
 - Ethereum and other platforms took it a step further by enabling smart contracts, allowing for decentralized, trust-minimized agreements.
 - Smart contracts can interact with the real world through decentralized oracle networks like Chainlink. It combines on-chain logic with off-chain data, allowing smart contracts to have the features that traditional contracts have.
 - Digital currencies like Ethereum and Bitcoin have inherent value even without smart contracts. The decentralized, censorship-resistant nature of these currencies is a powerful aspect.
-
-
-
-
