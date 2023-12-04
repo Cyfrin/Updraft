@@ -8,38 +8,32 @@ _Follow along with this video_
 
 ---
 
-Hello and welcome, dear students! Prepare yourself for an exciting ride as we dive deep into the realm of the most advanced curriculum ever created for smart contract security, assembly and DeFi (Decentralized Finance). Does relishing unexplored tech terrains get your wheels turning? If so, hop on board, this course is about to get froggy!
+---
 
-> **_“Knowledge is Power! Turn Yours into Security, Efficiency, and Profitability!”_**
+## Ultimate Smart Contract Security, Assembly, and DeFi Curriculum
 
-In the burgeoning world of blockchain technology, this unprecedented course material presents an enlightening journey. It exhaustively covers complex domains such as auditing for security in smart contracts, EVM (Ethereum Virtual Machine) and assembly, and decentralized finance. This coursework is meticulously designed and crafted by the leading minds of the technology industry. However, it's essential to address that this course is not built to suit everyone's cup of tea.
+### Introduction
 
-<img src="/security-intro/1-intro/intro1.png" style="width: 100%; height: auto;" alt="block fee">
+**Welcome to the ultimate Smart Contract Security, Assembly, and DeFi Curriculum.** This course is designed to provide the most advanced and comprehensive training in EVM assembly, security auditing, and DeFi (Decentralized Finance).
 
-## Are you ready?
+### Course Overview
 
-Ask yourself the critical question before we launch into uncharted territories. Are you truly ready for the wealth of information, technical know-how, and groundbreaking innovation that this course has to offer?
+- **Target Audience:** This course is tailored for individuals seeking deep insights and extensive knowledge in smart contract security, assembly language in EVM (Ethereum Virtual Machine), and decentralized finance applications.
+- **Course Structure:** The curriculum is structured to cover the intricacies of security auditing, the fundamentals and advanced concepts of EVM assembly, and critical aspects of DeFi.
 
-### What to Expect?
+### Objectives
 
-This course isn't for the faint-hearted, but if you're ready to buckle up and get your thinking cap on, brace yourself for an enriching experience. This curriculum will channel your curiosity and drive into the much-needed pragmatic skills for today's rapidly evolving tech landscape.
+1. **Deep Understanding of Smart Contract Security:** Gain an in-depth knowledge of the security aspects vital for smart contracts in the blockchain ecosystem.
+2. **Proficiency in EVM Assembly:** Develop a solid understanding and hands-on experience with EVM assembly language, crucial for advanced blockchain development.
+3. **Mastery of DeFi Concepts:** Explore and master the concepts and applications of decentralized finance, an emerging and significant sector in the blockchain world.
 
-#### Discover Security Auditing
+### Expectations
 
-Learn all there is about effectively examining smart contracts for possible security threats. Understanding how comprehensive security auditing works is an unmissable aspect of this course. You'll grasp how to identify and resolve potential loopholes and vulnerabilities, ensuring robust security for smart contract execution.
+- **Commitment and Readiness:** The course demands a high level of commitment and is intended for individuals who are ready to dive deep into the complex world of blockchain technology.
+- **Advanced Level:** This is not an introductory course. It is expected that participants already have a foundational understanding of blockchain and programming concepts.
 
-#### Uncover the Essentials of EVM and Assembly
+---
 
-Swiftly move onto grasping the nuts and bolts of EVM (Ethereum Virtual Machine) and assembly. Understand how to frame and execute smart contracts and decentralized applications (dApps) on the Ethereum platform.
+**Are you ready to embark on this journey and expand your knowledge in smart contract security, EVM assembly, and DeFi?** Let's get started! 🚀
 
-#### Deep Dive into the Wonders of Decentralized Finance (DeFi)
-
-Finally, wade into the exciting waters of DeFi, the financial system of the blockchain world. Building on the foundations of transparency and bypassing traditional financial intermediaries, DeFi is the heart and soul of the fintech revolution. Understand how to make the most of these financial services based on smart contracts.
-
-<img src="/security-intro/1-intro/intro2.png" style="width: 100%; height: auto;" alt="block fee">
-
-intRemember, this one-of-a-kind course is not everyone's playing field. It demands grit, persistence, and a thrill for exploring the novel. So, tech enthusiasts and innovators, are you all set to transform your world with this cutting-edge course? If so, it's time to fasten your seatbelts and set off on a fulfilling journey that is set to revamp the way we understand and interact with technology.
-
-Your ultimate smart contract security, assembly, and DeFi mastery await! Challenge yourself and emerge at the forefront of the tech revolution.
-
-> **_“In the grand scheme of things, it's the bold who make history!”_**
+---
