@@ -1,0 +1,20 @@
+{
+  "name": "updfrat-content",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tinacms dev --datalayer-port 9001 -c \"vite\"",
+    "build": "tinacms build --datalayer-port 9001 && tsc && vite build",
+    "preview": "tinacms build --datalayer-port 9001 && vite preview"
+  },
+  "devDependencies": {
+    "@tinacms/cli": "^1.5.38",
+    "@types/node": "^20.10.3",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "tinacms": "^1.5.28"
+  }
+}
