@@ -25,6 +25,8 @@ export default defineConfig({
   // Get this from tina.io
   token: process.env.TINA_TOKEN,
 
+  // contentApiUrlOverride: "/api/tina/gql",
+
   build: {
     outputFolder: "admin",
     publicFolder: "static",
