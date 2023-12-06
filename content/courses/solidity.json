@@ -1,0 +1,630 @@
+{
+  "id": "5d004a66-1e36-4679-a54f-6fd426913ba3",
+  "title": "Solidity fundamentals",
+  "slug": "solidity",
+  "folderName": "solidity",
+  "trailerUrl": "",
+  "previewImg": "https://res.cloudinary.com/droqoz7lg/image/upload/v1701193477/updraft/courses/qkrcodmbwwphpplbon0r.png",
+  "description": "If you’re new to writing smart contracts, start here! Get started developing smart contracts with Solidity, learn the best practices followed by the top-industry experts and kickstart your web3 career.",
+  "path": "Solidity Developer",
+  "number": 0,
+  "overview": {
+    "learnings": "Introduction to smart contracts development and deployment, Introduction to blockchain oracles, Introduction to smart contracts testing ",
+    "preRequisites": [
+      "Blockchain basics"
+    ]
+  },
+  "duration": 5,
+  "authors": [
+    {
+      "author": "content/authors/patrick-collins.json"
+    },
+    {
+      "author": "content/authors/austin-griffith.json"
+    }
+  ],
+  "sections": [
+    {
+      "number": 1,
+      "id": "8f376c2c-270d-4022-94ea-9686079c6244",
+      "title": "Simple Storage",
+      "slug": "simple-storage",
+      "folderName": "1-simple-storage",
+      "lessons": [
+        {
+          "id": "eb95ab4e-315d-4c2c-ada7-de40ad9ea462",
+          "number": 1,
+          "title": "Introduction",
+          "slug": "introduction",
+          "folderName": "1-introduction",
+          "description": "This lesson provides an introduction to the course, guiding students through accessing and navigating the GitHub repository, understanding the usage of the repository for cloning lesson codes, and engaging in discussions. It also covers the importance of asking questions and setting up for coding, including accessing educational resources and preparing for building and deploying a smart contract.",
+          "duration": 3,
+          "videoUrl": "nzeR4vWsAz8",
+          "rawMarkdownUrl": "/routes/solidity/1-simple-storage/1-introduction/+page.md",
+          "updates": []
+        },
+        {
+          "id": "47b4427f-fb3e-4d7a-bb25-e26129720573",
+          "number": 2,
+          "title": "Setting up your first contract",
+          "slug": "create-solidity-smart-contract",
+          "folderName": "2-setting-up-your-first-contract",
+          "description": "A beginner's guide to creating a Solidity smart contract using Remix IDE. The lesson covers the basics of setting up a Solidity development environment, including creating a new file, writing the contract, understanding SPDX License Identifier, and compiling the contract.",
+          "duration": 11,
+          "videoUrl": "1VYYhX7AXdI",
+          "rawMarkdownUrl": "/routes/solidity/1-simple-storage/2-setting-up-your-first-contract/+page.md",
+          "updates": []
+        },
+        {
+          "id": "390707ce-edd1-40df-9b81-8eb7c47ebb96",
+          "number": 3,
+          "title": "Basic variable types",
+          "slug": "solidity-basic-types",
+          "folderName": "3-basic-types",
+          "description": "This lesson introduces basic variable types in Solidity, such as Boolean, Uint, Integer, Address, and Bytes. It explains how to define variables in a Solidity contract and their default values, providing a foundational understanding of data types in smart contract programming.",
+          "duration": 9,
+          "videoUrl": "rGckm0GeQFc",
+          "rawMarkdownUrl": "/routes/solidity/1-simple-storage/3-basic-types/+page.md",
+          "updates": []
+        },
+        {
+          "id": "f89fb538-7afa-486c-8a95-c402d755621c",
+          "number": 4,
+          "title": "Functions",
+          "slug": "solidity-functions",
+          "folderName": "4-functions",
+          "description": "This lesson focuses on creating functions in Solidity, specifically a 'Store' function for updating a variable. It explains the syntax and structure of functions, including visibility specifiers, and guides students through deploying and interacting with the smart contract using the Remix IDE.",
+          "duration": 20,
+          "videoUrl": "RoeHK-wKDfk",
+          "rawMarkdownUrl": "/routes/solidity/1-simple-storage/4-functions/+page.md",
+          "updates": []
+        },
+        {
+          "id": "271a2535-9ece-4e0b-8678-8794bd84a0b0",
+          "number": 5,
+          "title": "Arrays and structs",
+          "slug": "solidity-arrays-and-structs",
+          "folderName": "5-arrays-and-structs",
+          "description": "This lesson explores the use of arrays and structs in Solidity for creating a list of favorite numbers and tying them to individuals. It demonstrates how to create and manipulate arrays and structs, enhancing the functionality of a smart contract to handle multiple data entries.",
+          "duration": 13,
+          "videoUrl": "uV40pjDC3fw",
+          "rawMarkdownUrl": "/routes/solidity/1-simple-storage/5-arrays-and-structs/+page.md",
+          "updates": []
+        },
+        {
+          "id": "1b19ae88-aafa-4d49-be07-40f1a34bb6b7",
+          "number": 6,
+          "title": "Errors and warnings",
+          "slug": "solidity-errors-and-warnings",
+          "folderName": "6-errors-and-warnings",
+          "description": "A guide to understanding and resolving errors and warnings in Solidity programming. The lesson covers interpreting the color coding of error messages, leveraging online resources like Phind, and effectively using communities like GitHub discussions and Stack Exchange for problem-solving.",
+          "duration": 5,
+          "videoUrl": "HjZQTFrs7qE",
+          "rawMarkdownUrl": "/routes/solidity/1-simple-storage/6-errors-and-warnings/+page.md",
+          "updates": []
+        },
+        {
+          "id": "1d8d1ef5-924a-4a2a-89cd-25c31f274e62",
+          "number": 7,
+          "title": "Memory storage and calldata",
+          "slug": "solidity-memory-storage-calldata",
+          "folderName": "7-memory-storage-calldata",
+          "description": "An in-depth look at data locations in Solidity, focusing on the differences and applications of 'memory', 'storage', and 'calldata'. The lesson explains these concepts with examples, clarifying their roles in temporary and permanent data storage within smart contracts.",
+          "duration": 6,
+          "videoUrl": "ISBvYpFBTyo",
+          "rawMarkdownUrl": "/routes/solidity/1-simple-storage/7-memory-storage-calldata/+page.md",
+          "updates": []
+        },
+        {
+          "id": "2022d3b1-4a00-429a-8fbd-e984114ba876",
+          "number": 8,
+          "title": "Mappings",
+          "slug": "solidity-mappings",
+          "folderName": "8-mappings",
+          "description": "This lesson introduces the concept of mappings in Solidity, explaining how they can be used to efficiently link information, such as connecting names to numbers. It demonstrates how to define and use mappings to improve data access in a smart contract.",
+          "duration": 5,
+          "videoUrl": "o8lzK640cuA",
+          "rawMarkdownUrl": "/routes/solidity/1-simple-storage/8-mappings/+page.md",
+          "updates": []
+        },
+        {
+          "id": "bdcd4385-ca14-49c0-8367-cdf923c9e6ec",
+          "number": 9,
+          "title": "Deploying your first contract",
+          "slug": "deploying-solidity-smart-contract",
+          "folderName": "9-deploying",
+          "description": "A practical guide to deploying a Solidity smart contract on a testnet. The lesson walks through the pre-deployment audit, compilation check, changing the environment, connecting accounts, confirming transactions, and interacting with the deployed contract.",
+          "duration": 10,
+          "videoUrl": "qHfWQpnvVLY",
+          "rawMarkdownUrl": "/routes/solidity/1-simple-storage/9-deploying/+page.md",
+          "updates": []
+        },
+        {
+          "id": "61efb7c8-e936-47de-8e49-dc8814b31ff6",
+          "number": 10,
+          "title": "Section recap",
+          "slug": "evm-recap",
+          "folderName": "10-evm-recap",
+          "description": "A recap of the section, emphasizing the understanding and workings of the Ethereum Virtual Machine (EVM) and its compatibility with various blockchains. The lesson revisits the essentials of writing a smart contract, types and structures in Solidity, functions, data locations, and the importance of continued learning in Solidity development.",
+          "duration": 3,
+          "videoUrl": "5LUtOkruO_k",
+          "rawMarkdownUrl": "/routes/solidity/1-simple-storage/10-evm-recap/+page.md",
+          "updates": []
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "bef84d21-e135-4171-bbc1-ac4275da456a",
+      "title": "Storage Factory",
+      "slug": "storage-factory",
+      "folderName": "2-storage-factory",
+      "lessons": [
+        {
+          "id": "5fabb153-8853-4b94-9984-d15dfe6501a5",
+          "number": 1,
+          "title": "Storage factory introduction",
+          "slug": "factory-introduction",
+          "folderName": "1-factory-introduction",
+          "description": "Introduction to deploying and interacting with contracts, focusing on Remix Storage Factory. The lesson involves working with 'SimpleStorage.sol', 'AddFiveStorage.sol', and 'StorageFactory.sol', demonstrating how other contracts can deploy and interact with new contracts.",
+          "duration": 4,
+          "videoUrl": "mlu8ISV3ZH4",
+          "rawMarkdownUrl": "/routes/solidity/2-storage-factory/1-factory-introduction/+page.md",
+          "updates": []
+        },
+        {
+          "id": "cd198711-c9ff-44fa-825f-3ca72733a5d9",
+          "number": 2,
+          "title": "Setting the project",
+          "slug": "setting-up-the-factory",
+          "folderName": "2-setting-up-the-factory",
+          "description": "This lesson explores the concept of composability in smart contracts, particularly in DeFi, and introduces the 'StorageFactory' contract that interacts with and deploys the 'SimpleStorage' contract. It covers setting up the StorageFactory contract in Remix and emphasizes the importance of version consistency in Solidity.",
+          "duration": 6,
+          "videoUrl": "VE4Vq1X24Xs",
+          "rawMarkdownUrl": "/routes/solidity/2-storage-factory/2-setting-up-the-factory/+page.md",
+          "updates": []
+        },
+        {
+          "id": "4e6c8899-247a-480a-9893-1b4d15cbd6b1",
+          "number": 3,
+          "title": "Deploying a contract from a contract",
+          "slug": "deploying-a-contract-from-a-contract",
+          "folderName": "3-deploying-a-contract-from-a-contract",
+          "description": "The chapter focuses on deploying a Simple Storage contract in Solidity and saving it to a storage or state variable. It covers the syntax for creating a Simple Storage contract within another contract and demonstrates the deployment and interaction process in Remix.",
+          "duration": 5,
+          "videoUrl": "oiXMEKO5mAE",
+          "rawMarkdownUrl": "/routes/solidity/2-storage-factory/3-deploying-a-contract-from-a-contract/+page.md",
+          "updates": []
+        },
+        {
+          "id": "2160e3d9-a66b-4f67-a5b8-bb759d5d9e10",
+          "number": 4,
+          "title": "Solidity imports",
+          "slug": "solidity-imports",
+          "folderName": "4-solidity-imports",
+          "description": "This lesson covers the use of the 'import' statement in Solidity for organizing contract files, managing Solidity versions, and the advanced method of 'named imports'. It demonstrates how importing improves workflow and allows for selective inclusion of contract elements.",
+          "duration": 6,
+          "videoUrl": "CNDzi1GuWyg",
+          "rawMarkdownUrl": "/routes/solidity/2-storage-factory/4-solidity-imports/+page.md",
+          "updates": []
+        },
+        {
+          "id": "ce675e0a-d6e9-4d32-8201-2882b2c8ef5d",
+          "number": 5,
+          "title": "Use AI to help pt.1",
+          "slug": "ai-help-developing-coding",
+          "folderName": "5-ai-help-ii",
+          "description": "The lesson discusses utilizing AI chat platforms like ChatGPT and Bard to assist in understanding programming concepts. It emphasizes the importance of formulating questions effectively for AI platforms and provides guidance on using these tools for coding assistance.",
+          "duration": 4,
+          "videoUrl": "hA2AMEeldx4",
+          "rawMarkdownUrl": "/routes/solidity/2-storage-factory/5-ai-help-ii/+page.md",
+          "updates": []
+        },
+        {
+          "id": "85b888f4-25c2-43e2-bece-6cfd3a09183b",
+          "number": 6,
+          "title": "Interacting with contracts ABI",
+          "slug": "interacting-with-smart-contracts-abi",
+          "folderName": "6-interacting-with-contracts-abi",
+          "description": "This lesson teaches how to keep track of contract addresses when deploying new contracts using Solidity's 'new' keyword. It introduces the concept of ABI (Application Binary Interface) for contract interaction and demonstrates how to interact with contracts using ABI and address in Solidity.",
+          "duration": 10,
+          "videoUrl": "335sMB2GY8w",
+          "rawMarkdownUrl": "/routes/solidity/2-storage-factory/6-interacting-with-contracts-abi/+page.md",
+          "updates": []
+        },
+        {
+          "id": "f8e837c4-c9c8-4a26-925a-f82d341ea7e4",
+          "number": 7,
+          "title": "Inheritance in Solidity",
+          "slug": "inheritance-in-solidity-smart-contracts",
+          "folderName": "7-inheritance-in-solidity",
+          "description": "An introduction to inheritance and overriding in Solidity, showcasing how to extend the functionality of a contract without duplicating it. The lesson involves creating a new contract 'addFiveStorage.sol' that inherits from 'SimpleStorage.sol' and overrides its functions.",
+          "duration": 7,
+          "videoUrl": "W8spUsFl0UA",
+          "rawMarkdownUrl": "/routes/solidity/2-storage-factory/7-inheritance-in-solidity/+page.md",
+          "updates": []
+        },
+        {
+          "id": "87b15470-d532-41fc-93e6-05277b0a79b1",
+          "number": 8,
+          "title": "Sections summary and recap",
+          "slug": "summary-and-recap",
+          "folderName": "8-summary-and-recap",
+          "description": "A summary and recap of the lessons covering deploying contracts using the 'new' keyword, importing contracts, named imports, interacting with contracts using ABI, and contract inheritance in Solidity. The lesson celebrates progress made and encourages continued learning.",
+          "duration": 2,
+          "videoUrl": "mwOTR_2Rv4U",
+          "rawMarkdownUrl": "/routes/solidity/2-storage-factory/8-summary-and-recap/+page.md",
+          "updates": []
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "6f3abd80-e461-4abd-9e21-03d93d5da5ba",
+      "title": "Fund Me",
+      "slug": "fund-me",
+      "folderName": "3-fund-me",
+      "lessons": [
+        {
+          "id": "972a84be-9bff-4730-8c17-3a75979eeef1",
+          "number": 1,
+          "title": "Fund me introduction",
+          "slug": "fund-me-intro",
+          "folderName": "1-fund-me-intro",
+          "description": "Introduction to decentralized crowdfunding contract 'FundMe.sol', allowing users to send native blockchain cryptocurrency, with the owner being able to withdraw the funds. The lesson covers deploying on a testnet and handling transactions in Ethereum, Polygon, or Avalanche.",
+          "duration": 4,
+          "videoUrl": "Ghmze8sh34M",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/1-fund-me-intro/+page.md",
+          "updates": []
+        },
+        {
+          "id": "dab8c9d9-9cde-4765-96f1-2f6f09a744c0",
+          "number": 2,
+          "title": "Project setup",
+          "slug": "setup",
+          "folderName": "2-setup",
+          "description": "This lesson guides through the initial steps in coding the 'FundMe' contract, which allows users to send funds and an owner to withdraw them. It involves setting up the Remix IDE workspace, outlining the contract functions, and focusing on the 'fund' function.",
+          "duration": 2,
+          "videoUrl": "_chLEeWR210",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/2-setup/+page.md",
+          "updates": []
+        },
+        {
+          "id": "43475ec4-ae9d-465f-b8dc-b45353801e56",
+          "number": 3,
+          "title": "Sending ETH through a function",
+          "slug": "sending-eth-through-a-function",
+          "folderName": "3-sending-eth-through-a-function",
+          "description": "This chapter explains how to create a function in a smart contract that requires a minimum amount of Ethereum (ETH) to be sent",
+          "duration": 5,
+          "videoUrl": "-jOiNJIRdz0",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/3-sending-eth-through-a-function/+page.md",
+          "updates": []
+        },
+        {
+          "id": "265a0fdd-801d-46cd-bc4b-c1fb65468812",
+          "number": 4,
+          "title": "Solidity reverts",
+          "slug": "solidity-reverts",
+          "folderName": "4-solidity-reverts",
+          "description": "The lesson focuses on understanding 'reverts' and 'gas' in Ethereum transactions. It covers the concept of reverting transactions, checking gas usage, and how gas is used and refunded in failed transactions. The lesson also explores transaction fields and gas limits.",
+          "duration": 4,
+          "videoUrl": "DzapsA5NQyc",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/4-solidity-reverts/+page.md",
+          "updates": []
+        },
+        {
+          "id": "0640be76-d633-468b-b959-feb7ad8e9be9",
+          "number": 5,
+          "title": "Intro to oracles - getting real world price data",
+          "slug": "real-world-price-data",
+          "folderName": "5-real-world-price-data",
+          "description": "This lesson introduces the concept of decentralized oracles and Chainlink for getting real-world price data into smart contracts. It explains how to update contracts for currency conversion, use Chainlink data feeds, and discusses Chainlink's role in blockchain oracles.",
+          "duration": 15,
+          "videoUrl": "PhVv8xjexoY",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/5-real-world-price-data/+page.md",
+          "updates": []
+        },
+        {
+          "id": "5883e116-4ba3-4df1-8721-ebf022f9029c",
+          "number": 6,
+          "title": "Mid section recap",
+          "slug": "mid-section-recap-fund-me",
+          "folderName": "6-mid-lesson-recap",
+          "description": "A recap of key concepts covered so far, including marking functions as payable for transactions, using 'require' statements, handling values with 'msg.value', and integrating external data using Chainlink for accurate real-world asset pricing in smart contracts.",
+          "duration": 5,
+          "videoUrl": "BnwxhJsa7so",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/6-mid-lesson-recap/+page.md",
+          "updates": []
+        },
+        {
+          "id": "da69799d-656b-4681-85c8-1783021913cc",
+          "number": 7,
+          "title": "Solidity interfaces",
+          "slug": "solidity-smart-contract-interfaces",
+          "folderName": "7-interfaces",
+          "description": "This lesson delves into using Solidity interfaces for converting Ethereum into USD and interacting with contracts. It explains how interfaces work, the importance of contract addresses and ABIs, and demonstrates interfacing with the Chainlink Aggregator V3 for price feeds.",
+          "duration": 7,
+          "videoUrl": "4tTBhEYgm-E",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/7-interfaces/+page.md",
+          "updates": []
+        },
+        {
+          "id": "4a672ede-7ebe-4c9f-a9b6-50c914249926",
+          "number": 8,
+          "title": "Use AI to help pt.2",
+          "slug": "ai-help-development-part-2",
+          "folderName": "8-ai-help-iii",
+          "description": "A lesson on using AI models like ChatGPT for understanding complex programming concepts in Solidity, focusing on the function of returning values without logic defined in interfaces. It explores the interaction between functions, contracts, and addresses using AI insights.",
+          "duration": 3,
+          "videoUrl": "rMVou5VIkm0",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/8-ai-help-iii/+page.md",
+          "updates": []
+        },
+        {
+          "id": "007993d3-d26f-4bba-9f1b-86ae1ac98cf4",
+          "number": 9,
+          "title": "Importing libaries from NPM and Github",
+          "slug": "import-libraries-smart-contracts-from-npm-github",
+          "folderName": "9-importing-from-npm-github",
+          "description": "This chapter explores how to import libraries and interfaces directly from GitHub or NPM in Ethereum contract development. It covers the benefits of direct imports for managing interfaces, using the Chainlink AggregatorV3Interface as an example.",
+          "duration": 3,
+          "videoUrl": "gOQ6Ylk0Tf0",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/9-importing-from-npm-github/+page.md",
+          "updates": []
+        },
+        {
+          "id": "1e873454-026c-446a-89d5-dc5a6267d01b",
+          "number": 10,
+          "title": "Getting real world price data from Chainlink",
+          "slug": "getting-prices-from-chainlink",
+          "folderName": "10-getting-prices-from-chainlink",
+          "description": "The lesson focuses on extracting real-world pricing information using the Aggregator V3 interface from Chainlink. It covers creating contract instances, summoning 'latestRoundData', dealing with decimals in Solidity, and typecasting for price and value compatibility.",
+          "duration": 4,
+          "videoUrl": "fQVIYzZxv1c",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/10-getting-prices-from-chainlink/+page.md",
+          "updates": []
+        },
+        {
+          "id": "e82b4210-de20-4557-8924-1a21a2ded429",
+          "number": 11,
+          "title": "Solidity math",
+          "slug": "solidity-math",
+          "folderName": "11-more-solidity-math",
+          "description": "This lesson provides insights into converting Ethereum value to USD using Solidity. It covers the implementation of 'getPrice' and 'getConversionRate' functions, understanding decimal places, value validation, and deployment on a testnet.",
+          "duration": 7,
+          "videoUrl": "UEfpFLtlzTk",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/11-more-solidity-math/+page.md",
+          "updates": []
+        },
+        {
+          "id": "eb82b3ce-5af7-4f79-9fe5-1004776159e0",
+          "number": 12,
+          "title": "Msg sender explained",
+          "slug": "solidity-msg-sender",
+          "folderName": "12-msg-sender",
+          "description": "The lesson introduces the use of Solidity's global variables, arrays, and mappings to track users sending money to a contract. It covers creating a mechanism to record addresses and amounts sent by users using 'msg.sender' and mappings.",
+          "duration": 2,
+          "videoUrl": "sSlMakVGEHg",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/12-msg-sender/+page.md",
+          "updates": []
+        },
+        {
+          "id": "abed0d0d-602d-46bc-a9ad-f1df9e6c42f6",
+          "number": 13,
+          "title": "Quick sectionr recap",
+          "slug": "quick-recap-fund-me",
+          "folderName": "13-quick-recap-ii",
+          "description": "A comprehensive refresher on key concepts in Advanced Solidity, covering contract addresses and ABIs, interfacing with contracts, using Chainlink Price Feeds, handling decimals and global units in Solidity, and the importance of these elements in smart contract development.",
+          "duration": 4,
+          "videoUrl": "NLTKk9k8eTE",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/13-quick-recap-ii/+page.md",
+          "updates": []
+        },
+        {
+          "id": "e5043367-e48c-44b4-9a50-6016c9057d19",
+          "number": 14,
+          "title": "Creating your own libraries",
+          "slug": "create-solidity-library",
+          "folderName": "14-libraries",
+          "description": "This lesson covers the creation and use of Solidity Libraries to streamline code and avoid redundancy. It demonstrates how to create a library, transfer functions to it, and utilize the library in contracts for efficient code management and functionality enhancement.",
+          "duration": 5,
+          "videoUrl": "HLqimKeA60s",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/14-libraries/+page.md",
+          "updates": []
+        },
+        {
+          "id": "b9897219-bdc3-4e41-b7fd-0d02708bafaa",
+          "number": 15,
+          "title": "Using Safemath",
+          "slug": "safemath",
+          "folderName": "15-safemath",
+          "description": "An introduction to the SafeMath library in Solidity, explaining its significance before Solidity 0.8 and the reasons for its reduced usage post Solidity 0.8. The lesson covers integer overflow issues and the implementation of automatic checks in newer Solidity versions.",
+          "duration": 6,
+          "videoUrl": "X6o3wmzBvy4",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/15-safemath/+page.md",
+          "updates": []
+        },
+        {
+          "id": "ac452aa0-0d21-468f-b1b6-aafa7cd7a811",
+          "number": 16,
+          "title": "Solidity for Loop",
+          "slug": "solidity-for-loop",
+          "folderName": "16-for-loop",
+          "description": "This lesson teaches the concept of for loops in Solidity, demonstrating how they can be used to access and manipulate arrays. It focuses on practical applications in a smart contract, particularly for iterating over arrays and resetting mappings.",
+          "duration": 5,
+          "videoUrl": "HSCJFwoi6ew",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/16-for-loop/+page.md",
+          "updates": []
+        },
+        {
+          "id": "82088b31-f119-4d15-b2ec-f6fa644e626f",
+          "number": 17,
+          "title": "Resetting an Array",
+          "slug": "solidity-reset-an-array",
+          "folderName": "17-resetting-an-array",
+          "description": "A guide on effectively resetting arrays in Solidity, particularly within the context of smart contracts. The lesson addresses the importance of resetting arrays for managing and updating contract states, and demonstrates the process using practical examples.",
+          "duration": 2,
+          "videoUrl": "0KRhBO6JgSM",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/17-resetting-an-array/+page.md",
+          "updates": []
+        },
+        {
+          "id": "a87b6e64-814d-477e-bd2e-8a40c296ed3d",
+          "number": 18,
+          "title": "Sending ETH from a contract",
+          "slug": "sending-eth-from-a-contract",
+          "folderName": "18-sending-eth-from-a-contract",
+          "description": "An exploration of three methods for sending Ether from a contract in Solidity: transfer, send, and call. The lesson compares these methods, discussing their syntax, behavior, and appropriate use cases, with a focus on their gas usage and security implications.",
+          "duration": 8,
+          "videoUrl": "Z_HPzbzZ-k4",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/18-sending-eth-from-a-contract/+page.md",
+          "updates": []
+        },
+        {
+          "id": "38e91f6c-1127-4ef3-961c-ed859b75546f",
+          "number": 19,
+          "title": "Smart contract constructor",
+          "slug": "solidity-smart-contract-constructor",
+          "folderName": "19-constructor",
+          "description": "This lesson focuses on using the constructor function in Solidity for role assignment, particularly for setting a contract owner. It discusses the security implications and demonstrates how to restrict certain functionalities, like fund withdrawal, to the owner.",
+          "duration": 4,
+          "videoUrl": "GCi3LWYSk_g",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/19-constructor/+page.md",
+          "updates": []
+        },
+        {
+          "id": "34ce586a-265f-4ab8-9c7f-0b4dc8fd9c72",
+          "number": 20,
+          "title": "Solidity function modifiers",
+          "slug": "solidity-function-modifiers",
+          "folderName": "20-modifiers",
+          "description": "A deep dive into the use of function modifiers in Solidity. The lesson covers how modifiers can streamline code, especially for administrative functions, and includes practical examples to illustrate the implementation and benefits of using modifiers in contracts.",
+          "duration": 3,
+          "videoUrl": "FfBPHTBSzk0",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/20-modifiers/+page.md",
+          "updates": []
+        },
+        {
+          "id": "a47d88b5-9ca7-49b4-bcde-eca953f80e67",
+          "number": 21,
+          "title": "Test the smart contract without a testnet",
+          "slug": "testnet-demo",
+          "folderName": "21-testnet-demo",
+          "description": "A guide to testing Solidity contracts without deploying to a testnet, focusing on compiling, deploying, and interacting with the 'FundMe.sol' contract. The lesson includes steps for using MetaMask, tracking transactions, and ensuring successful contract interaction.",
+          "duration": 5,
+          "videoUrl": "Xt7tzGhMMII",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/21-testnet-demo/+page.md",
+          "updates": []
+        },
+        {
+          "id": "10e8c090-dab6-499f-8f1e-0d3e1c4c8efb",
+          "number": 22,
+          "title": "Immutability and constants",
+          "slug": "solidity-immutability-and-constants",
+          "folderName": "22-immutability-and-constants",
+          "description": "A tutorial on optimizing Solidity smart contracts for gas efficiency using custom errors. The lesson explains the concept of custom errors and demonstrates how to use them for efficient error handling and reverts in smart contracts.",
+          "duration": 8,
+          "videoUrl": "BLLyOCo-GKU",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/22-immutability-and-constants/+page.md",
+          "updates": []
+        },
+        {
+          "id": "76e2a14f-a694-430a-80bb-b5189b7186ec",
+          "number": 23,
+          "title": "Creating custom errors",
+          "slug": "solidity-custom-errors",
+          "folderName": "23-custom-errors",
+          "description": "A tutorial on optimizing Solidity smart contracts for gas efficiency using custom errors. The lesson explains the concept of custom errors and demonstrates how to use them for efficient error handling and reverts in smart contracts.",
+          "duration": 3,
+          "videoUrl": "IF-NH74fZMU",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/23-custom-errors/+page.md",
+          "updates": []
+        },
+        {
+          "id": "e1882df5-5415-4d86-b1d5-5aa6875f35c7",
+          "number": 24,
+          "title": "Implementing the receive fallback",
+          "slug": "receive-fallback",
+          "folderName": "24-receive-fallback",
+          "description": "This lesson covers the implementation of '_receive_' and '_fallback_' functions in Solidity. It explains their significance in handling Ether sent directly to a contract and demonstrates their practical application in a 'FundMe' contract scenario.",
+          "duration": 13,
+          "videoUrl": "sgaBmbsriwk",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/24-receive-fallback/+page.md",
+          "updates": []
+        },
+        {
+          "id": "84d77e62-a910-4104-a981-77dbf5887722",
+          "number": 25,
+          "title": "Congratulations",
+          "slug": "recap-congratulations-fundme",
+          "folderName": "25-recap-congratulations",
+          "description": "A recap of the advanced aspects of Solidity covered in previous lessons, highlighting the transition from using Remix to a code editor. The lesson congratulates learners on mastering Solidity basics and introduces upcoming advanced topics for further exploration.",
+          "duration": 3,
+          "videoUrl": "GjTUKo7k9HY",
+          "rawMarkdownUrl": "/routes/solidity/3-fund-me/25-recap-congratulations/+page.md",
+          "updates": []
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "f351e657-b163-4a72-9642-680aea1ad239",
+      "title": "AI Prompting",
+      "slug": "ai-prompting",
+      "folderName": "4-ai-prompting",
+      "lessons": [
+        {
+          "id": "8bf2aad7-26e9-4950-9c37-c7991d8fd579",
+          "number": 1,
+          "title": "AI and forums",
+          "slug": "ai-and-forums",
+          "folderName": "1-ai-and-forums",
+          "description": "A lesson on using AI tools like Chat GPT, Bing's AI, and Google's BERT for debugging in software engineering. It covers the importance of understanding errors, writing clear instructions for AI, and the limitations of AI in debugging. The lesson also emphasizes the significance of documentation and online forums for resolving coding issues.",
+          "duration": 13,
+          "videoUrl": "Y4HylRGK6Rk",
+          "rawMarkdownUrl": "/routes/solidity/4-ai-prompting/1-ai-and-forums/+page.md",
+          "updates": []
+        },
+        {
+          "id": "fa0c07d3-1169-49e7-ab1e-761b2d8645d8",
+          "number": 2,
+          "title": "Setting up Github",
+          "slug": "setting-up-github",
+          "folderName": "2-setting-up-github",
+          "description": "This lesson guides through the process of setting up a GitHub account, emphasizing its importance in the software development community. It discusses how to ask well-crafted questions on GitHub to engage effectively with the coding community and get helpful responses.",
+          "duration": 2,
+          "videoUrl": "Tmv2cggeqGE",
+          "rawMarkdownUrl": "/routes/solidity/4-ai-prompting/2-setting-up-github/+page.md",
+          "updates": []
+        },
+        {
+          "id": "199491e0-daaa-45e2-ac0a-d4ad722e07aa",
+          "number": 3,
+          "title": "Formatting a question",
+          "slug": "formatting-a-question",
+          "folderName": "3-formatting-a-question",
+          "description": "A guide on how to ask effective questions in code discussions, particularly on GitHub. It covers the importance of clear, concise, and well-formatted questions, and includes tips on using markdown for code formatting and highlighting specific errors to get better responses.",
+          "duration": 6,
+          "videoUrl": "LYVXiIFwLTQ",
+          "rawMarkdownUrl": "/routes/solidity/4-ai-prompting/3-formatting-a-question/+page.md",
+          "updates": []
+        },
+        {
+          "id": "f5b5f8d6-59cc-45ff-8704-1cf86308b2c5",
+          "number": 4,
+          "title": "Speedrun",
+          "slug": "speedrun",
+          "folderName": "4-speedrun",
+          "description": "An introduction to 'Speedrun Ethereum' by Austin Griffin, a resource for learning about Ethereum and the Ethereum Virtual Machine (EVM). The lesson covers various projects like creating NFTs, staking apps, and learning about on-chain randomness, and recommends using Scaffold ETH for practical learning.",
+          "duration": 4,
+          "videoUrl": "N7D93c4oSZM",
+          "rawMarkdownUrl": "/routes/solidity/4-ai-prompting/4-speedrun/+page.md",
+          "updates": []
+        }
+      ]
+    }
+  ],
+  "createdAt": "2023-12-06T17:17:23.231Z",
+  "updatedAt": "2023-12-06T17:17:23.231Z"
+}

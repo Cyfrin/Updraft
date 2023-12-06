@@ -1,0 +1,166 @@
+{
+  "id": "32bb0733-5e24-4b43-959f-76f85d2bb5c6",
+  "title": "Blockchain Basics",
+  "slug": "blockchain-basics",
+  "folderName": "blockchain-basics",
+  "trailerUrl": "",
+  "previewImg": "https://res.cloudinary.com/droqoz7lg/image/upload/v1701193477/updraft/courses/nq7uojmdogr2dijnokng.png",
+  "description": "Kickstart your web3 career. Start from the complete blockchain fundamentals and build your knowledge from here!",
+  "path": "Foundations",
+  "number": 0,
+  "overview": {
+    "learnings": "What is a blockchain, How do blockchains work, Proof of work, smart contracts basics, blockchain transactions",
+    "preRequisites": []
+  },
+  "duration": 3,
+  "authors": [
+    {
+      "author": "content/authors/patrick-collins.json"
+    }
+  ],
+  "sections": [
+    {
+      "number": 1,
+      "id": "b52c8210-bf43-4b4a-b868-9800aa458945",
+      "title": "Blockchain Basics",
+      "slug": "basics",
+      "folderName": "1-basics",
+      "lessons": [
+        {
+          "id": "a0e53ee0-46d4-4bde-aa69-1300180d41a3",
+          "number": 1,
+          "title": "Welcome to Updraft!",
+          "slug": "welcome-to-updraft",
+          "folderName": "1-welcome",
+          "description": "Welcome to the course!",
+          "duration": 13,
+          "videoUrl": "oF4TsyFH3Yw",
+          "rawMarkdownUrl": "/routes/blockchain-basics/1-basics/1-welcome/+page.md",
+          "updates": []
+        },
+        {
+          "id": "a0e53ee0-46d4-4bde-aa69-1300180d41d2",
+          "number": 2,
+          "title": "What is a blockchain?",
+          "slug": "what-is-a-blockchain",
+          "folderName": "2-what-is-a-blockchain",
+          "description": "Introduction to blockchain technology, its evolution from Bitcoin to Ethereum, and the significance of smart contracts.",
+          "duration": 11,
+          "videoUrl": "bbBbq7T9Jjs",
+          "rawMarkdownUrl": "/routes/blockchain-basics/1-basics/2-what-is-a-blockchain/+page.md",
+          "updates": []
+        },
+        {
+          "id": "3e87b91a-c18e-4152-a9f7-dac2a0aa7819",
+          "number": 3,
+          "title": "The purpose of smart contracts",
+          "slug": "the-purpose-of-smart-contracts",
+          "folderName": "3-the-purpose-of-smart-contracts",
+          "description": "Exploration of the purpose of smart contracts, their advantages over traditional agreements, and their impact on various industries.",
+          "duration": 14,
+          "videoUrl": "yPzY4ifyGjY",
+          "rawMarkdownUrl": "/routes/blockchain-basics/1-basics/3-the-purpose-of-smart-contracts/+page.md",
+          "updates": []
+        },
+        {
+          "id": "39bb34be-6a9f-40f5-ba68-7956777d2d9d",
+          "number": 4,
+          "title": "Current smart contract landscape",
+          "slug": "smart-contract-landscape",
+          "folderName": "4-current-smart-contract-landscape",
+          "description": "Overview of the current landscape of smart contracts, their features like decentralization, transparency, and applications in different fields.",
+          "duration": 9,
+          "videoUrl": "q9UzRyWRPcY",
+          "rawMarkdownUrl": "/routes/blockchain-basics/1-basics/4-current-smart-contract-landscape/+page.md",
+          "updates": []
+        },
+        {
+          "id": "9a54e679-4c55-4947-a2ab-4bd749634a99",
+          "number": 5,
+          "title": "Setup your wallet - making your first transaction",
+          "slug": "metamask-setup-making-your-first-transaction",
+          "folderName": "5-making-your-first-transaction",
+          "description": "Guidance on setting up a Metamask wallet, understanding its interface, and the significance of secret recovery phrases in Ethereum transactions.",
+          "duration": 20,
+          "videoUrl": "DOCwvTT0mUM",
+          "rawMarkdownUrl": "/routes/blockchain-basics/1-basics/5-making-your-first-transaction/+page.md",
+          "updates": []
+        },
+        {
+          "id": "8f1efe3d-f43e-4e53-aa3f-0eff1b1afc1c",
+          "number": 6,
+          "title": "Introduction to gas",
+          "slug": "introduction-to-gas",
+          "folderName": "6-introduction-to-gas",
+          "description": "Introduction to the concept of 'gas' in Ethereum, its role in transactions, and the mechanics of calculating transaction fees.",
+          "duration": 10,
+          "videoUrl": "OtPMin2L8No",
+          "rawMarkdownUrl": "/routes/blockchain-basics/1-basics/6-introduction-to-gas/+page.md",
+          "updates": []
+        },
+        {
+          "id": "813188a3-0241-4fac-85f4-a05d1e5349cc",
+          "number": 7,
+          "title": "How do blockchains work",
+          "slug": "how-do-blockchains-work",
+          "folderName": "7-how-do-blockchains-work",
+          "description": "Detailed explanation of the working of blockchains, the importance of hash functions, and the concept of blockchain immutability.",
+          "duration": 18,
+          "videoUrl": "gRnebrIHMGM",
+          "rawMarkdownUrl": "/routes/blockchain-basics/1-basics/7-how-do-blockchains-work/+page.md",
+          "updates": []
+        },
+        {
+          "id": "a3c23224-9059-4be2-a5aa-d860451df2de",
+          "number": 8,
+          "title": "Signing transactions",
+          "slug": "signing-ethereum-transactions",
+          "folderName": "8-signing-transactions",
+          "description": "In-depth look at the process of signing blockchain transactions, the role of private and public keys, and their significance in maintaining security.",
+          "duration": 10,
+          "videoUrl": "gmMZ1N3xP7o",
+          "rawMarkdownUrl": "/routes/blockchain-basics/1-basics/8-signing-transactions/+page.md",
+          "updates": []
+        },
+        {
+          "id": "6f36bc8a-e920-406a-9885-39642b7864ef",
+          "number": 9,
+          "title": "Gas in depth",
+          "slug": "gas-in-depth",
+          "folderName": "9-gas-II",
+          "description": "Further exploration into the concept of 'gas' in blockchain transactions, including gas limits, transaction fees, and Ethereum's EIP 1559.",
+          "duration": 10,
+          "videoUrl": "7ScrQcuT7xA",
+          "rawMarkdownUrl": "/routes/blockchain-basics/1-basics/9-gas-II/+page.md",
+          "updates": []
+        },
+        {
+          "id": "872fe9ea-6511-413a-acaf-5f997e725417",
+          "number": 10,
+          "title": "How blockchains work",
+          "slug": "how-the-blockchain-works",
+          "folderName": "10-blockchain-fundamentals",
+          "description": "Comprehensive overview of fundamental blockchain concepts including cryptography, node operations, consensus protocols, and scaling solutions.",
+          "duration": 18,
+          "videoUrl": "NgHe7yuhyhU",
+          "rawMarkdownUrl": "/routes/blockchain-basics/1-basics/10-blockchain-fundamentals/+page.md",
+          "updates": []
+        },
+        {
+          "id": "1a5beaf9-4b6d-44b4-904d-357908e344fb",
+          "number": 11,
+          "title": "Congratulations",
+          "slug": "blockchian-basics-completed",
+          "folderName": "11-basics-completed",
+          "description": "Celebratory conclusion of the blockchain basics series, highlighting the journey from theoretical understanding to practical application.",
+          "duration": 1,
+          "videoUrl": "qlnZNeMY_hU",
+          "rawMarkdownUrl": "/routes/blockchain-basics/1-basics/11-basics-completed/+page.md",
+          "updates": []
+        }
+      ]
+    }
+  ],
+  "createdAt": "2023-12-06T17:17:23.229Z",
+  "updatedAt": "2023-12-06T17:17:23.229Z"
+}

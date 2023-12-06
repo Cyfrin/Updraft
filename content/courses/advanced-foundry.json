@@ -1,0 +1,1028 @@
+{
+  "id": "841d2824-6665-4f1e-8352-e0dbadf62bfb",
+  "title": "Advanced Foundry",
+  "slug": "advanced-foundry",
+  "folderName": "advanced-foundry",
+  "trailerUrl": "",
+  "previewImg": "https://res.cloudinary.com/droqoz7lg/image/upload/v1701193477/updraft/courses/y2uthyu5atnxhhd8aar6.png",
+  "description": "Become a Foundry expert! Learn advanced techniques to develop, deploy, test, optimise and interact with your smart contract using industry standard tools used by the top smart contracts engineers in web3",
+  "path": "Solidity Developer",
+  "number": 0,
+  "overview": {
+    "learnings": "Foundry, stablecoins, DeFi, DAOs, advanced smart contract development, advanced smart contracts testing, fuzz testing, manual verification",
+    "preRequisites": [
+      "Blockchain basics",
+      "Solidity fundamentals",
+      "Foundry fundamentals"
+    ]
+  },
+  "duration": 13,
+  "authors": [
+    {
+      "author": "content/authors/patrick-collins.json"
+    },
+    {
+      "author": "content/authors/ciara-nightingale.json"
+    },
+    {
+      "author": "content/authors/vasiliy-gualoto.json"
+    },
+    {
+      "author": "content/authors/nader-dabit.json"
+    },
+    {
+      "author": "content/authors/ally-haire.json"
+    },
+    {
+      "author": "content/authors/juliette-chevalier.json"
+    },
+    {
+      "author": "content/authors/vitto-rivabella.json"
+    },
+    {
+      "author": "content/authors/harrison.json"
+    }
+  ],
+  "sections": [
+    {
+      "number": 1,
+      "id": "c83165bc-da17-4714-ab4f-483cb52c5170",
+      "title": "Develop an ERC20 Crypto Currency",
+      "slug": "How-to-create-an-erc20-crypto-currency",
+      "folderName": "1-erc20s",
+      "lessons": [
+        {
+          "id": "c2420d11-5dcd-4f42-b26e-91e6234119b9",
+          "number": 1,
+          "title": "Introduction to ERC fundamentals and ERC20",
+          "slug": "erc-and-erc20-fundamentals",
+          "folderName": "1-erc20-basics",
+          "description": "Delve into the fundamentals of ERC20 tokens. Understand the critical concepts of Ethereum Improvement Proposals (EIPs) and Ethereum Request for Comments (ERCs), focusing particularly on the ERC20 Token Standard. Learn about the creation and significance of ERC20 tokens and explore notable examples.",
+          "duration": 5,
+          "videoUrl": "Iip9bQ3yKUI",
+          "rawMarkdownUrl": "/routes/advanced-foundry/1-erc20s/1-erc20-basics/+page.md",
+          "updates": []
+        },
+        {
+          "id": "72b71dd8-336c-4536-8a0e-304ea4043591",
+          "number": 2,
+          "title": "Creating an ERC20",
+          "slug": "create-an-erc20",
+          "folderName": "2-erc20-manual-creation",
+          "description": "This lesson guides you through the manual creation of your own ERC20 token using Solidity. It covers the setup of your development environment, initialization of your project repository, and step-by-step instructions to build and define your ERC20 token's properties and functionalities.",
+          "duration": 7,
+          "videoUrl": "RFynoQNPKOo",
+          "rawMarkdownUrl": "/routes/advanced-foundry/1-erc20s/2-erc20-manual-creation/+page.md",
+          "updates": []
+        },
+        {
+          "id": "9c7cfcb9-a693-4933-a006-4f046a9bdecf",
+          "number": 3,
+          "title": "Explore Open Zeppelin",
+          "slug": "erc20-open-zeppelin",
+          "folderName": "3-erc20-open-zeppelin",
+          "description": "Explore the use of the OpenZeppelin framework for smart contract development. Learn how to leverage pre-deployed, audited, and ready-to-go contracts to simplify the creation process of your ERC20 token.",
+          "duration": 4,
+          "videoUrl": "YJ9k09e1cqI",
+          "rawMarkdownUrl": "/routes/advanced-foundry/1-erc20s/3-erc20-open-zeppelin/+page.md",
+          "updates": []
+        },
+        {
+          "id": "7f90804e-7f7f-4818-8e9f-93f077970522",
+          "number": 4,
+          "title": "Deploy your ERC20 crypto currency",
+          "slug": "erc20-deploy-script",
+          "folderName": "4-erc20-deploy-script",
+          "description": "This lesson provides a comprehensive guide on deploying your ERC20 token. It includes instructions for setting up a deployment script, using the deployment script to deploy your token, and tips for finalizing and testing the deployment process efficiently.",
+          "duration": 3,
+          "videoUrl": "V-Hqnq-VcH8",
+          "rawMarkdownUrl": "/routes/advanced-foundry/1-erc20s/4-erc20-deploy-script/+page.md",
+          "updates": []
+        },
+        {
+          "id": "180ff894-f0fb-48c9-a7f1-2e45baeabd8f",
+          "number": 5,
+          "title": "Test your ERC20 using AI",
+          "slug": "erc20-ai-tests-and-recap",
+          "folderName": "5-erc20-ai-tests-and-recap",
+          "description": "Master the art of writing tests for your smart contracts, incorporating Artificial Intelligence (AI) to enhance the process. This lesson focuses on using AI to generate and execute tests efficiently, offering insights into best practices and considerations when integrating AI into your testing workflow.",
+          "duration": 16,
+          "videoUrl": "RYugLEPz7sE",
+          "rawMarkdownUrl": "/routes/advanced-foundry/1-erc20s/5-erc20-ai-tests-and-recap/+page.md",
+          "updates": []
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "94b46f4a-4966-4bf5-85f2-605e034d0061",
+      "title": "Develop an NFTs Collection",
+      "slug": "how-to-create-an-NFT-collection",
+      "folderName": "2-nfts",
+      "lessons": [
+        {
+          "id": "2dd01e95-bf3d-4cc6-8bd2-8b7d779863a3",
+          "number": 1,
+          "title": "Introduction to NFTs",
+          "slug": "introduction-to-nfts",
+          "folderName": "1-nfts",
+          "description": "his introductory lesson on Non-Fungible Tokens (NFTs) covers the basics of NFTs, including their creation, dynamics, and values. It features a practical project involving dynamic NFTs of dogs, emphasizing the addition of NFTs to MetaMask and connecting with platforms like OpenSea for selling NFTs.",
+          "duration": 3,
+          "videoUrl": "FSBxBenOdSU",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/1-nfts/+page.md",
+          "updates": []
+        },
+        {
+          "id": "f83641db-a754-4415-81f4-1aa1cfd3951c",
+          "number": 2,
+          "title": "What is an NFT",
+          "slug": "what-is-a-nft",
+          "folderName": "2-what-is-a-nft",
+          "description": "Dive deep into the world of Non-Fungible Tokens (NFTs), exploring their uniqueness compared to traditional tokens (ERC20s). The lesson focuses on the distinct nature of NFTs, their application in digital art, and the use of platforms like OpenSea and Rarible for trading.",
+          "duration": 7,
+          "videoUrl": "oSD3vSDHJO0",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/2-what-is-a-nft/+page.md",
+          "updates": []
+        },
+        {
+          "id": "08185616-d253-4f6a-b0e7-719c89386074",
+          "number": 3,
+          "title": "Foundry setup",
+          "slug": "foundry-setup",
+          "folderName": "3-foundry-setup",
+          "description": "This session guides you through setting up the Foundry environment for NFT development. It includes instructions on creating directories, initializing your project, and using OpenZeppelin contracts for defining NFTs, highlighting the process of minting and deploying NFT images.",
+          "duration": 11,
+          "videoUrl": "vB37gM1ooKs",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/3-foundry-setup/+page.md",
+          "updates": []
+        },
+        {
+          "id": "026164a1-de31-43b2-8f33-7471d8d6934d",
+          "number": 4,
+          "title": "Introduction to IPFS",
+          "slug": "what-is-ipfs",
+          "folderName": "4-ipfs",
+          "description": "Learn about the Interplanetary File System (IPFS), a decentralized data storage system, and its use in NFT development. Understand the concept of hashing data, pinning it on IPFS nodes, and the global network of nodes, differentiating it from blockchain in terms of data storage and access.",
+          "duration": 8,
+          "videoUrl": "Ytlmm_KGfso",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/4-ipfs/+page.md",
+          "updates": []
+        },
+        {
+          "id": "ad03afd8-a5f1-463a-89f4-f7c14ef33d5d",
+          "number": 5,
+          "title": "Upload and use IPFS data (token URI)",
+          "slug": "upload-data-on-IPFS",
+          "folderName": "5-using-ipfs",
+          "description": "This section explores using IPFS for hosting NFT images and metadata, focusing on OpenSea for practical demonstration. It also covers the customization of NFT appearances by allowing users to choose their Token URI, thus determining the look of their tokens.",
+          "duration": 7,
+          "videoUrl": "pX9UB0hqQPk",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/5-using-ipfs/+page.md",
+          "updates": []
+        },
+        {
+          "id": "b1fe8820-973d-4701-b6b2-6f466d824c6e",
+          "number": 6,
+          "title": "Writing the deployment script",
+          "slug": "nfts-deployment-script",
+          "folderName": "6-deploy-script",
+          "description": "Learn how to write a deployment script for NFTs. This includes using Forge script for deploying Basic NFTs and understanding the contract deployment process, highlighting the importance of testing and compiling before deployment.",
+          "duration": 2,
+          "videoUrl": "3TJ_T24f_18",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/6-deploy-script/+page.md",
+          "updates": []
+        },
+        {
+          "id": "e0582e78-a7f4-4b30-8f0d-76e8a807377c",
+          "number": 7,
+          "title": "Test the NFTs smart contract",
+          "slug": "basic-nft-tests",
+          "folderName": "7-basic-nft-tests",
+          "description": "Focuses on testing the basic NFT contract using Solidity. It includes detailed steps for conducting tests like confirming the NFT name and testing the mint function, emphasizing the importance of testing for successful smart contract deployment.",
+          "duration": 11,
+          "videoUrl": "v-_H8_wK2lQ",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/7-basic-nft-tests/+page.md",
+          "updates": []
+        },
+        {
+          "id": "bc86137e-2ab9-4a1f-aecd-60da82da36b3",
+          "number": 8,
+          "title": "Interact with a smart contract",
+          "slug": "interact-with-solidity-smart-contracts",
+          "folderName": "8-basic-interactions",
+          "description": "Teaches how to interact with Solidity smart contracts, particularly for minting NFTs. It includes setting up the necessary environment and scripts, and deploying NFTs using tools like Foundry and IPFS.",
+          "duration": 3,
+          "videoUrl": "kSiLlUxdEzs",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/8-basic-interactions/+page.md",
+          "updates": []
+        },
+        {
+          "id": "1b847650-6cc7-42e9-9d47-54d8f5cd09a8",
+          "number": 9,
+          "title": "Deploy your NFTs on the testnet",
+          "slug": "deploy-nfts-on-testnet",
+          "folderName": "9-testnet-demo",
+          "description": "Guides on deploying NFTs to a testnet and importing them into MetaMask. It covers the use of Anvil for deployment, extracting contract data, and using MetaMask to interact with the deployed NFTs.",
+          "duration": 7,
+          "videoUrl": "xoHAw86NbQw",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/9-testnet-demo/+page.md",
+          "updates": []
+        },
+        {
+          "id": "7831d519-1110-4317-8b7a-3298f63ebf62",
+          "number": 10,
+          "title": "IPFS and Pinata vs HTTP vs on chain SVGs",
+          "slug": "pin-nfts-images-using-pinata",
+          "folderName": "10-ipfs-https",
+          "description": "Discusses the pros and cons of using IPFS, HTTP, and on-chain SVGs for storing NFT data. It covers the pitfalls of each method and introduces services like Piñata Cloud for securing digital assets on IPFS.",
+          "duration": 4,
+          "videoUrl": "s0jR8R2Jy-I",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/10-ipfs-https/+page.md",
+          "updates": []
+        },
+        {
+          "id": "a6c7f1ac-aea5-42f5-860b-c1a025608de9",
+          "number": 11,
+          "title": "What is an SVG?",
+          "slug": "what-is-svg",
+          "folderName": "11-what-is-svg",
+          "description": "Explains Scalable Vector Graphics (SVGs), their advantages, and how to create them. The lesson includes coding snippets for SVG creation and highlights their use in NFTs for on-chain storage.",
+          "duration": 8,
+          "videoUrl": "m0nNd4o_Fy0",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/11-what-is-svg/+page.md",
+          "updates": []
+        },
+        {
+          "id": "15fe9028-8fd6-4e80-9cb2-fb3c44a17656",
+          "number": 12,
+          "title": "Create a dynamic NFTs collection",
+          "slug": "create-dynamic-nft",
+          "folderName": "12-svg-nft",
+          "description": "Focuses on creating dynamic SVG NFTs, particularly a mood-changing NFT that alternates its appearance. It includes detailed instructions for setting up the NFT project, minting the NFTs, and defining their appearance.",
+          "duration": 5,
+          "videoUrl": "Xwt7MXrYIg4",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/12-svg-nft/+page.md",
+          "updates": []
+        },
+        {
+          "id": "f1face80-d228-4ce4-8566-e4a6733cb435",
+          "number": 13,
+          "title": "Encoding SVGs to be stored onchain",
+          "slug": "svg-onchain-encoding",
+          "folderName": "13-svg-nft-encoding",
+          "description": "Teaches encoding SVGs in Base64 format for on-chain storage in NFTs. It covers the process of encoding and testing SVG NFTs, ensuring their proper functioning and appearance",
+          "duration": 17,
+          "videoUrl": "wF1elzqm6w0",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/13-svg-nft-encoding/+page.md",
+          "updates": []
+        },
+        {
+          "id": "2e1b663e-4070-4cf7-8858-e623c5d682e8",
+          "number": 14,
+          "title": "Modify the NFT image onchain",
+          "slug": "change-on-chain-nft-image",
+          "folderName": "14-svg-nft-flipping",
+          "description": "This section is about adding functionality to change the NFT's appearance on-chain. It includes creating a function to flip the mood of an NFT, ensuring only the owner can modify it",
+          "duration": 3,
+          "videoUrl": "4hqtCFXpS5U",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/14-svg-nft-flipping/+page.md",
+          "updates": []
+        },
+        {
+          "id": "760ee30e-0eab-4f5b-a560-27c9dc85c6ac",
+          "number": 15,
+          "title": "Create the deployment script",
+          "slug": "dynamic-nft-collection-deployment-script",
+          "folderName": "15-svg-deploy",
+          "description": "Guides on automating the deployment process of Mood NFTs using scripting. It covers setting up the deploy script, encoding SVGs, and testing the deployment script for effectiveness.",
+          "duration": 18,
+          "videoUrl": "PVg6ztt2QmE",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/15-svg-deploy/+page.md",
+          "updates": []
+        },
+        {
+          "id": "23802ffc-f88d-4bc6-85bf-c7633f5e963e",
+          "number": 16,
+          "title": "Debug your smart contract",
+          "slug": "debug-solidity-smart-contract",
+          "folderName": "16-svg-debug",
+          "description": "Guides on automating the deployment process of Mood NFTs using scripting. It covers setting up the deploy script, encoding SVGs, and testing the deployment script for effectiveness.",
+          "duration": 6,
+          "videoUrl": "MQXrXFRS3ks",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/16-svg-debug/+page.md",
+          "updates": []
+        },
+        {
+          "id": "b715cff6-2fe2-4261-a51e-6f8b065a5b95",
+          "number": 17,
+          "title": "Deploy and interact using Anvil",
+          "slug": "svg-anvil",
+          "folderName": "17-svg-anvil",
+          "description": "This lesson covers deploying and interacting with NFTs using Anvil, a local Ethereum network. It includes setting up MetaMask with Anvil, deploying Mood NFTs, minting, and flipping their mood, demonstrating the process of NFT interaction on a local blockchain network.",
+          "duration": 6,
+          "videoUrl": "2tK1aFelC54",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/17-svg-anvil/+page.md",
+          "updates": []
+        },
+        {
+          "id": "5da078de-11b0-4a3e-bf28-4c5e3249842b",
+          "number": 18,
+          "title": "Introduction to Filecoin and Arweave",
+          "slug": "introduction-to-filecoin-arweave",
+          "folderName": "18-filecoin-arweave",
+          "description": "Introduces Filecoin and Arweave, two decentralized storage solutions for NFT metadata. The lesson explores their features, benefits, and use cases, with insights from an expert at the Filecoin Foundation, highlighting the future of decentralized data storage.",
+          "duration": 8,
+          "videoUrl": "YYZs18wUdhs",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/18-filecoin-arweave/+page.md",
+          "updates": []
+        },
+        {
+          "id": "31cb90f0-4c98-4621-9742-ac0b6cc989a2",
+          "number": 19,
+          "title": "Advanced EVM - Opcodes, calling, etc",
+          "slug": "evm-opcodes-advanced",
+          "folderName": "19-advanced-evm",
+          "description": "Delves into advanced Ethereum Virtual Machine (EVM) concepts, focusing on opcodes and function calls. It demonstrates decoding transaction data using MetaMask and highlights the importance of verifying transactions to ensure safety in the cryptocurrency world.",
+          "duration": 23,
+          "videoUrl": "txbP7l3U6JU",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/19-advanced-evm/+page.md",
+          "updates": []
+        },
+        {
+          "id": "523a059e-80b6-472f-a1d4-5d8cd49726a8",
+          "number": 20,
+          "title": "Advanced EVM - Encoding",
+          "slug": "evm-encoding",
+          "folderName": "20-evm-encoding",
+          "description": "Explores ABI encoding and decoding in the context of EVM. The lesson breaks down the process of converting variables for use in transaction data fields, emphasizing the importance of understanding bytecode and binary for blockchain transactions.",
+          "duration": 6,
+          "videoUrl": "FxBPF8xsi3E",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/20-evm-encoding/+page.md",
+          "updates": []
+        },
+        {
+          "id": "166753f8-2135-4707-b712-c20471474ac9",
+          "number": 21,
+          "title": "Advanced EVM - Recap",
+          "slug": "avanced-evm-recap",
+          "folderName": "21-evm-recap",
+          "description": "A recap of the advanced EVM concepts covered in the course. It revisits topics like string combination, low-level concepts, binary encoding, and the use of the 'call' function in Solidity, summarizing the key takeaways from the advanced sections of the course.",
+          "duration": 4,
+          "videoUrl": "9E7ierp9tZc",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/21-evm-recap/+page.md",
+          "updates": []
+        },
+        {
+          "id": "b6e9292c-29ee-4a69-8a29-910fd5b8eca3",
+          "number": 22,
+          "title": "EVM signatures selectors",
+          "slug": "evm-signatures-selectors",
+          "folderName": "22-evm-signatures-selectors",
+          "description": "Focuses on EVM encoding signatures and selectors. The lesson explains how to populate the data field in function calls, the role of function selectors, and the use of ABI to call functions without explicit interface definitions.",
+          "duration": 15,
+          "videoUrl": "JuLKe5oBwZI",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/22-evm-signatures-selectors/+page.md",
+          "updates": []
+        },
+        {
+          "id": "ba69714a-ca5e-456b-9c6c-1afc337661f0",
+          "number": 23,
+          "title": "Verifying a transaction in Metamask",
+          "slug": "verifying-transaction-metamask",
+          "folderName": "23-verifying-metamask",
+          "description": "Provides a guide on verifying transactions in MetaMask. It includes steps to decode transaction data and emphasizes the importance of transaction verification for security purposes, especially when swapping tokens or interacting with smart contracts.",
+          "duration": 8,
+          "videoUrl": "hSo9imBuONs",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/23-verifying-metamask/+page.md",
+          "updates": []
+        },
+        {
+          "id": "dfedd4c2-96d5-4093-b8ce-c669163e7936",
+          "number": 24,
+          "title": "Section recap",
+          "slug": "nft-and-andvanced-evm-recap",
+          "folderName": "24-recap",
+          "description": "A comprehensive recap of the entire course, summarizing key concepts such as NFT basics, storage options, advanced EVM topics, smart contract interaction, and the use of tools like MetaMask for transaction verification.",
+          "duration": 4,
+          "videoUrl": "zU3kb_o0ppQ",
+          "rawMarkdownUrl": "/routes/advanced-foundry/2-nfts/24-recap/+page.md",
+          "updates": []
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "c78f2bb4-4bcd-4808-94e7-2e2b33e2522b",
+      "title": "Develop a DeFi Protocol",
+      "slug": "develop-defi-protocol",
+      "folderName": "3-defi",
+      "lessons": [
+        {
+          "id": "877d4fab-bf7c-483f-95ad-dab912ac5103",
+          "number": 1,
+          "title": "DeFi introduction",
+          "slug": "defi-introduction",
+          "folderName": "1-defi-introduction",
+          "description": "Explore the fundamentals of decentralized finance (DeFi) including key concepts, protocols, and the significance of DeFi in the financial sector.",
+          "duration": 10,
+          "videoUrl": "LrzxcaEEa14",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/1-defi-introduction/+page.md",
+          "updates": []
+        },
+        {
+          "id": "1d12f97f-cd50-4fbd-80d0-ca47bcffdbe8",
+          "number": 2,
+          "title": "Project code walkthrough",
+          "slug": "defi-code-walkthrough",
+          "folderName": "2-defi-code-walkthrough",
+          "description": "Delve into the detailed walkthrough of DeFi codebase including analysis of key files and their functionalities in the DeFi environment.",
+          "duration": 4,
+          "videoUrl": "G0e-BP0fFjo",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/2-defi-code-walkthrough/+page.md",
+          "updates": []
+        },
+        {
+          "id": "14c8bc73-7738-419b-bc4e-11fbd16e72e1",
+          "number": 3,
+          "title": "Introduction to stablecoins",
+          "slug": "defi-stablecoins",
+          "folderName": "3-defi-stablecoins-but-actually",
+          "description": "Gain insights into stablecoins, their types, significance in DeFi, and the roles they play in maintaining economic stability in digital finance.",
+          "duration": 29,
+          "videoUrl": "9wTC9ERju54",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/3-defi-stablecoins-but-actually/+page.md",
+          "updates": []
+        },
+        {
+          "id": "34ba57b0-a5f2-4991-801b-a4f3a0f1c230",
+          "number": 4,
+          "title": "Decentralised stablecoins",
+          "slug": "defi-decentralized-stablecoin",
+          "folderName": "4-defi-decentralized-stablecoin",
+          "description": "Understand the creation and management of decentralized stablecoins, focusing on their development, operational mechanics, and impact on DeFi.",
+          "duration": 15,
+          "videoUrl": "cLkqQaJsmls",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/4-defi-decentralized-stablecoin/+page.md",
+          "updates": []
+        },
+        {
+          "id": "139d8d5e-5fa9-4982-b591-6e4bd3f67fc5",
+          "number": 5,
+          "title": "Project setup - DSCEngine ",
+          "slug": "defi-dscengine-setup",
+          "folderName": "5-defi-dscengine-setup",
+          "description": "Learn about setting up the DSCEngine project in DeFi, including configuration, development practices, and key components of the engine.",
+          "duration": 11,
+          "videoUrl": "zEuF1_OC1Jk",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/5-defi-dscengine-setup/+page.md",
+          "updates": []
+        },
+        {
+          "id": "430a6668-1bb7-4b24-8593-7df423fe2681",
+          "number": 6,
+          "title": "Create the deposit collateral function",
+          "slug": "defi-deposit-collateral",
+          "folderName": "6-defi-deposit-collateral",
+          "description": "This lesson covers the process of creating a function to deposit collateral in a DeFi project, highlighting key aspects of its implementation.",
+          "duration": 19,
+          "videoUrl": "JEN9PAgwTOo",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/6-defi-deposit-collateral/+page.md",
+          "updates": []
+        },
+        {
+          "id": "3ce5a367-ce44-43f8-93e7-8a0028a5d16d",
+          "number": 7,
+          "title": "Creating the mint function",
+          "slug": "defi-mint-dsc",
+          "folderName": "7-defi-mint-dsc",
+          "description": "Explore the intricacies of creating a mint function in DeFi, focusing on its role, functionality, and integration within the DeFi ecosystem.",
+          "duration": 17,
+          "videoUrl": "EYbfRFAsGJg",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/7-defi-mint-dsc/+page.md",
+          "updates": []
+        },
+        {
+          "id": "e759be52-1320-4d27-b21f-5c6bb152c3b9",
+          "number": 8,
+          "title": "Creating and retrieving the health factor",
+          "slug": "defi-health-factor",
+          "folderName": "8-defi-health-factor",
+          "description": "Delve into the concept of 'Health Factor' in DeFi protocols, its calculation, significance, and impact on the stability and risk management of DeFi projects.",
+          "duration": 7,
+          "videoUrl": "jQNNph-x-18",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/8-defi-health-factor/+page.md",
+          "updates": []
+        },
+        {
+          "id": "58cb46b8-ad9f-4236-9074-26baa608d5a6",
+          "number": 9,
+          "title": "Finish the mint function",
+          "slug": "defi-wrap-mint-function",
+          "folderName": "9-defi-minting-the-dsc",
+          "description": "Complete the development of the mint function in DeFi, focusing on optimizing functionality, ensuring security, and integrating with the overall system.",
+          "duration": 2,
+          "videoUrl": "vWKLAwRURQQ",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/9-defi-minting-the-dsc/+page.md",
+          "updates": []
+        },
+        {
+          "id": "69e2f5d9-446d-4996-873d-4d81dc757843",
+          "number": 10,
+          "title": "Creating the deployment script",
+          "slug": "defi-deploy-script",
+          "folderName": "10-defi-deploy-script",
+          "description": "Learn the process of creating a deploy script for DeFi projects, including setup, configuration, and deploying smart contracts to the blockchain.",
+          "duration": 15,
+          "videoUrl": "jwTreavu9Ig",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/10-defi-deploy-script/+page.md",
+          "updates": []
+        },
+        {
+          "id": "1e420664-a74f-4b4c-b057-af62356da282",
+          "number": 11,
+          "title": "Test the DSCEngine smart contract",
+          "slug": "test-defi-protocol",
+          "folderName": "11-defi-tests",
+          "description": "Understand the process and importance of testing DSCEngine smart contracts in DeFi, including methodologies, best practices, and common test scenarios.",
+          "duration": 12,
+          "videoUrl": "o61Ek5XatNE",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/11-defi-tests/+page.md",
+          "updates": []
+        },
+        {
+          "id": "8a83df4b-a80d-4593-a713-c8bfc26bfb6b",
+          "number": 12,
+          "title": "Create the depositAndMint function",
+          "slug": "defi-deposit-and-mint-function",
+          "folderName": "12-defi-deposit-and-mint",
+          "description": "This lesson focuses on developing a combined deposit and mint function in DeFi, emphasizing its efficiency and integration into the DeFi framework.",
+          "duration": 3,
+          "videoUrl": "y7CXGz4LpFw",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/12-defi-deposit-and-mint/+page.md",
+          "updates": []
+        },
+        {
+          "id": "5cdf96d4-5a9f-48c4-9394-c33bacea8604",
+          "number": 13,
+          "title": "Create the redeem collateral function",
+          "slug": "defi-how-to-redeem-collateral",
+          "folderName": "13-defi-redeem-collateral",
+          "description": "Explore the development of a function for redeeming collateral in DeFi, including its significance, operational process, and impact on users.",
+          "duration": 12,
+          "videoUrl": "gGkl7D9Lqv0",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/13-defi-redeem-collateral/+page.md",
+          "updates": []
+        },
+        {
+          "id": "df0ffbd6-b926-4bde-84d6-3977d17ed15d",
+          "number": 14,
+          "title": "Setup liquidations",
+          "slug": "defi-liquidation-setup",
+          "folderName": "14-defi-liquidation-setup",
+          "description": "Dive into setting up liquidations in DeFi protocols, understanding their mechanics, importance, and their role in maintaining financial stability. ",
+          "duration": 17,
+          "videoUrl": "VbU0udZufO8",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/14-defi-liquidation-setup/+page.md",
+          "updates": []
+        },
+        {
+          "id": "7376cbd3-3cbd-4335-8d15-56868dfcd8ae",
+          "number": 15,
+          "title": "Refactor liquidations",
+          "slug": "defi-liquidation-refactor",
+          "folderName": "15-defi-liquidation-refactor",
+          "description": "This lesson focuses on refining the DeFi protocol by refactoring the 'redeemCollateral()' function. It covers the importance of testing and refactoring for building a reliable DeFi protocol, enhancing security, and improving functionality.",
+          "duration": 13,
+          "videoUrl": "UhcyoZyIF5M",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/15-defi-liquidation-refactor/+page.md",
+          "updates": []
+        },
+        {
+          "id": "35970bac-04ed-4d1a-93e1-8d71cb2486af",
+          "number": 16,
+          "title": "DSCEngine advanced testing",
+          "slug": "defi-protocols-advanced-testings-testing",
+          "folderName": "16-defi-leveling-up-testing",
+          "description": "This lesson dives into advanced testing techniques for Ethereum smart contracts using Foundry. It emphasizes the significance of testing for function initialization and demonstrates constructing and executing thorough test cases.",
+          "duration": 17,
+          "videoUrl": "_uSoXLzttqE",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/16-defi-leveling-up-testing/+page.md",
+          "updates": []
+        },
+        {
+          "id": "0dce8f57-7346-45fa-84f9-b9384b575d59",
+          "number": 17,
+          "title": "Write fuzz tests",
+          "slug": "defi-writing-fuzz-tests",
+          "folderName": "17-defi-open-fuzz-tests",
+          "description": "Lesson 17 explores the implementation of fuzz tests in smart contract development, discussing both stateful and stateless fuzz testing. It focuses on enhancing the robustness of DApps through meticulous unit testing and refactoring.",
+          "duration": 14,
+          "videoUrl": "tPDG4HFm2bE",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/17-defi-open-fuzz-tests/+page.md",
+          "updates": []
+        },
+        {
+          "id": "d8723ab8-f2c0-4738-a404-7d67735bec48",
+          "number": 18,
+          "title": "Create the fuzz tests handler pt.1",
+          "slug": "create-fuzz-tests-handler",
+          "folderName": "18-defi-handler-fuzz-tests",
+          "description": "Part 1 of this lesson introduces the concept of fuzz testing in Foundry, focusing on creating detailed invariant tests for smart contracts. It guides through setting up the testing environment and structuring invariants and handlers.",
+          "duration": 20,
+          "videoUrl": "CUKJ2Fxu0As",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/18-defi-handler-fuzz-tests/+page.md",
+          "updates": []
+        },
+        {
+          "id": "66e7be7e-257f-49a6-b4d2-d1dbf8806564",
+          "number": 19,
+          "title": "Create the fuzz tests handler pt.2",
+          "slug": "create-fuzz-tests-handler-part-2",
+          "folderName": "19-defi-handler-stateful-fuzz-tests",
+          "description": "In Part 2, the focus shifts to crafting optimized handlers for valid function calls in smart contracts. The lesson covers the groundwork of creating function handlers and improving test efficiency through valid and efficient function calls.",
+          "duration": 18,
+          "videoUrl": "FVYrIeMcCVY",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/19-defi-handler-stateful-fuzz-tests/+page.md",
+          "updates": []
+        },
+        {
+          "id": "1e5c8f0c-1f20-48bb-ad1f-553b3efa7759",
+          "number": 20,
+          "title": "Create the collateral redeemal handler",
+          "slug": "defi-handler-redeeming-collateral",
+          "folderName": "20-defi-handler-redeeming-collateral",
+          "description": "This lesson delves into the mechanisms of handling collateral in blockchain transactions. It focuses on the implementation and testing of functions for depositing and redeeming collateral, emphasizing the importance of validity checks.",
+          "duration": 6,
+          "videoUrl": "6VMj3ufdmrw",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/20-defi-handler-redeeming-collateral/+page.md",
+          "updates": []
+        },
+        {
+          "id": "37d41dd8-7170-4be4-aeb9-4e85822650f6",
+          "number": 21,
+          "title": "Create the mint handler",
+          "slug": "defi-handler-minting-dsc",
+          "folderName": "21-defi-handler-minting-dsc",
+          "description": "Lesson 21 guides through testing the 'mintDsc()' function in DSCEngine. It involves creating a handler function to ensure safe minting of DSC, considering the user's health factor and the system's overall stability.",
+          "duration": 6,
+          "videoUrl": "Gsk_KZ1D6zs",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/21-defi-handler-minting-dsc/+page.md",
+          "updates": []
+        },
+        {
+          "id": "399e5ce5-9d20-42f0-ac73-202b21e53bd0",
+          "number": 22,
+          "title": "Debugging the fuzz tests handler",
+          "slug": "defi-handler-fuzz-debugging",
+          "folderName": "22-defi-handler-fuzz-debugging",
+          "description": "This lesson explores debugging strategies for smart contracts, particularly focusing on the use of 'ghost variables' to track function calls. It provides insights into handling errors and refining the testing process for better outcomes.",
+          "duration": 9,
+          "videoUrl": "NPRIcNWuEzU",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/22-defi-handler-fuzz-debugging/+page.md",
+          "updates": []
+        },
+        {
+          "id": "aab32068-01bb-469f-8341-d07424a92369",
+          "number": 23,
+          "title": "Create the price feed handler",
+          "slug": "defi-price-feed-handler",
+          "folderName": "23-defi-price-feed-handling",
+          "description": "The lesson focuses on integrating price feed updates in smart contract handlers. It covers the creation of functions for updating collateral prices and emphasizes the importance of handling price fluctuations to maintain protocol integrity.",
+          "duration": 8,
+          "videoUrl": "5k3jTN7EesA",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/23-defi-price-feed-handling/+page.md",
+          "updates": []
+        },
+        {
+          "id": "6e1c63ff-90a4-43c1-be61-f68f9cb4b376",
+          "number": 24,
+          "title": "Manage your oracles connections",
+          "slug": "managing-oracles-connections",
+          "folderName": "24-defi-oracle-lib",
+          "description": "This lesson addresses the implementation and management of Chainlink Price Feeds in DSCEngine. It includes creating a library for ensuring price feed accuracy and discusses the implications of stale prices on the protocol's functionality.",
+          "duration": 9,
+          "videoUrl": "2rUhXKYNwWU",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/24-defi-oracle-lib/+page.md",
+          "updates": []
+        },
+        {
+          "id": "f47144e5-fe2d-4dc1-94d8-ac79b2a044c1",
+          "number": 25,
+          "title": "Preparing your protocol for an audit",
+          "slug": "preparing-your-protocol-for-an-audit",
+          "folderName": "25-defi-audit-prep",
+          "description": "This lesson provides a comprehensive guide on preparing smart contracts for audits. It emphasizes the importance of audits, offers a readiness checklist, and introduces the concept",
+          "duration": 2,
+          "videoUrl": "TIIOeeSMUw8",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/25-defi-audit-prep/+page.md",
+          "updates": []
+        },
+        {
+          "id": "8c36523c-6dbf-4c8c-adff-e14ed269494d",
+          "number": 26,
+          "title": "Section recap",
+          "slug": "defi-recap",
+          "folderName": "26-defi-recap",
+          "description": "This lesson serves as a comprehensive recap of the advanced project covered in the Web 3.0 course. It celebrates the milestones achieved in exploring varied concepts such as Decentralized Finance (DeFi), advanced fuzzing techniques, digital security, and working with Oracle",
+          "duration": 4,
+          "videoUrl": "5jJzxeqEQ-s",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/26-defi-recap/+page.md",
+          "updates": []
+        },
+        {
+          "id": "579492c9-95ff-411e-8149-1ee0c1967c98",
+          "number": 27,
+          "title": "Bonus: introduction to Lens Protocol",
+          "slug": "introduction-to-lens-protocol",
+          "folderName": "27-defi-lens-protocol",
+          "description": " This bonus lesson introduces the Lens Protocol, a decentralized social platform by the Aave team, presented by Nader Dabit, the head of DevRel for Lens Protocol. Lens Protocol empowers developers to build social media applications in the decentralized space, leveraging Web3 features such as native payments, ownership, and composability.",
+          "duration": 3,
+          "videoUrl": "0ULyUU1kIJs",
+          "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/27-defi-lens-protocol/+page.md",
+          "updates": []
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "193661f5-5f98-45e4-a3c3-ffcaae84f194",
+      "title": "Upgradeable Smart Contracts",
+      "slug": "upgradeable-smart-contracts",
+      "folderName": "4-upgradeable",
+      "lessons": [
+        {
+          "id": "fd66fe6b-cd83-46cd-b817-3d9a23889789",
+          "number": 1,
+          "title": "Introduction",
+          "slug": "introduction-to-upragadeable-smart-contracts",
+          "folderName": "1-upgradeable",
+          "description": "An introduction to upgradable smart contracts, discussing their advantages, risks, and different upgrade methodologies.",
+          "duration": 16,
+          "videoUrl": "Vkb_WVMkpRc",
+          "rawMarkdownUrl": "/routes/advanced-foundry/4-upgradeable/1-upgradeable/+page.md",
+          "updates": []
+        },
+        {
+          "id": "13e81a5e-dda3-4896-9b0e-aa35d292c0e8",
+          "number": 2,
+          "title": "Using Delegatecall",
+          "slug": "solidity-delegate-call",
+          "folderName": "2-delegate-call",
+          "description": "Detailed explanation of delegate call in Solidity, its differences from regular call functions, and its implications in smart contracts.",
+          "duration": 9,
+          "videoUrl": "QfMep1yROLk",
+          "rawMarkdownUrl": "/routes/advanced-foundry/4-upgradeable/2-delegate-call/+page.md",
+          "updates": []
+        },
+        {
+          "id": "8efd33a4-8933-4287-9fa8-278c4d22007f",
+          "number": 3,
+          "title": "Overview of the EIP-1967",
+          "slug": "what-is-eip-1967",
+          "folderName": "3-eip-1967",
+          "description": "Overview of EIP-1967 and its role in proxy contracts, including a practical guide on building a minimalistic proxy.",
+          "duration": 12,
+          "videoUrl": "hKcWAjt-Lpw",
+          "rawMarkdownUrl": "/routes/advanced-foundry/4-upgradeable/3-eip-1967/+page.md",
+          "updates": []
+        },
+        {
+          "id": "d18db6a9-9601-4a3e-9b08-74f7ac8f3ac5",
+          "number": 4,
+          "title": "OpeZeppelin UUPS proxies",
+          "slug": "introduction-to-uups-proxies",
+          "folderName": "4-uups",
+          "description": "Introduction to UUPS (Universal Upgradeable Proxy Standard) proxies in OpenZeppelin, showcasing their setup and usage.",
+          "duration": 22,
+          "videoUrl": "kL-7deasR0g",
+          "rawMarkdownUrl": "/routes/advanced-foundry/4-upgradeable/4-uups/+page.md",
+          "updates": []
+        },
+        {
+          "id": "816cc425-4b4c-45b1-a8be-0b7593b6d0c9",
+          "number": 5,
+          "title": "Deploy upgreadable smart contracts",
+          "slug": "deploy-upgreadable-smart-contracts",
+          "folderName": "5-uups-deploy",
+          "description": "Guide on deploying upgradeable smart contracts, focusing on the deployment process and best practices.",
+          "duration": 5,
+          "videoUrl": "Jl0NpeHVoww",
+          "rawMarkdownUrl": "/routes/advanced-foundry/4-upgradeable/5-uups-deploy/+page.md",
+          "updates": []
+        },
+        {
+          "id": "d3063f5c-4cd7-4fb6-aa35-5163adac7575",
+          "number": 6,
+          "title": "Upgrade UUPS proxy smart contracts",
+          "slug": "uups-upgrade",
+          "folderName": "6-uups-upgrade",
+          "description": "Tutorial on upgrading UUPS proxy smart contracts, including script writing and execution.",
+          "duration": 6,
+          "videoUrl": "_rkTETXk7S4",
+          "rawMarkdownUrl": "/routes/advanced-foundry/4-upgradeable/6-uups-upgrade/+page.md",
+          "updates": []
+        },
+        {
+          "id": "26f63889-34b4-4866-aaea-6f69e0203a02",
+          "number": 7,
+          "title": "Testing UUPS proxies",
+          "slug": "uups-tests",
+          "folderName": "7-uups-tests",
+          "description": "A practical session on testing UUPS proxies, ensuring functionality and successful upgrades.",
+          "duration": 6,
+          "videoUrl": "kb1X68wwQX4",
+          "rawMarkdownUrl": "/routes/advanced-foundry/4-upgradeable/7-uups-tests/+page.md",
+          "updates": []
+        },
+        {
+          "id": "174283fa-d2ad-473b-9b5d-e97b1a56fa50",
+          "number": 8,
+          "title": "Deploying the stablecoin on the testnet",
+          "slug": "testnet-demo",
+          "folderName": "8-testnet-demo",
+          "description": "Demonstration of deploying stablecoin smart contracts on a testnet, covering the entire process from deployment to upgrade.",
+          "duration": 7,
+          "videoUrl": "VI8HEYXu-6U",
+          "rawMarkdownUrl": "/routes/advanced-foundry/4-upgradeable/8-testnet-demo/+page.md",
+          "updates": []
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "7a5fa5f5-6d4d-4be4-a19d-d2b337abf943",
+      "title": "DAOs",
+      "slug": "daos",
+      "folderName": "5-daos",
+      "lessons": [
+        {
+          "id": "5bf97f38-e188-41ab-b1d6-98c5b6243fd0",
+          "number": 1,
+          "title": "Introduction to DAOs",
+          "slug": "introduction-to-dao",
+          "folderName": "1-intro",
+          "description": "Introduction to the concept and operational mechanics of Decentralized Autonomous Organizations (DAOs).",
+          "duration": 19,
+          "videoUrl": "SHk-0QWvXzs",
+          "rawMarkdownUrl": "/routes/advanced-foundry/5-daos/1-intro/+page.md",
+          "updates": []
+        },
+        {
+          "id": "6dfdc8b2-cb5a-4ee1-96a0-c46b6dd75a20",
+          "number": 2,
+          "title": "DAOs tooling - Introduction to Aragon",
+          "slug": "introduction-to-aragon-dao",
+          "folderName": "2-aragon",
+          "description": "Overview of Aragon, a tool for creating and managing DAOs without the need for extensive coding.",
+          "duration": 6,
+          "videoUrl": "pu2m54_Q7Xs",
+          "rawMarkdownUrl": "/routes/advanced-foundry/5-daos/2-aragon/+page.md",
+          "updates": []
+        },
+        {
+          "id": "2bce26c6-e68f-4f8e-aaef-a5e4b82d02c6",
+          "number": 3,
+          "title": "Project setup",
+          "slug": "setup",
+          "folderName": "3-setup",
+          "description": "Guidance on setting up a project for creating a DAO, with emphasis on ERC-20 based plutocracy DAOs.",
+          "duration": 5,
+          "videoUrl": "4FHKYnSER9A",
+          "rawMarkdownUrl": "/routes/advanced-foundry/5-daos/3-setup/+page.md",
+          "updates": []
+        },
+        {
+          "id": "95b25edd-db0a-4585-aa86-bd62171561b1",
+          "number": 4,
+          "title": "Governance tokens",
+          "slug": "governance-tokens",
+          "folderName": "4-governance-tokens",
+          "description": "Tutorial on creating governance tokens using ERC-20 extensions to facilitate DAO voting and decision-making processes.",
+          "duration": 3,
+          "videoUrl": "KWdpcX5Oz9Q",
+          "rawMarkdownUrl": "/routes/advanced-foundry/5-daos/4-governance-tokens/+page.md",
+          "updates": []
+        },
+        {
+          "id": "cecdace6-083a-4315-af14-95cfe95b65be",
+          "number": 5,
+          "title": "Creating the governor contract",
+          "slug": "create-governor-contract",
+          "folderName": "5-governor-contract",
+          "description": "Instructions for creating a governor contract for DAOs, utilizing Open Zeppelin's tools for efficient and secure contract generation.",
+          "duration": 15,
+          "videoUrl": "KAzM8MlQefI",
+          "rawMarkdownUrl": "/routes/advanced-foundry/5-daos/5-governor-contract/+page.md",
+          "updates": []
+        },
+        {
+          "id": "baa7e801-d9fb-420d-afdb-0c84fa9740d2",
+          "number": 6,
+          "title": "Testing the governance smart contract",
+          "slug": "tests",
+          "folderName": "6-tests",
+          "description": "Comprehensive guide on testing governance smart contracts to ensure efficient and secure DAO operations.",
+          "duration": 24,
+          "videoUrl": "MfonNwZVYlY",
+          "rawMarkdownUrl": "/routes/advanced-foundry/5-daos/6-tests/+page.md",
+          "updates": []
+        },
+        {
+          "id": "762e38ae-29e5-4f67-bf4b-2c2f172e5a7d",
+          "number": 7,
+          "title": "Section recap",
+          "slug": "daos-section-recap",
+          "folderName": "7-wrap-up",
+          "description": "A recap of the DAO section with additional insights on smart contract security and auditing, and tips on gas optimization.",
+          "duration": 6,
+          "videoUrl": "MEwyNYDH4c0",
+          "rawMarkdownUrl": "/routes/advanced-foundry/5-daos/7-wrap-up/+page.md",
+          "updates": []
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "c646c829-3376-430f-a3d4-65872e71fefb",
+      "title": "Security",
+      "slug": "security",
+      "folderName": "6-security",
+      "lessons": [
+        {
+          "id": "b47c5b24-cd73-425f-94e5-4937dbfa2b5b",
+          "number": 1,
+          "title": "Intro",
+          "slug": "intro",
+          "folderName": "1-intro",
+          "description": "Introduction to smart contract security and auditing, providing foundational knowledge for crypto space security.",
+          "duration": 4,
+          "videoUrl": "7H_bvaMsbLM",
+          "rawMarkdownUrl": "/routes/advanced-foundry/6-security/1-intro/+page.md",
+          "updates": []
+        },
+        {
+          "id": "4e52985f-9d6d-4a2f-b3be-011923e6cd64",
+          "number": 2,
+          "title": "What is a smart contract audit",
+          "slug": "what-is-smart-contract-audit",
+          "folderName": "2-what-is",
+          "description": "Insights into the manual review process in smart contract auditing, emphasizing the importance of detailed code and documentation examination.",
+          "duration": 7,
+          "videoUrl": "YEKFeImABek",
+          "rawMarkdownUrl": "/routes/advanced-foundry/6-security/2-what-is/+page.md",
+          "updates": []
+        },
+        {
+          "id": "d548101f-dbfe-4536-8a4e-99752f327be4",
+          "number": 3,
+          "title": "Top security tools",
+          "slug": "top-smart-contract-security-tools",
+          "folderName": "3-top-tools",
+          "description": "Overview of various security tools used by professionals for smart contract auditing, including their roles and effectiveness.",
+          "duration": 12,
+          "videoUrl": "7nMlUUV_itw",
+          "rawMarkdownUrl": "/routes/advanced-foundry/6-security/3-top-tools/+page.md",
+          "updates": []
+        },
+        {
+          "id": "f1c18671-11d8-4bd8-b206-bb0557e09751",
+          "number": 4,
+          "title": "Introduction to manual review",
+          "slug": "smart-contract-manual-review",
+          "folderName": "4-manual-review",
+          "description": "Insights into the manual review process in smart contract auditing, emphasizing the importance of detailed code and documentation examination.",
+          "duration": 14,
+          "videoUrl": "_8zvmg-vG1I",
+          "rawMarkdownUrl": "/routes/advanced-foundry/6-security/4-manual-review/+page.md",
+          "updates": []
+        },
+        {
+          "id": "31ed03ef-dbe7-4341-b314-27b6db4bcc4d",
+          "number": 5,
+          "title": "Introduction to formal verification",
+          "slug": "formal-verification",
+          "folderName": "5-formal-verification",
+          "description": "Exploration of formal verification and symbolic execution in Web3, including their applications and limitations in security testing.",
+          "duration": 15,
+          "videoUrl": "p40bYzRE8eA",
+          "rawMarkdownUrl": "/routes/advanced-foundry/6-security/5-formal-verification/+page.md",
+          "updates": []
+        },
+        {
+          "id": "9ec6f023-3e4a-4922-a97d-e9c1cdca6daf",
+          "number": 6,
+          "title": "Congratulations",
+          "slug": "congratulations",
+          "folderName": "6-congratulations",
+          "description": "Celebratory conclusion of the course, highlighting key resources and tools for continued learning in smart contract security.",
+          "duration": 5,
+          "videoUrl": "x38BncgKc9M",
+          "rawMarkdownUrl": "/routes/advanced-foundry/6-security/6-congratulations/+page.md",
+          "updates": []
+        }
+      ]
+    }
+  ],
+  "createdAt": "2023-12-06T17:17:23.228Z",
+  "updatedAt": "2023-12-06T17:17:23.228Z"
+}
