@@ -4,21 +4,19 @@ title: Storage
 
 _Follow along the with the video_
 
-
-
 ---
 
-In this lesson, we are going to discuss some important aspects related to variables in Solidity - the programming language for Ethereum contracts. Much of what we'll cover is conveniently summarized in the Solidity documentation, the link to which you can find in the corresponding GitHub repo.
+In this lesson, we are going to discuss some important aspects related to variables in Solidity. Much of what we'll cover is conveniently summarized in the [**Solidity documentation**](https://docs.soliditylang.org).
 
 ## Understanding Global Variables and Storage
 
-First and foremost, we need to familiarize ourselves with the concept of _Storage_. In Solidity, when we refer to variables that are global or those that persist over time, we are actually referring to variables that exist in `Storage`.
+First and foremost, we need to familiarize ourselves with the concept of `Storage`. In Solidity, when we refer to variables that are global or those that persist over time, we are actually referring to variables that exist in `Storage`.
 
 <img src="/security-section-1/8-storage/storage1.png" style="width: 100%; height: auto;" alt="block fee">
 
 Think of `Storage` as a huge array or list that contains all the variables we create in Solidity. When we declare a variable in a contract—say a contract named `fundamentalStorage`—to be a certain value, such as `favoriteNumber`, we're essentially demanding this variable to persist. This persistence is obtained via `Storage`.
 
-For example, say we have a contract `fundamentalStorage` and we have a variable in it called `favoriteNumber`.
+In code this looks like:
 
 ```js
 contract fundamentalStorage {
@@ -55,9 +53,11 @@ contract exampleContract {
 }
 ```
 
+In the code example above, `myArray.length` is stored in `storage slot [0]`, while the elements within the array (myArray.push(\_number)) are stored at `storage slot [keccak256(0)]`.
+
 ## Constant and Immutable Variables
 
-Interesting to note is the fact that constant and immutable variables do not occupy spots in `Storage`. This is because such variables are incorporated within the bytecode of the contract itself. Solidity automatically substitutes any reference to these variables with their declared values. Minor intricacies like these are what make Solidity a highly efficient language for smart contracts.
+Interesting to note is the fact that constant and immutable variables do not occupy spots in `Storage`. This is because such variables are incorporated within the bytecode of the contract itself. Solidity automatically substitutes any reference to these variables with their declared values.
 
 ```js
 contract exampleContract {
@@ -65,7 +65,7 @@ contract exampleContract {
 }
 ```
 
-In the example above, the constant variable `x` does not occupy a storage spot.
+In the example above, the constant variable `x` does not occupy a storage slot.
 
 ## Temporary Variables: Function Scope
 
@@ -97,6 +97,6 @@ contract exampleContract{
 }
 ```
 
-Every intricate detail discussed here can be found in the Solidity documentation, a reliable guide for both beginners and professional developers diving into the Ethereum world. Knowing how Solidity handles variables in different contexts is key to a deeper understanding and more efficient use of the language.
+All of what we've covered here is outlined in detail in the Solidity Documentation. Understanding these concepts and how Solidity handles variables is integral to attaining a deeper understanding of the language and compiler.
 
 > "Understanding the nitty-gritty of Solidity variables and storage will significantly amplify your solidity coding skills."

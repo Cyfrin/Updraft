@@ -4,8 +4,6 @@ title: Welcome to the ultimate Solidity Course
 
 _Follow along with this video_
 
-
-
 ---
 
 ## The Future of Web3: A focus on Security
@@ -22,7 +20,7 @@ This guide, however, is not for the newcomers. It's an advanced course aimed at 
 
 It's always enriching to learn from the best, and this guide takes care of that too. Featuring guest lecturers who are renowned experts in smart contract development:
 
-1. Jocelyn from Trail of Bits
+1. Josselin from Trail of Bits
 2. Owen from Guardian Audience
 3. Andy from Sigma Prime
 4. Johnny Time from Gingersec
