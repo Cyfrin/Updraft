@@ -3,6 +3,7 @@ import Courses from "./courses.json";
 
 const tinaCoursesPath = "content/courses";
 const tinaAuthorsPath = "content/authors";
+
 const slugify = (text: string): string => {
   return text
     .toString()
@@ -38,21 +39,33 @@ const createAuthorsFiles = () => {
     });
   });
 };
+
 const createCoursesFiles = () => {
   Courses.forEach((course) => {
     const updatedAuthors = course.authors.map((author) => {
       const slug = slugify(author.name);
       return { author: `${tinaAuthorsPath}/${slug}.json` };
     });
+
     delete (course as any).lastUpdated;
+
     const updatedCourse = {
       ...course,
       authors: updatedAuthors,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
+
+    // We also need to remove the markdownContent from the lessons
+    updatedCourse.sections.forEach((section) => {
+      section.lessons.forEach((lesson) => {
+        delete (lesson as any).markdownContent;
+      });
+    });
+
     const { slug } = course;
     const coursePath = `${tinaCoursesPath}/${slug}.json`;
+
     // Write course file
     fs.writeFile(coursePath, JSON.stringify(updatedCourse, null, 2), (err) => {
       if (err) throw err;
