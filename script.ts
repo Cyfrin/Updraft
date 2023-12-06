@@ -1,5 +1,5 @@
 import fs from "fs";
-import Courses from "../../cyfrin-platform/apps/updraft-web/src/lib/data/courses.json";
+import Courses from "./courses.json";
 
 const tinaCoursesPath = "content/courses";
 const tinaAuthorsPath = "content/authors";
