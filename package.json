@@ -1,5 +1,5 @@
 {
-  "name": "updfrat-content",
+  "name": "updraft-content",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -15,6 +15,11 @@
     "vite": "^5.0.0"
   },
   "dependencies": {
-    "tinacms": "^1.5.28"
+    "@tinacms/datalayer": "^1.2.32",
+    "@upstash/redis": "^1.25.1",
+    "tinacms": "^1.5.28",
+    "tinacms-authjs": "^1.0.5",
+    "tinacms-gitprovider-github": "^1.0.3",
+    "upstash-redis-level": "^1.1.1"
   }
 }
