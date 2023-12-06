@@ -11,19 +11,20 @@
   "devDependencies": {
     "@tinacms/cli": "^1.5.38",
     "@types/node": "^20.10.3",
-    "typescript": "^5.2.2",
     "@types/react": "^18",
-    "@types/react-dom": "^18"
+    "@types/react-dom": "^18",
+    "typescript": "^5.2.2"
   },
   "dependencies": {
     "@tinacms/datalayer": "^1.2.32",
     "@upstash/redis": "^1.25.1",
+    "next": "14.0.3",
+    "next-auth": "^4.24.5",
+    "react": "^18",
+    "react-dom": "^18",
     "tinacms": "^1.5.28",
     "tinacms-authjs": "^1.0.5",
     "tinacms-gitprovider-github": "^1.0.3",
-    "upstash-redis-level": "^1.1.1",
-    "react": "^18",
-    "react-dom": "^18",
-    "next": "14.0.3"
+    "upstash-redis-level": "^1.1.1"
   }
 }

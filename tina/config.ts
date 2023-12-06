@@ -1,12 +1,17 @@
-import { defineConfig } from "tinacms";
+import { LocalAuthProvider, defineConfig } from "tinacms";
+import {
+    TinaUserCollection,
+    UsernamePasswordAuthJSProvider,
+} from "tinacms-authjs/dist/tinacms";
 
+const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
 const branch =
   process.env.GITHUB_BRANCH ||
   process.env.VERCEL_GIT_COMMIT_REF ||
   process.env.HEAD ||
   "main";
 
-const slugify = (text: string): string => {
+  const slugify = (text: string): string => {
   return text
     .toString()
     .toLowerCase()
@@ -18,15 +23,16 @@ const slugify = (text: string): string => {
 };
 
 export default defineConfig({
+  contentApiUrlOverride: "/api/tina/gql",
+  authProvider: isLocal
+    ? new LocalAuthProvider()
+    : new UsernamePasswordAuthJSProvider(),
   branch,
-
   // Get this from tina.io
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
   // Get this from tina.io
   token: process.env.TINA_TOKEN,
-
   // contentApiUrlOverride: "/api/tina/gql",
-
   build: {
     outputFolder: "admin",
     publicFolder: "static",
@@ -37,9 +43,9 @@ export default defineConfig({
       publicFolder: "static",
     },
   },
-
   schema: {
     collections: [
+      TinaUserCollection,
       {
         name: "author",
         label: "Authors",
