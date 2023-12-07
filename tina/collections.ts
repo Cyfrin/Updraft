@@ -137,6 +137,20 @@ export const CourseCollection: Collection = {
           collections: ["author"],
         },
       ],
+      ui: {
+        itemProps(item) {
+          const authorName = item.author
+            .split("/")
+            .pop()
+            ?.split(".")
+            .shift()
+            ?.split("-")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+
+          return { label: authorName };
+        },
+      },
       list: true,
     },
     {
@@ -221,9 +235,19 @@ export const CourseCollection: Collection = {
               list: true,
             },
           ],
+          ui: {
+            itemProps(item) {
+              return { label: item.title };
+            },
+          },
           list: true,
         },
       ],
+      ui: {
+        itemProps(item) {
+          return { label: item.title };
+        },
+      },
       list: true,
     },
   ],
