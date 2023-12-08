@@ -108,6 +108,11 @@ export const CourseCollection: Collection = {
     },
     {
       type: "string",
+      name: "path",
+      label: "Path",
+    },
+    {
+      type: "string",
       name: "trailerUrl",
       label: "Trailer URL",
     },
