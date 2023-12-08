@@ -76,9 +76,9 @@ export const CourseCollection: Collection = {
       },
     },
     {
-      type: 'string',
-      name: 'slug',
-      label: 'Slug',
+      type: "string",
+      name: "slug",
+      label: "Slug",
       required: true,
     },
     {
@@ -195,9 +195,9 @@ export const CourseCollection: Collection = {
           },
         },
         {
-          type: 'string',
-          name: 'slug',
-          label: 'Slug',
+          type: "string",
+          name: "slug",
+          label: "Slug",
           required: true,
         },
         {
@@ -223,9 +223,15 @@ export const CourseCollection: Collection = {
               },
             },
             {
-              type: 'string',
-              name: 'slug',
-              label: 'Slug',
+              type: "number",
+              name: "number",
+              label: "Lesson Number",
+              required: true,
+            },
+            {
+              type: "string",
+              name: "slug",
+              label: "Slug",
               required: true,
             },
             {
