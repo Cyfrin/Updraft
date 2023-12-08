@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import fs from "fs";
 import Courses from "./courses.json";
 
@@ -26,8 +27,18 @@ const createAuthorsFiles = () => {
   const uniqueAuthors = Array.from(
     new Set(allAuthors.map((author) => author.name))
   ).map((name) => {
-    return allAuthors.find((author) => author.name === name);
+    const author = allAuthors.find((a) => a.name === name);
+
+    if (!author) return;
+
+    const authorId = crypto.randomUUID();
+
+    return {
+      authorId,
+      ...author,
+    };
   });
+
   uniqueAuthors.forEach((author) => {
     if (!author) return;
     const { name } = author;
@@ -41,29 +52,46 @@ const createAuthorsFiles = () => {
 };
 
 const createCoursesFiles = () => {
-  Courses.forEach((course) => {
-    const updatedAuthors = course.authors.map((author) => {
+  Courses.forEach((originalCourse) => {
+    const courseId = originalCourse.id;
+
+    const updatedSections = originalCourse.sections.map((originalSection) => {
+      const sectionId = originalSection.id;
+
+      const updatedLessons = originalSection.lessons.map((originalLesson) => {
+        const { id, ...lessonWithoutId } = originalLesson; // Destructure to remove id
+        const lessonId = id;
+
+        return {
+          lessonId,
+          ...lessonWithoutId,
+        };
+      });
+
+      const { id, ...sectionWithoutId } = originalSection; // Destructure to remove id
+      return {
+        sectionId,
+        ...sectionWithoutId,
+        lessons: updatedLessons,
+      };
+    });
+
+    const updatedAuthors = originalCourse.authors.map((author) => {
       const slug = slugify(author.name);
       return { author: `${tinaAuthorsPath}/${slug}.json` };
     });
 
-    delete (course as any).lastUpdated;
-
+    const { id, ...courseWithoutId } = originalCourse; // Destructure to remove id
     const updatedCourse = {
-      ...course,
+      courseId,
+      ...courseWithoutId,
+      sections: updatedSections,
       authors: updatedAuthors,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
-    // We also need to remove the markdownContent from the lessons
-    updatedCourse.sections.forEach((section) => {
-      section.lessons.forEach((lesson) => {
-        delete (lesson as any).markdownContent;
-      });
-    });
-
-    const { slug } = course;
+    const { slug } = originalCourse;
     const coursePath = `${tinaCoursesPath}/${slug}.json`;
 
     // Write course file

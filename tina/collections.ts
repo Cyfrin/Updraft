@@ -19,6 +19,16 @@ export const AuthorCollection: Collection = {
   fields: [
     {
       type: "string",
+      name: "authorId",
+      label: "Author ID",
+      required: true,
+      uid: true,
+      ui: {
+        component: "hidden",
+      },
+    },
+    {
+      type: "string",
       name: "name",
       label: "Name",
       isTitle: true,
@@ -55,6 +65,16 @@ export const CourseCollection: Collection = {
   path: "content/courses",
   format: "json",
   fields: [
+    {
+      type: "string",
+      name: "courseId",
+      label: "Course ID",
+      required: true,
+      uid: true,
+      ui: {
+        component: "hidden",
+      },
+    },
     {
       type: "datetime",
       name: "createdAt",
@@ -160,6 +180,16 @@ export const CourseCollection: Collection = {
       fields: [
         {
           type: "string",
+          name: "sectionId",
+          label: "Section ID",
+          required: true,
+          uid: true,
+          ui: {
+            component: "hidden",
+          },
+        },
+        {
+          type: "string",
           name: "title",
           label: "Title",
           isTitle: true,
@@ -170,6 +200,16 @@ export const CourseCollection: Collection = {
           name: "lessons",
           label: "Lessons",
           fields: [
+            {
+              type: "string",
+              name: "lessonId",
+              label: "Lesson ID",
+              required: true,
+              uid: true,
+              ui: {
+                component: "hidden",
+              },
+            },
             {
               type: "string",
               name: "title",
