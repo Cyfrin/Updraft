@@ -205,6 +205,12 @@ export const CourseCollection: Collection = {
           },
         },
         {
+          type: "number",
+          name: "number",
+          label: "Section Number",
+          required: true,
+        },
+        {
           type: "string",
           name: "slug",
           label: "Slug",
