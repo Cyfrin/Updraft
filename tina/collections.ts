@@ -76,6 +76,12 @@ export const CourseCollection: Collection = {
       },
     },
     {
+      type: 'string',
+      name: 'slug',
+      label: 'Slug',
+      required: true,
+    },
+    {
       type: "datetime",
       name: "createdAt",
       label: "Created At",
@@ -189,6 +195,12 @@ export const CourseCollection: Collection = {
           },
         },
         {
+          type: 'string',
+          name: 'slug',
+          label: 'Slug',
+          required: true,
+        },
+        {
           type: "string",
           name: "title",
           label: "Title",
@@ -209,6 +221,12 @@ export const CourseCollection: Collection = {
               ui: {
                 component: "hidden",
               },
+            },
+            {
+              type: 'string',
+              name: 'slug',
+              label: 'Slug',
+              required: true,
             },
             {
               type: "string",
