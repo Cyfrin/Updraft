@@ -4,41 +4,58 @@ title: Solidity Pre-requisites
 
 _Follow along with this video_
 
-
-
 ---
 
-Whipping up Solidity contracts seems daunting? Or you're simply new to Foundry? Don't fret, we've got you covered. Before we venture into the wonderful and wild world of Security, it's important to get a strong foundation. The Foundry full course is a fantastic resource to embark on, if you haven't took that course yet don't forget to check that out here at Cyfrin Updraft.
-
-> "A solid foundation in Solidity is the key to successfully creating sophisticated smart contracts."
+Alright! All of the pre-requisites I've mentioned so far, and those mentioned here can be found in the Foundry Full Course ([Fundamentals](https://updraft.cyfrin.io/courses/foundry) _and_ [Advanced](https://updraft.cyfrin.io/courses/advanced-foundry))
 
 ## The Prerequisites: Solidity Basics
 
-To keep up with this guide, there are some prerequisites that will make your journey smoother. You should be comfortable with Remix and understand how to use the 'compile' and 'deploy' buttons. Being able to deploy something locally and on a testnet using MetaMask (or another wallet) is a crucial skill. Basically, if you're cozy with coding locally or via a cloud provider, then you're on the right track and should follow along effortlessly.
+To keep up with this course, you should be familiar with all the basic functions of [Remix](https://remix.ethereum.org). This includes `compiling`, and `deploying` to both local and testnet blockchains.
+
+All of the basic Solidity, variable types, contract structure etc should be second nature.
+
+## Foundry Familiarity
+
+You should also be familiar with the working environments of Foundry, or your framework of choice. You should understand how to initialize a project in your framework and navigate it's working tree.
+
+<div style="text-align:center;">
+<img src="/security-section-1/2-solidity-req/solidity-prerequisites1.PNG" style="width: 40%; height: auto;" alt="block fee">
+</div>
+
+Commands like these should ring lots of bells.
 
 ```shell
-$ mkdir basic-solc-project
-$ cd basicSulkProject
-$ forge init
+forge init
+forge build
+forge test
 ```
 
-So, what’s that? Well, that’s how you usually set up a project. By now, you should be familiar with the set up on your left-hand side, with your scripts, your `src`, your tests and if you aren’t— don’t worry! Foundry will soon be your new best friend.
+The basic code seen in the Foundry example contracts should be things you recognize as well.
 
-## Understanding Foundry
+```js
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.13;
 
-Within Foundry, we've got a basic counter smart contract, including a set number and an increment number. Features within this setup should be familiar, ranging from the license Identifier to the Solidity version and other contract aspects.
+contract Counter {
+    uint256 public number;
 
-Should you stumble upon `forge Build`, it will seem familiar as well. It's all about compiling your contracts. If you're curious to see what's under the hood with your code testing, take a look at the 'counter t.sol' in the test folder.
+    function setNumber(uint256 newNumber) public {
+        number = newNumber;
+    }
 
-```shell
-$ forge test
+    function increment() public {
+        number++;
+    }
+}
 ```
 
-The basic test setup contains two distinct test types, a regular test (assert equal) and a Fuzz test.
+---
 
-<img src="/security-section-1/2-solidity-req/sol-req1.png" style="width: 100%; height: auto;" alt="block fee">
+## Testing
 
-## Exploring Test Types: Regular Test and Fuzz Test
+The Foundry example test setup contains two distinct test types, a regular test and a fuzz test. These distinctions you should be a little familiar with, but we'll definitely go more indepth throughout this course.
+
+### Exploring Test Types: Regular Test and Fuzz Test
 
 In the regular test, we merely incept the counter contract and increment it, ensuring the counter number equals one. The Fuzz test, however, involves passing a random number into our test.
 
@@ -46,7 +63,7 @@ As you may recall, we run this test with a certain number of runs, using differe
 
 How do we change the number of fuzz runs? Simply browse to Foundry's TOML file and copy the variable.
 
-```markdown
+```md
 [fuzz]
 runs = 256
 max_test_rejects = 65536
@@ -64,10 +81,16 @@ $ forge test
 
 Voila! You'll see that the test Fuzz ran 600 times. This indicates that the test ran with 600 different random numbers.
 
+```bash
+Running 1 test for test/Counter.t.sol:CounterTest
+[PASS] testFuzz_SetNumber(uint256) (runs: 600, μ: 27398, ~: 28409)
+Test result: ok. 1 passed; 0 failed; 0 skipped; finished in 14.63ms
+
+Ran 1 test suites: 1 tests passed, 0 failed, 0 skipped (1 total tests)
+```
+
 ## Advanced Fuzzing: Stateful Fuzzing and Invariant Tests
 
-On to the next level – **stateful fuzzing**, also popular as invariant tests in the Foundry universe. This aspect of coding might not be your forte yet, but no worries. We're here to guide you towards proficiency.
+On to the next level – **stateful fuzzing**, also popular as invariant tests in the Foundry universe. This aspect of coding might not be your forte yet, but no worries, that's what we're here for.
 
-Prep up and get ready to dive into the exciting world of fuzzing, stateful fuzzing, and invariant tests. Let's dig deeper and explore this advanced but rewarding aspect of Smart Contracts design in Foundry.
-
-Are you ready to swim with the big fishes in the Solidity sea? Let’s dive into the deep together.
+Let's look more closely at fuzzing and invariant testing in our next lesson.

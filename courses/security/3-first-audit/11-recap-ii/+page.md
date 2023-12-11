@@ -4,9 +4,6 @@ title: Recap II
 
 _Follow along with this video:_\
 
-
-
-
 ---
 
 # Unfolding Blockchain Security Issues: A Deep Dive into our latest Smart Contract Audit
@@ -23,14 +20,13 @@ To simplify the concept, the access control should look like this:
 
 ```javascript
 if (msg.sender !== s_owner) {
-    revert("Not owner");
+  revert("Not owner");
 }
 ```
 
 This logic check denotes that if the message sender doesn’t match the owner, then the system should revert or rollback any change, ensuring that only the correct owner can modify the password. Unfortunately, this check was missing in the audited contract, resulting in a major security lapse.
 
-<img src="../../../../../static/security-section-3/11-recap-ii/recapii-1.png" style="width: 100%; height: auto;">
-
+<img src="/security-section-3/11-recap-ii/recapii-1.png" style="width: 100%; height: auto;">
 
 ## Vulnerability 2: Erroneous Parameter
 
@@ -42,8 +38,7 @@ Although less conspicuously problematic than the missing ownership check, an err
 
 Last but definitely not least, we noticed that the application stored passwords on-chain. This is a major security concern as **all data on chain is public information**. Therefore, storing passwords, or any sensitive information for that matter, on-chain exposes them to public view, compromising the so-called private information.
 
-
-> *Remember, data stored on-chain equals to public information. Keeping passwords or any private data secure means that they must be off-chain.*
+> _Remember, data stored on-chain equals to public information. Keeping passwords or any private data secure means that they must be off-chain._
 
 ## Preliminary Audit Findings: Three Potential Vulnerabilities
 
@@ -54,4 +49,3 @@ These could be catastrophic if not addressed in time. However, the severity of t
 We hope to bring you more interesting insights from the audit trail once the severity of these potential vulnerabilities is gauged. So, congratulations to us and our eagle-eyed audit team. With our findings, we can contribute significantly to making the protocol safer.
 
 Great work, indeed! Let us continue to uncover potential threats and fortify the world of blockchain one step at a time. Here's looking forward to safer and secure smart contracts for everyone in the blockchain community! Stay tuned for further updates on these security vulnerabilities.
-
