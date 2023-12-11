@@ -2,6 +2,33 @@
 
 Welcome to the official GitHub repository for Cyfrin Updraft. This repository houses the written content of our courses, organized to facilitate easy access and contribution from our community.
 
+
+<p align="center">
+  <a href="https://updraft.cyfrin.io/">
+    <img src="https://img.icons8.com/fluency/48/000000/domain.png" alt="Webpage"/>
+  </a>
+  <br>
+  <a href="https://updraft.cyfrin.io/">Webpage</a>: Explore more about Cyfrin Updraft on our official website.
+</p>
+
+<p align="center">
+  <a href="https://twitter.com/CyfrinUpdraft">
+    <img src="https://img.icons8.com/color/48/000000/twitter--v1.png" alt="Twitter"/>
+  </a>
+  <br>
+  <a href="https://twitter.com/CyfrinUpdraft">Twitter</a>: Follow us on Twitter for the latest news, updates, and community highlights.
+</p>
+
+<p align="center">
+  <a href="https://discord.gg/NhVAmtvnzr">
+    <img src="https://img.icons8.com/color/48/000000/discord--v2.png" alt="Discord"/>
+  </a>
+  <br>
+  <a href="https://discord.gg/NhVAmtvnzr">Discord</a>: Join our Discord community to engage in discussions, seek support, and collaborate with fellow enthusiasts.
+</p>
+
+
+
 ## Repository Structure
 
 Our content is structured as follows:
