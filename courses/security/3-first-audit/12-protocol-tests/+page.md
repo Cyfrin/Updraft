@@ -4,8 +4,6 @@ title: Protocol Tests
 
 _Follow along with this video:_
 
-
-
 ---
 
 # The In-depth Guide to Code Reconnaissance
@@ -59,7 +57,7 @@ Conducting an analysis via `forge coverage` could offer insights into the code c
 
 For instance, even though our code reported a 100% coverage, we were able to discover significant vulnerabilities. Simply, anyone could set or read the password. Furthermore, we found misleading documentation.
 
-<img src="../../../../../static/security-section-3/12-protocol-tests/protocol1.png" style="width: 100%; height: auto;">
+<img src="/security-section-3/12-protocol-tests/protocol1.png" style="width: 100%; height: auto;">
 
 ## Finalises Code Audit
 

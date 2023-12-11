@@ -4,8 +4,6 @@ title: Description
 
 _Follow along with this video:_
 
-
-
 ---
 
 # Unmasking The Vulnerabilities of Chain Data Visibility
@@ -28,7 +26,7 @@ Now when you view these chunks of code, you immediately know that `S_password` i
 
 Here's a jolt of reality - should anyone access the private password, it dismantles the protocol's functionality entirely. Quite some impact there, isn't it?
 
-<img src="../../../../../static/security-section-3/15-description/description1.png" style="width: 100%; height: auto;">
+<img src="/security-section-3/15-description/description1.png" style="width: 100%; height: auto;">
 
 ## Convincing Proof of Concept
 

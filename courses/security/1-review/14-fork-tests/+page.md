@@ -4,38 +4,49 @@ title: Fork Tests & Congrats!
 
 _follow along with the video_
 
-
-
 ---
 
-Welcome to our in-depth guide on how to run fork tests or mainnet fork tests. In a nutshell, fork tests help us create a simulated local version of mainnet to execute tests, thereby eliminating the need to include all contract addresses. Today, our walkthrough will show you how to accomplish this smoothly.
+## Forking Mainnet
 
-## Fork Testing with Alchemy URL
+Forking is a valuable tool is a developer's box, it effectively takes a reference snapshot at a given block height on the provided chain. In practice, this allows us to interact with protocols as though we were interacting with them on mainnet.
 
-First off, we need to run the forage test. Simply type `forage test F` or `fork`, and add a URL such as Mainnet. By doing so, we create a pseudo-local version of Mainnet and run specific tests against it.
+## Fork Tests in Foundry
 
-To acquire your Alchemy URL, simply visit Alchemy's website (Alchemy.com) and navigate to relevant sections. Remember, this URL is not for actual forking, but for fork testing.
-
-```shell
-ExampleforkURL = "https://eth-mainnet.alchemyapi.io/v2/your-api-key"
+```bash
+forge test fork-url $MAINNET_RPC_URL
 ```
 
-If this process does not work, set your Alchemy URL in the `.env` file.
+This command in foundry tells the framework to run your tests while referencing a fork of the provided RPC URL, allowing you to interact with mainnet contract locally.
 
-```md
-FORK_URL=https://eth-mainnet.alchemyapi.io/v2/your-api-key
+Another way to fork is within the test contract directly.
+
+```js
+function setUp() public {
+    vm.createSelectFork({blockNumber: 0, urlOrAlias: "mainnet"})
+}
 ```
 
-)## Working with Mainnet Contracts Locally
+> Note: `mainnet` will need to be set as an alias in your `foundry.toml` under a new variable `[rpc_endpoints]`
 
-Running `forge test --fork-url $MAINNET_RPC_URL`, lets you interact and work with mainnet contracts locally without deploying anything. This can save you considerable time and resources.
+```js
+[rpc_endpoints];
+mainnet = "{MAINNET_RPC_URL}";
+```
+
+With the above in place running the following will run your tests with respect to a fork of a live chain!
+
+```bash
+forge test
+```
 
 ## Useful Resources &amp; Exercises
 
-If any concepts covered in this blog post seem confusing or new to you, take a moment to check out the Foundry Full Course here on Updraft to get the most recent Foundry course that suits your needs. These resources will expedite your learning and help you solidify the fundamental concepts.
+If any concepts covered in this blog post seem confusing or new to you, take a moment to check out the Foundry Full Course here on Updraft ([**Foundry Fundamentals**](https://updraft.cyfrin.io/courses/foundry) & [**Advanced Foundry**](https://updraft.cyfrin.io/courses/advanced-foundry)) to level up those concepts and give you all the information you need to succeed here. These resources will expedite your learning and help you solidify the fundamental concepts.
 
-Before signing off, I'd encourage you to join the [Cyfrin Discord](https://discord.com/invite/NhVAmtvnzr). This is an excellent platforms where you can connect, collaborate, and share insights with a diverse group of people working on similar projects.
+Before signing off, I'd encourage you to join the [Cyfrin Discord](https://discord.com/invite/NhVAmtvnzr). This is an excellent platform where you can connect, collaborate, and share insights with a diverse group of people working on similar goals.
 
-The final lesson: take a breather and well-deserved coffee break. Our next section will delve deeper into smart contract audits and security reviews.
+In addition to this, check out the [**Discussions on GitHub**](https://github.com/Cyfrin/security-and-auditing-full-course-s23/discussions) - this is a phenomenal place to get support and have your questions answered in a way that will be indexed by search engines and AI in an effort to improve the experience for people coming behind us.
 
-"Congratulations on finishing the refresher. You're now ready to embark on the fascinating journey of smart contract security auditing. Buckle up. It's going to be an exciting ride!"
+<img src="/security-section-1/14-fork-tests/forking1.png" style="width: 100%; height: auto;" alt="block fee">
+
+Congratulations on finishing the refresher! Take a break, you greatly deserve it for getting this far!

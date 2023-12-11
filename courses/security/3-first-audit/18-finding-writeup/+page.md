@@ -4,13 +4,11 @@ title: Finding Writeup Recap
 
 _Follow along with this video:_
 
-
-
 ---
 
 ## Previewing Your First Write-Up
 
-<img src="../../../../../static/security-section-3/18-writeup/writeup1.png" style="width: 100%; height: auto;">
+<img src="/security-section-3/18-writeup/writeup1.png" style="width: 100%; height: auto;">
 
 The only thing that's missing is the severity, but don't worry, we'll come back to that a little later. For now, let's go over the structure and content of your initial write-up.
 

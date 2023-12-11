@@ -4,19 +4,19 @@ title: Self-destruct
 
 _follow along with the video_
 
-
-
 ---
 
-In the course of analyzing Solidity - the creation language for Ethereum smart contracts - the `selfdestruct` term is a very crucial concept, initially taught in the Foundry Fill course but might be quickly glossed over. As Ethereum enthusiasts, understanding these key terminologies and functionalities allows us to maximize the possibilities Ethereum offers. The `selfdestruct` is a keyword in Solidity that removes or deletes a contract. But there's something extra special about it.
+## Forever On-chain ... mostly
+
+The next concept I want you to know is that of the `selfdestruct()` keyword in Solidity. In essence this keyword will destroy, or delete a contract.
 
 ## The Unique Characteristic of Selfdestruct
 
-<img src="/security-section-1/14-self-destruct/destruct1.png" style="width: 100%; height: auto;" alt="block fee">
-
 Why `selfdestruct` stands out lies in its exceptional behavior once a contract gets destroyed. Any Ethereum (or ETH) residing within the deleted contract gets automatically ‘pushed’ or ‘forced’ into any address that you specify.
 
-This behavior is not present if a contract doesn't incorporate a Receive or a Fallback function. Only through the use of `selfdestruct` can you be permitted to push any Ethereum into such a contract.
+Under normal circumstances a contract that doesn't contain a receive or fallback function (or some other payable function capable of receiving funds) cannot have ETH sent to it.
+
+Only through the use of `selfdestruct` can you be permitted to push any Ethereum into such a contract.
 
 So if ever you’re hunting for an exploit, or you have identified an attack where you need to force ETH into a contract, `selfdestruct` will be your instrument of choice.
 
@@ -86,12 +86,20 @@ contract Attack {
 
 ```
 
-When we deploy these contracts and interact with the functions, we realize that we are able to `deposit` Ethereum to the `EtherGame` contract but there is a limit set to prevent the game from going over a set target. Without a fallback or receive function, we can't send ETH directly into the contract.
+Looking closely at the above contracts, we can see that `EtherGame` requires `address(this).balance == targetAmount`. The expectation of the protocol is that any user can only deposit 1ETH and each deposit transaction is checked as a winner.
 
-> A wise choice would be to force ETH into a contract via `selfdestruct` and hence blocking the game mechanics, making the game unplayable forever.
+Can you think of how we'd break these invariants?
 
-The `Selfdestruct` keyword will forcefully push value into another smart contract, whether the receiving contract is prepared to receive funds or not.
+By leveraging `selfdestruct(payable(address(etherGame)));` on our `Attack` contract, we can force ETH to the `EtherGame` contract that isn't accounted for.
+
+```js
+if (balance == targetAmount) {
+  winner = msg.sender;
+}
+```
+
+By forcing enough ETH to `EtherGame` we can assure the above condition is never met and a winner is never decided!
 
 ## Conclusion
 
-The `selfdestruct` function is a powerful tool in Ethereum's Solidity language. Use it wisely and with caution. It provides not only a means to delete a contract but also the ability to forcefully push any amount of Ethereum into any other contract address. It also serves as a useful instrument for exploiting smart contracts by forcing Ethereum into places where they don't typically go.
+The `selfdestruct()` function is powerful. It's one of the only ways to force a contract to receive ETH that it doesn't want and in so doing exists as an attack vector for any protocol not prepared for it.
