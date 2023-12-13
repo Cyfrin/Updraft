@@ -4,42 +4,35 @@ title: Exercises
 
 _Follow along with this video:_
 
+---
 
+### Section 2: Excercises
 
 ---
 
-## Continual Learning in Security Research
+🎯 Exercise: `Sign up for at least 1 security/web3 newsletter!`
 
-The landscape of security research changes rapidly. As key players in this space, we need to keep learning and adapting. It's only through constant exposure and education that we can stay ahead of attackers.
+The reason this is so important is that you are now a security _researcher_. Keyword - `researcher`. You need to constantly be learning and taking in new things.
 
-Any time a hack takes place, we have a chance to glean insights from the exploit and to improve our defenses against similar future threats. One efficient way of staying well-informed is by subscribing to security newsletters and reports.
+In this course we're going to be studying other people's reports, studying other audits (using a tool called [**Solodit**](https://solodit.xyz/)) and we'll be continuously learning from previous exploits.
 
-> "Education and learning in the realm of security research are an ongoing journey, not a destination."
+> Exploits in the space are learning opportunities for us to improve as security researchers.
 
-### Solidity and Other Learning Tools
+Here are some newletters/resources to check out:
 
-To get started, there are various resources you can tap into. Here, I'll suggest some that I find particularly helpful:
+- [Blockchain Threat Intelligence](https://newsletter.blockthreat.io/?r=2mgsm7) (referral link)
+- [Solodit](https://solodit.xyz/)
+- [Rekt](https://rekt.news/)
+- [Week In Ethereum](https://weekinethereumnews.com/)
+- [Consensys Diligence Newsletter](https://consensys.io/diligence/newsletter/)
+- [Officer CIA](https://officercia.mirror.xyz/)
 
-1. **Solidit:** We plan to utilise Solidit later on in the journey, and registering now would give you a head start.
-2. **Rekt News:** Personal favourite that gives updates consistently.
-3. **Ethereum weekened &amp; Consensus Diligence Officer CIA:** Excellent sources to sign-up as well.
+With all that said, you've now completed the high-level overview of what this process looks like. You should be very proud of yourself.
 
-Sign up for a resource that suits your needs and preference. What matters is maintaining a continuous stream of information.
+Take a break and prepare to dive into our first audit together - Puppy Raffle.
 
-<img src="/security-section-2/8-exercises/ex1.png" style="width: 100%; height: auto;">
+Section 2 NFT Challenge 👀
 
-## Kick-starting Smart Contract Audit
+[Hardest one of the whole course (Arb)](https://arbiscan.io/address/0xeab9c7ac697408fd1581494577c7c0716c3b75e6)
 
-Now that we've touched base with staying updated, it's time we turned our attention to the central theme of the day — a smart contract audit. This segment will provide a high-level overview of what it is and what the process looks like.
-
-### The Password Store Audit
-
-Particularly, we'll be focusing on the Password Store Audit. At the time of recording, this was a **CodeHawks First Flight Audit**.
-
-Having covered all that, take a moment, take a deep breath, go through your notes or even better, stand up for a little stretch or go get a coffee. Once you’re ready, we will dive into an end-to-end audit with a minimal code base. Our mission? Stopping hackers from destroying our smart contracts and learning plenty about the audit process.
-
-Before we jump into our first audit, make sure to take a break and prepare to give this your all.
-
----
-
-End of lesson - See you next time when we begin our journey into the world of smart contract auditing together!
+[Hardest one of the whole course (Sepolia)](https://sepolia.etherscan.io/address/0x34d130b174f4a30a846fed7c02fcf53a19a4c2b6#code)

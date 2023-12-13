@@ -4,44 +4,77 @@ title: Lesson 2 Recap
 
 _Follow along with this video:_
 
-
-
 ---
 
-## The Basics of Smart Contract Audits
+Congratulations! You've come so far already, let's do a quick recap of what's been covered in this section.
 
-A smart contract audit is essentially a timed, extensive examination, targeting possible security vulnerabilities within a smart contract. But why is it vital?
+### The Basics of Smart Contract Audits
 
-Well, its main function is to ensure that a protocol is as shielded and invulnerable as possible. It's like drawing a hero's map to the treasures of security. Any detected bugs, vulnerabilities, or inefficiencies are noted and suggested fixes, enhancements, or optimizations provided.
+A smart contract audit is a time-boxed security review, looking for security vulnerabilities. The goal here is to inform the protocol on how to be as secure as possible.
 
-However, we must accept that there's no one ultimate solution to auditing or conducting security reviews. So, there's absolutely "no silver bullet," as we may say. It's not a one-size-fits-all scenario. The process is unique for each piece of code and requires custom examination depending on its specific function and architecture.
+### The Fundamentals of a Security Review
 
-## The Fundamentals of a Security Review
+There's no `silver bullet` when it comes to how to perform a security review. Generally, a security review is divided into three stages:
 
-Generally, a security review is divided into three crucial stages:
+1. Initial review
+   - Scoping
+   - Reconnaissance
+   - Vulnerability Identification
+   - Reporting
+2. Protocol Fixes
+   - Protocol fixes issues
+   - Retests and adds tests for changes
+3. Mitigation Review
+   - Reconnaissance
+   - Vulnerability Identification
+   - Reporting
 
-1. Initial review: This phase involves drafting the scope and engaging in reconnaissance.
-2. Write up vulnerabilities: All vulnerabilities are documented in detail.
-3. Protocol fixes: At this stage, the flaws are tackled, and verification is conducted to affirm if the fixes work perfectly.
+### Smart Contract Development Life Cycle
 
 Keep in mind that ensuring security isn’t only a crucial point in the smart contract development lifecycle, it's a continuous, never-ending process!
+
+- Plan & Design
+- Develop & Test
+- Smart Contract Audit & Post Deploy Planning
+- Deploy
+- Monitor & Maintain
 
 > "_Security shouldn't just be an afterthought or some box you check. You need to have a security mindset from day one_".
 
 Thinking about post-deployment planning, monitoring and maintaining is just as important as the development itself.
 
-## Tooling for Security Review
+### Tooling for Security Review
 
-In future posts, we'll be delving into the various tools utilized in conducting security reviews. Trust me, you'll need to get your hands dirty with resources like static analysis, Slither, Adarin, invariant tests and fuzzing form of verification, AI, etc.
+In future posts, we'll be delving into the various tools utilized in conducting security reviews. Trust me, you'll need to get your hands dirty with tools like
 
-Before any project undergoes an audit, it should ideally comply with a safety checklist or preferably, the rect test 100%. Why? Because, as security researchers, we need to be continually learning and evolve.
+Static Analysis
 
-Always remember, be it in 2023, 2024, or 2025, the key is to keep mastering the top attack vectors.
+- [Slither](https://github.com/crytic/slither)
+- [Aderyn](https://github.com/Cyfrin/aderyn)
 
-## Learning from the Past to Secure the Future
+Fuzzing/Invariant Tests
 
-Let's briefly touch on some of the top attacks that took place in 2023, and probably, would recur in the years to come. Take reentrancy, for instance. Since 2016, this issue has lingered, hitting time and again. But there's hope.
+- [Foundry Test Suite](https://github.com/foundry-rs/foundry)
 
-Through this course, our aim is to drop that number to zero! A drop in reentrancy issues to zero, in 2024! An ambitious goal, you say? But one that we must strive for because no one deserves to fall victim to these malicious hacks.
+Formal Verification
 
-Let's bet on improving the security of the crypto ecosystem by starting with your own smart contract, are you ready?
+- [Certora](https://www.certora.com/)
+
+AI
+
+- [Phind](https://www.phind.com/search?home=true)
+- [ChatGPT](https://chat.openai.com)
+- [Co-Pilot](https://github.com/features/copilot)
+- [AI Limitations](https://github.com/ZhangZhuoSJTU/Web3Bugs)
+
+### Audit Readiness
+
+Before a protocol is even ready for an audit, they should consider where they stand on the [**Rekt Test**](https://blog.trailofbits.com/2023/08/14/can-you-pass-the-rekt-test/) or other checklists like nacentxyz's [**simple-security-toolkit**](https://github.com/nascentxyz/simple-security-toolkit)
+
+### Always be Learning
+
+We need to always be improving as security researchers and adopt an `attacker vs defender` mindset. It's only by staying informed and constantly improving that we can stay ahead of the problem.
+
+We touched on top attack vectors that are hitting Web3 to this day (including re-entrancy which has been around since _2016!_).
+
+Hopefully, with you taking this course we can learn from the mistakes in the past and finally reign in the exploitation in Web3.
