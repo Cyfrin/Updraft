@@ -50,3 +50,11 @@ In addition to this, check out the [**Discussions on GitHub**](https://github.co
 <img src="/security-section-1/14-fork-tests/forking1.png" style="width: 100%; height: auto;" alt="block fee">
 
 Congratulations on finishing the refresher! Take a break, you greatly deserve it for getting this far!
+
+---
+
+Section 1 NFT Challenge 👀
+
+[Refresher NFT (Arb)](https://arbiscan.io/address/0x7a0f40757f6ba868b44ce959a1d4b8bc22c21d59)
+
+[Refresher NFT (Sepolia)](https://sepolia.etherscan.io/address/0x76d2403b80591d5f6af2b468bc14205fa5452ac0)

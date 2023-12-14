@@ -4,13 +4,17 @@ title: Rekt Test
 
 _Follow along with this video:_
 
-
-
 ---
 
-## The Rekt Test
+## Audit Readiness
 
-The Rect Test is highly important as it poses a set of questions to gauge your protocol's preparedness for an audit. This tool helps insists that you think about security measures from a more proactive angle. Should your protocols fail to answer these questions, the chances are that they're not audit-ready.
+The concept that once you've had an audit done, you're ready to ship - is wrong. There are two tests that I tell everyone to look at prior to getting a security review one is the [**nacentxyz simple-security-toolkit**](https://github.com/nascentxyz/simple-security-toolkit) and the other is [**The Rekt Test**](https://blog.trailofbits.com/2023/08/14/can-you-pass-the-rekt-test/), by Trail of Bits.
+
+### The Rekt Test
+
+The Rekt Test is highly important as it poses a set of questions to gauge your protocol's preparedness for an audit. This tool forces you to think about security measures from a more proactive angle. Should your protocols fail to answer these questions, the chances are that they're not audit-ready.
+
+<img src="/security-section-2/3-rekt/rekt1.png" style="width: 100%; height: auto;">
 
 The questions touch on several aspects like documentation, security roles, security tools, and protective measures, among others. Here's a curated list:
 
@@ -26,32 +30,20 @@ The questions touch on several aspects like documentation, security roles, secur
 - **Do you undergo external audits and maintain a vulnerability disclosure or bug bounty program?**
 - **Have you considered and mitigated avenues for abusing users of your system?**
 
-<img src="/security-section-2/3-rekt/rekt1.png" style="width: 100%; height: auto;">
-
-As developers, you must be able to answer all these queries before you proceed with an audit. If you're dealing with a protocol that fails to answer these questions, advise them on their lack of readiness and hold off on any audits until they are ready.
+As developers, you must be able to answer all these queries before you proceed with an audit. If you're dealing with a protocol that fails to answer these questions, it's best to tell them the protocol isn't ready to ship, or arguably audit, until they can.
 
 > "Delegate responsibility to someone on your team for security - Give your project a sense of ownership and a point person to handle any security breaches."
 
-While using hardware security keys might seem out of place in a digital space, they act as an additional layer of security that is arguably better than an authentication app or an SMS.
+### Nascent Audit Readiness Checklist
 
-## Nascent Audit Readiness Checklist
+[**This**](https://github.com/nascentxyz/simple-security-toolkit) checklist is another effective method to assess if you're ready for an audit. Though it offers different perspectives, it's another tool that helps you determine if your protocols are prepared for audits.
 
-This checklist is another effective method to assess if you're ready for an audit. Though it offers different perspectives, it's another tool that helps you determine if your protocols are prepared for audits.
+### Next Steps and Post Deployment
 
-## Basic OpSec and Other Essential Steps
+We'll later cover the important of Post Deployment Planning and all that entails, including:
 
-Before we dive into the details of smart contract reviews, let's briefly touch on Basic Operational Security (OpSec). Protocols must fulfill certain requirements that ensure the smooth running of the deployed contracts. This includes running invariants, using automated tools for discovering security issues, maintaining a disclosure program for vulnerability, and most importantly, considering users.
+- Bug Bounty Programs
+- Disaster Recovery Drills
+- Monitoring
 
-## External Audits and Other Security Reviews
-
-An external audit is a powerful tool to ensure the resilience of your code against vulnerabilities. Apart from uncovering potential security risks, these audits also help maintain a Bug Bounty or Vulnerability Disclosure program.
-
-These programs are beneficial as they encourage the identification of system vulnerabilities, thereby improving the overall security of the smart contract. It also creates a sense of accountability towards maintaining a secure system.
-
-## Post-deployment Measures
-
-Even after all the above steps, the process doesn't end with deploying the contract. Post-deployment planning, bug bounties, disaster recovery drills, and diligent monitoring are critical parts of the life-cycle of any smart contract. These measures ensure your readiness to deal with potential hacks and your ability to respond in a timely manner.
-
-<img src="/security-section-2/3-rekt/rekt2.png" style="width: 100%; height: auto;">
-
-)Consider these guidelines as a checklist. If your protocols can't tick off each of these requirements, you should postpone any audits or reviews until your protocol is ready to ship, and more importantly, able to withstand the tests of security after being live.
+Thinking about the steps necessary _after_ deployment really frames a protocols security holistically and ensures readiness to deal with potential exploits and ability to respond quickly.

@@ -4,11 +4,9 @@ title: The Audit (Security Review Process)
 
 _Follow along with this video:_
 
-
-
 ---
 
-When developing smart contracts, understanding and following the audit process is a crucial step towards achieving a more secure protocol. This guide will walk you through the entire audit process from initial review to the final mitigation phase, and why it's important to weave this process throughout your development lifecycle.
+When developing smart contracts, understanding and following the audit process is a crucial step towards achieving a more secure protocol. Here, we'll outline an example of this process.
 
 ## High-Level Overview of The Audit Process
 
@@ -21,29 +19,32 @@ The smart contract audit process can be briefly summed up in these steps:
 
 To illustrate how this pans out in reality, we can look at the Tincho method used to audit ENS – a process that landed him a cool $100,000 payout! We'll delve into this later on.
 
-## Diving Deeper: Breakdown of the Audit Process
+## Breakdown of the Audit Process
 
 For a more detailed perspective, let’s consider the process as broken into three distinct phases:
 
-**Initial Review:** In this phase, auditors go through the code to scope it. This gives an idea of how much time might be required for the audit, which can then be used to establish pricing. Key tasks include identification of all the contract’s dependencies and a general overview of the code. At this stage, auditors don’t dig deep into anything yet.
+**Initial Review:** The initial review of a protocol can also be broken down into 4 distinct phases.
 
-**Reconnaissance:** The actual work begins here. Auditors start looking through the code thoroughly and start utilizing their analysis tools.
-
-**Vulnerability Identification:** Identifying all vulnerabilities and understanding how these vulnerabilities could be exploited. Post identification, a detailed report is written, which comprises all identified vulnerabilities, and importantly, the steps to take to make the protocol more secure.
-
-Your ultimate aim should be to make the protocol more secure. Therefore, ensure to take notes of all findings and steps and elaborate it in your report.
+- Scoping - This is getting a sense of the protocol. In this phase, auditors go through the code to scope it. This gives an idea of how much time might be required for the audit, which can then be used to establish pricing. Key tasks include identification of all the contract’s dependencies and a general overview of the code. At this stage, auditors don’t dig deep into anything yet.
+- Reconnaissance - Here an auditor starts walking through the code, running tools, interacting with the protocol in an effort to break it.
+- Vulnerability Identification - An auditor determines which vulnerabilities are present and how they're exploited as well as mitigation.
+- Reporting - Compile a report detailing all of the identified vulnerabilities and recommendations to make the protocol more secure.
 
 > "Your job is to do whatever it takes to make the protocol more secure."
 
-Difference in Audit Styles: Note that the aforementioned process details a private audit or a traditional security review. For competitive audits, you are typically optimized for time and identifying as many high vulnerabilities as possible.
+**Protocol Fixes:** At this stage the protocol will take an auditor's report and work towards implementing suggested changes and mitigation. The length of time of this period can vary based on complexity of the issues, number of vulnerabilities identified and more.
 
-After handing over the report to the protocol, they should set about implementing every recommended change you've made in your report. Once all vulnerabilities are mitigated, they will hand the code back to you for the final phase.
+**Mitigation Review:** Once a protocol has employed and tested all of the recommended fixes, a review is conducted with a focus on verifying that previously reported vulnerabilities have been resolved.
 
-**Mitigation Review:** This is where you, as the auditor, have to verify that all the changes made actually fix the problems and, importantly, that no new bugs have been introduced.
+Your ultimate aim should be to make the protocol more secure. Therefore, ensure to take notes of all findings and steps and elaborate it in your report.
+
+> Difference in Audit Types: Note that the aforementioned process details a private audit or a traditional security review. For competitive audits, you are typically optimized for time and identifying as many high vulnerabilities as possible.
 
 Remember, the goal of conducting contract audits isn't simply to tick a box. It's about ensuring the security and smooth running of the smart contract at all stages of its lifecycle. The more audits you conduct, the better you become at identifying potential security issues.
 
-<img src="/security-section-2/2-the-audit/the-audit1.png" style="width: 100%; height: auto;">
+<div style="text-align:center">
+<img src="../../../../static/security-section-2/2-the-audit/the-audit1.png" style="width: 75%; height: auto;">
+</div>
 
 ## Embedding Security Audits in Development Lifecycle
 
