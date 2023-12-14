@@ -1,6 +1,7 @@
 import { defineConfig } from "tinacms";
 import { AuthorCollection } from "./collections/author";
 import { CourseCollection } from "./collections/course";
+import { GlobalsCollection } from "./collections/site";
 
 const branch =
   process.env.NEXT_PUBLIC_TINA_BRANCH ||
@@ -23,6 +24,6 @@ export default defineConfig({
     },
   },
   schema: {
-    collections: [AuthorCollection, CourseCollection],
+    collections: [AuthorCollection, CourseCollection, GlobalsCollection],
   },
 });
