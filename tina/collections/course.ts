@@ -6,6 +6,13 @@ export const CourseCollection: Collection = {
   label: "Courses",
   path: "content/courses",
   format: "json",
+  ui: {
+    filename: {
+      slugify: (values) => {
+        return slugify(values?.title || "New Course");
+      },
+    },
+  },
   fields: [
     {
       type: "string",
@@ -262,11 +269,4 @@ export const CourseCollection: Collection = {
       list: true,
     },
   ],
-  ui: {
-    filename: {
-      slugify: (values) => {
-        return slugify(values?.title || "New Course");
-      },
-    },
-  },
 };
