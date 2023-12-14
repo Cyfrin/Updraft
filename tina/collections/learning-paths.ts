@@ -18,7 +18,7 @@ export const LearningPathCollection: Collection = {
       type: "string",
       name: "learningPathId",
       label: "Learning Path ID",
-      required: true
+      required: true,
     },
     {
       type: "string",
@@ -26,6 +26,14 @@ export const LearningPathCollection: Collection = {
       label: "Title",
       isTitle: true,
       required: true,
+    },
+    {
+      type: "string",
+      name: "description",
+      label: "Description",
+      ui: {
+        component: "textarea",
+      },
     },
     {
       type: "object",
