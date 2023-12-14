@@ -11,7 +11,7 @@ export const CourseCollection: Collection = {
       type: "string",
       name: "courseId",
       label: "Course ID",
-      required: true
+      required: true,
     },
     {
       type: "string",
@@ -115,7 +115,7 @@ export const CourseCollection: Collection = {
       ui: {
         itemProps(item) {
           const authorName = item.author
-            .split("/")
+            ?.split("/")
             .pop()
             ?.split(".")
             .shift()
@@ -137,7 +137,7 @@ export const CourseCollection: Collection = {
           type: "string",
           name: "sectionId",
           label: "Section ID",
-          required: true
+          required: true,
         },
         {
           type: "number",
@@ -167,7 +167,7 @@ export const CourseCollection: Collection = {
               type: "string",
               name: "lessonId",
               label: "Lesson ID",
-              required: true
+              required: true,
             },
             {
               type: "number",

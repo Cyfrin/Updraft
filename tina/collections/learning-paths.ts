@@ -50,7 +50,7 @@ export const LearningPathCollection: Collection = {
       ui: {
         itemProps(item) {
           const courseName = item.course
-            .split("/")
+            ?.split("/")
             .pop()
             ?.split(".")
             .shift()
