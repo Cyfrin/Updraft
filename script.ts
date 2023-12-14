@@ -151,6 +151,7 @@ const createCoursesFiles = () => {
       ...courseWithoutId,
       sections: updatedSections,
       authors: updatedAuthors,
+      path: `${learningPathsPath}/${slugify(originalCourse.path)}.json`,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -166,11 +167,11 @@ const createCoursesFiles = () => {
   });
 };
 
-// createFolderIfNotExists("content");
-// createFolderIfNotExists(tinaCoursesPath);
-// createFolderIfNotExists(tinaAuthorsPath);
-// createFolderIfNotExists(learningPathsPath);
+createFolderIfNotExists("content");
+createFolderIfNotExists(tinaCoursesPath);
+createFolderIfNotExists(tinaAuthorsPath);
+createFolderIfNotExists(learningPathsPath);
 
 createLearningPathsFiles();
-// createAuthorsFiles();
-// createCoursesFiles();
+createAuthorsFiles();
+createCoursesFiles();
