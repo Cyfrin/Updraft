@@ -1,5 +1,6 @@
 import { defineConfig } from "tinacms";
-import { AuthorCollection, CourseCollection } from "./collections";
+import { AuthorCollection } from "./collections/author";
+import { CourseCollection } from "./collections/course";
 
 const branch =
   process.env.NEXT_PUBLIC_TINA_BRANCH ||
