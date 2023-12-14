@@ -12,7 +12,6 @@ export const CourseCollection: Collection = {
       name: "courseId",
       label: "Course ID",
       required: true,
-      uid: true,
       ui: {
         component: "hidden",
       },
@@ -141,7 +140,6 @@ export const CourseCollection: Collection = {
           name: "sectionId",
           label: "Section ID",
           required: true,
-          uid: true,
           ui: {
             component: "hidden",
           },
@@ -175,7 +173,6 @@ export const CourseCollection: Collection = {
               name: "lessonId",
               label: "Lesson ID",
               required: true,
-              uid: true,
               ui: {
                 component: "hidden",
               },
