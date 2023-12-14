@@ -12,6 +12,12 @@ export const CourseCollection: Collection = {
         return slugify(values?.title || "New Course");
       },
     },
+    beforeSubmit: async ({ values }) => {
+      return {
+        ...values,
+        updatedAt: new Date().toISOString(),
+      };
+    },
   },
   fields: [
     {

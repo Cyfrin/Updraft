@@ -6,12 +6,19 @@ export const AuthorCollection: Collection = {
   label: "Authors",
   path: "content/authors",
   format: "json",
+  ui: {
+    filename: {
+      slugify: (values) => {
+        return slugify(values?.name || "New Author");
+      },
+    },
+  },
   fields: [
     {
       type: "string",
       name: "authorId",
       label: "Author ID",
-      required: true
+      required: true,
     },
     {
       type: "string",
@@ -36,11 +43,4 @@ export const AuthorCollection: Collection = {
       label: "Company",
     },
   ],
-  ui: {
-    filename: {
-      slugify: (values) => {
-        return slugify(values?.name || "New Author");
-      },
-    },
-  },
 };
