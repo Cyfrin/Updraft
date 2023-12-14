@@ -1,0 +1,12 @@
+{
+  "learningPathId": "6f1ea05f-f353-49f5-8eb4-c3e65f914850",
+  "title": "Foundations",
+  "courses": [
+    {
+      "course": "content/courses/blockchain-basics.json"
+    },
+    {
+      "course": "content/courses/security.json"
+    }
+  ]
+}

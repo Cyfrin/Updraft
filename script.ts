@@ -4,6 +4,7 @@ import Courses from "./courses.json";
 
 const tinaCoursesPath = "content/courses";
 const tinaAuthorsPath = "content/authors";
+const learningPathsPath = "content/learning-paths";
 
 const slugify = (text: string): string => {
   return text
@@ -20,6 +21,69 @@ const createFolderIfNotExists = (path: string) => {
   if (!fs.existsSync(path)) {
     fs.mkdirSync(path);
   }
+};
+
+type LearningPath = {
+  learningPathId: string;
+  title: string;
+  courses: {
+    course: string;
+  }[];
+};
+
+const capitalize = (text: string) => {
+  const words = text.split(" ");
+  const capitalizedWords = words
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+  return capitalizedWords;
+};
+
+const getLearningPaths = (): LearningPath[] => {
+  const allLearningPaths = Courses.map((course) => {
+    return {
+      title: course.path.toLocaleLowerCase(),
+      course: `${tinaCoursesPath}/${course.slug}.json`,
+    };
+  });
+
+  const grouped = new Map<string, { course: string }[]>();
+
+  allLearningPaths.forEach((learningPath) => {
+    const { title, course } = learningPath;
+
+    if (!grouped.has(title)) {
+      grouped.set(title, []);
+    }
+
+    grouped.get(title)?.push({ course });
+  });
+
+  return Array.from(grouped).map(([title, courses]) => {
+    const learningPathId = crypto.randomUUID();
+
+    return {
+      learningPathId,
+      title: capitalize(title),
+      courses,
+    };
+  });
+};
+
+const createLearningPathsFiles = () => {
+  const learningPaths = getLearningPaths();
+
+  learningPaths.forEach((learningPath) => {
+    const { title } = learningPath;
+    const slug = slugify(title);
+    const path = `${learningPathsPath}/${slug}.json`;
+
+    fs.writeFile(path, JSON.stringify(learningPath, null, 2), (err) => {
+      if (err) throw err;
+      console.log(`Learning path file ${slug}.json has been saved!`);
+    });
+  });
 };
 
 const createAuthorsFiles = () => {
@@ -102,8 +166,11 @@ const createCoursesFiles = () => {
   });
 };
 
-createFolderIfNotExists("content");
-createFolderIfNotExists(tinaCoursesPath);
-createFolderIfNotExists(tinaAuthorsPath);
-createAuthorsFiles();
-createCoursesFiles();
+// createFolderIfNotExists("content");
+// createFolderIfNotExists(tinaCoursesPath);
+// createFolderIfNotExists(tinaAuthorsPath);
+// createFolderIfNotExists(learningPathsPath);
+
+createLearningPathsFiles();
+// createAuthorsFiles();
+// createCoursesFiles();

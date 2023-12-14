@@ -1,0 +1,15 @@
+{
+  "learningPathId": "e81724b3-d1ab-4652-a38d-3bf61b3aafa9",
+  "title": "Solidity Developer",
+  "courses": [
+    {
+      "course": "content/courses/advanced-foundry.json"
+    },
+    {
+      "course": "content/courses/foundry.json"
+    },
+    {
+      "course": "content/courses/solidity.json"
+    }
+  ]
+}

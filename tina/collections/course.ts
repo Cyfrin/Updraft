@@ -11,10 +11,7 @@ export const CourseCollection: Collection = {
       type: "string",
       name: "courseId",
       label: "Course ID",
-      required: true,
-      ui: {
-        component: "hidden",
-      },
+      required: true
     },
     {
       type: "string",
@@ -48,9 +45,10 @@ export const CourseCollection: Collection = {
       required: true,
     },
     {
-      type: "string",
+      type: "reference",
       name: "path",
       label: "Path",
+      collections: ["learningPath"],
     },
     {
       type: "string",
@@ -139,10 +137,7 @@ export const CourseCollection: Collection = {
           type: "string",
           name: "sectionId",
           label: "Section ID",
-          required: true,
-          ui: {
-            component: "hidden",
-          },
+          required: true
         },
         {
           type: "number",
@@ -172,10 +167,7 @@ export const CourseCollection: Collection = {
               type: "string",
               name: "lessonId",
               label: "Lesson ID",
-              required: true,
-              ui: {
-                component: "hidden",
-              },
+              required: true
             },
             {
               type: "number",

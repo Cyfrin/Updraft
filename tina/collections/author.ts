@@ -11,10 +11,7 @@ export const AuthorCollection: Collection = {
       type: "string",
       name: "authorId",
       label: "Author ID",
-      required: true,
-      ui: {
-        component: "hidden",
-      },
+      required: true
     },
     {
       type: "string",

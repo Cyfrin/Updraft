@@ -18,10 +18,7 @@ export const LearningPathCollection: Collection = {
       type: "string",
       name: "learningPathId",
       label: "Learning Path ID",
-      required: true,
-      ui: {
-        component: "hidden",
-      },
+      required: true
     },
     {
       type: "string",
@@ -29,6 +26,34 @@ export const LearningPathCollection: Collection = {
       label: "Title",
       isTitle: true,
       required: true,
+    },
+    {
+      type: "object",
+      name: "courses",
+      label: "Courses",
+      fields: [
+        {
+          type: "reference",
+          name: "course",
+          label: "Course",
+          collections: ["course"],
+        },
+      ],
+      ui: {
+        itemProps(item) {
+          const courseName = item.course
+            .split("/")
+            .pop()
+            ?.split(".")
+            .shift()
+            ?.split("-")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+
+          return { label: courseName };
+        },
+      },
+      list: true,
     },
   ],
 };
