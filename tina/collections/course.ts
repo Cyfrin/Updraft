@@ -65,11 +65,6 @@ export const CourseCollection: Collection = {
     },
     {
       type: "string",
-      name: "githubUrl",
-      label: "GitHub URL",
-    },
-    {
-      type: "string",
       name: "trailerUrl",
       label: "Trailer URL",
     },
@@ -219,6 +214,11 @@ export const CourseCollection: Collection = {
               type: "string",
               name: "videoUrl",
               label: "Video URL",
+            },
+            {
+              type: "string",
+              name: "rawMarkdownUrl",
+              label: "Raw Markdown URL",
             },
             {
               type: "rich-text",
