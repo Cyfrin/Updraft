@@ -22,7 +22,7 @@
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 
 <div align="center">
-<h1 align="center"><a href='https://createweb3dapp.alchemy.com/'>Cyfrin Updraft</a> </h1>
+<h1 align="center"><a href='https://updraft.cyfrin.io/'>Cyfrin Updraft</a> </h1>
 
 
 <p align="center"><strong>The ultimate learning platform for web3 developers
@@ -45,18 +45,18 @@
 Welcome to the official GitHub repository for Cyfrin Updraft. This repository houses the written content of our courses, organized to facilitate easy access and contribution from our community.
 Please refer to this for an in depth explanation of the content:
 
--   [Website](https://createweb3dapp.alchemy.com) - Join Cyfrin Updraft and enjoy 50+ hours of smart contract development courses
--   [Twitter](https://github.com/alchemyplatform/create-web3-dapp) - Stay updated with the latest course releases
--   [LinkedIn](https://createweb3dapp.alchemy.com/#templates) - Add Updraft to your learning experiences
--   [Discord](https://createweb3dapp.alchemy.com/#components) - Join a community of 3000+ developers and auditors
--   [Newsletter](https://github.com/alchemyplatform/create-web3-dapp-examples) - Weekly security research tips and resources to level up your career
--   [Codehawks](https://github.com/alchemyplatform/create-web3-dapp-examples) - Smart contracts auditing competitions to help securing web3
+-   [Website](https://updraft.cyfrin.io/) - Join Cyfrin Updraft and enjoy 50+ hours of smart contract development courses
+-   [Twitter](https://twitter.com/CyfrinUpdraft/) - Stay updated with the latest course releases
+-   [LinkedIn](https://www.linkedin.com/school/cyfrin-updraft/) - Add Updraft to your learning experiences
+-   [Discord](https://discord.gg/cyfrin) - Join a community of 3000+ developers and auditors
+-   [Newsletter](https://www.cyfrin.io/newsletter) - Weekly security research tips and resources to level up your career
+-   [Codehawks](https://www.codehawks.com/) - Smart contracts auditing competitions to help securing web3
 
 </br>
 
 
 **Have a question about the courses?**
-- Join us on [Discord]()
+- Join us on [Discord](https://discord.gg/cyfrin)
 - Or refer to the courses' GitHub discussions repositories linked on the lesson pages
 
 
