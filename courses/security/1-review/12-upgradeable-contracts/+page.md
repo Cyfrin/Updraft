@@ -124,7 +124,7 @@ When this is passed to our proxy contract, the contract won't recognize the func
 
 4. Send transaction with the data
 
-Now, when we call the `readStorage()` function, we caan see that the value on our proxy contract has indeed been set to `777`!
+Now, when we call the `readStorage()` function, we can see that the value on our proxy contract has indeed been set to `777`!
 
 This is a great illustration of how data is routed from our proxy contract to the implementation contract. Let's see what happens when we upgrade things by changing the implementation contract.
 
