@@ -4,36 +4,51 @@ title: Scoping CLOC
 
 _Follow along with this video:_
 
-
-
 ---
 
-In this lesson, we'll be going over a crucial step in scoping a contract: getting the stats of the protocol. As a part of this process, we'll be using a widely recognized tool known as CLOC, or Count Lines of Code.
+You may have noticed that we skipped over the `Stats` section of the protocol's README. This section of the documentation is comprised of a line count and complexity rating typically and you should be prepared to calculate these details for your client and use them to estimate the duration of your audit. In this lesson we're going to go over how that's done.
 
-The beauty of CLOC is about its compatibility; it works with pretty much any codebase you work with, be it Solidity, Python, Rust, and so on. It does exactly what it says –counts your lines of code, allowing you to quickly analyze the size and complexity of your projects.
+One of the components of the `Stats` section is `nSLOC` or `number of source lines of code`. A very simple tool exists to help us derive this count.
 
-## Installing and Using CLOC
+[**CLOC**](https://github.com/AlDanial/cloc) - cloc counts blank lines, comment lines, and physical lines of source code in many programming languages. It's compatible with Solidity, Python, Rust and many more.
 
-To use CLOC, the first step is downloading and installing. This can be done from a few different places; a popular method is to simply install via a package manager like NPM, Apt Brew for Mac users, among others. The entire installation process won't be covered here, but it is straightforward enough that anyone proficient in working with such tools should have no trouble.
+### Installing and Using CLOC
 
-Once successfully installed, run CLOC using your terminal. You can verify your installation by running CLOC help. This should give you an output showing a list of useful commands.
+First step is installation. The step by step won't be covered here, but pick the method you're most comfortable with.
 
-To get started, simply run CLOC with the directory or files you want to count the lines of code on. Upon hitting enter, you'll see a concise and detailed output. It will give you a few key stats: the number of files, the number of blank lines, the number of comment lines, and most importantly, the number of actual lines of code.
+```md
+npm install -g cloc # https://www.npmjs.com/package/cloc
+sudo apt install cloc # Debian, Ubuntu
+sudo yum install cloc # Red Hat, Fedora
+sudo dnf install cloc # Fedora 22 or later
+sudo pacman -S cloc # Arch
+sudo emerge -av dev-util/cloc # Gentoo https://packages.gentoo.org/packages/dev-util/cloc
+sudo apk add cloc # Alpine Linux
+doas pkg_add cloc # OpenBSD
+sudo pkg install cloc # FreeBSD
+sudo port install cloc # macOS with MacPorts
+brew install cloc # macOS with Homebrew
+choco install cloc # Windows with Chocolatey
+scoop install cloc # Windows with Scoop
+```
+
+Once successfully installed, verify your installation.
 
 ```bash
-cloc /directory_name
+cloc --help
+```
+
+Once installed, you can run using the command `cloc <directory>`. Our PasswordStore example should look like this:
+
+```bash
+cloc ./src/
 ```
 
 This is what the output might look like:
 
-```shell
-Number of files: 1
-Number of blank lines: 5
-Number of comment lines: 12
-Number of code lines: 20
-```
+<img src="/security-section-3/4-cloc/cloc1.png" style="width: 100%; height: auto;">
 
-## The Importance of Knowing Your Codebase Size
+### The Importance of Knowing Your Codebase Size
 
 Why is knowing the number of source lines of code (also referred to as Nsloc) crucial? The answer lies in the process of auditing and security research.
 
@@ -45,4 +60,6 @@ This is incredibly useful, as with time, you can use your past audit experience 
 
 Often, competitive audits might have a quicker timeline depending on the auditing platform. Upon having a good grasp of your auditing speed, it may assist in selecting competitive audits that align with your capabilities, or even ones that push you to accelerate your pace.
 
-In conclusion, stats like the complexity score and Nsloc are crucial for proper auditing. They not only help you estimate the time taken for an audit but also potentially push you to improve your skills in the process. They are, quite literally, a measure of your codebase—and your abilities.
+### Wrap Up
+
+`Stats` like a protocol's `nSLOC` (number of source lines of code) are very valuable to security reviewers. They afford you the ability to gauge how long an audit will take based on your current skill set and provide more accurate estimates for both the protocol and yourself with respect to timelines and workload.

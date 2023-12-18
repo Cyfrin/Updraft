@@ -6,44 +6,88 @@ _Follow along with this video:_
 
 ---
 
-# Unmasking The Vulnerabilities of Chain Data Visibility
+### The report so far:
 
-Hello, you! Here's an exciting topic that's sure to peak your interest - the valuable teachings of the protocol and its vulnerabilities when dealing with on-chain data storage. We've carefully crafted a compelling and extremely informative blog post. Read on to uncover the potential issues that can occur.
+---
 
-## Crucial Description
+### [S-#] Storing the password on-chain makes it visible to anyone
 
-A fail-proof practice while dealing with data uncovering in blockchain is to equip our auditors with a concise yet educative description. Given the fact that all data stored on-chain is visible to anyone, the assumption that they can be read directly from the blockchain is worryingly accurate.
+**Description:**
 
-Just to illustrate, consider the 'S_password variable' - which is intended to remain private, with its sole accessibility granted via the getPassword function. This function is essentially restricted to the contract's owner.
+**Impact:**
 
-However, the card up our sleeves here is a curious knack of being able to reveal data off-chain. At this point, you must be intrigued to see one method of achieving this. Look no further, it's all here under "proof of concept."
+**Proof of Concept:**
 
-Some of these variables might seemingly sink into oblivion when we're dealing with vast code bases. A widely followed practice in such scenarios is to distinguish variable and function names by highlighting them with backticks and specifying their contract name. For instance, here's how to format them:
+**Recommended Mitigation:**
 
-Now when you view these chunks of code, you immediately know that `S_password` is a variable and `GetPassword` is a function. And not to forget, they are directly fetched from the code base.
+---
 
-## What's The Impact?
+Alright, `title` done. What's next? Let's take a look at description and impact.
 
-Here's a jolt of reality - should anyone access the private password, it dismantles the protocol's functionality entirely. Quite some impact there, isn't it?
+### Description
+
+Our goal here is to describe the vulnerability consicely while clearly illustrating the problem. A description for our finding here might look like this.
+
+---
+
+```
+**Description:** All data stored on chain is public and visible to anyone. The s_password variable is intended to be hidden and only accessible by the owner through the getPassword function.
+
+I show one such method of reading any data off chain below.
+```
+
+---
+
+This looks good, but we can do even better. The bigger a codebase, the more our variables and references are going to get lost. We can fight this with a little bit of markdown formatting and standardizing our naming conventions.
 
 <img src="/security-section-3/15-description/description1.png" style="width: 100%; height: auto;">
 
-## Convincing Proof of Concept
+Consider the above adjustments to our references in the description. By wrapping the variable and function name in backticks we're able to highlight them. Additionally we're prepended the names with reference to the contract in which they're found.
 
-This next section is where we prove that our claims are real concerns and not just theoretical hypotheses. There's a somewhat humorous, albeit cynical, stereotype that dismisses auditors and security researchers as confused individuals trying to convince the protocol gurus about their 'imaginary' findings.
+---
 
-> "Yeah, yeah, sure, whatever, you dumb auditor, you dumb security researcher. I don't believe, you! You're confused."
+```
+**Description:** All data stored on chain is public and visible to anyone. The `PasswordStore::s_password` variable is intended to be hidden and only accessible by the owner through the `PasswordStore::getPassword` function.
 
-Let's change that perception, shall we? The 'proof of concept', sometimes referred to as 'proof of code', is where we do just that. The onus is entirely on us auditors to convince the protocol about its vulnerabilities and their aftermath.
+I show one such method of reading any data off chain below.
+```
 
-Our proof of concept is even more critical during competitive audits. Without it, it's nearly impossible to convince a judging panel about the legitimacy of your findings.
+---
 
-But what if you're dealing with a sophisticated protocol? And perhaps you've already hinted at them that their on-chain data can be read directly off-chain, to which they might react like so:
+This is the kind of clarity we should strive for in our reports!
 
-> "Oh, yes, oh my God, you're right."
+### Impact
 
-Well, in such cases, you might not need to bullish about providing an exhaustive proof of concept. Nevertheless, especially at the early stages of your career, it's advisable to err on the side of elaborate explanation.
+The impact is fairly self-evident, but to articulate it:
 
-That's what we're doing here. To help you visualize the protocol's flaws better, we've constructed a test case that exemplifies how anyone can access the password directly from the blockchain. This is where we attempt to outsmart the approach of reading data directly off the blockchain.
+```
+**Impact:** Anyone is able to read the private password, severly breaking the functionality of the protocol.
+```
 
-To wrap things up, let's remember that while dealing with protocol vulnerabilities, being succinct yet comprehensive is the key towards effective auditing and security research. Happy auditing!
+Putting things together, our report so far should look like this
+
+---
+
+```
+### [S-#] Storing the password on-chain makes it visible to anyone
+
+**Description:** All data stored on chain is public and visible to anyone. The `PasswordStore::s_password` variable is intended to be hidden and only accessible by the owner through the `PasswordStore::getPassword` function.
+
+I show one such method of reading any data off chain below.
+
+**Impact:** Anyone is able to read the private password, severly breaking the functionality of the protocol.
+
+**Proof of Concept:**
+
+**Recommended Mitigation:**
+```
+
+---
+
+### Wrap Up
+
+In the next lesson, we're going to go over `Proof of Concept` sometimes called `Proof of Code`. This is a critical section of our report where we show, irrefutably, that the vulnerability exists and has considerable impact.
+
+This is the section that prevents protocols from disregarding legitmate concerns.
+
+Let's get to the code!

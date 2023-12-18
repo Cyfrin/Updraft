@@ -4,47 +4,52 @@ title: Writing an amazing finding report
 
 _Follow along with this video:_
 
-
-
 ---
 
-## Moving Forward After Identifying Vulnerabilities
+### Phase #4: Reporting
 
 After the identification phase, we are tasked with communicating our findings to the protocol. This phase is crucial on several levels:
 
-1. We need to convince the protocol that the identified vulnerabilities are issues.
-2. The issues require necessary fixes to prevent a recurrence.
-3. Our intention is not merely pointing out the problems but to make the protocol safer.
-4. In a competitive audit, proving the issues to the judges is our primary focus.
+1. We need to convince the protocol that the identified vulnerabilities are valid.
+2. We must illustrate how severe/impactful the issue is
+3. We should also help the protocol with mitigation strategies.
 
 By effectively communicating this information, we position ourselves as educators, helping the protocol understand **why** these vulnerabilities are issues, **why** they were overlooked, and **how** to fix them to avoid running into the same issues in the future.
 
-## Writing Your First Finding
+### Writing Your First Finding
 
-Now comes an incredibly exciting part - doing a minimalistic write up of the vulnerabilities you've found. If this is your first time writing a finding, then buckle up!
+Now comes an incredibly exciting part - doing a minimalistic write up of the vulnerabilities you've found.
 
-For this walkthrough, we'll be using our main GitHub repository, from where we scroll all the way up to the files and look for a file named 'findinglayout.md' This minimalist markdown layout will guide us on what our findings should ideally look like. Here, we can quickly view its raw format and, for convenience, copy it over to our codebase.
+We've prepared a finding template for you, accessible in the course's [**GitHub Repo**](https://github.com/Cyfrin/security-and-auditing-full-course-s23/blob/main/finding_layout.md).
 
-We could create a new folder named 'Audit Data' and a new file marked 'Finding Layout MD' and paste the copied markdown layout here. This way, we have a markdown version of what our findings should look like.
+Open a new file in your project titled `audit-data`, download and copy `finding_layout.md` into this folder.
 
-If you use Visual Studio Code, you can preview the markdown layout by pressing "command Shift V" on a Mac. Fear not if you're on Linux or Windows, just opening the command palette and choosing 'preview Markdown open preview,' you'll get the same result.
+It should look like this when previewed (`CTRL + SHIFT + V`):
 
-## Layout for Your Finding Writeup
+---
 
-You're free to customize the information in your finding writeup as per your style and the severity of the issues found. The aim is to convince the protocol that there's a problem, articulate the severity of the issue, and finally suggest how to fix it.
+### [S-#] TITLE (Root Cause + Impact)
 
-Having copied the markdown layout, we can create a new file called 'Findings MD' and paste the layout here as a starting point for our first finding.
+**Description:**
 
-## Making Your Case
+**Impact:**
 
-Let's say our first finding is that the password variable is not as private as it may initially appear. Despite being marked 'private,' this does not mean that the data is inherently secure, as the keyword just denotes that other contracts can't read it. However, human beings can still read from a stored variable in the blockchain!
+**Proof of Concept:**
 
-To illustrate the vulnerability, we provide the following example:
+**Recommended Mitigation:**
 
-> "The S password variable is not actually private. This is not a safe place to secure your password."
+---
 
-It falls onto us to convince the protocol that the private keyword doesn't impart the level of security they might think, necessitating a change.
+You can customize this however you like, but this minimalistic template is a great starting point.
 
-## Conclusion
+> Remember our goals in this report:
+>
+> - illustrate that the issue is valid
+> - make clear the issue's severity and impact
+> - offer recommendation for mitigation
 
-Writing an audit report demands a deep understanding not only of the protocol's vulnerabilities but also the deft skill in communicating these findings effectively. As you develop your professional style, always remember the importance of your role as an educator. If executed correctly, your findings can drive crucial changes for a more secure protocol in the future.
+### Wrap up
+
+Create a copy of `findings_layout.md`, name it `findings.md` and let's start filling these sections out.
+
+Our first finding is `Private variable's aren't actually private!`
