@@ -4,34 +4,127 @@ title: Recommended Mitigation
 
 _Follow along with this video:_
 
+---
 
+### The report so far:
 
 ---
 
-## The Problem
+<details closed>
+<summary>Finding Report</summary>
 
-Let's start with this premise: You're creating a contract. The main aim of this contract is to store a private password that no one else can see. The contract architecture is such that it guarantees complete security by hiding this password. But imagine finding a glaring bug that breaks this promise. The truth is, maintaining your private password's security isn't a piece of cake, especially in the current architecture. The question is, how can we work around this issue?
+### [S-#] Storing the password on-chain makes it visible to anyone
 
-"To be honest, this isn't an easy problem to solve. And this is where the importance of having a security mindset from day one comes into play" -_Anonymous_.
+**Description:** All data stored on chain is public and visible to anyone. The `PasswordStore::s_password` variable is intended to be hidden and only accessible by the owner through the `PasswordStore::getPassword` function.
 
-## Mitigation Starts with the Mindset
+I show one such method of reading any data off chain below.
 
-Great developers, particularly those at the helm of solidity and smart contract development, have a security-first mindset from the get-go. This means that they factor in security loops and potential threats right from the outset, ensuring that the whole system architecture leans towards security as its major prop. So what's their secret to creating hack-proof smart contracts? How do we actually mitigate such issues?
+**Impact:** Anyone is able to read the private password, severaly breaking the functionality of the protocol.
 
-## Re-Thinking the Architecture
+**Proof of Concept:** The below test case shows how anyone could read the password directly from the blockchain. We use foundry's cast tool to read directly from the storage of the contract, without being the owner.
 
-Let's examine this scenario: A bug in your contract deems it useless. So, the question becomes, how do we create a contract that stays strong despite all odds? Well, the overall architecture of the contract needs to be re-evaluated and restructured.
+Create a locally running chain
 
-### An off-chain encryption solution?
+    make anvil
 
-One approach could be to encrypt the password off-chain, then store the encrypted password on-chain. This would require an additional password that the user must remember for decrypting purposes.
+Deploy the contract to the chain
 
-Take note, though, if you're considering this approach, you'll likely want to remove the view function. This prevents the user from having to send a transaction with the password that decrypts your password most of the time.
+    make deploy
 
-## Wrapping Up: Rethinking Security as Educators
+Run the storage tool
 
-Recommended mitigations might include specifying the code changes you want to implement. However, because an entire architectural reconstruction is required, text-format suggestions should suffice.
+    cast storage <ADDRESS_HERE> 1 --rpc-url http://127.0.0.1:8545
 
-As security researchers, our role veers more towards being security educators. Our goal is to educate about clever methods of securing protocols to ensure forward safety and credibility. If you think you can provide a better mitigation method or strategy, I'm inviting you to contribute to the discussion and broaden our collective knowledge.
+_We use 1 because that's the storage slot of `PasswordStore::s_password`._
 
-By doing so, you're helping create a future where bugs like these are a thing of the past, and each new challenge brings us one step closer to creating safer and more secure smart contracts. Let's challenge ourselves to come up with better ways to secure our future in the ever-evolving world of blockchain and smart contracts. Never forget, your contribution can make a significant difference!
+You'll get an output that looks like this:
+
+    0x6d7950617373776f726400000000000000000000000000000000000000000014
+
+You can then parse that hex to a string with:
+
+    cast parse-bytes32-string 0x6d7950617373776f726400000000000000000000000000000000000000000014
+
+And get an output of:
+
+    myPassword
+
+**Recommended Mitigation:**
+
+</details>
+
+---
+
+### Recommended Mitigation
+
+We're nearly there. Next we have to pass on our expert experience with a recommendation that will keep this protocol safe!
+
+This finding in `PasswordStore` kinda leaves us in a tough spot. We can't just suggest an adjustment to the code to fix things - the problem is fundamentally tied to the goals/architecture of the protocol. A recommendation in a situation like this might look like:
+
+---
+
+```
+**Recommended Mitigation:** Due to this, the overall architecture of the contract should be rethought. One could encrypt the password off-chain, and then store the encrypted password on-chain. This would require the user to remember another password off-chain to decrypt the stored password. However, you're also likely want to remove the view function as you wouldn't want the user to accidentally send a transaction with this decryption key.
+```
+
+---
+
+I challenge you to write something you'd think is more appropriate, or better expresses what the protocol could do in a situation like this!
+
+Here's our report now:
+
+<details closed>
+<summary>Finding Report</summary>
+<br>
+### [S-#] Storing the password on-chain makes it visible to anyone
+<br>
+<br>
+**Description:** All data stored on chain is public and visible to anyone. The `PasswordStore::s_password` variable is intended to be hidden and only accessible by the owner through the `PasswordStore::getPassword` function.
+<br>
+<br>
+I show one such method of reading any data off chain below.
+<br>
+<br>
+**Impact:** Anyone is able to read the private password, severaly breaking the functionality of the protocol.
+<br>
+<br>
+**Proof of Concept:** The below test case shows how anyone could read the password directly from the blockchain. We use foundry's cast tool to read directly from the storage of the contract, without being the owner.
+<br>
+<br>
+
+Create a locally running chain
+
+    make anvil
+
+Deploy the contract to the chain
+
+    make deploy
+
+Run the storage tool
+
+    cast storage <ADDRESS_HERE> 1 --rpc-url http://127.0.0.1:8545
+
+<br>
+*We use 1 because that's the storage slot of `PasswordStore::s_password`.*
+<br>
+<br>
+You'll get an output that looks like this:
+
+    0x6d7950617373776f726400000000000000000000000000000000000000000014
+
+You can then parse that hex to a string with:
+
+    cast parse-bytes32-string 0x6d7950617373776f726400000000000000000000000000000000000000000014
+
+And get an output of:
+
+    myPassword
+
+<br>
+**Recommended Mitigation:** Due to this, the overall architecture of the contract should be rethought. One could encrypt the password off-chain, and then store the encrypted password on-chain. This would require the user to remember another password off-chain to decrypt the stored password. However, you're also likely want to remove the view function as you wouldn't want the user to accidentally send a transaction with this decryption key.
+
+</details>
+
+### Wrap Up
+
+Our report is looking so professional! Let's recap everything in the next lesson before we move on to the next vulnerability we found.

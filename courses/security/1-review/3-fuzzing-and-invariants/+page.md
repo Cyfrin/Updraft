@@ -25,10 +25,10 @@ Let's dark dive deeper into what such a function could look like:
 ```js
 function doStuff(uint256 data) public {
     if (data == 2){
-        shouldAlwaysBezero = 1;
+        shouldAlwaysBeZero = 1;
     }
     if(hiddenValue == 7) {
-        shouldalwaysBeZero = 1;
+        shouldAlwaysBeZero = 1;
     }
     hiddenValue = data;
 }

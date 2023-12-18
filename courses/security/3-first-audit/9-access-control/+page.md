@@ -4,51 +4,61 @@ title: Exploit Access Controls
 
 _Follow along with this video:_
 
-
-
 ---
 
-# Discovering a Bug: How to Identify Vulnerabilities
+### The First Vulnerability
 
-Welcome to a bug hunting expedition! In today's post, we'll be breaking down some code hoping to locate a typical and highly common vulnerability, the missing access control error. By identifying and examining this mistake within a given function, let's dive in and uncover its layers.
+Already you may have spotted a vulnerability in this function. Take a moment before reading on to try to find it.
 
-Remember, even if the bug seems glaringly obvious or you struggle to find it, our mission today is learning how to identify such issues in code.
+```js
+    /*
+     * @notice This function allows only the owner to set a new password.
+     * @param newPassword The new password to set.
+     */
+    function setPassword(string memory newPassword) external {
+        s_password = newPassword;
+        emit SetNetPassword();
+    }
+```
 
-## The Bug
+The function's `NatSpec` gives us a clear `invariant` - "..only the owner..". This should serve as a clue for what to look for and we should as ourselves...
 
-Let's refer to the documentation and function at hand. The former states that "this function allows only the owner to set a new password". Given this crucial detail, can you locate the bug?
+> _Can anyone **other** than the **owner** call this function?_
 
+At first glance, there doesn't seem to be anything preventing this. I think we've found something! Let's be sure to make notes of our findings as we go.
 
-The function, `setPassword`, receives `string memory new password` and is marked `external`, meaning it automatically allows for a new password to be set. Can you spot the achilles heel here?
+```js
+    /*
+     * @notice This function allows only the owner to set a new password.
+     * @param newPassword The new password to set.
+     */
+    // @Audit - High - any user can set a password.
+    function setPassword(string memory newPassword) external {
+        s_password = newPassword;
+        emit SetNetPassword();
+    }
+```
 
-## Questioning Code
+> **Note**: We'll explain `High` and how to determine a finding's severity later in the course.
 
-Often, making sense of code requires asking the right questions like, "Can a non-owner set the password?" Now, if this is true (as it seems to be), it blatantly contravenes our function description, thereby ringing some alarm bells.
+### The Bug Explained
 
-"Should a non-owner be allowed to set a password?" A rhetorical question really, since anyone but the owner getting their hands on the password could brew trouble. Since the documentation rules this scenario out, it implies that we’ve sniffed out an issue.
+What we've found is a fairly common vulnerability that protocols overlook. `Access Control` effectively describes a situation where inadequate or inappropriate limitations have been places on a user's ability to perform certain actions.
 
-To tie in code practice with our deduction, you could make this observation in your code by writing an audit comment, such as `@audit`. Usually, a high severity alarm since any user has the potential to change the password, leaving your system vulnerable to attack.
+In our simple example - only the owner of the protocol should be able to call `setPassword()`, but in its current implementation, this function can be called by anyone.
 
-## Uncovering Vulnerabilities
+I'll stress again the value of taking notes throughout this process. In-line comments, formatted properly are going to make returning to these vulnerabilities later for reassessment much easier and will keep you organized as you go.
 
-During this recon phase, our keen detective work segues into a vulnerability identification phase. We've unearthed a common but significant vulnerability - the missing access control bug. This type of vulnerability surfaces when a function that is only supposed to be accessible by a particular user role is, in fact, accessible to all.
+```js
+// @Audit - Any user can set a password - Access Control
+```
 
+Clear and concise notes are key.
 
-Consequently, we've noticed a significant vulnerability in our function. Kudos to us! As a best practice, it's advisable to take a note of such findings, preferably with the `@audit` tag, and revisit at a later point.
+### Wrapping Up
 
-It's important to remember that even if at first, it seems like a vulnerability, a closer look might reveal otherwise. For now, let's pat ourselves on the back for potentially uncovering this security risk!
+We did it! We found our first vulnerability. Don't worry if you couldn't spot the issue on your own, much of security research is familiarizing ourselves with these bugs and educating ourselves to more readily spot issues in the future. Experience goes a _long_ way.
 
+We also emphasized the importance of taking notes as we perform our review. This allows us clear reference to these areas of concern later in the audit.
 
-
-## The Triumph of Bug Discoveries
-
-If you were able to pick up on the incongruity before it was pointed out, terrific job! That's a definitive sign that one is on the right track. However, if it slipped past your radar, don’t fret. Security is a vast field, demanding occasional rewiring of our conventional thought processes.
-
-Let's consider this as an exciting learning experience. Even if you didn't catch the bug but jotted down notes, you're making progress. Being vigilant enough to take notes is certainly a step in the right direction, and recognizing that we may have found a bug is a victory in itself!
-
-# Wrapping Up
-
-Through this exercise, we deeply whoop it up for potentially making this protocol more secure. We have identified a consequential access control issue- a significant stride towards solidifying our system’s defense and aware development.
-
-Let's forge ahead, keeping this rigorous bug-checking mindset as we continue walking through more lines of code.
-
+Let's see if we can find more bugs in the next lesson!

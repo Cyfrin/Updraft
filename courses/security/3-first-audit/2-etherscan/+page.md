@@ -4,59 +4,52 @@ title: Scoping Raw Etherscan
 
 _Follow along with this video:_
 
-
-
 ---
 
-In this lesson, we'll examine the initial steps of performing a security review with live examples, focusing on a Password Store audit. I'm going to take a deep-dive into the scoping phase, which is the primary step in conducting a security review.
+## Phase 1: Scoping
 
-## The Scoping Phase and Initial Review
+In this lesson, we'll examine the initial steps of performing a security review using our PasswordStore codebase. I'm going to take a deep-dive into the scoping phase, which is the primary step in conducting a security review.
 
-The scoping phase is where we receive the contract and fathom the scope of the review for this particular security audit of a Password Store. Conventionally, like any other audit exchange, the codebase will be solicited for immediate auditing with the end goal of gaining official listing.
+### The Scoping Phase and Initial Review
+
+The scoping phase is the point we initially receive a codebase for review and we perform a high level assessment.
 
 Imagine a scenario like this:
 
-_CLIENT: "Hi, we're the Password Store audit team looking to get our codebase audited ASAP to get it listed officially."_  
-_AUDITOR: "Hi Password Store, I'm beginner auditor number one. Really excited to help. Could you send your codebase to me?"_  
-_CLIENT: "Sure, here's the etherscan link to our codebase."_
+_CLIENT: "Hi, we're the PasswordStore dev team looking to get our codebase audited ASAP to get it listed officially."_
 
-This exchange is all too common. However, it poses a high risk.
+_AUDITOR: "Hi PasswordStore, I'm beginner-auditor. Really excited to help. Could you send your codebase to me?"_
+
+_CLIENT: "Sure, here's the etherscan link to our codebase." [**PasswordStore CodeV1**](https://sepolia.etherscan.io/address/0x2ecf6ad327776bf966893c96efb24c9747f6694b)_
+
+This exchange is all too common, and it's horrible. It's your responsibility as a security researcher to not audit codebases provided to you in this way.
 
 Why?
 
-Because what you've received is simply an etherscan link to the contract that's been verified on-chain. While it's great that it's been verified on-chain, this should immediately raise a red flag. It's not acceptable to perform an audit or a security review on a code base that is exclusively on Etherscan.
-
-## The Downside of Relying On Etherscan Exclusively
-
-The point of security reviews is not just to detect bugs but also to get an understanding of the code's maturity level. You can't gage things like whether they've a test suite, a deployment suite or an evaluation of the overall maturity of the codebase just by looking at an exclusively Etherscan-based codebase. As a security researcher, our aim is to promote and propagate secure codebases, leaving all protocols interacting with us better equipped to secure their own code.
+As security researchers, you're looking for more than bugs. You're looking for code maturity. If all you have is a codebase on etherscan, if there's no test suite, if there's no deployment suite you should be asking: `how mature is this code?`
 
 > **Remember: Secure protocols not only safeguard the code but also our reputation as researchers. They will likely blame us for a security breach if we've audited a compromised codebase.**
 
-If all they provide is an etherscan link, can you assure the protocol's safety? In these cases, the answer is a harty **NO**.
+If all they provide is an etherscan link, can you assure the protocol's safety? In these cases, the answer is a resounding **NO**.
 
-## Nowhere to Start: The Danger of Limited Documentation
+### Audit Readiness
 
-So how, then, should we start with this etherscan link review?
+One of the first things we covered when discussing preparing for an audit was the concept of `Audit Readiness` and steps protocols should take prior to requesting an audit.
 
-Going back to what we learned about **audit readiness**, there's a simple security checklist and the **rect test** that proves handy.
+You should recall the [**Rekt Test**](https://blog.trailofbits.com/2023/08/14/can-you-pass-the-rekt-test/) from a previous lesson.
 
-The **_rect test_** probes for:
+How does your client's protocol stand up against these questions?
 
-1. Documentation of all actors, roles, and privileges,
-2. Documentation of all the external services, contracts and oracles,
-3. Is there a written and tested incident response plan?,
-4. Documentation of the best ways to attack the system,
-5. Identity verification,
-6. Security definitions.
+<img src="/security-section-2/3-rekt/rekt1.png" style="width: 100%; height: auto;">
 
-If a codebase only provides an Etherscan link, it's hard-pressed to pass this test. Remember this rule:
+If all they've provided you is an Etherscan link - the answer is poorly.
 
 > **If you're offered monetary reward to audit an Etherscan-only codebase, that's a red flag. Say NO. Doing otherwise contradicts our mission to promote secure protocols.**
 
-### Proactive Steps: Questions to Ask Your Client
+Do not take clients who have not shown the same commitment to security in their codebase as you would. If you work with clients like those described above, it should be to educate them on how to write good tests and how to prepare their code for a review.
 
-To ensure the more secure protocol, ask your client these rect test questions. If the protocol insists that they're not planning to install a test suite, offer to do it for them, after they pay for the additional consulting fee. Weighing on the side of caution, you might ask:
+_AUDITOR: "Hi, PasswordStore. Thank you so much for this Etherscan link, this is a great start. However, do you have a test suite? We want to have every assurance that your codebase is safe and secure. Do you have a Git Repo or GitHub with a testing framework?"_
 
-> **"Do you have a test suite? We want to be sure that your codebase is safe and secure. Do you have a Git repo, perhaps on Github or GitLab, where you have a testing framework related to this codebase?"**
+_CLIENT: "AH! Yes, Sorry. We have a Foundry Test repo set up for this, let me send you that Git codebase."_
 
-Most likely, they'll appreciate your considerably detailed observation, and provide the necessary information. Adhering to these steps will ensure a more thorough, and overall secure, audit of the codebase. This approach emphasizes our goal as security professionals to leave protocols interacting with us better educated on code security - the first step towards a safer digital world.
+If a protocol's response to your care in securing them isn't like they above, and they begin pressuring you - walk away. It's evidence that security isn't their focus.

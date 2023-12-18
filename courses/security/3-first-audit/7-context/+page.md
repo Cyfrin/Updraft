@@ -4,52 +4,65 @@ title: Recon - Getting Context
 
 _Follow along with this video:_
 
-
-
 ---
 
-## First Step: Understanding The Codebase
+### First Step: Understanding The Codebase
 
-The first thing we must do is clone the repository, centralising all our resources. After successfully cloning the repo, our mission is to understand the _raison d'être_ of the code base. To do this, we'll utilize the 'doc'—an informational guide that deciphers a program's intentions and functionalities.
+Alright, we're ready to begin our recon, if you haven't already clone the repo our client has provided us.
 
-1. Start by opening the 'docs'.
-2. If you’re using a Mac, hit `CTRL + SHIFT + V` to enter the README view state.
-3. Don’t worry if you're not a Mac user: open the command palette and enter `markdown open preview` to view README in its shining glory.
+```bash
+git clone https://github.com/Cyfrin/3-passwordstore-audit.git
+cd 3-passwordstore-audit
+code .
+```
 
-_Quick tip: Check if an extension must be installed for Vs code if it's not working for you._
+If we're following `The Tincho` method, our first step is going to be reading the docs and familiarizing ourselves with the codebase. In VS Code, you can click on the `README.MD` file in your workspace and use the command `CTRL + SHIFT + V` to open the preview mode of this document.
 
-<img src="/security-section-3/7-context/context1.png" style="width: 100%; height: auto;">
+> You can also open the preview pane by opening your command pallet and typing `markdown open preview`.
 
-Perusing through the docs, we can deduce that this operates as a smart contract application for storing passwords. Here's how it functions: users can securely store their passwords and retrieve them later, with the assurance that unwanted entities won't gain access to them.
+_Quick tip: Check if an extension must be installed for Vs Code if it's not working for you._
 
-Great! Now we have context and enough background info to start thinking of potential attack vectors. For instance, is there a vulnerability in the code that might make it possible for unauthorized individuals to access the stored passwords?
+<img src="/security-section-3/7-context/context2.png" style="width: 100%; height: auto;">
 
-## Next Phase: Scoping Out The Files
+Already, we should be thinking about potential attack vectors with the information we've gleaned.
 
-Our next step involves an indispensable tool: Solidity Metrics. This extension is integral to exploring our codebase, identifying file lengths, capturing the call graph, and more.
+_Is there any way for an unauthorized user to access a stored password?_
 
-1. Find Solidity Metrics on the Visual Studio code marketplace.
-2. Once installed, right-click on the visuals of the files and select 'Run Solidity Metrics'. After this action, a report will be generated.
+Once you've finished reading through the documentation, we can proceed to...
 
-_Further Quick Tip: If you're a Windows user, employ the Ctrl+Click method._
+### Scoping Out The Files
+
+Following Tincho's advice our next step will be to organize the files of the protocol in scope and assess their respective complexity. (Spoiler, this first example is pretty simple).
+
+1. Download and install the [**Solidity Metrics**](https://marketplace.visualstudio.com/items?itemName=tintinweb.solidity-metrics) extension for VS Code.
+
+<img src="/security-section-3/7-context/context3.png" style="width: 100%; height: auto;">
+
+2. Once installed, you can right-click the appropriate folders to run the tool on and select `Solidity: Metrics` from the context menu.
+
+> _Pro-tip: If your repo has more than one applicable folder, you can CTRL + Click to select multiple simultaneously._
+
+<img src="/security-section-3/7-context/context4.png" style="width: 100%; height: auto;">
 
 After generating the report, navigate to the command palette and locate 'export this metrics report'. Once exported, you'll have HTML access to the report for future reference.
+
+<img src="/security-section-3/7-context/context5.png" style="width: 100%; height: auto;">
 
 Applying Tincho's methodology to this process, we can:
 
 1. Scroll down to the section containing the various files and their lengths.
 2. Copy this info and paste it onto any platform that allows for easy viewing and comparison— like Google Sheets or Notion.
 
-Please note that if your codebase contains a solitary file like ours, this step won't be necessary.
+> Please note that if your codebase contains a solitary file like ours, this step won't be necessary.
 
-Nevertheless, Solidity Metrics showcases its versatility and potency when dealing with Solidity codes. It effortlessly weeds out any node modules, tests, libraries while concurrently enriching the user experience with its easy-to-navigate interface - case in point, the inheritance graph, the call graph, and the contracts summary.
+Some aspects I'll draw your attention to in this metrics report are the `Inhertance Graph`, `The Call Graph`, and `The Contracts Summary`. It's not super obvious with such a simple protocol, but these are going to provide valuable insight down the line. Familiarize yourself with them now (way at the bottom).
 
-> “Public and external functions are going to be the ones that people can actually call. So these are going to be the ones that if a hacker wants to attack this, these are probably the functions that they're going to call.”
+<img src="/security-section-3/7-context/context6.png" style="width: 100%; height: auto;">
 
 Understanding your codebase and its functionalities is the first step towards securing it.
 
-## Moving Forward: Time for Detailed Recon
+### Wrap Up
 
-Now that we've used Solidity Metrics to understand the project codebase, we can identify potential security issues and verify the uncertainty around external access points. Let's walk through the codebase of the SRC password store.
+Now that we've got a sense of what lies before us, with the help of our tools like CLOC and Solidity Metrics, we're ready to assess the code.
 
-Tune in to the next blog post to continue with me on this walkthrough of the code base, where we’ll be exploring potential vulnerabilities and strengthening our codebase. This is only the beginning: stay curious, and keep learning!
+Let's see what we can find.

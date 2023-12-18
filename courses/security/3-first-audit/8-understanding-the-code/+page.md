@@ -4,48 +4,107 @@ title: Recon - Understanding the Code
 
 _Follow along with this video:_
 
-
-
 ---
 
-## How Tincho Cracked the Code
+### How Tincho Cracked the Code
 
-Tincho, a prominent security researcher, shared an interesting method to hack through an encrypted code: walking through the code line-by-line. This method might seem like he was looking for bugs/vulnerabilities in the code. But actually, he was just trying to understand the codebase better. In essence, understanding the functionalities and architecture of the code forms the first and most important part of code inspection.
+Tincho, was very pragmatic in his approach, literally going through the code line by line. This method might seem like he was looking for bugs/vulnerabilities in the code. But actually, he was just trying to understand the codebase better. In essence, understanding the functionalities and architecture of the code forms the first and most important part of code inspection.
 
 So let's take it from the top, just like Tincho did…
 
-## Step 1: Understanding What the Codebase Is Supposed to Do
+### Understanding What the Codebase Is Supposed to Do
 
-Before you start scrutinizing the code, it's crucial to comprehend the purpose of the code. In our case, the codebase allows users to store their passwords securely.
+Our client's documentation has let us know what the intended functionality of the protocol are. Namely: A user should be able to store and retreive their password, no one else should be able to see it.
 
-## Step 2: Scanning the Code from the Top
+Let's try to find this functionality within the code as we go through things line by line.
+
+### Scanning the Code from the Top
 
 After gaining a fundamental understanding, you can start going through the code. You can jump directly to the main functionality. However, to keep things simple, let's just start right from the top and start working our way down.
 
-On observing the code carefully, we find that the Solidity compiler language version is 0.8.18. Although this is not the most recent version (quite normal), trying to understand if this was the correct compiler version can be a query. So, mark it with something like `Q: Is this the correct compiler version?`
+First Lines:
 
-## Step 3: Taking Notes
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.18;
+```
 
-While walking through the code, you can jot down some points in a `Notes.md` file. These could include your thoughts, attack vectors, or even a summary of the project. You can also mark queries that you can come back to later.
+The open source license seems fine. A compiler version of `0.8.18` may not be an immediate concern, but we do know that this isn't the most recent compiler version. It may be worthwhile to make note of this to come back to.
 
-> **Bonus Tip**: Some security researchers, like Zero Kage from the Cypher team, even print the source code and use different color highlighters to visualize the codebase better.
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.18; // Q: Is this the correct compiler version?
+```
 
-## Step 4: Observing the Code Structure and Naming Convention
+Formatting our in-line comments in a reliable way will allow us to easily come back to these areas later by leveraging search.
 
-On further deep-diving, we find some well-followed conventions, state variables like `sowner` and `s_password`, and an event `set_new_password`. The good convention use adds points to the code strength, while a poorly followed convention may raise some questions.
+<img src="/security-section-3/8-understanding-code/understanding1.png" style="width: 100%; height: auto;">
 
-## Step 5: Reading the Documentation
+### Taking Notes
 
-Next, we find some extensive documentation written as comments. This documentation gives additional context about the functionality of the protocol.
+As Tincho had advised, creating a separate file to dump thoughts into and compile notes can be a valuable organizational tool. I like to open a file called `.notes.md` and outline things like potential `attack vectors`
 
-## Step 6: Identifying Functions
+> **Pro Tip**: Some security researchers, like 0Kage from the Cyfrin team, even print the source code and use different colour highlighters to visualize the codebase better.
 
-We can see a function here where only the owner can set a new password. Gaining clarity about this function is vital, as this is part of the main functionality of the code. And in the case of poor documentation, it can be helpful to ask the protocol directly about a function.
+### Moving Further
 
-For example, if the function isn't clear, note down the question like `Q: What does this function do?`
+Next we see some `NatSpec` comments like this can be considered **extended documentation** and will tell us more about what the protocol is expected to do.
 
-It's paramount to get a context about the code base, and these questions, comments, and annotations will help you achieve that.
+```js
+/*
+ * @author not-so-secure-dev
+ * @title PasswordStore
+ * @notice This contract allows you to store a private password that others won't be able to see.
+ * You can update your password at any time.
+ */
+```
 
-## Final Word
+The intended functionality is pretty clear. Maybe we want to jot this down in our `.notes.md`.
 
-Though this might seem like a simple walkthrough, it’s a process that will help you understand the core functioning of any codebase. Remember, the idea is not to hunt for bugs in the first go, but to understand what the code does. As you get to know the code more, you’ll identify its bugs and vulnerabilities. Happy coding!
+Let's consider things upto our constructor.
+
+<img src="/security-section-3/8-understanding-code/understanding2.png" style="width: 100%; height: auto;">
+
+Everything looks great so far, the client is using some clear standard naming conventions.
+
+**Hypothetically**, were the naming conventions poor, we might want to make an informational note.
+
+```js
+contract PasswordStore {
+    // I - naming convention could be more clear ie 'error PasswordStore__NotOwner();'
+    error NotOwner();
+}
+```
+
+In the example above we use `// I` for `informational` findings, but use what feels right for you.
+
+> **Pro Tip** - I like to use a package called [**headers**](https://github.com/transmissions11/headers) by `transmissions11`. It allows me to clearly label areas of a repo I'm reviewing.
+
+## Looking at Functions
+
+Alright, we've reached the functions of this protocol. Let's assess the `setPassword()` function first. Fortunately, we again have `NatSpec` to consider.
+
+```js
+    /*
+     * @notice This function allows only the owner to set a new password.
+     * @param newPassword The new password to set.
+     */
+    function setPassword(string memory newPassword) external {
+        s_password = newPassword;
+        emit SetNetPassword();
+    }
+```
+
+Sometimes a protocol won't have clear documentation like the above. This is where clear lines of communication between the security reviewer and the client are fundamental, as Tincho advised.
+
+Were things less clear, it may be appropriate to leave a note to ask the client.
+
+```js
+// Q What's this function do?
+```
+
+It can't be stressed enough, clarity in our understanding of the codebase and the intended functionalities are a _necessary_ part of performing a security review.
+
+### Wrap Up
+
+This has been a great start getting our hands on the code and applying a critical/adversarial frame of mind. You may already have spotted a vulnerability, we'll be taking a closer look in our next lesson!
