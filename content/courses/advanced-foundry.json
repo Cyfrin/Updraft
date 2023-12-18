@@ -3,12 +3,13 @@
   "title": "Advanced Foundry",
   "slug": "advanced-foundry",
   "folderName": "advanced-foundry",
-  "lastUpdated": "Mon Dec 11 2023 12:04:08 GMT-0500 (Eastern Standard Time)",
+  "lastUpdated": "Thu Dec 14 2023 10:13:11 GMT-0500 (Eastern Standard Time)",
   "trailerUrl": "",
   "previewImg": "https://res.cloudinary.com/droqoz7lg/image/upload/v1701193477/updraft/courses/y2uthyu5atnxhhd8aar6.png",
   "description": "Become a Foundry expert! Learn advanced techniques to develop, deploy, test, optimise and interact with your smart contract using industry standard tools used by the top smart contracts engineers in web3",
   "path": "content/learning-paths/solidity-developer.json",
   "number": 0,
+  "githubUrl": "https://github.com/Cyfrin/path-solidity-developer-2023/discussions",
   "overview": {
     "learnings": "Foundry, stablecoins, DeFi, DAOs, advanced smart contract development, advanced smart contracts testing, fuzz testing, manual verification",
     "preRequisites": [
@@ -1101,6 +1102,6 @@
       ]
     }
   ],
-  "createdAt": "2023-12-15T07:38:20.419Z",
-  "updatedAt": "2023-12-15T07:38:20.419Z"
+  "createdAt": "2023-12-18T15:14:18.685Z",
+  "updatedAt": "2023-12-18T15:14:18.686Z"
 }
