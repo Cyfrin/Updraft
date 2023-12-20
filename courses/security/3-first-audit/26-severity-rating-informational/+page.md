@@ -4,44 +4,72 @@ title: Severity Rating Assesing Informational/Gas/Non-Crit
 
 _Follow along with this video:_
 
+---
 
+## Finding #3
+
+### [S-#] The 'PasswordStore::getPassword` natspec indicates a parameter that doesn't exist, causing the natspec to be incorrect
+
+<details closed>
+<summary>Impacts and Likelihoods</summary>
+
+1. **High Impact**: `funds` are directly or nearly `directly at risk`, or a `severe disruption` of protocol functionality or availability occurs.
+2. **Medium Impact**: `funds` are `indirectly at risk` or there’s `some level of disruption` to the protocol’s functionality.
+3. **Low Impact**: `Fund are not at risk`, but a function might be incorrect, or a state handled improperly etc.
 
 ---
 
-# Understanding the Severity of Blockchain Protocol Findings
+4. **High Likelihood**: Highly probably to happen.
+   - a hacker can call a function directly and extract money
+5. **Medium Likelihood**: Might occur under specific conditions.
+   - a peculiar ERC20 token is used on the platform.
+6. **Low Likelihood**: Unlikely to occur.
+   - a hard-to-change variable is set to a unique value at a specific time.
 
-Assessing the gravity of issues in blockchain protocols can be challenging, especially for beginners in this complex field. Let's crack the mechanics of this process in a digestible form by breaking down each factor that impacts severity - disruption to the protocol, risk to funds and the chances of occurrence. Additionally, we'll deep dive into differentiating a critical issue from an informational observation.
+</details>
 
-## What Determines the Severity?
+---
 
-Different aspects determine the severity, primarily including whether the funds are at risk or if there is a major disruption. There's an area in the middle, where we are faced with issues that don't explicitly endanger funds or bring total disorder but still present as disruptions that shouldn't be ignored. For instance, a function might not be functioning as intended or state mismanagement.
+Just like before, let's ask ourselves things like
 
-![](https://cdn.videotap.com/7MnH5j3N8rEe92sSzFg5-23.62.png)
+- `Are funds at risk?` - No.
+- `Is this a severe disruption of the protocol?` - No.
+- `Are funds indirectly at risk?` - No
+- `Is there SOME disruption of the protocol?` - Also no.
 
-> Examining if the protocol will operate as expected or if user assets are jeopardized aids in understanding the severity.
+It seems already that this finding is going to be pretty low severity, but look at our `Low Impact` criteria (referenced in the dropdown above), we can see that even this doesn't seem to apply.
 
-## What is an Informational Finding?
+What do we do?
 
-Imagine a situation where there's incorrect documentation instead of a problem in the function itself. The repercussions are minor since the impact is limited to someone potentially misunderstanding the code.
+### Likelihood & Impact
 
-Does this have a high probability of happening? Yes. However, since it doesn't affect the protocol's functioning or carry any risk, its impact remains negligible, making it a zero impact issue.
+- Impact: NONE
+- Likelihood: HIGH
+- Severity: Informational/Gas/Non-crit
 
-Consequently, severity in such cases is assessed as informational or "noncritz." An informational finding is a non-critical instance where you bring it to the team's attention to improve code readability, extend test coverage, or rectify design patterns.
+In cases like these we would want to inform the protocol that these considerations may not explicitly be bugs but they could include things like
 
-You may also identify spelling errors, incorrect documentation, and opportunities for gas improvement, even though they don't qualify as bugs.
+- Design Pattern Improvements
+- Test Coverage Improvements
+- Documentation Errors
+- Spelling Mistakes
 
-![](https://cdn.videotap.com/RKj8pxAxknNIVZU5STC2-76.76.png)
+Anything that isn't a bug, but maybe should be considered anyway to make the code more readable etc - `Informational Severity` (sometimes called 'non-crits') There are also `Gas` severity findings, pertaining to gas optimizations, but we'll go over some of those a little later on.
 
-A wealth of tools can aid in informational findings to enhance your protocol. Make note of the fact that if you come across something that doesn't qualify as a bug but could potentially improve the code, it will often be an informational finding.
+This is how our titles look now:
 
-## What are Gas Improvements and Non-critical Issues?
+```
+### [H-1] Storing the password on-chain makes it visible to anyone and no longer private
 
-"Gas" in the context of blockchain refers to a fee associated with performing certain actions on the Ethereum network. By optimizing the "gas" usage of a function or a contract, you can help to reduce the cost of transactions on the Ethereum network.
+### [H-2] `PasswordStore::setPassword` has no access controls, meaning a non-owner could change the password
 
-For any gas improvements, it's marked as a gas improvement in severity. On the other hand, we have non-critical issues – casually referred to as "non-Crits" or "NCs".
+### [I-1] The 'PasswordStore::getPassword` natspec indicates a parameter that doesn't exist, causing the natspec to be incorrect
+```
 
-## Categorizing Severity
+### Wrap Up
 
-Each instance can be easily marked with a simple categorizing system. For example, you can note it as 'I' for informational, 'NC' for non-critical, or 'G' for gas improvements. We will take the example of an incorrect documentation case and mark it as 'I', annotating it as the first informational issue with 'I1'. This approach brings clarity when multiple issues are present, providing an organized overview of severities.
+Great work! Our report is looking amazing at this stage. We've consolidated our findings into a document that is clear and concise - outlining all the issues we've spotted. Our findings are well formatted and easy to understand with robust `Proofs of Code`.
 
-In conclusion, to understand the severity of protocol findings, we need to evaluate the impact on funds, disruption level, probability, and classify bugs, improvements, and non-critical issues appropriately.
+What's next?
+
+Maybe we missed something .. should we go back and do another pass? Let's go over that frame of mind in the next lesson.

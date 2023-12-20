@@ -4,46 +4,122 @@ title: Finding Writeup Documentation Fix
 
 _Follow along with this video:_
 
+---
 
+### Final Finding
+
+Our last finding is `informational` in nature (we'll learn more about what that means when we go over severities), but in essence - it's not very impactful, but it's still an issue and we should report it.
+
+You'll learn with experience that informational and gas findings don't generally require extensive write ups, but for now, let's treat this like any other finding. Fresh template time!
 
 ---
 
-## A Brief Overview
+### [S-#] TITLE (Root Cause + Impact)
 
-The third finding focuses on an overlooked mishap in the code - there is no new password parameter. While not as alarming as some other findings, it's still a concern that merits attention. As we progress into assessing its severity, you'll understand why it's taken as a relatively minor issue. But as we've done before, we'll be conducting a thorough write-up, irrespective of the severity level.
+**Description:**
 
-Before we begin, here's a heads up: once you get adroit at figuring out severities, you'll notice that gas and informational severities don't necessitate extensive write-ups. But for the sake of consistency and thoroughness, let's treat this finding with the same intensity as the others.
+**Impact:**
 
-Here's how we proceed:
+**Proof of Concept:**
 
-![](https://cdn.videotap.com/IArtvAsHoY19oT7nCiE3-30.97.png)
+**Recommended Mitigation:**
 
-## Diving Deeper: Root Cause and Impact
+---
 
-The root cause of this finding lies within the documentation. It advocates for the existence of a parameter in the code — when it does not exist — throwing the documentation accuracy off kilter. Specifically, the password store get password function's Natspec indicates a non-existent parameter, culminating in incorrect Natspec.
+### Title
 
-Let's put this in simple terms, shall we?
+    Remember the rule of thumb: `Root Cause + Impact`
 
-> **The root cause:** A contradiction between the documentation and the actual function, with the former falsely referring to a parameter within the `get password` function.
+- **Root Cause** - NatSpec describes a parameter that doesn't exist
+- **Impact** - NatSpec is incorrect
 
-The impact, as you might assume, revolves around the inaccuracy of the Natspec due to the aforementioned discrepancy.
+So our title should look something like this:
 
-## Getting Technical: Code Analysis and Description
+    **Title:** [S-#] The `PasswordStore::getPassword` natspec indicates a parameter that doesn't exist, causing the natspec to be incorrect.
 
-Let's get into the nitty-gritty details by examining the JavaScript code. As visual reference, we're referring to this particular section in the documentation. Here:
+Easy.
 
-> `passwordStore_getPassword` is the function signature, whereas the Natspec suggests the function should be `getPassword` with a string. The divergence results in incorrect NatSpec.
+### Description
 
-## Proof of Concept: Do We Need this Section?
+Here we can just paste the problematic section of the code and briefly describe the problem.
 
-Interestingly, in this case, a proof of concept seems unnecessary given the straightforwardness of the issue. So, for brevity, we move forward without it.
+    **Description:**
+    '''
+    /*
+     * @notice This allows only the owner to retrieve the password.
+    @> * @param newPassword The new password to set.
+     */
+    function getPassword() external view returns (string memory) {}
+    '''
 
-## Deciphering Mitigation Strategies
+    The `PasswordStore::getPassword` function signature is `getPassword()` while the natspec says it should be `getPassword(string)`.
 
-Our recommended solution is quite succinct: eliminate the incorrect Natspec line. And here we're going to do a fun little markdown trick where we're going to say a diff.
+### Impact
 
-This is a markdown format where you can indicate which lines to remove via `diff`. Now, if you preview it, it nicely exhibits in red, signifying that the said line ought to be deleted. Also, if we were to add a new line, we’d mark it with a plus sign, which will display in green for clarity. While in this case, we're suggesting only line removal, diff syntax can be incredibly powerful with its clear depiction of modifications.
+Impact of course is:
 
-That said, remember: sometimes less is more — a guiding principle that applies to our mitigation strategy.
+    **Impact** The natspec is incorrect
 
-While the omission of the password parameter might seem trivial at first, failing to rectify such issues could lead to larger problems down the road. Therefore, as conscientious developers and security analysts, it's our responsibility to keep our eyes peeled for these issues — no matter how seemingly insignificant they may be! Let's keep doing our part to make the world of code safe and sound.
+### Proof of Concept
+
+This section isn't actually needed for a report like this, so we'll omit it.
+
+### Recommended Mitigation
+
+This one should be obvious to us as well. We recommend the documentation is made accurate. Let's add it to the report.
+
+    **Recommended Mitigation:** Remove the incorrect natspec line
+
+We can use a fun markdown trick to illustrate the suggested changes.
+
+```diff
+    /*
+     * @notice This allows only the owner to retrieve the password.
+-     * @param newPassword The new password to set.
+     */
+```
+
+_You can achieve this using the below syntax_
+
+    ```diff
+    + line you want to add (shown in green)
+    - line you want to remove (shown in red)
+    ```
+
+Let's put everything together into a report now.
+
+<details open>
+<summary>Finding #3 Report</summary>
+
+```
+[S-#] The `PasswordStore::getPassword` natspec indicates a parameter that doesn't exist, causing the natspec to be incorrect.
+
+**Description:**
+    '''
+    /*
+     * @notice This allows only the owner to retrieve the password.
+    @> * @param newPassword The new password to set.
+     */
+    function getPassword() external view returns (string memory) {}
+    '''
+
+    The `PasswordStore::getPassword` function signature is `getPassword()` while the natspec says it should be `getPassword(string)`.
+
+**Impact:** The natspec is incorrect
+
+**Recommended Mitigation:** Remove the incorrect natspec line.
+
+'''diff
+    /*
+     * @notice This allows only the owner to retrieve the password.
+-     * @param newPassword The new password to set.
+     */
+'''
+
+```
+
+</details>
+
+### Wrap Up
+
+I told you this one would be quick. We nailed it. Let's look at how we can use AI to polish things up for us when we need it.

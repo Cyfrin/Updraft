@@ -4,110 +4,133 @@ title: Recap & Congrats
 
 _Follow along with this video:_
 
+---
 
+Let's recap everything we've learnt in this lesson so far - it's been a lot.
+
+### Onboarding
+
+We learnt the importance of thoroughly onboarding a protocol. Often we'll receive audit requests without context or preparation (ie random etherscan links) and it's our job to advise the protocol that these are inappropriate. We should educate them on steps required to be ready for an audit. Think back to our [**minimal-onboarding-questions**](https://github.com/Cyfrin/3-passwordstore-audit/blob/onboarded/minimal-onboarding-questions.md)
+
+**About the Project** - Summary of the project
+
+**Setup** - What tools are needed to setup the codebase & test suite?
+
+**Testing** - How to run tests, how to see test coverage
+
+**Scope** - Specific details of the security review, which contracts are to be audited, the specific commit hash being reviewed
+
+**Compatibilities** - Chains for deployment, compatible tokens, solc versions
+
+**Roles** - What are the different actors of the system? What are their powers meant to be?
+
+**Known Issues** - Any issues the protocol is aware of already.
+
+### Codebase Size
+
+Another thing we covered was how to determine a codebase's size and complexity using tools like [**Solidity Metrics**](https://marketplace.visualstudio.com/items?itemName=tintinweb.solidity-metrics) and [**CLOC**](https://github.com/AlDanial/cloc).
+
+These tools allow us to count lines of code, estimate complexity and - in the case of Solidity Metrics - see breakdowns of how the protocol interconnects and which functions are visible.
+
+These tools are primarily valuable in that they allow us the ability to estimate a work load or timeframe required for a thorough audit.
+
+### The phases of an audit
+
+We covered the phases of an audit and each steps within.
+
+- Initial Review
+  - Scoping - This is getting a sense of the protocol. In this phase, auditors go through the code to scope it. This gives an idea of how much time might be required for the audit, which can then be used to establish pricing. Key tasks include identification of all the contract’s dependencies and a general overview of the code. At this stage, auditors don’t dig deep into anything yet.
+  - Reconnaissance - Here an auditor starts walking through the code, running tools, interacting with the protocol in an effort to break it.
+  - Vulnerability Identification - An auditor determines which vulnerabilities are present and how they're exploited as well as mitigation.
+  - Reporting - Compile a report detailing all of the identified vulnerabilities and recommendations to make the protocol more secure.
+  ***
+- Protocol Fixes
+  - Fixes Issues
+  - Retests and adds tests
+- Mitigation Review
+  - Reconnaissance
+  - Vulnerability Identification
+  - Reporting
+
+### The Tincho
+
+The legendary Tincho from [**The Red Guild**](https://blog.theredguild.org/) blessed us with his wisdom and experience, outlining the approach he takes while peforming a security review. He stresses:
+
+- Read the docs
+- Take notes often - right in the codebase
+- Small > Large - start on the easiest contracts and advance into more complex ones
+- Leverage tools like [**Solidity Metrics**](https://marketplace.visualstudio.com/items?itemName=tintinweb.solidity-metrics) to breakdown a hierarchy of complexity/size within a codebase
+
+### First Security Review
+
+We performed our first security review of the PasswordStore protocol!
+
+Applying the steps of a security review we were able to uncover 3 vulnerabilities within the protocol:
 
 ---
 
-# The Comprehensive Guide to Conducting A Solidity Security Review
+[H-1] `PasswordStore::setPassword` has no access controls, meaning a non-owner could change the password
 
-Today, we're diving into how to conduct a security review for Solidity, the programming language behind Ethereum's smart contracts. We'll walk you through the major phases, from educating protocols about security necessities and onboarding them, to conducting a thorough security review and generating a professional report.
+[H-2] Storing the password on-chain makes it visible to anyone and no longer private
 
-## Starting with a Basic-Yet-Critical Lesson
+[I-1]The `PasswordStore::getPassword` natspec indicates a parameter that doesn't exist, causing the natspec to be incorrect.
 
-One of the first things to understand is that audit requests often come in the form of Ether scan links, a practice that needs to change. A more comprehensive process is required to ensure security, which includes properly onboarding different protocols and teaching these protocols about safety measures.
+---
 
-```markdown
-Basic Security Structure:
+We also learnt how to classify the severities of our findings! Remember the matrix:
 
-1. Have a test suite
-2. Complete onboarding questionnaires
-3. Consciously plan for an audit
+|            |        | Impact |        |     |
+| ---------- | ------ | ------ | ------ | --- |
+|            |        | High   | Medium | Low |
+|            | High   | H      | H/M    | M   |
+| Likelihood | Medium | H/M    | M      | M/L |
+|            | Low    | M      | M/L    | L   |
+
+1. **High Impact**: `funds` are directly or nearly `directly at risk`, or a `severe disruption` of protocol functionality or availability occurs.
+2. **Medium Impact**: `funds` are `indirectly at risk` or there’s `some level of disruption` to the protocol’s functionality.
+3. **Low Impact**: `Fund are not at risk`, but a function might be incorrect, or a state handled improperly etc.
+
+---
+
+1. **High Likelihood**: Highly probably to happen.
+   - a hacker can call a function directly and extract money
+2. **Medium Likelihood**: Might occur under specific conditions.
+   - a peculiar ERC20 token is used on the platform.
+3. **Low Likelihood**: Unlikely to occur.
+   - a hard-to-change variable is set to a unique value at a specific time.
+
+### Creating Findings Reports
+
+We covered how to turn those findings into a professional breakdown using this template:
+
+---
+
+```
+### [S-#] TITLE (Root Cause + Impact)
+
+**Description:** - Succinctly detail the vulnerability
+
+**Impact:** - The affects the vulnerability has
+
+**Proof of Concept:** - Programmatic proof of how the vulnerability is exploited
+
+**Recommended Mitigation:** Recommendations on how to fix the vulnerability
 ```
 
-The first step toward creating a secure protocol involves ensuring they're thinking about security in the right way.
+---
 
-## Gathering Documentation
+### Timeboxing
 
-Once a protocol has been onboarded, you will need to amass all the documentation relating to the protocol, such as details about how to build the protocol and the actual scope of the security review.
+We briefly covered the importance of timeboxing. We'll always be able to further scrutinize a codebase - time management and constraining our time investments is how we become efficient security reviewers.
 
-Key details to identify include:
+### Professional PDF Report
 
-- Solidity version
-- Chains
-- Tokens
-- Roles
-- Known issues
+And finally, we walked through the steps needed to create a beautiful PDF report using our [**audit-report-templating**](https://github.com/Cyfrin/audit-report-templating) repo.
 
-## Estimating Codebase Size
+Leveraging new tools like [**Pandoc**](https://pandoc.org/installing.html) and [**LaTex**](https://www.latex-project.org/) we were able to convert our markdown report into a presentable PDF that we're now proudly displaying on our own GitHub Security Reviewer portfolio.
 
-Learning how to estimate the size of a codebase can also be beneficial when predicting the duration of an audit or security review. The tool "Solidity Metrics" is useful for this, as it provides a simple output detailing the number of source lines of code and a complexity score.
+### Wrap Up
 
-Alternatively, the "cloc" command can be used, offering similar statistics and aiding the planning process for audits and reviews.
+Wooooow. That's a lot when you put it all together like that. You should be incredibly proud of your progress so far. Take a break, stretch your legs, tweet your successes and then come back.
 
-## The Phases of A Smart Contract Audit
-
-Parallel to conventional software engineering, security reviews also involve a number of phases, namely Scoping, Recon, and Vulnerability Identification.
-
-Here's a brief rundown on each phase:
-
-- **Scoping**: Collect initial information, determine what is within scope, and plan the review.
-- **Recon**: Look for potential bugs and abnormalities.
-- **Vulnerability Identification**: Identify actual bugs, tinker, take notes, comment, and figure out the severity.
-
-Next, the process also involves creating a detailed report post-analysis.
-
-The final two phases involve the protocol fixing any issues identified, adding tests, re-testing, and conducting a mitigation review. This phase usually proceeds more swiftly, given that you would by then have gained substantial context about the codebase and only need to focus on the differences.
-
-## Imperial Advice from an Ace Security Researcher
-
-We've had the privilege of learning from renowned security researcher, Wizard Tincho, who shared his method for carrying out smart contract security reviews. His advice? Start by reading the docs, take detailed notes, and then build from small to large concepts.
-
-> "Read the docs, take notes, go from small to large." - Wizard Tincho
-
-You can find his full-length interview [here](https://www.youtube.com/watch?v=bYdiF06SLWc&t=0s), where he dives deeper into his techniques for successful security reviews.
-
-## Getting Hands Dirty with an Actual Security Review
-
-After getting a good theoretical foundation, it's time to try it out. For instance, we conducted a security review where we detected missing access controls, a relatively common bug, yet one that provides crucial insights into the protocol.
-
-In our review, for example, we found a section in the 'set password' function that should have stipulated that only the owner of this contract could set the password - this essential requirement was missing.
-
-This is precisely why understanding the protocol's intended function is crucial for finding bugs. Often, with multiple roles within a protocol, identifying the appropriate access controls can get complicated and it's virtually imperative to clarify roles at the outset.
-
-Consequently, getting to know potential exploits such as private data and access controls is absolutely crucial, even if they seem highly evident.
-
-## Hand-holding through Writing a Phenomenal Review Report
-
-One of the final and more essential steps lies in writing a comprehensive report. A template that works well includes a succinct description, where you mention the root cause and impact in your findings list. Here's a minimal example to illustrate this:
-
-```markdown
-### Findings1.
-
-Storing the password on chain makes it visible to anyone and no longer private. (Root Cause -> Impact)
-
-### Recommended mitigation
-
-_Depends on the findings; can range from code fixes to architecture changes._
-```
-
-Additionally, it's quite useful to provide proof of code as an evident proof of the concept for the existing issue.
-
-Finally, don't neglect informational write-ups where you can flag potential areas of concern even if they aren't critical bugs.
-
-## The Magic of AI in Audits
-
-Modern advancements mean we can embrace the power of Artificial Intelligence (AI) in helping us tackle an audit. Using AI, we can expedite and automate some tasks, saving countless precious hours.
-
-## Recognizing the Severity and Classifying Findings
-
-Classifying the severity of findings can initially seem a subjective task. However, with practice, distinguishing between high, medium, and low severity findings becomes easier.
-
-Fundamentally, this distinction rests on the matrix of likelihood versus impact. For example, a high impact and highly likely finding that disrupts the protocol's functionality entirely would qualify as a 'high severity' finding.
-
-## Bringing It All Together with An Audit Report
-
-Finally, you'll consolidate all your findings into a detailed, professionally laid out audit report using a tool like Markdown. This will present your findings in a clear and accessible format and provides a great visual representation to clients.
-
-However, remember that this process is but a guide. You might decide to create your own report template or use different tools as you grow experienced in conducting audits and reviewing security. Bitcoin/blockchain is still a relatively new field, so the aim is to keep iterating, learning, and improving your review process. Whichever path you choose, the goal remains the same: to construct a secure, sound protocol.
-
-That's your brief yet comprehensive guide to conducting a security review in Solidity. Audit on and ensure the crypto world stays secure!
+The next security review is going to be _SICK_.

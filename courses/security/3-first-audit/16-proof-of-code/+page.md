@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 ---
 
-### [S-#] Storing the password on-chain makes it visible to anyone
+### [S-#] Storing the password on-chain makes it visible to anyone and no longer private
 
 **Description:** All data stored on chain is public and visible to anyone. The `PasswordStore::s_password` variable is intended to be hidden and only accessible by the owner through the `PasswordStore::getPassword` function.
 
@@ -74,7 +74,7 @@ And we've done it. In a few quick commands we've shown that the data our client 
 
 <details closed>
 <summary>Finding Report</summary>
-### [S-#] Storing the password on-chain makes it visible to anyone
+### [S-#] Storing the password on-chain makes it visible to anyone and no longer private
 <br>
 <br>
 **Description:** All data stored on chain is public and visible to anyone. The `PasswordStore::s_password` variable is intended to be hidden and only accessible by the owner through the `PasswordStore::getPassword` function.
