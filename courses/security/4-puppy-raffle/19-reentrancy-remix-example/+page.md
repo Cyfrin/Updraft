@@ -4,81 +4,70 @@ title: Reentrancy - Remix Example
 
 _Follow along with this video:_
 
-## 
-
 ---
 
-# Preventing Reentrancy Attacks on Ethereum Smart Contracts
+### Re-entrancy Remix Example
 
-When designing Ethereum Smart Contracts, one area that requires vigilance is the handling of user balances. A simple change in the sequences of function calls could open the door to a reentrancy attack, causing unexpected behavior and potentially wiping out users' funds.
+The crux to this vulnerability lies in that we're updating the user's balance _last_.
 
-![](https://cdn.videotap.com/1J27BMPtiIfHtQifcabU-6.42.png)
+```js
+    function withdrawBalance() public {
+        uint256 balance = userBalance[msg.sender];
+        // An external call and then a state change!
+        // External call
+        (bool success,) = msg.sender.call{value: balance}("");
+        if (!success) {
+            revert();
+        }
 
-## Understanding the Problem
-
-The main issue that makes smart contracts vulnerable to reentrancy attacks relates to the order in which we update the user balance. The problematic sequence in pseudocode looks like this:
-
-```javascript
-...
-// some contract code...//
-function withdraw(uint withdraw_amount) {
-    require(userBalance >= withdraw_amount, "Insufficient funds for withdraw request.");
-    user.transfer(withdraw_amount);
-    userBalance = userBalance - withdraw_amount;
-}
-...
-// more contract code...
+        // State change
+        userBalance[msg.sender] = 0;
+    }
 ```
 
-In a situation where a malicious contract reenters the `withdraw` function before the user balance was updated—`userBalance = userBalance - withdraw_amount`—the smart contract would transfer the same amount again, despite the fact that the balance should have been reduced.
+The prevention of re-entrancy is actually very simple.
 
-Quote:
+```js
+function withdrawBalance() public {
+        uint256 balance = userBalance[msg.sender];
 
-> "The heart of the problem lies in the sequence in which the balance is updated. If an attacker can interrupt this sequence, they can exploit this vulnerability to drain the contract's funds."
+        // State change
+        userBalance[msg.sender] = 0;
 
-## The Test Case Scenario
-
-To reveal the vulnerability in action, let's consider this scenario in the `ReentrancyTest.sol` file:
-
-1. Prank the victim.
-2. Deposit the funds to the victim's account.
-3. Check the balance.
-4. Launch the attack.
-
-As a result, the victim's balance goes to zero, while the attacker's balance increases by the deposited amount. This exact scenario can be witnessed in the [Remix IDE](https://remix.ethereum.org) directly, giving you a tangible feel of how this exploit plays out.
-
-![](https://cdn.videotap.com/LzhPJ3RR0EUmXpogirbd-102.71.png)The files to be watched are `ReentrancyVictim.sol` and `ReentrancyAttacker.sol`, which hold our hapless victim and the cunning attacker respectively.
-
-To reproduce the scenario:
-
-1. Compile `ReentrancyVictim.sol` and `ReentrancyAttacker.sol`.
-2. Deploy both contracts.
-3. Deposit 5 Ether to the victim contract.
-4. Observe that the user balance is updated with 5 Ether.
-5. Now deploy the attacker and carry out the attack.
-
-The result is the same as predicted. The victim's balance goes to zero, while the attacker ends up with 6 Ether.
-
-## The Solution
-
-How then can we prevent such disastrous scenarios? The solution lies in adjusting the sequence of how the user balance is updated. Just move the `userBalance = 0;` line before the withdraw function. Here's the updated function:
-
-```javascript
-...
-// some contract code...//
-function withdraw(uint withdraw_amount) {
-    require(userBalance >= withdraw_amount, "Insufficient funds for withdraw request.");
-    userBalance = userBalance - withdraw_amount; // note the order of these lines
-    user.transfer(withdraw_amount); // note the order of these lines
-}
-...
-// more contract code...
+        // External call
+        (bool success,) = msg.sender.call{value: balance}("");
+        if (!success) {
+            revert();
+        }
+    }
 ```
 
-This way, even if the attacker reenters the function, the updated zero balance will not allow it to withdraw any funds.
+That's it!
 
-Remember, the safety and trust users have on your smart contract are built on the solid foundation of security diligence in your coding process. Being aware of potential threats such as reentrancy attacks and taking preventive measures will add to your credibility as a developer.
+The first time this function is called now, the user's balance is updated to zero before making external calls. This means if an enternal call causes this function to be called again - the user's balance will already be updated as zero, so no further funds will be withdrawn.
 
-For further practice, dig deeper and try out test suites that explore more such scenarios. Practise makes perfect—all the best on your journey to mastering the security aspects of Ethereum Smart Contract development!
+Let's see this in action, in [**Remix**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/reentrancy/Reentrancy.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js).
 
-![](https://cdn.videotap.com/O8nYCKukwbgtzZaFQ7DU-195.79.png)
+### Trying it Out
+
+Once you're in remix with the re-entrancy examples open, begin by compiling and deploying both contracts.
+
+_Be sure to deploy both contracts, first `ReentrancyVictim` then `ReentrancyAttacker`_
+
+<img src="/security-section-4/19-reentrancy-remix/reentrancy-remix1.png" style="width: 75%; height: auto;">
+
+Both contracts should have 0 balance. Begin by having a sucker deposit 5 ether into `ReentrancyVictim` contract.
+
+<img src="/security-section-4/19-reentrancy-remix/reentrancy-remix2.png" style="width: 75%; height: auto;">
+
+Now, change the account/wallet you're calling functions from (near the top). Our `ReentrancyAttacker::attack` function requires at least 1 ether. Once that's set and our attack function is called...
+
+<img src="/security-section-4/19-reentrancy-remix/reentrancy-remix3.png" style="width: 75%; height: auto;">
+
+The attacker has made off with all of the protocol's ETH!
+
+### Wrap Up
+
+We've seen how impactful overlooked re-entrancy can be and we've seen it in action through remix. Our sc-exploits-minimized repo has some test suites included that will illustrate things locally as well. I encourage you to take a look at those and familiarize yourself with them between lessons if you want to learn more and build on your experience.
+
+In the next lesson we'll approach how to safeguard ourselves and protocols from re-entrancy.
