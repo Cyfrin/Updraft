@@ -84,13 +84,13 @@ Let's put things together in our report so far.
 
 **Description:** The `PasswordStore::setPassword` function is set to be an `external` function, however the purpose of the smart contract and function's natspec indicate that `This function allows only the owner to set a new password.`
 
-
+'''
 function setPassword(string memory newPassword) external {
     // @Audit - There are no Access Controls.
     s_password = newPassword;
     emit SetNewPassword();
 }
-
+'''
 
 **Impact:** Anyone can set/change the stored password, severly breaking the contract's intended functionality
 

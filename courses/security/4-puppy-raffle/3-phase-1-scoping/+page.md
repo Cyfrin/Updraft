@@ -4,76 +4,77 @@ title: Phase 1 - Scoping
 
 _Follow along with this video:_
 
-## 
-
 ---
 
-# Bridging the Gap in Your Cybersecurity Journey: Exploring Codebase Exploits
+### Puppy Raffle Scoping
 
-Welcome back, tech enthusiasts! If you're here for the first time, no worries, there's still time to catch up. Now, was everyone able to spend some time going through the code before coming back here? Excellent! As you know, practice makes perfect, and taking the time to familiarize yourself with the code makes the walk-through process much more beneficial.
+Now that you've **definitely** tried reviewing the codebase on your own, let's start scoping things out together.
 
-So, let's dive into our fun-filled expedition, exploring various coding exploits, and reinforcing your knowledge base. Excitingly, by the end of this, you'll have a comprehensive report to add to your ever-growing developer portfolio.
+Take a look at the [**Puppy Raffle Repo**](https://github.com/Cyfrin/4-puppy-raffle-audit)'s README
 
-Are you ready? Good. Let's dive right in.
+<img src="static/security-section-4/3-phase-1-scoping/phase-1-scoping1.png" style="width: 50%; height: auto;">
 
-## Navigating the Security Course
+### README Overview
 
-Currently, we are navigating through our structured cybersecurity course. Note-taking is essential during the journey, as there will be an array of essentials to learn, especially in this module.
+This README looks pretty good. We've got all the expected sections and necessary details.
 
-Take note of the below GitHub codebase, which we will be referencing throughout this course:
+Remember the things we're looking for:
 
-```bash
-git clone https://github.com/repository/examples.git
-```
+- **About**
+- **Setup**
+- **Scope**
+- **Compatibilities**
+- **Roles**
+- **Known Issues**
 
-After doing a successful `git clone`, let's open the project in our favorite code editor (Personally, I prefer VS Code).
-
-## The Smart Contract Security Review
-
-Before we explore the code, we need to understand what it is about. This stage is often referred to as the 'Scoping Phase'. We are encouraged to explore, question, and gain context on the ongoing project.
-
-In this particular code base, we encounter a rather delightful concept: a 'Puppy Raffle'. Now, let's take a minute to go through the 'About' section, yes, the one right at the top of the page.
-
-![](https://cdn.videotap.com/wTq0wfCNib6lb1D2AqTZ-67.02.png)## Essential Prep Work
-
-In the README, there are some instructions about tools we need in order to run the project, specific versions of Git and Foundry in this case. We've already cloned the project; now, let's have a look at the `make` file.
+We should see clear instructions under [**Getting Started**](https://github.com/Cyfrin/4-puppy-raffle-audit#getting-started) on how to get set up locally.
 
 ```bash
-git clone https://github.com/repository/examples.gitcd examplesmake run
+git clone https://github.com/Cyfrin/4-puppy-raffle-audit.git
+cd 4-puppy-raffle-audit.git
+make
 ```
 
-What happens when we run `make`? We're executing three commands, remove, install, and build.
+> Take a brief look at your `Makefile`. It's worthwhile to appreciate what it's actually doing. Our `Makefile` cleans our repo, installs necessary packages (Foundry, OpenZeppelin and base64) and then runs `forge build` to compile everything.
 
-Here's a breakdown of the makefile:
+### Testing
 
-- Remove: Clears any previous build files.
-- Install: Handles the library and package installations. In this example, we're installing specific versions of OpenZeppelin and the BrushPD base64 package.
-- Build: Compiles the project.
+Once we've run our `make` command, we should check out the protocol tests. I like to start by running `forge coverage` to see what kind of baseline we're starting with.
 
-![](https://cdn.videotap.com/N8L5QF4tSzLDWWv68Ike-139.2.png)Running `make` should execute these commands in the terminal. We can then observe the dependencies being installed, files being compiled, and possible warnings thrown.
+<img src="/security-section-4/3-phase-1-scoping/phase-1-scoping2.png" style="width: 50%; height: auto;">
 
-However, remember:
+Thing's don't look great.
 
-> A warning isn't an error. However, warnings need attention just as much as errors.
+From a competitive audit point of view, this might be exciting, there are lots of opportunities for bugs to be hiding in this codebase.
 
-Contained within our makefile is a command for running tests, `forge test`. But, before we run tests, we want to gauge the solidness of the test coverage. Running coverage reports give us some insight into the maturity level of the code base.
+If we were doing a private audit, we're less optimistic. Poor test coverage is indicative of an immature codebase and we're responsible for securing this protocol!
 
-```bash
-make coverage
-```
+### README Continued
 
-## Navigating the Codebase
+Further down the README we see the scope details. Invaluable information.
 
-Next, we recognize the commit hash - an opportunity to delve into different versions of the code base. We're not going to run the `git checkout` at this moment.
+By using the command `git checkout <commitHash>` we can assure our local repo is the correct version to be auditing.
 
-```bash
-git checkout <commit-hash>
-```
+We also see exactly which contracts are under review.
 
-For the next stage of this exercise, you should ensure you're working in the main branch. We're focusing on a single file in the scope: `puppyraffle.sol`.
+    ./src/
+    └── PuppyRaffle.sol
 
-Within in this file, we can see some interesting aspects: a firm amount of comments, which is always encouraging, several functions, compatibility with solidity version 0.7.6, contract deployment to Ethereum, and various assigned roles.
+Moving on, we should take notice of the **Compatibilities** section.
 
-![](https://cdn.videotap.com/elVBGNan7XfaFJokz2Yt-216.53.png)So far, everything seems in order, which can be deceiving. There could be potential exploits or weaknesses. But don't panic just yet. That's precisely why we're here: to navigate this curiosity-filled world of cybersecurity. Join us in the next part, as we continue unravelling this mystery.
+<img src="/security-section-4/3-phase-1-scoping/phase-1-scoping3.png" style="width: 50%; height: auto;">
 
-Stay curious and until next time - Happy Coding!
+That Solc version is strange - definitely make note of it.
+
+Finally, they've also outlined the Roles of the protocol for us. Knowing this intended functionality is important in being able to spot when things go wrong.
+
+- Owner - Deployer of the protocol, has the power to change the wallet address to which fees are sent through the changeFeeAddress function.
+- Player - Participant of the raffle, has the power to enter the raffle with the enterRaffle function and refund value through refund function.
+
+There are no _known_ issues. Hehe.
+
+### Wrap Up
+
+Things are looking great so far, the protocol has provided us with lots of documentation to get started with. We've even spotted an oddity already.
+
+In the next lesson we'll begin using our tools to spot vulnerabilities before we even start.

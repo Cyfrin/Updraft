@@ -4,76 +4,112 @@ title: Assessing Highs
 
 _Follow along with this video:_
 
+---
 
+### Assessing Our Severities
+
+Alright! We're ready to start applying our understanding of `likelihood` and `impact` to the PasswordStore protocol. Let's take a look at our findings.
+
+```
+### [S-#] Storing the password on-chain makes it visible to anyone and no longer private
+
+### [S-#] `PasswordStore::setPassword` has no access controls, meaning a non-owner could change the password
+
+### [S-#] The 'PasswordStore::getPassword` natspec indicates a parameter that doesn't exist, causing the natspec to be incorrect
+```
+
+## Finding #1
+
+### [S-#] Storing the password on-chain makes it visible to anyone and no longer private
+
+<details closed>
+<summary>Impacts and Likelihoods</summary>
+
+1. **High Impact**: `funds` are directly or nearly `directly at risk`, or a `severe disruption` of protocol functionality or availability occurs.
+2. **Medium Impact**: `funds` are `indirectly at risk` or there’s `some level of disruption` to the protocol’s functionality.
+3. **Low Impact**: `Fund are not at risk`, but a function might be incorrect, or a state handled improperly etc.
 
 ---
 
-# How to Evaluate Finding Severity: Hands-On on VS Code
+4. **High Likelihood**: Highly probably to happen.
+   - a hacker can call a function directly and extract money
+5. **Medium Likelihood**: Might occur under specific conditions.
+   - a peculiar ERC20 token is used on the platform.
+6. **Low Likelihood**: Unlikely to occur.
+   - a hard-to-change variable is set to a unique value at a specific time.
 
-Welcome to the definitive guide on evaluating the _severity_ of your findings. Specifically, we will be drawing examples from storing a password on-chain and finding potential vulnerabilities. By the end of this journey, you'll understand the process of assessing your findings and identifying their severity.
+</details>
 
-## Understanding the Structure
+---
 
-Here we are, on our findings page, keen to figure out how we evaluate severity.
+Let's consider impacts and likelhoods of our first scenario (I've provided you a reference to them above).
 
-![](https://cdn.videotap.com/uKAm9nbZqqFSb0JpwSD2-30.14.png)
+Upon consideration we see that, while funds aren't at risk, the user's 'hidden' password being visible to anyone is a pretty severe impact to how the protocol is expected to function.
 
-Within Vs code, a nifty little drop down helps us to collapse the findings for easy visibility. This feature provides a more consolidated view for efficiency.
+Because of this, I would argue our assessment of `Impact` should be `High`.
 
-However, in case your dropdown keeps auto uncollapsing, apprehend the scenario. This blog piece has been built using an approach that still presents the collapsed view for clarity.
+Now, for likelihood we ask ourselves:
 
-## Dissecting Storing Password On-Chain
+- `How likely is it that somebody will be able to exploit this?`
 
-Let's set the stage with our first finding. Storing the password on-chain is a strategy that makes it visible to anyone, thereby stripping it of its private status.
+The answer is - _very likely_. There's nothing stopping any malicious actor from acquiring the stored password - it's almost a certainty. `Likelihood` should also be considered `High`.
 
-Ranking severity requires us to consider two major aspects: **likelihood and impact**.
+### Likelihood & Impact:
 
-### Looking at Impact
+- Impact: High
+- Likelihood: High
+- Severity: High
 
-What does it _criticality_ of making the password public hold? Does it put funds directly at risk? It does not. However, does it cause a severe disruption of the protocol functionality or availability? The answer is a resounding yes.
+Applying our assessment to our finding title should look like this:
 
-The core purpose of a password store protocol is ensuring password safety on-chain. So, when this is disrupted or diminished, we're looking at a high potential impact. This situation will undoubtedly tip towards higher severity.
+<img src="/security-section-3/25-assessing-highs/severity1.png" style="width: 100%; height: auto;">
 
-```markdown
-Quote: "The impact of storing the password on-chain corresponds to high severity. It severely disrupts the protocol functionality"
+> Pro-tip: We should try to arrange our findings in our report from High -> Low and from Worst -> Least Offenders
+
+## Finding #2
+
+### [S-#] `PasswordStore::setPassword` has no access controls, meaning a non-owner could change the password
+
+<details closed>
+<summary>Impacts and Likelihoods</summary>
+
+1. **High Impact**: `funds` are directly or nearly `directly at risk`, or a `severe disruption` of protocol functionality or availability occurs.
+2. **Medium Impact**: `funds` are `indirectly at risk` or there’s `some level of disruption` to the protocol’s functionality.
+3. **Low Impact**: `Fund are not at risk`, but a function might be incorrect, or a state handled improperly etc.
+
+---
+
+4. **High Likelihood**: Highly probably to happen.
+   - a hacker can call a function directly and extract money
+5. **Medium Likelihood**: Might occur under specific conditions.
+   - a peculiar ERC20 token is used on the platform.
+6. **Low Likelihood**: Unlikely to occur.
+   - a hard-to-change variable is set to a unique value at a specific time.
+
+</details>
+
+---
+
+Considering our second finding, we can tell that anyone being able to set the password at any time is a severe disruption of protocol functionality. A clear `High` `Impact`.
+
+The `likelihood` is also going to be `High`. Anyone can do this, at any time, the vulnerability is rooted in `access control`.
+
+### Likehood & Impact:
+
+- Impact: High
+- Likelihood: High
+- Severity: High
+
+The application of this to our second finding's title should leave us with:
+
+```
+### [H-1] Storing the password on-chain makes it visible to anyone and no longer private
+
+### [H-2] `PasswordStore::setPassword` has no access controls, meaning a non-owner could change the password
+
+### [S-#] The 'PasswordStore::getPassword` natspec indicates a parameter that doesn't exist, causing the natspec to be incorrect
 ```
 
-### Understanding Likelihood
+### Wrap Up
 
-But what is the probability of this mishap? The feasibility of a hacker directly calling this function, extracting money, or breaking the protocol? Indeed, it seems rather easy for this to happen. In the worst-case scenario, passwords stored on-chain could be read off-chain by anyone at any given moment. Hence, _likelihood_ maps to high in this case.
-
-High impact and high likelihood, you might know, translates to _critical severity_.
-
-But we'll just denote this with an _H_ for high impact and high likelihood, signaling a high severity. This way, our first finding is:
-
-```plaintext
-["1"]: H - Storing the password on-chain makes it visible to anyone, stripping it of its private status.
-```
-
-Practically, 'findings' range from high, medium, to low. The worst players are ranked higher, but this trend is more of a rule of thumb and can change based on context.
-
-## Examining Password Store Set
-
-Next, let's explore another scenario. What if the password store set has no access controls? The impact might look something like a non-owner being able to change the password. It's another disruption of the protocol functionality. Scroll down to learn more.
-
-If any random person sets a password and then another comes to change it at their will, we're indeed looking at another situation with high impact.
-
-Surprisingly, this ploy is not too implausible to pull off. Any budding hacker merely needs to call the '_set password_' function, plug in a new password, and viola, the password has been altered!
-
-Echoing our previous finding, the likelihood of this event is high, making severity palpable.
-
-Irrefutably, this severity is also high. In the scope of this blog, this would be noted as:
-
-```plaintext
-["2"]: H - Password store set has no access controls; a non-owner can alter the password.
-```
-
-Our second high-severity bug!
-
-Discussing severity, it's important to mention that our first finding outweighs this in severity. It entirely undermines the purpose of the protocol, but this, too, is significantly harmful.
-
-## Investigating Incorrect Natspec
-
-At last, we have landed on our final finding. If the password store's get-password NatSpec indicates a non-existent parameter, the NatSpec ends up incorrect.
-
-Let's follow the same procedure to evaluate its impact. What-acould-go-wrong with incorrect documentation in the context of severity? Find out in the next section!
+This is great! We've got one more finding to assess the severity of and this one's a little different as it's `informational`. Let's go over it's `Impact` and `Likelihood` in the next lesson.

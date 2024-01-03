@@ -4,39 +4,27 @@ title: Exercises
 
 _Follow along with this video:_
 
-
-
 ---
 
-# Your Unprecedented Progress in Code Auditing and What's Next
+### Congratulations!
 
-Hey everyone! I just wanted to congratulate you on completing the first section of our code auditing course. It's a giant leap forward in your journey to beefing up your security skills. By far, this was the smallest and easiest code base we've dealt with - full of glaringly obvious bugs, perfect for beginners.
+I sincerely want to congratulate you on making it through your first audit experience. It's a giant leap forward in your journey to beefing up your security skills.
 
-But did you find it too challenging? Don't worry! The challenges are only set to spike from here. Remember, in your exploration and troubleshooting, you may sometimes get presented with poorly written code. Don't let the bad code distract you. Your focus should be on debugging it.
+This codebase was obviously very small, with fairly obvious bugs, the difficulty is going to ramp up from here. Don't worry if you had a hard time spotting these vulnerabilities. So much of successful auditing comes with practice and familiarity.
 
-## Cheers to your Accomplishments!
+By the end of this course, your portfolio will contain not one, but six impressively professional security reviews! The 'Final Boss' audit `Vault Guardians` is going to really test our skills. SO EXCITING.
 
-Again, a massive congratulation to everyone for your achievements so far! You've taken a crucial first stride. But don't get too comfortable - we're just getting ramped up!
+Before we conclude section 3, there are 2 exercises I have for you to complete.
 
-By the end of this course, your portfolio will contain not one, but six impressively professional security reviews! Here comes the exiting bit - get ready to audit the final "Boss Vault Guardians", which is going to be nothing short of awe-inspiring!
+1. **Tweet about your progress**: Publicly acknowledging and sharing your small wins often gives a big motivational boost. Tweet about your experience so far, and don't forget to join the community discussions on platforms like [**Discord**](https://discord.gg/cyfrin) and [**GitHub**](https://github.com/Cyfrin/security-and-auditing-full-course-s23/discussions).
+2. **Sign up for Code Hawks**: Now comes the practical application of what you have learned so far. After completing this task, you will be ready to start performing "competitive audits". Although there are a few more skills for you to learn, you're overwhelmingly ready for this challenge! So, sign up [**here**](https://www.codehawks.com/).
 
-![](https://cdn.videotap.com/lczjZNOdteSEVFTeatFV-39.64.png)# Preparing for the Next Chapter
+Section 3 NFT Challenge 👀
 
-Before we conclude the section three, I have a couple of tasks for you to accomplish.
+[Storage Refresher! (Arb)](https://arbiscan.io/address/0x89edc4c74810bedbd53d7da677eb420dc0154b0b)
 
-1. **Tweet about your progress**: Publicly acknowledging and sharing your small wins often gives a big motivational boost. Tweet about your experience so far, and don't forget to join the community discussions on platforms like **discord** and **Cyfrin**.
-2. **Sign up for Code Hawks**: Now comes the practical application of what you have learned so far. After completing this task, you will be ready to start performing "competitive audits". Although there are a few more skills for you to learn, you're overwhelmingly ready for this challenge! So, sign up [here](https://www.codehawks.com/).
+[Storage Refresher! (Sepolia)](https://sepolia.etherscan.io/address/0xa2626be06c11211a44fb6ca324a67ebdbcd30b70)
 
-# The Benefits and The Next Steps
+### Take a Break
 
-Performing competitive audits not only helps you to practise your newly-acquired skills but is also one of the fastest ways to learn and grow. That's why we've incorporated a multitude of features into our platform to help you sharpen your skills and assist protocols to maintain security.
-
-> **However, my one piece of advice would be to continue the course to ensure a comprehensive learning experience.**
-
-So there you have it! Your tasks at the end of this course: tweeting your progress and signing up for Code Hawks.
-
-Now, it's time for a breather. Grab that cup of coffee, take a walk, basically do anything that helps you unwind and refocus. I can't imagine the amount of learning you've accomplished so far and am pretty excited for you to start building your security portfolio. But remember, it's essential to rest before diving back in because the next section, 'The Puppy Raffle Audit', will prove more demanding.
-
-So, take a well-deserved break, and I'll see you very soon!
-
-![](https://cdn.videotap.com/Q6RCCk0Sh02NOuZZhjXh-178.39.png)
+Now is a perfect time to take a break (ice cream). Our next security review is a big one. Relax and bask in your accomplishments! Well done!

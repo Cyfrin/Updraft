@@ -4,38 +4,27 @@ title: Timeboxing
 
 _Follow along with this video:_
 
-
-
 ---
 
-# The Art of Code Review: Managing the Password Store Inspection
+### Are we done?
 
-Hello Coders! You know how we all love our code, always willing to add one more line, to make it perfect. Well, today, we'll be discussing a crucial aspect of the developer's life - Code Review, with a specific focus on Password Store.
+Now, we've done a lot. You're probably wondering if we should go back and look at the code again. Maybe we missed something...
 
-## Code Review: Do we need another round?
+Take a moment to consider what you would do in a `live audit` situation. Consider your answer before continuing on.
 
-I presume some of you might ask, "Should we do another review of the Password Store?" Before we dive in, why don't you take a pause, jot down what you think - do we need another run?
+<details closed>
+<summary> The Answer </summary>
+<br>
+Maybe.
+<br>
+<br>
 
-## The answer - Maybe?
+Honestly, we can always look at one more line of code. We can always further scrutinize a repo. At some point however, we have to say "I'm done."
 
-Welcome back! So, what's the answer? Honestly, it could be a _maybe_. It's a never-ending process, you can always look at one more line of code or rerun one more box test. But as developers, there comes a point where you've to put down your coding gloves, and tell yourself, "It's done. Time to move on".
+A lot of time's we're going to be time-boxed in what we do. There will be a limit to the amount of time we can reasonably spend on something. Sometimes this time-boxing is a hard limit we impose on ourselves to assure we remain at our most efficient.
 
-> "A good programmer is someone who always looks both ways before crossing a one-way street." - Doug Linder
+Often a pressing situation comes down to time management and setting bounds on the time we spend on things.
 
-## The Human Aspect in Code Review
+We'll go over a few time-boxing strategies a little later as well.
 
-Any lingering queries? Well, go ahead and try to get them answered. However, remember, programmers are humans too. Many-a-times, we face time constraints. In fact, I could spend an eternity scrutinizing a set of codes, deciphering more methods, and challenging my local findings. Understanding the intricacies of a particular protocol may seem tantalizing, but it's also essential to know when to stop.
-
-## The Art of Time-Boxing
-
-When it comes to reviewing codes, it's really important to master the art of 'time-boxing'. It's a strategy where you fix a maximum time limit to spend on a specific activity. In this case, deciding how much time you'd spend on code reviewing before moving on to reporting. By following this strategy, you ensure that you use your time effectively and avoid being stuck in an endless loop of code optimization.
-
-The common outcry among most security researchers often is, "I don't have enough time". However, the key lies in not having more time, but in managing the available time better.
-
-## Wrap up, Write the Report &amp; Move on
-
-There's always the lure to gaze upon another line of code, trying to level up your work. But, there comes a point when you need to compile your findings, pen down the report, and move on to the next assignment.
-
-So, for now, we are at the end of the proverbial road, or let's say, the close of our coding task or nearing the audit deadline. We have our findings, it's time to wrap up and draft the report.
-
-Well then, let’s bring down the curtain here for now and look forward to a new day with newer challenges. Happy coding!
+</details>

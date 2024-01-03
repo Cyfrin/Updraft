@@ -4,58 +4,134 @@ title: Missing Access Controls Proof of Code
 
 _Follow along with this video:_
 
+---
 
+### Report so far
+
+<details closed>
+<summary>Access Control Report</summary>
+
+### [S-#] `PasswordStore::setPassword` has no access controls, meaning a non-owner could change the password
+
+**Description:** The `PasswordStore::setPassword` function is set to be an `external` function, however the purpose of the smart contract and function's natspec indicate that `This function allows only the owner to set a new password.`
+
+function setPassword(string memory newPassword) external {
+// @Audit - There are no Access Controls.
+s_password = newPassword;
+emit SetNewPassword();
+}
+
+**Impact:** Anyone can set/change the stored password, severly breaking the contract's intended functionality
+
+**Proof of Concept:**
+
+**Recommended Mitigation:**
+
+</details>
 
 ---
 
-## The Importance of Proof of Concept &amp; Code
+### Proof of Concept/Proof of Code
 
-Despite seeming glaringly apparent, proof of concept or proof of code is not always given its due attention, leaving room for security mishaps. Hence, it is essential to validate the protocol. The protocol's existing test suite provides invaluable assistance in doing so.
+While this vulnerability may seem obvious, often it isn't. PoC's are valuable in proving that our claim that the protocol is at risk is valid and a serious concern.
 
-## Setting Up the Test
+Let's write a `fuzz test` to check if in fact addresses other than the owner are able to call `setPassword`.
 
-Here is a step-by-step guide on creating a custom test:
+```js
+    function test_anyone_can_set_password(address randomAddress) public {
+        vm.assume(randomAddress != owner);
+        vm.startPrank(randomAddress);
+        string memory expectedPassword = "myNewPassword";
+        passwordStore.setPassword(expectedPassword);
 
-- Initially, navigate to the test folder for writing the test.
-- Write a function, let's name it `test_anyone_can_set_password`.
-- To make the process more robust, make it a fuzz test.
-- Next, select a random public address.
-- For the first step within this function, we'll need to mock the address, for instance, `VM.prank(random_address)`.
-- Now, establish a string memory, e.g., `string memory expected_password = 'my_new_password'`.
+        vm.startPrank(owner);
+        string memory actualPassword = passwordStore.getPassword();
+        assertEq(actualPassword, expectedPassword);
+    }
+```
 
-Then, we must reserve a section for the setup function to get the password contract established. An essential part of being a security researcher is being able to code effectively, so congratulations on this milestone when you achieve it!
+Foundry will pass this function random addresses to see if the assert holds, based on the number of runs we've configured.
 
-## Writing the Function
+<img src="/security-section-3/20-missing-access-controls-proof-of-code/access-control1.png" style="width: 100%; height: auto;">
 
-Continuing the coding, remember we're a random address, aiming to set up a new password. Prank the owner of the contract setup in the beforementioned function now with another `VM.prank`. Here is how:
+We can see that through 256 runs, our fuzz test passed! So indeed any address was able to call our `setPassword` function!.
 
-- The string memory, for instance, `string memory actual_password = passwordstore.get_password`.
-- Set an assertion that verifies the `actual_password` and `expected_password` are the same.
+### Recommended Mitigations
 
-Identifying areas of weakness, understanding them and bringing them to attention is what security research is all about, and hopefully, through these steps, you can do just that.
+The mitigation of this is pretty clear - add access control to this function.
 
-## Result Presentation
+Let's add our test as a `proof of code` as well as our `recommended mitigation` to our report.
 
-The results can sometimes appear messy when presented with the test suites, especially in markdown. However, with the use of HTML tags, you can collapse the details into a small, clickable bit, making it more visually appealing.
+<details closed>
+<summary>Access Control Report</summary>
 
-For instance:
+```
+### [S-#] `PasswordStore::setPassword` has no access controls, meaning a non-owner could change the password
 
-```markdown
+**Description:** The `PasswordStore::setPassword` function is set to be an `external` function, however the purpose of the smart contract and function's natspec indicate that `This function allows only the owner to set a new password.`
+
+'''js
+function setPassword(string memory newPassword) external {
+    // @Audit - There are no Access Controls.
+    s_password = newPassword;
+    emit SetNewPassword();
+}
+'''
+
+**Impact:** Anyone can set/change the stored password, severly breaking the contract's intended functionality
+
+**Proof of Concept:** Add the following to the PasswordStore.t.sol test file:
+
+'''js
+function test_anyone_can_set_password(address randomAddress) public {
+        vm.assume(randomAddress != owner);
+        vm.startPrank(randomAddress);
+        string memory expectedPassword = "myNewPassword";
+        passwordStore.setPassword(expectedPassword);
+
+        vm.startPrank(owner);
+        string memory actualPassword = passwordStore.getPassword();
+        assertEq(actualPassword, expectedPassword);
+    }
+'''
+
+**Recommended Mitigation:** Add an access control conditional to `PasswordStore::setPassword`.
+
+'''js
+if(msg.sender != s_owner){
+    revert PasswordStore__NotOwner();
+}
+'''
+```
+
+> Pro-tip: Use the dropdowns, like you've seen in these lessons, in your reports to hide big blocks of code.
+
 <details>
-    <summary>
-        Code Summary
-    </summary>
+<summary>Here's the syntax</summary>
+
+> ```
+> <details>
+> <summary>Code</summary>
+> '''js
+> function test_anyone_can_set_password(address >randomAddress) public {
+>        vm.assume(randomAddress != owner);
+>        vm.startPrank(randomAddress);
+>        string memory expectedPassword = "myNewPassword";
+>        passwordStore.setPassword(expectedPassword);
+>
+>        vm.startPrank(owner);
+>        string memory actualPassword = passwordStore.>getPassword();
+>        assertEq(actualPassword, expectedPassword);
+>    }
+> '''
+> </details>
+> ```
+
 </details>
-```
+</details>
 
-## Mitigation
+### Wrap Up
 
-Finally, after discovering the weakness, it is crucial to provide a recommended solution or prevention measure. The solution here would be to add an access control conditional to the 'set_password' function.
+That's two findings down. Repetition is what will strengthen these skills and make writting these reports second nature. As we saw in this lesson, security reviewers even get to do a little coding 😋.
 
-```javascript
-if (msg.sender != s_owner) revert("PasswordStore: Not owner");
-```
-
-The resulting effect would be a more secure 'set_password' function.
-
-We've thus covered the second part of the testing and proofed it with a practical test case. Careful scrutiny of seemingly minor security risks can drastically enhance the security levels of blockchain systems.
+Let's move on to our third finding, this one should be quick!
