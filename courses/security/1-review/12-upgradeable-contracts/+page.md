@@ -78,9 +78,9 @@ function setImplementation(address newImplementation) public {
 - **setImplementation()** - changes the implementation contract, effectively allowing a protocol to upgrade.
 - **\_implementation** - reads the location of the implementation contract
 
-You may also have noticed `bytes32 private constant _IMPLEMENTATION_SLOT = ...` this is the storage slot where we are storaage the address of our implementation contract. You read more about `Standard Proxy Storage Slots` in [**EIP-1967**](https://eips.ethereum.org/EIPS/eip-1967)
+You may also have noticed `bytes32 private constant _IMPLEMENTATION_SLOT = ...` this is the storage slot where we are storing the address of our implementation contract. You can read more about `Standard Proxy Storage Slots` in [**EIP-1967**](https://eips.ethereum.org/EIPS/eip-1967)
 
-Let's consider a based implementation contract:
+Let's consider a basic implementation contract:
 
 ```js
 contract ImplementationA {
