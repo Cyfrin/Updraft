@@ -22,15 +22,15 @@ By now, I hope you're questioning with anticipation: "What does a security revie
 
 Right in our GitHub repository, we detail the three phases of a security review and what that process looks like.
 
-    Initial Review
+    1. Initial Review
             Scoping
             Reconnaissance
             Vulnerability identification
             Reporting
-    Protocol fixes
+    2. Protocol fixes
             Fixes issues
             Retests and adds tests
-    Mitigation Review
+    3. Mitigation Review
             Reconnaissance
             Vulnerability identification
             Reporting
@@ -43,7 +43,7 @@ Before we delve into the specifics, let's discuss why security reviews are criti
 
 ## Importance of Security Reviews
 
-> A smart contract audit is a timeboxed, security based review of your smart contract system. An auditor's goal is to find as many vulnerabilities as possible and educate the protocol and security and coding best-practices moving forward.
+> A smart contract audit is a timeboxed, security based review of your smart contract system. An auditor's goal is to find as many vulnerabilities as possible and educate the protocol on ways to improve their codebase security and coding best-practices moving forward.
 
 As code deployed to a blockchain is immutable, it’s crucial that it's error-free before deployment. The permissionless and adversarial nature of the blockchain means that protocols need to be ready to repel malicious users. Failure to do so can lead to hefty monetary losses, as evidenced by the nearly $4 billion stolen due to smart contract vulnerabilities last year.
 
@@ -78,7 +78,7 @@ Lines of Code: Duration
 - 5000 : 3-5 Weeks
 - 5000+: 5+ weeks
 
-Take this with a lot of salt though as these timelines vary largely based on circumstance.
+Take this with a lot of salt though, as these timelines vary largely based on circumstance.
 
 With the submission of a `commit hash` and `down payment` by the protocol and start date can be set!
 
@@ -96,7 +96,7 @@ Once the review period is over, the auditors compile an initial report. This rep
 - Medium
 - Low
 - Information/Non-critical
-- Gas Efficiences
+- Gas Efficiencies
 
 High, medium and low findings have their severity determined by the impact and likelihood of an exploit.
 
