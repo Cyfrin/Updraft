@@ -23,17 +23,17 @@ By now, I hope you're questioning with anticipation: "What does a security revie
 Right in our GitHub repository, we detail the three phases of a security review and what that process looks like.
 
     1. Initial Review
-            Scoping
-            Reconnaissance
-            Vulnerability identification
-            Reporting
+            a. Scoping
+            b. Reconnaissance
+            c. Vulnerability identification
+            d. Reporting
     2. Protocol fixes
-            Fixes issues
-            Retests and adds tests
+            a. Fixes issues
+            b. Retests and adds tests
     3. Mitigation Review
-            Reconnaissance
-            Vulnerability identification
-            Reporting
+            a. Reconnaissance
+            b. Vulnerability identification
+            C. Reporting
 
 To give you a heads-up, there really isn't a "one-size-fits-all" approach to smart contract auditing. There are several unique strategies, each bringing a different set of pros and cons to the table.
 
