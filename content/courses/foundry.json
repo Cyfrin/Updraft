@@ -7,7 +7,7 @@
   "trailerUrl": "",
   "previewImg": "https://res.cloudinary.com/droqoz7lg/image/upload/v1701193477/updraft/courses/ccrmrt6nnfgcyuk2o7bu.png",
   "description": "Already know Solidity? Your next step is Foundry! Learn how to manage your dependencies, compile your project, run tests, deploy, and interact with your from the command-line and via Solidity scripts.",
-  "path": "Solidity Developer",
+  "path": "content/learning-paths/solidity-developer.json",
   "number": 0,
   "githubUrl": "https://github.com/Cyfrin/path-solidity-developer-2023",
   "overview": {
