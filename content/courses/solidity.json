@@ -5,7 +5,7 @@
   "courseId": "5d004a66-1e36-4679-a54f-6fd426913ba3",
   "slug": "solidity",
   "createdAt": "2023-12-18T15:14:18.698Z",
-  "updatedAt": "2024-01-10T11:41:54.944Z",
+  "updatedAt": "2024-01-10T11:44:29.842Z",
   "title": "Solidity fundamentals",
   "path": "content/learning-paths/solidity-developer.json",
   "githubUrl": "https://github.com/Cyfrin/path-solidity-developer-2023",
@@ -45,6 +45,13 @@
           "rawMarkdownUrl": "/routes/solidity/1-simple-storage/1-introduction/+page.md",
           "markdownContent": "***\n\n## title: Repository Access and Navigation\n\n*If you'd like, you can follow along with the course here.*\n\n## Introduction\n\nTo get started, navigate to our [GitHub repository](https://github.com/Cyfrin/foundry-full-course-f23)\n\n<img src=\"/solidity/remix/lesson-2/section-1/1.png\" style=\"width: 100%; height: auto;\">\n\nThe interface might look slightly different when you first access it, but no need to worry. What you're looking for is the repository associated specifically with this lesson. This repository will contain all the code required for this stage of the course, together with a `README` section. The `README` will provide you with a wealth of notes on how to work with the code.\n\n## Usage of the repository\n\nThe repository serves two main purposes:\n\n* **Access and Clone:** It provides easy access to all lesson codes, allowing you to clone them effortlessly.\n* **Discussion Section:** Engage with fellow students, ask questions, and participate in collaborative learning.\n\nMake the most of this repository by accessing and cloning lesson codes quickly, while also taking part in interactive discussions with your peers. Happy learning!\n\n## Asking Questions\n\nThroughout your journey, you'll likely have queries that you'd need answers to. We recommend using the Questions section provided. We'll guide you on how to ask questions such that they have the highest chance of receiving an answer from the community, an AI, or a forum.\n\n<img src=\"/solidity/remix/lesson-2/section-1/lesson-2-section-1-quoute.png\" style=\"width: 100%; height: auto;\">\n\n## Setting Up\n\nBefore we dive into coding, it is essential that you have access to the code repository and educational resources provided.\n\n1. Access the GitHub repository associated with this course. The repository contains all the code we will be working with, as well as a README file which includes important notes on working with the code.\n2. If you face any issues or want to participate in discussions, use the discussions tab on GitHub instead of creating issues.\n\nAlso, I recommend creating accounts on the following platforms if you haven't already:\n\n* [GitHub](https://github.com/)\n* [Stack Exchange Ethereum](https://ethereum.stackexchange.com/)\n* [Chat GPT](https://openai.com/blog/chatgpt) (but remember it might not always provide accurate information).\n\n## Let's Start Coding!\n\nNow, comes the exciting part — we're actually going to be building and deploying your first smart contract!\n\nWe're going to be utilizing a tool called an IDE — specifically, Remix, for deploying and interacting with this smart contract. The best way to get the most out of this guide is to code along with me. You're encouraged to change the speed on the tutorial video to match your coding pace. Remember, repetition is critical to building a new skill and we want to make sure that you come out on the other side armed with it!\n\n## The Deployment Tool: Remix\n\n<img src=\"/solidity/remix/remix-screenshot.png\" style=\"width: 100%; height: auto;\">\n\nTo plunge into coding, we're going to be using [Remix](https://remix.ethereum.org/). You can either Google search it or access it directly from the link provided.\n\nSo, let's jump right in and start deploying your first smart contract! By the end of this lesson, you'll have deployed your first smart contract and written your first bit of Solidity code. We can't wait to get through this exciting journey with you!\n",
           "updates": [
+            {},
+            {},
+            {
+              "title": "Update 3",
+              "description": "this is the third update",
+              "date": "2024-01-09T23:00:00.000Z"
+            },
             {
               "title": "This is an update",
               "description": "update description",
