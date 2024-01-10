@@ -5,7 +5,7 @@
   "courseId": "32bb0733-5e24-4b43-959f-76f85d2bb5c6",
   "slug": "blockchain-basics",
   "createdAt": "2023-12-18T15:14:18.688Z",
-  "updatedAt": "2024-01-10T10:05:09.891Z",
+  "updatedAt": "2024-01-10T10:05:52.774Z",
   "title": "Blockchain Basics",
   "path": "content/learning-paths/foundations.json",
   "githubUrl": "https://github.com/Cyfrin/path-solidity-developer-2023",
@@ -151,7 +151,7 @@
         },
         {
           "lessonId": "1a5beaf9-4b6d-44b4-904d-357908e344fb",
-          "number": 11,
+          "number": 9,
           "slug": "blockchian-basics-completed",
           "title": "Congratulations",
           "description": "Celebratory conclusion of the blockchain basics series, highlighting the journey from theoretical understanding to practical application.",
