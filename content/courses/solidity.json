@@ -5,7 +5,7 @@
   "courseId": "5d004a66-1e36-4679-a54f-6fd426913ba3",
   "slug": "solidity",
   "createdAt": "2023-12-18T15:14:18.698Z",
-  "updatedAt": "2024-01-10T11:44:59.509Z",
+  "updatedAt": "2024-01-10T11:47:48.726Z",
   "title": "Solidity fundamentals",
   "path": "content/learning-paths/solidity-developer.json",
   "githubUrl": "https://github.com/Cyfrin/path-solidity-developer-2023",
@@ -36,7 +36,7 @@
       "lessons": [
         {
           "lessonId": "eb95ab4e-315d-4c2c-ada7-de40ad9ea462",
-          "number": 1,
+          "number": 2,
           "slug": "introduction",
           "title": "Introduction",
           "description": "This lesson provides an introduction to the course, guiding students through accessing and navigating the GitHub repository, understanding the usage of the repository for cloning lesson codes, and engaging in discussions. It also covers the importance of asking questions and setting up for coding, including accessing educational resources and preparing for building and deploying a smart contract.",
