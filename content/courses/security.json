@@ -4,7 +4,6 @@
   "slug": "security",
   "folderName": "security",
   "lastUpdated": "Wed Jan 03 2024 10:33:06 GMT-0500 (Eastern Standard Time)",
-  "trailerUrl": "",
   "previewImg": "https://res.cloudinary.com/droqoz7lg/image/upload/f_auto,q_auto/v1/updraft/courses/rdmkzepzrx9b3sf0t3ko",
   "description": "Start your career as a smart contract auditor! Learn the best practices for writing secure and optimized smart contracts. Explore techniques like fuzzing, invariant testing, formal verification, and more to identify bugs and protect web3 protocols.",
   "path": "content/learning-paths/foundations.json",
