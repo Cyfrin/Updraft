@@ -262,6 +262,11 @@ export const CourseCollection: Collection = {
                 },
               ],
               list: true,
+              ui: {
+                itemProps(updateItem) {
+                  return { label: updateItem.title };
+            },
+          },
             },
           ],
           ui: {
