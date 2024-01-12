@@ -71,11 +71,6 @@ export const CourseCollection: Collection = {
       label: "GitHub URL",
     },
     {
-      type: "string",
-      name: "trailerUrl",
-      label: "Trailer URL",
-    },
-    {
       type: "image",
       name: "previewImg",
       label: "Preview Image",
