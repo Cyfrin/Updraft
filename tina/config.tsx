@@ -14,15 +14,14 @@ export default defineConfig({
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
   token: process.env.TINA_TOKEN,
   build: {
-    publicFolder: "public",
+    publicFolder: "static",
     outputFolder: "admin",
   },
   media: {
-    tina: {
-      mediaRoot: "",
-      publicFolder: "public",
-      static: true,
-    },
+    loadCustomStore: async () => {
+      const pack = await import("next-tinacms-cloudinary");
+       return pack.TinaCloudCloudinaryMediaStore;
+         }
   },
   schema: {
     collections: [

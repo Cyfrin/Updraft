@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@tinacms/auth':
+    specifier: ^1.0.4
+    version: 1.0.4
   '@tinacms/cli':
     specifier: ^1.5.34
     version: 1.5.39(@babel/core@7.23.5)(@types/node@20.10.3)(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
@@ -14,6 +17,9 @@ dependencies:
   next-auth:
     specifier: ^4.24.5
     version: 4.24.5(next@14.0.3)(react-dom@18.2.0)(react@18.2.0)
+  next-tinacms-cloudinary:
+    specifier: ^4.4.5
+    version: 4.4.5(tinacms@1.5.28)
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -3241,6 +3247,14 @@ packages:
       - yup
     dev: false
 
+  /@tinacms/auth@1.0.4:
+    resolution: {integrity: sha512-M+lX+oIJpmxtyRprQ9hlQk2J/32XduESJDQ0dA3m8g8Z6QhSlP/7Eg09ocgFSCyJDj50tit8hpLTrbtlEpz4+A==}
+    dependencies:
+      fetch-ponyfill: 7.1.0(encoding@0.1.13)
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
   /@tinacms/cli@1.5.39(@babel/core@7.23.5)(@types/node@20.10.3)(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-IAYYSWXVvIdeMCbRvuXH70UKcnoekGfy65eZAb2e/QyId0bcuRbPR/kBr8I+ogozmL5CoEXCP+tm2RgRY1O5Ow==}
     hasBin: true
@@ -3264,7 +3278,7 @@ packages:
       '@tinacms/graphql': 1.4.32(react@18.2.0)
       '@tinacms/metrics': 1.0.2(fs-extra@9.1.0)
       '@tinacms/schema-tools': 1.4.15(react@18.2.0)(yup@0.32.11)
-      '@tinacms/search': 1.0.17(react@18.2.0)(yup@0.32.11)
+      '@tinacms/search': 1.0.17(encoding@0.1.13)(react@18.2.0)(yup@0.32.11)
       '@vitejs/plugin-react': 3.1.0(vite@4.5.1)
       ajv: 6.12.6
       altair-express-middleware: 4.0.6
@@ -3558,25 +3572,6 @@ packages:
     dev: false
 
   /@tinacms/search@1.0.17(encoding@0.1.13)(react@18.2.0)(yup@0.32.11):
-    resolution: {integrity: sha512-AIrli3YhMAgxFQ80LyiIKahdMrHwX0J1I+/u/hOl+uRti+Vvj6LRLnY8cSz/0FcswEoypPSjo58EPlrlK0sOVg==}
-    dependencies:
-      '@tinacms/graphql': 1.4.32(react@18.2.0)
-      '@tinacms/schema-tools': 1.4.15(react@18.2.0)(yup@0.32.11)
-      abstract-level: 1.0.3
-      memory-level: 1.0.0
-      module-error: 1.0.2
-      node-fetch: 2.7.0(encoding@0.1.13)
-      search-index: 4.0.0(abstract-level@1.0.3)
-      sqlite-level: 1.0.1
-      stopword: 2.0.8
-    transitivePeerDependencies:
-      - encoding
-      - react
-      - supports-color
-      - yup
-    dev: false
-
-  /@tinacms/search@1.0.17(react@18.2.0)(yup@0.32.11):
     resolution: {integrity: sha512-AIrli3YhMAgxFQ80LyiIKahdMrHwX0J1I+/u/hOl+uRti+Vvj6LRLnY8cSz/0FcswEoypPSjo58EPlrlK0sOVg==}
     dependencies:
       '@tinacms/graphql': 1.4.32(react@18.2.0)
@@ -7439,6 +7434,24 @@ packages:
       wrap-ansi: 7.0.0
     dev: false
 
+  /cloudinary-core@2.13.0(lodash@4.17.21):
+    resolution: {integrity: sha512-Nt0Q5I2FtenmJghtC4YZ3MZZbGg1wLm84SsxcuVwZ83OyJqG9CNIGp86CiI6iDv3QobaqBUpOT7vg+HqY5HxEA==}
+    peerDependencies:
+      lodash: '>=4.0'
+    dependencies:
+      lodash: 4.17.21
+    dev: false
+
+  /cloudinary@1.41.2:
+    resolution: {integrity: sha512-9gH6ofz+N8AzfjqtmTgB9lVxwWcroHFfMOOM6iiX/g1H+KYz+sArClXWtd0prRE6m/IoBBBbbaJ12yRdJNnMxA==}
+    engines: {node: '>=0.6'}
+    dependencies:
+      cloudinary-core: 2.13.0(lodash@4.17.21)
+      core-js: 3.35.0
+      lodash: 4.17.21
+      q: 1.5.1
+    dev: false
+
   /clsx@1.2.1:
     resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
     engines: {node: '>=6'}
@@ -7560,6 +7573,11 @@ packages:
     resolution: {integrity: sha512-2KV8NhB5JqC3ky0r9PMCAZKbUHSwtEo4CwCs0KXgruG43gX5PMqDEBbVU4OUzw2MuAWUfsuFmWvEKG5QRfSnJA==}
     dependencies:
       toggle-selection: 1.0.6
+    dev: false
+
+  /core-js@3.35.0:
+    resolution: {integrity: sha512-ntakECeqg81KqMueeGJ79Q5ZgQNR+6eaE8sxGCx62zMbAIj65q+uYvatToew3m6eAGdU4gNZwpZ34NMe4GYswg==}
+    requiresBuild: true
     dev: false
 
   /core-util-is@1.0.3:
@@ -9925,6 +9943,16 @@ packages:
       uuid: 8.3.2
     dev: false
 
+  /next-tinacms-cloudinary@4.4.5(tinacms@1.5.28):
+    resolution: {integrity: sha512-zJJ3z3pC5KefkFdIFIP0HIGVBuOzC8NXlU4zSGS2jLbDgKLI0FX6lI1Lp258lOnTCBTX78TKav6FvI0Sqz4pkA==}
+    peerDependencies:
+      tinacms: 1.5.28
+    dependencies:
+      cloudinary: 1.41.2
+      multer: 1.4.5-lts.1
+      tinacms: 1.5.28(@babel/core@7.23.5)(@types/react-dom@18.2.4)(@types/react@18.2.7)(react-dom@18.2.0)(react@18.2.0)
+    dev: false
+
   /next@14.0.3(@babel/core@7.23.5)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-AbYdRNfImBr3XGtvnwOxq8ekVCwbFTv/UJoLwmaX89nk9i051AEY4/HAWzU0YpaTDw8IofUpmuIlvzWF13jxIw==}
     engines: {node: '>=18.17.0'}
@@ -10528,6 +10556,11 @@ packages:
   /punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
+    dev: false
+
+  /q@1.5.1:
+    resolution: {integrity: sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==}
+    engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     dev: false
 
   /qs@6.11.0:
