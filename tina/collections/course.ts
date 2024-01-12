@@ -1,6 +1,8 @@
 import { Collection } from "tinacms";
 import { slugify } from "../utils";
 
+
+
 export const CourseCollection: Collection = {
   name: "course",
   label: "Courses",
@@ -74,7 +76,7 @@ export const CourseCollection: Collection = {
       label: "Trailer URL",
     },
     {
-      type: "string",
+      type: "image",
       name: "previewImg",
       label: "Preview Image",
     },
