@@ -14,7 +14,7 @@ export const CourseCollection: Collection = {
         return slugify(values?.title || "New Course");
       },
     },
-    beforeSubmit: async ({ values }) => {
+    beforeSubmit: async ({ values }: { values: any}) => {
       if (values.sections) {
         values.sections.forEach((section, sectionIndex) => {
           section.number = sectionIndex + 1;
