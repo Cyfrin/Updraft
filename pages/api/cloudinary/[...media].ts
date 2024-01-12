@@ -7,12 +7,12 @@ import {
   
   export const config = mediaHandlerConfig
   
-  if(!process.env.CLOUD_NAME || !process.env.API_KEY || !process.env.API_SECRET) throw new Error('Missing Cloudinary env variables')
+  if(!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) throw new Error('Missing Cloudinary env variables')
 
   export default createMediaHandler({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
     authorized: async (req, _res) => {
       try {
        if (process.env.NODE_ENV == 'development') {
