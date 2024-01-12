@@ -14,7 +14,7 @@ export default defineConfig({
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
   token: process.env.TINA_TOKEN,
   build: {
-    publicFolder: "static",
+    publicFolder: "public",
     outputFolder: "admin",
   },
   media: {
@@ -30,5 +30,13 @@ export default defineConfig({
       CourseCollection,
       GlobalsCollection,
     ],
+  },
+  search: {
+    tina: {
+      indexerToken: process.env.TINA_SEARCH_TOKEN,
+      stopwordLanguages: ['eng'],
+    },
+    indexBatchSize: 100,
+    maxSearchIndexFieldLength: 100,
   },
 });
