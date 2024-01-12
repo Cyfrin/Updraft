@@ -5,7 +5,7 @@
   "courseId": "32bb0733-5e24-4b43-959f-76f85d2bb5c6",
   "slug": "blockchain-basics",
   "createdAt": "2023-12-18T15:14:18.688Z",
-  "updatedAt": "2024-01-12T15:48:56.569Z",
+  "updatedAt": "2024-01-12T15:49:24.218Z",
   "title": "Blockchain Basics",
   "path": "content/learning-paths/foundations.json",
   "githubUrl": "https://github.com/Cyfrin/path-solidity-developer-2023",
@@ -170,17 +170,6 @@
               "date": "2024-01-10T05:00:00.000Z"
             }
           ]
-        },
-        {
-          "lessonId": "asdasd",
-          "number": 12,
-          "slug": "asdada",
-          "title": "dasdada",
-          "description": "dadad",
-          "duration": 3,
-          "videoUrl": "asdad",
-          "rawMarkdownUrl": "asdsdas",
-          "markdownContent": "dasdad\n"
         }
       ]
     }
