@@ -15,6 +15,18 @@ export const CourseCollection: Collection = {
       },
     },
     beforeSubmit: async ({ values }) => {
+      if (values.sections) {
+        values.sections.forEach((section, sectionIndex) => {
+          section.number = sectionIndex + 1;
+
+          // Auto-numbering logic for lessons within each section
+          if (section.lessons) {
+            section.lessons.forEach((lesson, lessonIndex) => {
+              lesson.number = lessonIndex + 1;
+            });
+          }
+        });
+      }
       return {
         ...values,
         updatedAt: new Date().toISOString(),
@@ -154,6 +166,7 @@ export const CourseCollection: Collection = {
           name: "number",
           label: "Section Number",
           required: true,
+          
         },
         {
           type: "string",
