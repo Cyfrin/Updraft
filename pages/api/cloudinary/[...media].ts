@@ -1,5 +1,4 @@
 import {
-    mediaHandlerConfig,
     createMediaHandler,
   } from 'next-tinacms-cloudinary/dist/handlers'
   
