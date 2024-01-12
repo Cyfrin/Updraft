@@ -5,7 +5,7 @@
   "courseId": "32bb0733-5e24-4b43-959f-76f85d2bb5c6",
   "slug": "blockchain-basics",
   "createdAt": "2023-12-18T15:14:18.688Z",
-  "updatedAt": "2024-01-12T08:34:37.124Z",
+  "updatedAt": "2024-01-12T15:48:08.407Z",
   "title": "Blockchain Basics",
   "path": "content/learning-paths/foundations.json",
   "githubUrl": "https://github.com/Cyfrin/path-solidity-developer-2023",
@@ -29,8 +29,19 @@
       "title": "Blockchain Basics",
       "lessons": [
         {
-          "lessonId": "a0e53ee0-46d4-4bde-aa69-1300180d41a3",
+          "lessonId": "asdasd",
           "number": 1,
+          "slug": "asdada",
+          "title": "dasdada",
+          "description": "dadad",
+          "duration": 3,
+          "videoUrl": "asdad",
+          "rawMarkdownUrl": "asdsdas",
+          "markdownContent": "dasdad\n"
+        },
+        {
+          "lessonId": "a0e53ee0-46d4-4bde-aa69-1300180d41a3",
+          "number": 2,
           "slug": "welcome-to-updraft",
           "title": "Welcome to Updraft!",
           "description": "Welcome to the course!",
@@ -42,7 +53,7 @@
         },
         {
           "lessonId": "a0e53ee0-46d4-4bde-aa69-1300180d41d2",
-          "number": 2,
+          "number": 3,
           "slug": "what-is-a-blockchain",
           "title": "What is a blockchain?",
           "description": "Introduction to blockchain technology, its evolution from Bitcoin to Ethereum, and the significance of smart contracts.",
@@ -54,7 +65,7 @@
         },
         {
           "lessonId": "3e87b91a-c18e-4152-a9f7-dac2a0aa7819",
-          "number": 3,
+          "number": 4,
           "slug": "the-purpose-of-smart-contracts",
           "title": "The purpose of smart contracts",
           "description": "Exploration of the purpose of smart contracts, their advantages over traditional agreements, and their impact on various industries.",
@@ -66,7 +77,7 @@
         },
         {
           "lessonId": "39bb34be-6a9f-40f5-ba68-7956777d2d9d",
-          "number": 4,
+          "number": 5,
           "slug": "smart-contract-landscape",
           "title": "Current smart contract landscape",
           "description": "Overview of the current landscape of smart contracts, their features like decentralization, transparency, and applications in different fields. aaa",
@@ -78,7 +89,7 @@
         },
         {
           "lessonId": "9a54e679-4c55-4947-a2ab-4bd749634a99",
-          "number": 5,
+          "number": 6,
           "slug": "metamask-setup-making-your-first-transaction",
           "title": "Setup your wallet - making your first transaction",
           "description": "Guidance on setting up a Metamask wallet, understanding its interface, and the significance of secret recovery phrases in Ethereum transactions.",
@@ -90,7 +101,7 @@
         },
         {
           "lessonId": "8f1efe3d-f43e-4e53-aa3f-0eff1b1afc1c",
-          "number": 6,
+          "number": 7,
           "slug": "introduction-to-gas",
           "title": "Introduction to gas",
           "description": "Introduction to the concept of 'gas' in Ethereum, its role in transactions, and the mechanics of calculating transaction fees.",
@@ -102,7 +113,7 @@
         },
         {
           "lessonId": "813188a3-0241-4fac-85f4-a05d1e5349cc",
-          "number": 7,
+          "number": 8,
           "slug": "how-do-blockchains-work",
           "title": "How do blockchains work",
           "description": "Detailed explanation of the working of blockchains, the importance of hash functions, and the concept of blockchain immutability.",
@@ -114,7 +125,7 @@
         },
         {
           "lessonId": "a3c23224-9059-4be2-a5aa-d860451df2de",
-          "number": 8,
+          "number": 9,
           "slug": "signing-ethereum-transactions",
           "title": "Signing transactions",
           "description": "In-depth look at the process of signing blockchain transactions, the role of private and public keys, and their significance in maintaining security.",
@@ -126,7 +137,7 @@
         },
         {
           "lessonId": "6f36bc8a-e920-406a-9885-39642b7864ef",
-          "number": 9,
+          "number": 10,
           "slug": "gas-in-depth",
           "title": "Gas in depth",
           "description": "Further exploration into the concept of 'gas' in blockchain transactions, including gas limits, transaction fees, and Ethereum's EIP 1559.",
@@ -138,7 +149,7 @@
         },
         {
           "lessonId": "872fe9ea-6511-413a-acaf-5f997e725417",
-          "number": 10,
+          "number": 11,
           "slug": "how-the-blockchain-works",
           "title": "How blockchains work",
           "description": "Comprehensive overview of fundamental blockchain concepts including cryptography, node operations, consensus protocols, and scaling solutions.",
@@ -150,7 +161,7 @@
         },
         {
           "lessonId": "1a5beaf9-4b6d-44b4-904d-357908e344fb",
-          "number": 11,
+          "number": 12,
           "slug": "blockchian-basics-completed",
           "title": "Congratulations",
           "description": "Celebratory conclusion of the blockchain basics series, highlighting the journey from theoretical understanding to practical application.",
