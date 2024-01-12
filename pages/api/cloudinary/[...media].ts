@@ -15,9 +15,9 @@ import {
     api_secret: process.env.API_SECRET,
     authorized: async (req, _res) => {
       try {
-       /* if (process.env.NODE_ENV == 'development') {
+       if (process.env.NODE_ENV == 'development') {
           return true
-        }*/ 
+       }
         const user = await isAuthorized(req)
     
         return !!user && user.verified
