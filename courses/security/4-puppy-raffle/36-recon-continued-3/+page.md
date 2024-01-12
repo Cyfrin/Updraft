@@ -4,60 +4,113 @@ title: Recon Continued 3
 
 _Follow along with this video:_
 
-## 
-
 ---
 
-# Manual Code Review: The Puppy Raffle Codebase
+### Recon Continued
 
-Hello folks, in our continuous journey to explore the world of code, let's dive into a manual code review of the Puppy Raffle codebase. We're going to sift through the codebase together and try to understand how it works, pointing out areas of concern.
+We're doing great so far and have uncovered lots - we definitely shouldn't stop now. The next function we'll approach is `changeFeeAddress`.
 
-## Change Fee Address Function
+### changeFeeAddress
 
-To begin with, let's look into the `changeFeeAddress` function. This function ensures that only the contract owner can make changes to the contract's fee address. The modifier `onlyOwner` that is used in this function is sourced from the OpenZeppelin library. By inspecting these functions, it becomes apparent that they do perform the required tasks.
-
-```javascript
-require(owner == msg.sender);
+```js
+/// @notice only the owner of the contract can change the feeAddress
+/// @param newFeeAddress the new address to send fees to
+function changeFeeAddress(address newFeeAddress) external onlyOwner {
+    feeAddress = newFeeAddress;
+    emit FeeAddressChanged(newFeeAddress);
+}
 ```
 
-Set the new fee address and check whether the fee address is used where it is supposed to. An event is then emitted.
-
-It's worth noting that there may be some events missing from other functions, such as 'Withdraw Fees' and 'Select Winner'. This sparks a query for our manual audit of whether there are events missing elsewhere in the code that need to be added.
-
-## Active Player Function
+To begin with, let's look into the `changeFeeAddress` function. This function ensures that only the contract owner can make changes to the contract's `feeAddress`. The modifier `onlyOwner` that is used in this function is sourced from the OpenZeppelin library. We can (and should) inspect these functions to assure access control is working as we'd expect - it is.
 
 ```javascript
-    function isActivePlayer() public view returns (bool) {
-        return activePlayers[msg.sender];
+/**
+ * @dev Throws if called by any account other than the owner.
+ */
+modifier onlyOwner() {
+    require(owner() == _msgSender(), "Ownable: caller is not the owner");
+    _;
+}
+```
+
+`changeFeeAddress` then sets the `feeAddress` variable to the new address provided, and finally emits an event.
+
+> Whoops! - events should be emitted after state changes, we haven't seen many events til now, we may need to return to previous functions to verify!
+
+Things look fine with `changeFeeAddress`, what's next?
+
+## \_isActivePlayer
+
+```javascript
+/// @notice this function will return true if the msg.sender is an active player
+function _isActivePlayer() internal view returns (bool) {
+    for (uint256 i = 0; i < players.length; i++) {
+        if (players[i] == msg.sender) {
+            return true;
+        }
     }
+    return false;
+}
 ```
 
-The function above is supposed to return true if the message sender is an active player. On attempting to identify its use within the protocol, we realize it isn't utilized anywhere. In the face of this finding, we add it to our audit report emphasizing the unused function may not contribute much impact or likelihood but is a wastage of gas and redundant clutter in our codebase.
+Now, we haven't seen this referenced anywhere before now, we may want to simply investigate when this function is being used.
 
-## Base URI and NFT Stuff
+<img src="/security-section-4/36-recon-continued-3/recon-continued1.png" style="width:75%; height:auto;">
 
-![](https://cdn.videotap.com/x2QzHSr5HPaTEkOKw0xW-194.4.png)
+Ironically, it seems this function isn't being used anywhere in our protocol!
 
-Next up is our base URI function that's tied to the creation of SVG-based NFTs. This function is critical for anyone wanting to comprehend NFTs and their role within the Defi and Web3 ecosystems. Understanding how NFTs operate under the hood is crucial for any security researcher.
+We would have to ask ourselves of course:
 
-The function as we see it here is essentially a classic SVG. It has an override for OpenZeppelin's method, checks if a token exists and then event tickets are mapped to rarity levels.
-
-```javascript
-function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
-    require(_exists(tokenId), "PuppyRaffle: URI query for nonexistent token");
-    uint256 rarity = tokenIdToRarity[tokenId];
-    string memory imageUri = rarityToUri[rarity];
-    string memory rareName = rarityToName[rarity];
-    ...
-    }
+```js
+// Impact:
+// Likelihood:
 ```
 
-This function deserves a more in-depth exploration along with cross-checking and verifying aspects like Rarity levels, URI mapping, token Id's, among other things.
+Given that this is an `internal` function that is never called - the `impact` and `likelihood` are both realistically going to be `None`. With that said, this function is clearly a waste of gas.
 
-## In Retrospect
+When we complete our write up, it's likely this will be an `Informational` or `Gas` severity.
 
-Having swept over the codebase once, we notice several areas deserving of keen attention, for instance, the sparing use of state variables and event emitters. Despite the detailed walkthrough, the first pass through the Puppy Raffle codebase has thrown up a host of questions to be answered as part of our codebase review. As we explore these points, we might end up with even more questions or uncover potential vulnerabilities.
+### \_baseURI
 
-Take the challenge and dive deeper into the codebase, explore it thoroughly until you get a complete understanding. You can start trying to answer the questions we've stirred up, or even better, stir up a few of your own. It's a fantastic opportunity to practise your debugging skills and understand the codebase better.
+```js
+/// @notice this could be a constant variable
+function _baseURI() internal pure returns (string memory) {
+    return "data:application/json;base64,";
+}
+```
 
-And if you choose not to, that's okay too! There's always more to learn and more adventures to embark on, in the vast world of coding. Keep exploring!
+The next function down is `_baseURI`. This seems pretty straightforward. It looks like it provides a base for a tokenURI used for an SVG NFT implementation.
+
+> **Note:** If this is confusing to you, absolutely review the Foundry Full Course. NFTs are a huge part of DeFi and you _need_ to know this stuff intimately.
+
+### tokenURI
+
+Skimming through the `tokenURI` function, nothing initially sticks out as unusual. A few things we would want to check would be:
+
+- Assuring tokens have their rarity properly assigned.
+- Verifying mapping for `rarityToUri` and `rarityToName` and where they are set.
+- Double checking that the image URIs work for each rarity.
+
+The function then ends in a whole bunch of encoding stuff. It's pretty heavy, so we're not going to go through it too deeply. There may be some redundancy here - I challenge you to sus it out - but for the most part this is good.
+
+Definitely be thinking about _how can I break this view function?_
+
+### Wrap Up
+
+At this point we've completed our first thorough review of the code base. We should definitely go back and reassess events, as well as dedicate some time considering state variables - but for the most part, we've completed an initial review!
+
+This would be a great stage to go back through our notes and begin answering some of the questions we've been leaving ourselves.
+
+```js
+// Were custom reverts a thing in 0.7.6 of solidity?
+// - No!
+// What if the players.length == 0?
+// - still emits an event when creating the raffle?
+// etc...
+```
+
+We likely have a tonne of questions at this point and it's good practice to now answer them. Going through our previous questions might even generate new ones - but we keep at the process until we have a solid understanding of how everything should and does work.
+
+Usually one pass of a code base isn't going to be enough. If there are unanswered questions, it's a good sign that you need to go deeper.
+
+In the next lesson, we'll answer more of our questions, but I challenge you to go through some and try to find answers on your own before continuing!
