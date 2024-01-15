@@ -4,7 +4,7 @@ title: Receive & Fallback
 
 _Follow along this chapter with the video bellow_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/sgaBmbsriwk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 In Solidity, a hurdle can arise when users send Ether directly to a contract without passing through necessary function calls. This lesson provides a step-by-step guide on how to mitigate this issue using Solidity's special functions, namely `_receive_` and `_fallback_`.
 

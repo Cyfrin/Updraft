@@ -4,7 +4,7 @@ title: ERC20 Basics
 
 _Follow along the course with this video._
 
-<iframe width="560" height="315" src="https://youtube.com/embed/Iip9bQ3yKUI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 # Understanding ERC20 Tokens in Ethereum: A Comprehensive Guide
 

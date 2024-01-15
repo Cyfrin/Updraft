@@ -4,7 +4,7 @@ title: Open Fuzz Tests
 
 _Follow along the course with this video._
 
-<iframe width="560" height="315" src="https://youtube.com/embed/tPDG4HFm2bE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 # Unit Testing and Refactoring: Building Better and Secure DApps
 

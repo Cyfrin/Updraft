@@ -4,89 +4,68 @@ title: Info and Gas Findings
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/WycVutSWjlM" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
-# Boosting Code Quality with Solidity: An Audit Analysis
+### Info and Gas Findings
 
-In our journey to mastering Solidity, we have encountered a few gaps and opportunities for improvement in our code quality, especially during private audits. This blog post will guide you through some key areas to call out in code during an audit: naming conventions, versioning, the risk of magic numbers, addressing supply chain attacks, and opportunities for gas optimization.
+With all our questions answered, there still remain a few outstanding items we should consider.
 
-## Naming Conventions: Clarifying Storage Variables
+We briefly ran Slither earlier in this section, but didn't look too closely at what its output was. We should definitely return to this. Additionally, as people who have gone through the Foundry course should recognize, this code base is not adhering to any design pattern best practices, and regularly chooses poor naming conventions.
 
-One of the easiest ways to improve code readability is to use clear naming conventions. In the codebase for our audit, the names of the storage variables were found lacking. A beneficial standard to maintain is adding a `"s_"` prefix to every storage variable name.
+Let's review a few recommendations we could make to improve the code for this protocol.
 
-```js
-uint256 public s_variableName;
-```
+### Starting at the Top
 
-![](https://cdn.videotap.com/HUA3lLveQmbRWkwQgBnq-36.53.png)
+The first thing we notice, at the very top of this repo are the naming conventions used for storage variables.
 
-Even though modifying the names of the storage variables wouldn't immediately cause a drastic change, it's one of our key recommendations for better readability and organization of the code.
+<img src="../../../../static/security-section-4/38-info-and-gas/info-and-gas1.png" style="width: 75%; height: auto;">
 
-## The Risk of Different Solidity Versions
+A convention I like to use for storage variables is the `s_variableName` convention! So this may be an informational finding we would want to submit.
 
-Continuing with the code analysis, we found the use of different Solidity versions thanks to an indicator—the caret (`^`)—placed at the top of the code.
+Even further up the contract there's a bigger concern however.
 
 ```js
-pragma solidity ^0.5.0;
+pragma solidity ^0.7.6
 ```
 
-While the caret signifies that any version compatible with `0.5.0` could be used, it's not a best practice. The ideal way is to stick with a single version of Solidity.
+This statement is what's known as a `floating pragma`. It essentially denotes that the contract is compatible with solidity versions up to and including `0.7.6`. This brings a number of concerns including vulnerabilities across multiple versions, so best practice is to use a single version of solidity.
+
+This would be a great informational finding to include in our report.
+
+### Further Recommendations
+
+Progressing down the code base, the next thing I notice are these statements:
 
 ```js
-pragma solidity 0.5.0;
+uint256 prizePool = (totalAmountCollected * 80) / 100;
+uint256 fee = (totalAmountCollected * 20) / 100;
 ```
 
-By nailing down the exact version of Solidity, it guarantees compatibility and stability when running tests.
-
-![](https://cdn.videotap.com/q76csvaY6UkAse0ikj5X-97.42.png)
-
-## Ditch Those Magic Numbers:
-
-Our audit found hardcoded numbers (`80` and `20`) in the middle of the codebase. It's not desirable; these “magic numbers” create confusion as other developers would not understand why these numbers are there. We propose adding a descriptor that provides context.
+When raw numbers are used in a code body like this, we refer to them as `Magic Numbers`. They provide no context of what they're doing. Best practice would be to assign these to named constants.
 
 ```js
-uint256 public constant prizePoolPercentage = 80;
-uint256 public constant feePercentage = 20;
-uint256 public constant poolPrecision = 100;
+uint256 public constant PRIZE_POOL_PERCENTAGE = 80;
+uint256 public constant FEE_PERCENTAGE = 20;
+uint256 public constant POOL_PRECISION = 100;
+
+uint256 prizePool = (totalAmountCollected * PRIZE_POOL_PERCENTAGE) / POOL_PRECISION;
+uint256 fee = (totalAmountCollected * FEE_PERCENTAGE) / POOL_PRECISION;
 ```
 
-Now, rather than ambiguous magic numbers, we have self-explanatory constants which add meaning and readability to our code.
-_Note: 0 and 1 are often exceptions to this rule because of their ubiquitous use. However, you could still create constants for these as well._
+The last thing I'll point out is best verified through the project's `foundry.toml`. Here we can see the versions of the libraries being imported for the protocol.
 
-![](https://cdn.videotap.com/wIpzaZwE6d1VfGkBsRLt-146.13.png)
+A good practice will be to investigate the specific versions being used for reported issues and security advisories.
 
-## Defense against Supply Chain Attacks
+We can navigate to the OpenZeppelin security section [**here**](https://github.com/OpenZeppelin/openzeppelin-contracts/security).
 
-When using external libraries or contracts, it's crucial to know their security status and ensure they're free from vulnerabilities. In our code audit, we used the OpenZeppelin library; however, it's crucial to check disclosures for **each specific version** used.
+This section of the OpenZepplin repo is kept updated with known security vulnerabilities within various versions of the OpenZeppelin library.
 
-> You can refer to [OpenZeppelin’s security tab](https://github.com/OpenZeppelin/openzeppelin-contracts/security/advisories) to get bug bounty info and security disclosures.
+By clicking on one of the advisories, we get a detailed breakdown including the affected versions.
 
-Here's an example of a security disclosure:
+<img src="/security-section-4/38-info-and-gas/info-and-gas2.png" style="width: 75%; height: auto;">
 
-_“Governor Votes Quorum Fraction: Updates to Quorum may affect past defeated proposals.”_
+### Gas
 
-It's crucial to verify that none of the contracts used in your project, like Ownable or Address, are affected by the issues present in the specific version of OpenZeppelin used.
+In addition to informational findings in an audit, it can be optional to include gas recommendations for the protocol as well, though static analysis tools are getting really good at this and they're certainly becoming less common.
 
-![](https://cdn.videotap.com/YktdcyF0s9wvili0y7mu-207.02.png)
-
-## Gas Optimization Opportunities
-
-Gas optimization is often reported as part of informational findings in an audit. For example, in our audit, we found that the `raffleDuration` variable is declared as a storage variable, even though it never changes.
-
-```js
-uint public raffleDuration = 100;
-```
-
-Instead, declaring it as an immutable variable would be more gas-efficient and a better practice.
-
-```js
-uint public immutable raffleDuration = 100;
-```
-
-![](https://cdn.videotap.com/CAyDqXFyoDcDU80R3SyW-255.73.png)
-
-Remember, compared to storage variables, mutable variables are cheaper to use and crucial for gas-efficiency in your smart-contracts. Would you like to deepen your understanding of Immutable vs. Storage variables? We recommend our [Foundry Course](https://github.com/Cyfrin/foundry-full-course-f23).
-
-As a summary, enhancing code quality is not always about finding impactful bugs. It's also about refining your codebase to improve readability, maintainability, performance, and security—even if the effects aren't immediately observable. In the long run, it makes your codebase robust, efficient and less prone to errors.
+One example of such a suggestion in Puppy Raffle would be regarding `raffleDuration`. Currently this is a storage variable, but this never changes. Puppy Raffle could absolutely change this to be a `constant` or `immutable` variable to save substantial gas.

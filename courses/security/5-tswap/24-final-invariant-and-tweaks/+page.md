@@ -2,7 +2,7 @@
 title: Final Invariant & Tweaks
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/tLGNJ-cfGAg?si=_OGfA0fNDzeWjilC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

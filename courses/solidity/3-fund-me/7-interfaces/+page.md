@@ -4,7 +4,7 @@ title: Interfaces
 
 *Follow along this chapter with the video bellow*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/4tTBhEYgm-E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 
 Making transactions with Ethereum has become quite straightforward. But converting Ethereum into dollars or other currencies is where things get a little tricky. So today, we're going to take a deep dive into converting Ethereum into USD and interacting with other contracts lodged within the Ethereum blockchain.

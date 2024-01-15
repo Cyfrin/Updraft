@@ -5,7 +5,7 @@ title: End of Part 1
 _Follow along with this video:_
 
 <!-- TODO -->
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=PFV7C4d-EwE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

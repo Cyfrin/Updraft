@@ -4,7 +4,7 @@ title: AI Help III
 
 *Follow along this chapter with the video bellow*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/rMVou5VIkm0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 In our quest for mastering the field of programming, questions and confusions are inevitable stepping stones. From deciphering the unintended consequences of a code block to understanding the intricate mechanisms behind built-in functions, every step in this journey is an opportunity to learn something new. Today, we'll discuss a common confusion that many developers stumble upon: *How does a Solidity function return a value when no logic is defined within it?*
 

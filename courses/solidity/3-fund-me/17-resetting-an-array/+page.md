@@ -4,7 +4,7 @@ title: Resetting an Array
 
 _Follow along this chapter with the video bellow_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/0KRhBO6JgSM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 In the previous lesson on smart contracts in Ethereum, we discussed how to handle value funds and introduced the `mapping` keyword with Ethereum's Solidity. In this stage of our course, our main focus will be on how to reset an array effectively and to withdraw funds appropriately from our smart contract.
 

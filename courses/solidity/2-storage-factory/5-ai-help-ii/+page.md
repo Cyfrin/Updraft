@@ -2,7 +2,7 @@
 title: 5-ai-help-ii
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/hA2AMEeldx4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 
 We've all been there. Staring blankly at a line of code and scratching our heads, trying to make sense of it. Sometimes a new concept or technique can trip us up. And it's not really surprising—the world of programming and technology is vast and constantly evolving and, sooner or later, we're bound to hit a roadblock.

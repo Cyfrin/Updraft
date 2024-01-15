@@ -2,6 +2,54 @@
 title: Wrapping Up
 ---
 
-<iframe width="560" height="315" src="https://youtu.be/xqD4VeRcAYg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+# Debugging and Improving Your Solidity Code with Thunder Loan
 
-## Write up coming soon...
+In this blog post, we will take a closer look at how to test, debug and improve your Solidity code, using our Thunder Loan example. Solidity, for those who are less familiar, is a statically typed, contract-oriented, high-level language whose syntax is similar to that of JavaScript and it is designed to target the Ethereum Virtual Machine.
+
+Let's dive right into it.
+
+## Starting with the Git Checkout and Stashing Changes
+
+First, let's pull up our Thunder Loan test. After reviewing the code, it is advisable to stash your changes. Stashing is a great feature of Git that allows you to take a snapshot of your current changes, store them off to the side on a stack of unfinished changes, and then reapply them later.
+
+After stashing, I switch the currently active branch to 'demo' using git checkout command.
+
+## Updating the Protocol
+
+Next, I paste our Proof of Concept (POC) into the current branch. For this, the Thunder Loan upgraded protocol needs to be imported from the respective source folder.
+
+The code for this would look like:
+
+At this point, a test run is required to ensure everything runs smoothly.
+
+This command runs the test that we just added, confirming its successful implementation.
+
+## Understanding the Impact and Likelihood of Issues
+
+Before wrapping things up, it is essential to consider the impact and likelihood of the issue in question.
+
+In our current setting, the impact is high; primarily because the upgrade could potentially lead to what is referred to as a 'storage collision'; a serious problem whereby addresses of storage variables overlap, causing unexpected behaviours. These could inadvertently skew the fees associated with our Thunder Loan.
+
+The likelihood of this occurring can be medium to low. However, it tends to lean towards a higher likelihood considering that an upgrade was planned.
+
+The key here is to understand your protocol's likelihood and impact of the storage collision issues, which is a very common pain-point when it comes to proxy contract upgrades.
+
+## Identifying the Root Cause
+
+A root cause analysis reveals that variable location mix-ups can result in storage collisions. In our Thunder Loan case, the problem arises in the _Flash Loan fee_ and the process of _Flash Loaning_. The severity of this problem means that it could potentially paralyze the entire protocol due to the storage location mismatches.
+
+## Potential Mitigations and Recommendations
+
+To mitigate such an issue, it is recommended to maintain constant variables when removing and introducing storage variables.
+
+![](https://cdn.videotap.com/MJYevuA6WF1Wcqj3AgIR-148.52.png)
+
+This recommendation is based on the understanding that storage layouts are very important to the solidity coding structure – modifying them could lead to unexpected errors.
+
+## Wrapping Up
+
+In this post, we have walked through not just the intricacies of debugging and improving solidity code, but also the complexities that proxy contracts introduce. It's no surprise that some developers see proxies as a necessary evil while others view them as progress in the smart contract sphere.
+
+Whether you side with the 'Bad News Bears' or 'Great Progress' team, we strongly encourage you to share your view in our ongoing community discussion!
+
+As for our next step with Thunder Loan, that will largely consist of doing the reporting. Stay tuned for more updates in that regard. Happy coding until then!

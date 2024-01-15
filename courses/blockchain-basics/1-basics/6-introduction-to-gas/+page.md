@@ -2,9 +2,7 @@
 title: Introduction to Gas
 ---
 
-You can follow along with this section of the course here. 
-
-<iframe width="560" height="315" src="https://youtu.be/OtPMin2L8No" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="introduction to gas video"></iframe>
+You can follow along with this section of the course here.
 
 ---
 
@@ -28,7 +26,7 @@ Now, let's address an important question: who gets these transaction fees and wh
 
 ## The Role of Nodes in Blockchain
 
-Blockchains are run by a group of different nodes, sometimes referred to as miners or validators, depending on the network. These miners get incentivized for running the blockchain by earning a fraction of the native blockchain currency for processing transactions. For instance, Ethereum miners get paid in Ether, while those in Polygon get rewarded in Maddox, the native token of Polygon. This remuneration encourages people to continue running these nodes.
+Blockchains are run by a group of different nodes, sometimes referred to as miners or validators, depending on the network. These miners get incentivized for running the blockchain by earning a fraction of the native blockchain currency for processing transactions. For instance, Ethereum miners get paid in Ether, while those in Polygon get rewarded in MATIC, the native token of Polygon. This remuneration encourages people to continue running these nodes.
 
 ## Understanding Gas in Transactions
 

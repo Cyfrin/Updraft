@@ -4,7 +4,7 @@ title: SVG NFT Intro
 
 _Follow along the course with this video._
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Xwt7MXrYIg4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

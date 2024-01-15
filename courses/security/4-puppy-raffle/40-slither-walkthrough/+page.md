@@ -4,82 +4,437 @@ title: Slither Walkthrough
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/WOU8yw0ATBA" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+---
+
+### Slither Static Analysis
+
+Alright, let's take a closer look at some of the issues Slither was able to find in our code base earlier. These will include, but aren't limited to, each of these.
+
+- Using incorrect Solidity versions
+- Missing/wrong events
+- Event reentrancy
+- Zero address checks
+- Supply chain attacks
+- Cache storage variables for loops
+- Unchanged variables marked as immutable or constant
+
+Start by running `slither .` just as before and let's dive into the output starting at the most severe
+
+### Slither Highs
+
+<img src="/security-section-4/40-slither-walkthrough/slither-walkthrough1.png" width="75%" height=auto>
+
+**1. Sends Eth to Arbitrary User**
+
+- Dangerous Calls: `(success) = feeAddress.call{value: feesToWithdraw}() (src/PuppyRaffle.sol#160)`
+
+Taking a look at this call in our code base, we see it's in the `withdrawFees` function.
+
+```js
+function withdrawFees() external {
+    require(address(this).balance == uint256(totalFees), "PuppyRaffle: There are currently players active!");
+    uint256 feesToWithdraw = totalFees;
+    totalFees = 0;
+    // (bool success,) = feeAddress.call{value: feesToWithdraw}("");
+    require(success, "PuppyRaffle: Failed to withdraw fees");
+}
+```
+
+So, `Slither` is telling us that our feeAddress is arbirary and may be malicious. Let's look at the attack vector in the [**`Slither` documentation**](https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations).
+
+The documentation outlines that since our `feeAddress` can be changed, whomever receives funds from `withdrawFees` could theoretically be anybody. However, in `PuppyRaffle`, the `feeAddress` can only be changed by the `owner`, so this would be considereed intention in our protocol.
+
+```js
+function changeFeeAddress(address newFeeAddress) external onlyOwner {
+    feeAddress = newFeeAddress;
+    emit FeeAddressChanged(newFeeAddress);
+}
+```
+
+Conveniently, by using the syntax `// slither-disable-next-line [DETECTOR_NAME]`, we can tell Slither to ignore this warning:
+
+```js
+// slither-disable-next-line arbitrary-send-eth
+(bool success,) = feeAddress.call{value: feesToWithdraw}("")
+```
+
+**2. Uses a Weak PRNG**
+
+- Dangerous Calls:
+  - `winnerIndex = uint256(keccak256(bytes)(abi.encodePacked(msg.sender,block.timestamp,block.difficulty))) % players.length (src/PuppyRaffle.sol#127-128)`
+
+This is the same vulnerability we detected! We can have slither ignore this line with:
+
+```js
+// slither-disable-next-line weak-prng
+uint256 winnerIndex =
+uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.difficulty))) % players.length;
+```
+
+### Slither Mediums
+
+<img src="/security-section-4/40-slither-walkthrough/slither-walkthrough2.png" width="75%" height=auto>
+
+**1. Performs a Multiplication on the Result of a Division**
+
+- Dangerous Calls:
+  - `encodedLen = 4 * ((data.length + 2) / 3) (lib/base64/base64.sol#22)`
+  - `decodedLen = (data.length / 4) * 3 (lib/base64/base64.sol#78)`
+
+These issues are actually being detected in one of the libraries we're using, `Base64`. For the purposes of this section, we won't be going through our libraries, but what I want you to take away is that we need to assure our libraries, inheritances and dependencies are compatible, and these are generally warnings that are worth investigation.
+
+You can have slither ignore these by navigating to `lib/base64/base64.sol#22` and `lib/base64/base64.sol#78` to prepend the line:
+
+```js
+// slither-disable-next-line divide-before-multiply
+```
+
+**2. Uses a Dangerous Strict Equality**
+
+- Dangerous Calls:
+  - `require(bool,string)(address(this).balance == uint256(totalFees),PuppyRaffle: There are currently players active!) (src/PuppyRaffle.sol#158)`
+
+This is another one we caught during our manual review! The warning here is pointing to our previous `Mishandling of Eth` finding.
+
+We can have slither ignore this warning with:
+
+```js
+// slither-disable-next-line incorrect-equality
+```
+
+**3. Reentrancy in PuppyRaffle.refund(uint256)**
+
+- Dangerous Calls:
+  - External calls:
+    - `address(msg.sender).sendValue(entranceFee) (src/PuppyRaffle.sol#102)`
+  - State variables written after the call(s):
+    - `players[playerIndex] = address(0) (src/PuppyRaffle.sol#104)`
+
+We found this one too! Don't get me started talking about reentrancy again. Know it, protect against it.
+
+You can have `Slither` ignore this one by adding this to the line before our external call:
+
+```js
+// slither-disable-next-line reentrancy-no-eth
+payable(msg.sender).sendValue(entranceFee);
+```
+
+**4. Ignores Return Value by {function call}**
+
+- Dangerous Calls:
+- <details>
+  <summary>Call Summary</summary>
+
+  - `(tokenId) = _tokenOwners.at(index) (lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol#181)`
+
+  - `_holderTokens[to].add(tokenId) (lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol#339)`
+  - `_tokenOwners.set(tokenId,to) (lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol#341)`
+  - `_holderTokens[owner].remove(tokenId) (lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol#369)`
+  - `_tokenOwners.remove(tokenId) (lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol#371)`
+  - `_holderTokens[from].remove(tokenId) (lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol#396)`
+  - `_holderTokens[to].add(tokenId) (lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol#397)`
+  - `_tokenOwners.set(tokenId,to) (lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol#399)`
+  </details>
 
 ---
 
-# Slithering Through Code: The Power of Slither for Solidity Auditing
-
-Whenever you're developing a contract using the Solidity programming language (or indeed, any contract), thorough auditing is critical. One of the handiest tools for completing this process is **Slither**.
-
-Let's deep dive into the code and uncover the treasures this utility can offer us.
-
-## Starting From The Extremes
-
-![](https://cdn.videotap.com/NQHSIHFaGFwd07Cdj3aB-77.3.png)
-
-To effectively dissect your code, it's beneficial to begin with the most extreme areas and then continue downwards. Going through an example, I started my process with a function named `withdrawFees` and investigated its command for sending ETH (Ethereum's primary cryptocurrency) to an arbitrary user.
+You can remove these warning from your `Slither` report by navigating to the respective lines for each call in the library and adding:
 
 ```js
-function withdrawFees...
+// slither-disable-next-line unused-return
 ```
 
-This line has been isolated by Slither as a potential problem. Here, Slither highlights that the `feeAddress` is an arbitrary user and there's a risk of malicious behavior. In other circumstances, this might be a significant issue, but I know that in this context, it's an intentional element. The developer designed this function so that the `feeAddress` can be manually reset if required.
+### Slither Lows
 
-## Getting Up Close And Personal With The Documentation
+<img src="/security-section-4/40-slither-walkthrough/slither-walkthrough3.png" width="75%" height=auto>
 
-While the above example illustrates one instance where Slither can help, to truly benefit from this tool, it's crucial to dive into the [documentation](https://github.com/crytic/slither/wiki) and deepen your understanding.
+**1. Lacks a Zero Check**
 
-Here, you'll find extensive information about the severity ratings, confidence levels, and possible attack vectors associated with different vulnerabilities.
+- Dangerous Calls:
+  - `feeAddress = _feeAddress (src/PuppyRaffle.sol#63)`
+  - `feeAddress = newFeeAddress (src/PuppyRaffle.sol#170)`
 
-Remember, while the high confidence level indicates a bug has likely been detected, a medium confidence level means it could be a false positive. Always cross-check your findings to insist on precision.
+`feeAddress` is assigned in our `constructor` and the `changeFeeAddress` function. `Slither` is advising that we include a check to assure the `feeAddress` isn't being set to `address(0)`.
 
-> "The severity is high, the confidence is medium here. Confidence being medium means that the tool is medium sure."
-
-## Slithering Around False Positives
-
-One exciting feature of Slither is how you can customize its priorities. Specifically, if your audit reveals a facet of your code that Slither identifies as a potential issue, and you want to retain the feature, you can set Slither to ignore this issue during future audits.
-
-To do this, simply follow the formatting in the Slither documentation.
+That sounds like a valid informational finding to me. Let's add it to our notes above each function!
 
 ```js
-/* slither-disable-next-line arbitrary-send-eth */
+// @Audit: Info - check for zero address when setting feeAddress
 ```
 
-By incorporating this command directly into your code, you can ensure that Slither glosses over this line in further audits. This is a handy way of preventing critical function lines from repeatedly making noise in the audit reports.
+These sorts of finds are often referred to as `input validation` and the severity is typically deemed informational.
 
-## And The Winner Is...
+We can have our `Slither` report remove these warnings once we've made note of them, but adding this line to `PuppyRaffle` before assigning our `feeAddress` in our `constructor` and the `changeFeeAddress` functions:
 
-![](https://cdn.videotap.com/9tgDlvKbmj5arMTdT1ql-425.15.png)
+```js
+// slither-disable-next-line missing-zero-check
+```
 
-Moving on to another common piece of Solidity code—the `selectWinner` function. In this scenario, Slither identified a weakness in the PRNG (Pseudorandom Number Generator) being used. This tool is regularly used in Solidity contracts to simulate a fair lottery, but it's critical you use a robust PRNG to avoid potential exploitation. If a developer can predict the randomly selected winner, they can manipulate the result, which relegates the fairness of the lottery to a mere illusion.
+**2. Reentrancy in PuppyRaffle.refund/selectWinner**
 
-> "Slither picked out the weak randomness as well. "
+- Dangerous Calls: - <details open>
+  <summary>Call Summary</summary>
+  PuppyRaffle.refund
 
-Slither can detect this particular issue automatically, allowing your team to correct the PRNG weakness straightforwardly, saving valuable time that manual review processes would soak up.
+          - `address(msg.sender).sendValue(entranceFee) (src/PuppyRaffle.sol#103)`
 
-## Praying On Libraries
+          PuppyRaffle.selectWinner
 
-Libraries in Solidity are double-edged swords. They offer a wealth of functions and features, but they can be riddled with vulnerabilities that can exponentially increase your attack surface. Slither spares your security team the headache by scanning these areas of your contract and flagging any potential flaws.
+          -  `(success) = winner.call{value: prizePool}() (src/PuppyRaffle.sol#152)`
+          - `_safeMint(winner,tokenId) (src/PuppyRaffle.sol#154)`
+          - `returndata = to.functionCall(abi.encodeWithSelector(IERC721Receiver(to).onERC721Received.selector,_msgSender(),from,tokenId,_data),ERC721: transfer to non ERC721Receiver implementer) (lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol#447-450)`
+          - `(success,returndata) = target.call{value: value}(data) (lib/openzeppelin-contracts/contracts/utils/Address.sol#119)`
+        </details>
 
-However, it's always prudent to verify that these libraries are doing exactly what they're supposed to and aren't presenting unnecessary risks.
+        ---
 
-## Unchecked Events: A Low-Flying Concern
+  Now, you may be asking yourself _These are reentrancy, why aren't they high!?_.
 
-One advantage of auditing with Slither is its penchant for identifying unchecked events within your code. This issue usually flies under the radar in manual reviews, but unchecked events can lead to manipulation in the emitted information. While some might classify these as minor vulnerabilities, unchecked events can actually be exploited in multiple ways and interfere with important Ethereum ecosystem elements.
+Well, these warnings are specifically pointing to the vulnerability described by the manipulation of the order or value of events being emitted. By reentering these functions an attacker is able to manupulate the events being emitted and potentially compromise third party reliance on them.
 
-For this reason, I've developed a rule of thumb whereby if an event can be manipulated, omitted, or is incorrect, I usually categorize them as low-level issues. This rating is subjective, of course, but I believe that bringing them to the view helps in correcting them early.
+There's a lot of debate about what kind of severity should be ascribed to event based findings, but my personal rule of thumb is that they are _at least_ `Low Severity`. Examples include:
 
-## Unearth Old Versions and Low-Level Calls
+- If an event can be manipulated
+- If an event is missing
+- If an event is wrong
 
-![](https://cdn.videotap.com/jqNTpIqXL1SPGiYnAfl6-657.05.png)
+I would add these to my notes for an audit report.
 
-Slither isn't just a guardian against dangerous codes; it's also an adviser for better coding practices. The tool diligently points out outdated Solidity version usage, encouraging the adoption of up-to-date versions. Moreover, it raises an alarm on the usage of low-level calls, guiding the programmer towards safer coding habits.
+```js
+// @Audit: Low - Events affected by reentrancy
+```
 
-This particularly aids in learning best practices from the community and serves as a yardstick measuring the overall code quality. Following such leads can be beneficial in the long run, not only for overall security but also for smoother audits.
+We can remove these warnings from `Slither` by navigating to the reported lines and adding the following as appropriate:
 
-## Final Wrap
+```js
+// slither-disable-next-line reentrancy-events
+```
 
-The somewhat tedious task of parsing through the entire slither output just goes to further underscore its utility. The resources saved in manual reviews can be better directed towards more sophisticated issues that require deeper investigation. This course is a boon not only for developers looking to hone their skills but also for audits aiming for a thorough review, thereby creating a more secure and reliable smart contract ecosystem.
+In your refund function, you may try to disable 2 checks for the same line. In order to do this, separate your ignore directives with a comma:
 
-Slither is an auditor's companion, discovering vulnerabilities, suggesting fixes, and promptly sniffing out potential threats waiting to rear their heads in your codes. Are you ready to let the Slither work its magic on your codes?
+```js
+// slither-disable-next-line reentrancy-no-eth, reentrancy-events
+```
+
+**3. Uses Timestamp for Comparisons**
+
+- Dangerous Calls:
+  - `require(bool, string)(block.timestamp >= raffleStartTime + raffleDuration, PuppyRaffle: Raffle not over) (src/PuppyRaffle.sol#136)`
+
+Technically relying on `block.timestamp` means this _would_ be vulnerable to manipulation, but realistically only by a few seconds. For the purposes of this section we'll ignore it for now.
+
+You can have `Slither` ignore it too with:
+
+```js
+// slither-disable-next-line timestamp
+```
+
+**4. Uses Assembly**
+
+- Dangerous Calls:
+  - `INLINE ASM (lib/base64/base64.sol#28-63)`
+  - `INLINE ASM (lib/base64/base64.sol#84-126)`
+  - `INLINE ASM (lib/openzeppelin-contracts/contracts/utils/Address.sol#33)`
+  - `INLINE ASM (lib/openzeppelin-contracts/contracts/utils/Address.sol#180-183)`
+
+In short - Slither doesn't like Assembly. We'll be going over Assembly much later in this course, for now we'll be ignoring these warnings.
+
+You can remove these detectors/warnings by adding the following to the appropriate lines:
+
+```js
+// slither-disable-next-line assembly
+```
+
+**5. Different Versions of Solidity Are Used**
+
+- Dangerous Calls:
+
+  - <details>
+      <summary>Call Summary</summary>
+
+    - `Version used: ['>=0.6.0', '>=0.6.0<0.8.0', '>=0.6.2<0.8.0', '^0.7.6']`
+    - `>=0.6.0 (lib/base64/base64.sol#3)`
+    - `>=0.6.0<0.8.0 (lib/openzeppelin-contracts/contracts/access/Ownable.sol#3)`
+    - `>=0.6.0<0.8.0 (lib/openzeppelin-contracts/contracts/introspection/ERC165.sol#3)`
+    - `>=0.6.0<0.8.0 (lib/openzeppelin-contracts/contracts/introspection/IERC165.sol#3)`
+    - `>=0.6.0<0.8.0 (lib/openzeppelin-contracts/contracts/math/SafeMath.sol#3)`
+    - `>=0.6.0<0.8.0 (lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol#3)`
+    - `>=0.6.0<0.8.0 (lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol#3)`
+    - `>=0.6.0<0.8.0 (lib/openzeppelin-contracts/contracts/utils/Context.sol#3)`
+    - `>=0.6.0<0.8.0 (lib/openzeppelin-contracts/contracts/utils/EnumerableMap.sol#3)`
+    - `>=0.6.0<0.8.0 (lib/openzeppelin-contracts/contracts/utils/EnumerableSet.sol#3)`
+    - `>=0.6.0<0.8.0 (lib/openzeppelin-contracts/contracts/utils/Strings.sol#3)`
+    - `>=0.6.2<0.8.0 (lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol#3)`
+    - `>=0.6.2<0.8.0 (lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Enumerable.sol#3)`
+    - `>=0.6.2<0.8.0 (lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Metadata.sol#3)`
+    - `>=0.6.2<0.8.0 (lib/openzeppelin-contracts/contracts/utils/Address.sol#3)`
+    - `^0.7.6 (src/PuppyRaffle.sol#2)`
+
+  </details>
+
+This is where `Slither` is pointing out the `Floating Pragma` vulnerability we outlined earlier. This will definitely be going in our report as an informational finding.
+
+Unfortunately `Slither` doesn't offer a per-file or line disabling of this detector, but we can remove it by adding the following to a `.slither.config.json` that we create:
+
+```js
+
+"detectors_to_exclude":[
+    "solc-version"
+]
+
+```
+
+Then add this line to the appropriate files:
+
+```js
+// slither-disable-next-line pragma,solc-version
+```
+
+**6. solc 0.7.6 is not Recommended for Deployment**
+
+- Dangerous Calls:
+  - `PuppyRaffle.sol solc version 0.7.6`
+
+Slither's documentation tells us that this is an old version of Solidity and that we're not taking advantage of Solidity updates or new security checks. This is a great finding and should definitely be added to our report.
+
+```js
+// @Audit: Info - Should use updated solv version such as 0.8.18
+```
+
+**7. {function} is Never Used and Should be Removed**
+
+- Dangerous Calls
+  - `PuppyRaffle._isActivePlayer() (src/PuppyRaffle.sol#180-187)`
+
+We called this one out as an informational/gas finding as well. You can disable this detector in `Slither` by adding this line above the function:
+
+```js
+// slither-disable-next-line dead-code
+```
+
+**8. Low Level Call**
+
+- Dangerous Calls:
+
+  - <details>
+    <summary>Call Summary</summary>
+
+    - `(success) = recipient.call{value: amount}() (lib/openzeppelin-contracts/contracts/utils/Address.sol#60)`
+    - `(success,returndata) = target.call{value: value}(data) (lib/openzeppelin-contracts/contracts/utils/Address.sol#128)`
+    - `(success,returndata) = target.staticcall(data) (lib/openzeppelin-contracts/contracts/utils/Address.sol#156)`
+    - `(success,returndata) = target.delegatecall(data) (lib/openzeppelin-contracts/contracts/utils/Address.sol#183)`
+    - `(success) = winner.call{value: prizePool}() (src/PuppyRaffle.sol#154)`
+    - `(success) = feeAddress.call{value: feesToWithdraw}() (src/PuppyRaffle.sol#167)`
+    </details>
+
+---
+
+Much like Assembly, `Slither` doesn't like low level calls. We'll be ignoring these for now, but you can remove them from your warnings by applying this line above the described calls.
+
+```js
+// slither-disable-next-line low-level-calls
+```
+
+**9. Not in mixedCase**
+
+- Dangerous Calls:
+  - `Parameter Base64.decode(string)._data (lib/base64/base64.sol#68)`
+  - `Parameter ERC721.safeTransferFrom(address,address,uint256,bytes)._data (lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol#247)`
+
+These are simply pointing out naming convention concerns in a couple of our libraries. We'll ignore these as well, but you can remove them from the `Slither` warnings with:
+
+```js
+// slither-disable-next-line naming-convention
+```
+
+**10. Redundant Expression**
+
+- Dangerous Calls:
+  - `"this (lib/openzeppelin-contracts/contracts/utils/Context.sol#21)" inContext (lib/openzeppelin-contracts/contracts/utils/Context.sol#15-24)`
+
+Another warning from a depedency of ours, we'll ignore this, but if you want to remove it you can add the line:
+
+```js
+// slither-disable-next-line redundant-statements
+```
+
+**11. Variable is Too Similar**
+
+- Dangerous Calls
+  - `Base64.TABLE_DECODE (lib/base64/base64.sol#10-13) is too similar to Base64.TABLE_ENCODE (lib/base64/base64.sol#9)`
+
+**_ANOTHER_** warning from the libraries we're using. We can remove it with this line:
+
+```js
+// slither-disable-next-line similar-names
+```
+
+Now, at this point, you're probably annoyed by all the libraries `Slither` has been catching things in. What if I told you there's a better way to exclude them all at once?!
+
+By running `Slither . --exclude-dependencies` we can actually run our tool and have it ignore anything detected in our imports!
+
+**12. Cached Array Length**
+
+- Dangerous Calls:
+  - `Loop condition j < players.length (src/PuppyRaffle.sol#90)`
+  - `Loop condition i < players.length (src/PuppyRaffle.sol#114)`
+  - `Loop condition i < players.length (src/PuppyRaffle.sol#182)`
+
+Here's a vulnerability we missed!
+
+Any time we're looping through players.length in this way, we're using far more gas than should be necessary. We should cache this value so we're only calling it from storage once.
+
+```js
+// @Audit: We should cache the players.length array when looping - uint256 playersLength = players.length;
+```
+
+We can remove this warning from the `Slither` report by adding this line before our loops:
+
+```js
+// slither-disable-next-line cache-array-length
+```
+
+**13. Storage Variables can be Declares Constant**
+
+- Dangerous Calls:
+  - `PuppyRaffle.commonImageUri (src/PuppyRaffle.sol#40)`
+  - `PuppyRaffle.legendaryImageUri (src/PuppyRaffle.sol#50)`
+  - `PuppyRaffle.rareImageUri (src/PuppyRaffle.sol#45)`
+
+A great finding, absolutely these storage variables should be constants, we're setting them once and they never change, a big potential gas savings.
+
+```js
+// @Audit: These Storage Variables can be Constants
+string private commonImageUri = "ipfs://QmSsYRx3LpDAb1GZQm7zZ1AuHZjfbPkD6J7s9r41xu1mf8"
+string private rareImageUri = "ipfs://QmUPjADFGEKmfohdTaNcWhp7VGk26h5jXDA7v3VtTnTLcW";
+string private legendaryImageUri = "ipfs://QmYx6GsYAKnNzZ9A6NvEKV9nf1VaDzJrqDR23Y8YSkebLU";
+```
+
+We can filter these warnings from our `Slither` report with the line:
+
+```js
+// slither-disable-next-line
+```
+
+**14. State Variables can be Immutable** - Dangerous Calls: - `PuppyRaffle.raffleDuration (src/PuppyRaffle.sol#25)`
+
+Likewise, this is a great call by `Slither` our raffleDuration is being set once and cannot be changed. Setting this to immutable would offer additional gas savings. Absolutely added to the report.
+
+```js
+// @Audit: Unchanging state variables can be declared as immutable
+uint256 public raffleDuration;
+```
+
+This warning can be removed from the `Slither` report with:
+
+```js
+// slither-disable-next-line immutable-states
+```
+
+### Wrap Up
+
+Wow. This may have seemed a bit tedious, but look how much we've found and how much better we understand what `Slither` is able to detect. `Slither`, if nothing else, is great at finding gas optimizations, but beyond that it found issues we thought we needed to manually review for.
+
+Had PuppyRaffle ran `Slither` before coming to audit, their code base would have been in a much better starting place.
+
+Up next, let's see what `Aderyn` can do for Puppy Raffle!

@@ -4,7 +4,7 @@ title: Introduction
 
 *Follow along the course with this video.*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Ghmze8sh34M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 
 Hello everyone, I’m glad to have you back with us for Lesson 4 in our Web3 Development series. This time we’re diving headfirst into **FundMe.sol**, our very own decentralized crowdfunding contract.

@@ -4,57 +4,155 @@ title: Recon Continued 2
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/9l_L7s-XtoI" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
-# Smart Contract Review: Select Winner & Withdraw Fees
+### Continuing Reconnaissance
 
-We will be navigating through multiple big issues found in a smart contract. Specifically, for a function called `selectWinner` and later on, `withdrawFees`.
+We've already found **two** big bugs in this selectWinner function! This is great, let's continue down the code and see what else we uncover.
 
-## selectWinner
-
-Alright, jump in the war zone! We spotted two big glitches in the `selectWinner` segment. Not the greatest news, but I do have some documentation for you. My bad, let me guide you through these tricky terminologies.
-
-The two issues were:
-
-1. Utilization of on-chain data hashes to generate random numbers.
-2. Resetting the players' array after the winner is chosen.
-
-To break it down for you:
-
-Firstly, the issue with using the hash of on-chain data to generate random numbers is that it leaves our contract susceptible to manipulation. This is frowned upon in a blockchain environment that requires secure and non-tamperable algorithms.
-
-Secondly, clearing out the active players' array after a winner is selected was another significant problem. If this doesn't happen, new users could confront erroneous entries from previous rounds, thereby jeopardizing the next winner sequence.
-
-Now, what happens post-selection? We disburse 80% of the accumulated funds to the fortunate victor, and the remaining 20% is remitted to the fee address. Efficient, isn't it?
-
-> "Generating unique and secure random numbers and regular reset of player arrays are crucial components of maintaining a fair and efficient lottery system."
-
-## Token ID
-
-Surprisingly, we stumbled over another considerable bug, bearing in the token supply section. The term 'Total Supply' was unresponsive when clicked at first. Therefore, scrolling through my project, I spotted the term multiple times in the code. It was linked to ERC721 token standard and indicated the number of token owners. So we concluded that the total supply also represents the token ID. However, we need to increment the ID to avoid its reuse.
+The next line in our code is `uint256 tokenId = totalSupply()`. It may be worth confirming where `totalSupply()` is coming from and making some in-line notes of questions to answer later.
 
 ```js
-TotalSupply = tokenId++;
+...
+    //
+    uint256 tokenId = totalSupply();
+
+    // We use a different RNG calculate from the winnerIndex to determine rarity
+    uint256 rarity = uint256(keccak256(abi.encodePacked(msg.sender, block.difficulty))) % 100;
+    if (rarity <= COMMON_RARITY) {
+        tokenIdToRarity[tokenId] = COMMON_RARITY;
+    } else if (rarity <= COMMON_RARITY + RARE_RARITY) {
+        tokenIdToRarity[tokenId] = RARE_RARITY;
+    } else {
+        tokenIdToRarity[tokenId] = LEGENDARY_RARITY;
+    }
+
+    delete players;
+    raffleStartTime = block.timestamp;
+    previousWinner = winner;
+    (bool success,) = winner.call{value: prizePool}("");
+    require(success, "PuppyRaffle: Failed to send prize pool to winner");
+    _safeMint(winner, tokenId);
+}
 ```
 
-## Rarity Determination
+We can see that `totalSupply()` is coming from our `ERC721 inheritance` and is returning `_tokenOwners.length`
 
-Here we held onto the similar unpredictable randomness issue. We, although, calculated the winner index differently for rarity selection of the newly minted NFTs. If its number is less than a common rarity, it is mapped as a random number, else it's rare.
+```js
+function totalSupply() public view virtual override returns (uint256) {
+    // _tokenOwners are indexed by tokenIds, so .length() returns the number of tokenIds
+    return _tokenOwners.length();
+}
+```
 
-So, great, we nailed another bug! Before moving on, we also set conditions for resetting the players' array, the raffle start time and reviewed its necessity. If these conditions aren't perfected, the lottery could potentially get stuck and never finish.
+ERC721 is a very common token standard and tokenSupply is a well known function within it. You should absolutely familiarize yourself with these concepts. Ultimately things look good here, but we may want to make note:
 
-![](https://cdn.videotap.com/7ck6k0hpIuydiM6GKGAa-460.86.png)
+```js
+// @Audit: Where is tokenId/tokenSupply being incremented?
+uint256 tokenId = totalSupply();
+```
 
-## Withdrawing Fees
+Continuing with our `selectWinner` function we next see that a token rarity is being determined. `Weak Randomness` is seen again! Something to note is - any time I see constants being used, I like to verify what they are. In this case the constants in this code are representing percentage changes of obtaining a giving rarity.
 
-Now, moving towards the `withdrawFees` section, we detailed how 20% of the funds were transferred to the fee address. This function can be activated by a different address than the owner. Wherein, the owner can alter the fee address if desired.
+```js
+// @Audit: Weak Randomness
+uint256 rarity = uint256(keccak256(abi.encodePacked(msg.sender, block.difficulty))) % 100;
+//
+if (rarity <= COMMON_RARITY) {
+    tokenIdToRarity[tokenId] = COMMON_RARITY;
+} else if (rarity <= COMMON_RARITY + RARE_RARITY) {
+    tokenIdToRarity[tokenId] = RARE_RARITY;
+} else {
+    tokenIdToRarity[tokenId] = LEGENDARY_RARITY;
+}
+```
 
-Do remember, when we are sending money, we could possibly trigger another function. So we should be precautious. Upon questioning whether withdrawal of fees was difficult, considering the existing balance and total fees in the contract, and whether the winner's address smart contract could potentially fail, we recorded these as issues to be probed further.
+Following this, our function performs a number of state changes. Let's make note of what each of these is actually doing.
 
-## Conclusion
+```js
+delete players; // resetting the players array
+raffleStartTime = block.timestamp; // resetting the raffle start time
+previousWinner = winner; // vanity, doesn't impact much
+```
 
-All in all, while the intricacies of the blockchain are quite deep, going through this review should have allowed you to better understand some of its fundamental parts. I hope this blog was illuminating and helpful in navigating through the complex terrain of smart contract auditing. The bugs we discussed are by no means exhaustive, but remembering these few pitfalls can save a lot of debugging time in the future. Game on.
+Finally we see calls to send the `prizePool` and mint the NFT to the winner.
 
-Remember, the goal as a successful security researcher is to gain knowledge and experience from each review, and eventually, you will develop an intuition, a "bug sniffer". The more you review the code, the better you'll get at hunting bugs. Happy coding!
+```js
+(bool success,) = winner.call{value: prizePool}("");
+require(success, "PuppyRaffle: Failed to send prize pool to winner");
+_safeMint(winner, tokenId);
+```
+
+We may even suspect that `re-entrancy` is a risk here, given the order of these lines. So let's verify!
+
+When a call is made externally, we should always ask ourselves what could happen in different scenarios.
+
+- _What if the recipient is a smart contract?_
+
+- _What if the contract doesn't have a receive/fallback function or forces a revert?_
+
+- _What if the recipient calls another function through receive/fallback?_
+
+The more experience you gain performing security reviews, the better your intuition will be about which questions to ask and what to watch out for.
+
+In this particular circumstance, we see that the `selectWinner` function includes require statements that would prevent re-entrancy at this point in this code as we've already reset these state variables. Whew!
+
+```js
+require(block.timestamp >=
+  raffleStartTime + raffleDuration, "PuppyRaffle: Raffle not over");
+require(players.length >= 4, "PuppyRaffle: Need at least 4 players");
+```
+
+However, if the winner had a broken `receive` function, `selectWinner` here would fail, it could actually be quite difficult to select a winner in that situation! We'll discuss impact and reporting of that a little later.
+
+```js
+// @Audit: Winner wouldn't be unable to receive rewards if fallback function was broken!
+(bool success,) = winner.call{value: prizePool}("");
+require(success, "PuppyRaffle: Failed to send prize pool to winner");
+_safeMint(winner, tokenId);
+```
+
+Alright, we've completed a fairly thorough walkthrough of `selectWinner`, let's move onto the next function `withdrawFees`.
+
+> As always there may be more bugs in these repos than we go over, keep a look out!
+
+### Risks in withdrawFees
+
+```js
+function withdrawFees() external {
+    require(address(this).balance == uint256(totalFees), "PuppyRaffle: There are currently players active!");
+    uint256 feesToWithdraw = totalFees;
+    totalFees = 0;
+    (bool success,) = feeAddress.call{value: feesToWithdraw}("");
+    require(success, "PuppyRaffle: Failed to withdraw fees");
+}
+```
+
+So, let's break this function down to see what it's doing.
+
+First we see a require statement and already a couple questions come to mind _Hint: there are issues with this line_
+
+```js
+// @Audit: If there are players, fees can't be withdrawn, does this make withdrawl difficult?
+require(address(this).balance ==
+  uint256(totalFees), "PuppyRaffle: There are currently players active!");
+```
+
+The next two lines are resetting our `totalFees`, seems fine.
+
+```js
+uint256 feesToWithdraw = totalFees;
+totalFees = 0;
+```
+
+And finally we reach the external call which distributes the fees. It's worth noting that the address isn't the `owner`, fees are being sent to the `feeAddress` which our earlier `NatSpec` advises is controllable by the `owner`
+
+```js
+// @Audit: What if the feeAddress is a smart contract with a fallback/receive which reverts?
+(bool success,) = feeAddress.call{value: feesToWithdraw}("");
+require(success, "PuppyRaffle: Failed to withdraw fees");
+```
+
+### Wrap Up
+
+We've covered two more functions in `Puppy Raffle` and I think we're on the trail of a couple more bugs. In the next lesson, lets answer some of the questions we asked here and look at better practices to employ in protocols such as these.

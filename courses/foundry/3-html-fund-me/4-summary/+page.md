@@ -4,38 +4,41 @@ title: Summary
 
 _Follow along the course with this video._
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/EDaD5Ln1_u0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+---
+
+### Recap
+
+I know this lesson was pretty quick, but my intent was to give you some degree of familiarity with the low-level functionality behind interacting with websites in Web3.
+
+If you're interested in expanding your full-stack skills, I encourage you to check out the html-fund-me repo in more depth. Some additional tools and frameworks you may want to investigate include:
+
+- [**React**](https://react.dev/)
+- [**Svelte**](https://svelte.dev/)
+
+Let's do a refresher on the important things to know under the hood, when it comes to interacting using our wallets.
 
 ---
 
-Hello, there! Today, we had a quick lesson, but it was a vital one as it gives you the real feeling of interacting with websites from a very low level. For those excited about engaging themselves in more complex full-stack work, this post will hopefully whet your appetite.
+We learnt, in order to send a transaction, you need to connect your wallet.
 
-#### Initiating a Transaction - Making a Connection
+The most popular way to connect our wallet to Web3 enabled applications is through browser injection. Our browser can check for the presence of a wallet by checking for the `window.ethereum` object.
 
-A website sends a transaction to your wallet by establishing attachment to the wallet in one way or another. Browser extension injection into your browser is one of the most prevalent methods in use today.
+Additionally, in order to send a transaction to our wallet, our browser needs an RPC URL or a `provider` this is derived from the `ethereum.window` object that our browser wallet creates.
 
-```javascript
-window.Ethereum;
+```js
+const provider = new ethers.providers.Web3Provider(window.ethereum);
 ```
 
-This line of code signals the browser to confirm the presence of the metamask object, an essential step for browsers interacting with wallets such as `wallet connect`, `ledger`, among other types.
+Our wallet also provides the browser with an account to use through this line.
 
-While on the surface all wallets seem different, they all perform the fundamental function of consolidating a connection object with the website, thus enabling the website to transmit transactions to your browser. The process involves hitting "connect" on the website and the wallet confirming the establishment of a successful connection.
+```js
+const signer = provider.getSigner();
+```
 
-<img src="/html-fundme/4-summary/summary1.png" style="width: 100%; height: auto;">
+Once a wallet is connected, it's important to remember that the browser sends transactions _to_ our wallet for signing/confirmation. The wallet does _not_ provide private key information to the browser application.
 
-#### Send a Transaction, Keep the Private Key
+<img src="/html-fundme/2-metamask/metamask5.png" style="width: 75%; height: auto;">
 
-When it comes to sending a transaction to our wallets, the website first extracts the provider or the RPC URL from MetaMask.
+We also learnt a basic way to verify the function calls being sent to our wallet through the use of `function selectors` and decoding `calldata`. We'll go over this in more detail later!
 
-<img src="/html-fundme/4-summary/summary2.png" style="width: 100%; height: auto;">
-
-Through the function signature or function selector, our system helps us verify that the transactions from the website are not counterfeit. Later in our course, we will delve deeper into decoding complex transactions and functions.
-
-<img src="/html-fundme/4-summary/summary3.png" style="width: 100%; height: auto;">
-
-#### Conclusion
-
-That tips off our lesson for today. It was short but dense with necessary knowledge, especially for learners who are passionate about smart contracts. Understanding web interactions and the intricate operations of websites aids in conducting intelligent work and being on the lookout for potential threats.
-
-This was a basic introduction to web interactions, and as we continue digging deeper into topics, such as function selectors and signatures, expect to become more proficient in navigating websites. Now would be a perfect time to digest all that we've discussed. Stay tuned for the next lesson. Catch you later!
+That's all there is to this lesson! With your deeper understanding of how transactions are handled, I'll see you in the next one!

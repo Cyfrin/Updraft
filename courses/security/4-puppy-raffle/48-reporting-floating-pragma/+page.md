@@ -4,60 +4,44 @@ title: Reporting - Floating Pragma
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/cfbv95INyKY" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
-# A Step-by-Step Guide to Auditing Code from Your Search Bar
+### Floating Pragma
 
-Welcome to our step-by-step guide to auditing code from your search bar. Today we'll dive into the nuances of auditing, showing you exactly how we utilize the **@audit** tool to rewrite sections of a code base.
+The first finding we're going to add to our `findings.md` comes from our notes on `floating pragma`. Remember, we can look through the repo for notes we've left by searching for our `@Audit` tag.
 
-Follow along as we jump into the details, sharing how you can take **@audit** findings, turn them into a comprehensive write-up, and even grade the findings based on severity. By the end of this guide, you'll have a clear understanding of the code auditing process and how to leverage it in your own projects.
+This one should be easy for us as `Aderyn` caught it, and did most of the write up for us. Lets look at what `Aderyn` output.
 
-## Getting Started
+````
+## L-2: Solidity pragma should be specific, not wide
 
-We're going to kick off with a simple search query. In the search bar, we're looking for "@audit." We'll scour the code base for any instance of "@audit," creating a thorough write-up on each finding we uncover.
+Consider using a specific version of Solidity in your contracts instead of a wide version. For example, instead of `pragma solidity ^0.8.0;`, use `pragma solidity 0.8.0;`
 
-### Our First Audit Result
+- Found in src/PuppyRaffle.sol [Line: 3](src/PuppyRaffle.sol#L3)
 
-Our first instance of @audit involves an issue with using **floating Pragma**, which our Aderyn tool has already flagged in the **report.md** file.
+	```solidity
+	pragma solidity ^0.7.6;
+	```
+````
 
-Let's take a look at this further.
+At this point you may wish to copy the [**finding_layout.md**](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/audit-data/audit-data/finding_layout.md) template we've been following into your audit repo.
+
+`Aderyn's` output actually looks really great. I personally would rate this as an informational, so I'm going to make a few changes/formatting adjustments, but ultimately this is what it's going to look like, easy!
+
+````
+### I-1: Solidity pragma should be specific, not wide
+
+Consider using a specific version of Solidity in your contracts instead of a wide version. For example, instead of `pragma solidity ^0.8.0;`, use `pragma solidity 0.8.0;`
+
+- Found in src/PuppyRaffle.sol [Line: 3](src/PuppyRaffle.sol#L3)
+
+	```solidity
+	pragma solidity ^0.7.6;
+	```
+````
+
+Be sure to note your finding as actioned in your code base notes, and lets move onto the next one!
 
 ```js
-//@Audit: Info - Use of Floating Pragma is bad. Solidity Pragma should be specified, not wide.
+// report-written: use of floating pragma is bad!
 ```
-
-So what does this mean? In layman's terms, it suggests that solidity pragma should be explicitly articulated rather than left vague or wide. This isn't necessarily a critical issue (it doesn't pose a direct and immediate threat), but it's still worth addressing.
-
-![](https://cdn.videotap.com/MjcMkBDMLsjt5BWWw3v6-25.97.png)
-
-## Categorizing the Audit Result
-
-Every audit result requires categorization based on potential impact. In our case, this floating Pragma issue is relatively minor. While some people assign it a 'low' level of importance, I prefer to label it 'informational.'
-
-It's crucial to keep in mind that the classification of findings is subjective, open to interpretation based on the auditor's knowledge and understanding of the code base's architecture and dependencies, as well as its potential impact on the overall system.
-
-In our audit data, we'll document our finding accordingly.
-
-![](https://cdn.videotap.com/VduK8PC4shE7VwpBA65s-44.86.png)
-
-## Building a Database of Findings
-
-After documenting the initial finding, we won't stop there. We'll want to compile a more robust database of audit results.
-
-We'll return to the **Password Store audit** we worked on previously and extract both the "finding layout" and the "report layout." We then create a new folder (let's name it **Audit Data**) and paste these layouts there.
-
-Now we have a structured template to work from for our code audits—in essence, saving time and maintaining consistency in our work.
-
-## Wrapping up the Audit
-
-As we go through the process, we'll mark each `@audit` instance, noting that a report has been written based on the findings.
-
-It's satisfying to physically (or digitally) tick off tasks as they are completed, providing that sense of achievement and progress. We're not just identifying issues; we're systematically working through them and documenting our findings for future reference and action.
-
-> "...the objective code auditing is not just to identify potential vulnerabilities but to provide developers with an understanding of these weaknesses to produce more secure code in the future."
-
-After a thorough audit, not only will we have a detailed report of the current state of the code base, but we'll also have a blueprint for improving code security and quality moving forward.
-
-In conclusion, the power of a simple tool such as the search bar, coupled with a little knowledge and understanding, can be leveraged to provide comprehensive and granular insights into a code base. Happy auditing!

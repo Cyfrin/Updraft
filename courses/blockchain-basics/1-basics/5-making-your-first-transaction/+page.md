@@ -4,7 +4,7 @@ title: Making your first transaction
 
 You can follow along with this section of the course here. 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/DOCwvTT0mUM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="the current smart contract landscape"></iframe>
+
 
 
 ## Setting up Metamask for Ethereum Transactions

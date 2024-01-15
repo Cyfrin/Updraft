@@ -2,7 +2,7 @@
 title: Inheritance in Solidity
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/W8spUsFl0UA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 
 In past lessons, we have been using a simple storage contract designed to store a user's favorite number. While we understand that it's amazing, what if we want to expand its functionality a bit?

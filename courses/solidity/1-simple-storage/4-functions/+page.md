@@ -5,7 +5,7 @@ title: Functions & Deployment
 
 *Follow along with the course here.*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/RoeHK-wKDfk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 <!-- <img src="/solidity/remix/lesson-2/solidity-types/types.png" style="width: 100%; height: auto;"> -->
 

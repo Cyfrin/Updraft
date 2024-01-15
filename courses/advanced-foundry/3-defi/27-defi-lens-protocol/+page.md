@@ -4,7 +4,7 @@ title: Lens Protocol
 
 _Follow along the course with this video._
 
-<iframe width="560" height="315" src="https://youtube.com/embed/0ULyUU1kIJs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 # Understanding Lens Protocol - The Decentralized Social Layer of Web3
 

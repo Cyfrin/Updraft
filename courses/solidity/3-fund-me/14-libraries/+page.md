@@ -4,7 +4,7 @@ title: Libraries
 
 _Follow along this chapter with the video bellow_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/HLqimKeA60s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 Ever wanted to streamline your code by getting rid of some repeated functions or routine workflows? Is it too tiresome and annoying to rewrite code snippets to maintain pricing information? Well, then, you're in the right place! In this blog post, we will discuss an efficient way to solve these problems using Solidity Libraries.
 

@@ -2,7 +2,7 @@
 title: T-Swap Manual Review T-Swap Pool - Swap Exact Output
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/tbf65EMdqNI?si=0fDQW6EBfCoVh4Bq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

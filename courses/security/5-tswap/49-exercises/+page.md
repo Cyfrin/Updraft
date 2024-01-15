@@ -2,7 +2,7 @@
 title: Exercises
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/-oBnbA3-QCw?si=4d-6BdnhvYMoyiWd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

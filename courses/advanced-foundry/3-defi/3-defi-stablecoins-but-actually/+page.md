@@ -4,7 +4,7 @@ title: Stablecoins, but actually
 
 _Follow along the course with this video._
 
-<iframe width="560" height="315" src="https://youtube.com/embed/9wTC9ERju54" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 # Everything You Need to Know About Stablecoins
 

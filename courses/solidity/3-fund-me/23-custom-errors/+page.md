@@ -4,7 +4,7 @@ title: Custom Errors
 
 _Follow along this chapter with the video bellow_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/IF-NH74fZMU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ## Optimizing Smart Contracts for Gas Efficiency Using Custom Errors
 

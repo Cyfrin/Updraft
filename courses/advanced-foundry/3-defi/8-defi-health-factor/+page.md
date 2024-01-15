@@ -4,7 +4,7 @@ title: Health Factor
 
 _Follow along the course with this video._
 
-<iframe width="560" height="315" src="https://youtube.com/embed/jQNNph-x-18" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 # Upgrading the Health Factor Function of a DeFi Platform
 

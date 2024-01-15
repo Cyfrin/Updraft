@@ -1,12 +1,12 @@
 ---
-title: The Purpose Of Smart Contracts
+title: The purpose of smart contracts
 ---
 
-You can follow along with this section of the course here.
+_Follow along with this video:_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/yPzY4ifyGjY?si=VB_lEqevsU9MF_qn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+---
 
-## The Essence of Blockchain and Smart Contracts
+### The Essence of Blockchain and Smart Contracts
 
 Almost every interaction or transaction in our lives involves some form of agreement or contract. For instance, purchasing a chair involves a contract to buy lumber, assemble it, and sell the finished product. Your electricity supply is also based on an agreement between you and the electric company.
 
