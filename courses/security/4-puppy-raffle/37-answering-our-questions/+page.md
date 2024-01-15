@@ -4,80 +4,103 @@ title: Answering Our Questions
 
 _Follow along with this video:_
 
-## 
+---
+
+### Answering Our Questions
+
+This lesson will be a little unconventional. I'm going to list some of the questions that were raised as we performed our recon on Puppy Raffle. I want you to challenge yourself to answer these questions, then compare to my answers below!
+
+Questions:
+
+```js
+// Q1: What resets the players array?
+
+// Q2: What if enterRaffle is called with an empty array?
+
+// Q3: In the case of getActivePlayerIndex - what if the player is at Index 0?
+
+// Q4: Does the selectWinner function follow CEI?
+
+// Q5: Are raffleDuration and raffleStartTime being set correctly?
+
+// Q6: Why not use address(this).balance for the totalAmountCollected in the selectWinner function?
+
+// Q7: Is the 80% calculation for winners rewards correct?
+
+// Q8: Where do we increment the totalSupply/tokenId?
+
+// Q9: Can a user simply force the selectWinner function to revert if they don't like the results?
+
+// Q10: What happens if the winner is a contract with broken or missing receive/fallback functions?
+
+// Q11: What happens if the feeAddress is a contract with broken or missing receive/fallback functions?
+```
 
 ---
 
-# Detailed Debugging Discussion: Answering Key Questions
+<details>
+<summary>Answers!</summary>
 
-During my recent dive into a codebase, I was asked several key questions. In this blog post, I'm going to break down each question and provide my solutions. Let's begin our discussion.
+```js
+// A1: The players array is reset in the selectWinner function.
 
-## The Players Array Dilemma
+...
+delete players;
+raffleStartTime = block.timestamp;
+previousWinner = winner;
+(bool success,) = winner.call{value: prizePool}("");
+...
 
-First, the intriguing question of the players' array arose. It was essential to check if we ever reset the array. Our audit eventually led us to the bottom of the code where we found that indeed, the players' array was reset.
+// A2: If an empty array is submitted, an event is still emitted by the function. This will likely go in our report.
 
-![](https://cdn.videotap.com/kmOkBiTr178jCe2yOCNa-22.9.png)
+...
+function enterRaffle(address[] memory newPlayers) public payable {
+        require(msg.value == entranceFee * newPlayers.length, "PuppyRaffle: Must send enough to enter raffle");
+        ...
+        emit RaffleEnter(newPlayers);
+    }
+...
 
-### Empty Array Scenario
+// A3: A player at index zero, may believe they are not active in a raffle, as this function returns zero if a player is not found. This will also go in our report for sure.
 
-The next question posed was, what happens when we have an empty array? Does this trigger an event? After thorough checks, I decided to include this scenario in my report for further audit.
+...
+function getActivePlayerIndex(address player) external view returns (uint256) {
+        for (uint256 i = 0; i < players.length; i++) {
+            if (players[i] == player) {
+                return i;
+            }
+        }
+        return 0;
+    }
+...
 
-## When Player Is at Index Zero
+// A4: No, the selectWinner function doesn't follow CEI and we would recommend to the protocol that it does. However, I happen to know this isn't an issue in this function, so we might flag this as informational.
 
-A scenario raised was anticipating the condition when the player is at index zero. Previous results indicated that if the player is at index zero, the function returns zero. This might confuse a player into thinking they're not active.
+// A5: They are being set in the constructor and seem to be configured properly.
 
-![](https://cdn.videotap.com/HSNYhGEIwD2ytQEi2CeQ-49.61.png)
+...
+constructor(uint256 _entranceFee, address _feeAddress, uint256 _raffleDuration) ERC721("Puppy Raffle", "PR") {
+        entranceFee = _entranceFee;
+        feeAddress = _feeAddress;
+        raffleDuration = _raffleDuration;
+        raffleStartTime = block.timestamp;
+...
 
-### CEI Compliance in Audit Recommendations
+// A6: This may be a design choice, but without clear rationale or a protocol to ask, we may flag this as informational for now.
 
-All of this leads us to the question of whether the code adheres to Checks-Effects-Interactions (CEI) pattern. It turned out that it did not, consequently, suggesting a recommendation in the audit to adhere to CEI.
+// A7: Yes, as per the documentation, 80% should be sent to the winner with 20% being retained in fees.
 
-> "The CEI pattern is an important best practice in Solidity programming to avoid reentrancy attacks."
+// A8: This is handled by the OpenZeppelin ERC721.sol contract. Ultimately being set by this declaration when a winner is selected:
 
-## Duration and Start Time
+...
+uint256 tokenId = totalSupply();
+...
 
-Continuing our examination, we explored if the duration and start time parameters are being set correctly. The code appeared to handle this correctly, effectively eliminating this query from our list of concerns.
+// A9: Yes! This will probably be an issue we'll want to add to our report.
 
-## Question of Balances and Fees
+// A10: The winner wouldn't be able to receive their reward! This is definitely something we should report as a vulnerability.
 
-Another query was to contemplate why we don't just use `address(this).balance` for some of the fees. Why not, indeed? This interesting inquiry was marked down for further exploration in the audit.
+// A11: Sending funds to the feeAddress with the withdrawFees function will probably fail, but this is very low impact as the owner can simply change the feeAddress.
+```
 
-## Is the 80% Calculation Correct?
-
-Moving on, we examined a key calculation in the code that deals with 80% of a certain value. Our audit confirmed that this calculation was implemented correctly.
-
-> Always refer back to the documentation to validate the implementation.
-
-Looking deeper into this calculation, we discovered a possible arithmetic error which might cause some precision loss. A note was made to address this issue in the final report.
-
-## Keeping Track of Token Supply
-
-To find out where the token supply total was incremented, we referred to the Open Zeppelin repositories', `SafeMint` function. If you're not familiar with this, I highly recommend checking out the OpenZeppelin documentation.
-
-![](https://cdn.videotap.com/6icrcHwg1yWjBbqusn4h-133.57.png)
-
-### Unfair Advantage with Transaction Reverts
-
-A worrying scenario might occur if a transaction picks a winner that we don't like, causing a gas war. This could create an unfair advantage in the system, making it a key point in the report follow-up.
-
-## Is Reentry Possible?
-
-Our debugging expedition dove deeper as we tried to verify if reentry was possible. The results indicated that it wasn't, but the advice was given to follow CEI nonetheless.
-
-## Issues with Smart Contracts as Winners
-
-The potential of a smart contract with a failing fallback function winning was observed as an issue. This situation could result in the winner not receiving any money.
-
-### Withdrawal Difficulties
-
-The inability to withdraw fees if there were players in the protocol was viewed as a significant problem. This hindrance could develop into an "Miners Extractable Value (Mev)" attack as well.
-
-## Mishandling of ETH
-
-We then deduced that the code mishandled ETH. This bug resulted in losing accumulated ETH, making it a matter for our consideration.
-
-## Addressing Fee Addresses
-
-The final question assessed the scenario of a fee address being a smart contract with a non-functioning fallback. We concluded that it's not a big issue since the owner can change the holder.
-
-And with that, all of our pressing questions were successfully answered! But remember, coding is an evolving process. Always revise, recheck and keep improving. Until our next debugging session, happy coding!
+</details>

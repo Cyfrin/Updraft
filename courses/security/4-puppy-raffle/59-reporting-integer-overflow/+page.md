@@ -4,85 +4,205 @@ title: Reporting - Integer Overflow
 
 _Follow along with this video:_
 
-## 
+---
+
+### Integer Overflow and Unsafe Casting
+
+Lets start with the integer overflow we identified in the `selectWinner` function. We thoroughly went through this vulnerability in previous lessons!
+
+```js
+totalFees = totalFees + uint64(fee);
+```
+
+We should begin by determining severity.
+
+- **Impact:** High - Fees are at risk of being lost/stuck. This typically is going to result in a high impact.
+- **Likelihood:** High - It could be argued that this is a `medium`, but the risk increases with how successful the protocol becomes, and we want Puppy Raffle to be successful. High.
+
+With the above determined, let's start filling out our finding template. I know this seems repetitive, but this is what's going to make you _really good_ at writing these reports.
+
+```
+### [H-3] Integer overflow of `PuppyRaffle::totalFees` loses fees
+```
+
+For the description section, lets include some of the work we did in `chisel` to show this happening.
+
+````
+### [H-3] Integer overflow of `PuppyRaffle::totalFees` loses fees
+
+**Description:** In solidity versions prior to `0.8.0` integers were subject to integer overflows.
+
+    ```js
+    uint64 myVar = type(uint64).max
+    // 18446744073709551615
+    myVar = myVar + 1
+    // myVar will be 0
+    ```
+
+**Impact:** In `PuppyRaffle::selectWinner`, `totalFees` are accumulated for the `feeAddress` to collect later in `PuppyRaffle::withdrawFees`. However, if the `totalFees` variable overflows, the `feeAddress` may not collect the correct amount of fees, leaving fees permanently stuck in the contract
+````
+
+Now, we didn't write a Proof of Concept together for this, but I _have_ prepared one. This is another moment I'm going to challenge you to write one yourself before continuing. You need to practice these skills to improve them.
+
+Once you've made an attempt, compare what you've done with the PoC I've provided below to see how you did!
+
+<details>
+<summary>Integer Overflow PoC</summary>
+
+1. We conclude a raffle of 4 players
+2. We then have 89 players enter a new raffle, and conclude the raffle
+3. 3. `totalFees` will be:
+
+```js
+totalFees = totalFees + uint64(fee);
+// substituted
+totalFees = 800000000000000000 + 17800000000000000000;
+// due to overflow, the following is now the case
+totalFees = 153255926290448384;
+```
+
+4. You will not be able to withdraw due to the line in `PuppyRaffle::withdrawFees`:
+
+```js
+require(address(this).balance ==
+  uint256(totalFees), "PuppyRaffle: There are currently players active!");
+```
+
+Although you could use `selfdestruct` to send ETH to this contract in order for the values to match and withdraw the fees, this is clearly not what the protocol is intended to do.
+
+<details>
+<summary>Code</summary>
+
+```js
+function testTotalFeesOverflow() public playersEntered {
+    // We finish a raffle of 4 to collect some fees
+    vm.warp(block.timestamp + duration + 1);
+    vm.roll(block.number + 1);
+    puppyRaffle.selectWinner();
+    uint256 startingTotalFees = puppyRaffle.totalFees();
+    // startingTotalFees = 800000000000000000
+
+    // We then have 89 players enter a new raffle
+    uint256 playersNum = 89;
+    address[] memory players = new address[](playersNum);
+    for (uint256 i = 0; i < playersNum; i++) {
+        players[i] = address(i);
+    }
+    puppyRaffle.enterRaffle{value: entranceFee * playersNum}(players);
+    // We end the raffle
+    vm.warp(block.timestamp + duration + 1);
+    vm.roll(block.number + 1);
+
+    // And here is where the issue occurs
+    // We will now have fewer fees even though we just finished a second raffle
+    puppyRaffle.selectWinner();
+
+    uint256 endingTotalFees = puppyRaffle.totalFees();
+    console.log("ending total fees", endingTotalFees);
+    assert(endingTotalFees < startingTotalFees);
+
+    // We are also unable to withdraw any fees because of the require check
+    vm.prank(puppyRaffle.feeAddress());
+    vm.expectRevert("PuppyRaffle: There are currently players active!");
+    puppyRaffle.withdrawFees();
+}
+```
+
+</details>
+
+</details>
 
 ---
 
-# Understanding Integer Overflow in Puppy Raffle - A Deep Dive
+I trust you attempted the PoC yourself - time to add our recommended mitigation
 
-In the dynamic world of programming and security, an auditor's job seldom runs out of thrill. A significant part of the role involves identifying and reporting issues that have a potential to cause considerable harm in the future.
+````
+**Recommended Mitigation:** There are a few recommended mitigations here.
 
-In a recent security audit, we found two major issues — **integer overflow** and **unsafe casting**. Our team dedicated a significant amount of time to understand these, and what follows is our detailed report on the audit findings.
+1. Use a newer version of Solidity that does not allow integer overflows by default.
+    ```diff
+    - pragma solidity ^0.7.6;
+    + pragma solidity ^0.8.18;
+    ```
+Alternatively, if you want to use an older version of Solidity, you can use a library like OpenZeppelin's `SafeMath` to prevent integer overflows.
 
-![](https://cdn.videotap.com/tTiu8L4Bi8vsuicWvE2t-27.83.png)
+1. Use a `uint256` instead of a `uint64` for `totalFees`.
+    ```diff
+    - uint64 public totalFees = 0;
+    + uint256 public totalFees = 0;
+    ```
+2. Remove the balance check in `PuppyRaffle::withdrawFees`
+    ```diff
+    - require(address(this).balance == uint256(totalFees), "PuppyRaffle: There are currently players active!");
+    ```
+We additionally want to bring your attention to another attack vector as a result of this line in a future finding.
+````
 
-## Issue 1: Overflow
+There's another finding we identified which is going to have a write up that is very similar to this one - unsafe casting. I'm going to challenge you to write this one yourself (as its a little repetitive and uninteresting after what we just did), but it's good practice. Compare your write up versus mine below.
 
-Let's jump straight into the iter details of the overflow issue.
+<details>
+<summary>Unsafe Casting Write Up</summary>
+    
+    ### [M-3] Unsafe cast of `PuppyRaffle::fee` loses fees
 
-### Severity
+    **Description:** In `PuppyRaffle::selectWinner` their is a type cast of a `uint256` to a `uint64`. This is an unsafe cast, and if the `uint256` is larger than `type(uint64).max`, the value will be truncated.
 
-When we did an impact analysis, we discovered that if this specific overflow issue occurred, wealthy reserves could be lost. As any venture (or anyone, for that matter), we hate losing money. Hence, we rank the impact of this issue as "high".
+    ```javascript
+        function selectWinner() external {
+            require(block.timestamp >= raffleStartTime + raffleDuration, "PuppyRaffle: Raffle not over");
+            require(players.length > 0, "PuppyRaffle: No players in raffle");
 
-The likelihood of this happening might be a tad bit lower, ranging between "low" - "medium". However, given our stake in wanting the protocol to thrive and rake in lots of fees, our argument would tilt the scale towards "medium".
+            uint256 winnerIndex = uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.difficulty))) % players.length;
+            address winner = players[winnerIndex];
+            uint256 fee = totalFees / 10;
+            uint256 winnings = address(this).balance - fee;
+    @>      totalFees = totalFees + uint64(fee);
+            players = new address[](0);
+            emit RaffleWinner(winner, winnings);
+        }
+    ```
 
-Should this overflow happen when the raffle is being globally used, the severity would shoot up drastically. For the sake of this report, let's assume this scenario. The inference drawn, therefore, is that this issue carries high severity.
+    The max value of a `uint64` is `18446744073709551615`. In terms of ETH, this is only ~`18` ETH. Meaning, if more than 18ETH of fees are collected, the `fee` casting will truncate the value.
 
-![](https://cdn.videotap.com/A4rPHxYf6JE5lHcKRsPu-92.77.png)
+    **Impact:** This means the `feeAddress` will not collect the correct amount of fees, leaving fees permanently stuck in the contract.
 
-### Root Cause
+    **Proof of Concept:**
 
-The root cause can be traced back to the **integer overflow in the Puppy Raffle**. Due to this overflow, the total fees get wiped out, which means we lose money. In older Solidity versions (prior to 0.8.0), integers are subject to **integer overflows**. An example of how this could play out can be demonstrated through the following code block. Here, we increment myVar by 1 after it has reached its maximum limit.
+    1. A raffle proceeds with a little more than 18 ETH worth of fees collected
+    2. The line that casts the `fee` as a `uint64` hits
+    3. `totalFees` is incorrectly updated with a lower amount
 
-```javascript
-myVar = typeof myVar(64).max;
-// 'myVar' reaches limit
-myVar = myVar + 1;
-// 'myVar' is incremented by 1 and wraps back to 0, causing overflow
-```
+    You can replicate this in foundry's chisel by running the following:
 
-![](https://cdn.videotap.com/VNP7SHlx2E2aTLHNFAWN-148.43.png)
+    ```javascript
+    uint256 max = type(uint64).max
+    uint256 fee = max + 1
+    uint64(fee)
+    // prints 0
+    ```
 
-### Impact
+    **Recommended Mitigation:** Set `PuppyRaffle::totalFees` to a `uint256` instead of a `uint64`, and remove the casting. Their is a comment which says:
 
-In the context of our Puppy Raffle, the 'Select Winner' function is responsible for accumulating total fees for the fee address to collect later via the 'Withdraw Fees' function. But if 'total fees' overflows, the amount that the fee address could collect would be incorrect, causing fees to be permanently stuck in the contract.
+    ```javascript
+    // We do some storage packing to save gas
+    ```
+    But the potential gas saved isn't worth it if we have to recast and this bug exists.
 
-Here's a proof-of-concept to better understand how this could happen. Let's consider a raffle scenario with four players. If we can get 89 more players to join a new raffle, we can see the overflow playing out. The simplistic theory behind the number 89 is that the number of additional participants required to trigger an overflow in this context calculatively comes out to be 89.
-
-After the raffle concludes, the 'totalFees' should ideally add up correctly. However, due to the overflow, the 'totalFees' end up being far less than the actual value, which is the sum of the previous 'totalFees' and the newly added fee.
-
-#### Note:
-
-```markdown
-This overflow is particularly critical as once these 'total fees' overflows, the balance in the contract escalates to a point where it surpasses the limits of uint64. In that event, the 'Withdraw Fees' function fails (as balance != totalFees) and the trapped fees will never be retrievable.
-```
-
-![](https://cdn.videotap.com/cDvBxAfeGdyCJqDHfe8B-250.47.png)
-
-### Mitigation
-
-We propose the following strategies:
-
-1. Upgrade to a newer version of Solidity.
-2. Use a `uint256` type instead of `uint64` for `puppyRaffle` total fees.
-3. Utilize the SafeMath library of OpenZepplin for Solidity v0.7.6.
-4. Remove the balance check from `puppyRaffle` withdraw fees function.
-
-An example mitigation strategy would be:
-
-```diff
--   totalFees = totalFees + uint64(fee); // The line to be removed
-+   totalFees = totalFees.add(fee); // After mitigation using OpenZepplin's SafeMath library
-```
-
-## Issue 2: Unsafe Cast
-
-The second issue that was uncovered in the audit was an unsafe cast.The details of this issue have been built into another report as the problem is closely related to the overflow problem described in this report.
-
-In a nutshell, we now have a better understanding and a mitigation plan for the overflow issue in the Puppy Raffle, addressing an integral issue we had discovered in the audit. Such audits, though complex, provide a platform to demonstrate the real value an auditor brings — ensuring the robustness of systems and detecting vulnerabilities before hitches can occur.
-
-Well, that brings us to the end of our auditing adventures for this time. This was an interesting dive into the pit of overflow and casting vulnerabilities in the Puppy Raffle code, wasn't it?
-
-Stay tuned for more such technical adventures.
-
-![](https://cdn.videotap.com/aUhVkP3XVtdb20yd5YkC-426.72.png)
+    ```diff
+    -   uint64 public totalFees = 0;
+    +   uint256 public totalFees = 0;
+    .
+    .
+    .
+        function selectWinner() external {
+            require(block.timestamp >= raffleStartTime + raffleDuration, "PuppyRaffle: Raffle not over");
+            require(players.length >= 4, "PuppyRaffle: Need at least 4 players");
+            uint256 winnerIndex =
+                uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.difficulty))) % players.length;
+            address winner = players[winnerIndex];
+            uint256 totalAmountCollected = players.length * entranceFee;
+            uint256 prizePool = (totalAmountCollected * 80) / 100;
+            uint256 fee = (totalAmountCollected * 20) / 100;
+    -       totalFees = totalFees + uint64(fee);
+    +       totalFees = totalFees + fee;
+    ```

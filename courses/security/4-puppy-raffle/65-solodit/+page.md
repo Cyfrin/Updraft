@@ -4,44 +4,32 @@ title: Solodit
 
 _Follow along with this video:_
 
-## 
-
 ---
 
-# Level Up Your Security Game with Solodit
+### Level Up Your Security Game with Solodit
 
-Anybody who aims to excel in competitive audits and enhance their grasp of Web3 security should pay attention. The secret tool you need to get an edge? It's called Solodit, a phenomenal hub that collates all security reports in one place. Whether you're a budding researcher or a seasoned auditor, Solodit can help you stay on top of your game.
+Anybody who aims to excel in competitive audits and enhance their grasp of Web3 security should pay attention. The secret tool you need to get an edge? It's called [**Solodit**](https://solodit.xyz/).
 
-![](https://cdn.videotap.com/9jUjFBlxSuhDXx6ob1Uv-17.43.png)
+The legendary [**Hans Friese**](https://twitter.com/hansfriese?lang=en) Was the #1 competitive auditor by earnings for the first half of 2023 with over $100,000 won.
 
-## Solodit: Knowing the Powerhouse
+When asked for advice on how he performs so well, he says one of the most beneficial things he does is reading the reports of other auditors.
 
-Let's understand what makes Solodit a favorite tool for top competitive auditors. Picture this: Hans Friese, the top auditor for the first half of 2023, amassing an impressive figure of approximately $130 million. How did he reach this level of expertise? His winning strategy was to learn from other auditors and their reports. He used Solodit to expand his knowledge, which solidified his position as the world's number one competitive auditor (pun intended).
+Thus [**Solodit**](https://solodit.xyz/) was born. [**Solodit**](https://solodit.xyz/) aggregates publicly available security reports from across the industry into a single convenient aveneue to search and sort through.
 
-Solodit brings the latest and greatest security findings under one roof, positioning itself as an unbeatable resource for aspiring auditors and security enthusiasts. It lets you follow the trail of other auditors, helps you keep up with the latest, and allows you to stay one step ahead of potential attackers.
+Once logged in you should see something like this, a clean UI through which you can search and filter by anything you'd like.
 
-> "Solodit is a 100% must-do for people who want to get better at security and especially for those who want to excel at competitive audits. Studying the latest and greatest findings is the way you're going to stay ahead of the game and continue to keep the attackers at bay."
+<img src="/security-section-4/65-solodit/solodit1.png" width="75%" height="auto">
 
-## Getting Started with Solodit
+By navigating to the [**`Audits` menu**](https://solodit.xyz/audit), we can even see live and upcoming audit competitions as well as learn about types of audits such as the Multi-Phase Audit.
 
-Sign up on Solodit to kickstart your journey to becoming a master security researcher. You will be greeted with an intuitive interface with a findings search index. Say you need to explore high reentrancies – you can do a search and find related reports from other auditors. In short, Solodit serves as your one-stop solution to learn from the pros.
+<img src="/security-section-4/65-solodit/solodit2.png" width="75%" height="auto">
 
-![](https://cdn.videotap.com/a9jxnlI8mzpdQV3RFFii-95.86.png)
+In addition to this, Solodit aggregates open `bug bounties` as well as `leaderboard` positions across multiple auditing platforms.
 
-## Digging Deeper: Features Overview
+There's even a notes section, to allow you to jot down your thoughts on your findings, or the findings of other people.
 
-One of the most valuable features of Solodit is the aggregated reports from smart contract auditing firms and competitive audits. It helps you kickstart your day by browsing the latest and greatest reports from other auditors.
+[**Solodit**](https://solodit.xyz/) truly is the `one-stop-shop` for security researchers.
 
-The audits page within the tool shows you ongoing contests, a timeline view of competitive audits in operations such as the Viper compiler, the Steadyfi, and more. You can easily dive into any of these competitive audits.
-
-A feature that deserves a special mention is the search for different bug bounties. It's no secret that finding and patching bugs can be quite rewarding. Solodit makes it easy for you to search for bug bounty programs, check their ratings, and understand how lucrative they might be.
-
-![](https://cdn.videotap.com/l6kCWJDKA8WMasYYpsMV-139.43.png)
-
-The platform also includes a leaderboard tracking top competitive auditors. You might even catch Hans there! The leaderboard is a great way to measure your progress against others in the auditing field.
-
-Lastly, with the added feature of note-taking, Solodit stands out from other tools. You can jot down notes about your findings or valuable insights from other people's reports. This personalized knowledge repository can help you enhance your skills as a smart contract security researcher.
-
-## The Bottom Line
+### Wrap Up
 
 Becoming a successful security researcher or a leading smart contract developer requires continuous learning. Solodit provides a unique platform that allows you to effortlessly learn, compete, and evolve as a professional in the sector. Consider it as your personal go-to learning and resource tool for staying abreast of industry developments. If you aspire to lead in the world of smart contract security, signing up for Solodit is a no-brainer.
