@@ -3,7 +3,7 @@
   "title": "Advanced Foundry",
   "slug": "advanced-foundry",
   "folderName": "advanced-foundry",
-  "lastUpdated": "Wed Jan 03 2024 10:29:29 GMT-0500 (Eastern Standard Time)",
+  "lastUpdated": "Mon Jan 15 2024 12:21:13 GMT-0500 (Eastern Standard Time)",
   "previewImg": "https://res.cloudinary.com/droqoz7lg/image/upload/v1701193477/updraft/courses/y2uthyu5atnxhhd8aar6.png",
   "description": "Become a Foundry expert! Learn advanced techniques to develop, deploy, test, optimise and interact with your smart contract using industry standard tools used by the top smart contracts engineers in web3",
   "path": "content/learning-paths/solidity-developer.json",
@@ -46,7 +46,7 @@
   ],
   "sections": [
     {
-      "sectionId": "c83165bc-da17-4714-ab4f-483cb52c5170",
+"sectionId": "c83165bc-da17-4714-ab4f-483cb52c5170",
       "number": 1,
       "title": "Develop an ERC20 Crypto Currency",
       "slug": "How-to-create-an-erc20-crypto-currency",
@@ -120,7 +120,7 @@
       ]
     },
     {
-      "sectionId": "94b46f4a-4966-4bf5-85f2-605e034d0061",
+"sectionId": "94b46f4a-4966-4bf5-85f2-605e034d0061",
       "number": 2,
       "title": "Develop an NFTs Collection",
       "slug": "how-to-create-an-NFT-collection",
@@ -441,7 +441,7 @@
       ]
     },
     {
-      "sectionId": "c78f2bb4-4bcd-4808-94e7-2e2b33e2522b",
+"sectionId": "c78f2bb4-4bcd-4808-94e7-2e2b33e2522b",
       "number": 3,
       "title": "Develop a DeFi Protocol",
       "slug": "develop-defi-protocol",
@@ -494,7 +494,7 @@
           "folderName": "4-defi-decentralized-stablecoin",
           "description": "Understand the creation and management of decentralized stablecoins, focusing on their development, operational mechanics, and impact on DeFi.",
           "duration": 11,
-          "videoUrl": "heUhNEpZtFV3vp011u01JGhIgWn4gydFZO2oa7oqODvos",
+          "videoUrl": "hHyZhQro6kCWr02tZLwTTeUxhdoJgwu00DsSRY01m01qyIA",
           "rawMarkdownUrl": "/routes/advanced-foundry/3-defi/4-defi-decentralized-stablecoin/+page.md",
           "markdownContent": "---\ntitle: DecentralizedStableCoin.sol\n---\n\n_Follow along the course with this video._\n\n\n\n# Building a Decentralized Stablecoin: Step-by-Step Guide\n\nIn this section, we're diving into the exciting world of decentralized finance (DeFi) and going one step ahead by creating our very own stablecoin. We'll be covering everything you need to know to follow along and delve into the world of stablecoins with us.\n\n## What is a Stablecoin?\n\nA stablecoin is a form of cryptocurrency that is pegged to a reserve asset like the US Dollar. The idea behind it is to provide stability in the highly volatile world of cryptocurrencies.\n\n## Forging Ahead with Code\n\nIf you're as excited about this project as we are, you can follow along with all the code that we're creating in this tutorial. We have dedicated an entire GitHub repository to the code we'll be building - it's under the [foundry-defi-stablecoin-f23](https://github.com/Cyfrin/foundry-defi-stablecoin-f23) course section. We have big plans for this project, including getting the code audited to ensure its security and reliability.\n\nTo follow the updates about this audit, keep an eye on this GitHub repository as we will be posting all audit reports there.\n\nWe're diving straight into the nuts and bolts of this project. A lot of the information we'll be going over is likely to be familiar to you if you've done similar projects before. However, we'll also introduce a few new concepts like stateless fuzzing.\n\n## The Architecture of Our Stablecoin\n\nSo, before we dive straight into the code, let's take a glance at what our stablecoin's architecture is going to look like. We are building a stablecoin that's one, anchored, meaning it is pegged to the US Dollar. Secondly, our stability mechanism is algorithmic, meaning the process for minting is going to be entirely decentralized - there's no governing entity that is controlling our stablecoins. Lastly, we're using exogenous crypto-assets, specifically Ethereum and Bitcoin, as collateral for our stablecoin.\n\n<img src=\"/foundry-defi/4-defi-decentralized-stablecoin/defi-decentralized-stablecoin1.png\" style=\"width: 100%; height: auto;\">\n\n## Maintaining Our Stablecoin's Value\n\nTo ensure that our stablecoin is always worth $1, we have to match it to the dollar's price constantly. We do this using a chainlink price feed. Our program will run a feed from chainlink, and we will set a function to exchange Ethereum and Bitcoin for their equivalent dollar value. This function will help us maintain the stability of our stablecoin.\n\nTo make the stability mechanism algorithmic, we will have a condition in our code that only mints the stablecoin if there's enough collateral.\n\nThe collateral type, i.e., Ethereum and Bitcoin, is exogenous, meaning, we're only going to accept these two types of cryptocurrencies as collateral. We're going to use the ERC20 version of Ethereum and Bitcoin, also known as wrapped Ethereum (WETH) and wrapped Bitcoin (WBTC).\n\n<img src=\"/foundry-defi/4-defi-decentralized-stablecoin/defi-decentralized-stablecoin2.PNG\" style=\"width: 100%; height: auto;\">\n\nTo use this architecture, we create a code that over collateralizes the stablecoin using WETH and Bitcoin as the collateral.\n\n## Pulling up Our Sleeves and Coding Away\n\nWith the plan in place, it's time to dive into coding.\n\nHere is a step-by-step guide to creating your own decentralised stablecoin:\n\n### Step 1: Install OpenZeppelin\n\nWe begin by installing OpenZeppelin as it provides basic smart contract-building blocks. To do this, we use the following command:\n\n```bash\nforge install openzeppelin/openzeppelin-contracts --no-commit\n```\n\nThen open up the `foundry TOML` and add the following remappings:\n\n```javascript\nremappings = [\"@openzeppelin/contracts=lib/openzeppelin-contracts/contracts\"];\n```\n\n### Step 2: Import Libraries and Contract Functions\n\nOnce OpenZeppelin is correctly installed, open up our `DecentralizedStableCoin.sol` contract file where we will import necessary libraries. We start by importing three OpenZeppelin contracts: `ERC20`, `ERC20Burnable` and `Ownable`.\n\nThe `ERC20Burnable` contract provides us with a \"burn\" function, which is essential in maintaining the peg price of our stablecoin, as we'll be burning a lot of tokens. The \"burn\" function will be overridden by our function.\n\nIn contrast, when it comes to the \"mint\" function, we do not need to override any functions. Instead, we are going to call the \"\\_mint\" function directly.\n\n```javascript\n//SDPX-LICENSE-IDENTIFIER:MIT\npragma solidity 0.8.19;\n\nimport {ERC20Burnable, ERC20} from \"@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol\";\nimport {Ownable} from \"@openzeppelin/contracts/access/Ownable.sol\";\n\ncontract DecentralizedStableCoin is ERC20Burnable, Ownable {\n    error DecentralizedStableCoin__AmountMustBeMoreThanZero();\n    error DecentralizedStableCoin__BurnAmountExceedsBalance();\n    error DecentralizedStableCoin__NotZeroAddress();\n\n    constructor() ERC20(\"DecentralizedStableCoin\", \"DSC\") {}\n\n    function burn(uint256 _amount) public override onlyOwner {\n        uint256 balance = balanceOf(msg.sender);\n        if (_amount <= 0) {\n            revert DecentralizedStableCoin__AmountMustBeMoreThanZero();\n        }\n        if (balance < _amount) {\n            revert DecentralizedStableCoin__BurnAmountExceedsBalance();\n        }\n        super.burn(_amount);\n    }\n\n    function mint(address _to, uint256 _amount) external onlyOwner returns (bool) {\n        if (_to == address(0)) {\n            revert DecentralizedStableCoin__NotZeroAddress();\n        }\n        if (_amount <= 0) {\n            revert DecentralizedStableCoin__AmountMustBeMoreThanZero();\n        }\n        _mint(_to, _amount);\n        return true;\n    }\n}\n```\n\nThat's it! We've now sown the seeds of creating a stablecoin.\n\nIt's always a good practice to keep updating and checking your code as you progress. You can run `forge build` to compile the contract and check for any issues or errors. In a little bit, we'll be writing tests and a deploy script.\n\n## Wrapping it up\n\nVoila! With that, we've built the basis our own stablecoin that with be pegged to the US dollar, fully decentralized, and powered by exogenous crypto-assets Ethereum and Bitcoin.\n\nStarting a DeFi project such as this raises numerous possibilities in the world of cryptocurrencies and blockchain technologies. The tools and technologies available to developers today, like Solidity and OpenZeppelin, are making it easier than ever to get started in this exciting field. So whether you are a beginner or a pro-developer, the landscape of stablecoins offers an intriguing opportunity for everyone.\n\nHappy coding!\n",
           "updates": []
@@ -801,7 +801,7 @@
       ]
     },
     {
-      "sectionId": "193661f5-5f98-45e4-a3c3-ffcaae84f194",
+"sectionId": "193661f5-5f98-45e4-a3c3-ffcaae84f194",
       "number": 4,
       "title": "Upgradeable Smart Contracts",
       "slug": "upgradeable-smart-contracts",
@@ -914,7 +914,7 @@
       ]
     },
     {
-      "sectionId": "7a5fa5f5-6d4d-4be4-a19d-d2b337abf943",
+"sectionId": "7a5fa5f5-6d4d-4be4-a19d-d2b337abf943",
       "number": 5,
       "title": "DAOs",
       "slug": "daos",
@@ -1014,7 +1014,7 @@
       ]
     },
     {
-      "sectionId": "c646c829-3376-430f-a3d4-65872e71fefb",
+"sectionId": "c646c829-3376-430f-a3d4-65872e71fefb",
       "number": 6,
       "title": "Security",
       "slug": "security",
