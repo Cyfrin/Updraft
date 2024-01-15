@@ -6,7 +6,7 @@ title: Memory, Storage, and Calldata
 *Follow along with the course here.*
 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ISBvYpFBTyo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 One aspect that crashes the compilers and gets heads scratching is the `memory` keyword, which we can gloss over, as it's heavily entwined with the data locations in Solidity. You might be puzzled when you delete the keyword sometimes and you receive a compilation error. Let's dive into this conundrum.
 

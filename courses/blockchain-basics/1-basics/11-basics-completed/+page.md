@@ -2,9 +2,9 @@
 title: Congratulations!
 ---
 
-If you reached this section you are awesome!! You can follow along with this section of the course here. TEST
+If you reached this section you are awesome!! You can follow along with this section of the course here.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/qlnZNeMY_hU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ## Demystifying Blockchain: From Basics to Code
 

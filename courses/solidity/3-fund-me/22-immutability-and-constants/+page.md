@@ -4,7 +4,7 @@ title: Immutability and Constants
 
 _Follow along this chapter with the video bellow_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/BLLyOCo-GKU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 The Solidity programming language provides tools for improving the efficiency of smart contracts. These tools can be useful when modifying existing contracts to achieve higher levels of professionalism. Although contracts might not reach an 'end to end' level of amazement, they can certainly become better. This blog post focuses on how to utilize these tools in the case of variables set only one time. We will explore this through the optimization of example variables, namely, `owner` and `minimumUSD`.
 

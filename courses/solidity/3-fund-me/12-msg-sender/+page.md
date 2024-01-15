@@ -4,7 +4,7 @@ title: Message Sender (msg.sender)
 
 *Follow along this chapter with the video bellow*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/sSlMakVGEHg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 
 As you continue to dive deeper into the world of Solidity, you may find yourself wondering: "How can I keep track of users sending money within a contract?" and "How can I easily look up how much each user has spent?" In today's lesson, we'll walk through how to achieve this using Solidity's global variables, arrays, and mappings.

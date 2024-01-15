@@ -4,7 +4,7 @@ title: Quick Recap II
 
 *Follow along this chapter with the video bellow*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/NLTKk9k8eTE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 # Advanced Solidity: A Comprehensive Refresher
 

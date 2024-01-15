@@ -4,68 +4,96 @@ title: The Audit Process With Tincho
 
 _Follow along with this video:_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/KJbU3pxscJw?si=M9PMfPNgSeCrLd3g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
-### Meet Master Tincho
+### Reconnaissance
 
-Master Tincho is a part of Redgill, a firm specializing in smart contracts and EVM security. Tincho and the Red Guild are dedicated to ensuring security in the EVM space, and frequently contribute their wealth of knowledge, expertise, and passion to the community.
+We've finally scoped out our client's code base and we're ready to dive into looking more closely at the code.
 
-He has previously served as the lead auditor at the security firm OpenZeppelin and has graciously agreed to share his unique approach to performing security reviews on codebases. He was instrumental in the creation of this course and we owe him a huge round of applause for that!
+To do this, we're going to learn some best practices and a technique I've dubbed `The Tincho` from the master himself - Tincho Abbate.
 
-Now, are you ready to learn from the best?
+### Introducing Tincho
+
+Tincho is a legend in Web3 security and is a member of [**The Red Guild**](https://theredguild.org/), a smart contract and EVM security firm. He was a previous lead auditor for the security firm at `OpenZeppelin` and he even helped me create this course!
+
+We're lucky to have Tincho walk us through his high-level way to approach security reviews.
+
+_What follows is derived from a video featuring Tincho's point of view_
 
 ### The Tincho Auditing Method
 
-To illustrate the Tincho auditing method, we're going to refer to a video where Tincho performs a live auditing of the Ethereum Name Service (ENS). "Auditing ENS! That sounds complex", you might be thinking. Well, fear not as we'll break this down into bite-sized pieces of easy-to-digest information.
+To illustrate the Tincho auditing method, we're going to refer to a video where Tincho performs a live auditing of the Ethereum Name Service (ENS).
 
 > "I don't have a super formal auditing process. I will just show you briefly some things that I do..." - Tincho
 
-First things first, let's clone the ENS repository into our local development environment and begin the mad reading.
+### First Step
 
-#### Reading... Reading... More Reading
+First thing's first - download the code, and **read the documentation**. You need to familiarize yourself with the content and context of the codebase, learn the jargon you can expect to see in the code and become comfortable with what the protocol is expected to do.
 
-Before diving into the code, familiarize yourself with some jargon that you might come across often in the code, such as what a registry or a resolver is - things that you'll gain understanding about as you read through the documentation.
+**READ THE DOCUMENTATION**
 
-#### Tool Time
+### Tools and Frameworks
 
-Now let's move onto some handy tools for auditing:
+Tincho describes a number of tools he uses while performing security reviews, bring the tools you're most familiar and best with.
 
-- **VS Codeium**: Tincho's text-editor of choice. It is a 'more-private' spin-off from VS Code that respects your data privacy.
-- **Clock**: A simple command-line utility that helps count lines of code which can give a sense of the complexity of different parts of the codebase.
-- **Solidity Metric**: Another tool developed by consensus that provides useful metrics about your Solidity codebase.
+- **VS Codeium**: a text editor with a privacy focus. It's based on VS Code but removes a lot of the user tracking telemetry
+- **Foundry**: As a framework for reviewing codebases Foundry is incredibly fast and allows for quick testing with it's robust test suite
+- **CLOC**: A simple command-line utility that helps count lines of code which can give a sense of the complexity of different parts of the codebase.
+- **Solidity Metric**: Another tool developed by Consensys that provides useful metrics about your Solidity codebase.
 
-Once you get your initial overview, it's time to roll up your sleeves and dive deeper into the codes.
+By leveraging `CLOC` and `Solidity Metrics`, a security researcher can organize the codebase by complexity and systemically go through the contracts - marking them each complete as appropriate. This pragmatic approach ensures no stone is left unturned.
 
-> "I would advise to keep the clients at hand. Ask questions, but also be detached enough." - Tincho
+It's recommended to start with the smaller and more manageable contracts and build upon them as you go.
+
+There's a point in an audit where your frame of mind should switch to an adversarial one. You should be thinking _"How can I break this..."_
+
+<img src="/security-section-3/6-the-tincho/tincho1.png" style="width: 100%; height: auto;">
+
+Given even simple functions like above, we should be asking ourselves
+
+- **"Will this work for every type of token?"**
+- **"Have they implemented access control modifiers properly?"**
+
+> _USDT is a 'weird ERC20' in that it doesn't return a boolean on transferFrom calls_
 
 ### Audit, Review, Audit, Repeat
 
-Keeping a record of your work is crucial in this process. Tincho recommends taking notes directly in the code and maintaining a separate file for raw notes and ideas.
+Keeping a record of your work is crucial in this process.
+
+> Tincho recommends taking notes directly in the code _and_ maintaining a separate file for raw notes/ideas.
 
 Remember, there is always a risk of diving too deep into just one part of the code and losing the big picture. So, remember to pop back up and keep an eye on the over-all review of the code base.
 
-One distinct part of the Tincho method is writing proof-of-concept (POC) exploits via Solidity tests in his preferred test environment, Foundry. This quickly verifies or falsifies any hunches about possible vulnerabilities.
+Not everything you'll be doing is a manual review. Applying your knowledge of writing tests to verify suspicions is incredibly valuable. Tincho applies a `fuzz test` to his assessment of functions within the ENS codebase.
 
-At this stage of the process, keeping an open line of communication with the client is key. Often times they will have much more context on why certain things were coded the way they were.
+### Communication
 
-Remember, the goal is not to trust completely, but to validate.
+Tincho describes keeping an open line of communication with the client/protocol as `fundamental`. The protocol is going to possess far more contextual understanding of what constitutes intended behavior than you will. Use them as collaborators. **`Trust but validate.`**
 
-### Wrapping it All Up
+> "I would advise to keep the clients at hand. Ask questions, but also be detached enough." - Tincho
 
-After your audit, it's time to neatly present your findings in a report. Note that your work isn't over once the report has been handed over. The client will go back, make the necessary fixes based on your suggestions and return to you with the updated code.
+### Wrapping it Up
 
-Your final responsibility is to ensure that these fixes effectively correct the earlier identified vulnerabilities and that they didn't inadvertently introduce new ones.
+Sometimes it can feel like there's no end to the approaches you can make to a codebase, no end to the lines of code you can check and verify.
+
+Tincho advocates for time-bounding yourself. Set limits and be as thorough as possible within them.
+
+> "The thing is...I always get the feeling that you can be looking at a system forever." - Tincho
+
+### The Audit Report and Follow Up
+
+The last stage of this whole process is to present an audit report to the client. It should be clear and concise in the detailing of discovered vulnerabilities and provide recommendations on mitigation.
+
+It's our responsibility as security researchers to review the implementation of any mitigations the client employs and to assure that _new bugs_ aren't introduced.
 
 ### Aftermath of a Missed Vulnerability
 
-There will always be the fear of missing out on some vulnerabilities and instead of worrying about the cracks that slip through the net, aim to bring value beyond just identifying vulnerabilities. Imbibe the thought that even if you missed a critical vulnerability, the value you delivered was worth it.
+There will always be the fear of missing out on some vulnerabilities and instead of worrying about things that slip through the net, aim to bring value beyond just identifying vulnerabilities. Be that collaborative security partner/educator the protocol needs to employ best practices and be prepared holistically.
+
+As an auditor it's important to remember that you do not shoulder the whole blame when exploits happen. You share this responsibility with the client.
+
+> This doesn't give you free reign to suck at your job. People will notice.
 
 A last takeaway from Tincho:
 
 > "Knowing that you’re doing your best in that, knowing that you’re putting your best effort every day, growing your skills, learning grows an intuition and experience in you."
-
-With that, we conclude our detailed examination of the Tincho style of auditing in the EVM ecosystem. I hope you enjoyed learning about this process just as much as I enjoyed presenting it to you.
-
-Stay tuned for more content geared towards making you the best auditor you can be. Until next time, folks!

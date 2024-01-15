@@ -4,7 +4,7 @@ title: Recap
 
 _Follow along with this video._
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/zU3kb_o0ppQ?si=ppXnz7KF0EiI02Gw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

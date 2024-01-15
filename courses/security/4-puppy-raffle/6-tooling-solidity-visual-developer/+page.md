@@ -4,48 +4,52 @@ title: Tooling - Solidity Visual Developer
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/sIb_geciuiU" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
-# Static Analysis Tools in Understanding Solidity Metrics
+### Tools in our Belt
+
+We've already got a handful of tools at our disposal.
+
+- `Slither`
+- `Aderyn`
+- `CLOC`
+
+We also went over `Solidity Metrics` earlier, but let's take another look as `Puppy Raffle` is going to afford us some more interesting insight into the power of this tool.
+
+> Remember: you can right-click your `src` folder in the `Puppy Raffle` workspace and select `Solidity: Metrics` from the context menu to run the tool on that directory.
+
+### Solidity Metrics Insights
+
+Scrolling to the bottom of the `Solidity: Metrics` report, take a look at the `Inheritence Graph`
+
+<img src="/security-section-4/6-tooling-svd/tooling-svd1.png" style="width: 75%; height: auto;">
+
+From this illustration we can see that the contract `PuppyRaffle` is of types `ERC721` and `Ownable`.
+
+A little further down we see a `Call Graph`
+
+<img src="/security-section-4/6-tooling-svd/tooling-svd2.png" style="width: 75%; height: auto;">
+
+This provides us a clear reference of which functions are being called by which other functions!
+
+And finally `Solidity: Metrics` gives us a `Contract Summary`
+
+<img src="/security-section-4/6-tooling-svd/tooling-svd3.png" style="width: 75%; height: auto;">
+
+This is incredibly valuable. It provides is a clear breakdown of `Internal` vs `External functions` as well as identifies which functions are `payable` and can `modify state`!
+
+### Solidity Visual Developer
+
+There's another tool I'll briefly mention - some developers swear by it. It's the extension [**Solidity Visual Developer**](https://marketplace.visualstudio.com/items?itemName=tintinweb.solidity-visual-auditor) for VS Code.
+
+In addition to providing very similar reporting as Solidity Metrics, the inheritence graph is interactive and it provides syntax highlighting in your code based on variable types.
+
+<img src="/security-section-4/6-tooling-svd/tooling-svd4.png" style="width: 75%; height: auto;">
+
+Check it out if you feel it would be useful for adding some clarity to your development and security reviews!
 
 Next we're going to dive deeper into the exciting world of static analysis tools. We'll take a closer look at the Solidity Metrics tool, which we introduced before, and also explore another tool known as Solidity Visual Developer.
 
-## A Deeper Dive into Solidity Metrics
+### Wrap Up
 
-We already have a familiarity with the clock and have explored Solidity Metrics. However, if we go back to the Solidity Metrics and scroll to the bottom, we can discover a few more useful insights.
-
-```bash
-run solidity metrics
-```
-
-![](https://cdn.videotap.com/D6ISDBvfop9mmTwaeeNA-26.74.png)Down there, we can see:
-
-1. **An Inheritance Graph**: Here, we can see our puppy raffle is of type ERC 721 and it's also ownable.
-2. **A Call Graph**: It illustrates what functions call, what other functions; a valuable tool while debugging.
-3. **A Contract Summary**: It gives a list of the different public and external functions. These are the functions that an attacker would mostly call.
-
-These features provide essential information, especially from the vulnerability perspective.
-
-> **Note:** This is slightly more on the scoping side of things.
-
-## Introducing Solidity Visual Developer
-
-Not all code bases have clear, easy-to-decipher variable names identified by markers such as an 's' underscore to help distinguish them as storage variables. In some instances, you'll find that these variables are just a single word. The functions are often similar — just a single word without much distinction between a storage variable, memory variable, and others. This kind of code can make comprehension quite challenging.
-
-Thankfully, we have other helpful VS code extensions, with one of the key ones being the Solidity Visual Developer.
-
-This tool is a favorite for some auditors and smart contract security researchers. Once installed and we go back to our code base, we can see some automatically highlighted variables.
-
-- An immutable variable is in a purple hue.
-- A storage variable is identified by a yellow color.
-- If it's a constant, its highlight is noticeable.
-
-These features significantly improve code readability. However, how much this tool makes a difference to individual developers varies. You can disable it or keep it according to your preference.
-
-## Understanding the Big Picture
-
-We've skimmed over some tooling essentials and run some tools. We've also dug deeper into scoping. I have merged them all into one section here. But let's finally get into scoping and reconnaissance where we understand the puppy raffle and its purpose, and then return to these tools.
-
-Once we have the context for how the code base operates, the static analysis outputs will give us a lot more meaningful information. Let's get this context and start step one of the exercise: Reading the Documentation. I hope this brings you a comprehensive understanding of the Solidity Metrics and how to make the most of it, not just in your work, but also in your learning journey.
+Now that we've a firm grasp of our tooling options available, let's get started on this `Puppy Raffle` review. We're onto `Recon` - let's start with the documentation.

@@ -2,7 +2,7 @@
 title: Creating the PDF for your Portfolio
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/JEhPE3k7wGM?si=dYBqELIjh2aYrDyb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

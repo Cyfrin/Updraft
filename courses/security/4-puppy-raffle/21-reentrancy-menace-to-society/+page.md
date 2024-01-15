@@ -4,59 +4,139 @@ title: Reentrancy - Menace to Society
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/U9A50LLbYSc" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+---
+
+### Re-entrancy a Menace
+
+Why am I stressing re-entrancy so much you might ask? The answer is simple.
+
+- We've known about it since 2016
+- It's easy enough to detect that static analyzers (like Slither) can identify them
+- Web3 is still hit by millions of dollars in re-entrancy attacks per year.
+
+This is so frustrating!
+
+There's a [**GitHub Repo**](https://github.com/pcaversaccio/reentrancy-attacks) maintained by Pascal (legend) that catalogues re-entrancy attacks which have occured. I encourage you to look through these examples and really acquire a sense of the scope of the problem.
+
+### Case Study: The DAO
+
+[**The DAO**](https://en.wikipedia.org/wiki/The_DAO) was one of the most famous (or infamous) protocols in Web3 history. As of May 2016, its total value locked was ~14% of all ETH.
+
+Unfortunately, it suffered from a re-entrancy vulnerability in two of its functions.
+
+The first problem existed in the `splitDao` function, here's the vulnerable section and the whole contract for reference:
+
+```js
+contract DAO is DAOInterface, Token, TokenCreation {
+    ...
+    function splitDAO(
+        uint _proposalID,
+        address _newCurator
+    ) noEther onlyTokenholders returns (bool _success) {
+
+    Transfer(msg.sender, 0, balances[msg.sender]);
+    withdrawRewardFor(msg.sender); // be nice, and get his rewards
+    totalSupply -= balances[msg.sender];
+    balances[msg.sender] = 0;
+    paidOut[msg.sender] = 0;
+    return true;
+    }
+}
+```
+
+<details>
+<summary>Entire Contract</summary>
+
+```js
+contract DAO is DAOInterface, Token, TokenCreation {
+    function splitDAO(
+        uint _proposalID,
+        address _newCurator
+    ) noEther onlyTokenholders returns (bool _success) {        Proposal p = proposals[_proposalID];        // Sanity check        if (now < p.votingDeadline  // has the voting deadline arrived?
+            //The request for a split expires XX days after the voting deadline
+            || now > p.votingDeadline + splitExecutionPeriod
+            // Does the new Curator address match?
+            || p.recipient != _newCurator
+            // Is it a new curator proposal?
+            || !p.newCurator
+            // Have you voted for this split?
+            || !p.votedYes[msg.sender]
+            // Did you already vote on another proposal?
+            || (blocked[msg.sender] != _proposalID && blocked[msg.sender] != 0) )  {
+            throw;
+        }        // If the new DAO doesn't exist yet, create the new DAO and store the
+        // current split data
+        if (address(p.splitData[0].newDAO) == 0) {
+            p.splitData[0].newDAO = createNewDAO(_newCurator);
+            // Call depth limit reached, etc.
+            if (address(p.splitData[0].newDAO) == 0)
+                throw;
+            // should never happen
+            if (this.balance < sumOfProposalDeposits)
+                throw;
+            p.splitData[0].splitBalance = actualBalance();
+            p.splitData[0].rewardToken = rewardToken[address(this)];
+            p.splitData[0].totalSupply = totalSupply;
+            p.proposalPassed = true;
+        }        // Move ether and assign new Tokens
+        uint fundsToBeMoved =
+            (balances[msg.sender] * p.splitData[0].splitBalance) /
+            p.splitData[0].totalSupply;
+        if (p.splitData[0].newDAO.createTokenProxy.value(fundsToBeMoved)(msg.sender) == false)
+            throw;        // Assign reward rights to new DAO
+        uint rewardTokenToBeMoved =
+            (balances[msg.sender] * p.splitData[0].rewardToken) / p.splitData[0].totalSupply;        uint paidOutToBeMoved = DAOpaidOut[address(this)] * rewardTokenToBeMoved /
+            rewardToken[address(this)];        rewardToken[address(p.splitData[0].newDAO)] += rewardTokenToBeMoved;
+        if (rewardToken[address(this)] < rewardTokenToBeMoved)
+            throw;
+        rewardToken[address(this)] -= rewardTokenToBeMoved;        DAOpaidOut[address(p.splitData[0].newDAO)] += paidOutToBeMoved;
+        if (DAOpaidOut[address(this)] < paidOutToBeMoved)
+            throw;
+        DAOpaidOut[address(this)] -= paidOutToBeMoved;        // Burn DAO Tokens
+        Transfer(msg.sender, 0, balances[msg.sender]);
+        withdrawRewardFor(msg.sender); // be nice, and get his rewards
+        totalSupply -= balances[msg.sender];
+        balances[msg.sender] = 0;
+        paidOut[msg.sender] = 0;
+        return true;
+    }
+}
+```
+
+</details>
 
 ---
 
-# Beware of the Reentrancy Attack in Your Smart Contract
+Hopefully we can spot the problem above. The DAO was making external calls before updating its state!
 
-In the world of crypto and blockchain, security is a paramount concern. When dealing with a web infrastructure that transacts and stores billions of dollars, any weakness in the security system could lead to irreversible financial loss. Many of these losses have been attributed to something known as the Reentrancy Attack, which still ranks among the top ten Decentralized Finance (DeFi) attacks of 2023.
-
-In this post, I will thoroughly discuss Reentrancy Attacks, shed some light on tools that can help you identify them, suggest common-sense approaches to avoid them, and indulge in a little history by revisiting one of the most infamous cases of Reentrancy Attack.
-
-![](https://cdn.videotap.com/NRMDW7u49DDoO3HwaIgb-20.75.png)
-
-## What is a Reentrancy Attack?
-
-A Reentrancy Attack is a malicious maneuver where an attacker repeatedly calls a function within a Smart Contract before the original function has finished executing. This repetition allows the attacker to drain funds or manipulate data in an unintended way.
-
-## The Dogged Persistence of Reentrancy Attacks
-
-A glance at the data available in our GitHub repository related to this course reveals that Reentrancy Attacks have rather stubbornly stuck around. Not only are they persisting, but their occurrence rate is even increasing.
-
-> "More people have still gotten hit by Reentrancy Attacks. It is still a common attack vector and is still stealing millions of dollars out of web three."
-
-Despite the availability of static analysis tools like Slither, which are fantastic at detecting them, these attacks somehow still find their way through the cracks. The issue with the 'puppy raffle' clearly demonstrates this point.
-
-## A Peek into the Past: The DAO Hack
-
-A great way to understand Reentrancy Attacks is to look back at their history and study some notable case studies. The DAO (Decentralized Autonomous Organization) Hack is one such case and remains one of the most notorious Reentrancy Attacks in history.
-
-In May 2016, The DAO managed to attract nearly 14% of all Ether tokens issued to date. However, this promising start came to a halt when it was discovered to have a massive bug. The 'reward withdrawal' form was one of the main culprits, having an insidious pattern: it made an external call and then updated the state.
+This is seen again in the `withdrawRewardFor` function:
 
 ```js
-function withdrawReward (address _account) public returns (bool _success) {
-    if ((balanceOf(_account) == 0)&& (rewardAccount.earned(_account) == 0))throw;
-    uint reward = rewardAccount.earned(_account);
-    if (!rewardAccount.reward(_account))throw;
-    if (!_account.call.value(reward)())throw;
-    Withdrawal(_account, reward);
-    return true;
+contract DAO is DAOInterface, Token, TokenCreation {
+    ...
+    function withdrawRewardFor(address _account) noEther internal
+        returns (bool _success) {
+        if ((balanceOf(_account) * rewardAccount.accumulatedInput()) / totalSupply < paidOut[_account])
+            throw;        uint reward =
+            (balanceOf(_account) * rewardAccount.accumulatedInput()) / totalSupply - paidOut[_account];
+        if (!rewardAccount.payOut(_account, reward))
+            throw;
+        paidOut[_account] += reward;
+        return true;
     }
+}
 ```
 
-In the code snippet above, you can see that an external call is made and immediately followed by a state update. It clearly did not adhere to best practices, which resulted in a severe and costly failure—a crucial element in what would later be known as the DAO Hack.
+---
 
-## Proactive Solutions to Thwart Reentrancy Attacks
+An attack of this protocol in June 2016 resulted in the transfer of 3.8 Million Eth tokens and ultimately hardforked the Ethereum network in the recovery efforts.
 
-The Reentrancy Attack can be complicated, but its solution is surprisingly straightforward:
+You should absolutely read more about this attack [**here**](https://medium.com/@zhongqiangc/smart-contract-reentrancy-thedao-f2da1d25180c).
 
-> "If you make an external call that can reenter the same function before you update some state, you are likely paving the way for a successful Reentrancy Attack."
+### Wrap Up
 
-By adhering to coding best practices and utilizing the numerous security tools available, we could drastically reduce the occurrence and the potential damage of these attacks.
+Clearly re-entrancy plagues us to this day. Millions of dollars are lost every year. There are even new types of re-entrancy, such as `read-only re-entrancy` (which we'll cover more later).
 
-## Summing Up and Looking Ahead
+The bottom line is - this is preventable.
 
-The unfortunate persistence of Reentrancy Attacks indeed serves as a wake-up call. They continue to plague the digital financial world, stealing massive sums of money and causing significant disruption.
-
-But as we continue to innovate and work towards a more secure Web 3, it's essential to take any setbacks as learning opportunities. An in-depth understanding of attacks like this one, along with the proactive application of recently developed solutions, will surely pave the way for a more secure future.
+Let's recap everything we've learnt about this vulnerability, in the next lesson.

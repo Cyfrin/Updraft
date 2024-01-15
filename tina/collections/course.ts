@@ -90,7 +90,7 @@ export const CourseCollection: Collection = {
     {
       type: "number",
       name: "duration",
-      label: "Duration (in minutes)",
+      label: "Duration (in hours)",
       required: true,
     },
     {

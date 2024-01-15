@@ -4,7 +4,7 @@ title: Manual Review Aderyn
 
 _Follow along with the video:_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/PiA6B_W9jbE?si=eFwQgFUrj4EaE6fz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

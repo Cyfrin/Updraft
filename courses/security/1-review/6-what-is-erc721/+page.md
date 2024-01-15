@@ -4,25 +4,31 @@ title: What is an ERC721/NFT?
 
 _Follow along the with the video_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/516bzGbgYak?si=AyWisOyxF7Tjy7zP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
-The buzz around non-fungible tokens (NFTs) or ERC 720 Ones lately is becoming impossible to ignore, especially within the spheres of art and blockchain technology. NFTs, originally authored on the Ethereum platform, present a unique form of digital asset that holds the potential to revolutionize the world of art, gaming and beyond. But what exactly are they?
+The buzz around non-fungible tokens (NFTs) or `ERC721s` lately is becoming impossible to ignore, especially within the spheres of art and blockchain technology. NFTs, originally authored on the Ethereum platform, present a unique form of digital asset that holds the potential to revolutionize the world of art, gaming and beyond. But what exactly are they?
 
 ## Understanding NFTs
 
-NFT stands for Nonfungible token. Unlike ERC 20 tokens—think Link and Maker—each NFT is entirely unique, and no two tokens can be interchanged.
+NFT stands for non-fungible token. Unlike `ERC20` tokens, such as LINK, DAI etc, each NFT is entirely unique, and no two tokens can be interchanged.
 
-To better understand, let's look at a simple analogy. Think of a dollar bill; it holds the same value as any other dollar out there. You can freely exchange a dollar for another, and their value remains the same. This makes them _fungible_. Contrastingly, an NFT is the complete opposite. It could be likened to a unique Pokemon card. Each card has its own exclusive set of stats and moves and can't be interchanged with other cards.
+To better understand, let's look at a simple analogy. Think of a dollar bill; it holds the same value as any other dollar out there. You can freely exchange a dollar for another, and their value remains the same. This makes them _fungible_. Contrastingly, an NFT is the complete opposite. It could be likened to a unique Pokemon. Each Pokemon is unique and no two Pikachu's are exactly the same.
 
 As a more relatable analogy, consider an NFT as a distinct piece of art, trading card, or any other one-of-a-kind item. So to sum up, NFTs are unique, non-interchangeable tokens best thought of as indestructible digital pieces of art with a permanent history detailing their ownership and alterations.
 
 ## The Many Uses of NFTs
 
-Although NFTs are mostly associated with art, they extend beyond that. They can be assigned any stats, used in battles, or manipulated in any way you like, thanks to the underlying smart contract technology. However, one the most popular, and simplest, ways to conceive of NFTs is as unique collectibles or art pieces.
+Although NFTs are mostly associated with art, they extend beyond that. They can be assigned any property, or manipulated in any way you like, thanks to the underlying smart contract technology.
 
-These unique tokens are deployed on a smart contract platform and can be traded on numerous NFT platforms such as OpenSea or Rarible. While these decentralized marketplaces provide user-friendly interfaces for trading NFTs, one could just as easily buy and sell outside of them.
+<div>
+<div style="text-align: center">
+    <img src="/security-section-1/6-erc721s/erc721s1.png" style="width: 20%; height: auto;" alt="block fee">
+    <img src="/security-section-1/6-erc721s/erc721s2.png" style="width: 21.7%; height: auto;" alt="block fee"> 
+    <div style="font-size: 10">An NFT example from <a href="https://opensea.io/assets/ethereum/0x5af0d9827e0c53e4799bb226655a1de152a425a5/7874">Milady</a></div>
+</div>
+</div>
+
+These unique tokens are deployed on a smart contract platform and can be traded on numerous NFT platforms such as [OpenSea](https://opensea.io/) or [Rarible](https://rarible.com/). While these decentralized marketplaces provide user-friendly interfaces for trading NFTs, one could just as easily buy and sell outside of them.
 
 ## NFTs: Bridging the Gap for Artists
 
@@ -30,18 +36,18 @@ Many might find the whole concept of NFTs puzzling. Isn't art meant to be tangib
 
 > "Having a decentralized royalty mechanism, or some type of mechanism where these artists can get accurately comped for what they're doing, is crucial."
 
-Yes, NFTs can be a solution to current issues plaguing the arts industry by creating an auditable and transparent trail of royalties without the need for any centralized service.
+Yes, NFTs can be a solution to current issues plaguing the art industry by creating an auditable and transparent trail of royalties without the need for any centralized service.
 
-## The Role of the ERC 721 Standard
+## The Role of the ERC721 Standard
 
-ERC 721, or the NFT standard, forms the basis of it all. To keep it simple, the main distinction between `ERC721` and `ERC20` tokens is that each `ERC721` token has a unique Token ID, an attribute that indirectly represents the asset linked to that token.
+`ERC721`, or the NFT standard, forms the basis of it all. To keep it simple, the main distinction between `ERC721` and `ERC20` tokens is that each `ERC721` token has a unique Token ID, an attribute that indirectly represents the asset linked to that token.
 
-To illustrate the unique attributes of an asset, let's say a piece of art or a character in a game, NFTs rely on metadata and Token URIs. Due to the prohibitively high gas prices on Ethereum, it's quite impractical to store these intricate art pieces directly on the chain.
+To illustrate the unique attributes of an asset, let's say a piece of art or a character in a game, NFTs rely on metadata and `Token URIs`. Due to the prohibitively high gas prices on Ethereum, it's quite impractical to store these intricate art pieces directly on the chain.
 
 ## How Token URIs Work
 
-The solution? The developers introduced what is known as a Token URI in the NFT standard—a universally unique identifier that provides information about what an asset (or token) looks like, and the attributes of that token. Data storage platforms like IPFS or a centralized API usually provide this Token Uri.
+The solution? The developers introduced what is known as a `Token URI` in the NFT standard—a universally unique identifier that provides information about what an asset (or token) looks like, and the attributes of that token. Data storage platforms like IPFS or a centralized API usually provide this `Token URI` through a simple API call.
 
-The Token Uri should return data in a preset format, including the name, image location, description, and any other attributes that add to the uniqueness of the token.
+The `Token URI` should return data in a preset format, including the name, image location, description, and any other attributes that add to the uniqueness of the token.
 
 However, storing metadata off-chain does come with its challenges. If the centralized system hosting these assets crashes, every link associated with your NFT is lost. Modern discussions in the NFT world often debate the pros and cons of on-chain metadata versus off-chain metadata. Regardless of the limitations, there's something truly groundbreaking about NFTs, and it's exciting to envision where this technology could lead us.

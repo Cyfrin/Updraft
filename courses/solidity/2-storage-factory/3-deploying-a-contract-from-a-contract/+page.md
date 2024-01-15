@@ -4,7 +4,7 @@ title: Deploying a Contract from a Contract (Factory)
 
 *If you'd like, you can follow along with the course here.*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/oiXMEKO5mAE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 
 This chapter covers the process of deploying a Simple Storage contract in Solidity by saving it to a storage or state variable. This will be implemented similarly to saving any variable.

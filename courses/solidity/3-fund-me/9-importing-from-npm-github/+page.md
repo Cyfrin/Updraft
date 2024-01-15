@@ -4,7 +4,7 @@ title: Importing from NPM & GitHub
 
 *Follow along this chapter with the video bellow*
 
-*Follow along this chapter with the video bellow*<iframe width="560" height="315" src="https://www.youtube.com/embed/gOQ6Ylk0Tf0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+*Follow along this chapter with the video bellow*
 
 
 In Ethereum contract development, we frequently need to interface with other smart contracts. This usually means importing and dealing with potentially complex and numerous interfaces which can make our contracts untidy and difficult to manage. Is there a better way to do this? Let's explore how to streamline this process in Ethereum's programming environment, the Remix IDE, using Chainlink contracts as an example.

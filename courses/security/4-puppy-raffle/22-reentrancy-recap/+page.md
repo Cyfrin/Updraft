@@ -4,42 +4,113 @@ title: Reentrancy - Recap
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/yrxasLwJvpQ" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
-# Unraveling Reentrancy Attacks in Ethereum Smart Contracts
+### Recap
 
-Reentrancy Attacks within the blockchain ecosystem have become a considerable concern. These attacks exploit a vulnerability found predominantly in Ethereum smart contracts, causing significant damage and financial loss. This blog post hones in what a reentrancy attack is, how to identify one, and, most crucially, what you can do to effectively protect your smart contracts from falling victim to such an attack.
+At it's most minimalistic, a re-entrancy attack looks like this:
 
-![](https://cdn.videotap.com/fLgSr8bv86FfH9PCnTAk-12.55.png)
+<img src="/security-section-4/18-exploit-reentrancy/exploit-reentrancy3.png" style="width: 75%; height: auto;">
 
-## Understanding Reentrancy Attacks
+A reentrancy attack occurs when an attacker takes advantage of the recursive calling capability of a contract. By repeatedly calling a function within a contract, the attacker can withdraw funds or manipulate contract state before the initial function call is resolved, often leading to the theft of funds or other unintended consequences.
 
-At its most basic, a reentrancy attack appears as follows. An attacker begins by calling a victim's contract, which in turn calls some external contract. This external contract then circles back and calls the victim contract - repeating the process continuously. The critical flaw that makes this possible is a state change that isn't made before calling this external contract. This diagram provides a more nuanced view of the situation.
+As a more indepth reference:
 
-![](https://cdn.videotap.com/bUHtSEcSIcBowtKkMcSw-31.36.png)
+<img src="/security-section-4/18-exploit-reentrancy/exploit-reentrancy2.png" style="width: 75%; height: auto;">
 
-The victim deposits and immediately the attacker launches an attack, which calls back to the attack contract. This callback triggers a withdrawal, leading back to the attack contract, provoking another withdrawal, and so on. This recurring action is only possible because we neglect to update the state until the very end - instead of carrying out this crucial step before initiating any external calls.
+We learnt that re-entrancy is a _very_ common attack vector and walked through how to indentify and reproduce the vulnerability both in [**Remix**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/reentrancy/Reentrancy.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js) and locally as well as how to test for them.
 
-## Catching Reentrancy Attacks
+<details>
+<summary>Re-entrancy Test Example</summary>
 
-Being a common attack vector, reentrancy attacks can be reproduced quite effortlessly. There are a multitude of tools that can help in detecting such risks, one of them being [Remix](http://remix.ethereum.org/), a powerful tool for Solidity programming. You'll find that it's quite straightforward to test and simulate reentrancy attacks using this platform. Static analysis tools such as [Slither](https://github.com/crytic/slither) are similarly handy in identifying these threats. Slither steps in when manual auditors make a slip — this is why static analysis tools are so invaluable. However, bear in mind to only rely on powerful static analysis tools capable of catching Reentrancy issues.
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
 
-> "If we screw up as manual auditors, Slither or some other static analysis tool can catch this."
+import {Test, console2} from "forge-std/Test.sol";
+import {ReentrancyVictim, ReentrancyAttacker} from "../../src/reentrancy/Reentrancy.sol";
 
-## Ways to Block Reentrancy Attacks
+contract ReentrancyTest is Test {
+    ReentrancyVictim public victimContract;
+    ReentrancyAttacker public attackerContract;
 
-Defense against reentrancy attacks can be approached in two ways. Firstly, you can use checks, effects, interactions to conduct the state change prior to making any external calls.
+    address victimUser = makeAddr("victimUser");
+    address attackerUser = makeAddr("attackerUser");
 
-![](https://cdn.videotap.com/T6NG2ok8Y9Hcf4Jmh3Kv-87.82.png)
+    uint256 amountToDeposited = 5 ether;
+    uint256 attackerCapital = 1 ether;
 
-Alternatively, OpenZeppelin's non-Reentrant modifier can be used or some type of modifier (e.g., `if, locked`) which is also identified as a mutex lock in computer science.
+    function setUp() public {
+        victimContract = new ReentrancyVictim();
+        attackerContract = new ReentrancyAttacker(victimContract);
 
-## Summing Up
+        vm.deal(victimUser, amountToDeposited);
+        vm.deal(attackerUser, attackerCapital);
+    }
 
-This disturbing streak of reentrancy attacks that still plagues us today extends back to June 2016 with the Dow hack. It is distressing to note that 14% of all ETH in existence was threatened at the time, as evidenced by [this repo](https://github.com/pcaversaccio/reentrancy-attacks) managed by Pascal.
+    function test_reenter() public {
+        // User deposits 5 ETH
+        vm.prank(victimUser);
+        victimContract.deposit{value: amountToDeposited}();
 
-However, despite the sobering reality, we are far better equipped today to detect and prevent these attacks. We have the knowledge, the tools, and the power to prevent the further plundering of Ethereum assets. Here's to a more secure future, where you'll never miss a Reentrancy attack ever again!
+        // We assert the user has their balance
+        assertEq(victimContract.userBalance(victimUser), amountToDeposited);
 
-> "Really important attack. Glad you got it."
+        // // Normally, the user could now withdraw their money if they like
+        // vm.prank(victimUser);
+        // victimContract.withdrawBalance();
+
+        // But... we get attacked!
+        vm.prank(attackerUser);
+        attackerContract.attack{value: 1 ether}();
+
+        assertEq(victimContract.userBalance(victimUser), amountToDeposited);
+        assertEq(address(victimContract).balance, 0);
+
+        vm.prank(victimUser);
+        vm.expectRevert();
+        victimContract.withdrawBalance();
+    }
+}
+```
+
+</details>
+<br>
+
+Additionally, we learnt that `static analysis` tools like `Slither` can even catch this vulnerability (though not always)!
+
+We also covered how to safeguard against this attack in at least two ways.
+
+- Adhering to the CEI (Checks, Effects, Interactions) pattern, assuring we perform state changes _before_ making external calls.
+- Implenting a nonReentrant modifier like one offered by [**OpenZeppellin's ReentrancyGuard**](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/ReentrancyGuard.sol).
+- Applying a mutex lock to our function ourselves.
+<details>
+<summary>Mutex Lock Example</summary>
+
+```js
+bool locked = false;
+function withdrawBalance() public {
+    if(locked){
+        revert;
+    }
+    locked = true;
+
+    // Checks
+    // Effects
+    uint256 balance = userBalance[msg.sender];
+    userBalance[msg.sender] = 0;
+    // Interactions
+    (bool success,) = msg.sender.call{value: balance}("");
+    if (!success) {
+        revert();
+    }
+    locked = false;
+}
+```
+
+</details>
+<br>
+
+Lastly, we learnt how this problem still plagues us today. Through this [**repo**](https://github.com/pcaversaccio/reentrancy-attacks) managed by Pascal et al, we can see a horrifying list, 7 years long, of just this single attack vector. We also uncovered a case study in [**The DAO hack**](https://medium.com/@zhongqiangc/smart-contract-reentrancy-thedao-f2da1d25180c) and saw just how severe this issue can be.
+
+Armed with all of this knowledge, surely you will _never_ miss a re-entrancy attack again. Let's move onto the PoC.

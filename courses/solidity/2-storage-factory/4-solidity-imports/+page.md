@@ -4,7 +4,7 @@ title: Solidity Imports
 
 *If you'd like, you can follow along with the course here.*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/CNDzi1GuWyg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 
 In this lesson, we will look at a more improved way of organizing your Solidity contract files using the `import` statement, making the task of making any changes in your contract files much simpler. We’ll also address potential issues around consistency in Solidity version between multiple files, and we'll focus primarily on the more advanced import method called `named imports` that you should always use.

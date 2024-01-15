@@ -4,66 +4,64 @@ title: Recon - Refund
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/sci43xJcAhA" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+---
+
+### Return to Refund
+
+Coming back to the refund function, let's have a closer look.
+
+```js
+/// @param playerIndex the index of the player to refund. You can find it externally by calling `getActivePlayerIndex`
+/// @dev This function will allow there to be blank spots in the array
+function refund(uint256 playerIndex) public {
+    address playerAddress = players[playerIndex];
+    require(playerAddress == msg.sender, "PuppyRaffle: Only the player can refund");
+    require(playerAddress != address(0), "PuppyRaffle: Player already refunded, or is not active");
+
+    payable(msg.sender).sendValue(entranceFee);
+
+    players[playerIndex] = address(0);
+    emit RaffleRefunded(playerAddress);
+}
+```
+
+This function takes a player's index, and checks the `players` array for the appropriate address. Following this we see two require statements.
+
+```js
+require(playerAddress == msg.sender, "PuppyRaffle: Only the player can refund");
+require(playerAddress !=
+  address(0), "PuppyRaffle: Player already refunded, or is not active");
+```
+
+The first is ensuring that only a player can refund their own ticket/fee.
+
+The second, while a little less clear, makes more sense if we see how a player is handled after a refund is processed - their `players` index is set to `address(0)`. So the second require is meant to prevent multiple refunds this way.
+
+```js
+players[playerIndex] = address(0);
+```
+
+Before this however, we see the `sendValue` function being called. This is what returns the `entranceFee` back to the player.
 
 ---
 
-# Understanding the Active Players Index: A Deeper Delve into Solidity Coding
+`sendValue` may look unusual, this is just a simplfied method to transfer funds contained within the [**OpenZeppelin Address.sol library**](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Address.sol).
 
-In this post we go down the rabbit hole to understand the intricacies of handling arrays, managing edge cases, and safeguarding against vulnerabilities in Solidity, the contract-oriented language of Ethereum.
+> ```js
+> function sendValue(address payable recipient, >uint256 amount) internal {
+>        if (address(this).balance < amount) {
+>            revert AddressInsufficientBalance(address(this));
+>        }
+>
+>        (bool success, ) = recipient.call{value: amount}("");
+>        if (!success) {
+>            revert FailedInnerCall();
+>        }
+>    }
+> ```
 
-## Getting Active Players Index
+---
 
-Let's start with the function of `getActivePlayerIndex()`. This seemingly simple process has a twist to it - the function allows for blank spots within the array.
+### Wrap Up
 
-While on surface this might not seem like an issue, there is a potential caveat. A pitfall known as Minor Extractable Value (MEV) presents itself when people try to "front-run" this function. For the novice, MEV refers to the ability of miners or validators to exploit their position for profit by reordering or censoring transactions within the blocks they produce. However, to keep things simplified, let's skip the MEV complexities in this explanation and imagine that the function works perfectly as expected without it.
-
-![](https://cdn.videotap.com/ROdzfVev0ULFYEDhkigd-14.19.png)
-
-## Tracing The Function
-
-Starting with the premise that our active players array works as desired, let's unravel the intricacies of this function. Here's an illustrative code for reference:
-
-```js
-function getActivePlayerIndex(uint playerIndex) public view returns (address) {
-    address playerAddress = players[playerIndex];
-    require(playerAddress == msg.sender, "Player mismatch!");
-    require(playerAddress != address(0), "This player has either refunded or is not active");
-    return playerAddress;
-    }
-```
-
-The function begins by obtaining the player's address from the player index. This is pretty straightforward - click on a player, get their address.
-
-Next, it brings in two requisites for the player's address. These validation checks solidify the function's parameters:
-
-- `msg.sender` must be equal to the player's address. This check is in line with good security practices to ensure that only the owner of the account can initiate transactions.
-- The player's address should not return to `address(0)`. Essentially, this check protects the system from getting an address that has been removed or flagged as inactive.
-
-These require statements guard the integrity of the function while preventing unauthorized access.
-
-## Dealing with Player Removal
-
-But what happens to the player details post-removal? Digging deeper into the code, once the value transacts successfully, the function resets the player's address to zero - `address(0)`. This effectively cleans the slot for future use.
-
-> Note: Resetting to zero essentially deletes that player entry, signaling they're either refunded or not active.
-
-## Spotting the Send Value Function
-
-Interestingly, the process implies the use of a `sendValue` function. Now, this function plays a crucial role. It quite literally sends the entry fee back to the player. But is this `sendValue` essentially a built-in function or is there an external library managing this aspect?
-
-Delving further clarifies that this function sourced from OpenZeppelin, a library well-known for providing reusable smart contracts in the Ethereum community. Examining it shows a range of validation or 'require' conditions.
-
-```js
-function sendValue(address payable recipient, uint256 amount) internal {
-    require(address(this).balance >= amount, "Address: insufficient balance");
-    (bool success, ) = recipient.call{value: amount}("");
-    require(success, "Address: unable to send value, recipient may have reverted");
-    }
-```
-
-The `sendValue` function is equivalent to essentially sending the entry fee back to the `msg.sender`.
-
-## Did You Spot the Glitch?
-
-Here's a scenario: everything seems to be flowing well, the MEV complexities were ignored as promised, and we got a little bit of help understanding what's going on. But amidst this, there seems to be one more issue... can you tell what it might be? Well, let's call this a cliffhanger, and explore the issue in the next blog entry. Until then, happy coding!
+Already we can see the order of things is going to cause another potential issue. Do you know what it is? Can you spot it?

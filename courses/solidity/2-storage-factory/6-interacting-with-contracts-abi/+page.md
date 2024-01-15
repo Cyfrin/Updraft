@@ -2,7 +2,7 @@
 title: Interacting with Contracts ABI
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/335sMB2GY8w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 Let's assume that every time we call `createSimpleStorageContract()`, we're deploying a new Simple Storage Contract. But there's a catch – we're not keeping track of all the addresses that this simple storage contract is being deployed to. Let's fix that.
 

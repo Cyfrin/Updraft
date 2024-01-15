@@ -4,63 +4,101 @@ title: Weak Randomness - Case Study
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/KpWqBm2IE20" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
-# Case Study: The Meebits Exploit of 2021
+### Intro to Meebits and Andy Li
 
-In today's post, we're going to delve into an intriguing case study that involves an exploit of an NFT project, Meebits, which occurred in 2021. This analysis will shed light on a real-world example of how weak randomness was exploited, resulting in a substantial loss of nearly a million dollars for the protocol.
+Let's look into a case study that involves the exploit of an NFT project, Meebits, which occurred in 2021. This analysis will shed light on a real-world example of how weak randomness was exploited, resulting in a substantial loss of nearly a million dollars for the protocol.
 
-Our guest lecturer and fellow YouTuber, Andy Lee from Sigma Prime, is here to break everything down for us, from the details of the exploit itself to how it was eventually resolved.
+We extend our appreciation to [**Andy Li**](https://twitter.com/andyfeili) from [**Sigma Prime**](https://sigmaprime.io/) who walks us through the details of this attack.
 
-![](https://cdn.videotap.com/xkbChTamuPnibRHVXkei-35.55.png)
+_Information in this post is graciously provided by Andy_
 
-Remember, periodically conducting post mortems like this greatly contributes towards honing your skills as a security researcher. Moreover, it complements the effort of strengthening the overall security of your projects and applications by acquainting you with the past exploits to forestall future vulnerabilities.
+Remember, periodically conducting post mortems like this greatly contributes towards honing your skills as a security researcher. Familiarity begets mitigation.
 
-## A Deep Dive Into The Meebits Exploit
+### Case Study: Meebits - Insecure Randomness
 
-Meebits, created by Lava Labs (the brains behind CryptoPunks), was exploited due to insecure randomness in its smart contracts. By rerolling their randomness, an attacker was able to obtain a rare NFT.
+Meebits, created by Larva Labs (team behind CryptoPunks), was exploited in May 2021 due to insecure randomness in its smart contracts. By rerolling their randomness, an attacker was able to obtain a rare NFT which they sold for $700k.
 
-The concept behind Mebits is simple. If you owned a CryptoPunk, you could mint a free Meebit NFT. The attributes of this newly minted NFT were supposed to be random, with some traits being more valuable than others. However, owing to exploitable randomness, the attacker could incessantly reroll their mint until they obtained an elusive NFT.
+The concept behind Meebits was simple. If you owned a CryptoPunk, you could mint a free Meebit NFT. The attributes of this newly minted NFT were supposed to be random, with some traits being more valuable than others. However, owing to exploitable randomness, the attacker could reroll their mint until they obtained an NFT with desirable traits.
 
-## Key Steps to the Exploit
+### How the Attack Happened
 
-Let's discuss how the attack unfolded. The attacker:
+There were 4 distinct things that occured.
 
-1. Found the metadata revealing the valuable traits compared to the other available ones.
-2. Exploited the insecure randomness stemming from the smart contract, enabling the repeated rerolls of their mint.
+**Metadata Disclosure:** The Meebit contract contained an IPFS hash which pointed to metadata for the collection. Within the Metadata there existed a string of text that clearly disclosed which traits would be the most rare
 
-The metadata disclosure in the contract was found on line 129, which led to an IPFS hash with a JSON Blob. This JSON Blob outlined the rarity of the types of Meebits, ranking from the rarest to the least rare.
+    "...While just five of the 20,000 Meebits are of the dissected form, which is the rarest. The kinds include dissected, visitor, skeleton, robot, elephant, pig and human, listed in decreasing order of rarity."
 
-![](https://cdn.videotap.com/CEWoGF9o6n51CYYJGpOx-177.73.png)
+In addition to this, the `tokenURI` function allowed public access to the traits of your minted Meetbit, by passing the function your tokenId.
 
-Besides, the Meebit Website provided further information on the rarity by using the token URL function. By entering the token ID, you could see the specific trait your Meebit had.
+**Insecure Randomness:** Meebits calculated a random index based on this line of code:
 
-For instance, token 16647 had a 'visitor' trait type, currently ranking second in rarity.
+```js
+uint index = uint(keccak256(abi.encodePacked(nonce, msg.sender, block.difficulty, block.timestamp))) % totalSize;
+```
 
-## Analysing the Mint Function and Attack Contract
+This method to generate an index is used within Meebit's `randomIndex` function when minting an NFT.
 
-The smart contract had an external function, `mintWithPunkOrGlyph`, that verified whether the caller owned a Crypto Punk or Glyph. Upon confirmation, the user was allowed to mint a free NFT. This function assigns a random index to the ID; this random index is then assigned to the owner who requested the Meebit NFT.
+```js
+function _mint(address _to, uint createdVia) internal returns (uint) {
+        require(_to != address(0), "Cannot mint to 0x0.");
+        require(numTokens < TOKEN_LIMIT, "Token limit reached.");
+        uint id = randomIndex();
 
-![](https://cdn.videotap.com/bBOd0ojIlu3ppLIWpKQg-236.97.png)
+        numTokens = numTokens + 1;
+        _addNFToken(_to, id);
 
-> "To understand the exploitability, we need to consider the attack contract and its transactions."
+        emit Mint(id, _to, createdVia);
+        emit Transfer(address(0), _to, id);
+        return id;
+    }
+```
 
-On Etherscan, you can see the transactions where the attacker deployed a contract and repeatedly called a function on the attack contract until they succeeded in minting the NFT they wanted.
+**Attacker Rerolls Mint Repeatedly:** The attacker in this case deployed a contract which did two things.
 
-The attack contract is essentially a blob of bytecode, unlike the Meebits contract, which was verified. By putting this code into a bytecode decompiler, we can pinpoint how it was exploited.
+1. Calls `mint` to mint an NFT
+2. Checks the 'random' Id generated and reverts the `mint` call if it isn't desirable.
 
-![](https://cdn.videotap.com/VDFDeR5qbb6lh1CXHZBw-308.06.png)
+The attack contract wasn't verified, but if we decompile its bytecode we can see the attack function.
 
-The attack function reveals that the contract calls `mintWithPunkOrGlyph`, and if the Meebit random index wasn't as per the user's wish, the transaction would revert, allowing the attacker to try again.
+```js
+function 0x1f2a8a19(uint256 varg0) public nonPayable {
+    require(msg.data.length -4 >= 32);
+    require(bool(stor_2_0_19.code.size));
+    v0, /*uint256*/ v1 = stor_2_0_19.mintWithPunkOrGlyph(varg0).gas(msg.gas);
+    require(bool(v0), 0, RETURNDATASIZE());
+    require(RETURNDATASIZE() >= 32);
+    assert(bool(uint8(map_1[v1]))==bool(1));
+    v2 = address(block.coinbase).call().value(0xde0b6b3a7640000);
+    require(bool(v2), 0, RETURNDATASIZE());
+}
+```
 
-One can use Tenderly to trace what exactly transpired during the transaction process.
+The above my be a little complex, but these are the important lines to note:
 
-## Conclusion of the Attack
+```js
+v0, /*uint256*/ (v1 = stor_2_0_19.mintWithPunkOrGlyph(varg0).gas(msg.gas));
+```
 
-After a grueling six hours of continual calls, the attacker successfully minted the rare Meebit 11647, which held the 'visitor' trait, spending thousands of dollars on gas during this period.
+and
 
-We owe a big thanks to Andy Lee from Sigma Prime for compelling insights into this case study. It provides a stark reminder of the importance of constant vigilance and thorough examination when dealing with smart contracts and other cryptographic protocols. It also underscores the vital necessity to never underestimate the potential for exploitation, no matter how obscure.
+```js
+assert(bool(uint8(map_1[v1])) == bool(1));
+```
 
-Stay tuned for more intriguing case studies and analysis as we continue to dissect cybersecurity incidents in the crypto space!
+The first line is where the mint function is being called by the attacking contract.
+
+The second line is where an assertion is made that the minted NFT has the desired rare traits. If this assersion fails, the whole transaction is reverted.
+
+**Attacker Receives Rare NFT:**
+
+The attacking contract called this mint function and reverted for over 6 hours. Spending ~$20,000/hour in gas until they minted the rare NFT they wanted Meebit #16647. The NFT possessed a Visitor trait and sold for ~$700,000.
+
+<img src="/security-section-4/27-weak-randomness-case-study/meebit1.png" style="width: 75%; height: auto;">
+
+### Wrap Up
+
+There you have it. That's how an attacker in 2021 was able to exploit weak randomness in the Meetbits contract.
+
+Thanks again to Andy! In the next lesson we'll be going over how to prevent this madness!

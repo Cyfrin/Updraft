@@ -4,7 +4,7 @@ title: More Solidity Math
 
 *Follow along this chapter with the video bellow*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/UEfpFLtlzTk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 
 In this lesson, we're going to walk through the conversion of the Ethereum value to USD using Solidity. The purpose of this tutorial is to understand how Ethereum contract operations work, using the `getPrice` and `getConversionRate` functions.

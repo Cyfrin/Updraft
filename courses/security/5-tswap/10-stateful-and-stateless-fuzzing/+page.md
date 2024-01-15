@@ -2,7 +2,7 @@
 title: Stateful and Stateless Fuzzing to Test Invariants
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/K6OtIxq3j7g?si=9Q5ercaufieg421q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

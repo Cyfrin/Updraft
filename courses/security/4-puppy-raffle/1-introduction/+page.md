@@ -4,29 +4,30 @@ title: Introduction
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/3Tn_jJxYvoc" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
----
+## Puppy Raffle Audit
 
-# Puppy Raffle Audit
+Welcome to Section 4: Puppy Raffle Audit! In addition to strengthening our skills in manual review, in this section we'll be introducing powerful tools and leveraging `static analysis` to help us secure this protocol.
 
-Welcome to the in-depth discussion on the Puppy Raffle Audit! Conducting audits, particularly for smart contract security, is a necessity in the field of computer programming. Engaging in audits not only fine-tunes your coding skills, but it also gives your portfolio a significant boost.
+We'll see the differences between a private audit report and a competitive audit submission and be introduced to the process of competing in a CodeHawks First Flight!
 
-What makes the Puppy Raffle Audit discussion interesting is that it is a current live event on the CodeHawks platform. This provides us with an opportunity to examine both private and competitive audits, helping you to hone your skills in writing professional audit findings.
+### CodeHawks First Flights
 
----
+CodeHawks First Flights offer an excellent platform for budding smart contract security researchers. This platform contains relatively easy-to-understand codebases that resemble those you will find in this course.
 
-## CodeHawks First Flights
+If you are a beginner, they are a perfect opportunity to get live auditing experience and build upon the things you've learnt in a practical setting. For experienced auditors, they serve as a chance to engage in the community and itterate on your established skills.
 
-CodeHawks First Flights offers an excellent platform for budding smart contract security researchers. This platform contains relatively easy-to-understand codebases that resemble those you will find in this guide.
+<img src="/security-section-4/1-introduction/introduction1.png" style="width: 100%; height: auto;">
 
-If you are a beginner, this reference will help you familiarize yourself with the nuances of code auditing. More experienced auditors will find it a chance to reiterate their learning and uncover new strategies.
+We'll be going over how to submit an awesome competitive finding in this section.
 
-![](https://cdn.videotap.com/WViyXovd5mwSDrFG0B68-71.76.png)---
+### Tooling
 
-## Learning Outcomes
+As mentioned above, we'll be using new tools to help us in finding vulnerabilities and familiarizing ourselves with `static analysis`. We'll be using:
+
+- [**Slither**](https://github.com/crytic/slither) - A pythonic static analysis tool compatible with Solidity and Vyper
+- [**Aderyn**](https://github.com/Cyfrin/aderyn) - Built in Rust by _Alex Roan_, Aderyn traverses Abstract Syntax Trees to highlight suspected vulnerabilities.
 
 Through this section, you will:
 
@@ -35,33 +36,26 @@ Through this section, you will:
 - Gain an insight into the different exploits in this codebase.
 - Finally, learn how to write reports of competitive audits and differentiate them from private audits.
 
----
+### So Many Bugs
 
-## Your Journey
+Our previous codebase was quite small, Puppy Raffle has more to it and as a result, there are many more bugs to find! There are at least FOUR HIGHs to find in this repo (and likely some I didn't even account for 😋).
 
-Throughout your Puppy Raffle Audit journey, you will encounter a range of exploits in a sophisticated codebase. To cover more ground, this guide also includes case studies because historical attacks offer valuable lessons in improving security measures.
+### Case Studies
 
-Here’s your itinerary:
+As we uncover vulnerabilities in the Puppy Raffle codebase, we'll dive into real world case studies detailing times these vulnerabilities were exploited in the wild.
 
-1. Familiarize yourself with the Puppy Raffle audit codebase.
-2. Pinpoint and analyze numerous exploits inherent in the codebase.
-3. Conclude the mission with the production of a professional audit report.
-4. Learn how to create competitive audit reports that catch the eye for selections.
+This should give you real insight into what's at stake as we're performing security reviews and really instill that these efforts of ours matter.
 
-![](https://cdn.videotap.com/7lcDGcvJJnJfWsy6ddge-202.24.png)---
+### Exercises
 
-## Diving Into the Audit
+At the end of the section we'll have _even more_ excercises for you to expand on your knowledge and challenge yourself beyond the course's teachings. These are your opportunities to branch out, network and gain additional experience.
 
-Ready to take the plunge into the audit? Scroll to section four and select the repo to get started. You'll come across two branches: the **main** branch and the **audit data** branch. Unlike prior projects, the onboarding document of this project is already successful.
+This includes participating in a CodeHawks First Flight or a competitive audit! Get ready!
 
-Under these branches, you will find detailed information including compatibilities, roles, known issues, the audit scope, and more. At this point, you have everything you need to embark on your audit journey. Just beware, future audits will demand more extensive onboarding so this super-detailed manual while making things easier, may set unrealistic expectations!
+### Prep for Puppy Raffle
 
-![](https://cdn.videotap.com/HCLaeRMCU3Y5V1POfhjN-234.86.png)Inside the audit data folder is where all the audit/security review info resides. Although it could be helpful to dive straight into the answers given here, it isn't advisable. The real learning and skill-building come from individually tackling the codebase, unraveling the codes, and discovering the attack vectors.
+If you take a look at the [**repo**](https://github.com/Cyfrin/4-puppy-raffle-audit) associated with this section, you'll see a fairly robust README already supplied. For this review, we're assuming the protocol has already undergone some degreee of onboarding and they've provided us a respectable repo.
 
-In the case of the Puppy Raffle, there are four high severity vulnerabilities awaiting discovery. Bear in mind that the ultimate goal of this exercise is to thwart those looking to exploit these vulnerabilities. Every bug or issue you identify and report prevents potential hackers from exploiting the protocol.
+I will transparently point out that, much like our previous protocol review, this repo has multiple branches, one of which is the `audit-data` branch. I **STRONGLY** encourage you to resist peeking in this branch until the end. The `audit-data` branch effectively serves as an `answer key`, in which all the vulnerabilities and write-ups can be found.
 
-```
-"There are always attackers looking to break these protocols, and we need to keep that in mind when we're working on them."
-```
-
-So gear up, as the world of the Puppy Raffle audit has many secrets waiting to be unveiled!
+Going through the codebase throughout the course, and appreciating each step is how you're going to build these skills. Uncovering the attack vectors is how you build familiarity with these risks. Skipping over steps is only going to harm your progress. Build the habits, do the work.

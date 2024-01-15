@@ -4,7 +4,7 @@ title: Solidity Reverts and Gas
 
 *Follow along this chapter with the video bellow*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/DzapsA5NQyc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 <!-- <img src="/solidity/remix/lesson-4/transact/transact2.png" style="width: 100%; height: auto;"> -->
 

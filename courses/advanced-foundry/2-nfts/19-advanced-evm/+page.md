@@ -4,7 +4,7 @@ title: Advanced EVM - Opcodes, Calling, and Encoding
 
 _Follow along the course with this video._
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/txbP7l3U6JU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

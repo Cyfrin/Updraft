@@ -4,7 +4,7 @@ title: UUPS Upgrade
 
 _**Follow along with this video.**_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/_rkTETXk7S4?si=qS6f9T-XSjFxpZN4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 ---
 

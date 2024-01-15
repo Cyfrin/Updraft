@@ -4,7 +4,7 @@ title: Transfer, Send and Call
 
 _Follow along this chapter with the video bellow_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Z_HPzbzZ-k4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 One important aspect is understanding how to securely and effectively withdraw funds from a smart contract. This tutorial explores three different methods of doing this – `transfer`, `send`, and `call`. We will examine their differences, understand how each one works, and determine when to use each strategy.
 

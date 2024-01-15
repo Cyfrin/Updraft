@@ -4,7 +4,7 @@ title: Gas II
 
 You can follow along with this section of the course here.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/7ScrQcuT7xA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="signing transactions"></iframe>
+
 
 # Decoding the Essence of Blockchains: Transactions and Gas
 

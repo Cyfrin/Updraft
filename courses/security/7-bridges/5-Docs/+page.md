@@ -2,7 +2,7 @@
 title: Docs
 ---
 
-## <iframe width="560" height="315" src="https://www.youtube.com/embed/CYFBEMBKSe0?si=tNzub0kyRjFlLFnW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+## 
 
 # Bridging the Gap: Introducing Boss Bridge for ERC20 Tokens
 

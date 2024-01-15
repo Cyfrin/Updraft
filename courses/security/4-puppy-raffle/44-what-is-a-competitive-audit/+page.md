@@ -4,58 +4,44 @@ title: What is a Competitive Audit?
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/GzxUGMlw340" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
-# Understanding Competitive Audits in Software Security: A Deep Dive
+### Competitive vs Private Audits
 
-Welcome to another enlightening post about software security. Gone are the days when only a single person or firm conducted audits for a codebase. It's time we talked about competitive audits—a game-changing yet relatively underexplored area of software security!
+Before we get to our report, I want to illustrate what a competitive audit is, and how it may differ from a private audit.
 
-## What's a Competitive Audit?
+**_What is a competitive audit?_**
 
-Unlike private audits, a competitive audit is based on a unique principle: put your code base out to the public and invite them to compete in spotting as many bugs as possible.
+Unlike a private audit, where a single security researcher (or a small team) would be working with a protocol directly, a competitive audit sees a protocol making their code base publicly available and having people compete to find vulnerabilities within it.
 
-"Competitive audits are a little bit different from private audits because the main focus is actually going to be on bugs as opposed to a private audit, where we're talking about increasing the code quality, test coverage, et cetera. In a competitive audit, you get paid if you find bugs, and if you find bugs, you win money."
+I encourage you to checkout some of the past competitive audits on [**CodeHawks**](https://www.codehawks.com/contests), you can click 'View Final Report' To see a compilation of all the findings in a contest, who found it etc.
 
-An exciting example of a completed competitive audit is the BeedleFi protocol from CodeHawks.
+In a competitive audit, you're competing to find _bugs_, you're paid if you find vulnerabilities.
 
-![](https://cdn.videotap.com/1TB4kKK5zsjQEFuoczfL-53.14.png)
+We can see how these payouts work by looking at the [**CodeHawks Docs**](https://docs.codehawks.com/). Findings rewards are ultimately broken down into shares and severity, where the system rewards finding more unique, difficult to find bugs.
 
-When you view the final report and click on one of the findings, you will notice a list of users who submitted this issue. Remember that these are not just any users—they are bug-finders who actually make a living out of this. Clicking on a profile will lead you to their credentials and past contributions.
+<img src="/security-section-4/44-what-is-a-competitive-audit/competitive-audit1.png" width="75%" height="auto">
 
-## How Do Competitive Audits Work?
+You can also find examples of scenarios and calculations on the [**CodeHawks Docs**](https://docs.codehawks.com/hawks-auditors/payouts).
 
-Now onto the real catch: how is the payout determined? Each competitive audit platform has its unique way of determining the compensation, basing it on factors such as the gravity and uniqueness of the bug found.
+**_How good are competitive audits?_**
 
-From the CodeHawks docs, we learn that the payouts are currently determined as medium-risk shares and high-risk shares—more bugs located by the same person or group, less the pay-out per bug. The idea behind this could be interpreted as an incentive towards spotting more unique bugs, making the whole process more competitive and efficient.
+The quality of competitive audits has been found to be - incredible. To use a past contest on CodeHawks as an example, the Beedle-Fi audit resulted in a staggering number of findings.
 
-![](https://cdn.videotap.com/77H0xz2GOS14nGEknd09-97.43.png)
+<img src="/security-section-4/44-what-is-a-competitive-audit/competitive-audit2.png" width="75%" height="auto">
 
-This framework works as a sybil resistance mechanism, so that one auditor doesn't submit under multiple names the same bug to get more money.
+Security reviews of this nature consistently find more bugs that private reviews _and_ they serve as the perfect platforms to gain experience and build your security researcher career.
 
-> "If you go to the CodeHawks documentation, there's actually some examples given a prize pot, who finds what bugs and how much they'd actually get paid out, if you want to know exactly how it works."
+Many top security researchers started their careers in this space, and continue to compete in competitive audits throughout.
 
-## The Quality of Competitive Audits
+Competitive audits are a tonne of fun, you can learn lots and of course you can win money.
 
-Quality-wise, competitive audits are off the charts! Contest summaries often report findings including high, medium, and low-risk vulnerabilities, as well as gas informational findings. The fact that smart contract security platforms are now resorting to competitive audits is proof of their effectiveness in spotting as many bugs as possible.
+**_How do I start with competitive audits?_**
 
-![](https://cdn.videotap.com/C5hTu21ZmxEPmmnMP7gn-159.43.png)
+I'm glad you asked! CodeHawks hosts events called [**First Flights**](https://www.codehawks.com/first-flights), and we're going to have you do some of these!
 
-But you don't just stop at audits. Valorizing your skills and building a solid career in the field is very much possible. Security researchers such as Hans and Pashav have started their journeys as competitive auditors and are now expert auditors.
+First Flights are simplified code bases (just like Puppy Raffle) that have been built specifically to ease newcomers into the auditing process, familiarize them with how competitive audits work and afford auditors an effective avenue through which to learn and grow their skills with real world experience.
 
-## Why Should You Consider Competitive Audits?
+One additional benefit to using competitive audits as a platform to improve your skills is, once one concludes, all the validated findings are viewable, allowing an auditor to see which vulnerabilities they missed and how others are reporting their findings. This is hugely valuable for those looking to expand their skills.
 
-If you aspire to start your journey in smart contracts security and auditing, then remember: competitive audits are the best way! They offer an enriching learning experience and real opportunities to win money.
-
-Moreover, competitive audits platforms like CodeHawks provide career-building opportunities where you can level up your skill and expose your competence to a wide range of potential clients.
-
-A fun way to start this journey can be opting for CodeHawks' "First Flights"—a program designed to help you dive into the world of competitive auditing through easy, small code bases, like the Puffy Raffle.
-
-"Competitive audits are a great way to learn and grow as a security research searcher, because oftentimes doing security reviews is very daunting, time-consuming. These are much quicker, much faster, and you learn so fast."
-
-![](https://cdn.videotap.com/kr2xo5Oi0O71dQUU9I1q-221.43.png)
-
-There's a clear path to growth with competitive audits: once the competition is over, you're able to view the final report, see all the findings that you missed, and use it as learning for your next venture. Competitive audits are undoubtedly the best way to always stay on top of your game.
-
-Get ready to dive in because your road towards a top-notch software security auditing career starts here! Stay tuned for our next update on the latest trends in software security.
+In the next lesson we'll sign up for CodeHawks together!

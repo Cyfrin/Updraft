@@ -4,7 +4,7 @@ title: Real World Price Data
 
 *Follow along this chapter with the video bellow*
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/PhVv8xjexoY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 
 With the advancement of blockchain technology and the increasing integration of decentralized finance (DeFi) platforms, the need to accommodate a range of digital currencies has exploded. Allowing users to transact in their preferred digital coinage not only enhances the user experience, but also broadens the market reach of your platform. This lesson will walk you through the steps to adding currency conversion features and setting price thresholds in your smart contracts with Chainlink Oracle, a decentralized network for external data.

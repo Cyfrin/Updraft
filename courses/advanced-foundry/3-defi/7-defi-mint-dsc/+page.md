@@ -4,7 +4,7 @@ title: Mint DSC
 
 _Follow along the course with this video._
 
-<iframe width="560" height="315" src="https://youtube.com/embed/EYbfRFAsGJg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 # Building a Mechanism for Minting Decentralized StableCoin
 

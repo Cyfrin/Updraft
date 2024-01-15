@@ -3,7 +3,7 @@
   "title": "Foundry Fundamentals",
   "slug": "foundry",
   "folderName": "foundry",
-  "lastUpdated": "Wed Jan 03 2024 10:31:17 GMT-0500 (Eastern Standard Time)",
+  "lastUpdated": "Mon Jan 15 2024 12:23:01 GMT-0500 (Eastern Standard Time)",
   "previewImg": "https://res.cloudinary.com/droqoz7lg/image/upload/v1701193477/updraft/courses/ccrmrt6nnfgcyuk2o7bu.png",
   "description": "Already know Solidity? Your next step is Foundry! Learn how to manage your dependencies, compile your project, run tests, deploy, and interact with your from the command-line and via Solidity scripts.",
   "path": "content/learning-paths/solidity-developer.json",
@@ -30,7 +30,7 @@
   ],
   "sections": [
     {
-      "sectionId": "b224a5a3-2e7f-4c8d-b5a2-c95980b6f011",
+"sectionId": "b224a5a3-2e7f-4c8d-b5a2-c95980b6f011",
       "number": 1,
       "title": "Foundry Simple Storage",
       "slug": "foundry-simple-storage",
@@ -351,7 +351,7 @@
       ]
     },
     {
-      "sectionId": "105de61f-72fe-46d3-bfc4-8a2460e38d21",
+"sectionId": "105de61f-72fe-46d3-bfc4-8a2460e38d21",
       "number": 2,
       "title": "Foundry Fund Me",
       "slug": "foundry-fund-me",
@@ -646,7 +646,7 @@
       ]
     },
     {
-      "sectionId": "b3b77063-6dfd-43d6-83b6-c0655a81d722",
+"sectionId": "b3b77063-6dfd-43d6-83b6-c0655a81d722",
       "number": 3,
       "title": "Fund Me Frontend",
       "slug": "html-fund-me",
@@ -707,7 +707,7 @@
       ]
     },
     {
-      "sectionId": "31c5e514-7427-479c-ad8c-1aebcf1e45ee",
+"sectionId": "31c5e514-7427-479c-ad8c-1aebcf1e45ee",
       "number": 4,
       "title": "Smart Contract Lottery",
       "slug": "smart-contract-lottery",

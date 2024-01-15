@@ -4,63 +4,118 @@ title: Recon Continued
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/V4TuGjGuCxU" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
-# Thoroughly Examining and Auditing Smart Contract in Slither
+Let's continue with our manual review of PuppyRaffle. So far we've gone through
 
-While performing a manual audit of the smart contract of a Puppy Raffle application in Slither, we unearthed several areas that warrant a more in-depth investigation, such as functions, variables and interactions.
+- enterRaffle - where we uncovered a DoS vulnerability
+- refund - we discovered is vulnerable to reentrancy
+- getActivePlayerIndex - we found an edge case where players at index 0 aren't sure if they've entered the raffle!
 
-![](https://cdn.videotap.com/bY22ZXsy75N3gZs0jFox-17.06.png)
-
-## A Close Look at Specific Functions
-
-In this audit, we have done a thorough review of the `refund` function as well as the `enterRaffle` function. Let's now move our attention to understanding the other functionalities of how the Puppy Raffle works.
-
-### Reviewing the GetActivePlayer Function
-
-Upon reviewing the `GetActivePlayer` function, we discovered an informational issue. From a first glance, it appears to be a minor issue as it can lead someone to erroneously believe that their active player index is zero.
+Walking through the code, we're moving onto the `selectWinner` function. This is a big one, we'll have a lot to go over.
 
 ```js
-function getActivePlayer() public {/* function logic*/}
+function selectWinner() external {
+    require(block.timestamp >= raffleStartTime + raffleDuration, "PuppyRaffle: Raffle not over");
+    require(players.length >= 4, "PuppyRaffle: Need at least 4 players");
+    uint256 winnerIndex =
+        uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.difficulty))) % players.length;
+    address winner = players[winnerIndex];
+    uint256 totalAmountCollected = players.length * entranceFee;
+    uint256 prizePool = (totalAmountCollected * 80) / 100;
+    uint256 fee = (totalAmountCollected * 20) / 100;
+    totalFees = totalFees + uint64(fee);
+
+    uint256 tokenId = totalSupply();
+
+    // We use a different RNG calculate from the winnerIndex to determine rarity
+    uint256 rarity = uint256(keccak256(abi.encodePacked(msg.sender, block.difficulty))) % 100;
+    if (rarity <= COMMON_RARITY) {
+        tokenIdToRarity[tokenId] = COMMON_RARITY;
+    } else if (rarity <= COMMON_RARITY + RARE_RARITY) {
+        tokenIdToRarity[tokenId] = RARE_RARITY;
+    } else {
+        tokenIdToRarity[tokenId] = LEGENDARY_RARITY;
+    }
+
+    delete players;
+    raffleStartTime = block.timestamp;
+    previousWinner = winner;
+    (bool success,) = winner.call{value: prizePool}("");
+    require(success, "PuppyRaffle: Failed to send prize pool to winner");
+    _safeMint(winner, tokenId);
+}
 ```
 
-### Unfolding the Select Winner Function
-
-Next, we are going to examine a major function called `selectWinner`. This function is designed to choose a single winner randomly and mint a new puppy token based on the entries kept in the `players` array.
+The function's NatSpec makes it's purpose quite clear.
 
 ```js
-function selectWinner() public {/* function logic*/}
+/// @notice this function will select a winner and mint a puppy
+/// @notice there must be at least 4 players, and the duration has occurred
+/// @notice the previous winner is stored in the previousWinner variable
+/// @dev we use a hash of on-chain data to generate the random numbers
+/// @dev we reset the active players array after the winner is selected
+/// @dev we send 80% of the funds to the winner, the other 20% goes to the feeAddress
 ```
 
-A cursory look at the function shows that the select winner function follows CEI (Check Effects Interaction) principle as it starts with a series of checks. A quick follow-up review confirms the function's adherence to the principle except for one section where it calls `Safe Mint`. However, we need to better understand what `Safe Mint` does to evaluate if the exception is justified.
+We can see the first thing this function is doing is performing some checks. Given what we recently learnt a reasonable question to ask might be _Is this following CEI?_
 
-## Exploring Variables and Rules
-
-The `selectWinner` function contains a built-in condition that requires at least four players to exist before a winner can be selected. Another condition that enforces temporal constraints is the `raffle_duration` paired with the `raffle_start_time`. Our review shows that the raffle duration is set at the deployment of the contract, and the raffle start time is set at the instant when the contract is deployed.
+Well, in this instance the only thing happening after our external call is `_safeMint`. We're not really sure what this is yet, so we may come back to it.
 
 ```js
-public int raffleDuration; // set during contract deployment
-public int raffleStartTime; // set when contract is deployed
+  (bool success,) = winner.call{value: prizePool}("");
+  require(success, "PuppyRaffle: Failed to send prize pool to winner");
+  _safeMint(winner, tokenId);
 ```
 
-Preliminary inspection indicates that these setups seem correct, but we will need to validate their setting and interactions in the next phase.
-
-## Questioning the Randomness of the Winner
-
-The real crux of the `selectWinner` function lies in the line that calculates the `winner_index`. This is achieved by taking an encoded value based on the message sender, block timestamp and block difficulty, and then applying a modulus operation with the player's length. This operation presumably provides a pseudo-random number, which in turn is used to select a winner.
+One of our checks requires the `raffleDuration` to have passed, verifying this variable is set properly would be another thing we would want to check. In this case the `raffleDuration` is set in our constructor, the `raffleStartTime` is set during the instant of deployment. Looks good.
 
 ```js
-winnerIndex =
-  keccak256(abi.encodePacked(msg.sender, block.timestamp, block.difficulty)) %
-  players.length;
+require(block.timestamp >=
+  raffleStartTime + raffleDuration, "PuppyRaffle: Raffle not over");
 ```
 
-However, this method of generating a random number raises a potentially critical concern — weak randomness. This is a known area of potential exploit in blockchain wherein pseudo-random number generators can be manipulated, thus warranting further investigation.
+I encourage you to write these thoughts down in your `notes.md` file and actually write in-line notes to keep them organized. Being able to reference these thoughts during our write ups and later in the review is incredibly valuable to the proceess.
 
-> _Note: "Is the random winner really random?"_
+```js
+// @Audit: Does this follow CEI?
+// @Audit: Are the duration and time being set correctly?
+// @Audit: What is _safeMint doing after our external call?
+```
 
-Overall, our extensive drill-down into the `selectWinner` function and related variables has revealed several potential loopholes, including weak randomness, that need further examination to ensure the security and fairness of the Puppy Raffle Dapp.
+It's important to note the `selectWinner` function is external, so anyone can call it. The checks in this function will be really important, but they do look good.
 
-Stay tuned for our upcoming posts where we will dive deep into understanding potential vulnerabilities, and continue examining the rest of the smart contract.
+Moving on, the next this thing function is doing is defining a `winnerIndex`.
+
+```js
+uint256 winnerIndex = uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.difficulty))) % players.length;
+address winner = players[winnerIndex];
+```
+
+It seems our function is using a pseudo-random number, modded by the player's array to choose our winning index. It then assigns the player at that index in the array to our `winner` variable.
+
+This winner variable is used further in the function to distribute the `prizePool` as well as mint the winning NFT.
+
+```js
+(bool success,) = winner.call{value: prizePool}("");
+require(success, "PuppyRaffle: Failed to send prize pool to winner");
+_safeMint(winner, tokenId);
+```
+
+It's important that this selection is fair and truly random or this could be exploited by malicious actors fairly easily. My alarm bells are going off and I'm seeing a lot of red flags.
+
+### Wrap Up
+
+Having gone through the `selectWinner` function, we now have a better understanding of this process and how it's controlleed.
+
+The function can't be called until the `raffleDuration` has passed and there are at least 4 people entered. Once `selectWinner` is called and passes checks, it uses a pseudo-random method to determine a winner of the raffle and then transfers the `prizePool` and mints them an NFT.
+
+The question becomes:
+
+```js
+// @Audit: Is this selection process fair/truly random?
+```
+
+Let's look more closely in the next lesson!
+
+> **Challenge:** There is a **massive** bug with refund + selectWinner that we _don't_ go over here. I challenge you to find it!

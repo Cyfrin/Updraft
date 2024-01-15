@@ -4,114 +4,106 @@ title: Abi.encode & Abi.encodePacked
 
 _Follow along with the video_
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/k0WSQNXCMU4?si=RcoPWaVqHWQOBP6M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
-In a bid to have a high-level understanding of `Solidity`, a statically typed, contract-oriented programming language, one should be aware of how to concatenate strings, or simply put, combine strings together. We will further explore `ABI encode` packing and what ABI encoding entails generally.
+## Understanding ABI.encode & ABI.encodePacked in Solidity
 
-At this point, it should be illustrated that the subject matter we are delving into is quite advanced, involving in-depth knowledge of how `Solidity` operates behind-the-scenes, the workings of binary, the concept of opcodes, and other intricate aspects that may be challenging to grasp.
+### Introduction
 
-However, I strongly encourage anyone to attempt absorbing what the content offers. And guess what? It's absolutely fine not to understand it at first glance. Remember, this advanced information could aid significantly in future complex projects. And of course, the more conversant you become with this, the more proficient a Solidity developer you turn out to be.
+The topic we're diving into is how to concatenate strings in Solidity, specifically exploring `abi.encode` and `abi.encodePacked`. This is advanced stuff, delving into the low-level workings of Solidity, binary, and opcodes. Remember, it's okay if you don't grasp it all on the first go!
 
-# Abi Encode Packed for String Concatenation and More
+> Remember: You can find all the code we'll be working with [**here**](https://github.com/PatrickAlphaC/hardhat-nft-fcc/tree/main/contracts/sublesson).
 
-Our exploration begins with creating a `ABI encode packed` based function for our contract, named `encoding.sol`. The function is to wrap different strings together while returning a single string. It's important to note that all code within `encoding.sol` can be found within the sub-lesson folder of the hardhead NFT FCC.
+### Getting Started
 
-Below is the basic contract setup:
+- **Setting Up:** We'll use Remix for this exploration. Start by creating a new file named `encoding.sol`.
+
+Your contract should look something like this:
 
 ```js
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
 
-contract Encoding{
-    function combineStrings() public pure returns(string memory) {
-        return string(abi.encodePacked("Hi mom"," ","Miss you"));
+pragma solidity ^0.8.7
+
+contract Encoding {
+    function combineStrings() public pure returns (string memory) {
+        return string(abi.encodePacked("Hi Mom! ", "Miss you."));
     }
 }
 ```
 
-After compiling and deploying, you'd be able to call the `combineStrings` function and get the combined string output `Hi mom Miss you`. Here, `abi.encodePacked` method merges the two input strings into a bytes object and then the `string` keyword typecasts the bytes object back into a string object.
+Compiling this contract and calling the `combineStrings()` function in Remix is going to give us the whole string `"Hi Mom! Miss you."`
 
-As mentioned, the `abi.encodePacked` method is not the only way to concatenate strings in `Solidity`. An alternative way is using the `stringConcat` method provided with `Solidity  0.8.X`. However, `abi.encodePacked` is not limited to string concatenation. It's in fact a method to encode pretty much anything into binary format.
+### Exploring `abi.encode` and `abi.encodePacked`
+
+- **Understanding Encoding:** We use `abi.encode` and `abi.encodePacked` for encoding strings and other data types into a binary format. In our function above `"Hi Mom!"` and `"Miss you."` are both converted into binary then concatenated. We then typecast the returned binary is a string.
+
+`encode` and `encodePacked` are examples of globally available methods in Solidity. There's a [**Cheatsheet**](https://docs.soliditylang.org/en/latest/cheatsheet.html) you should checkout with more information and tonnes of examples of these globally available methods and variables.
+
+> Note: As of `Solidity 0.8.12` you can also use `string.concat(stringA, StringB)` to achieve the same result as our `"Hi Mom!"` example.
+
+Before getting to deep with encoding, let's take a step back to understand what's happening when we send a transaction.
+
+### Compilation Breakdown
 
 <img src="/security-section-1/10-encoding/encoding1.png" style="width: 100%; height: auto;" alt="block fee">
 
-# Diving Deeper into Abi Encoding with Opcodes
+As seen in the image above, when we compile a smart contract, the solidity compiler is returning two things `contract.abi` and `contract.bin`. The `abi` you likely remember from previous lessons.
 
-To better understand what happens under the hood when we send a transaction, we'll lift the veil of the low-level binary and music the Ethereum Opcodes. If you'd wish to look at detailed comments on this, you can check them in the encoding `sol` file in the `GitHub repo`.
+`Contract.bin` is the binary representation of your contract. This is the actual code that get put on the blockchain.
 
-# Understanding Opcodes
-
-The `EVM` or the `Ethereum Virtual Machine`, interprets these random numbers and letters into Ethereum opcodes. In simpler terms, an opcode is like an English alphabet for these random numbers and letters of the bytecode of a transaction.
-
-When we send our contracts to the blockchain, we're basically sending the binary version of our contracts, which comes as opcodes. To understand this better, let's examine the transaction that creates a new contract in the blockchain.
-
-# Encoding Variables to Binary with Abi Encode
-
-With Abi Encoding, we can encode pretty much any type of data, be it numbers, strings, or others. The encoding process narrows down the data to its binary form. This allows contracts to interact with the data more cost-effectively.
-
-Here is the function that encodes a number into binary:
+We see this binary object in transaction we send to the blockchain. Recall what constitutes a transaction:
 
 ```js
-function encodeNumber() public pure returns(bytes memory) {
-    bytes memory number = abi.encode(1);
-    return number;
-}
+tx = {
+  nonce: nonce,
+  gasPrice: 10000000000,
+  gasLimit: 1000000,
+  to: null,
+  value: 0,
+  data: "BINARYGOESHERE",
+  chainId: 1337,
+};
 ```
 
-In Solidity, you can also encode strings into binary. The resulting output will be a bytes object that the computer will understand. However, the encode function by itself doesn't compress the resulting data. Here's an example of such encoding.
+> Note: When we're deploying a new contract, this is still a transaction on the blockchain, but our `to` property is empty and the `data` field will contain both the `contract init code` and `contract bytecode(binary)`.
 
-```js
-function encodeString() public pure returns(bytes memory) {
-    bytes memory someString = abi.encode("some string");
-    return someString;
-}
-```
+[**Here's**](https://etherscan.io/tx/0x112133a0a74af775234c077c397c8b75850ceb61840b33b23ae06b753da40490) a transaction on etherscan.io with a binary data object you can inspect.
 
-# Compressing Binary with Abi Encode Packed
+At first look, the binary data in a transaction looks like chaos. Just a garbled mess of letters and numbers. You may be asking yourself - how does the EVM (Ethereum Virtual Machine) make any sense of these instructions?
 
-When the encoded object is too large, it can be compressed to save space. This can be achieved using the `abi.encodePacked` method. It performs packed encoding while maintaining datatypes shorter than 32 bytes. However, for encoded data to be packed, the dynamic types of the data must be encoded in place with no length array. This method can be utilized to compress contract functions for cost-effective execution.
+Well ...
 
-Here is a contract function that encodes a string into a packed binary:
+### Intro to EVM Opcodes
 
-```js
-function encodeStringPacked() public pure returns(bytes memory) {
-    bytes memory someString = abi.encodePacked("some string");
-    return someString;
-}
-```
+> Opcodes are the building blocks of EVM instructions. Each opcode represents a specific operation.
 
-After packing the encoding data, the solidity function can concatenate the new string data based on the memory bytes. The resulting packed string can then be easily sent through transactions within the smart contract environment.
+Opcodes are effectively the alphabet of the ethereum machine language. Each pair of characters in the binary object discussed above represents an Opcode with pertains to a specific operation to be performed.
 
-# Multiple Abi Encoding
+You can find a list of the EVM Opcodes [**here**](https://www.evm.codes/?fork=shanghai).
 
-In Solidity, you can encode more than just one data at a time. The multi-encode function is enabled to encode multiple data and returns them as a bytes object. The process entails defining the types of the encoded data strings before the function interpretation begins.
+This means that the binary object we pass in our blockchain transactions is ultimately a long list of these operations we're telling the EVM to perform.
 
-Here is a function to demonstrate multiple data encoding:
+### Why This Matters
 
-```js
-function multiEncode() public pure returns(bytes memory) {
-    bytes memory someString = abi.encode("some string", "it’s bigger");
-    return someString;
-}
-```
+Until now we've only used `encode` and `encodePacked` to concatenate strings, but in reality these functions are much more powerful. You can encode virtually anything into its binary format.
 
-The subsequent decoding function decodes back the packed binary into its original form.
+- **abi.encode** - returns the binary of the provided argument
+- **abi.encodePacked** - returns the binary of the provided argument, but with stipulation/compression
+  - types shorter than 32 bytes are concatenated directly, without padding or sign extension
+  - dynamic types are encoded in-place and without the length.
+  - array elements are padded, but still encoded in-place
 
-Here is the corresponding decoding function:
+Read more about [**Non-standard Packed Mode**](https://docs.soliditylang.org/en/latest/abi-spec.html#abi-packed-mode)
 
-```js
-function multiDecode() public pure returns(string memory, string memory) {
-    (string memory someString, string memory someOtherString) =  abi.decode(multiEncode(), (string, string));
-    return (someString, someOtherString);
-}
-```
+The other side to this whole equation is that we also have the ability to _`decode`_ things.
 
-The function above takes two strings, encodes them, and then subsequently decodes the resulting bytes object back into its original form.
+<img src="/security-section-1/10-encoding/encoding2.png" style="width: 100%; height: auto;" alt="block fee">
+
+and finally .. we can even `multiEncode` and `multiDecode`.
+
+## <img src="/security-section-1/10-encoding/encoding3.png" style="width: 100%; height: auto;" alt="block fee">
 
 # Conclusion
 
-In summary, this post has taken a deep dive into the intricacies of using the abi.encodePacked method to concatenate strings and more in Solidity. We've worked through detailed examples to understand the function from various angles. Whether you're a beginner or an advance Solidity developer, the information here should broaden your knowledge and understanding of the Solidity language.
-
-> With constant trials and multiple iterations, you'll master the powerful Solidity encoding/decoding tools and become an even more proficient Solidity developer. - "Solidity Coding Guru"
+Hopefully this lesson has shed some light on some of the finer details of using encoding functions in solidity and the power they can hold. In the next lesson we'll be looking at how to encode function calls directly.

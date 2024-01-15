@@ -4,77 +4,47 @@ title: Weak Randomness - Multiple Issues
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/VVOpvCw9-FA" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
-# Breaking Down Blockchain Randomness: Security and Potential Pitfalls
+### Weak Randomness Breakdown
 
-Today, we're going to delve into the intricacies of managing certain aspects of blockchain programming. Specifically, we will be discussing these three elements: Message Sender, Blocked ProgramDo, and Blocked Timestamp. These are key aspects when dealing with randomness in blockchain, which we will dissect, explaining their functionalities and potential security issues.
+Let's look at a few ways that randomness, as we've seen in `PuppyRaffle` and our [**sc-exploits-minimized**](https://github.com/Cyfrin/sc-exploits-minimized) examples, can be manipulated.
 
-Let's get started.
+<img src="/security-section-4/26-weak-randomness-issues/randomness-issues1.png" style="width: 75%; height: auto;">
 
-## Deconstructing the Blockchain Components
+### block.timestamp
 
-### 1. block.timestamp
+Relying on block.timestamp is risky for a few reasons as node validators/miners have privileges that may give them unfair advantages.
 
-To understand the concept of `block.timestamp`, refer to the repository's diagrams.
+The validator selected for a transaction has the power to:
 
-![](https://cdn.videotap.com/96gVghjLA5xt6vAGyZ3W-23.74.png)
+- Hold or delay the transaction until a more favorable time
+- Reject the transaction because the timestamp isn't favorable
 
-A transaction on the blockchain has its timestamp that miners can manipulate. If a miner doesn't agree with the timestamp, they might hold onto the transaction until a more favourable timestamp occurs.
+Timestamp manipulation has become less of an issue on Ethereum, since the merge, but it isn't perfect. Other chains, such as Arbitrum can be vulnerable to several seconds of slippage putting randomness based on `block.timestamp` at risk.
 
-> When dealing with Validator node issues, remember never to trust miners!
+### block.prevrandao
 
-A miner can also reject a transaction if the timestamp doesn't favour their needs. Manipulating the timestamp has become more challenging after the merge; yet, there are ways to tamper.
+`block.prevrandao` was introduced to replace `block.difficulty` when the merge happened. This is a system to choose random validators.
 
-On non-Ethereum blockchain systems, miners sometimes have the power to adjust block timestamps by a few seconds. It might not seem much, but in the agile world of blockchain, these minor adjustments might lead to contract violations or aid in attaining a favourable random number.
+The security issues using this value for randomness are well enough known that many of them are outlined in the [**EIP-4399**](https://eips.ethereum.org/EIPS/eip-4399) documentation already.
 
-### 2. block.prevrandao
+The security considerations outlined here include:
 
-A new Solidity component, **block.prevrandao**, replaced the block difficulty post the merge. It is used to randomly pick validators under the new system.
+**Biasability:** The beacon chain RANDAO implementation gives every block proposer 1 bit of influence power per slot. Proposer may deliberately refuse to propose a block on the opportunity cost of proposer and transaction fees to prevent beacon chain randomness (a RANDAO mix) from being updated in a particular slot.
 
-For more in-depth information, refer to EIP (Ethereum Improvement Proposal) [EIP 4399](https://eips.ethereum.org/EIPS/eip-4399).
+**Predictability:** Obviously, historical randomness provided by any decentralized oracle is 100% predictable. On the contrary, the randomness that is revealed in the future is predictable up to a limited extent.
 
-![](https://cdn.videotap.com/fhhVXSh7UyBBcLkTyLNK-63.32.png)
+### msg.sender
 
-However, it also bears security considerations. First, it's biased since it allows one bit of influence power per slot. A tweak in the security component can cause a shift from an originally intended number. Moreover, it opens doors to predictability since it originates from a previous random number.
+Any field controlled by a caller can be manipulated. If randomness is generated from this field, it gives the caller control over the outcome.
 
-Consequently, caution is of utmost importance while using **prevrandao** if it can't be avoided.
+By using msg.sender we allow the caller the ability to mine for addresses until a favorable one is found, breaking the randomness of the system.
 
-```js
-pragma solidity ^0.5.0;
+### Wrap Up
 
-contract Example {
-    uint public myNum = uint(block.prevrandao);
+This should all make sense. The blockchain is a deterministic system, any number we derive from it, is by definition going to be deterministic.
 
-    function getPrevRandao() public view returns (uint) {
-        return myNum;
-        }
-}
-```
+We've touched on a few ways this vulnerability can be exploited, in the next lesson we'll investigate a case study that should illustrate the potential impact of a weakness like this.
 
-### 3. msg.sender
-
-Our last element, **msg.sender**, can also be manipulated by the caller. If the randomness is generated from a field controlled by the caller, they can manipulate the field to get their favoured random number.
-
-A simple example can be hashing the `msg.sender`, where a caller can mine for addresses until they find one that gets them the random number they want. Add to that the deterministic nature of the blockchain, and it becomes evident that finding a random number inside the blockchain would lead to finding a deterministic number.
-
-```js
-pragma solidity ^0.5.0;
-
-contract Example {
-    address public addressVar = msg.sender;
-    function getSender() public view returns (address) {
-        return addressVar;
-        }
-}
-```
-
-## Beware of the Pitfalls
-
-The crux of the matter is the blockchain, being a deterministic system, can't commit to genuine randomness. All generated random numbers can get influenced and adjusted, leading to potential security lapses. Using these elements for randomness is hence a poor practice and should be avoided at all costs.
-
-You can also test this in Solidity's Remix or via the `sc-exploits-minimized` repository for further practice.
-
-While dealing with blockchains, one must always keep their eyes and ears open for potential security breaches. It's not an easy world to navigate, but with careful consideration and active learning, we can make it a safer place for everyone.
+Meanwhile, I encourage you to experiment further with how the vulnerability works within our [**Remix**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/weak-randomness/WeakRandomness.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js) and [**sc-exploits-minimized**](https://github.com/Cyfrin/sc-exploits-minimized) examples.

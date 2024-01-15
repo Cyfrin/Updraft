@@ -4,54 +4,55 @@ title: Exercises
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/rhg5N8zjkFw" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+---
+
+### Exercises
+
+This has easily been my favourite auditing codebase. We've come a long way and now is a great time to take a break and feed that ice cream addiction.
+
+When you're ready we've got much more for you to dive into to sharpen your skills and further familiarize yourself with the vulnerabilities we've discussed in this section.
+
+Navigate to [**sc-exploits-minimized**](https://github.com/Cyfrin/sc-exploits-minimized) repo.
+
+In the same area of this repo where we'd reference our simplified Remix examples, we've additional sections available to you, including `Ethernaut`, `Damn Vulnerable DeFi` and `Case Studies`. These are invaluable resources to challenge yourself and learn more about the security eco-system in Web3.
+
+### Ethernaut
+
+Ethernaut, is amazing. It's effectively a compilation of CTFs (capture the flags) or games where you learn about how to exploit various vulnerabilities in a semi-live environment. There are dozens of challenges to complete. I highly recommend starting with `Hello Ethernaut` as it will outline the basics of how Ethernaut works and how to play.
+
+You _are_ expected to know a little bit of JavaScript for some of the functionality of `Ethernaut`, but with a little work you can deploy the instanced contracts and interact with them through `Foundry` or `Etherscan` as well.
+
+<img src="/security-section-4/64-exercises/exercises1.png" width="75%" height="auto">
+
+### Damn Vulnerable DeFi
+
+I also would encourage you to check out [**Damn Vulnerable Defi**](https://www.damnvulnerabledefi.xyz/), which has a number of similar challenges. I'll warn you that DVD _is_ a bit more challenging than `Ethernaut`
+
+Unfortunately DVD is _also_ written in `Hardhat`, so some JavaScript knowledge goes a long way.
+
+> **Note:** Someone needs to rewrite this in Foundry!!!
+
+What you can do, if you're not comfortable with `Hardhat` would be to copy the contracts that Damn Vulnerable Defi provides you into a Forge project and just try to break it locally. Each challenge in DVD provides you with your objectives.
+
+<img src="/security-section-4/64-exercises/exercises2.png" width="75%" height="auto">
+
+### Case Studies
+
+This section, of course, offers some case study examples of the vulnerabilities we've been discussing so you can gain further insight into how impactful these issues have been and how they've affected the ecosystem beyond all the theory - in the real world.
 
 ---
 
-# Harnessing the Power of Protocol Auditing and Security: A Deep Dive
+Beyond the above, we've got **even more** for you to do to practice all you've learnt in this section.
 
-In the vast, ever-expanding universe of Web3, auditing and security are two paramount pillars that reinforce the strength and dependability of our digital arena. It's an extensive journey and, yes, it may involve a lot of moving parts. But remember, while you may find it overwhelming at times, your heroic efforts in protocol auditing are protecting the glorious realm of Web3 from malicious attackers.
+1. [**Ethernaut Challenges**](https://ethernaut.openzeppelin.com/) (1, 9 & 10)
+2. Sign up for [**Solodit**](https://solodit.xyz/)
+3. Post a tweet about how you completed the Puppy Raffle Audit!
+4. Sign up for [**Farcaster**](https://www.farcaster.xyz/)
+5. Do a [**CodeHawks First Flight**](https://www.codehawks.com/first-flights)
 
-In today's post, we'll dig deeper into the world of codebase auditing, explore classic exploits, and guide you through some exercises that can help bolster your skills. So grab your gear, and maybe a double scoop ice cream for the ride, because we're diving in!
+🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀🧑‍🚀
 
-![](https://cdn.videotap.com/JkvEJbq7u3RlIes0Sb61-20.74.png)
+### Section 4 NFT Challenges
 
-## Training Grounds: Exploits Minimized Git Repository
-
-To hone your skills, you must first be appropriately trained, and what better place to begin than the `exploits minimized git repo`?
-
-The repository offers a treasure trove of coding examples, challenges, and exploits, such as reentrancy, mishandling of ETH, weak randomness access controls, and much more. If you need a sandbox to play around and experiment, Remix is embedded into the repository for your convenience. This extensive library of exploits will help you familiarize yourself with the intricacies of potential vulnerabilities and enable you to secure your code better.
-
-You can find a link to [`Remix`](https://remix.ethereum.org/).
-
-### Ethernaut: Codebase Challenges Levelled Up
-
-If you enjoy the thrill of gamification, Ethernaut offers an exciting alternative to practice your skills. Although it requires a decent understanding of JavaScript, the platform builds a compelling and engaging structure around learning exploits.
-
-![](https://cdn.videotap.com/pcyARKhhtGvEJQvH4MaI-69.14.png)
-
-The game hosts a diverse catalog of codebase challenges and allows you to practice different exploits in an interactive way. Considering starting with 'Hello Ether' to get the hang of the platform's interaction. However, if JavaScript is not your forte, you can still interact with the contracts on Etherscan or Forge.
-
-You can access `ethernaut` [here](https://ethernaut.openzeppelin.com/).
-
-### Damn Vulnerable DeFi: Real-life Challenges
-
-A step-up from Ethernaut, the damn vulnerable DeFi (DvDeFi) platform, hosts a selection of real-world DeFi-related challenges, that simulate possible vulnerabilities in DeFi protocols.
-
-![](https://cdn.videotap.com/Z24KmWHF5WMJZtrT8KiH-103.71.png)
-
-Though these challenges may be more complex than Ethernaut's, they offer an invaluable perspective into scenario-based exploits and understanding how to shield against them. Each challenge's context and contracts are explicitly provided, which you can either execute directly on Hardhat or copy-paste into Forge and try to crack.
-
-Access `Damn Vulnerable DeFi` [here](https://www.damnvulnerabledefi.xyz/).
-
-> "DvDeFi challenges replicate real-world security scenarios, granting you a near-authentic experience of interacting with and fortifying protocol vulnerabilities."
-
-### Case Studies: Learning from Real-world Attacks
-
-For a comprehensive understanding of how these exploits take place, we can learn a ton by studying examples of real-world attacks. A curated list of reentrancy attacks, compiled by Pascal, provides a deep dive into various case studies and how these incidents unfolded in reality.
-
-Access the `Case Studies` [here](https://github.com/pcaversaccio/reentrancy-attacks).
-
-## In Closing
-
-With your newfound tools and knowledge, it's time to dive in and start practicing. Good luck, ethernauts, and remember, the digital realm you protect is entirely worth your dedication and effort.
+- [**A combination hack (Arb)**](https://arbiscan.io/address/0xef72ba6575b86beaa9b9e4a78bca4a58f3cce276)
+- [**A combination hack (Sepolia)**](https://sepolia.etherscan.io/address/0xf988ebf9d801f4d3595592490d7ff029e438deca)

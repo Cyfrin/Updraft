@@ -4,71 +4,227 @@ title: DoS - Reporting
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/GP4Fto4u5dQ" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+---
+
+### Denial of Service PoC
+
+Maybe you're the type of security reviewer who likes to save all the write ups to the end. There's nothing wrong with that! As you grow and gain experience you'll begin to carve out your own workflow and ways of doing things.
+
+In future lessons, we may not go through writing things up together, but for now - let's report this uncovered DoS vulnverability
+
+We of course start with our template, create a `findings.md` file and paste this within:
 
 ---
 
-# Unpacking a Denial of Service Attack: A Practical Look into Security Writeups
+### [S-#] TITLE (Root Cause + Impact)
 
-![](https://cdn.videotap.com/Dj7HsLraeSv2ZrJ1t1L1-10.38.png)Today we delve deep into the inner workings of a Denial of Service (DoS) attack - a prevalent cybersecurity threat that we might stumble upon in the realm of software auditing.
+**Description:**
 
-## Step One: Set the Stage - Create a New File
+**Impact:**
 
-We'll begin our journey by creating a new file, which we'll optimistically name `findings.md`. The purpose of this file is fairly simple - it serves as the canvas where we'll write up our findings. We encapsulate our journey of discovery and understanding into this space, shedding ample light on the severity and various aspects of the underlying issue.
+**Proof of Concept:**
 
-## Giving Feet to the Ghost: Identifying the Root Cause
+**Recommended Mitigation:**
 
-As the saying goes, a problem well stated is a problem half solved. It is crucial to nail down the root cause of the issue before moving forward. Our root cause for the DoS attack turns out to be a piece of code in `PuppyRaffle` which loops through the players array to check for duplicates.
+---
+
+### Title
+
+Remember the rule of thumb!
+
+`<ROOT CAUSE> + Impact`.
+
+So, what's our root cause? Looping through an array to check for duplicates is the cause. What about the impact? Well, this causes a denial of service due to incrementing gas costs!
+
+So the title I'm going with is something like this:
+
+```
+### [S-#] Looping through players array to check for duplicates in `PuppyRaffle::enterRaffle` is a potential denial of service (DoS) attack, incrementing gas costs for future entrants
+```
+
+What can I say, I like to be verbose, but at least I'm clear!
+
+Regarding severity, let's consider the impact vs likelihood of this scenario.
+
+Impact - The protocol is unlikely to fully break, it simply makes the raffle more expensive to participate in. I might rate this a `Medium`.
+
+Likelihood - If an attacker wants the NFT badly enough, this will surely happen - but it does cost the attacker a lot. I might settle with `Medium` here as well.
+
+With an Impact of `Medium` and a likelihood of `Medium`, this finding's severity is going to be decidedly `Medium`.
+
+Update our title appropriately `[M-#]`.
+
+### When to do Writeups
+
+Often, I won't do a whole writeup as soon as I think I've found something. The reason for this is simple - I might be wrong! It's entirely possible that I come across more information as I dive deeper into the protocol that makes clear that what I thought was an issue actually isn't.
+
+Sometimes I'll just leave my in-line notes indicating my suspicions and come back to them at the end.
+
+For now, let's write the report as though we're confident this is valid.
+
+### Description
+
+Feel free to write your own description! Remember we want to be clear in how we illustrate the vulnerability and its affects.
+
+Here's mine.
+
+```
+**Description:** The `PuppyRaffle::enterRaffle` function loops through the `players` array to check for duplicates. However, the longer the `PuppyRaffle:players` array is, the more checks a new player will have to make. This means the gas costs for players who enter right when the raffle starts will be dramatically lower than those who enter later. Every additional address in the `players` array is an additional check the loop will have to make.
+
+'''javascript
+// @audit Dos Attack
+@> for(uint256 i = 0; i < players.length -1; i++){
+    for(uint256 j = i+1; j< players.length; j++){
+    require(players[i] != players[j],"PuppyRaffle: Duplicate Player");
+  }
+}
+'''
+```
+
+### Impact
+
+This is pretty clear from our description, but we can expand on things a little more.
+
+```
+**Impact:** The gas consts for raffle entrants will greatly increase as more players enter the raffle, discouraging later users from entering and causing a rush at the start of a raffle to be one of the first entrants in queue.
+
+An attacker might make the `PuppyRaffle:entrants` array so big that no one else enters, guaranteeing themselves the win.
+```
+
+### Proof of Concept/Code
+
+We did the hard part of this in our previous lesson, but let's add it to our report.
+
+```
+**Proof of Concept:**
+
+If we have 2 sets of 100 players enter, the gas costs will be as such:
+- 1st 100 players: ~6252048 gas
+- 2nd 100 players: ~18068138 gas
+
+This is more than 3x more expensivee for the second 100 players.
+
+<details>
+<summary>Proof of Code</summary>
+
+'''js
+function testDenialOfService() public {
+      // Foundry lets us set a gas price
+      vm.txGasPrice(1);
+
+      // Creates 100 addresses
+      uint256 playersNum = 100;
+      address[] memory players = new address[](playersNum);
+      for (uint256 i = 0; i < players.length; i++) {
+          players[i] = address(i);
+      }
+
+      // Gas calculations for first 100 players
+      uint256 gasStart = gasleft();
+      puppyRaffle.enterRaffle{value: entranceFee * players.length}(players);
+      uint256 gasEnd = gasleft();
+      uint256 gasUsedFirst = (gasStart - gasEnd) * tx.gasprice;
+      console.log("Gas cost of the first 100 players: ", gasUsedFirst);
+
+      // Creats another array of 100 players
+      address[] memory playersTwo = new address[](playersNum);
+      for (uint256 i = 0; i < playersTwo.length; i++) {
+          playersTwo[i] = address(i + playersNum);
+      }
+
+      // Gas calculations for second 100 players
+      uint256 gasStartTwo = gasleft();
+      puppyRaffle.enterRaffle{value: entranceFee * players.length}(playersTwo);
+      uint256 gasEndTwo = gasleft();
+      uint256 gasUsedSecond = (gasStartTwo - gasEndTwo) * tx.gasprice;
+      console.log("Gas cost of the second 100 players: ", gasUsedSecond);
+
+      assert(gasUsedSecond > gasUsedFirst);
+  }
+'''
+
+</details>
+```
+
+### Wrap Up
+
+Click below to see what our finding report should look like so far!
+
+<details>
+<Summary>DoS Writeup</summary>
+
+### [M-#] Looping through players array to check for duplicates in `PuppyRaffle::enterRaffle` is a potential denial of service (DoS) attack, incrementing gas costs for future entrants
+
+**Description:** The `PuppyRaffle::enterRaffle` function loops through the `players` array to check for duplicates. However, the longer the `PuppyRaffle:players` array is, the more checks a new player will have to make. This means the gas costs for players who enter right when the raffle starts will be dramatically lower than those who enter later. Every additional address in the `players` array is an additional check the loop will have to make.
 
 ```javascript
-// Pseudocode for the root cause
-function loopThroughPlayersArray(playersArray) {
-  for (let i = 0; i < playersArray.length; i++) {
-    /*Check for duplicates*/
+// @audit Dos Attack
+@> for(uint256 i = 0; i < players.length -1; i++){
+    for(uint256 j = i+1; j< players.length; j++){
+    require(players[i] != players[j],"PuppyRaffle: Duplicate Player");
   }
 }
 ```
 
-## Estimating the Impact
+**Impact:** The gas consts for raffle entrants will greatly increase as more players enter the raffle, discouraging later users from entering and causing a rush at the start of a raffle to be one of the first entrants in queue.
 
-To comprehend the severity of the DoS attack, we need to dissect its impact - the higher the impact, the more destructive our DoS attack.
+An attacker might make the `PuppyRaffle:entrants` array so big that no one else enters, guaranteeing themselves the win.
 
-The looping mechanism in `PuppyRaffle` causes a rise in gas costs for every additional player entering the raffle due to the added overhead of checking for duplicates. Consequently, our system becomes increasingly costly to use. We might debate over the severity - is it medium or high, but considering the additional gas users would have to spend and the resultant inconvenience it could cause, we'll settle for a medium severity rating.
+**Proof of Concept:**
 
-## Drill Down into Details: Write Up a Description
+If we have 2 sets of 100 players enter, the gas costs will be as such:
 
-At this point, let's delve deep into our DoS finding and write a meticulous and articulate description.
+- 1st 100 players: ~6252048 gas
+- 2nd 100 players: ~18068138 gas
 
-```markdown
-## Description: The 'enterRaffle' function loops through the players array to check for duplicates. As the length of the 'players' array increases, the gas costs and the number of checks a new player must carryout also increase. This issue has the potential to deter players that enter later due to the remarkably higher gas costs.
+This is more than 3x more expensivee for the second 100 players.
+
+<details>
+<summary>Proof of Code</summary>
+
+```js
+function testDenialOfService() public {
+      // Foundry lets us set a gas price
+      vm.txGasPrice(1);
+
+      // Creates 100 addresses
+      uint256 playersNum = 100;
+      address[] memory players = new address[](playersNum);
+      for (uint256 i = 0; i < players.length; i++) {
+          players[i] = address(i);
+      }
+
+      // Gas calculations for first 100 players
+      uint256 gasStart = gasleft();
+      puppyRaffle.enterRaffle{value: entranceFee * players.length}(players);
+      uint256 gasEnd = gasleft();
+      uint256 gasUsedFirst = (gasStart - gasEnd) * tx.gasprice;
+      console.log("Gas cost of the first 100 players: ", gasUsedFirst);
+
+      // Creats another array of 100 players
+      address[] memory playersTwo = new address[](playersNum);
+      for (uint256 i = 0; i < playersTwo.length; i++) {
+          playersTwo[i] = address(i + playersNum);
+      }
+
+      // Gas calculations for second 100 players
+      uint256 gasStartTwo = gasleft();
+      puppyRaffle.enterRaffle{value: entranceFee * players.length}(playersTwo);
+      uint256 gasEndTwo = gasleft();
+      uint256 gasUsedSecond = (gasStartTwo - gasEndTwo) * tx.gasprice;
+      console.log("Gas cost of the second 100 players: ", gasUsedSecond);
+
+      assert(gasUsedSecond > gasUsedFirst);
+  }
 ```
 
-## Light upon the Impact
+</details>
+<br>
 
-Now it's time to put the spotlight on the impact of this issue. The intensifying gas costs as more players enter the queue make it a less attractive proposition for potential players. Coupling this with the possibility of a rogue player filling up the raffle to guarantee a win makes for a pretty daunting scenario.
+**Recommended Mitigations:**
 
-```markdown
-## Impact: The skyrocketing costs for users entering the raffle at a later stage could deter participation. Furthermore, an attacker with large enough resources could monopolize the system, crowding out other potential participants.
-```
+</details>
 
-## Unveiling the Proof of Concept
+---
 
-To demonstrate the vulnerability at hand, we could showcase the escalating gas costs with a simple comparison - taking two sets of 100 players each and observing the gas charges. Our projected surge in costs could look something like this:
-
-```markdown
-## Proof of Concept:
-
-1st set of 100 players: ~70,000 gas
-2nd set of 100 players: ~210,000 gas
-Note: The second set of players face a gas cost more than 3 times that of the initial set.
-```
-
-## Forge a Solution: Propose a Mitigation
-
-Now that we've gathered knowledge about our vulnerability, it's time to suggest a viable solution. In our case, a possible mitigation could be altering the check for duplicate players. We'd replace the existing iteration-based solution with a more gas-efficient method like using a mapping system.
-
-```markdown
-## Mitigation: We recommend altering the manner in which duplicate players are checked – switching from an iteration-based system to a mapping-based system – which would be a far more gas-efficient solution.
-```
-
-No vulnerabilities are impenetrable. With adequate knowledge and an apt comprehension of the system, we can certainly transform the most complex of vulnerabilities into well-understood and manageable problems.
+Things look great! Lets finally have a look at what mitigations we can recommend for this vulnerability, in the next lesson.

@@ -4,67 +4,168 @@ title: DoS - Mitigation
 
 _Follow along with this video:_
 
-## <iframe width="560" height="315" src="https://youtu.be/NpCFoZeXp8E" title="YouTube Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 ---
 
-# Strategies to Mitigate Duplicate Entries in Smart Contract Code
+### Recommended Mitigation
 
-In the world of smart contracts and their associated applications, security is a pivotal asset. One primary issue often encountered is the challenge of dealing with duplicates. The system needs to acknowledge these duplicates without compromising its original function. So, how do we achieve this functionality while also mitigating potential risks?
+Our next step, of course, is providing a recommendation on how to fix this issue.
 
-## 1. Keeping the Original Functionality
+We may be tempted to suggest something like _"Don't check for duplicates."_, but it's important to preserve the original functionality as much as possible. If we do suggest a change in functionality, we must be clear in explaining why.
 
-Indeed, the easiest action we might suggest is to stop checking for duplicate entries altogether. However, our mission is to preserve the original functionality as much as possible, so let's dissect some potential solutions with that mind.
+With that said, here are some potential suggestions we could make.
 
-> **NOTE:** Remember, in suggesting these solutions, our ultimate goal is not to change the original functionality, but to enhance it for improved performance and security.
+1. Consider allowing duplicates. Users can make new wallet addresses anyway, so a duplicate check doesn't prevent the same person from entering multiple times, only the same wallet address.
 
-### A. Consider Allowing Duplicates
+2. Consider using a mapping to check duplicates. This would allow you to check for duplicates in constant time, rather than linear time. You could have each raffle have a uint256 id, and the mapping would be a player address mapped to the raffle Id.
 
-Firstly, let's consider the option of allowing duplicates. In altering the protocol's original functionality, there needs to be a solid foundation that supports this decision. So, why might we actually benefit from permitting duplicates? Here's the argument:
+```diff
++    mapping(address => uint256) public addressToRaffleId;
++    uint256 public raffleId = 0;
+    .
+    .
+    .
+    function enterRaffle(address[] memory newPlayers) public payable {
+        require(msg.value == entranceFee * newPlayers.length, "PuppyRaffle: Must send enough to enter raffle");
+        for (uint256 i = 0; i < newPlayers.length; i++) {
+            players.push(newPlayers[i]);
++            addressToRaffleId[newPlayers[i]] = raffleId;
+        }
 
-Users, if they want, can create new wallet addresses at will. In light of this, checking for duplicates does little to prevent the same user from entering multiple times, as it only prevents the same wallet address's multiple entries.
+-        // Check for duplicates
++       // Check for duplicates only from the new players
++       for (uint256 i = 0; i < newPlayers.length; i++) {
++          require(addressToRaffleId[newPlayers[i]] != raffleId, "PuppyRaffle: Duplicate player");
++       }
+-        for (uint256 i = 0; i < players.length; i++) {
+-            for (uint256 j = i + 1; j < players.length; j++) {
+-                require(players[i] != players[j], "PuppyRaffle: Duplicate player");
+-            }
+-        }
+        emit RaffleEnter(newPlayers);
+    }
+.
+.
+.
+    function selectWinner() external {
++       raffleId = raffleId + 1;
+        require(block.timestamp >= raffleStartTime + raffleDuration, "PuppyRaffle: Raffle not over");
+```
 
-![](https://cdn.videotap.com/U40Y4UOf96RccTmlPQua-31.96.png)### B. Using a Mapping for Duplicate Checks
+3. Alternatively, you could use [**OpenZeppelin's EnumerableSet library**](https://docs.openzeppelin.com/contracts/4.x/api/utils#EnumerableSet).
 
-If the creators of the protocol insist on maintaining the check for duplicates, we suggest using a mapping to do this check. This strategy would grant constant time lookups to ascertain whether a user has already entered or not. Let's take a look at how we could change the existing code to implement this functionality:
+### Wrap Up
 
-Original Code:
+That's all there is to it! Let's add this recommendation to our `findings.md` report for this vulnerability and we can move on to the next issue!
 
-```js
-for (let i = 0; i < player.length; i++) {
-  if (player[i] == _address) return true;
+<details>
+<Summary>DoS Writeup</summary>
+
+### [M-#] Looping through players array to check for duplicates in `PuppyRaffle::enterRaffle` is a potential denial of service (DoS) attack, incrementing gas costs for future entrants
+
+**Description:** The `PuppyRaffle::enterRaffle` function loops through the `players` array to check for duplicates. However, the longer the `PuppyRaffle:players` array is, the more checks a new player will have to make. This means the gas costs for players who enter right when the raffle starts will be dramatically lower than those who enter later. Every additional address in the `players` array is an additional check the loop will have to make.
+
+```javascript
+// @audit Dos Attack
+@> for(uint256 i = 0; i < players.length -1; i++){
+    for(uint256 j = i+1; j< players.length; j++){
+    require(players[i] != players[j],"PuppyRaffle: Duplicate Player");
+  }
 }
 ```
 
-Some Modification:
+**Impact:** The gas consts for raffle entrants will greatly increase as more players enter the raffle, discouraging later users from entering and causing a rush at the start of a raffle to be one of the first entrants in queue.
+
+An attacker might make the `PuppyRaffle:entrants` array so big that no one else enters, guaranteeing themselves the win.
+
+**Proof of Concept:**
+
+If we have 2 sets of 100 players enter, the gas costs will be as such:
+
+- 1st 100 players: ~6252048 gas
+- 2nd 100 players: ~18068138 gas
+
+This is more than 3x more expensivee for the second 100 players.
+
+<details>
+<summary>Proof of Code</summary>
 
 ```js
-mapping(address => bool) entered;
-if (entered[_address])return true;
+function testDenialOfService() public {
+      // Foundry lets us set a gas price
+      vm.txGasPrice(1);
+
+      // Creates 100 addresses
+      uint256 playersNum = 100;
+      address[] memory players = new address[](playersNum);
+      for (uint256 i = 0; i < players.length; i++) {
+          players[i] = address(i);
+      }
+
+      // Gas calculations for first 100 players
+      uint256 gasStart = gasleft();
+      puppyRaffle.enterRaffle{value: entranceFee * players.length}(players);
+      uint256 gasEnd = gasleft();
+      uint256 gasUsedFirst = (gasStart - gasEnd) * tx.gasprice;
+      console.log("Gas cost of the first 100 players: ", gasUsedFirst);
+
+      // Creats another array of 100 players
+      address[] memory playersTwo = new address[](playersNum);
+      for (uint256 i = 0; i < playersTwo.length; i++) {
+          playersTwo[i] = address(i + playersNum);
+      }
+
+      // Gas calculations for second 100 players
+      uint256 gasStartTwo = gasleft();
+      puppyRaffle.enterRaffle{value: entranceFee * players.length}(playersTwo);
+      uint256 gasEndTwo = gasleft();
+      uint256 gasUsedSecond = (gasStartTwo - gasEndTwo) * tx.gasprice;
+      console.log("Gas cost of the second 100 players: ", gasUsedSecond);
+
+      assert(gasUsedSecond > gasUsedFirst);
+  }
 ```
 
-With this mapping in place, the smart contract instantly reviews duplicates from only new players instead of traversing the whole array of players, thereby averting potential risks related to time complexity.
+</details>
+<br>
 
-![](https://cdn.videotap.com/jAgeqw0BOdnWiWPCG0Kn-86.28.png)### C. Leveraging OpenZeppelin's Enumerable Library
+**Recommended Mitigations:** There are a few recommended mitigations.
 
-Here's our last recommendation. An alternative technique could be to utilize OpenZeppelin's Enumerable library.
+1. Consider allowing duplicates. Users can make new wallet addresses anyways, so a duplicate check doesn't prevent the same person from entering multiple times, only the same wallet address.
+2. Consider using a mapping to check duplicates. This would allow you to check for duplicates in constant time, rather than linear time. You could have each raffle have a uint256 id, and the mapping would be a player address mapped to the raffle Id.
 
-```js
-import "@openzeppelin/contracts/access/Enumerable.sol";
+```diff
++    mapping(address => uint256) public addressToRaffleId;
++    uint256 public raffleId = 0;
+    .
+    .
+    .
+    function enterRaffle(address[] memory newPlayers) public payable {
+        require(msg.value == entranceFee * newPlayers.length, "PuppyRaffle: Must send enough to enter raffle");
+        for (uint256 i = 0; i < newPlayers.length; i++) {
+            players.push(newPlayers[i]);
++            addressToRaffleId[newPlayers[i]] = raffleId;
+        }
 
-contract SomeContract {
-    using Enumerable for Enumerable.Set;
-    Enumerable.Set private players;
-    // In some function…
-    // if (players.contains(_address))return true;
-    // players.add(_address);
+-        // Check for duplicates
++       // Check for duplicates only from the new players
++       for (uint256 i = 0; i < newPlayers.length; i++) {
++          require(addressToRaffleId[newPlayers[i]] != raffleId, "PuppyRaffle: Duplicate player");
++       }
+-        for (uint256 i = 0; i < players.length; i++) {
+-            for (uint256 j = i + 1; j < players.length; j++) {
+-                require(players[i] != players[j], "PuppyRaffle: Duplicate player");
+-            }
+-        }
+        emit RaffleEnter(newPlayers);
     }
+.
+.
+.
+    function selectWinner() external {
++       raffleId = raffleId + 1;
+        require(block.timestamp >= raffleStartTime + raffleDuration, "PuppyRaffle: Raffle not over");
 ```
 
-This option might be a viable solution, improving both performance and security of the protocol.
+3. Alternatively, you could use [**OpenZeppelin's EnumerableSet library**](https://docs.openzeppelin.com/contracts/4.x/api/utils#EnumerableSet).
 
-![](https://cdn.videotap.com/HGAjhb2SQjm8rllHFWci-140.61.png)## Next Steps
-
-With all these in mind, we now have a template to approach duplicate checks in smart contract codes. Though incomplete, it provides several viable options for updating the code while remaining true to the original functionality.
-
-Regardless of whichever strategy you choose to mitigate this issue, ensure your chosen solution suits your unique smart contract needs. Remember to thoroughly review all proposed changes before implementation to ensure its robustness and security. This will help in maintaining the integrity of your contracts, and by extension, the entire protocol.
+</details>
