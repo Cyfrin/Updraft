@@ -281,7 +281,7 @@ export const CourseCollection: Collection = {
           ],
           ui: {
             itemProps(item) {
-              return { label: item.title };
+              return { label: `${item.number}. ${item.title}` };
             },
           },
           list: true,
@@ -289,7 +289,7 @@ export const CourseCollection: Collection = {
       ],
       ui: {
         itemProps(item) {
-          return { label: item.title };
+          return { label: `${item.number}. ${item.title}` };
         },
       },
       list: true,
