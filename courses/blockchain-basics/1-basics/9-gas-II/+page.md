@@ -1,69 +1,71 @@
 ---
-title: Gas II
+title: Gas Part II
 ---
 
-You can follow along with this section of the course here.
+_Follow along with this video:_
 
+---
 
+### Transactions and Gas
 
-# Decoding the Essence of Blockchains: Transactions and Gas
+In this lesson we're going to take a an even closer look at `gas`, how it functions and the purpose it serves on the blockchain.
 
-Over the previous couple of blog posts, we've tried to unravel the mechanism underlying blockchains in detail. Today, the focus is on blockchain transactions and the concept of 'gas.'
+Don't stress if this topic sounds complex; gas can absolutely be a confusing topic, but the more experience you gain and more examples we go through, it'll start to become clear.
 
-Don't stress if this topic sounds complex; by the end of this post, the understanding of transactions and gas in the blockchain world will become more accessible.
+**Note:** What we're covering here is applicable to Ethereum post implementation of [**EIP-1559**](https://eips.ethereum.org/EIPS/eip-1559) wherein gas limits, priority fees and the discussed burn mechanism were all introduced.
 
-<img src="/blockchain-basics/block-fee.png" style="width: 100%; height: auto;" alt="block fee">
+### Transaction Breakdown
 
-## Back to Basics: Transaction Fee and Gas Limit
+Before we continue, there are a couple important terms to understand.
 
-To start, let's focus on a transaction's cost or its transaction fee. It's the expense incurred when performing a transaction. You can view this on Etherscan under the block base fee per gas plus the max priority fee per gas times the gas used section.
+    Wei: 1,000,000,000 Wei = 1 Gwei (Gigawei)
+    Gwei: 1000,000,000 Gwei = 1 Eth
 
-Take a close look, though. Ethereum, like other digital currencies, may govern transactions differently. It follows EIP 1559, for instance.
+<img src="../../../../static/blockchain-basics/09-gas-II/gas-II1.png" width="75%" height="auto">
 
-<img src="/blockchain-basics/set-mm-fee.png" style="width: 100%; height: auto;" alt="set mm fee">
+_Reference the above image, the labelled sections will be detailed below_
 
-If we delve deeper, we find that the transaction used gas equal to the gas limit. Now the gas limit is changeable and is the maximum gas you're willing to use up in a transaction. This limits the computation units and prevents overuse. It can be adjusted using MetaMask (or any other Ethereum wallet).
+**1. Transaction Fee:** This is calculated as Total `Gas Used * Gas Price` where `Gas Used` represents the computational units required to perform the work and `Gas Price` is comprised of a `Base` and `Priority Fee`
 
-```python
-click Send-> Advanced -> change Gas limit.
-```
+**2. Gas Limit:** This is the maximum amount of gas allowed for the transaction. This can be set by the user prior to sending a transaction.
 
-MetaMask defaults the gas to 21,000 (Base cost for transferring Ether). Also present here are the priority fee and max base fee. If the gas needed exceeds the limit set, the transaction fails.
+In Metamask, you can navigate to `Market > Advanced > Edit Gas Limit` in order to set this value.
 
-## Blockchain Jargon: Gwei and Ether
+<img src="../../../../static/blockchain-basics/09-gas-II/gas-II2.png" width="75%" height="auto">
 
-Pricing in Ethereum uses a unit called `gwei`. Unfamiliar with this term? Let me simplify it for you. Just as dollars and cents are part of the same family, Ethereum and gwei are too. Visit [Ethconverter.com](https://eth-converter.com/) to see one Ether's worth in terms of GWei.
+**3. Base Gas Fee:** The base fee of a transaction, represented in Gwei. Remember, this is cost per gas.
 
-<img src="/blockchain-basics/eth-converter.png" style="width: 100%; height: auto;" alt="set mm fee">
+There are a couple important points to note regarding the Base Fee
 
-The Max fee refers to the maximum gas fee we're ready to shell out for the transaction. It could be more than the actually paid gas price. Furthermore, the 'Max Priority Fee' accounts both for the maximum gas fee and the maximum tip given to miners.
+- The fee is burnt as of EIP-1559. Burning serves to remove the value from circulation, combating inflation on the protocol. The amount burnt can be seen beneath the `Base Fee` in the image above.
+- The fee is dynamic, under EIP-1559, if a block is more than 50% full, the `Base Gas Fee` is increased for the next block. Likewise, if a block is less then 50% full, the fee decreases. This serves to balance network demand and capacity.
 
-## Gas Burning and Transaction Fees
+**4. Max Gas Fee:** This is the maximum cost per cast the transaction has been configured to allow. This can again be configured prior to sending a transaction.
 
-With Ethereum's EIP 1559, a portion of the transaction fee is subtracted permanently from the total Ether supply, thereby 'burning' it. This eventually leads to a decrease in its circulation. The rest proceeds to miners. To tabulate the exact amount given to miners, subtract the 'burnt' fee from the total fee.
+**5. Max Priority Fee:** Again, configurable prior to sending a transaction, this represents the maximum `tip` we're willing to give miners. This incentivizes the inclusion of our transaction within a block.
 
-Each transaction type is unique, and Ethereum type 2 EIP 1559 signifies these gas fee and burning transactions.
+**6. Block Confirmations:** These are he number of blocks which have been mined or validated which have been confirmed to contain your transaction. The more confirmations the more sure we can be of the transaction's validity.
 
-<img src="/blockchain-basics/burn-fee.png" style="width: 100%; height: auto;" alt="brun fee">
+### Wrap Up
 
-Ethereum's unique base fee system changes in response to the demand for transaction inclusion. If more transactions need inclusion, the base fee rises, and vice versa. This base fee is mathematically adjusted to maintain block capacity at around 50%.
+Lets recap some of what we've learnt about transactions on the blockchain!
 
-## A Recap on Transactions
+We learnt that every transaction has a unique `transaction hash` that uniquely identifies the transaction on chain.
 
-> "Every transaction on blockchain consists of unique transaction hash, status, block number, block confirmations, gas used, gas limit, timestamp, senders and receiver's address, transaction fee and so on."
+Pulling up a transaction in a block explorer like Etherscan can provide us a tonne of additional information, including:
 
-Check the image below for a more comprehensive overview.
+- The block which contains the transaction
+- The time stamp of when the transaction was requested
+- Where the transaction is originating
+- Where the transaction is being sent
+- The value included in a transaction
 
-<img src="/blockchain-basics/gas-ii-summary.png" style="width: 100%; height: auto;" alt="gas ii summary">
+From here we can also see details about the `transactions fees` and `gas` costs.
 
-## Minutiae of Blockchains
+`Gas` is a measure of computation required to perform a task, the cost of a transaction is derived from a `Gas Price` (made of `Base` and `Priority Fees`) and the amount of `gas` used.
 
-- The unique transaction hash identifies each transaction.
-- 'Block confirmations' signify the number of blocks mined after a block's inclusion. The higher the number of confirmations, the more secure the blockchain.
-- Once the transaction is included, you can see the block and all its transactions.
-- For Ethereum transfers, input data remains blank, but for Smart Contracts, it holds crucial transaction information.
-- The State tab, for advanced users, shows state changes linked to the transaction.
+We learnt that a `Gas Limit` can be set before a transaction is set and that the `Base Fee` on all Ethereum transactions is actually `burnt`, in order to reduce inflation and stabilize the network economy.
 
-With the basics of blockchains, transactions, and gas now clearer, it's time to dive deeper into the blockchain fundamentals. Y
+We also discovered that the Base Fee goes up and down depending on the congestion of a block. If a block is >50% full, the fee goes up, <50% and the fee goes down.
 
-Now that you're all geared up with the theoretical know-how, it's time to dive into the practice! Incidentally, that's what we will be exploring in the next post. Stay tuned!
+Wow, we've learnt a lot. I think we might need a whole lesson to review everything properly. Coming up!
