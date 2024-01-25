@@ -60,7 +60,7 @@ Now, extending our `enterRaffle` functionality, we will include a check to ensur
 
 ```js
 if (s_raffleState != RaffleState.OPEN) {
-    revert Error("RaffleNotOpen");
+    revert RaffleNotOpen();
 }
 ```
 
