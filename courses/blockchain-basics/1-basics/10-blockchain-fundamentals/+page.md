@@ -10,106 +10,37 @@ _Follow along with this video:_
 
 I'll start by saying, you've done great getting his far, if at first some of these concepts are hard to grasp, things will get better with experience as we move through the course and you're exposed to real world examples.
 
-I definitely would recommend going back
-and reviewing the
-parts that you don't quite get and
-asking questions in the [**discussions tab**](https://github.com/Cyfrin/foundry-full-course-f23/discussions)
-of the GitHub repository.
+I definitely would recommend going back and reviewing the parts that you don't quite get and asking questions in the [**discussions tab**](https://github.com/Cyfrin/foundry-full-course-f23/discussions) of the GitHub repository.
 
-Now
-that we know all the cryptography pieces, how
-the blockchain actually works, how
-our signatures work and how everything
-sticks together, let's talk a little bit
-about how this works in actuality and
-what's really going on.
+Now that we know all the cryptography pieces, how the blockchain actually works, how our signatures work and how everything sticks together, let's talk a little bit about how this works in actuality and what's really going on.
 
 It's important to note that many of the concepts we've covered and will cover are going to pertain to Ethereum, or the EVM ecosystem. Each specific blockchain however, may have their own nuances and intricies to watch out for. Trust that the overarching concepts will all be the same, but keep an eye out for the specific criteria that may very from chain to chain, how blocktime is handled, or which hashing algorithm is used for example.
 
 ### Traditional Networks vs Blockchain
 
-Traditionally, when you run
-an application be it a website
-or something that connects to a server you are interacting with a
-centralized entity. This is the opposite of what you may recall from our distributed blockchain example, in that the server is controlled and run by a single centralized group.
+Traditionally, when you run an application be it a website or something that connects to a server you are interacting with a centralized entity. This is the opposite of what you may recall from our distributed blockchain example, in that the server is controlled and run by a single centralized group.
 
-Blockchains, as we saw, run on a
-network of independent nodes. In our previous example, each of the `Peers` was representative of an independent `node` operator. The term `node` typically refers to a single instance of a decentralized system, Peer A would be a `node`.
+Blockchains, as we saw, run on a network of independent nodes. In our previous example, each of the `Peers` was representative of an independent `node` operator. The term `node` typically refers to a single instance of a decentralized system, Peer A would be a `node`. This network, this combination of these nodes interacting with each other is what creates a blockchain. What makes these networks so potent, is that anybody can join. All anyone needs is a little bit a hardward and you can participate in securing a blockchain network. You could go to GitHub and start operating a node in a few seconds!
 
-This network, this combination of
-these nodes interacting with each other is what creates a blockchain. What
-makes these networks so potent, is that
-anybody can join. All anyone needs is a little bit a hardward and you can participate in securing a blockchain network. You could go to GitHub and start operating a node in a few seconds!
+In the traditional world applications are run by centralized entities and if that entity goes down or is malicious or decides that they want to shut off - they just can. They're the ones that control everything.
 
-In the traditional world
-applications are run by centralized
-entities and if that entity goes down or
-is malicious or decides that
-they want to shut off - they just can.
-They're the ones that control
-everything.
+Blockchains, by contrast, don't have this problem. If one node or one entity that runs several nodes goes down, since there are so many other independent nodes running, it doesn't matter, the blockchain and the system will persist so long as there is at least one node always running. Luckily for us, the most popular chains like Bitcoin and ethereum have thousands and thousands of nodes. Malicious nodes are kicked from the network, or even punished in some cases. Majority rules when it comes to the blockchain.
 
-Blockchains, by contrast, don't
-have this problem. If one node or one
-entity that runs several nodes goes down,
-since there are so many other
-independent nodes running, it
-doesn't matter, the blockchain and the
-system will persist so long as there is
-at least one node always running. Luckily for us, the most
-popular chains like Bitcoin and ethereum
-have thousands and thousands of nodes. Malicious nodes are kicked from the network, or even punished in some cases. Majority
-rules when it comes to the blockchain.
-
-This gives
-blockchains this incredibly potent
-immutability trait where nothing can be
-changed or corrupted so in essence we
-can think of a blockchain as a
-decentralized database. In the case of Ethereum
-it has an extra additional feature where
-it also can do computation in a
-decentralized manner now.
+This gives blockchains this incredibly potent immutability trait where nothing can be changed or corrupted so in essence we can think of a blockchain as a decentralized database. In the case of Ethereum it has an extra additional feature where it also can do computation in a decentralized manner now.
 
 ### Consensus
 
-Let's talk
-consensus. This includes `Proof of Work` and `Proof of
-Stake`. You've probably heard
-these terms before and they're really
-important to how these blockchains
-work.
+Let's talk consensus. This includes `Proof of Work` and `Proof of Stake`. You've probably heard these terms before and they're really important to how these blockchains work.
 
 The `mining` feature of our previous blockchain example was an example of `Proof of Work`
 
-`Proof of Work` and `Proof of
-Stake` fall under this umbrella of
-`consensus` and `consensus` is a really
-important topic when it comes to
-blockchains.
+`Proof of Work` and `Proof of Stake` fall under this umbrella of `consensus` and `consensus` is a really important topic when it comes to blockchains.
 
-> `Consensus` is defined as the
-> mechanism used to reach an agreement on
-> the state or a single value on the
-> blockchain especially in a decentralized
-> system.
+> `Consensus` is defined as the mechanism used to reach an agreement on the state or a single value on the blockchain especially in a decentralized system.
 
-Very roughly, a consensus protocol in
-a blockchain or decentralized system can
-be broken down into two pieces a chain
-selection algorithm and a sybil
-resistance mechanism. Mining, or Proof of Work, is a sybil resistance mechanism. This is
-what Bitcoin currently uses.
+Very roughly, a consensus protocol in a blockchain or decentralized system can be broken down into two pieces a chain selection algorithm and a sybil resistance mechanism. Mining, or Proof of Work, is a sybil resistance mechanism. This is what Bitcoin currently uses.
 
-`Proof of Work` is known as a sybil
-resistance mechanism because it defines
-a way to figure out who is the block
-author or which node did the work to mine a block. Sybil resistance is a
-blockchain's ability to defend against
-users creating a large number of
-pseudo-anonymous identities to gain a
-disproportionately advantageous
-influence over said system.
+`Proof of Work` is known as a sybil resistance mechanism because it defines a way to figure out who is the block author or which node did the work to mine a block. Sybil resistance is a blockchain's ability to defend against users creating a large number of pseudo-anonymous identities to gain a disproportionately advantageous influence over said system.
 
 As mentioned, there are two primary types of sybil resistance:
 
