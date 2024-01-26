@@ -4,7 +4,12 @@ on:
   pull_request:
     paths:
       - '**/*.md'
-
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - '**/*.md'
 jobs:
   update-json:
     runs-on: ubuntu-latest
