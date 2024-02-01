@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 # Unveiling Invariance and DeFi in Security Auditing: An Interactive Exploration
 
-Happy to have you back in the exciting world of Security and Auditing. So, you’ve made it through the delightful puppy raffle, you have ideally signed up for Codeox and might have sprung into your first few flights or even explored a contest. That's awesome! You'd certainly be exuding more confidence about your security and auditing journey. But there's a lot more to unfold and absorb.
+Happy to have you back in the exciting world of Security and Auditing. So, you’ve made it through the delightful puppy raffle, you have ideally signed up for CodeHawks and might have sprung into your first few flights or even explored a contest. That's awesome! You'd certainly be exuding more confidence about your security and auditing journey. But there's a lot more to unfold and absorb.
 
 ## Entering Section Five: Invariance and Introduction to DFI T-SWAP Audit
 
