@@ -66,14 +66,20 @@ Our content is structured as follows:
 
 - `courses/`
   - `course_name/`
-    - `lesson_name/`
-      - `lesson_content.md`
+    - `section_name/`
+       - `lesson_name/`
+          - `lesson_content.md`
 
-Each course is contained within its own directory, and within each course, you will find directories for each lesson, which contain a Markdown file (.md) with the lesson's content.
+Each course is contained within its directory, and for each course, you will find directories for each lesson, which contain a Markdown file (.md) with the lesson's content.
 
 ## How to Contribute
 
-We deeply value community contributions, whether it's correcting typos, enhancing code snippets, or refining our educational content. Here's how you can contribute:
+We deeply value every kind of community contribution:
+- Correcting typos or subtitles
+- Enhancing code snippets
+- Refining our educational content
+
+Here's how you can contribute:
 
 ### Prerequisites
 
@@ -114,7 +120,7 @@ We deeply value community contributions, whether it's correcting typos, enhancin
 
 7. **Create a Pull Request (PR):** Go to the original Cyfrin Updraft repository on GitHub and create a pull request from your forked repository. In your PR, explain the changes you've made and why they're beneficial.
 
-8. **Await Review:** Your PR will be reviewed by the Cyfrin team or community maintainers. Be responsive to any feedback or requested changes.
+8. **Await Review:** The Cyfrin team or community maintainers will review your PR. Be responsive to any feedback or requested changes.
 
 ### Best Practices for Contribution
 
@@ -139,7 +145,7 @@ This project exists thanks to all the people who contribute.<br>
 
 ## License
 
-Cyfrin Updraft content is open sourced [licensed as GPLv3](https://github.com/cyfrin/updraft/blob/main/LICENSE).
+Cyfrin Updraft content is open-sourced [licensed as GPLv3](https://github.com/cyfrin/updraft/blob/main/LICENSE).
 
 
 [![Cyfrin Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/cyfrinupdraft)
