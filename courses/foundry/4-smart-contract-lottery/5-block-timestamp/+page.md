@@ -29,7 +29,7 @@ Let's dive right into how we can achieve this. Initially, let's focus on the fir
 To create an `external` function that anyone could call to select a random winner, we'd probably want the winner selection to happen when the lottery is ready for its winner. So, how do we know when that time is right? We make sure that enough time has elapsed to pick a winner.
 
 ```js
-public function pickWinner() external {}
+function pickWinner() external {}
 ```
 
 We'd achieve this by creating an `interval` variable, specifying how long our lottery will last before a winner is selected. However, since we wouldn't want to keep changing this value, we'll make it an `immutable` variable, meaning it can only be set in the constructor and remains constant throughout the contract's life.
