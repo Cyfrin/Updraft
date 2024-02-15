@@ -1,0 +1,16 @@
+{
+  "courseId": "randomcourseid123",
+  "slug": "fullstack-course",
+  "createdAt": "2024-02-15T05:00:00.000Z",
+  "updatedAt": "2024-02-15T07:34:52.103Z",
+  "title": "New Fullstack Course!",
+  "githubUrl": "https://github.com",
+  "previewImg": "https://res.cloudinary.com/droqoz7lg/image/upload/v1707978770/c_je0rkv.png",
+  "duration": 35,
+  "description": "Here is a description for the new fullstack web3 course that Cyfrin Updraft is releasing. ",
+  "authors": [
+    {
+      "author": "content/authors/patrick-collins.json"
+    }
+  ]
+}
