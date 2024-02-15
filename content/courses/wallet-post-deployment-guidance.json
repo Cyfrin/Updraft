@@ -2,7 +2,7 @@
   "courseId": "wallet-and-deployment",
   "slug": "wallet-and-deployment",
   "createdAt": "2024-02-15T05:00:00.000Z",
-  "updatedAt": "2024-02-15T17:40:24.208Z",
+  "updatedAt": "2024-02-15T17:40:36.495Z",
   "title": "Wallet & Post-Deployment",
   "path": "content/learning-paths/solidity-developer.json",
   "githubUrl": "https://github.com/Cyfrin/foundry-full-course-f23",
@@ -16,5 +16,10 @@
       "2. You've used a blockchain wallet before ",
       "3. (optional, but preferred) You've completed the security & auditing course on Cyfrin Updraft "
     ]
-  }
+  },
+  "authors": [
+    {
+      "author": "content/authors/patrick-collins.json"
+    }
+  ]
 }
