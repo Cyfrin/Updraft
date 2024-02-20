@@ -2,7 +2,7 @@
   "courseId": "assembly-opcodes-formal-verification",
   "slug": "assembly-opcodes-formal-verification",
   "createdAt": "2024-02-20T05:00:00.000Z",
-  "updatedAt": "2024-02-20T23:03:35.656Z",
+  "updatedAt": "2024-02-20T23:04:02.499Z",
   "title": "Assembly, EVM Opcodes, and Formal Verification",
   "path": "content/learning-paths/solidity-developer.json",
   "githubUrl": "https://github.com/Cyfrin/assembly-evm-opcodes-and-formal-verification-course",
@@ -16,5 +16,10 @@
       "Preferred: The [Security and Auditing Course](https://updraft.cyfrin.io/courses/security) completed",
       "Nice to have: Advanced Foundry Skills "
     ]
-  }
+  },
+  "authors": [
+    {
+      "author": "content/authors/patrick-collins.json"
+    }
+  ]
 }
