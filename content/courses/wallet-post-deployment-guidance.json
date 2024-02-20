@@ -2,7 +2,7 @@
   "courseId": "wallet-and-deployment",
   "slug": "wallet-and-deployment",
   "createdAt": "2024-02-15T05:00:00.000Z",
-  "updatedAt": "2024-02-20T16:29:49.567Z",
+  "updatedAt": "2024-02-20T16:45:40.296Z",
   "title": "Wallet & Post-Deployment",
   "path": "content/learning-paths/solidity-developer.json",
   "githubUrl": "https://github.com/Cyfrin/foundry-full-course-f23",
@@ -37,7 +37,7 @@
           "description": "We will go over what to expect from this course. ",
           "duration": 10,
           "videoUrl": "jv9up9fhEPfv2wWrK4Unv01xYQMzmPRxGQXZG72fu4zg",
-          "rawMarkdownUrl": "https://github.com/Cyfrin/foundry-full-course-f23",
+          "rawMarkdownUrl": "",
           "markdownContent": "Test test test\n\nTest test test\n\nTest test test\n\nTest test test\n"
         }
       ]
