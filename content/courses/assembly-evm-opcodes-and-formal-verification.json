@@ -2,7 +2,7 @@
   "courseId": "assembly-opcodes-formal-verification",
   "slug": "assembly-opcodes-formal-verification",
   "createdAt": "2024-02-20T05:00:00.000Z",
-  "updatedAt": "2024-02-20T23:08:18.324Z",
+  "updatedAt": "2024-02-20T23:08:54.534Z",
   "title": "Assembly, EVM Opcodes, and Formal Verification",
   "path": "content/learning-paths/solidity-developer.json",
   "githubUrl": "https://github.com/Cyfrin/assembly-evm-opcodes-and-formal-verification-course",
@@ -36,6 +36,7 @@
           "title": "Assembly, EVM Opcodes, and Formal Verification | Welcome!",
           "description": "Welcome to the course! ",
           "duration": 1,
+          "videoUrl": "jv9up9fhEPfv2wWrK4Unv01xYQMzmPRxGQXZG72fu4zg",
           "markdownContent": "\\## Why EVM, Opcodes, and Formal Verification?\n\n* Become a top 1% smart contract developer\n* Understand exactly why certain gas optimizations work\n* Become a top 1% smart contract security researcher\n* Learn how to decompile smart contracts\n* Learn how to write in Huff and Yul low-level EVM languages \n* Learn how to formally verify smart contracts - PROVE that a bug does not exist for specific invariants! \n\n\\## Best Practices \n\n  \\- Register for \\[Cyfrin Updraft]\\(https\\://updraft.cyfrin.io/)\n\n    \\- USE THIS SITE!!! It's specfically made to make learning easier\n\n  \\- \\*\\*Follow the repository:\\*\\* While going through the course be 100% certain to follow along with the github repository. If you run into in an issue check the chronological-updates in the repo.\n\n  \\- \\*\\*Be Active in the community:\\*\\* Ask questions and engage with other developers going through the course in the discussions tab, be sure to go and say hello or gm! This space is different from the other industries, you don't have to be secretive; communicate, network and learn with others :)\n\n  \\- \\*\\*Learn at your own pace:\\*\\* It doesn't matter if it takes you a day, a week, a month or even a year. Progress >>> Perfection\n\n  \\- \\*\\*Take Breaks:\\*\\* You will exhaust your mind and recall less if you go all out and watch the entire course in one sitting. \n\n    \\*\\*Suggested Strategy\\*\\* every 25 minutes take a 5 min break, and every 2 hours take a longer 30 min break\n\n  \\- \\*\\*Refer to Documentation:\\*\\* Things are constantly being updated, so whenever Patrick opens up some documentation, open it your end and maybe even have the code sample next to you.\n\n  \\- \\*\\*Use ChatGPT and/or the course chat\\*\\*\n"
         }
       ]
