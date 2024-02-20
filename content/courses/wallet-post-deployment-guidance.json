@@ -2,7 +2,7 @@
   "courseId": "wallet-and-deployment",
   "slug": "wallet-and-deployment",
   "createdAt": "2024-02-15T05:00:00.000Z",
-  "updatedAt": "2024-02-20T16:45:40.296Z",
+  "updatedAt": "2024-02-20T16:45:50.548Z",
   "title": "Wallet & Post-Deployment",
   "path": "content/learning-paths/solidity-developer.json",
   "githubUrl": "https://github.com/Cyfrin/foundry-full-course-f23",
@@ -30,7 +30,7 @@
       "title": "Wallet & Key Management",
       "lessons": [
         {
-          "lessonId": "12323231312xzczx",
+          "lessonId": "wallets-introduction",
           "number": 1,
           "slug": "wallets-introduction",
           "title": "Introduction",
