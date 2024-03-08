@@ -6,53 +6,69 @@ _Follow along with this video:_
 
 ---
 
-## Previewing Your First Write-Up
+### Our Finding Report
 
-<img src="/security-section-3/18-writeup/writeup1.png" style="width: 100%; height: auto;">
+<details closed>
+<summary>Finding Report</summary>
 
-The only thing that's missing is the severity, but don't worry, we'll come back to that a little later. For now, let's go over the structure and content of your initial write-up.
+### [S-#] Storing the password on-chain makes it visible to anyone and no longer private
+
+**Description:** All data stored on chain is public and visible to anyone. The `PasswordStore::s_password` variable is intended to be hidden and only accessible by the owner through the `PasswordStore::getPassword` function.
+
+I show one such method of reading any data off chain below.
+
+**Impact:** Anyone is able to read the private password, severaly breaking the functionality of the protocol.
+
+**Proof of Concept:** The below test case shows how anyone could read the password directly from the blockchain. We use foundry's cast tool to read directly from the storage of the contract, without being the owner.
+
+Create a locally running chain
+
+    make anvil
+
+Deploy the contract to the chain
+
+    make deploy
+
+Run the storage tool
+
+    cast storage <ADDRESS_HERE> 1 --rpc-url http://127.0.0.1:8545
+
+_We use 1 because that's the storage slot of `PasswordStore::s_password`._
+
+You'll get an output that looks like this:
+
+    0x6d7950617373776f726400000000000000000000000000000000000000000014
+
+You can then parse that hex to a string with:
+
+    cast parse-bytes32-string 0x6d7950617373776f726400000000000000000000000000000000000000000014
+
+And get an output of:
+
+    myPassword
+
+**Recommended Mitigation:** Due to this, the overall architecture of the contract should be rethought. One could encrypt the password off-chain, and then store the encrypted password on-chain. This would require the user to remember another password off-chain to decrypt the stored password. However, you're also likely want to remove the view function as you wouldn't want the user to accidentally send a transaction with this decryption key.
+
+</details>
+
+---
+
+### Recap
+
+Our finding report looks great. All we're missing is the severity (`[S-#]`), but we'll get to that shortly. Let's recap some of the important aspects we went over while compiling this report.
 
 ### The Write-Up Structure
 
-1. **Title**: It's hard-hitting and to the point. For example, "Storing the password on-chain leads to privacy breach."
-2. **Severity Status**: This is currently absent but we'll come back to it.
-3. **Root Cause**: The title explains the bug's root cause — the password storage on-chain is visible to anyone, which is a significant privacy issue.
-4. **Impact**: It highlights the considerable ramifications — that the password isn't private anymore.
-5. **Description**: This is a brief explanation of the problem, widely enhanced by using markdown.
-6. **Proof of Code**: It explains how anyone, with available tools, could exploit this particular vulnerability.
-7. **Recommended Mitigation**: A practical mitigation is suggested, such as encrypting the password off-chain and storing the encrypted password on-chain.
+1. **Title**: A title should be succinct and clear. A best practice is to adhere to the `Root Cause + Impact` rule of thumb.
 
-While it may feel provocative to suggest ditching the whole protocol, we'd like to keep things constructive, offering more context or solutions where possible. Our goal is to educate developers on securing their smart contracts better.
+2. **Description**: This is a brief explanation of the problem, widely enhanced by using markdown and clear naming conventions for our variables.
 
-With this first issue sorted, you might want to delete it, or keep it for reference — it's up to you.
+3. **Impact**: The impact should be clear and concise in how, in plain language, is describes the affects the vulnerability has on the protocol.
 
-_For brevity, let's move on to the next issue we spotted: missing access control._
+4. **Proof of Code**: A vital part of a good report, this section proves how someone could exploit the detailed vulnerability by walking through the process programmatically.
 
-## Identifying the Next Issue: Missing Access Control
+5. **Recommended Mitigation**: This is where our expertise shines. Our focus in the recommendation should be in making the protocol more secure, advising specific changes or considerations that should be made to mitigate the reported vulnerability and adding value by offering solutions instead of just pointing out problems.
 
-The 'Set Password' function can be accessed by anyone, whereas it should only be callable by the owner.
+### Wrap Up
 
-### Adding a New Finding
-
-We'll follow the previous finding's format. Here we'll begin with identifying the root cause: the 'Set Password' function in the 'Password Store' has no access controls. The impact? A non-owner could change the password.
-
-### Crafting the Description
-
-Here's the description I penned:
-
-```
-The 'Password Store' 'Set Password' function is an external function. However, the 'nat_spec' of the function and the purpose of the smart contract is that only the owner should set a new password.
-```
-
-Adding the flawed code segment can be helpful, as it equips readers with a clear visualization of the issue. To do this:
-
-1. Use three backticks to start a code block.
-2. Then write the language that you're using for syntax highlighting — in this case, JavaScript.
-
-The comments explicitly mention the problematic section, making it easier for others to spot the issue. This step enhances the markdown view and provides better readability.
-
-### Highlighting the Impact
-
-Finally, the impact explanation underscores the problem's gravity, emphasizing that the flaw allows anyone to set or change the contract's password, grossly violating intended functionality.
-
-Stay tuned for the next installment, where we probe further into smart contract vulnerabilities. Happy auditing!
+Our report looks awesome, but there's more to do. No stopping now, let's dive into our `Access Control` finding as see what a finding report for it would look like. This shouldn't take long, we're practically experts already.

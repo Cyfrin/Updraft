@@ -4,82 +4,106 @@ title: Mishandling of Eth - Minimized
 
 _Follow along with this video:_
 
-## 
-
 ---
 
-# Exposing the Mishandling of Ethereum: A Deeper Dive into Smart Contract Exploits
+### Mishandling of Eth
 
-Hello Ethereum enthusiasts, today's post is a deep dive into understanding risk and vulnerabilities associated with Ethereum, specifically the mishandling of Ethereum or ETH.
+To see this vulnerability in action we're going to again reference our [**sc-exploits-minimized**](https://github.com/Cyfrin/sc-exploits-minimized) repo!
 
-We'll walk through the exploration of a particular codebase we've frequently returned to - our sc-exploits-repository. Follow along as we explore and expose exploits related to the mishandling of ETH.
+There are two situational examples available for `Mishandling of Eth` for this lesson we want [**Remix (Vulnerable to selfdestruct)**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/mishandling-of-eth/SelfDestructMe.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js).
 
-> Be sure to have this repository on your bookmarks to facilitate easy navigation.
+> Remember: The codebase is available on the [**sc-exploits-minimized**](https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/mishandling-of-eth/SelfDestructMe.sol) repo as well, if you want to test things locally.
 
-## The Importance of Understanding ETH Breaches
+### Remix Example
 
-The constant evolution and expansion of blockchain technology mean the occurrence of exploitations. In our sc-exploits-repository, notable examples of ETH mishandling have been categorized. Today we will look at a particular exploit - 'Vulnerable to Self Destruct'.
+We've done this a few times, so we should be familiar with the process - go ahead and compile our `SelfDestructMe.sol` contract and deploy.
 
-![](https://cdn.videotap.com/9K1a9GtnKi7ohaku3tCP-47.6.png)
+You'll likely be met with this message, `selfdestruct` is being heavily considered for deprecation, but for now this vulnerability still exists, so we can ignore this message for now.
 
-[Mishandling of Eth Repo](https://github.com/Cyfrin/sc-exploits-minimized/tree/main/src/mishandling-of-eth)
+<img src="/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized1.png" style="width: 50%; height: auto;">
 
-For those who have difficulty in retrieving the codebase in remix, the code can be found right at the repository. Head to the top source and copy-paste the code into remix.
-
-## Analysing the Contract
-
-The contract's primary function is to allow users to deposit their money and withdraw it later. There are several key factors to note:
-
-1. The variable **total deposits**
-2. A **mapping for deposits**
-3. A **deposit** function
-4. A **withdrawal function**
-
-Total deposits variable and deposit function add and keep track of the value sent (in ETH) into the contract by the sender. The withdrawal function then allows for the removal of an amount set by the user from the account.
+<details>
+<summary>SelfDestructMe.sol</summary>
 
 ```js
-function withdraw() public payable {
-    require(msg.value >= 1 ether);
-    totalDeposits = totalDeposits - msg.value;
+contract SelfDestructMe {
+    uint256 public totalDeposits;
+    mapping(address => uint256) public deposits;
+
+    function deposit() external payable {
+        deposits[msg.sender] += msg.value;
+        totalDeposits += msg.value;
     }
+
+    function withdraw() external {
+        /*
+            Apparently the only way to deposit ETH in the contract is via the `deposit` function.
+            If that were the case, this strict equality would always hold.
+            But anyone can deposit ETH via selfdestruct, or by setting this contract as the target
+            of a beacon chain withdrawal.
+            (see last paragraph of this section
+            https://eth2book.info/capella/part2/deposits-withdrawals/withdrawal-processing/#performing-withdrawals),
+            regardless of the contract not having a `receive` function.
+
+            If anybody deposits ETH that way, then the equality breaks and the contract is DoS'd.
+            To fix it, the code could be changed to >= instead of ==. Which means that the available
+            ETH balance should be _at least_ `totalDeposits`, which makes more sense.
+        */
+        assert(address(this).balance == totalDeposits); // bad
+
+        uint256 amount = deposits[msg.sender];
+        totalDeposits -= amount;
+        deposits[msg.sender] = 0;
+
+        payable(msg.sender).transfer(amount);
+    }
+}
 ```
 
-To ensure proper functioning, we have implemented an _assertion_ that checks that the address's balance is equivalent to the total deposits. This way, we know that accounting is done correctly inside the contract.
+</details>
+<br>
 
-However, we soon bump into a significant issue.
+`SelfDestructMe.sol` is a fairly straightforward contract at a glance, experiment with the basic functions of the contract as you wish.
 
-## The Self-destruct Dichotomy
+A user is able to deposit funds, which updates their balance as well as the `totalDeposits` variable. A user can also call `withdraw`, this function checks that the contract's balance is still equal to the `totalDeposits` and if so will updates balances and transfer funds.
 
-This issue arises on a relatively innocuous line - the self-destruct command. You may think that this function's straightforward task could not possibly harm the contract. However, in practice, this command can introduce a considerable vulnerability.
+I've deposited 1 Ether to the contract, here.
+
+<img src="/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized2.png" style="width: 50%; height: auto;">
+
+The issue comes from this line:
 
 ```js
-function selfdestruct() public onlyOwner {
-    selfdestruct(owner);
-    }
+assert(address(this).balance == totalDeposits);
 ```
 
-For your information, sending ETH directly to the contract will typically fail. This failure occurs because smart contracts must have a designated `receive` or `payable` function to accept ETH, providing an essential security mechanism.
+The core of this vulnerability is the assumption that, without a `receive` or `fallback` function, the only way to send value to this contract is through the deposit function.
 
-Yet, this is where self-destruct proves to be a sword that cuts both ways. On the surface, self-destruct comes across as a necessary destruct function to delete contracts. Yet, it also transforms the contract into a potential target to force money (ETH) into, even bypassing regular checks and balances.
+This is **_false_**.
 
-## Misusing the Self Destruct Function
+Go ahead and deploy the `AttackSelfDestructMe.sol` contract. The constructor requires an attack target, so be sure to copy the address for `SelfDestructMe.sol` and pass it to your deploy. Give the contract a balance during deployment as well.
 
-To demonstrate this, let's visualize a scenario:
+<img src="/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized3.png" style="width: 50%; height: auto;">
 
-1. We deploy `SelfDestructMe` with one ETH.
-2. We then copy the target contract as the target and deploy `AttackSelfDestructMe`.
-3. We initiate the attack by sending one more ETH.
+Now, when the attack function is called, `selfdestruct` will be triggered, and we expect to see our 5 Ether forced onto `SelfDestructMe.sol`.
 
-![](https://cdn.videotap.com/gFO4YKELZcnyna0BEy0X-273.7.png)
+And, that's exactly what we see:
 
-In this scenario, the balance of ETH in the contract doubles, thereby defying the assertion that checks for equivalent balance with total deposits. As a direct consequence, this acts as a bug that blocks further withdrawals, resulting in a dysfunctional state.
+<img src="/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized4.png" style="width: 50%; height: auto;">
 
-Jeopardizing the withdrawal ability is significantly perilous as a contract's naturality lies in the inflow and outflow of money. The bug forces money into the contract, leading to the demise of the contract.
+Lastly, try calling the `withdraw` function on `SelfDestructMe.sol`. It reverts! The contract's accounting has been broken and it's balance is now stuck!
 
-## Recap and Additional Resources
+<img src="/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized5.png" style="width: 75%; height: auto;">
 
-To recap, the equation of the address balance equates to total fees, an internal audit, and ETH mishandling can result in a mishap on smart contracts. Such mishandling could be disastrous on withdrawal functionality, hindering users from recovering their investments.
+### Wrap Up
 
-In the sc-exploits-repository, a test case has been provided to examine and understand it further. Moreover, there is another example of ETH mishandling that you can explore. We recommend using the code examples in the [repository](https://github.com/Cyfrin/sc-exploits-minimized/tree/main/src/mishandling-of-eth) to learn more about this subject.
+We've illustrated how relying on a contract's balance as a means of internal counting can be risky. There's really no way to be certain that arbitrary value isn't sent to a contract currenty.
 
-Just as any coin has two sides, Ethereum too has pros and cons. Hence it's recommended to exercise caution when deploying contracts involving significant amounts of ETH. Happy coding!
+As I'd mentioned previously, the concept of `Mishandling Eth` is a broad one. Our sc-exploits-minimized repo outlines another common scenario (push over pull) that I encourage you to look at, as we won't go over it here.
+
+Ultimately, this is another finding for sure - let's make note of it.
+
+```js
+// @Audit: Mishandling Eth
+function withdraw() external {...}
+```

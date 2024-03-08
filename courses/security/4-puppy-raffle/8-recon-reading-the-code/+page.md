@@ -4,65 +4,75 @@ title: Recon - Reading the Code
 
 _Follow along with this video:_
 
-## 
-
 ---
 
-# Deep Dive into Codebase: Unraveling the Main Entry Point and More
+### Starting with the Code
 
-Welcome everyone! Today we're embarking on an insightful journey through an intriguing codebase. What's truly exciting about this voyage is that we'll be starting from the main entry point of the protocol. This approach offers a thrilling way to understand the critical functions and operations that govern the system.
+What I like to do when first assessing a codebase is to start at the `main entry point`. Sometimes this area of a protocol may be a little unclear, but using Solidity: Metrics can help us out a lot.
 
-## Locating the Main Entry Point
+<img src="../../../../static/security-section-4/7-recon-reading-docs/reading-docs2.png" style="width: 75%; height: auto;">
 
-The adventure starts with a bird's-eye-view of the codebase. This 'quick skim' gives me an idea of the overall landscape. However, identifying the best point of entry can be tough if you don't know where to look.
+Pay special attention to the functions marked `public` or `external`. Especially those which `modify state` or are `payable`. These are going to be certain potential attack vectors.
 
-Here is where Solidity Metrics comes in handy. If you scroll all the way down to the bottom, you'll see **Contract Summary** that lists down the public and external functions.
+> **Note:** In Foundry you can use the command `forge inspect PuppyRaffle methods` to receive an output of methods for the contract.
 
-![](https://cdn.videotap.com/iZyEcW0QPu9UkA6c5Xlf-36.03.png)Alternatively, for forge projects, run the following command:
+I would start with the `enterRaffle` function. Let's take a look.
 
-```bash
-forge inspect PuppyRaffle methods
+```js
+/// @notice this is how players enter the raffle
+/// @notice they have to pay the entrance fee * the number of players
+/// @notice duplicate entrants are not allowed
+/// @param newPlayers the list of players to enter the raffle
+function enterRaffle(address[] memory newPlayers) public payable {
+    require(msg.value == entranceFee * newPlayers.length, "PuppyRaffle: Must send enough to enter raffle");
+    for (uint256 i = 0; i < newPlayers.length; i++) {
+        players.push(newPlayers[i]);
+    }
+
+    // Check for duplicates
+    for (uint256 i = 0; i < players.length - 1; i++) {
+        for (uint256 j = i + 1; j < players.length; j++) {
+            require(players[i] != players[j], "PuppyRaffle: Duplicate player");
+        }
+    }
+    emit RaffleEnter(newPlayers);
+}
 ```
 
-This command will print a list of methods you can check out.
+Starting with the `NatSpec` we may have a few questions rise.
 
-![](https://cdn.videotap.com/O4YijeMcS1T44HRm1v5c-72.06.png)Some of the core functions that I focus on include public functions such as `enterRaffle`, `refund`, and external functions like `selectWinners`. These are especially fascinating if they modify any state.
+- _What's meant by # of players?_
+- _How does the function prevent duplicant entrants?_
 
-## Zooming In: The `enterRaffle` Function
+Write questions like these in your `notes.md` or even as `@audit` notes inline. These are things we'll want to answer as we progress through the code.
 
-For this project, I identify `enterRaffle` as a possible main entry point. It's a decisive function that gives users access to participate in the raffle.
+###
 
-Interestingly, the code documentation explains that the user entry into the raffle involves paying the entrance fee, multiplied by the number of players. This bit can be slightly confusing, so I'm gonna clarify it for you.
+One thing I notice in our next few lines is - I don't really love their naming conventions. `entranceFee` is immutable and nothing in this function makes that clear to me (unless I'm using [**Solidity Visual Developer**](https://marketplace.visualstudio.com/items?itemName=tintinweb.solidity-visual-auditor)).
 
-We see `address[] memory new_players` in the parameters. This suggests that a user has to pay the entrance fee times the `number of players`. If this seems perplexing, just remember to ask questions or make a note for further investigation.
+Were this a private audit, I may start an `Informational` section in my `notes.md`.
 
-Furthermore, the documentation highlights that **duplicate entries are not allowed**. We can expect to see validation for this in the `enterRaffle` function.
+```
+## About
 
-### Clearer Variable Naming
+> The project allows users to enter a raffle to win a dog NFT.
 
-Now, the `enterRaffle` function's syntax doesn’t sit right with me.
+## Informational
 
-```javascript
-function enterRaffle(address[] memory new_players)
+`PuppyRaffle::entranceFee` is immutable and should follow a more clear naming convention
+
+    ie. `i_entranceFee` or `ENTRANCE_FEE`
 ```
 
-In case I was conducting a private audit, I'd note that variable names in this function could be more expressive. This critique is mainly based on `entrance_fee`which is an Immutable variable. A `I_` prefix before `entrance_fee` would provide better clarity, suggesting that it is immutable. Alternatively, another syntax could be used to indicate the immutability of `entrance_fee`.
+> **Pro-tip:** In VS Code you can use these keyboard shortcuts to navigate between previous and next cursor positions:
+>
+> - Windows: `Alt + Left/Right Arrow`
+> - Mac:
+>   - Previous - `Control + '-'`
+>   - Next - `Control + Shift + '-'`
 
-**Note:** If you are using Solidity Visual Developer, such states are pretty palpable.
+### Wrap Up
 
-### Navigating Around Codebase with Keyboard Shortcuts
+We're going to be bouncing between `Recon` and `Vulnerability` phases a bit in the Puppy Raffle review. Sometimes the lines can be a little blurry, but you'll find a workflow that works well for you with time and experience.
 
-Quick tip for Mac users to zip through the codebase. Using the keyboard shortcuts come really handy in swiftly moving forward and backward through the code-files.
-
-For instance, click `entrance_fee`, scroll down, click something else, and then hit `CTRL -`. This combo works like 'The Back Button' - bobbing you right back to your last cursor location.
-
-- `CTRL -` = Go Back
-- `CTRL+Shift -` = Go Forward
-
-These shortcuts dramatically speed up your code navigation, making life a bit easier. Various text editors like Vim, VI or Emacs offer great support for such keyboard shortcuts.
-
-This quick skim up until here should arm you with some pointers when embarking on a code audit or simply understanding a new codebase. In our next session, I'll delve into more details about the `enterRaffle` function, but until then, Happy Coding!
-
-```markdown
-> "When in doubt, break things down!"> - Your tactical guide to navigating complex codebases.
-```
+Let's go back to the code.

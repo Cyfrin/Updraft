@@ -22,7 +22,7 @@
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 
 <div align="center">
-<h1 align="center"><a href='https://createweb3dapp.alchemy.com/'>Cyfrin Updraft</a> </h1>
+<h1 align="center"><a href='https://updraft.cyfrin.io/'>Cyfrin Updraft</a> </h1>
 
 
 <p align="center"><strong>The ultimate learning platform for web3 developers
@@ -45,18 +45,18 @@
 Welcome to the official GitHub repository for Cyfrin Updraft. This repository houses the written content of our courses, organized to facilitate easy access and contribution from our community.
 Please refer to this for an in depth explanation of the content:
 
--   [Website](https://createweb3dapp.alchemy.com) - Join Cyfrin Updraft and enjoy 50+ hours of smart contract development courses
--   [Twitter](https://github.com/alchemyplatform/create-web3-dapp) - Stay updated with the latest course releases
--   [LinkedIn](https://createweb3dapp.alchemy.com/#templates) - Add Updraft to your learning experiences
--   [Discord](https://createweb3dapp.alchemy.com/#components) - Join a community of 3000+ developers and auditors
--   [Newsletter](https://github.com/alchemyplatform/create-web3-dapp-examples) - Weekly security research tips and resources to level up your career
--   [Codehawks](https://github.com/alchemyplatform/create-web3-dapp-examples) - Smart contracts auditing competitions to help securing web3
+-   [Website](https://updraft.cyfrin.io/) - Join Cyfrin Updraft and enjoy 50+ hours of smart contract development courses
+-   [Twitter](https://twitter.com/CyfrinUpdraft/) - Stay updated with the latest course releases
+-   [LinkedIn](https://www.linkedin.com/school/cyfrin-updraft/) - Add Updraft to your learning experiences
+-   [Discord](https://discord.gg/cyfrin) - Join a community of 3000+ developers and auditors
+-   [Newsletter](https://www.cyfrin.io/newsletter) - Weekly security research tips and resources to level up your career
+-   [Codehawks](https://www.codehawks.com/) - Smart contracts auditing competitions to help securing web3
 
 </br>
 
 
 **Have a question about the courses?**
-- Join us on [Discord]()
+- Join us on [Discord](https://discord.gg/cyfrin)
 - Or refer to the courses' GitHub discussions repositories linked on the lesson pages
 
 
@@ -66,14 +66,20 @@ Our content is structured as follows:
 
 - `courses/`
   - `course_name/`
-    - `lesson_name/`
-      - `lesson_content.md`
+    - `section_name/`
+       - `lesson_name/`
+          - `lesson_content.md`
 
-Each course is contained within its own directory, and within each course, you will find directories for each lesson, which contain a Markdown file (.md) with the lesson's content.
+Each course is contained within its directory, and for each course, you will find directories for each lesson, which contain a Markdown file (.md) with the lesson's content.
 
 ## How to Contribute
 
-We deeply value community contributions, whether it's correcting typos, enhancing code snippets, or refining our educational content. Here's how you can contribute:
+We deeply value every kind of community contribution:
+- Correcting typos or subtitles
+- Enhancing code snippets
+- Refining our educational content
+
+Here's how you can contribute:
 
 ### Prerequisites
 
@@ -114,7 +120,7 @@ We deeply value community contributions, whether it's correcting typos, enhancin
 
 7. **Create a Pull Request (PR):** Go to the original Cyfrin Updraft repository on GitHub and create a pull request from your forked repository. In your PR, explain the changes you've made and why they're beneficial.
 
-8. **Await Review:** Your PR will be reviewed by the Cyfrin team or community maintainers. Be responsive to any feedback or requested changes.
+8. **Await Review:** The Cyfrin team or community maintainers will review your PR. Be responsive to any feedback or requested changes.
 
 ### Best Practices for Contribution
 
@@ -139,9 +145,17 @@ This project exists thanks to all the people who contribute.<br>
 
 ## License
 
-Cyfrin Updraft content is open sourced [licensed as GPLv3](https://github.com/cyfrin/updraft/blob/main/LICENSE).
+Cyfrin Updraft content is open-sourced [licensed as GPLv3](https://github.com/cyfrin/updraft/blob/main/LICENSE).
 
 
 [![Cyfrin Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/cyfrinupdraft)
 [![Cyfrin YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@CyfrinAudits)
 [![Cyfrin LinkedIn](https://img.shields.io/badge/Linkedin-0e76a8?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/school/cyfrin-updraft/)
+# Usage
+
+```
+git clone https://github.com/Cyfrin/Updraft
+cd Updraft
+pnpm install
+pnpm dev
+```

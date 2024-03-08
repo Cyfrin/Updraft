@@ -1,0 +1,28 @@
+{
+  "name": "updraft-cms",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "TINA_PUBLIC_IS_LOCAL=true tinacms dev --datalayer-port 9001  -c \"next dev\"",
+    "dev:prod": "TINA_PUBLIC_IS_LOCAL=false tinacms dev --datalayer-port 9001  -c \"next dev\"",
+    "build": "tinacms build --datalayer-port 9001  --partial-reindex && next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "@types/react": "18.2.7",
+    "@types/react-dom": "18.2.4"
+  },
+  "dependencies": {
+    "@tinacms/auth": "^1.0.4",
+    "@tinacms/cli": "^1.5.39",
+    "next": "^14.0.3",
+    "next-auth": "^4.24.5",
+    "next-tinacms-cloudinary": "^4.4.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tinacms": "^1.5.28",
+    "typescript": "5.0.4"
+  }
+}

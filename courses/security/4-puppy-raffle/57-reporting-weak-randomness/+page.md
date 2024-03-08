@@ -4,60 +4,61 @@ title: Reporting - Weak Randomness
 
 _Follow along with this video:_
 
-## 
-
 ---
 
-# Auditing Randomness in Blockchain Protocols: A Deep Dive
+### Weak Randomness
 
-In the world of decentralized applications and blockchain protocols, randomness plays a critical role in creating fair outcomes. Platforms relying on randomness mechanisms like lottery games tend to be prone to vulnerabilities. In this article, we'll discuss the common weaknesses related to randomness and their impact on the functionality of the protocol.
+Our next marked finding was also in `selectWinner` and is referencing weak randomness.
 
-## Auditing the Process of Randomness
+```js
+function selectWinner() external {
+    uint256 winnerIndex =
+        uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.difficulty))) % players.length;
+        ...
+        uint256 rarity = uint256(keccak256(abi.encodePacked(msg.sender, block.difficulty))) % 100;
+}
+```
 
-![](https://cdn.videotap.com/A0C1NmhbMJhDQtFHw3eb-29.91.png)
+Lets consider what the severity of this would be by assessing the Impact and Likelihood.
 
-While auditing a recent protocol, we encountered a significant flaw in the system: The randomness involved wasn't verifiably random. This observation led us to assess a variety of variables, namely the impact and the likelihood of this flaw affecting the protocol.
+- **Impact:** High - If someone is able to predict the outcome of a raffle and exploit this knowledge, this fundamentally breaks this protocol's functionality.
+- **Likelihood:** High - A user has a lot of incentive to assure they win, and assure their token is rare. It's very likely this would be exploited.
 
-> "The impact of a non-verifiably random number in a protocol can be high. The winner could be predicted or altered, which can significantly undermine the protocol's integrity."
+Our assessment pretty clearly points to this finding being of `High Severity`. Fortunately in previous lessons we already wrote a Proof of Concept for this, so let's take our finding template and start filling it in.
 
-The likelihood of this happening is also high because individuals, motivated by self-interest, will likely try to exploit this vulnerability to cheat the system. Therefore, we rated the potential impact and likelihood both high, placing the issue at a high severity level.
+```
+**Title:**
+### [H-2] Weak Randomness in `PuppyRaffle::selectWinner` allows users to influence or predict the winner and influence or predict the winning puppy
 
-## Unearthing the Root Cause and Impact
+**Description:** Hashing `msg.sender`, `block,timestamp` and `block.difficulty` together creates a predictable final number. A predictable number is not a good random number. Malicious users can manipulate these values or know them ahead of time to choose the winner of the raffle themselves.
 
-![](https://cdn.videotap.com/K1jaGIVHSOnaSRtPUtcD-99.69.png)
+**Note:** This additionally means users could front-run this function and call `refund` if they see they are not the winner.
+```
 
-Reentrancy stood out as another significant issue we encountered during the audit. However, the primary focus of this article revolves around weak randomness, a common security flaw in many blockchain protocols.
+We'll talk more about front-running and MEV concerns later in the course, but know this exposes a vulnerability of this type here too.
 
-Weak randomness in 'Puppy Raffle' gives users an influencer role, allowing them to predict or alter the winner. This prediction is based on a simple susceptibility - hashing the message sender, block timestamp, and block difficulty together leads to a predictable final number. The outcome isn't truly random, providing malicious users with an opportunity to manipulate values or predict them in advance to influence the raffle results.
+What's the impact of this?
 
-This vulnerability also exposes another potential threat - front running. Users clever enough to see they aren't the winner may choose to call router functions and disrupt the functionality of the protocol further.
+```
+**Impact:** Any user can influence the winner of the raffle, winning the money and selecting the `rarest` puppy. Making the entire raffle worthless if a gas war to choose a winner results.
+```
 
-## Impact and Inaccurate Randomness
+For our Proof of Concept, lets begin by outlining the details of exploiting this vulnerability. This attack vector is well known, so I might be cheating a little bit by linking to a reference of this exploit - but I challenge you to write a test that proves this vulnerability!
 
-![](https://cdn.videotap.com/6sKiQi1LSBNokBJRuCbW-149.53.png)
+```
+**Proof of Concept:**
 
-The dangers of weak randomness are magnified in scenarios where users can influence the raffle winner, thus winning the prize money or getting access to the rarest puppy. The problem amplifies when bad randomness also effects the rarity of the puppies, making the entire raffle worthless if evolved into a gas war.
+1. Validators can know the values of `block.timestamp` and `block.difficulty` ahead of time and usee that to predict when/how to participate. See the [solidity blog on prevrandao](https://soliditydeveloper.com/prevrandao). `block.difficulty` was recently replaced with prevrandao.
+2. User can mine/manipulate their `msg.sender` value to result in their address being used to generate the winner!
+3. Users can revert their `selectWinner` transaction if they don't like the winner or resulting puppy.
 
-We'll combine these two issues arising from inaccurate randomness - the raffle winner and the puppy rarity - into one. They have unique root causes but the same dysfunctionality resultant from the weak randomness at play.
+Using on-chain values as a randomness seed is a [well-documented attack vector](https://betterprogramming.pub/how-to-generate-truly-random-numbers-in-solidity-and-blockchain-9ced6472dbdf) in the blockchain space.
+```
 
-## Proof of Concept
+Anyone who knows me, or as seen any of my other content knows what my recommendation is going to be!
 
-Understanding these vulnerabilities isn't enough. We also need to establish a concrete proof of concept:
+```
+**Recommended Mitigation:** Consider using a cryptographically provable random number generator such as [Chainlink VRF](https://docs.chain.link/vrf)
+```
 
-1. Validators predicting block timestamp and block difficulty can significantly manipulate their participation.
-2. Users can modify their message sender value, making their address the preferred one to determine the winner.
-3. Transactions, such as select winner, can be reverted by users if the result doesn't meet their satisfaction.
-
-In this case, creating proof of concept would require fuzzing the message sender, manipulating it to a preferred outcome.
-
-Also noteworthy is a common attack vector - using on-chain values as seeds for randomness. The solution requires a reform of the randomness mechanism used in the protocol.
-
-## Recommended Mitigation
-
-A cryptographically verifiable random number generator, such as [Chainlink VRF](https://docs.chain.link/docs/get-a-random-number/), could substantially mitigate such issues.
-
-## Wrapping Up
-
-The audit, evaluation, and subsequent steps we discussed underline the essential nature of randomness in blockchain protocols. At the same time, they also highlight the need for robust mechanisms to ensure the implementation of fair and unpredictable randomness.
-
-In the dynamic and rapidly evolving blockchain space, keeping up with security vulnerabilities, understanding them and formulating comprehensive mitigation strategies, is of utmost importance.
+That's one more down! Our next finding to write up is `Magic Numbers`!

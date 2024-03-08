@@ -4,60 +4,71 @@ title: Function Selectors Introduction
 
 _Follow along the course with this video._
 
-
-
 ---
 
-## Decoding Transaction Data With Ethereum: A Step-by-Step Guide
+### Intro to Function Selectors
 
-Have you ever found yourself struggling with transaction data in Ethereum? Muddling through raw transaction data can be quite a challenge, especially if you aren't quite certain if the function you're calling is as it appears on the surface. Let's walk through how you can confirm what function is being called, decode Ethereum transactions, and call functions with parameters.
+Continuing from the last lesson, when we call the `fund` function our Metamask is going to pop up with a bunch of information about the transaction.
 
-## The Fund Function
+<img src="/html-fundme/3-function-selector/function-selector1.png" style="width: 75%; height: auto;">
 
-Picture this scenario: You have a system encoded with 'fund' and 'steal money' functions. You enter 0.1, hit _fund_, and find your MetaMask filled with data. At first glance, the data suggests it's calling the 'fund' function, but you'd like to precisely know.
+By clicking the `Hex` tab, we can confirm the raw data for this transaction and exactly which function is being called.
 
-Proving that the system is indeed calling the 'fund' function involves using function selectors. When solidity functions are transformed into function selectors, the human-readable 'fund' is converted into low-level bytecode or Ethereum Virtual Machine (EVM) code to stimulate Ethereum to grasp the function you're calling.
+<img src="/html-fundme/3-function-selector/function-selector2.png" style="width: 75%; height: auto;">
 
-<img src="/html-fundme/3-function-selector/function1.png" style="width: 100%; height: auto;">
+We'll go into `function selectors` a lot more later, but the important thing to understand is that when a Solidity contract is compiled, our functions are converted into a low-level bytecode called a `function selector`.
 
-## Function Selectors and Checking Functions
+When we call our `fund` function, this is converted to a `function selector` that we can actually verify using Foundry's `cast` command.
 
-Now, every function selector has its unique low-level hex encoding, and that's where the Cast command comes into play. Running 'cat SIG fund' in your system will return a 'fund' function selector. If you'd like to cross-verify this transaction's function, copy and paste the hex data alongside the expected selector in the console.
-
-If they're the same, you can have assurance that it is actually calling the 'fund' function. But if you sense something fishy about the website and suspect it's pulling off some treacherous tactic like calling a malicious function like 'steal money', you can run 'Cast SIG steal money'. This will provide you with the 'steal money' function selector.
-
-Copy the function selectors and verify them against the hex data on MetaMask. If they align, unfortunately, your website is calling the 'steal money' function- not the 'fund' function it should ideally be calling.
-
-<img src="/html-fundme/3-function-selector/function2.png" style="width: 100%; height: auto;">
-
-## Functions With Parameters
-
-Now let's consider the scenario of functions with parameters. In such cases, your hex data is bigger, considering you'll have to accommodate data for calling the function. Cast calldata decode comes in handy in such scenarios.
-
-Running _cast calldata decode_ alongside the call data on the system should reveal all the parameters on a function should they exist. This, however, isn't a perfect example since neither the 'fund' nor the 'steal money' function has any parameters. We'll delve into this a little later.
-
-```
-> Cast calldata decode > paste the call data
+```bash
+cast sig "fund()"
 ```
 
-## Withdrawing Funds
+The above should result in the output `0xb60d4288` and when we compare this to the `Hex` data in our Metamask, we see that it does indeed match!
 
-Now, consider a different scenario where there's a function to withdraw funds. In this case, let's say this specific withdrawal feature is enabled to the account owner only.
+Were the function being called something secret/nefarious like `stealMoney()`. This function selector would be completely different. Running our cast command again confirms this clearly with a return of `0xa7ea5e4e`.
 
-Entering 0.1, hitting _fund_, and confirming the transaction sends the function via the API call. Once sent, calling _get balance_ should reveal that the balance has increased.
+We can use this knowledge to verify any function we're calling through our browser wallet by comparing the expected and actual `function selectors` for the transaction.
 
-Heading to 'function withdraw', the system shows that it's an owner function. Making an attempt to withdraw from another (non-owner) account gets an RPC error since the function is limited to the owner.)However, getting back to the owner account gives a different story. Commanding withdraw and conferring the hex data to the earlier Cast SIG withdraw hex, the matching hexes gives the assurance to confirm the withdrawal. Once the mining is done, just as expected, the balance goes back to zero. So mission accomplished!
+There's even a way to decode calldata using the cast command.
 
+Let's say our function was a little different and it required an argument.
+
+```js
+function fund(uint256 amount) public payable {
+    require(amount.getConversionRate(s_priceFeed) >= MINIMUM_USD, "You need to spend more ETH!");
+    // require(PriceConverter.getConversionRate(msg.value) >= MINIMUM_USD, "You need to spend more ETH!");
+    s_addressToAmountFunded[msg.sender] += amount;
+    s_funders.push(msg.sender);
+}
 ```
-> Cast SIG withdraw> Withdraw function hex data: copied hex data
+
+If we were to call this function, the information Metamask gives us is a little different.
+
+<img src="/html-fundme/3-function-selector/function-selector3.png" style="width: 75%; height: auto;">
+
+In this instance, we can use the command `cast --calldata-decode <SIG> <CALLDATA>` to provide us the parameters being passed in this function call!
+
+```bash
+cast --calldata-decode "fund(uint256)" 0xca1d209d000000000000000000000000000000000000000000000000016345785d8a0000
 ```
 
-## Conclusion
+The above decodes to:
 
-In summary, understanding and verifying the transaction data we're handling in MetaMask ensures we're in control of our systems and comfortable in knowing no malicious functions are being called. So go out there and put this to good use, knowing exactly where your transactions are heading.
+```bash
+100000000000000000 [1e17]
+```
 
-And remember,
+0.1 Eth! The same amount being passed as an argument to our `fund` call. It seems this function is safe!
 
-<img src="/html-fundme/3-function-selector/function3.png" style="width: 100%; height: auto;">
+### Wrap Up
 
-We will delve into function parameters, calldata, and much more later. Get started, happy coding!
+This more or less summarizes how transactions work through our browser wallet and what we can expect to see from a low-level with respect to the encoded `function selectors` and `calldata`, we'll go over those in more detail later.
+
+I encourage you to experiment with the remaining functions on the front end. A few things to try:
+
+- Funding and Withdrawing with an account
+- Funding with Account A and Withdrawing with Account B - what happens?
+- Verify the `function selectors` of our other functions
+
+In our next lesson we'll recap everything we've learnt so far 💪

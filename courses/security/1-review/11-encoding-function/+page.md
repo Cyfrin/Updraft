@@ -55,7 +55,7 @@ In solidity, we rely on some low-level keywords - `staticcall` and `call` - to p
 In these functions, the code that specifies a particular function to execute goes into the parentheses (data field). For instance, in a previous function utilized for our lottery contract,
 
 ```js
-function withdraw(address recentWinnder) public {
+function withdraw(address recentWinner) public {
     (bool success, ) = recentWinner.call{value: address.(this).balance}("");
     require(success, "Transfer Failed");
 }
