@@ -36,6 +36,8 @@ Beyond just teaching you to code, this course prepares you to maneuver DeFi, NFT
 
 ### Best Practices
 
+<img src="/blockchain-basics/git-repo.png" style="width: 100%; height: auto;" alt="git repo">
+
 Let's start by covering some of the best practices to help you get the absolute most out of this course.
 
 [**Use the GitHub repo as your Bible!**](https://github.com/Cyfrin/foundry-full-course-f23/) it will have all the resources you'll need to succeed. Contained within, you'll find a `discussions` tab. Any questions you have or hurdles you face can be posted here!

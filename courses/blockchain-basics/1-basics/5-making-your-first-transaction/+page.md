@@ -55,7 +55,7 @@ This recovery phrase (sometimes referred to as a mnemonic) is your master key, s
 
 From this point, you should be able to see your metamask interface. It should look something like this:
 
-<img src="static/blockchain-basics/05-first-transaction/first-transaction1.png" width="75%" height="auto">
+<img src="/blockchain-basics/05-first-transaction/first-transaction1.png" width="75%" height="auto">
 
 You can Pin Metamask to the top of your browser for easy access to this view in future.
 
