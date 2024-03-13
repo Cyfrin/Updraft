@@ -28,7 +28,7 @@ First, we create a `staleCheckLatestRoundData()` function. The input parameter w
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 ...
 library OracleLib {
     function staleCheckLatestRoundData(AggregatorV3Interface priceFeed) public view returns (uint80, int256, uint256, uint256, uint80){...}

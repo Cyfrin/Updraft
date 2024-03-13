@@ -39,7 +39,7 @@ import "./AggregatorV3Interface.sol";
 Is there a more efficient way? Let's return to the [Chainlink documentation](https://docs.chain.link/docs/using-chainlink-reference-contracts). As we scroll down, we notice an `import` statement.
 
 ```js
-import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 ```
 
 This import command contains the path that corresponds to the `AggregatorV3Interface.sol` GitHub repository. This means we can directly import the contract from GitHub or NPM, ridding us of the need to manually copy and paste.
@@ -54,7 +54,7 @@ Adding the `import` statement to our contract is, therefore, equal to copy-pasti
 
 ```js
     pragma solidity 0.8.18;
-    import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+    import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
     contract MyContract {}
 ```
 
