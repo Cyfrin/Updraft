@@ -46,7 +46,7 @@ An alternate approach relies on the concept of `Interface`.
 
 In Solidity, an interface essentially is a declaration of methods without implemented logic — merely a list of possible interactions with a contract. The interface allows us to call these functions on the contract without needing the contract code. If the contract is deployed, the logic is also automatically included with it.
 
-Chainlink's GitHub repository provides a detailed rundown of different contracts, and our focus is on the Aggregator V3 Interface. You can review it [here](https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.6/interfaces/AggregatorV3Interface.sol). This interface is what we need to interact with the contract for our task. It contains the `getVersion()` function, among others, key for our usage.
+Chainlink's GitHub repository provides a detailed rundown of different contracts, and our focus is on the Aggregator V3 Interface. You can review it [here](https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol). This interface is what we need to interact with the contract for our task. It contains the `getVersion()` function, among others, key for our usage.
 
 By copying the interface and employing Remix, Solidity's online compiler, we can test the `getVersion()` function. Testing on testnets can be time-consuming; hence, it is best to defer full deployment until the end.
 
