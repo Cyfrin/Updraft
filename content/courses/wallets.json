@@ -9,13 +9,13 @@
   "updatedAt": "2024-03-18T17:12:57.850Z",
   "title": "Wallet and Deployment",
   "path": "content/learning-paths/foundations.json",
-  "githubUrl": "",
-  "previewImg": "",
+  "githubUrl": "https://github.com/Cyfrin/path-solidity-developer-2023",
+  "previewImg": "https://res.cloudinary.com/droqoz7lg/image/upload/v1701193477/updraft/courses/y2uthyu5atnxhhd8aar6.png",
   "duration": 0,
-  "description": "",
+  "description": "Here is a filler description for the course",
   "overview": {
-    "learnings": "",
-    "preRequisites": []
+    "learnings": "Here is a filler overview for the course.",
+    "preRequisites": ["Blockchain Basics"]
   },
   "authors": [
     {
