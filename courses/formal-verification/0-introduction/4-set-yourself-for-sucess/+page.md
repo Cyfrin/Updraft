@@ -4,8 +4,6 @@ title: Set yourself up for Success
 
 ---
 
-**Setting Yourself Up for Success in Coding: A Practical Guide**
-
 ---
 
 ### The Workspace Setup
