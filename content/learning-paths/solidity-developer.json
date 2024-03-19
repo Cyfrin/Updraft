@@ -10,6 +10,12 @@
     },
     {
       "course": "content/courses/solidity.json"
+    }, 
+    {
+      "course": "content/courses/formal-verification.json"
+    }, 
+    {
+      "course": "content/courses/wallets.json"
     }
   ]
 }
