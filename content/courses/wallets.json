@@ -61,8 +61,8 @@
     {
       "sectionId": "4d09ea8f-7a3d-4327-8f83-70ed26bb03c6",
       "number": 2,
-      "slug": "section-1",
-      "title": "Section 1",
+      "slug": "wallets",
+      "title": "Wallets",
       "lessons": [
         {
           "lessonId": "e10e227c-6b80-42b5-a461-4dd4602eb06b",
@@ -201,8 +201,8 @@
     {
       "sectionId": "550c1259-a796-4a77-87f8-6c7408dc03de",
       "number": 3,
-      "slug": "section-2",
-      "title": "Section 2",
+      "slug": "post-deployment",
+      "title": "Post Deployment",
       "lessons": [
         {
           "lessonId": "cf08c757-6e93-4b2d-b40d-e8c576f92e2c",
