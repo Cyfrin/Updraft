@@ -9,19 +9,25 @@
   "updatedAt": "2024-03-18T17:02:56.541Z",
   "title": "Assembly, EVM Opcodes, and Formal Verification",
   "path": "content/learning-paths/solidity-developer.json",
-  "githubUrl": "https://github.com/Cyfrin/path-solidity-developer-2023",
+  "githubUrl": "https://github.com/Cyfrin/assembly-evm-opcodes-and-formal-verification-course",
   "previewImg": "https://res.cloudinary.com/droqoz7lg/image/upload/v1701193477/updraft/courses/nq7uojmdogr2dijnokng.png",
   "duration": 11,
-  "description": "Here is a filler description for the formal verification course.",
+  "description": "The most advanced smart contract course you'll ever take. Learn the bleeding edge of gas optimizations, security, and testing methodologies. ",
   "overview": {
-    "learnings": "Here is the filler overview for the formal verification course.",
+    "learnings": "Learn exactly how the solidity compiler works, and how the opcodes work. Then, learn how to write formal verification tests to guarantee your invariants hold.\n\nTechnologies:\n- Halmos\n- Certora\n- Huff\n- Yul\n- Assembly\n- Kontrol",
     "preRequisites": [
-      "Blockchain Basics"
+      "Blockchain Basics",
+      "Solidity",
+      "Advanced Foundry",
+      "Nice to have: Security and Auditing"
     ]
   },
   "authors": [
     {
       "author": "content/authors/patrick-collins.json"
+    },
+    {
+      "author": "content/authors/josselin-feist.json"
     }
   ],
   "sections": [

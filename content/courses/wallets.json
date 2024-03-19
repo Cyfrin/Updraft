@@ -7,16 +7,17 @@
   "slug": "wallet-and-deployment",
   "createdAt": "2024-03-18T17:12:57.850Z",
   "updatedAt": "2024-03-18T17:12:57.850Z",
-  "title": "Wallet and Deployment",
+  "title": "Wallets and Post Deployment",
   "path": "content/learning-paths/foundations.json",
-  "githubUrl": "https://github.com/Cyfrin/path-solidity-developer-2023",
+  "githubUrl": "https://github.com/Cyfrin/evm-wallet-and-post-deployment-course",
   "previewImg": "https://res.cloudinary.com/droqoz7lg/image/upload/v1701193477/updraft/courses/y2uthyu5atnxhhd8aar6.png",
   "duration": 2,
-  "description": "Here is a filler description for the course",
+  "description": "In this course, we learn the basics of how to work with wallets from a developer's/protocol's perspective. We also then learn the fundamentals of what a project needs when it comes to monitoring their protocols after they have been deployed.",
   "overview": {
-    "learnings": "Here is a filler overview for the course.",
+    "learnings": "Introduction to best practices when working with wallets. Understanding the importance of monitoring and maintaining a protocol after it has been deployed.",
     "preRequisites": [
-      "Blockchain Basics"
+      "Blockchain Basics",
+      "Nice to have: Advanced Foundry"
     ]
   },
   "authors": [
