@@ -33,7 +33,7 @@ We will do the same for the 'price converter' contract.
 
 ```shell
 # Create a new file
-touch priceConverter.sol
+touch PriceConverter.sol
 # Copy-paste the content of the price converter contract file into this new file
 
 ```

@@ -22,24 +22,25 @@ The test code initially looks like this:
 
 ```js
 // SPDX-License-Identifier: MIT
-pragma solidity;contract fundMeTest { }
+pragma solidity ^0.8.18;
+contract FundMeTest { }
 ```
 
-To make running our tests easier, we will import a standard contract from the Forge Standard Library. We'll utilize the `test` contract from `std.st`.
+To make running our tests easier, we will import a standard contract from the Forge Standard Library. We'll utilize the `Test` contract from `forge-std`.
 
 ```js
 import {Test} from "forge-std/Test.sol";
-contract FundMeTest is test { }
+contract FundMeTest is Test { }
 ```
 
 ## Prioritizing Smart Contract Functionality
 
 Our first goal is to ensure our FundMe contract operates effectively. Thus, one of the first tasks is to deploy this contract. We can accomplish this task by initially deploying our contracts directly in the test folder. Ideally, one should import the contract deployment scripts into the test scripts to homogenize the deployment and testing environments.
 
-While setting up our test contract, include a function called `setup`. This function is always the first to execute whenever we run our tests. Here's how it should look:
+While setting up our test contract, include a function called `setUp`. This function is always the first to execute whenever we run our tests. Here's how it should look:
 
 ```js
-function setup() external { }
+function setUp() external { }
 ```
 
 Our setup function will deploy our contract. Before that, let's briefly explore what a test might look like. Here's an example:
@@ -52,11 +53,11 @@ Upon executing `forge test`, you will see a successful compiler run, indicating 
 
 ## The Magic of 'Setup' and 'Console'
 
-Do you know why `setup` runs first? Let's break it down with an example:
+Do you know why `setUp` runs first? Let's break it down with an example:
 
 ```js
     uint256 number = 1;
-    function setup() external {
+    function setUp() external {
         number = 2;
     }
     function testDemo() {
@@ -64,13 +65,19 @@ Do you know why `setup` runs first? Let's break it down with an example:
     }
 ```
 
-Above, we declared `number` as 1. Within `setup`, `number` becomes 2. When we call the `testdemo` function and assert `number` is equal to 2, the test passes.
+Above, we declared `number` as 1. Within `setUp`, `number` becomes 2. When we call the `testDemo` function and assert `number` is equal to 2, the test passes.
 
-The `setup` function allowed us to update `number` before running our tests.
+The `setUp` function allowed us to update `number` before running our tests.
 
 How about debugging these tests? We can tap into console logging for that.
 
-The Console is a part of the `test.sol` contract included by default with Forge. The library lets us output print statements from our tests and contracts.
+Let's import the `console` from the `forge-std` library:
+
+```js
+import {Test, console} from "forge-std/Test.sol";
+```
+
+The Console is a part of the `Test.sol` contract included by default with Forge. The library lets us output print statements from our tests and contracts.
 
 Consider this code snippet:
 
@@ -81,22 +88,21 @@ function testDemo() public {
 }
 ```
 
-Running `forge test -vv` prints the current value of `number` and "Hello, world!" The `-vv` specifies the verbosity level of the logging, giving us insight into our test results.S
+Running `forge test -vv` prints the current value of `number` and "Hello, world!" The `-vv` specifies the verbosity level of the logging, giving us insight into our test results.
 
 <img src="/foundry-fund-me/4-tests/tests1.png" style="width: 100%; height: auto;">
 
-
 ## Deploying the Contract
 
-Let's dive back into our `setup` function and deploy the contract. To accomplish that, the contract should know about `fundMe`.
+Let's dive back into our `setUp` function and deploy the contract. To accomplish that, the contract should know about `FundMe`.
 
 Let's import it:
 
 ```js
-import "FundMe" from "../src/FundMe.sol";
+import {FundMe} from "../src/FundMe.sol";
 ```
 
-Next, we will initialize the `fundMe` contract in the `setup` function:
+Next, we will initialize the `fundMe` contract in the `setUp` function:
 
 ```js
 FundMe fundMe = new FundMe();
@@ -108,7 +114,7 @@ The contract is now deployed, and we are all set for testing.
 
 Let's begin by writing a test that ensures our minimum USD value is five.
 
-Considering `minimumUSD` is a public variable, we will validate within our `testdemo` function if the value is indeed 5 times 10⁹ or simply 5e18:
+Considering `minimumUSD` is a public variable, we will validate within our `testDemo` function if the value is indeed 5 times 10⁹ or simply 5e18:
 
 ```js
 function testMinimumDollarIsFive() public {
