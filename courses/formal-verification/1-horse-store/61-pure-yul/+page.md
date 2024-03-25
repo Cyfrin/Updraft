@@ -2,76 +2,377 @@
 title: Pure Yul
 ---
 
+_Follow along with this video:_
+
 ---
 
-## The Optional Adventure in Yul
+### Pure Yul Disclaimer
 
-Let's get one thing straight: coding in Yul is optional, 100%. If I had my way, you'd be mastering Huff, where the abstract meets the concrete. Huff keeps it simple and straightforward, giving you that raw feel of coding without peeling you away from assembly's essential vibe. But when dealing with Yul, sometimes it feels like you're wrestling the Ethereum Virtual Machine itself. Probably not the kind of daily grind you're looking for, but it's exciting nonetheless.
+I'm going to start this lesson by saying, out of the gate, basically no body codes in raw Yul.  This is entirely optional, and I don't recommend using raw Yul in production unless you have some esoteric reason to.
 
-### Yul vs. Huff: The Choice Is Yours
+I personally feel you'd be more successful getting really good at Huff than spending a lot of time on raw Yul and Yul's abstraction sometimes feels like you're fighting with the EVM - this is just my opinion.
 
-I want you to take from this learning experience as much or as little as you want. We won't be building "crazy assembly things," as they say, but we will push boundaries as far as Yul will let us. Sure, inline assembly gets most of the spotlight in Yul-land, but standalone Yul deserves some love too, despite Foundry not being its biggest fan. Therefore, it's time to break new ground and make our very own Yul file. Ready to dive into the complete rewrite of our Horse Store? Game on!
 
-### Crafting the Horse Store Contract in Yul: Step by Step
+### Standalone Yul
 
-Crafting a contract in Yul starts differently than you might be used to. Forget the familiar 'contract' keyword for a minute; Yul calls this structure an 'object'. So, we embark on this journey with `object "HorseStoreYul" { ... }`, setting the stage for our Yul-scripted Horse Store.
+Let's see how raw Yul would look nonetheless. We'll do this by writing the entire HorseStore contract in standalone Yul!
 
-Right inside our object, we nest our contract deployment within a class known as `code`. Note: to make our Yul script pretty (and readable), I recommend using the Solidity plus Yul VS Code extension for those sweet syntax highlights. Trust me, it’s a game-changer for readability.
+Foundry doesn't like `Yul` being in the `src` folder, so start by creating a `Yul` folder and a file within named `HorseStoreYul.yul`
 
-#### From Scratch: Writing the Contract Deployment
+We're going to notice differences immediately upon starting this contract. For example, we don't use the keyword `contract`, we use `object`. Whenever this object is deployed, it will deploy whatever is inside of the `code` section it contains.
 
-Unlike our cozy, comfort zone in Huff, Yul doesn't hand us the contract deployment on a silver platter. We take on the exciting task of writing it ourselves. It boils down to a few special Yul functions—`data_copy`, `data_offset`, and `data_size`. These are the trio of magicians that move and access portions of your Yul object.
-
-![Yul contract deployment](https://cdn.videotap.com/618/screenshots/2ke2SHMrl9xCpgGCvimu-447.21.png)
-
-The magic incantation goes a bit like this:
-
-```
-data_copy(0, data_offset("runtime"), data_size("runtime"))
+```js
+object "HorseStoreYul" {
+    code {}
+}
 ```
 
-Then we wrap it up with:
+> **Note:** If you'd like to take advantage of Yul syntax highlighting you can install the vs code extension [Solodity + Yul Semantic Syntax](https://marketplace.visualstudio.com/items?itemName=ContractShark.solidity-lang)
 
-```
-return(0, data_size("runtime"))
-```
+ Alright, unlike Huff, in Yul we have to set up our contract deployment ourselves. The code for this deployment is going to look like:
 
-Easy enough, right? You're essentially commanding Yul to grab the full `runtime` object, shove it into memory spot zero, and serve it up on the blockchain silver platter-style.
-
-#### Compiling Yul: A Techie's Dream (or Nightmare?)
-
-Let's talk about compiling Yul. Warning: it's a tad more complex than your average script. You're going to want the Solidity (solc) compiler for this one, and the ever-so-handy `solc-select` tool can help you switch between Solidity versions with a breeze.
-
-Once you've armored up with `solc`, ready your terminal and type:
-
-```shell
-solc --strict-assembly --optimize --optimize-runs=2000 --bin horsestore.yul
+ ```js
+ object "HorseStoreYul" {
+    code {
+        datacopy(0, dataoffset("runtime"), datasize("runtime"))
+        return(0, datasize("runtime"))
+    }
+}
 ```
 
-Hit enter, and bam! You've got a result that's a mixed bag of gibberish and genius. For sanity's sake, a quick `grep '60'` can help you isolate that precious binary output.
+Datacopy, dataoffset and datasize might seem unfamiliar, but these are function within Yul which assist it to access disparate parts of a Yul Object.
 
-#### Playing Dispatcher: The Smart Contract’s Command Centre
+<img src="/61-pure-yul/pure-yul1.png" width="100%" height="auto"> 
 
-Next, we breathe life into our contract with a function dispatcher. Think of it as the HQ where all function calls are directed. Deploy a switch statement sprinkled with cases for each function selector, and for anything else, a default revert. We're setting strict rules for this dispatcher, and it's going to uphold them like a boss.
+We can see that in our circunstances the `datacopy` function is being used as equivalent to the `codecopy` op code, and what does `codecopy` do? Well, it's taking the size and offset of our `runtime code` (we haven't written the `runtime` yet!) and returning it to be copied to the blockchain!
 
-## Decoding the Magic: Helper Functions Unveiled
 
-Let's not forget our helper functions. They're the unsung heroes working backstage, breaking down the selectors and arguments. It's a bit of Yul quirkiness, but hang in there.
+```js
+object "HorseStoreYul" {
+    code {
+        datacopy(0, dataoffset("runtime"), datasize("runtime"))
+        return(0, datasize("runtime"))
+    }
+}
 
-For our `store_number` and `update_horse_number` functions, we’re meticulously pulling data from call data, ensuring every byte is precisely where it needs to be. If all goes to plan, you’ll wield the power to splice in new numbers or simply read the number of horses at your whim.
+object "runtime" {
+    code {}
+}
+```
 
-### Testing and Deploying: The Final Frontier
+### Compiling Yul
 
-So you’ve followed the breadcrumbs and coded the perfect Horse Store in Yul. Now what? The litmus test involves compiling and looking out for that pesky invalid opcode (`FE`). Once you nab it, seize all the code that follows and boldly move it to your test environment.
+Before we start adding `runtime code`, lets go over compiling `Yul`, since it can be a little tricky.  You'll first need to have the Solidity Compiler installed. You can look at how to install `solc` [here](https://docs.soliditylang.org/en/latest/installing-solidity.html)
 
-Feel like skipping the deployment phase? Totally fine. But if you have an insatiable curiosity and a thirst for proving your Yul mastery, then I urge you to take this baby for a spin. Deploy it, fuzz it, and marvel at your creation. The bragging rights alone are worth it.
+> **Pro-tip:** I recommend looking at installing `solc` via `solc-select` (available [here](https://github.com/crytic/solc-select)). This will allow you to easily switch between different versions of the solidity compiler as you need!
 
-## Wrap Up: Understanding Your Yul Creation
+You can verify your solc installation with `solc --version`.
 
-Let’s tie it all up. Every Yul masterpiece kicks off with an `object`, cradling your contract deployment and runtime code in its arms. It's a journey of storing, decoding, and dispatching—with a scenic view of the Yul syntax.
+From here you should be able to run the command:
 
-The bottom line? If you roll with Yul, you’re engaging in a unique dialogue with the Ethereum Virtual Machine. If it's not for you, no hard feelings—there's a whole world of Solidity and Huff awaiting your talent. But for the coders who choose to walk the path less traveled, may your Yul contract be robust and your coding sessions less like battles and more like victories.
+```bash
+solc --strict-assembly --optimize --optimize-runs 20000 yul/HorseStoreYul.yul --bin | grep 60
+```
 
-As we conclude this epic tale of smart contract development, whether you choose Huff or Yul, let your development journey be adventurous and your code impeccable. And with that, we close the chapter on our all-Yul Horse Store contract. We've ascended beyond the layers of abstraction and wrestled with raw EVM bytecode. Is Yul a prodigious friend or a formidable foe? That’s for you to decide.
+This is going to return the binary of our contract after compilation!
 
-Happy coding, and may your smart contracts be as solid as your resolve.
+<img src="/61-pure-yul/pure-yul2.png" width="100%" height="auto"> 
+
+
+### Runtime Code
+
+Let's get started writing the `runtime` portion of our `Yul` smart contract. Just like we say in Huff (and the Solidity back end), we're going to need to start with a `function dispatcher`!
+
+The function dispatcher here is going to be handled a little differently than we're used to.
+
+```js
+object "runtime" {
+    code {
+        // function dispatcher
+        switch selector()
+        // updateHorseNumber
+        case 0xcdfead2e {
+
+        }
+        // readNumberOfHorses
+        case 0xe026c017 {
+
+        }
+        default {
+            revert(0, 0)
+        }
+    }
+}
+```
+
+So, what's happening here? We're declaring a `switch` statement for a function `selector()` that we'll define soon. We're defining each case for the switch statement to execute based on the result of our `selector()` function. 
+
+The first case, we expect to see the function signature of our `updateHorseNumber`, at which case the logic for that function will execute. Likewise, if the function signature of `readNumberOfHorses` is received, that case will trigger and the associated logic will execute.
+
+If neither cases are found, the `default` will trigger and revert the transaction!
+
+We next need to define our `selector()` function.
+
+```js
+object "runtime" {
+    code {
+        // function dispatcher
+        switch selector()
+        // updateHorseNumber
+        case 0xcdfead2e {
+
+        }
+        // readNumberOfHorses
+        case 0xe026c017 {
+
+        }
+        default {
+            revert(0, 0)
+        }
+
+        /* -- decoding functions -- */
+        function selector() -> s {
+            s := div(calldataload(0), 0x10000000000000000000000000000000000000000000000000000000)
+        }
+    }
+}
+```
+
+Let's breakdown `selector()` a bit because it is wild.
+
+Basically, when this function is called it returns a variable `s`. Return, in Yul, is denoted by `->`, so `return s` == `-> s`.
+
+Then, within the `selector()` function we're dividing our `call data` (accessed via `calldataload(0)`), by `0x10000000000000000000000000000000000000000000000000000000` and assigning the value to our `s` variable.
+
+> **Note:** the number `0x10000000000000000000000000000000000000000000000000000000` is effectively removing 28 bytes from our call data, leaving us with the first 4 bytes - or our `function selector` to compare to our `switch` cases!
+
+### Switch Case Logic
+
+Now that we've isolated our `function selector` from our `call data`, we should have some logic for it to get routed to base on which `switch case` triggers.  Let's start with `updateHorseNumber`
+
+```js
+case 0xcdfead2e {
+    storeNumber(decodeAsUint(0))
+}
+``` 
+
+Both `storeNumber()` and `decodeAsUint()` are functions we'll define ourselves now.
+
+
+### decodeAsUint
+
+```js
+/* -- decoding functions -- */
+        function selector() -> s {
+            s := div(calldataload(0), 0x10000000000000000000000000000000000000000000000000000000)
+        }
+
+        function decodeAsUint(offset) -> v {
+            let positionInCalldata := add(4, mul(offset, 0x20))
+            if lt(calldatasize(), add(positionInCalldata, 0x20)){
+                revert(0, 0)
+            }
+
+            v := calldataload(positionInCalldata)
+        }
+```
+
+Our `decodeAsUint()` function is taking an `offset` as a parameter (we've passed `0` in our `updateHorseNumber` switch case) and returns a value `v`. The function determines a `positionInCalldata` by adding `4` (the size of our `function selector`) to our `offset` multiplied by `0x20` (32 bytes).
+
+Because our `offset` is 0, our positionInCallData is going to be starting at 4 bytes, or immediately following our function selector.
+
+We then assign a value to our return value, v. `calldataload()` will load 32 bytes of `call data` starting from a passed `offset`, which in our case is immediately following our `function selector` and hopefully this will be the value that we're updating! 
+
+### storeNumber
+
+With our `decodeAsUint` function written, let's go back to our switch case for `updateHorseNumber` and start defining the `storeNumber` function. Here's where we're at so far for our `runtime` code:
+
+
+```js
+object "runtime" {
+    code {
+        // function dispatcher
+        switch selector()
+        // updateHorseNumber
+        case 0xcdfead2e {
+            storeNumber(decodeAsUint(0))
+        }
+        // readNumberOfHorses
+        case 0xe026c017 {
+
+        }
+        default {
+            revert(0, 0)
+        }
+
+        /* -- decoding functions -- */
+        function selector() -> s {
+            s := div(calldataload(0), 0x10000000000000000000000000000000000000000000000000000000)
+        }
+
+        function decodeAsUint(offset) -> v {
+            let positionInCalldata := add(4, mul(offset, 0x20))
+            if lt(calldatasize(), add(positionInCalldata, 0x20)){
+                revert(0, 0)
+            }
+
+            v := calldataload(positionInCalldata)
+        }
+    }
+}
+```
+
+We'll define our `storeNumber` function just below our `default` switch case.
+
+```js
+default {
+            revert(0, 0)
+        }
+
+function storeNumber(newNumber) {
+    sstore(0, newNumber)
+}
+
+        /* -- decoding functions -- */
+```
+
+Because the data being passed to our `storeNumber` function has already been decoded (via our `decodeAsUint` function), we can just call our `sstore` code, passing it the storage slot of our `horseNumber` (`0`) and the function parameter (`newNumber`).
+
+Let's look at our readNumberOfHorses case now!
+
+### readNumberOfHorses
+
+```js
+// readNumberOfHorses
+case 0xe026c017 {
+    returnUint(readNumber())
+}
+default {
+    revert(0, 0)
+}
+
+function storeNumber(newNumber) {
+    sstore(0, newNumber)
+}
+
+function readNumber() -> storedNumber {
+    storedNumber := sload(0)
+}
+
+ /* -- decoding functions -- */
+function selector() -> s {
+    s := div(calldataload(0), 0x10000000000000000000000000000000000000000000000000000000)
+}
+
+function decodeAsUint(offset) -> v {
+    let positionInCalldata := add(4, mul(offset, 0x20))
+    if lt(calldatasize(), add(positionInCalldata, 0x20)){
+        revert(0, 0)
+    }
+
+    v := calldataload(positionInCalldata)
+}
+
+function returnUint(v) {
+    mstore(0, v)
+    return(0, 0x20)
+}
+```
+
+Alright, under the readNumberOfHorses switch case we've added two functions which will be called. The `readNumber()` function is loading our `horseNumber` from storage slot 0 via `sload(0)`. This value is then being passed to `returnUint(v)` which is storing it in memory, and returning 32 bytes (0x20) of data from where it was stored!
+
+
+Let's see our whole contract now:
+
+```js
+object "HorseStoreYul" {
+    code {
+        datacopy(0, dataoffset("runtime"), datasize("runtime"))
+        return(0, datasize("runtime"))
+    }
+}
+
+object "runtime" {
+    code {
+        // function dispatcher
+        switch selector()
+        // updateHorseNumber
+        case 0xcdfead2e {
+            storeNumber(decodeAsUint(0))
+        }
+        // readNumberOfHorses
+        case 0xe026c017 {
+            returnUint(readNumber())
+        }
+        default {
+            revert(0, 0)
+        }
+
+        function storeNumber(newNumber) {
+            sstore(0, newNumber)
+        }
+
+        function readNumber() -> storedNumber {
+            storedNumber := sload(0)
+        }
+
+        /* -- decoding functions -- */
+        function selector() -> s {
+            s := div(calldataload(0), 0x10000000000000000000000000000000000000000000000000000000)
+        }
+
+        function decodeAsUint(offset) -> v {
+            let positionInCalldata := add(4, mul(offset, 0x20))
+            if lt(calldatasize(), add(positionInCalldata, 0x20)){
+                revert(0, 0)
+            }
+
+            v := calldataload(positionInCalldata)
+        }
+
+        function returnUint(v) {
+            mstore(0, v)
+            return(0, 0x20)
+        }
+    }
+}
+```
+
+### Pure Yul Recap
+
+And that's our Pure Yul Smart contract!  What did we learn?
+
+We learnt that Yul contracts don't use the contract keyword, they have an `object` which will contain a `code` section. This `code` section will almost always contain your contract deployment logic.
+
+```js
+object "HorseStoreYul" {
+    code {}
+
+    object "runtime" {
+        code {}
+    }
+}
+```
+There's also a `runtime` object, which contains our contracts `runtime` logic within *its* `code` section.
+
+We learnt that the first thing we do, just like in Huff and Solidity is employ a `function dispatcher` and that the Yul `function dispatcher` uses `switch `cases to route logic to the case which matches our `call data`'s `function selector`.
+
+And finally, we learnt the value of leveraging helper functions like decodeAsUint and returnUint to load the necessary data for our functions in and out of storage and memory.
+
+```js
+function decodeAsUint(offset) -> v {
+    let positionInCalldata := add(4, mul(offset, 0x20))
+    if lt(calldatasize(), add(positionInCalldata, 0x20)){
+        revert(0, 0)
+    }
+
+    v := calldataload(positionInCalldata)
+}
+
+function returnUint(v) {
+    mstore(0, v)
+    return(0, 0x20)
+}
+```
+
+Wow. We've learnt a lot. Go take a break, you've earned it.

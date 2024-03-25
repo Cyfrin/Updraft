@@ -1,45 +1,184 @@
 ---
-title: Runtime code Introduction
+title: Runtime Code Introduction
 ---
 
+_Follow along with this video:_
+
 ---
 
-## Understanding Runtime Code
+### Runtime Code
 
-If you've played around with Solidity, you might've noticed it being kind enough to sprinkle little invalid opcodes to mark the boundaries between sections of code. And if you've been scratching your head at the excess of these opcodes at some points, don't worry—we’ll get to that in a moment.
+With `contract creation` understood, we move onto the runtime section of our op codes. Remember, Solidity conveniently will break each of theses sections up by adding an `INVALID` op code between them.
 
-When we previously built with Huff, we defined this handy `main` function as our starting point. Solidity does things a bit differently; the entry point here is going to be whatever opcodes are deployed on the blockchain. Essentially, whatever we put on the chain becomes the guardian gate to the rest of our smart contract's code.
+<details>
+<Summary> Op Codes </summary>
 
-![Runtime code entry point](https://cdn.videotap.com/618/screenshots/ruIT0QzAgQf3DzNhJXLj-55.4.png)
+    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033 
+```js
+    PUSH1 0x80 ✅
+    PUSH1 0x40 ✅
+    MSTORE ✅
 
-This section—our code copy—is what Solidity will use as our runtime code going forward. It's the proverbial front door where every call will knock before entering. So now, armed with just a tad more insight into Solidity’s workings, we're prepared for a déjà vu moment. Here, we can see outlines of familiar concepts, such as the free memory pointer, which preps us to work with memory.
+    CALLVALUE ✅
+    DUP1 ✅
+    ISZERO ✅
+    PUSH1 0x0e ✅
+    JUMPI ✅
 
-## Opcode Breakdown
+    PUSH0 ✅
+    DUP1 ✅
+    REVERT ✅
 
-Let's not just skim the surface; we're going deep. Opcode by opcode, we’ll excavate to discover the magic beneath. We've seen before how call value nabs the message value, and, yes, a dupe quickly follows.
+    JUMPDEST ✅
+    POP ✅
+    PUSH1 0xa5 ✅
+    DUP1 ✅
+    PUSH2 0x001b ✅
+    PUSH0 ✅
+    CODECOPY ✅
+    PUSH0 ✅
+    RETURN ✅
+    INVALID ✅
+    
+    PUSH1 0x80      //<---- We are here!
+    PUSH1 0x40
+    MSTORE
+    CALLVALUE
+    DUP1
+    ISZERO
+    PUSH1 0x0e
+    JUMPI
+    PUSH0
+    DUP1
+    REVERT
+    JUMPDEST
+    POP
+    PUSH1 0x04
+    CALLDATASIZE
+    LT
+    PUSH1 0x30
+    JUMPI
+    PUSH0
+    CALLDATALOAD
+    PUSH1 0xe0
+    SHR
+    DUP1
+    PUSH4 0xcdfead2e
+    EQ
+    PUSH1 0x34
+    JUMPI
+    DUP1
+    PUSH4 0xe026c017
+    EQ
+    PUSH1 0x45
+    JUMPI
+    JUMPDEST
+    PUSH0
+    DUP1
+    REVERT
+    JUMPDEST
+    PUSH1 0x43
+    PUSH1 0x3f
+    CALLDATASIZE
+    PUSH1 0x04
+    PUSH1 0x59
+    JUMP
+    JUMPDEST
+    PUSH0
+    SSTORE
+    JUMP
+    JUMPDEST
+    STOP
+    JUMPDEST
+    PUSH0
+    SLOAD
+    PUSH1 0x40
+    MLOAD
+    SWAP1
+    DUP2
+    MSTORE
+    PUSH1 0x20
+    ADD
+    PUSH1 0x40
+    MLOAD
+    DUP1
+    SWAP2
+    SUB
+    SWAP1
+    RETURN
+    JUMPDEST
+    PUSH0
+    PUSH1 0x20
+    DUP3
+    DUP5
+    SUB
+    SLT
+    ISZERO
+    PUSH1 0x68
+    JUMPI
+    PUSH0
+    DUP1
+    REVERT
+    JUMPDEST
+    POP
+    CALLDATALOAD
+    SWAP2
+    SWAP1
+    POP
+    JUMP
+    INVALID
+    LOG2
+    PUSH5 0x6970667358
+    INVALID
+    SLT
+    KECCAK256
+    INVALID
+    ADD
+    INVALID
+    PUSH13 0x40d0ed98f16c7769ffde7109d5
+    INVALID
+    SWAP16
+    SWAP14
+    INVALID
+    INVALID
+    BALANCE
+    PUSH23 0x9a77032ceb92497a64736f6c63430008140033
+```
+</details>
 
-Next, we encounter an `is zero` operation and there's a sudden realization: this mirrors what we've seen in contract creation code! It checks if the message value is empty and moves on to a new operation—`push 0x0e`.
+---
+This section of code is the `runtime code` this is what is copied to the blockchain and represents the entry point of all calls sent to its address.
 
-Now comes the 'jump if' dance. Remember, the counter is the program counter we're aiming for, while 'b' holds whether or not we’ll make that leap. The stage is set: if the message value stands at zero, we peek at `0x0e`. If something more, we stay put and signal an immediate `revert`.
+The next chunk we'll assess should look familiar to us! Let's break it down.
 
-![Jump if opcode check](https://cdn.videotap.com/618/screenshots/UaHRYR4kMLJaIJKOF0Kn-166.2.png)
+```js
+// Free Memory Pointer
+PUSH1 0x80
+PUSH1 0x40
+MSTORE
 
-And there we have it: a Solidity smarty, calculating that if no functions could possibly be payable, any incoming transactions tagged with a value must promptly be turned away. The elegance lies in the preemptive check for a zero value—a smart contract's very own bouncer, if you will.
+//msg.value check
+CALLVALUE    // [msg.value]
+DUP1         // [msg.value, msg.value]
+ISZERO       // [msg.value == 0, msg.value]
+PUSH1 0x0e   // [0x0e, msg.value == 0, msg.value]
+JUMPI        // [msg.value]
+// Jump to "continue!" if msg.value == 0
 
-![Jump if continue](https://cdn.videotap.com/618/screenshots/jGJjTv2AnNpTdNbZuvcE-200.83.png)
+PUSH0        // [0x00, msg.value]
+DUP1         // [0x00, 0x00, msg.value]
+REVERT       // []
 
-Our stack's starting point was the message value, which dictates our narrative from then on out.
+// If msg.value == 0, start here!
+// continue!
+JUMPDEST
+POP
+```
 
-## The Power of Solidity Optimizations
+What's happening above?
 
-This routine you're witnessing is Solidity flaunting one of its many optimizations. It meticulously analyzes every function, scanning for the ones labeled payable. Finding none worthy of the title, Solidity crisply decides: any value-laced transaction gets shot down.
+The first three codes are Solidity's `free memory pointer` again! We'll get used to seeing this. From there we see another chunk we've seen before - the msg.value check.
 
-> "Solidity is like a smart bouncer, promptly turning away any transactions that don't meet the strict no-value-attached policy."
+The Solidity compiler is smart enough to check all the functions within a contract and determine if any of them are payable. If none of a contract's functions are payable, any call data sent to the contract's runtime code will be checked for value and the transaction will revert if any is found!
 
-So, there's an implied message here: senders, don’t attach a value unless you're ready to face the Solidity music.
-
-## Wrapping It Up
-
-It's not a stretch to say this Solidity journey's been an eye-opener. It’s like getting a front-row seat to a cerebral game of chess, where each opcode plays its part with precision, and Solidity sits as the grandmaster, overseeing it all.
-
-Now that you've got an understanding of the runtime code and witnessed the brilliance of some Solidity optimisations, you can look at a smart contract and decode the performance like a seasoned champ. So go ahead, dive into some actual codes, play around with functions, and see if you can spot the cool tricks Solidity pulls right before your eyes. It's just another day in the fabulous world of smart contract development!
+We'll continue from the `JUMPDEST` in the next lesson to see how a call is handled when `msg.value == 0`.

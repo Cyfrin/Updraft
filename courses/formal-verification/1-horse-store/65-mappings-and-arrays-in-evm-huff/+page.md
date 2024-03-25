@@ -1,87 +1,138 @@
 ---
-title: Mappings & Arrays in EVM - Huff
+title: Mappings and Arrays in EVM - Huff
 ---
 
+_Follow along with this video:_
+
 ---
 
-## The Magic Behind Mappings
+I'll keep a running reminder of our current total contract state at the top of each lesson moving forward as a point of reference.
 
-Let's get our hands dirty and peer into this rabbit hole, but not without our trusty guide, the Solidity documentation. We've tread this path before, so let me just jog your memory that the location of a value for any given key in a mapping involves a nifty algorithm. Picture this: the value for a key 'k' is nestled at `keccak256(h(k) . p)`, where the dot represents concatenation, and 'h' is our cryptographic hash function tailored to the key's data type. Yep, cryptography meets math – exciting stuff.
+<details>
+<summary>HorseStoreV2.huff</summary>
 
-Before your head starts spinning with bytes and hashes, yes, it involves quite some math. We've dug through the nitty-gritty details in the full Foundry course. No need to rehash that here—pun intended. The gist is, you need this algorithm in your toolbox. But c'mon, re-writing this again and again? Not happening.
+```js
+/* HorseStore Interface */
+#define function mintHorse() nonpayable returns()
+#define function feedHorse(uint256) nonpayable returns()
+#define function isHappyHorse(uint256) view returns(bool)
+#define function horseIdToFedTimeStamp(uint256) view returns(uint256)
+#define function HORSE_HAPPY_IF_FED_WITHIN() view returns(uint256)
 
-## Huffmate To The Rescue
+#define function FEED_HORSE() = takes (0) returns (0) {
+    timestamp          // [timestamp]
+    0x04 calldataload  //[horseId, timestamp]
+}
 
-Good news! We coders are a clever bunch, and many felt the same way about the algorithmic drudgery. Enter **Huffmate**: this gem of a tool comes pre-loaded with these brainy bits built-in.
+#define macro MAIN() = takes (0) returns (0){
+    0x00 calldataload 0xE0 shr      //  [function_selector]
 
-Huffmate's structure is as inviting as a cozy library. Inside its `src` you'll find treasures such as an `ERC 721` contract ready for use. But we're particularly interested in a certain folder: `utils/datastructures/hashmaps.huff`.
+    dup1 __FUNC_SIG(mintHorse) eq mintHorse jumpi
+    dup1 __FUNC_SIG(feedHorse) eq feedHorse jumpi
+    dup1 __FUNC_SIG(isHappyHorse) eq isHappyHorse jumpi
+    dup1 __FUNC_SIG(horseIdToFedTimeStamp) eq horseIdToFedTimeStamp jumpi
+    dup1 __FUNC_SIG(HORSE_HAPPY_IF_FED_WITHIN) eq horseHappyFedWithin jumpi
 
-Here's where it gets spicy. The `hashmap.huff`—not for the faint of heart—displays a veritable garden of opcodes, the secret sauce Solidity chefs sprinkle over hashmaps. It's a complicated dish to master but fear not, Huffmate simplifies the recipe for us.
-
-## The Stack Symphony
-
-Now, if we revisit our Solidity contract, it reads something like `timestamp = horseFedTimestamp[horseId]`. The horse's feed timestamp associates with its ID.
-
-Back in huffland, doing this is more symphonic. Think of a macro called `store_element_from_keys` lifting this load. This macro, a true workhorse, grabs three items off our stack: the location, horse ID, and timestamp, without leaving a trace.
-
-## From Hashing to Storing: The Chain Reaction
-
-What happens behind the curtains? The macro invokes `get_slot_from_keys`, a spell to hash out (literally) the slot each piece of data calls home. With the right slot in hand, a simple `s_store` seals the deal.
-
-```huff
-store_element_from_keys(0x0, location, horseId, timestamp)
+    mintHorse:
+        MINT_HORSE()
+    feedHorse:
+        FEED_HORSE()
+    isHappyHorse:
+        IS_HAPPY_HORSE()
+    horseIdToFedTimeStamp:
+        HORSE_ID_TO_FED_TIMESTAMP()
+    horseHappyFedWithin:
+        HORSE_HAPPY_FED_WITHIN()
+}
 ```
 
-Pass it a memory pointer, which in this case is our free memory pointer set to `0x0`, and like magic, our mapping updates—a stroke of simplicity thanks to Huffmate's grace.
-
-## Feed Horse Macro: Code Charm
-
-So there we have it: our "feed horse" macro in all its glory, a small triumph in the vast empire of code. Took some frosting with Huffmate, but hey, it saved us a spell of toil.
-
-Feeling lost among the opcodes and macros? I beckon you to hit pause and dissect `store_element_from_keys` inside out. You'll unravel the mysteries Solidity guards so closely when dealing with mappings.
-
-And that, my friend, is the marvelous bridge between Solidity's mappings and Huffman's elegance—complexity tamed for the practical coder. Great job weaving through that!
+</details>
 
 ---
 
-As we dive further into the intricacies of Solidity and huff, it's easy to get overwhelmed by the complex algorithms and data structures under the hood. Mappings are a perfect example - their key-value associations rely on some heavy cryptographic lifting we'd rather not slog through manually each time.
+Now's a good time to go back and reference the Solidity Documentation. We should be reminded that mappings are handled using a very specific algorithm.
 
-That's where ingenious tools like Huffmate come in clutch. Huffmate hands us tried-and-true building blocks, ripe for the picking. We get to focus on crafting our smart contract masterpiece rather than re-inventing lower-level wheels.
+<img src="/65-mappings-and-arrays-in-evm-huff/mappings-and-arrays-in-evm-huff1.png" width="100%" height="auto">
 
-Of course, eventually we must peek behind the curtain to truly own our code. Huffmate gives us a comfy on-ramp before we hit the expressway.
+We cover this in a little more detail in the Foundry Full Course on Updraft, so I won't go over it here, but lets look at how we accomplish this in Huff.
 
-## Hashing Out Huffmate's Helper Methods
+### Huffmate
 
-The `hashmap.huff` library in Huffmate packs some potent spells. Lurking within is the cryptographic secret sauce for translating keys into calculated slots.
+Now, I don't know about you, but I don't want to write out the `keccak256` algorithm every time we access a mapping. Fortunately, most people don't and a convenient tool has been created to help us out, [Huffmate](https://github.com/huff-language/huffmate).
 
-Solidity hides these guts from plain sight, but Huffmate invites us to trace the source step-by-step. By studying its shortcut macros like `store_element_from_keys`, we uncover how mappings marshal data behind locked doors.
+There are a couple specific things we're going to use from this repo, namely:
 
-Huffmate's eloquent opcode garden handles the intricate slot allocation math. Functions like `get_slot_from_keys` tap into this ecosystem, handling keys, values, and slots in harmony.
+- [`ERC721.huff`](https://github.com/huff-language/huffmate/blob/main/src/tokens/ERC721.huff) - we'll leverage this for our NFT implementation a little later on.
+- [`Hashmap.huff`](https://github.com/huff-language/huffmate/blob/main/src/data-structures/Hashmap.huff) - this outlines how solidity handles mappings or `hashmaps` under the hood. By installing Huffmate, we can avoid implementing all this from scratch ourselves.
 
-We simply call the macro, pass it the requisite stack items, and enjoy the symphonic orchestration under the hood. No more computational cadences for us to conduct.
+Install Huffmate with:
 
-## The Holy Grail: One Snippet to Rule Them All
-
-And so we arrive at our holy grail, the deceptively compact morsel of code that feeds a timestamp to our stable:
-
-```huff
-store_element_from_keys(0x0, location, horseId, timestamp)
+```bash
+forge install huff-language/huffmate --no-commit
 ```
 
-With this unassuming snippet, we ally the power of mappings through abstraction's lens. Huffmate breaks the spell of complexity that often leads developers to avoid digging into lower-level details.
+Now we can import the Hashmap.huff contract into ours with a Huff import statement:
 
-By studying how Huffmate's building blocks operate, we expand our mental models of the mechanics underlying tools we use daily. We shed assumptions that something just works by magic, peering into the method behind the magic.
+```js
+/* Imports */
+#include "../../lib/huffmate/src/data-structures/Hashmap.huff"
+```
 
-## Coding Journeys: Maps, Macros and The Long Road Ahead
+This will allow us to avoid the messy algorithm while working with mappings in storage. But for any variable in storage, it still needs an assiged storage slot. We do this by defining a storage slot constant for this timestamp
 
-We all start on simple coding quests, taking tools as given without questioning their origins. After some mileage accrued, we yearn to traverse wider pastures, venture off road, and explore uncharted territory.
+```js
+#define constant HORSE_FED_TIMESTAMP_LOCATION = FREE_STORAGE_POINTER()
+```
+As we know, the mapping itself needs a location, but the elements within the mapping are stored at locations determined by using the hashing algorithm.
 
-Huffmate equips us with sturdy vehicles to revamp as we push boundaries. Its orchestrated macros compose immutable knowledge extracted from cryptographic creed. We plug into accrued wisdom without reinventing integrity.
+Now we can access this variable to add this storage slot location to our stack. Our feedHorse macro looks like this now:
 
-This leaves us energy to customize couplings between constructs, innovating integrations that push progress for the collective. Standing on the shoulders of giants, we get to focus on the new.
+```js
+#define function FEED_HORSE() = takes (0) returns (0) {
+    timestamp                       // [timestamp]
+    0x04 calldataload               //[horseId, timestamp]
+    [HORSE_FED_TIMESTAMP_LOCATION]  // [HORSE_FED_TIMESTAMP_LOCATION, horseId, timestamp]
+}
+```
 
-Our travels may one day lead us to coding cspans vastly more complex than mapping timestamps. By honoring engineering elders along the winding road, we pave inroads for additional wayfarers behind us.
+So what the code is saying is - At mapping location HORSE_FED_TIMESTAMP_LOCATION, update index horseId with this timestamp.
 
----
+We can actually accomplish all of this by using a macro of our imported `Hashmap.huff` called `STORE_ELEMENT_FROM_KEYS`
 
-This blog post did its own little dance around the 2000-word mark, staying true to the casual tone and intricate knowledge of the original transcript. We used markdown for structuring, slipped in some code magic, and let the essence of the transcript shine through—a blend of information and relief for the smart contract developer. Keep weaving that huff, my fellow coders!
+```js
+#define macro STORE_ELEMENT_FROM_KEYS(mem_ptr) = takes (3) returns (0){
+    //input stack: [key1, key2, value]
+    GET_SLOT_FROM_KEYS(<mem_ptr>)     // [slot, value]
+    sstore                            // []
+}
+
+#define macro GET_SLOT_FROM_KEY(mem_ptr) = takes (2) returns (1) {
+    //input stack: [slot, key]
+    // Load data into memory
+    <mem_ptr> 0x20 add // [<mem_ptr> +32, slot, key]
+    mstore             // [key]
+    <mem_ptr>          // [<mem_ptr>, key]
+    mstore             // []
+
+    // Hash the data, generating a slot
+    0x40        // [64]
+    <mem_ptr>   // [<mem_ptr>, 64]
+    sha3        // [slot]
+}
+```
+
+Above we can see what the macros from `Hashmap.huff` are actually doing. We're taking our `mapping location` and `key value` and hashing them to generate a slot for the data we want to store.
+
+We can just call this `STORE_ELEMENT_FROM_KEYS()` macro within our `FEED_HORSE()` macro like so - we're passing it `0x00` as a free memory pointer in this example.
+
+```js
+#define function FEED_HORSE() = takes (0) returns (0) {
+    timestamp                       // [timestamp]
+    0x04 calldataload               //[horseId, timestamp]
+    [HORSE_FED_TIMESTAMP_LOCATION]  // [HORSE_FED_TIMESTAMP_LOCATION, horseId, timestamp]
+    STORE_ELEMENT_FROM_KEYS(0x00)   // []
+}
+```
+
+And that's all there is for our `FEED_HORSE()` macro! `Hashmap.huff` made things pretty painless for us, but if you find yourself not quite understanding how things were calculated, I encourage you to go into the macros of `Hashmap.huff` and walk yourself through the op codes to gain a deeper understanding of what they're doing before continuing.
+
