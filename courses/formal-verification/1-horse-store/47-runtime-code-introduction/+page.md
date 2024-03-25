@@ -13,7 +13,8 @@ With `contract creation` understood, we move onto the runtime section of our op 
 <details>
 <Summary> Op Codes </summary>
 
-    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033 
+    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033
+
 ```js
     PUSH1 0x80 ✅
     PUSH1 0x40 ✅
@@ -39,7 +40,7 @@ With `contract creation` understood, we move onto the runtime section of our op 
     PUSH0 ✅
     RETURN ✅
     INVALID ✅
-    
+
     PUSH1 0x80      //<---- We are here!
     PUSH1 0x40
     MSTORE
@@ -144,9 +145,11 @@ With `contract creation` understood, we move onto the runtime section of our op 
     BALANCE
     PUSH23 0x9a77032ceb92497a64736f6c63430008140033
 ```
+
 </details>
 
 ---
+
 This section of code is the `runtime code` this is what is copied to the blockchain and represents the entry point of all calls sent to its address.
 
 The next chunk we'll assess should look familiar to us! Let's break it down.

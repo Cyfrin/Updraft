@@ -11,7 +11,8 @@ _Follow along with this video:_
 <details>
 <Summary> Op Codes </summary>
 
-    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033 
+    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033
+
 ```js
     PUSH1 0x80 ✅
     PUSH1 0x40 ✅
@@ -156,12 +157,13 @@ _Follow along with this video:_
     INVALID
     BALANCE
     PUSH23 0x9a77032ceb92497a64736f6c63430008140033
-```    
+```
+
 </details>
 
 ---
 
-Take a moment above to appreciate how much low level knowledge you've gleaned from just this one small Solidity smart contract!  You should be very proud of yourself!
+Take a moment above to appreciate how much low level knowledge you've gleaned from just this one small Solidity smart contract! You should be very proud of yourself!
 
 We just went through the entire execution of the `updateHorseNumber` function, So let's recap what we've learnt.
 
@@ -224,6 +226,7 @@ JUMPI ✅
 ### Isolating Passed Data
 
 If the `call data` passes this size check, we next jump and isolate the parameter from the `call data` by loading 32 bytes of `call data` starting at `0x04`:
+
 ```js
 JUMPDEST ✅
 POP ✅
@@ -250,6 +253,6 @@ STOP ✅
 
 That's it! The transaction is done!
 
-It's easy to see at first glance (if you remember back to our Huff implementation), that we wrote *much less* Huff code. It's clear why this is the case, now, isn't it?  We performed many fewer checks and we didn't have to jump around! If we were focused on hyper gas optimized code, we may want to remove some of these checks that Solidity performs - but this is a double edged sword. These checks are often in place for a reason and to protect against potential vulnerabilities and bugs!
+It's easy to see at first glance (if you remember back to our Huff implementation), that we wrote _much less_ Huff code. It's clear why this is the case, now, isn't it? We performed many fewer checks and we didn't have to jump around! If we were focused on hyper gas optimized code, we may want to remove some of these checks that Solidity performs - but this is a double edged sword. These checks are often in place for a reason and to protect against potential vulnerabilities and bugs!
 
 There's more for us to do still! One function down, let's keep going.

@@ -27,7 +27,7 @@ INVALID
 INVALID
 BALANCE
 PUSH23 0x9a77032ceb92497a64736f6c63430008140033
-``` 
+```
 
 Ultimately, this is inaccessible code that exists to detail things like compiler version, how the contract was compiled or optimized etc. Tools like etherscan utilize metadata like this for verification purposes for example.
 

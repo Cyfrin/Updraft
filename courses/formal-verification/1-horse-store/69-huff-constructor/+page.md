@@ -47,7 +47,7 @@ I'll keep a running reminder of our current total contract state at the top of e
 #define event ApprovalForAll(address,address,bool)
 
 /* Constants */
-#define constant HORSE_HAPPY_IF_FED_WITHIN_CONST = 0x0000000000000000000000000000000000000000000000000000000000015180 // 1 days 
+#define constant HORSE_HAPPY_IF_FED_WITHIN_CONST = 0x0000000000000000000000000000000000000000000000000000000000015180 // 1 days
 
 /* Storage Slots */
 #define constant TOTAL_SUPPLY = FREE_STORAGE_POINTER()
@@ -66,7 +66,7 @@ I'll keep a running reminder of our current total contract state at the top of e
 #define constant SYMBOL_OFFSET =        0x0000000000000000000000000000000000000000000000000000000000000020
 #define constant SYMBOL_LENGTH_OFFSET = 0x0000000000000000000000000000000000000000000000000000000000000040
 
-/* HorseStore Methods */ 
+/* HorseStore Methods */
 #define macro GET_TOTAL_SUPPLY() = takes (0) returns (0) {
     [TOTAL_SUPPLY] // [TOTAL_SUPPLY]
     sload// [totalSupply]
@@ -82,7 +82,7 @@ I'll keep a running reminder of our current total contract state at the top of e
     MINT()               // [totalSupply]
     0x01                 // [0x01, totalSupply]
     add                  // [totalSupply + 1]
-    [TOTAL_SUPPLY]       // [TOTAL_SUPPLY, totalSupply + 1]   
+    [TOTAL_SUPPLY]       // [TOTAL_SUPPLY, totalSupply + 1]
     sstore               // []
     stop
 }
@@ -125,9 +125,9 @@ I'll keep a running reminder of our current total contract state at the top of e
     gt                                  // [HORSE_HAPPY_IF_FED_WITHIN > timestamp - horseFedTimestamp, timestamp, horseFedTimestamp]
     start_return_true jumpi             // [timestamp, horseFedTimestamp]
     eq                                  // [timestamp == horseFedTimestamp]
-    start_return 
+    start_return
     jump
-    
+
     start_return_true:
     0x01
 
@@ -148,9 +148,9 @@ I'll keep a running reminder of our current total contract state at the top of e
     // Constructor arguments:
     // ?, name_size, name, ?, symbol_size, symbol
 
-    // This constructor will return the runtime bytecode with all the 
+    // This constructor will return the runtime bytecode with all the
     // constructor arguments concatenated at the end.
-    
+
     // Copy the runtime bytecode with constructor argument concatenated.
     0xb                                     // [offset] - constructor code size
     dup1                                    // [offset, offset]
@@ -200,8 +200,8 @@ I'll keep a running reminder of our current total contract state at the top of e
 
     // Revert on failed dispatch
     0x00 dup1 revert
-    
-   
+
+
     feedHorse:
         FEED_HORSE()
     isHappyHorse:
@@ -280,7 +280,7 @@ I'll keep a running reminder of our current total contract state at the top of e
     NON_PAYABLE()                                       // []
     0x04 calldataload                                   // [account]
     // revert if account is zero address
-    dup1 continue jumpi 
+    dup1 continue jumpi
     ZERO_ADDRESS(0x00)
     continue:
     [BALANCE_LOCATION] LOAD_ELEMENT_FROM_KEYS(0x00)     // [balance]
@@ -746,6 +746,7 @@ I'll keep a running reminder of our current total contract state at the top of e
     REQUIRE()                // []
 }
 ```
+
 </details>
 
 ---
@@ -754,7 +755,7 @@ Alright! We're nearly done, the last bit outstanding is our contract's construct
 
 Part of what we inherited for our ERC721 functionality includes an ERC721 constructor. I won't be going into it, in detail, feel free to check it out if you're interested, but the use of this constructor means 2 things for us
 
-First - We need to deploy our contract a very specific way.  I've already set this up for us, but if you look at `HorseStoreV2HuffTest.t.sol`, our Huff Deployer is set up with args, which means our deployment must pass the necessary parameters of `NFT_NAME` and `NFT_SYMBOL` for our constructor.
+First - We need to deploy our contract a very specific way. I've already set this up for us, but if you look at `HorseStoreV2HuffTest.t.sol`, our Huff Deployer is set up with args, which means our deployment must pass the necessary parameters of `NFT_NAME` and `NFT_SYMBOL` for our constructor.
 
 ```js
 function setUp() public override {
@@ -790,4 +791,4 @@ totalSupply:
 
 ### Wrap Up
 
-We should be pretty good at this point, our contract is more or less entirely converted from Solidity to Huff.  Be sure to test things out with `huffc ./src/horseStoreV2/HorseStore.huff` and `forge test` to assure thing are compiling as expected!
+We should be pretty good at this point, our contract is more or less entirely converted from Solidity to Huff. Be sure to test things out with `huffc ./src/horseStoreV2/HorseStore.huff` and `forge test` to assure thing are compiling as expected!

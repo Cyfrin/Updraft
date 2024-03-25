@@ -17,6 +17,7 @@ runtime code - 0x6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdf
 ```
 
 Solidity Contract:
+
 ```js
 // SPDX-License-Identifier: GPL-3.0-only
 pragma solidity 0.8.20;
@@ -35,28 +36,29 @@ contract HorseStore {
 ```
 
 Dedaub result:
+
 ```js
 uint256 stor_0; // STORAGE[0x0]
 
 
 
-function function_selector() public payable { 
+function function_selector() public payable {
     revert();
 }
 
-function 0xcdfead2e(uint256 varg0) public payable { 
+function 0xcdfead2e(uint256 varg0) public payable {
     require(msg.data.length - 4 >= 32);
     stor_0 = varg0;
 }
 
-function 0xe026c017() public payable { 
+function 0xe026c017() public payable {
     return stor_0;
 }
 
 // Note: The function selector is not present in the original solidity code.
 // However, we display it for the sake of completeness.
 
-function function_selector( function_selector) public payable { 
+function function_selector( function_selector) public payable {
     MEM[64] = 128;
     require(!msg.value);
     if (msg.data.length >= 4) {
@@ -69,7 +71,6 @@ function function_selector( function_selector) public payable {
     fallback();
 }
 ```
-
 
 So it's .. not great, but we can definitely see the flavour of what our Solidity contract was doing. We see the `0xcdfead2e` function taking a uint256, and storing that at storage slot 0 - this is our `setNumberOfHorses` function!
 

@@ -6,8 +6,7 @@ _Follow along with this video:_
 
 ---
 
-
-Wooo! This is very exciting. You've just written your first smart contract in Huff, and in so doing, you learnt a tonne about the deeper machinations of the EVM and how Op Codes work!  Let's recap some of the more important things we've covered in this section.
+Wooo! This is very exciting. You've just written your first smart contract in Huff, and in so doing, you learnt a tonne about the deeper machinations of the EVM and how Op Codes work! Let's recap some of the more important things we've covered in this section.
 
 ### Function Dispatching
 
