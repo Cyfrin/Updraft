@@ -6,14 +6,13 @@ _Follow along with this video:_
 
 ---
 
-
 ### Checking Call Data Size
-
 
 <details>
 <Summary> Op Codes </summary>
 
-    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033 
+    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033
+
 ```js
     PUSH1 0x80 ✅
     PUSH1 0x40 ✅
@@ -154,6 +153,7 @@ _Follow along with this video:_
     BALANCE
     PUSH23 0x9a77032ceb92497a64736f6c63430008140033
 ```
+
 </details>
 
 ---
@@ -176,7 +176,7 @@ JUMPI        // [0x00, 0x04, calldata_size, 0x3f, 0x43, func_selector]
 
 Our stack is getting a little crazy, but each step should be pretty clear to us, we `PUSH0`, then `PUSH1 0x20` (0x20 == 32, this is important to know!) Then we reach DUP3, which we can speculate about, but haven't actually seen. Here's what [evm.codes](https://www.evm.codes/#34?fork=cancun) has to say:
 
-<img src="/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size1.png" width="100%" height="auto">
+<img src="/formal-verification-1/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size1.png" width="100%" height="auto">
 
 In essence the DUP3 op code is taking the third item from the top of the stack and duplicating it, adding this copy to the top of the stack. Given this, what do you think DUP5 does?
 
@@ -194,16 +194,15 @@ Next we see two more op codes we've not come across yet `SUB` and `SLT`
 
 <img src="/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size4.png" width="100%" height="auto">
 
-We can see the steps, but what are these operations actually doing? 
+We can see the steps, but what are these operations actually doing?
 
 Well, when we `DUP3` > `DUP5` we are setting up an assessment of our `call data` by then calling `SUB` we're performing the operation `calldata_size - 0x04` which gives us a number which represents if our call data was greater than 4 bytes in size - remember 4 bytes is the size of our `function selector`.
 
-
 The next operation is `SLT` and here's where `0x20` being 32 is important.
 
-We compare the result of `calldata_size - 0x04` with `0x20`. So we're asking: 
+We compare the result of `calldata_size - 0x04` with `0x20`. So we're asking:
 
-***If we remove what we expect to be the size of a function selector, is the remaining call data less than 32 bytes?***
+**_If we remove what we expect to be the size of a function selector, is the remaining call data less than 32 bytes?_**
 
 This check is going to assure that call data being passed to this function is greater than 32 bytes (which is what a uint256 parameter would be!). We then call `ISZERO` and `PUSH1 0x68`, and finally `JUMPI` if the call data is the appropriate size.
 
@@ -218,14 +217,14 @@ JUMPI        // [0x00, 0x04, calldata_size, 0x3f, 0x43, func_selector]
 // Jump to jump dest 3 if there is more call data than function selector + 0x20!
 ```
 
-If the call data received, less the size of the function selector is *not* 32 bytes in size, execution won't jump and we see what happens next - a revert block!
+If the call data received, less the size of the function selector is _not_ 32 bytes in size, execution won't jump and we see what happens next - a revert block!
 
 ```js
-JUMPI        // [0x00, 0x04, calldata_size, 0x3f, 0x43, func_selector]
+JUMPI; // [0x00, 0x04, calldata_size, 0x3f, 0x43, func_selector]
 
-PUSH0        // [0x00, 0x00, 0x04, calldata_size, 0x3f, 0x43, func_selector]
-DUP1         // [0x00, 0x00, 0x00, 0x04, calldata_size, 0x3f, 0x43, func_selector]
-REVERT       // []
+PUSH0; // [0x00, 0x00, 0x04, calldata_size, 0x3f, 0x43, func_selector]
+DUP1; // [0x00, 0x00, 0x00, 0x04, calldata_size, 0x3f, 0x43, func_selector]
+REVERT; // []
 ```
 
-We'll continue from jump dest 3 in the next lesson (spoiler - it's just after the revert we encountered!).  See you there!
+We'll continue from jump dest 3 in the next lesson (spoiler - it's just after the revert we encountered!). See you there!

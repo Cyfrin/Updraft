@@ -44,6 +44,7 @@ I'll keep a running reminder of our current total contract state at the top of e
 </details>
 
 ---
+
 ### feedHorse Macro
 
 We're going to begin with the feedHorse Macro. It shouldn't be too tough. Let's start by looking at the Solidity.
@@ -54,11 +55,11 @@ function feedHorse(uint256 horseId) external {
 }
 ```
 
-This is going to one of the most important functions we learn about in this section as we'll be touching on `timestamps` *and* `mappings`!
+This is going to one of the most important functions we learn about in this section as we'll be touching on `timestamps` _and_ `mappings`!
 
 We're going to need to access the block's timestamp, fortunately there's an op code that does just this `TIMESTAMP`.
 
-<img src="/64-feedhorse-macro/feedhorse_macro1.png" width="100%" height="auto">
+<img src="/formal-verification-1/64-feedhorse-macro/feedhorse_macro1.png" width="100%" height="auto">
 
 So, our function takes a `uint256 horseId`, we're going to want to add this to our stack as well. We know how to do this with the op code `calldataload`, which takes an offset, then adds 32 bytes of call data from the offset to our stack.
 
@@ -69,6 +70,6 @@ So, our function takes a `uint256 horseId`, we're going to want to add this to o
 }
 ```
 
-Things look great, what's our next step?  Think of what a mapping is. We're going to need to `sstore` our `timestamp` to our `horseId` key.
+Things look great, what's our next step? Think of what a mapping is. We're going to need to `sstore` our `timestamp` to our `horseId` key.
 
 We'll look at how that's done in the next lesson!

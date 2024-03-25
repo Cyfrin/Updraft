@@ -8,12 +8,13 @@ _Follow along with this video:_
 
 ### CODECOPY
 
-Let's continue from our `JUMPDEST`. Our contructor wasn't sent any value and we avoided the initial `REVERT`. 
+Let's continue from our `JUMPDEST`. Our contructor wasn't sent any value and we avoided the initial `REVERT`.
 
 <details>
 <Summary> Op Codes </summary>
 
-    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033 
+    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033
+
 ```js
     PUSH1 0x80 ✅
     PUSH1 0x40 ✅
@@ -28,7 +29,7 @@ Let's continue from our `JUMPDEST`. Our contructor wasn't sent any value and we 
     PUSH0 ✅
     DUP1 ✅
     REVERT ✅
-    
+
     JUMPDEST       //<---- We are here!
     POP
     PUSH1 0xa5
@@ -143,6 +144,7 @@ Let's continue from our `JUMPDEST`. Our contructor wasn't sent any value and we 
     BALANCE
     PUSH23 0x9a77032ceb92497a64736f6c63430008140033
 ```
+
 </details>
 
 ---
@@ -164,11 +166,12 @@ The first several op codes are examples of things we've seen before. Without get
 
 This continues until we reach the `CODECOPY` operation. We'd mentioned it briefly before, but now we're going to see it in action. Let see what it does.
 
-<img src="/45-CODECOPY/CODECOPY1.png" width="100%" height="auto">
+<img src="/formal-verification-1/45-CODECOPY/CODECOPY1.png" width="100%" height="auto">
 
 Now, what's this doing in the context of our contract?
 
 Here's our stack input:
+
 - `destOffset`: byte offset in the memory where the result will be copied - for us we've set 0x00, so we're starting at the beginning of memory
 - `offset`: byte offset in the code to copy - where in the code being copied, do we start copying? The value in our stack is 0x001b.
 
@@ -176,6 +179,7 @@ Here's our stack input:
 cast to-base 0x001b dec
 27
 ```
+
 This is literally saying 'start my copy at the 27th op code of the code being copied'.
 
 I can tell you from experience - this is where our `runtime` bytecode begins and it is omitting the `creation code` seen at the start of our deployment! The copy will begin immediately after the `INVALID` op code coming up.
@@ -204,11 +208,11 @@ INVALID       // []
 
 After copying our `runtime code` to memory we `PUSH0` and call `RETURN`.
 
-<img src="/45-CODECOPY/CODECOPY2.png" width="100%" height="auto">
+<img src="/formal-verification-1/45-CODECOPY/CODECOPY2.png" width="100%" height="auto">
 
-`RETURN` takes a bytes offset and a size to be returned from memory. We're passing `0x00` and `0xa5` which represents the whole size of the `runtime code` we've copied into memory. This is what our transaction is returning and is being copied to the blockchain! 
+`RETURN` takes a bytes offset and a size to be returned from memory. We're passing `0x00` and `0xa5` which represents the whole size of the `runtime code` we've copied into memory. This is what our transaction is returning and is being copied to the blockchain!
 
-The astute among you may be asking - ***What about the `CREATE` and `CREATE2` op codes? Shouldn't they be called to save a contract on chain?*** - The short answer is, there are a few ways to save a contract to the blockchain.
+The astute among you may be asking - **_What about the `CREATE` and `CREATE2` op codes? Shouldn't they be called to save a contract on chain?_** - The short answer is, there are a few ways to save a contract to the blockchain.
 
 `CREATE`/`CREATE2` are used by contracts to create other contracts. Another way to create a contract on chain is by passing `nil` in the `to` field of a transaction, which is what's done through the `RETURN` method we're leveraging here.
 

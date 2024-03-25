@@ -13,7 +13,8 @@ Ok! We've reach a section that may finally be new to us. Not sure what's going t
 <details>
 <Summary> Op Codes </summary>
 
-    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033 
+    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033
+
 ```js
     PUSH1 0x80 ✅
     PUSH1 0x40 ✅
@@ -53,7 +54,7 @@ Ok! We've reach a section that may finally be new to us. Not sure what's going t
     PUSH0 ✅
     DUP1 ✅
     REVERT ✅
-    
+
     JUMPDEST      //<---- We are Here!
     POP
     PUSH1 0x04
@@ -147,13 +148,14 @@ Ok! We've reach a section that may finally be new to us. Not sure what's going t
     BALANCE
     PUSH23 0x9a77032ceb92497a64736f6c63430008140033
 ```
+
 </details>
 
 ---
 
 ```js
 JUMPDEST       // [msg.value]
-POP            // [] 
+POP            // []
 PUSH1 0x04     // [0x04]
 CALLDATASIZE   // [calldata_size, 0x04]
 LT             //
@@ -161,25 +163,27 @@ LT             //
 
 Continuing from our `JUMPDEST` (this is if `msg.value == 0`), we are then clearing our stack with `POP`. Next we push `0x04` to our stack with `PUSH1`, we'll see why soon. Then we execute an op code we haven't seen before. `CALLDATASIZE`.
 
-<img src="/48-function-selector-size-check/function-selector-size-check1.png" width="100%" height="auto">
+<img src="/formal-verification-1/48-function-selector-size-check/function-selector-size-check1.png" width="100%" height="auto">
 
 We can see that this op code takes no stack input, but the stack output is the `byte size of the call data`. A couple examples:
 
 If call data = 0x04
+
 - CALLDATASIZE = 0x01
 
 if call data = 0x05284a06
+
 - CALLDATASIZE = 0x04
 
 We then hit another new op code `LT` this stands for `less than`.
 
-<img src="/48-function-selector-size-check/function-selector-size-check2.png" width="100%" height="auto">
+<img src="/formal-verification-1/48-function-selector-size-check/function-selector-size-check2.png" width="100%" height="auto">
 
-The LT op code will return 1 if the top item of the stack is less than the second from top item in the stack. Functionally this is checking the the call data being received is long enough to satisfy the required length of a contracts function selector (4 bytes). 
+The LT op code will return 1 if the top item of the stack is less than the second from top item in the stack. Functionally this is checking the the call data being received is long enough to satisfy the required length of a contracts function selector (4 bytes).
 
 ```js
 JUMPDEST       // [msg.value]
-POP            // [] 
+POP            // []
 PUSH1 0x04     // [0x04]
 CALLDATASIZE   // [calldata_size, 0x04]
 LT             // [calldata_size < 0x04]
@@ -219,7 +223,7 @@ DUP1              // [0x00, 0x00]
 REVERT            // []
 ```
 
-The summarize all this, we're checking our `CALLDATASIZE`, if it is less than the size of a `function selector` we are jumping our execution to the `0x30` offset and reverting the transaction. 
+The summarize all this, we're checking our `CALLDATASIZE`, if it is less than the size of a `function selector` we are jumping our execution to the `0x30` offset and reverting the transaction.
 
 The Solidity compiler again is smart enough to know if a contract possesses a `fallback` function and how to handle `call data` that can't be processed by a contract's functions by reverting the call when the `call data` passed is less then 4 bytes long.
 

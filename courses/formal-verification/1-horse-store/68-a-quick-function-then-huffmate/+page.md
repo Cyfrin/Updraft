@@ -97,7 +97,7 @@ We'll start this lesson by knocking out the getting macro for our `HORSE_HAPPY_I
 
 ### mintHorse, totalSupply and using Huffmate
 
-Here comes the hard stuff, the minting and the constructor.  We'll start with the minting, as always it's best to take a look at the Solidity to remind ourselves of what we're trying to accomplish at a low level:
+Here comes the hard stuff, the minting and the constructor. We'll start with the minting, as always it's best to take a look at the Solidity to remind ourselves of what we're trying to accomplish at a low level:
 
 ```js
 function mintHorse() external {
@@ -105,9 +105,9 @@ function mintHorse() external {
 }
 ```
 
-Working with `ERC721`'s in Huff isn't perfect, there are a few issues, so rather than importing directly, we're going to copy some specific sections of the `Huffmate` libraries to get us set up for `ERC721s`. 
+Working with `ERC721`'s in Huff isn't perfect, there are a few issues, so rather than importing directly, we're going to copy some specific sections of the `Huffmate` libraries to get us set up for `ERC721s`.
 
-Assure your contract closely resembles below to avoid missing anything we've added over from `Huffmate`.  We'll go through, in detail, anything important to know for the purposes of this course.
+Assure your contract closely resembles below to avoid missing anything we've added over from `Huffmate`. We'll go through, in detail, anything important to know for the purposes of this course.
 
 <details>
 <summary>HorseStoreV2.huff</summary>
@@ -149,7 +149,7 @@ Assure your contract closely resembles below to avoid missing anything we've add
 #define event ApprovalForAll(address,address,bool)
 
 /* Constants */
-#define constant HORSE_HAPPY_IF_FED_WITHIN_CONST = 0x0000000000000000000000000000000000000000000000000000000000015180 // 1 days 
+#define constant HORSE_HAPPY_IF_FED_WITHIN_CONST = 0x0000000000000000000000000000000000000000000000000000000000015180 // 1 days
 
 /* Storage Slots */
 #define constant OWNER_LOCATION = FREE_STORAGE_POINTER()
@@ -167,7 +167,7 @@ Assure your contract closely resembles below to avoid missing anything we've add
 #define constant SYMBOL_OFFSET =        0x0000000000000000000000000000000000000000000000000000000000000020
 #define constant SYMBOL_LENGTH_OFFSET = 0x0000000000000000000000000000000000000000000000000000000000000040
 
-/* HorseStore Methods */ 
+/* HorseStore Methods */
 
 #define macro HORSE_HAPPY_IF_FED_WITHIN() = takes (0) returns (0) {
     [HORSE_HAPPY_IF_FED_WITHIN_CONST] // [HORSE_HAPPY_IF_FED_WITHIN]
@@ -207,9 +207,9 @@ Assure your contract closely resembles below to avoid missing anything we've add
     gt                                  // [HORSE_HAPPY_IF_FED_WITHIN > timestamp - horseFedTimestamp, timestamp, horseFedTimestamp]
     start_return_true jumpi             // [timestamp, horseFedTimestamp]
     eq                                  // [timestamp == horseFedTimestamp]
-    start_return 
+    start_return
     jump
-    
+
     start_return_true:
     0x01
 
@@ -230,9 +230,9 @@ Assure your contract closely resembles below to avoid missing anything we've add
     // Constructor arguments:
     // ?, name_size, name, ?, symbol_size, symbol
 
-    // This constructor will return the runtime bytecode with all the 
+    // This constructor will return the runtime bytecode with all the
     // constructor arguments concatenated at the end.
-    
+
     // Copy the runtime bytecode with constructor argument concatenated.
     0xb                                     // [offset] - constructor code size
     dup1                                    // [offset, offset]
@@ -282,7 +282,7 @@ Assure your contract closely resembles below to avoid missing anything we've add
 
     // Revert on failed dispatch
     0x00 dup1 revert
-    
+
     feedHorse:
         FEED_HORSE()
     isHappyHorse:
@@ -361,7 +361,7 @@ Assure your contract closely resembles below to avoid missing anything we've add
     NON_PAYABLE()                                       // []
     0x04 calldataload                                   // [account]
     // revert if account is zero address
-    dup1 continue jumpi 
+    dup1 continue jumpi
     ZERO_ADDRESS(0x00)
     continue:
     [BALANCE_LOCATION] LOAD_ELEMENT_FROM_KEYS(0x00)     // [balance]
@@ -827,6 +827,7 @@ Assure your contract closely resembles below to avoid missing anything we've add
     REQUIRE()                // []
 }
 ```
+
 </details>
 
 ---
@@ -858,7 +859,7 @@ We can finally begin defining our `MINT_HORSE()` macro:
 
 Next we'll need to access the msg.sender, as that's to whom the token is being minted. Fortunately we've an op code specifically to reference the `CALLER`.
 
-<img src="/68-a-quick-function-then-huffmate/a-quick-function-then-huffmate1.png" width="100%" height="auto">
+<img src="/formal-verification-1/68-a-quick-function-then-huffmate/a-quick-function-then-huffmate1.png" width="100%" height="auto">
 
 This op code will add the 20 byte address of the callers account to the top of our stack!
 
@@ -885,7 +886,7 @@ Now we simply need to increment our `totalSupply` value by 1, we do this by push
     MINT()               // [totalSupply]
     0x01                 // [0x01, totalSupply]
     add                  // [totalSupply + 1]
-    [TOTAL_SUPPLY]       // [TOTAL_SUPPLY, totalSupply + 1]   
+    [TOTAL_SUPPLY]       // [TOTAL_SUPPLY, totalSupply + 1]
     sstore               // []
     stop
 }

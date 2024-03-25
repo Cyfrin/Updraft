@@ -5,11 +5,12 @@ title: Foundry Op Code Debugger
 _Follow along with this video:_
 
 ---
+
 ### Foundry Op Code Debugger
 
 Alright! All that we've done has lead to this! We've proved .. somehting fairly minor. Both our Huff and Solidity contracts inialize storage slot 0 with 0. This is just a start however, we've been able to verify that our contracts are both functioning the same way - this is great!
 
-Often when coding in a low level language like Assembly or Huff it can be difficult to pinpoint where things are going wrong when errors are received.  Foundry, fortunately, has a built in debugger we can use!
+Often when coding in a low level language like Assembly or Huff it can be difficult to pinpoint where things are going wrong when errors are received. Foundry, fortunately, has a built in debugger we can use!
 
 Try the command:
 
@@ -21,7 +22,7 @@ This should launch Foundry's debugger.
 
 The trickest part of the debugger could easily be navigation to the correct pieces of code. Foundry itself has a bunch of operations executing as a product of running its test suites, this muddies the waters a little bit in our debugger.
 
-Utilize the commands along the bottom of the screen to navigate, you're looking for our `calldataload` or our `function selector` checks.  These are clear inidicators that we're looking at our contracts implementation.
+Utilize the commands along the bottom of the screen to navigate, you're looking for our `calldataload` or our `function selector` checks. These are clear inidicators that we're looking at our contracts implementation.
 
 Foundry's debugger allows us to step through execution op code by op code very similarly to how the evm.codes playground works! We've seen this a few times before in our experiments learning about op codes, but I encourage you to play with this debugger until you're familiar with it. Trying things out is the best way to learn.
 
@@ -66,6 +67,6 @@ cast to-base 777 hex
 
 With the above, we can see that 0x309 should be expected to pop up as we walk through the op code execution in our debugger, and indeed it does.
 
-<img src="../static/39-foundry-opcode-debugger/foundry-opcode-debugger1.png" width="100%" height="auto">
+<img src="/formal-verification-1/39-foundry-opcode-debugger/foundry-opcode-debugger1.png" width="100%" height="auto">
 
 I can't encourage you enough to practice and experiment with this debugger. Being able to read through op code executions will be an invaluable low level skill for those serious about a deep understanding of the EVM.

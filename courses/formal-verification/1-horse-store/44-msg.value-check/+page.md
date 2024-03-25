@@ -9,12 +9,13 @@ _Follow along with this video:_
 <details>
 <Summary> Op Codes </summary>
 
-    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033 
+    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033
+
 ```js
     PUSH1 0x80 ✅
     PUSH1 0x40 ✅
     MSTORE ✅
-    
+
     CALLVALUE     //<---- We are here!
     DUP1
     ISZERO
@@ -137,13 +138,14 @@ _Follow along with this video:_
     BALANCE
     PUSH23 0x9a77032ceb92497a64736f6c63430008140033
 ```
+
 </details>
 
 ---
 
 ### Non-Payable Constructor Check
 
-When going through op codes, I like to repeatedly ask myself *What does this chunk do?*.  Let's look at the next check and walk through is execution. 
+When going through op codes, I like to repeatedly ask myself _What does this chunk do?_. Let's look at the next check and walk through is execution.
 
 I'll typically look out for 'break points', things like `Revert` and `Return` to detemine where a "chunk" starts and stops.
 
@@ -158,19 +160,19 @@ DUP1         // [0, 0, msg.value]
 REVERT       // [msg.value]
 ```
 
-I've added our comment notation to our op code list to keep track of what's on our stack.  So, what's happening here?
+I've added our comment notation to our op code list to keep track of what's on our stack. So, what's happening here?
 
-We've seen many of these op codes before, but some of them are new. Each time a new op code is mentioned, I'll include a screenshot of it's details from [evm.codes](https://www.evm.codes/#34?fork=cancun). I encourage you to use this website like a dictionary as we attempt to define what's being executed.  `CALLVALUE` adds to the stack, the value included with the current call.
+We've seen many of these op codes before, but some of them are new. Each time a new op code is mentioned, I'll include a screenshot of it's details from [evm.codes](https://www.evm.codes/#34?fork=cancun). I encourage you to use this website like a dictionary as we attempt to define what's being executed. `CALLVALUE` adds to the stack, the value included with the current call.
 
-<img src="/44-msg.value-check/msg_value-check1.png" width="100%" height="auto">
+<img src="/formal-verification-1/44-msg.value-check/msg_value-check1.png" width="100%" height="auto">
 
 We then duplicate this value with `DUP1` and check if it's equal to zero with the conditional `ISZERO`
 
-<img src="/44-msg.value-check/msg_value-check2.png" width="100%" height="auto">
+<img src="/formal-verification-1/44-msg.value-check/msg_value-check2.png" width="100%" height="auto">
 
 Next it looks like we're setting up the executions response to this `ISZERO` conditional. We push a program counter/jump destination to the stack with PUSH1 0x0e then execute JUMPI.
 
-If the result of ISZERO is true (the msg.value is zero), the execution will jump to 0x0e to continue. 
+If the result of ISZERO is true (the msg.value is zero), the execution will jump to 0x0e to continue.
 
 If the result of ISZERO is false (the msg.value is greater than zero), the execution won't jump. We see the next operations queues if we don't jump:
 
@@ -180,7 +182,7 @@ PUSH0
 REVERT
 ```
 
-It's going to revert!  You can even see this in our foundry script if you try to pass a value to our contract creation, in our test.  It won't even let us compile!
+It's going to revert! You can even see this in our foundry script if you try to pass a value to our contract creation, in our test. It won't even let us compile!
 
 <img src="/44-msg.value-check/msg_value-check3.png" width="100%" height="auto">
 
@@ -192,4 +194,4 @@ To summarize, what this chunk is doing is:
 2. reverts if value is being sent
 3. jumps over revert to continue logic if no value is sent.
 
-Things really become easier if you break them down one step at a time.  Let's see what happens if we don't revert in the next lesson.
+Things really become easier if you break them down one step at a time. Let's see what happens if we don't revert in the next lesson.

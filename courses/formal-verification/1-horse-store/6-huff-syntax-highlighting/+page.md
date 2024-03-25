@@ -17,7 +17,7 @@ If you'd like to take advantage of the syntax highlighting you see me using for 
 - Click **Install**.
 ```
 
-<img src="../../../../static/formal-verification-1/6-huff-syntax-highlighting/huff-syntax-highlighting-1.png" width="75%" height="auto">
+<img src="/formal-verification-1/6-huff-syntax-highlighting/huff-syntax-highlighting-1.png" width="75%" height="auto">
 
 This should add a much needed level of clarity while developing in Huff, and as Patrick says: "It'll give you these nice little highlightings."
 

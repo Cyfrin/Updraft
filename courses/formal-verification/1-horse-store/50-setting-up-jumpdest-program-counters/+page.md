@@ -11,7 +11,8 @@ Alright, let's keep going!
 <details>
 <Summary> Op Codes </summary>
 
-    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033 
+    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033
+
 ```js
     PUSH1 0x80 ✅
     PUSH1 0x40 ✅
@@ -150,6 +151,7 @@ Alright, let's keep going!
     BALANCE
     PUSH23 0x9a77032ceb92497a64736f6c63430008140033
 ```
+
 </details>
 
 ---
@@ -166,11 +168,11 @@ PUSH1 0x59    // [0x59, 0x04, calldata_size, 0x3f, 0x43, func_selector]
 JUMP          // [0x04, calldata_size, 0x3f, 0x43, func_selector]]
 ```
 
-Now, this looks like we're pushing a bunch of random things to the stack and then calling a `JUMP`. That's kind of true, but things will seem less random soon, haha!  Let's look at JUMP since we've never seen it used before.
+Now, this looks like we're pushing a bunch of random things to the stack and then calling a `JUMP`. That's kind of true, but things will seem less random soon, haha! Let's look at JUMP since we've never seen it used before.
 
-<img src="/50-setting-up-jumpdest-program-counters/setting-up-jumpdest-program-counters1.png" width="100%" height="auto">
+<img src="/formal-verification-1/50-setting-up-jumpdest-program-counters/setting-up-jumpdest-program-counters1.png" width="100%" height="auto">
 
-`JUMP` takes the top item of our stack and continues our execution from that bytes offset location.  This chunk of code represents our `updateHorseNumber jump dest 1`. When we reach the `JUMP` operation on this chunk.
+`JUMP` takes the top item of our stack and continues our execution from that bytes offset location. This chunk of code represents our `updateHorseNumber jump dest 1`. When we reach the `JUMP` operation on this chunk.
 
 Take my word for it, for now, but `0x59` as a bytes offset means the next code to execute pertaining to this function is going to be all the way down at:
 
@@ -191,6 +193,6 @@ DUP1
 REVERT
 ```
 
-This is our `updateNumberOfHorses()` jump dest 2. A great way to determine these jump destinations would be to copy your op codes into the [evm.codes playground](https://www.evm.codes/playground) and reference the locations jumped  when stepping through the execution.
+This is our `updateNumberOfHorses()` jump dest 2. A great way to determine these jump destinations would be to copy your op codes into the [evm.codes playground](https://www.evm.codes/playground) and reference the locations jumped when stepping through the execution.
 
 Let's see what this `JUMPDEST` does in the next lesson!

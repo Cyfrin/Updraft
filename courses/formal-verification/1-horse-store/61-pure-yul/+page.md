@@ -8,10 +8,9 @@ _Follow along with this video:_
 
 ### Pure Yul Disclaimer
 
-I'm going to start this lesson by saying, out of the gate, basically no body codes in raw Yul.  This is entirely optional, and I don't recommend using raw Yul in production unless you have some esoteric reason to.
+I'm going to start this lesson by saying, out of the gate, basically no body codes in raw Yul. This is entirely optional, and I don't recommend using raw Yul in production unless you have some esoteric reason to.
 
 I personally feel you'd be more successful getting really good at Huff than spending a lot of time on raw Yul and Yul's abstraction sometimes feels like you're fighting with the EVM - this is just my opinion.
-
 
 ### Standalone Yul
 
@@ -29,23 +28,22 @@ object "HorseStoreYul" {
 
 > **Note:** If you'd like to take advantage of Yul syntax highlighting you can install the vs code extension [Solodity + Yul Semantic Syntax](https://marketplace.visualstudio.com/items?itemName=ContractShark.solidity-lang)
 
- Alright, unlike Huff, in Yul we have to set up our contract deployment ourselves. The code for this deployment is going to look like:
+Alright, unlike Huff, in Yul we have to set up our contract deployment ourselves. The code for this deployment is going to look like:
 
- ```js
- object "HorseStoreYul" {
-    code {
-        datacopy(0, dataoffset("runtime"), datasize("runtime"))
-        return(0, datasize("runtime"))
-    }
+```js
+object "HorseStoreYul" {
+   code {
+       datacopy(0, dataoffset("runtime"), datasize("runtime"))
+       return(0, datasize("runtime"))
+   }
 }
 ```
 
 Datacopy, dataoffset and datasize might seem unfamiliar, but these are function within Yul which assist it to access disparate parts of a Yul Object.
 
-<img src="/61-pure-yul/pure-yul1.png" width="100%" height="auto"> 
+<img src="/formal-verification-1/61-pure-yul/pure-yul1.png" width="100%" height="auto">
 
 We can see that in our circunstances the `datacopy` function is being used as equivalent to the `codecopy` op code, and what does `codecopy` do? Well, it's taking the size and offset of our `runtime code` (we haven't written the `runtime` yet!) and returning it to be copied to the blockchain!
-
 
 ```js
 object "HorseStoreYul" {
@@ -62,7 +60,7 @@ object "runtime" {
 
 ### Compiling Yul
 
-Before we start adding `runtime code`, lets go over compiling `Yul`, since it can be a little tricky.  You'll first need to have the Solidity Compiler installed. You can look at how to install `solc` [here](https://docs.soliditylang.org/en/latest/installing-solidity.html)
+Before we start adding `runtime code`, lets go over compiling `Yul`, since it can be a little tricky. You'll first need to have the Solidity Compiler installed. You can look at how to install `solc` [here](https://docs.soliditylang.org/en/latest/installing-solidity.html)
 
 > **Pro-tip:** I recommend looking at installing `solc` via `solc-select` (available [here](https://github.com/crytic/solc-select)). This will allow you to easily switch between different versions of the solidity compiler as you need!
 
@@ -76,8 +74,7 @@ solc --strict-assembly --optimize --optimize-runs 20000 yul/HorseStoreYul.yul --
 
 This is going to return the binary of our contract after compilation!
 
-<img src="/61-pure-yul/pure-yul2.png" width="100%" height="auto"> 
-
+<img src="/formal-verification-1/61-pure-yul/pure-yul2.png" width="100%" height="auto">
 
 ### Runtime Code
 
@@ -105,7 +102,7 @@ object "runtime" {
 }
 ```
 
-So, what's happening here? We're declaring a `switch` statement for a function `selector()` that we'll define soon. We're defining each case for the switch statement to execute based on the result of our `selector()` function. 
+So, what's happening here? We're declaring a `switch` statement for a function `selector()` that we'll define soon. We're defining each case for the switch statement to execute based on the result of our `selector()` function.
 
 The first case, we expect to see the function signature of our `updateHorseNumber`, at which case the logic for that function will execute. Likewise, if the function signature of `readNumberOfHorses` is received, that case will trigger and the associated logic will execute.
 
@@ -148,16 +145,15 @@ Then, within the `selector()` function we're dividing our `call data` (accessed 
 
 ### Switch Case Logic
 
-Now that we've isolated our `function selector` from our `call data`, we should have some logic for it to get routed to base on which `switch case` triggers.  Let's start with `updateHorseNumber`
+Now that we've isolated our `function selector` from our `call data`, we should have some logic for it to get routed to base on which `switch case` triggers. Let's start with `updateHorseNumber`
 
 ```js
 case 0xcdfead2e {
     storeNumber(decodeAsUint(0))
 }
-``` 
+```
 
 Both `storeNumber()` and `decodeAsUint()` are functions we'll define ourselves now.
-
 
 ### decodeAsUint
 
@@ -181,12 +177,11 @@ Our `decodeAsUint()` function is taking an `offset` as a parameter (we've passed
 
 Because our `offset` is 0, our positionInCallData is going to be starting at 4 bytes, or immediately following our function selector.
 
-We then assign a value to our return value, v. `calldataload()` will load 32 bytes of `call data` starting from a passed `offset`, which in our case is immediately following our `function selector` and hopefully this will be the value that we're updating! 
+We then assign a value to our return value, v. `calldataload()` will load 32 bytes of `call data` starting from a passed `offset`, which in our case is immediately following our `function selector` and hopefully this will be the value that we're updating!
 
 ### storeNumber
 
 With our `decodeAsUint` function written, let's go back to our switch case for `updateHorseNumber` and start defining the `storeNumber` function. Here's where we're at so far for our `runtime` code:
-
 
 ```js
 object "runtime" {
@@ -281,7 +276,6 @@ function returnUint(v) {
 
 Alright, under the readNumberOfHorses switch case we've added two functions which will be called. The `readNumber()` function is loading our `horseNumber` from storage slot 0 via `sload(0)`. This value is then being passed to `returnUint(v)` which is storing it in memory, and returning 32 bytes (0x20) of data from where it was stored!
 
-
 Let's see our whole contract now:
 
 ```js
@@ -340,7 +334,7 @@ object "runtime" {
 
 ### Pure Yul Recap
 
-And that's our Pure Yul Smart contract!  What did we learn?
+And that's our Pure Yul Smart contract! What did we learn?
 
 We learnt that Yul contracts don't use the contract keyword, they have an `object` which will contain a `code` section. This `code` section will almost always contain your contract deployment logic.
 
@@ -353,7 +347,8 @@ object "HorseStoreYul" {
     }
 }
 ```
-There's also a `runtime` object, which contains our contracts `runtime` logic within *its* `code` section.
+
+There's also a `runtime` object, which contains our contracts `runtime` logic within _its_ `code` section.
 
 We learnt that the first thing we do, just like in Huff and Solidity is employ a `function dispatcher` and that the Yul `function dispatcher` uses `switch `cases to route logic to the case which matches our `call data`'s `function selector`.
 

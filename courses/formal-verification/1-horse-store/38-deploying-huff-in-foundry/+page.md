@@ -6,7 +6,6 @@ _Follow along with this video:_
 
 ---
 
-
 ### Setting up Huff in Foundry
 
 In this lesson we're going to be diving into the process of deploying a Huff contract using Foundry. In order to accomplish this, we'll be using the [Huff Foundry Extension](https://github.com/huff-language/foundry-huff).
@@ -27,7 +26,7 @@ forge install huff-language/foundry-huff --no-commit
 
 Now that things are installed, this library will assist us in deploying our Huff contracts using Foundry.
 
-Behind the scenes, what this library does, is any time we deploy a Huff smart contract, the framework basically runs `huffc` to compile things into a file, which then has it's binary read from it for deployment.  A product of this is our Foundry Framework needs to have FFI enabled to allow it to write new files. We can enable this by adding `ffi = true` to our `foundry.toml`.
+Behind the scenes, what this library does, is any time we deploy a Huff smart contract, the framework basically runs `huffc` to compile things into a file, which then has it's binary read from it for deployment. A product of this is our Foundry Framework needs to have FFI enabled to allow it to write new files. We can enable this by adding `ffi = true` to our `foundry.toml`.
 
 Find more information on FFI **[here](https://book.getfoundry.sh/cheatcodes/ffi)**.
 
@@ -62,13 +61,8 @@ That's all there is to setting up our Huff and Solidity tests! We're set up to r
 
 By running `forge test` now, we should see both test suites be run.
 
-<!-- WRONG ERROR MESSAGE, SWAP IMAGE <img src= "../static/38-deploying-huff-in-foundry1/deploying-huff-in-foundry1.png" width="100%" height = "auto"> -->
-
 Both test suites run! One of them is showing an error however! Much like the `--mt or match-test` command we normally use, forge affords us the command `forge test --match-path *huff*` this will run only our Huff test suite, allowing us to narrow down the focus of our debugging.
 
-You may run into an error such as `EvmError: NotActivated`.  This is typically seen due to forge testing defaulting to `Paris` as an EVM version. by adding `evm_version = shanghai` to our `foundry.toml` this error should resolve!
+You may run into an error such as `EvmError: NotActivated`. This is typically seen due to forge testing defaulting to `Paris` as an EVM version. by adding `evm_version = shanghai` to our `foundry.toml` this error should resolve!
 
 Great work!
-
-
-

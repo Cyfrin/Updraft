@@ -52,7 +52,7 @@ I'll keep a running reminder of our current total contract state at the top of e
 
 Now's a good time to go back and reference the Solidity Documentation. We should be reminded that mappings are handled using a very specific algorithm.
 
-<img src="/65-mappings-and-arrays-in-evm-huff/mappings-and-arrays-in-evm-huff1.png" width="100%" height="auto">
+<img src="/formal-verification-1/65-mappings-and-arrays-in-evm-huff/mappings-and-arrays-in-evm-huff1.png" width="100%" height="auto">
 
 We cover this in a little more detail in the Foundry Full Course on Updraft, so I won't go over it here, but lets look at how we accomplish this in Huff.
 
@@ -83,6 +83,7 @@ This will allow us to avoid the messy algorithm while working with mappings in s
 ```js
 #define constant HORSE_FED_TIMESTAMP_LOCATION = FREE_STORAGE_POINTER()
 ```
+
 As we know, the mapping itself needs a location, but the elements within the mapping are stored at locations determined by using the hashing algorithm.
 
 Now we can access this variable to add this storage slot location to our stack. Our feedHorse macro looks like this now:
@@ -135,4 +136,3 @@ We can just call this `STORE_ELEMENT_FROM_KEYS()` macro within our `FEED_HORSE()
 ```
 
 And that's all there is for our `FEED_HORSE()` macro! `Hashmap.huff` made things pretty painless for us, but if you find yourself not quite understanding how things were calculated, I encourage you to go into the macros of `Hashmap.huff` and walk yourself through the op codes to gain a deeper understanding of what they're doing before continuing.
-

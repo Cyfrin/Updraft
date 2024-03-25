@@ -14,11 +14,11 @@ Start by creating a new folder named `breakdowns`, we'll be compiling our op cod
 
 Navigate to `out/horseStoreV1/HorseStore.sol/HorseStore.json`. This is the ABI of our deployed HorseStore contract. Within this file you'll find a `bytecode` object with an `object` property. This represents our op codes for the contract in bytecode!
 
-<img src="../static/42-solidity-opcodes-from-bytecode/solidity-opcodes-from-bytecode1.png" width="100%" height="auto">
+<img src="/formal-verification-1/42-solidity-opcodes-from-bytecode/solidity-opcodes-from-bytecode1.png" width="100%" height="auto">
 
-Create a new file named `solc-breakdowns.c++`.  This won't actually be a C++ file, but some of the syntax highlighting for C++ will make things easier on us. You can paste your bytecode to the top of this file as a comment for reference.
+Create a new file named `solc-breakdowns.c++`. This won't actually be a C++ file, but some of the syntax highlighting for C++ will make things easier on us. You can paste your bytecode to the top of this file as a comment for reference.
 
-As we know, every 2 digits in this bytecode represents an op code. For example, the very first pair `60` is `PUSH1`.  We could absolutely go through the bytecode, pair by pair and break things down that way.
+As we know, every 2 digits in this bytecode represents an op code. For example, the very first pair `60` is `PUSH1`. We could absolutely go through the bytecode, pair by pair and break things down that way.
 
 But that's a lot of work.
 
@@ -156,4 +156,4 @@ PUSH23 0x9a77032ceb92497a64736f6c63430008140033
 
 ---
 
- Paste this into our `solc-breakdowns.c++` files and we'll get started walking through this contract's execution in the next lesson.
+Paste this into our `solc-breakdowns.c++` files and we'll get started walking through this contract's execution in the next lesson.
