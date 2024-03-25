@@ -2,14 +2,13 @@
 title: The Current Smart Contract Landscape
 ---
 
-You can follow along with this section of the course here. 
+_Follow along with this video:_
 
-
-
+---
 
 ## Features of Smart Contracts
 
-Smart contracts come with various features that distinguish them from traditional agreements. 
+Smart contracts come with various features that distinguish them from traditional agreements.
 
 ### Decentralization
 
@@ -17,7 +16,7 @@ The first feature is decentralization; smart contracts do not rely on any centra
 
 ### Transparency and Flexibility
 
-Transparency is inherent to blockchain networks. Since all node operators can see everything happening on-chain, there is no room for unfair or hidden deals. This transparency ensures that everyone has access to the same information and plays by the same rules. 
+Transparency is inherent to blockchain networks. Since all node operators can see everything happening on-chain, there is no room for unfair or hidden deals. This transparency ensures that everyone has access to the same information and plays by the same rules.
 
 It is important to note that this transparency does not necessarily compromise privacy. Blockchain is pseudo-anonymous, meaning that your transactions are not directly tied to your real-world identity.
 
@@ -55,9 +54,8 @@ NFTs, or Non-Fungible Tokens, can be thought of as digital art or unique assets.
 
 ### Other Applications
 
-And then, maybe *you'll* be the one to discover the next iteration of smart contract applications!
+And then, maybe _you'll_ be the one to discover the next iteration of smart contract applications!
 
-## Making Your First Transaction
+### Making Your First Transaction
 
 You've gained a high-level understanding of smart contracts and their applications. It’s now time to dive into the practical aspect. In the next section, we will guide you through setting up a wallet and making your first transaction. Let's immerse ourselves in this new world.
-

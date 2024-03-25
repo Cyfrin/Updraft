@@ -1,62 +1,37 @@
 ---
-title: SLOAD - MSTORE & RETURN
+title: SLOAD MSTORE RETURN
 ---
 
----
-
-# Demystifying Smart Contract Development: Reading and Returning Data with Huff
-
-Howdy, developers! I hope you're all doing fantastic. Let's keep our learning spree rolling. Today, we're tackling the last piece of our smart contract puzzle. Our quest? Figuring out how to read the number of horses we have stashed in a storage slot. We'll also dive into writing some tests and peek into the art of debugging smart contracts—trust me, it's much simpler than the run-of-the-mill copy-paste routine in your playground.
-
-## Reading the Number of Horses: Breaking it Down
-
-So, what's the game plan? We need to retrieve the number of horses from that nifty storage slot we've been working with. Follow these three steps:
-
-1. Get the storage slot.
-2. Load the slot's value into memory.
-3. Return the data to the caller.
-
-Seems straightforward, right? Let's dive deeper into these steps and uncover the magic behind them.
-
-### Step 1: Lay Your Hands on the Storage Slot
-
-First up, we need to identify the storage slot that holds our data. Think of this like a treasure hunt—each slot is a chest, and we've marked ours with a big red "X".
-
-### Step 2: The S Load Operation
-
-We now bring two powerful opcodes into the limelight: `SLOAD` and `RETURN`. If you're seasoned in the realm of Ethereum smart contracts, you've definitely come across `SLOAD` before. This opcode is notorious for being gas-hungry, but it's a necessary beast when we want to read from storage.
-
-```
-// Top of the stack before `SLOAD`[32 byte key in storage]
-// After `SLOAD`, the value from storage is now on the stack[value stored in slot]
-```
-
-Think of the Ethereum Virtual Machine (EVM) as a curious creature peeking into slot `0` and finding out how many horses we've got. It then places this number neatly on top of the stack for us to work with.
-
-> "The `SLOAD` opcode transforms our storage key into the value we've been looking for. It's like revealing the number of horses in the paddock with a single whisper to the EVM."
-
-### Step 3: Returning Data with a Flourish
-
-`RETURN` is our other star performer. Unlike `STOP`, it not only halts execution but also serves up the data on a silver platter. But remember, it dishes out data from memory, not the stack. So, we must first move our value into memory using `MSTORE`, akin to setting the table before serving the meal.
-
-```
-// Using `MSTORE` to add data to memory[location] [value]
-```
-
-Think of memory as a fleeting thought that vanishes at the end of the conversation—it only sticks around for the transaction's duration.
-
-![EVM Diagram](https://cdn.videotap.com/618/screenshots/FGxPiZpNxGEKV0pyK7rV-113.14.png)
-
-## Storing Charms: Mstore and Its Vital Role
-
-When we talk about `MSTORE`, imagine it as `SSTORE`'s cousin, but with a penchant for short-term memory. Both deal with storage, but one deals with lasting records while the other handles ephemeral data. It's the difference between carving into stone and writing in the sand.
-
-## The Final Return: Wrapping Things Up
-
-Armed with these insights, we're crisp and clear on how to read and return the number of horses in our contract. But wait, there's more! It's not enough to know these steps; it's time to put this knowledge into practice. Let's roll up our sleeves, punch in some code, and witness our smart contract come alive.
-
-In the upcoming sections, we'll craft some snug test cases and unveil a debugging process that'll make your development journey feel like a walk in the park. So, stay tuned, and let's turn these concepts into code!
+_Follow along with this video:_
 
 ---
 
-There you have it—our little adventure in smart contract development, with a playful tone matching our casual yet insightful conversation. As always, stay curious and keep experimenting. By embracing these ops and embracing some tests, you're on your way to becoming a smart contract superhero in the ever-exciting blockchain realm. Catch you on the flip side!
+Having got this far the next steps we take should be pretty straight forward. Let's outline what we need for our `GET_NUMBER_OF_HORSES()` macro.
+
+1. Get the applicable storage slot
+2. Load the value of that slot into memory
+3. return
+
+There are 3 op codes we'll be working with do accomplish this. The first is `SLOAD`
+
+<img src="/formal-verification-1/33-sload-mstore-return/sload-mstore-return-1.png" width="100%" height="auto">
+
+Our SLOAD op code takes a single stack input - our key which points to the location of the storage slot we want to load from. This is a very gas intensive operation, be mindful!
+
+The output we expect from this op code is of course - the value stored at that location. It adds this to the top of our stack.
+
+The other op code we'll be looking at, is the `return` op code.
+
+<img src="/formal-verification-1/33-sload-mstore-return/sload-mstore-return-2.png" width="100%" height="auto">
+
+`return` functions very similarly to `stop` in that is halts execution of our code. The difference here is that `return` is going to return requested data when it's executed. We can see in the above screenshot that `return` takes 2 stack inputs that allow us to define what data we want returned `offset` and `size`.
+
+It's important to notes, however, that the `return` op code returns data from _memory_, not storage. As an extra step, we need to load our data into memory first. To do this we'll be leveraging the `mstore` op code.
+
+<img src="/formal-verification-1/33-sload-mstore-return/sload-mstore-return-3.png" width="100%" height="auto">
+
+`mstore` functions just like `sstore`, which we used previously, except this op code is going to push to memory, no storage.
+
+We can recall that memory, can be considered effectively the same as storage, like a giant array, except memory is deleted after a transaction completes.
+
+Let's keep going!

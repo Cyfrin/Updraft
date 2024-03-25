@@ -1,60 +1,44 @@
 ---
-title: Jumpdest
+title: JUMPDEST
 ---
 
+_Follow along with this video:_
+
 ---
 
-## Getting Your Feet Wet with EVM Code Playground
-
-Dabbling with the EVM doesn't have to be daunting. Take advantage of the EVM codes playground, a sandbox where your smart contract visions can materialize fearlessly.
-
-To start, lean on the simplicity of the `huff compiler` to pluck out the runtime code via `bin runtime`:
-
-```bash
-huffc your_contract
-huff --bin-runtime
-```
-
-![EVM screenshot](https://cdn.videotap.com/618/screenshots/EjkuL9455ergb1Ep3Jbb-67.82.png)
-
-When you paste the resulting opcodes into the playground, you're essentially looking at your creation—your Huff code in its purest computational form ready for execution.
-
-## From Code to Opcodes: A Visual Walkthrough
+We're going to take a look at how this function in the [**evm.codes playground**](https://www.evm.codes/playground), and there's actually a convenient method, build into Huff, that allows us to retrieve the runtime bytecode of our compiled contract!
 
 ```
-PUSH1 0x60 PUSH1 0x40 ...
+huffc src/horseStoreV1/HorseStore.huff --bin-runtime
+5f3560e01c63cdfead2e1461000f575b
 ```
 
-Look at the elegance! Start by pushing call data onto the stack, then apply a shift to pinpoint the function selector—a crucial piece of the puzzle that governs which piece of the contract to execute.
+Paste the returned runtime bytecode into the evm.codes playground and let's step through what's happening with our contract.
 
-Next up, you'll perform a comparison with the intended update function selector. The `EQ` opcode balances the scales, ascertaining identity. Follow it with a push of the program counter, and now it's time for the critical moment—a `JUMPI`, where the code leaps based on a condition.
+<img src="/formal-verification-1/21-jumpdest/jumpdest-1.png" width="75%" height="auto">
 
-```bash
-JUMPIJUMPDEST
+By adding the runtime bytecode to the playground, we're presented with almost exactly what we wrote in Huff, converted to pure op codes. Something that's going to stand out is the `JUMPDEST` code. To understand this op code, let's take one step back.
+
+In the previous lesson we'd set `updateJump` as a pointer to our program counter of `SET_NUMBER_OF_HORSES()`. This is only partially true. When a `JUMP` or `JUMPI` op code is executed, it requires a stack input of a `valid jump destination`. Huff's syntax allows us to define `updateJump` as a new `valid jump destination` before our `JUMPI` operation is executed.
+
+```js
+updateJump: SET_NUMBER_OF_HORSES(); // sets the compiled location of the SET_NUMBER_OF_HORSES macro as a valid jump destination.
 ```
 
-Now, here's a nugget of wisdom:
+So, looking again at our playground:
 
-> "In the realm of jumps, only the oracle known as `JUMPDEST` will foretell a valid landing."
+- Op Codes 1-4 - isolating `function selector` from received `call data`
+- PUSH4 - Pushes our known `function selector` to the stack
+- EQ - Compares our isolated `function selector` to our known selector and returns 0/1
+- PUSH2 - Adds our jump destination to the stack
+- JUMPI - Jumps to our destination if the value returned by EQ is anything other than 0
+- JUMPDEST - An empty stack at our jump destination
 
-Omit a `JUMPDEST`, and your code will be wandering eternally in the bytecode wilderness.
+<img src="/formal-verification-1/21-jumpdest/jumpdest-2.png" width="75%" height="auto">
 
-We've sweetened the deal with Huff's syntactical sugar. Instead of a daunting manual `JUMP`, we simply mark the set number of horses as a valid jump spot. This is our "update jump" isa beacon of clarity in the sea of low-level code.
+Currently of course, nothing is going to happen after we jump to our new destination. We haven't added any logic to our macro yet. I encourage you to experiment in the playground before moving on.
 
-## Testing the Waters with Valid Call Data
+What's left on our stack after stepping through the code?
+What happens if we provide call data that doesn't start with our expected `function selector`?
 
-Got your call data straight from the cauldron of hexadecimal stew? Great! Any which way you concatenate, as long as it commences with the sacred function selector. Ready, set, `RUN`!
-
-As the opcodes execute step by step, feel that suspense build as the stack aligns `f` and `true`, and _voilà_, it soars to `JUMPDEST`. But should your function selector groove to the wrong beat, `false` will appear, revealing the conditional jump's ruse. Instead of vaulting onwards, it ambles to `JUMPDEST` because—fun code trivia—it's next in line anyway.
-
-So, pat yourself on the back or give your neighbor a high-five, you've made it through the initial gauntlet:
-
-> "The function dispatch for the update of the number of horses, executed with precision!"
-
-## Conclusion
-
-Writing Huff code throws you into the deep end of EVM's intricate ocean. Every opcode is a puzzle piece, and it's a game of intellect and foresight to assemble each seamlessly. Turning code into actions on Ethereum's blockchain requires a keen understanding of both high-level concepts and the granular details that make this technology so powerful.
-
-With this exercise, we've merely skimmed the surface of what's possible in smart contract development. Remember, practice brings mastery, and every line of code hones your prowess in this digital alchemy. The EVM codes playground might be your sandbox today, but tomorrow, it could be the canvas for your magnum opus smart contract that reshapes blockchain history.
-
-Until then, keep experimenting, keep learning, and most importantly, keep coding, brave souls of Ethereum.
+Answer these questions, and I'll see you in the next lesson!

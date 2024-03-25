@@ -2,72 +2,54 @@
 title: Signing Transactions
 ---
 
-You can follow along with this section of the course here.
+_Follow along with this video:_
 
+---
 
+To help understand the fundamentals of how concepts like public and private keys as well as signing transactions, we'll again be leveraging an incredible resource by **Anders Brownworth** available [**here**](https://andersbrownworth.com/blockchain/public-private-keys/)
 
-# Understanding Blockchain Transaction Signatures, Private and Public Keys
+### Public and Private Keys
 
-The beauty and security of blockchain technology revolve around the privacy and secure nature of transactions. In this blog post, we will demystify this concept by digging deeper into how transaction signing, private and public keys, and other cryptographic pieces lend credence to blockchain transactions.
-
-<img src="/blockchain-basics/public-private-key.png" style="width: 100%; height: auto;" alt="public private key">
-
-## What are Private and Public Keys?
+In this lesson, all the pieces we learnt about with Metamask should start coming together.
 
 Understanding the relationship between private and public keys is essential to grasping the concept of blockchain transactions. In essence, a private key is a randomly generated secret key used to sign all transactions.
 
-```python
-private_key = generate_random()
-```
+The private key is then passed through an algorithm (the [**Elliptic Curve Digital Signature Algorithm**](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) for Ethereum and Bitcoin) to create the corresponding public key. Both the private and public keys are central to the transaction process. However, while the private key must remain secret, the public key needs to be accessible to everyone.
 
-The private key is then passed through an algorithm (the Elliptic Curve Digital Signature Algorithm for Ethereum and Bitcoin) to create the corresponding public key. Both the private and public keys are central to the transaction process. However, while the private key must remain secret, the public key needs to be accessible to everyone.
+When we send a transaction to the blockchain, we're passing a private key - this allows others to verify the transaction through the generated public key
 
-## How does Transaction Signing Happen?
+<img src="/blockchain-basics/08-signing-transactions/signing-transactions1.png" width="100%" height="auto" alt="signing-transactions1">
 
-Consider a simple scenario; Darcy sends $400 to Bingley. To verify this transaction, Darcy uses her private key to sign the transaction.
+### How does Transaction Signing Happen?
 
-```python
-signature = sign(data, private_key)
-```
+When we sign a transaction on the blockchain, we're digitally signing some data with our private key. The hashing algorithm used makes it impossible for something to derive your private key from a message signature.
 
-This creates a unique message signature that can't be used to derive the private key, but can be verified using the public key.
+<img src="/blockchain-basics/08-signing-transactions/signing-transactions2.png" width="100%" height="auto" alt="signing-transactions2">
 
-```python
-verify(signature, public_key)
-```
+This signing method allows anyone to verify the validity of a transaction by comparing the message signature to a user's public key!
 
-When person X attempts to impersonate Darcy and send a transaction, the fake transaction can be easily detected as the transaction signature doesn't match the public key.
+<img src="/blockchain-basics/08-signing-transactions/signing-transactions3.png" width="100%" height="auto" alt="signing-transactions3">
 
-## Importance of Hiding Private Keys
+### Importance of Hiding Private Keys
 
-The concept of private keys is implemented in your MetaMask account, nestled away in the Settings section. The private key isn't displayed, but is readily available when the password is entered, telling a tale of how critical it is to secure it.
+Your Metamask account's private key is accessible through `Account Details` > `Show Private Key`. You'll be asked to provide a password, again underscoring the importance of keeping this key safe.
 
-```python
-print(meta_mask_private_key)
-```
+Anyone with access to your private key can perform and sign transactions, on your behalf consequently making it absolutely vital to safeguard private keys.
 
-Anyone with access to the private key can perform and sign transactions, consequently making it absolutely vital to safeguard private keys.
+> **Note:** As an interesting side note, wallet addresses, like the one Metamask provided to you, are actually derived from your public key. A public key is passed through the Ethereum Hashing Algorithm, the last 20 bytes of the resulting hash is the address!
 
-## The Ethereum Address and your Private Key
+### Wrap Up
 
-<img src="/blockchain-basics/sign-a-tx.png" style="width: 100%; height: auto;" alt="sign a tx">
+Lets recap some of the things covered in this lesson.
 
-Interestingly, the Ethereum address is a part of your public key. It's derived from hashing the public key via the Ethereum hashing algorithm and extracting the last 20 bytes. While the procedure may differ from one blockchain to another, the principle remains the same - the address is a derivative of the public key.
+We discovered that transactions on the blockchain are signed using a user's `private key`, the generated `message signature` can then be verified by anyone through a comparison to a user's `public key`.
 
-## Recapping the Key Concepts
+**KEEP YOUR PRIVATE KEY SECURE!**
 
-- Your private key is super-secret, held securely by you alone as it holds the power to authorize transactions.
-- The public key created via digital signature algorithm on your private key verifies your transaction signatures.
-- The Ethereum address, an offshoot of your public key, is publicized and harmless.
+- Private Keys allow someone to sign a transaction, they should be kept secret and secure.
 
-<img src="/blockchain-basics/key-chart.png" style="width: 100%; height: auto;" alt="key chart">
+We learnt that `public keys` are generated by using the [**Elliptic Curve Digital Signature Algorithm**](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) on a user's private keys.
 
-The private and public keys, paired with the address, create a securely functioning transaction system. This security is extended in the MetaMask account with the creation of new accounts.
+In addition to this, Ethereum addresses are derived from public keys by hashing a user's public keys with the Keccak256 algorithm.
 
-The creation of any new account in your MetaMask involves your 'mnemonic' or secret phrase. The process employs simple hashing and takes your secret phrase, adds a number to it (corresponding to the new account number you want), and generates a new hash to create a private key for your new account.
-
-Thus, if your mnemonic is shared, access to all the accounts created in your MetaMask or wallet is granted. However, sharing your private key only allows access to a single account, while sharing your public key or address is perfectly safe.
-
-On a note of caution, the mnemonic is a highly treasured piece of information that needs unrelenting protection. A stolen mnemonic means access to all your accounts. Losing access to a single account due to a mishandled private key, although worrisome, is less damaging. Your public key and address, albeit valueless when displaced, are crucial pillars that solidify blockchain's security architecture.
-
-In summary, your private key, public key, and address closely collaborate to generate, authenticate and secure transactions in the blockchain world. Maintaining their confidentiality and understanding their functions in the transaction process ensures seamless and safe blockchain usage.
+The deeper we go, the more complicated things get, but you're doing great and we still have a ways to go. In the next lesson we'll look again at gas and investigate some of the more low level interactions of gas in a blockchain ecosystem.

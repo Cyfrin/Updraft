@@ -6,41 +6,55 @@ _Follow along with this video:_
 
 ---
 
-Today, I'm excited to take you through the paces of creating a simple storage contract, which we're endearingly nicknaming our "one horse store" venture. Indeed, we're saddling up in our trusty Visual Studio Code (VS Code), and I'm going to share a trick that'll gallop your coding speed into the next-level: coding with an AI extension or AI buddy by your side.
+I'm excited to get started! I'll first mention, I am coding with GitHub co-pilot installed. I highly recommend doing the same (or using a comparable AI extension). I promise this is going to make you much faster. AI agents have come a long way in such a short time, and we should be leveraging every tool at our disposal.
 
-If you haven't yet, say a digital hello to GitHub Copilot—I've got it turned on and ready to code. AI tools like this are incredible time-savers, and I can't recommend them enough. While Microsoft's AI prowess is steering the ship at the moment, there are other AI-friendly extensions out there too. It's a playground of innovation, but let's not dwell on the tech politics for now.
+Let's get down to business and create a new project environment!
 
-> "Embrace the AI extensions—not just for their speed, but for their ability to transform coding into a collaborative endeavor with the future."
-
-Let's get down to business and create a new project environment:
+We can start by creating a project directory and opening it with the commands:
 
 ```
-# Open up your terminal and run:mkdir one_horse_storecd one_horse_store# This creates your project directory and navigates you into it.
+mkdir 1-horse-store
+code 1-horse-store/
 ```
 
-![](https://cdn.videotap.com/618/screenshots/4xk0alpmUeX5Q5g85Wng-134.4.png)
-
-Now, let's initiate our project by setting up Foundry, an awesome tool for smart contract development:
+Now, let's initiate our Foundry project, should all be standard to us here:
 
 ```
 forge init
 ```
 
-Ready? Hit the command and... Voilà! Your Foundry project is ready to roll.
+Proceed with cleaning up the workspace by deleting `src/Counter.sol`, `test/Counter.t.sol`, and `script/Counter.s.sol`. Let's begin with setting up `HorseStore.sol`.
 
-![](https://cdn.videotap.com/618/screenshots/lxxB0cs9eQo4oAnglwWL-158.4.png)With our scene all set up, it's time to script our first act. Dive into your README, clear the stage, and let's craft a basic, simple storage smart contract. It's easier than it sounds—I promise.
+Create a new folder within `src` named `horseStoreV1` and within that folder create the file `HorseStore.sol`
 
-If you're inclined to peek at the playbook, venture over to the GitHub repository associated with this walkthrough. You'll find our hero file `Horsestore.sol` under the `src/horse_store_v1` directory—there for the taking (or copying)!
+<img src="/formal-verification-1/1-huff-yul-opcodes/huff-yul-opcodes-1.png" width="100%" height="auto">
 
-Here's where things get really interesting. As we explore the codebase, you'll stumble upon `horsestore_symbolic_t.sol`, which might seem like a riddle in code form. Don't stress about it now; it's part of our next adventure involving minimalistic symbolic execution or formal verification. We'll circle back to it in what I'd like to call the "Math Masters" section later on.
+It's a fairly simple contract, feel free to copy it from the [**GitHub**](https://github.com/Cyfrin/1-horse-store-s23/blob/main/src/horseStoreV1/HorseStore.sol) associated with this lesson, or copy it below:
 
-If the code's looking alien, it's your cue to brush up on the Advanced Foundry or even the Basic Solidity skills. Everything we're doing here should resonate like a familiar chord.
+```js
+// SPDX-License-Identifier: GPL-3.0-only
+pragma solidity 0.8.20;
 
-![](https://cdn.videotap.com/618/screenshots/vLrMPkPGuE8nuP01Nuon-182.4.png)
+contract HorseStore {
+    uint256 numberOfHorses;
 
-Our smart contract? It's minimalism at its finest. We've got our `numberOfHorses` variable, an `update` function to change its value, and a `read` function to peek at it.
+    function updateHorseNumber(uint256 newNumberOfHorses) external {
+        numberOfHorses = newNumberOfHorses;
+    }
 
-Ready to see this baby run? Fire up your terminal and let's compile:
+    function readNumberOfHorses() external view returns (uint256) {
+        return numberOfHorses;
+    }
+}
+```
+
+If you find yourself investigating the codebase, you may come across `HorseStoreSymbolic.t.sol`. I urge you not to worry too much about it currently as we're going to be coming back to HorseStore in a later section as we learn more about `Symbolic Execution/Formal Verification`.
+
+If the code's looking alien, it's your cue to brush up on the skills taught in the Advanced Foundry or Basic Solidity courses. Everything we're doing here should be very familiar to you.
+
+As you can see, our smart contract is very simple. There's a storage variable, `numberOfHorses`, and function to update it, `updateHorseNumber()` and a view function to read the number `readNumberOfHorses()`
+
+We should be able to...
 
 ```bash
 forge build
@@ -48,14 +62,12 @@ forge build
 
 Success should grace your screen, and with it, confirmation of a job well done.
 
-![](https://cdn.videotap.com/618/screenshots/IRScPR5Kx7OL2J90pzyW-211.2.png)
+Once built, you should be able to navigate to `out/HorseStore.sol/HorseStore.json`. I recommend utilizing your command pallet in VS Code to format the document and toggle word-wrap, to assist in readability.
 
-A quick command-shift-p brings up the command palette (handy tip: you can always google how to do this for your setup), and we're going to format our JSON output from the compiler and toggle the word wrap—it may not look pretty, but functionality is our first date, not aesthetics.
+<img src="/formal-verification-1/1-huff-yul-opcodes/huff-yul-opcodes-2.png" width="100%" height="auto">
 
-![](https://cdn.videotap.com/618/screenshots/ge99ueN4MYHHbzplAWRz-220.8.png)
+This json is going to have a _lot_ of stuff in it, and much of it isn't important to us right now. Minimize the `abi` and locate the outputs `bytecode` and `deployedBytecode` This is going to be our focus in the coming lesson!
 
-Within the output—particularly the JSON—we find the ABI and bytecode, both critical for our smart contract to interact with the blockchain. They tell the tale of the deployed contract and its capabilities.
-
-And that's where we'll leave off for now. By following along, you've set the stage for more complex and thrilling coding adventures that lie ahead. Remember, coding doesn't have to be a solitary journey. With the right AI accomplices and a dash of collaborative spirit, you're well on your way to becoming a coding sorcerer in this electric era of smart contract development.
+See you there!
 
 ---

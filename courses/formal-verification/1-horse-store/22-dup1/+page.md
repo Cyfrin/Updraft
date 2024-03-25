@@ -2,53 +2,61 @@
 title: DUP1
 ---
 
+_Follow along with this video:_
+
 ---
 
-# Function Selector Optimization in EVM: The Trick to Saving Gas
+### Duplicating Stack Items
 
-Hey there, fellow coders and blockchain enthusiasts! Have you ever stumbled upon a pesky problem regarding function selectors in your smart contracts? You know, those moments when you're not quite sure if the smart contract is actually calling the right function—or, let's say, "the read number of horses function selector"—that sounds about right.
+At this point, what we've written will handle call data which pertains to the updateHorseNumber function selector. We need to ask ourselves - _"How are we going to handle if a different selector is passed with our received `call data`?"_
 
-Well, you might be thinking, "That's easy! Just don't jump!" And at first glance, you're absolutely correct. But there's a catch. If we go down that road without any further action, we find that our stack is essentially naked—nothing on it.
+We could do another comparison, but if we haven't jumped anywhere, our stack is empty. We would have to again derive what the call data's function selector is from scratch, implementing another round of `calldataload` and `shr`. There may be a better way...
 
-![Stack screenshot](https://cdn.videotap.com/618/screenshots/JPzcO7vPGFpESeMmtNCm-48.05.png)
+```js
+#define macro MAIN() = takes(0) returns(0){
+    0x00
+    calldataload
+    0xe0
+    shr        // [function_selector]
+    0xcdfead2e // [0xcdfead2e, function_selector]
+    eq         // [true/false]
+    updateJump // [updateHorseNumberProgramCounter, true/false]
+    jumpi      // []
 
-It's a bit like finding yourself in the middle of a desert, no water, no compass—just vast nothingness. Of course, we could just run the whole shebang again and nab that function selector once more. Sure, it's doable, but let me whisper a little secret in your ear: there's a much easier route that also saves you on gas—a precious commodity in the Ethereum ecosystem.
+    updateJump:
+        SET_NUMBER_OF_HORSES()
+}
 
-Here's the trick. We snag the function selector initially, and before we do any type of checking, we pull a quick duplication move. It's like having a double-check system firmly in place. This clever maneuver comes at a lower gas cost than the alternative, which would involve repeating a series of opcodes.
-
-```
-DUPE1 // The magic spell
-```
-
-## Unpacking the Gas-Saving Magic of `DUPE1`
-
-Solidity, our faithful yet sometimes clumsy companion, might not always be sharp enough to concoct these gas-saving strategies by itself. The Solidity compiler may just regurgitate the function selector the old way. But lo and behold, we can outsmart it by invoking the `DUPE1` opcode.
-
-For those of you diving deep into the world of EVM codes, `DUPE1` is your friend, your pal, your trusty sidekick. Its mission? To clone the item at the top of your stack with finesse. You lay down the value to duplicate, and voilà, it tops off your stack with a carbon copy.
-
-![DUPE1 illustration](https://cdn.videotap.com/618/screenshots/8n4tnR2VLGPpkomzqSQI-83.png)
-
-Now, with "DUPE1' added to our repertoire, our setup is looking sharp. Whenever we reach a comparison point—an `update` function selector comparison, to be precise—the stack is going to showcase a beautiful sight: the original function selector accompanied by its twin.
-
-```
-// Prior to DUPE1<Function Selector>
-// Lonely and singular
-// After DUPE1<Function Selector, Function Selector>
-// Twice as prepared
+#define macro SET_NUMBER_OF_HORSES() = takes(0) returns(0){}
 ```
 
-> "Two is company when it comes to function selectors—a mantra for gas efficiency."
+An op code is available to us which will help us achieve a cleaner and more gas efficient path to our goal, `DUP1`
 
-So, by the time we hit the update jump, we're sailing smoothly. Even if we decide not to take the leap and jump, the function selector remains intact, patiently waiting on the stack, ready for its next moment in the spotlight.
+<img src="/formal-verification-1/22-dup1/dup1-1.png" width="75%" height="auto">
 
-Huff programmers and Solidity veterans alike know this setup all too well. It's a well-worn path beaten by countless transactions. If we had a parade of function selectors, we'd probably chant `DUPE1` again and again. But since this is our final curtain call, there's no encore needed.
+`DUP1` simply takes the top item of the stack, copies it and adds both items back to the stack. By executing this op code directly after the first time we accessed the `call data`'s `function selector`, it would keep a copy of this selector for us to access, on the bottom of our stack. How does this look in our code?
 
-## Parting Thoughts
+```js
+#define macro MAIN() = takes(0) returns(0){
+    0x00
+    calldataload
+    0xe0
+    shr        // [function_selector]
 
-The nuances of Huff versus Solidity can sometimes feel like navigating a labyrinth, but it's optimization opportunities like this one that make the journey worthwhile. It's not just about saving gas; it's about honing our skills, about being the maestro of our own code, conducting an orchestra where every opcode plays its part in perfect harmony.
+    dup1       // [function_selector, function selector]
 
-Incorporating these small yet pivotal changes into our smart contract repertoire not only augments our developer toolkit but also reflects on our evolution as craftspeople of code. So next time you find yourself engaged with function selectors, remember the duplication dance, and let 'DUPE1' be the beat to which you sway.
+    0xcdfead2e // [0xcdfead2e, function_selector, function selector]
+    eq         // [true/false, function selector]
+    updateJump // [updateHorseNumberProgramCounter, true/false, function selector]
+    jumpi      // [function selector]
 
-Well, there you have it, my coding comrades—a little insider trick to keep your smart contracts lean and efficient. May your stacks always overflow with purpose and your gas fees stay minimal!
+    updateJump:
+        SET_NUMBER_OF_HORSES()
+}
 
-Until next time, keep those selectors duplicating and those contracts executing!
+#define macro SET_NUMBER_OF_HORSES() = takes(0) returns(0){}
+```
+
+I've updated the comments in the code above to visualize how our duplicated `function selector` is carried through each step of execution. We see resultingly that, if we don't jump to `updateJump`, our stack still retains the `function selector` that was passed with the received `call data`.
+
+Now that we have access to this function selector again, we're prepared to start handling calls to `readNumberOfHorses()`. Let's look at that in the next lesson!

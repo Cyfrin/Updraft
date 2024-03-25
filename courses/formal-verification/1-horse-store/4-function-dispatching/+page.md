@@ -2,35 +2,78 @@
 title: What is function dispatching
 ---
 
+_Follow along with this video:_
+
 ---
 
-# Understanding Solidity Smart Contracts with Remix and Foundry
+## A Closer Look at Call Data with Huff
 
-The blog post aims to demystify how we can interact with smart contracts on the Ethereum blockchain using tools like Remix and Foundry. It explores what happens behind the scenes when we make function calls to smart contracts.
+Lets start by taking a closer look at what's happening during transactions on the blockchain. I'll remind you of the code for `HorseStore.sol` below.
+
+```js
+
+// SPDX-License-Identifier: GPL-3.0-only
+pragma solidity 0.8.20;
+
+contract HorseStore {
+    uint256 numberOfHorses;
+
+    function updateHorseNumber(uint256 newNumberOfHorses) external {
+        numberOfHorses = newNumberOfHorses;
+    }
+
+    function readNumberOfHorses() external view returns (uint256) {
+        return numberOfHorses;
+    }
+}
+
+```
+
+By deploying this contract in remix and calling the `updateNumberOfHorses()` function, we're provided an output that looks like this:
+
+<img src="/formal-verification-1/4-function-dispatching/function-dispatching-1.png" width="75%" height="auto">
+
+We're most interested in the `input` data.
+
+```
+0xe026c0170000000000000000000000000000000000000000000000000000000000000001
+```
 
 ## How Call Data Works
 
-When you interact with a smart contract in Remix, you might be surprised to see that the input sent is a "jumble of numbers". This input is called the **call data**, and it is crucial because it tells the smart contract what task to perform.
+At first glance this input data may seem like a "jumble of numbers". This input is called the **call data**, and it is crucial because it tells the smart contract what task to perform.
 
-For example, if you call the `updateNumberOfHorses` function, the call data might look like:
+So, we're left with a few questions
 
-```
-0x2f2e2123450000ab...
-```
+1. Where did this data come from? How did Remix know to send this data?
+2. How does Remix know to update the number of horses with this data?
 
-So what does this string of data represent and how does the smart contract know how to interpret it? This is where **function selectors** come in.
+We're going to answer these questions with Huff!
 
 ## Function Selectors
 
-Every function in Solidity has a **signature** - a unique identifier formed by hashing its name and input types. The first 4 bytes of the call data correspond to the function selector.
+_Where did this data come from?_
 
-So when you call `updateNumberOfHorses`, Remix sends the selector `0xcdfea2e...` at the start of the call data. This acts like an address sign, telling Solidity which specific function you want to call.
+For those who have taken the Foundry Advance course, you know what a function selector is (for those who haven't go do that [**HERE**](https://updraft.cyfrin.io/courses/advanced-foundry)!)
+
+In short, every function in Solidity has a **signature** - a unique identifier formed by hashing its name and input types. The first 4 bytes of the call data correspond to the function selector.
+
+So when you call `updateNumberOfHorses`, Remix sends the selector `0xe026c017` at the start of the call data. This acts like an address, telling Solidity which specific function you want to call.
+
+You can confirm this function selector in Foundry with the command:
+
+```bash
+cast sig "updateHorseNumber(uint256)"
+0xe026c017
+```
 
 ## Function Dispatching
 
-Behind the scenes, Solidity has a **function dispatcher** that matches the selector to the intended function and routes the call accordingly. This dispatching happens automatically when smart contracts are compiled.
+Behind the scenes, Solidity has a **function dispatcher** that matches the selector to the intended function and routes the call accordingly. This dispatching is handled natively when the solidity is compiled.
 
 However, if writing in a lower-level language like Huff, you have to manually set up the dispatcher yourself to connect call data to functions. This gives more control but requires extra work.
+
+<img src="/formal-verification-1/4-function-dispatching/function-dispatching-2.png" width="75%" height="auto">
 
 ## Putting It Together
 
@@ -41,7 +84,7 @@ In summary, here is the full process when calling a function:
 3. Dispatcher uses selector to route call to correct function
 4. Function executes based on the call data
 
-So while calling functions may seem magical, there are underlying mechanisms that enable this to work - function selectors and dispatchers.
+So while calling functions may seem magical, there are underlying mechanisms that enable this to work.
 
 ## Huff vs Solidity
 
@@ -55,4 +98,6 @@ Through exploring call data, function selectors, and dispatching, the "magic" of
 
 While Remix and Solidity simplify things, seeing the lower-level mechanics gives deeper insight into blockchain development. This knowledge empowers you to build more advanced smart contract systems.
 
-So next time you call a function, remember the intricate mechanisms working to make it happen! Use tools like Huff to go beyond the surface and master the blockchain arts.
+So next time you call a function, remember the intricate mechanisms working to make it happen!
+
+Let's look at how Huff manages all of this in a more manual way, in the next lesson.
