@@ -61,7 +61,7 @@ You can Pin Metamask to the top of your browser for easy access to this view in 
 
 A couple things to note:
 
-1. In Metamask, you can create multiple accounts. Each account has a different address. You can do this by selected `Create Account` from the menu in the top right.
+1. In Metamask, you can create multiple accounts. Each account has a different address. You can do this by selected `Create Account` from the menu in the top right.~~~~
 2. All accounts created in Metamask share the same secret phrase but have different private keys.
 
    **Note**: Access to the secret phrase grants control to all accounts, while access to a private key only grants control to a single account.
