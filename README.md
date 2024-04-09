@@ -151,11 +151,4 @@ Cyfrin Updraft content is open-sourced [licensed as GPLv3](https://github.com/cy
 [![Cyfrin Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/cyfrinupdraft)
 [![Cyfrin YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@CyfrinAudits)
 [![Cyfrin LinkedIn](https://img.shields.io/badge/Linkedin-0e76a8?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/school/cyfrin-updraft/)
-# Usage
 
-```
-git clone https://github.com/Cyfrin/Updraft
-cd Updraft
-pnpm install
-pnpm dev
-```
