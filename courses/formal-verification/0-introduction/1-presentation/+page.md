@@ -20,7 +20,7 @@ Forget the high-level abstractions for a moment. We're going to teach you how to
 
 ### Getting Your Hands Dirty: Project-Based Learning
 
-At Cypher and Opdraft, we don't believe in idle learning. Our modus operandi? Hands-on projects. Despite featuring only three projects, don't be misled by quantity. These carefully selected tasks are deep dives, challenging you to explore diverse and complex routes to smart contract development.
+At Cyfrin and Updraft, we don't believe in idle learning. Our modus operandi? Hands-on projects. Despite featuring only three projects, don't be misled by quantity. These carefully selected tasks are deep dives, challenging you to explore diverse and complex routes to smart contract development.
 
 ### The Might of Formal Verification
 
