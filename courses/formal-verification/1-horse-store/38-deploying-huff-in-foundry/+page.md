@@ -1,92 +1,68 @@
 ---
-title: Deploying Huff in foundry - Foundry-huff
+title: Deploying Huff in Foundry
 ---
 
+_Follow along with this video:_
+
 ---
 
-# Deploying Huff Smart Contracts with Foundry: A Comprehensive Guide
+### Setting up Huff in Foundry
 
-Smart contract development is an exciting frontier, with new languages like Huff pushing boundaries. If you’re keen to dive into crafting smart contracts, you’ve come to the right place! This 2,000 word guide will take you through deploying a Huff smart contract in Foundry.
+In this lesson we're going to be diving into the process of deploying a Huff contract using Foundry. In order to accomplish this, we'll be using the [Huff Foundry Extension](https://github.com/huff-language/foundry-huff).
 
-## Getting Started with the Foundry Huff Extension
+To get set up with this extension, you'll of course need Huff installed - which at this point we should already have done. If you still need to install Huff you can use the command:
 
-To deploy Huff contracts in Foundry, we need the Foundry Huff extension. You can find installation instructions and a download link in the course GitHub repo.
-
-With Huff installed, run:
-
-```
-forge install huff-language/foundry-huff
+```bash
+curl -L get.huff.sh | bash
 ```
 
-Behind the scenes, this extension handles compiling Huff code to EVM bytecode for Foundry to deploy. It does so by running the `huffc` compiler and passing the output to Foundry.
+If you've confirmed Huff is installed you can install the Huff library using forge:
 
-Since Foundry executes `huffc`, we need to set `FFI=true` in the Foundry configuration. This grants Foundry elevated permissions to run complex operations, so use it judiciously!
-
-We also need to add a remapping to point Foundry to Huff's resources:
-
-```
-foundry-huff=lib/Foundry-Huff/src
+```bash
+forge install huff-language/foundry-huff --no-commit
 ```
 
-## Importing and Deploying with the Huff Deployer
+### Deploying Huff with Foundry
 
-With the extension set up, import the Huff Deployer contract, our ticket to smooth deployments:
+Now that things are installed, this library will assist us in deploying our Huff contracts using Foundry.
+
+Behind the scenes, what this library does, is any time we deploy a Huff smart contract, the framework basically runs `huffc` to compile things into a file, which then has it's binary read from it for deployment. A product of this is our Foundry Framework needs to have FFI enabled to allow it to write new files. We can enable this by adding `ffi = true` to our `foundry.toml`.
+
+Find more information on FFI **[here](https://book.getfoundry.sh/cheatcodes/ffi)**.
+
+> **Note:** Enabling FFI gives Foundry some pretty pervasive accesses include access to your shell and the ability to read and write from disk. Be very aware of this and use FFI with care.
+
+Addtionally to the above, we'll need to add a remapping to our `foundry.toml` as well.
+
+```toml
+remappings = ['foundry-huff/=lib/foundry-huff/src']
+```
+
+Our next step will be making the necessary adjustments to our Huff test contract, including the import and use of the `HuffDeployer` our test file is going to look like this when applied:
 
 ```js
-import "foundry-huff/HuffDeployer.sol";
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
+
+import {Base_TestV1, HorseStore} from "./Base_TestV1.t.sol";
+import {HuffDeployer} from "foundry-huff/HuffDeployer.sol";
+
+contract HorseStoreHuff is Base_TestV1{
+    string public constant HORSE_STORE_HUFF_LOCATION = "horseStoreV1/horsestore";
+    function setUp() public override {
+        HorseStore horsestore = HorseStore(HuffDeployer.config().deploy(HORSE_STORE_HUFF_LOCATION));
+    }
+}
 ```
 
-Then, deploy your Huff contract:
+> **Note:** The file path we're passing our `HuffDeployer.config().deploy()` function has slightly unusual syntax. The framework assumes everything is in an `src` folder and doesn't require a file extension, only the file name.
 
-```js
-HorseStore huffDeployer = new HuffDeployer.config.deploy("HorseStoreHuff");
-```
+That's all there is to setting up our Huff and Solidity tests! We're set up to run two suites of tests `HorseStoreHuff` and `HorseStoreSolc`. Both of these will run over every test we add to our `Base_TestV1.t.sol`
 
-The path syntax takes some explaining. It assumes contracts live in `src` so you can omit that. It also assumes a `.huff` extension by default. So our file path becomes:
+By running `forge test` now, we should see both test suites be run.
 
-```
-"HorseStoreV1/Horsestore"
-```
+Both test suites run! One of them is showing an error however! Much like the `--mt or match-test` command we normally use, forge affords us the command `forge test --match-path *huff*` this will run only our Huff test suite, allowing us to narrow down the focus of our debugging.
 
-This neatly wraps contract deployment so Foundry can work its magic!
+You may run into an error such as `EvmError: NotActivated`. This is typically seen due to forge testing defaulting to `Paris` as an EVM version. by adding `evm_version = shanghai` to our `foundry.toml` this error should resolve!
 
-## Testing Huff Contracts Thoroughly
-
-With our `HorseStore` contract deployed, we gain two robust test suites - Huff and Solidity. Run `forge test` and they’ll execute in succession, covering all bases.
-
-If issues arise, test Huff files separately with:
-
-```shell
-forge test --match-path *huff*
-```
-
-This isolates the problem for smoother debugging.
-
-## Digging Deeper into the Huff Deployer Contract
-
-The Huff Deployer abstracts away deployment intricacies, but understanding its internals is worthwhile for aspiring blockchain developers.
-
-Its key lies in the `_deploy` function which handles compiling Huff to EVM bytecode. It does so by:
-
-1. Calling out to the `huffc` binary to compile Huff code
-2. Writing the bytecode output to a file
-3. Loading this file for Foundry to pick up
-
-The compiler call passes args like contract name, file path, and optimization runs. It looks like:
-
-```js
-bytes memory huffBC =abi.encodePacked(uint8(0),"huffc","--bin","--optimize","3",strconcat(srcPath, contractName, ".huff"));
-// Create filef.write(huffBC);
-```
-
-## Concluding Thoughts
-
-Deploying Huff contracts may seem tricky but this 2,000 word guide equips you to handle those binaries. We walked through:
-
-- Installing Foundry Huff
-- Passing Huff code safely to Foundry
-- Actually deploying contracts
-- Testing thoroughly with Huff and Solidity suites
-- Understanding Huff Deployer internals
-
-With these skills, you can deploy Huff alongside Solidity confidently. As parting wisdom, rigorously test smart contracts, for they wield immense power! Code carefully, and may your Huff contracts always deploy smoothly.
+Great work!

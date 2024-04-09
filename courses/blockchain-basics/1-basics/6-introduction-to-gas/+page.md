@@ -2,17 +2,17 @@
 title: Introduction to Gas
 ---
 
-You can follow along with this section of the course here.
+_Follow along with this video:_
 
 ---
 
-Welcome to our comprehensive guide on understanding Ethereum transactions. Here, we will discuss important concepts ranging from transaction fees and gas prices, mining incentives, computational measures in transactions, to hands-on experience of sending a transaction in Ethereum’s test network.
+In this lesson, we will discuss important concepts ranging from transaction fees and gas prices, mining incentives, computational measures in transactions, to hands-on experience of sending a transaction in Ethereum’s test network.
 
 Let's jump right in!
 
-## Transaction Fee and Gas Price: What are they?
+### Transaction Fee and Gas Price: What are they?
 
-<img src="/blockchain-basics/tx-etherscan.png" style="width: 100%; height: auto;" alt="etherscan transaction">
+<img src="/blockchain-basics/06-intro-to-gas/intro-to-gas1.png" style="width: 100%; height: auto;" alt="etherscan transaction">
 
 While inspecting an Ethereum transaction, two terms invariably catch the glance: "transaction fee" and "gas price". Let's clarify what they are and why they matter.
 
@@ -24,11 +24,11 @@ When we click on "more details" in a transaction overview, we can see further in
 
 Now, let's address an important question: who gets these transaction fees and why?
 
-## The Role of Nodes in Blockchain
+### The Role of Nodes in Blockchain
 
 Blockchains are run by a group of different nodes, sometimes referred to as miners or validators, depending on the network. These miners get incentivized for running the blockchain by earning a fraction of the native blockchain currency for processing transactions. For instance, Ethereum miners get paid in Ether, while those in Polygon get rewarded in MATIC, the native token of Polygon. This remuneration encourages people to continue running these nodes.
 
-## Understanding Gas in Transactions
+### Understanding Gas in Transactions
 
 In the context of transactions, gas signifies a unit of computational complexity.
 
@@ -36,7 +36,7 @@ The higher a transaction's complexity, the more gas it requires. For instance, c
 
 The total transaction fee can be calculated by multiplying the gas used with the gas price in Ether (not GWei). Therefore, `Transaction fee = gasPrice * gasUsed`.
 
-## Hands-on: Sending an Ethereum Transaction
+### Hands-on: Sending an Ethereum Transaction
 
 In any blockchain, making a transaction requires the payment of a transaction fee (in terms of the native token) to the blockchain nodes processing that transaction. Let's take an example of a transaction using the MetaMask extension, a popular Ethereum wallet.
 
@@ -48,9 +48,14 @@ Here are the steps:
 4. Select "Transfer between my accounts".
 5. Enter the account to send the Ether to, and the amount you wish to send.
 6. Click "Next". MetaMask will automatically calculate the gas fee for you. The total amount to be paid is the sum of the Ether value you're sending and the gas fee.
+
+Something of note, if you click the `market` link in Metamask, you'll be shown some optional settings for gas in the transaction. You may wonder _Why would I choose to spend more gas?_
+
+A simplified explanation of this is: if lots of people are trying to process transactions at the same time, the space on a given block is competitive, gas prices are increased to throttle and prioritize transactions during congestion.
+
 7. Click "Confirm".
 
-The transaction would now appear in the Activity tab of MetaMask. After a short while, the transaction gets processed, and you can view its details in a block explorer like Etherscan.
+The transaction will now appear in the Activity tab of MetaMask. After a short while, the transaction gets processed, and you can view its details in a block explorer like Etherscan.
 
 You have now executed your first blockchain transaction!
 
@@ -58,4 +63,4 @@ Despite its simplicity, knowing how to process transactions with MetaMask is vit
 
 Remember, mastering the nuances of blockchain transactions and understanding the mechanics behind Ethereum will enable you to become a powerful developer in the decentralized world.
 
-Stay tuned for more insights into the world of blockchain development!
+Next up, lets take a closer look at exactly how blockchains work.

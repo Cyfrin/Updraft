@@ -25,7 +25,7 @@ Test coverage is up next, this should be easy.
 
 > **Remember:** you can check test coverage with the command `forge coverage`.
 
-<img src="../../../../static/security-section-4/42-test-coverage/test-coverage1.png" width="100%" height="auto">
+<img src="/security-section-4/42-test-coverage/test-coverage1.png" width="100%" height="auto">
 
 This is ... pretty bad. In the context of a competitive audit, this may be less important, but in a private audit we should absolutely be calling this out as an informational. Assuring a repo has an adequate test coverage helps a protocol avoid overlooking areas of their code.
 
