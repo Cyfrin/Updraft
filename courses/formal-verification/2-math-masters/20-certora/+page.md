@@ -4,59 +4,40 @@ title: Certora
 
 ---
 
-## Dissecting the Transcript: Understanding the Context
 
-Analyzing a segment of the transcript, a few key elements emerge. The tone is undoubtedly casual, accessible to those familiar with the subject matter but not stuffed with jargon to intimidate newcomers. Speaking of which, the vocabulary, while thoughtfully chosen, avoids unnerving complexity. It's apparent that the intended audience includes individuals with an interest in blockchain development, particularly those dabbling in or curious about smart contract verification.
+### Introduction to Certora: Cloud-Based Formal Verification
 
-So, with our bearings set, let's wade into the world of Certora with the same approachable demeanor.
+#### Overview of Certora
+Certora is a cloud-based formal verification tool and is also a sponsor of this course. It offers significant advantages for running complex verification processes:
 
-## Certora: A Beacon in the Clouds
+- **Cloud Processing:** Allows lengthy verification processes to be conducted in the cloud, providing more computing resources and flexibility.
+- **Certora Approver:** Enhanced tooling for executing and managing verification tasks.
+- **New Language for Verification:** Introduces the Certora Verification Language (SVL or CL), tailored for defining fine-grained invariants and rules applicable to smart contracts.
 
-At its core, **Certora** stands out as a cloud-based vessel for formal verification. Proudly sponsoring this informative journey, Certora offers two colossal advantages that make it a favorite among developers:
+#### Unique Capabilities of Certora
+Unlike typical unit or fuzzing tests, Certora's approach mathematically proves each rule or invariant about a protocol. This method offers near-perfect assurance—beyond what fuzzing can provide—aiming to close the gap to 100% certainty and eliminate critical bugs.
 
-1. **Cloud-Powered Verification**: Say goodbye to the constraints of local processing! With Certora, you embark on validation endeavors within the cloud, handling even the most lengthy computations with ease.
-2. **The Flexibility of Satora Approver**: Coupled with the cloud, Certora equips you with the Satora Approver—adding an additional layer of dynamic capability to your verification ventures.
+#### Getting Started with Certora
+To begin using Certora:
 
-### Delving into Sartora Verification Language (SVL)
+1. **Sign Up for Free:** Certora operates on a freemium model, allowing free use up to 2000 minutes per month.
+   - Visit the [Certora signup page](https://www.certora.com/signup?plan=prover).
+   - Use the affiliate link provided in the course materials to help support the creation of more tutorials.
 
-As we embrace Certora, we're also ushered into the realm of a novel language dedicated to formal verification proofs—the Sartora Verification Language, affectionately abbreviated as SVL. This powerful tool enables us to craft precise invariants and rules tailored to the intricacies of our smart contracts.
+2. **Email Verification:**
+   - After signing up, check your email for a verification link.
+   - Follow the instructions to verify your account and receive your login details.
 
-What truly sets SVL apart is not just its proficiency in running unit tests or fuzzing, but its mathematical prowess in validating every single rule or invariant about our protocols. This meticulousness provides that elusive last fraction of assurance beyond what fuzzers offer. While not a panacea, this mathematical rigor delivers confidence in the integrity of our smart contracts, attending to the finest of details.
+#### Setup with Certora
+Upon receiving your Certora key (similar to an API key but with no associated funds):
 
-### Starting with Certora: Your First Steps
+1. **API Key Management:**
+   - Store the API key securely; although it's not as sensitive as a private key, it's important to keep it confidential.
+   - Consider integrating the key into your development environment, such as VS Code, but avoid placing it in easily accessible locations like ENV files.
 
-Ready to dive into Certora? Fantastic news—you can begin for **zero cost**! Operating on a generous freemium model, Certora invites you to formal verification with up to 2000 minutes per month on the house.
+2. **Logging into Certora Prover:**
+   - Use the login credentials to access the Certora Prover interface.
+   - You will be prompted to change your password upon first login.
 
-#### Registration Made Simple
-
-Get the wheels turning by [signing up here](https://www.certora.com/) (and yes, using our affiliate link would be a huge support—it lets Certora know you discovered them through us and helps fund future tutorials). Completing the sign-up will require a verification step via your email, leading you to your temporary credentials and your unique Certora key. Treat this key as you would with an API key—keep it close to your chest (though, rest assured, it's not tied to any financial stakes).
-
-**Remember:** Store this critical API key with utmost care!
-
-#### Navigating the Prover UI
-
-Upon registering and logging into the Certora Prover, you'll be welcomed by a fresh and tidy interface eagerly awaiting your first project. This is where formal verification takes life and where the silent spells of anticipation transform into triumphant feats of bug-free protocols.
-
-## Blogging About Blockchain: The Art of Tone and Vocabulary
-
-When translating the nuances of such a narrative for a blog, it's imperative to mirror the original's congenial essence. We sidestep the traps of overwrought jargon without oversimplifying the brilliant complexity of blockchain technology. We aim for a tonal balance that beckons the reader into a conversational, but enlightening, exploration. Hence, this text manifests not as an imperious lecture but as an inviting dialogue between peers.
-
-Rest assured, though we tread on soil ripe with technicality, our lexicon shall remain grounded, opting for terms like "long" over "unabated". This ensures accessibility and keeps the core audience—those intrigued or involved in blockchain dev—a central part of the conversation.
-
-### Visual Aids and Practical Breakouts
-
-And where the narrative calls for illustration, let us not falter:
-
-A visual beacon to light the way through complex concepts or processes. We shall not shy from lists that offer clarity, or code blocks that speak the developer's native tongue—clear, concise, and always pivotal for understanding the full picture. Moreover, as we come across nuggets of wisdom:
-
-> "Formal verification is not a cure-all, but it brings us ever closer to the ideal of flawless smart contracts."
-
-Such musings shall be graced with the prominence of block quotes, to resonate and be reflected upon.
-
-### The Journey is Only Beginning
-
-Remember, discovery is an ever-extended bridge between query and comprehension. Our objective—far-reaching yet meticulously pieced together—is to forge that bridge with the planks of insight, one blog post at a time, leading all intrepid souls to the promised land of blockchain mastery.
-
-So onwards we march, carrying the torch of Certora's promise into the further expanses of our digital tomorrow, proving that in this ever-evolving scape of code, contract, and cloud, there is always more to learn, more to verify, and more to achieve.
-
-And to you, dear reader, as we eclipse the 2000-word mark, remember that the journey of a thousand lines of code begins with a single keystroke. Embrace Certora, embrace the future, and let's write it together—bug-free, proven, and cloud-empowered.
+#### Next Steps
+Once logged in, the interface will initially be empty as no verification jobs have been run yet. However, setup is now complete, and you are ready to start using Certora's tools to ensure the robustness and security of your smart contracts.ƒ

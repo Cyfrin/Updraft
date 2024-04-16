@@ -4,61 +4,42 @@ title: Invariant Preserved Blocks
 
 ---
 
-## What Are Invariants Anyway?
+### Rewriting Tests as Invariants
 
-Imagine you're cultivating a beautifully manicured coding garden. Within it, no matter the season, certain laws of nature must always hold true. These unbreakable rules are akin to invariants in our programming environment. In the realm of smart contracts, for example, an invariant is a condition that _must remain consistent_ throughout the lifetime of a contract.
+In our discussion, we explore how to transform a test into an invariant, highlighting the practical differences and the strategic considerations between writing a rule and an invariant. We start by renaming our function to `MulWadUpInvariant` to clarify that it's an invariant, maintaining the parameters `uint256 x` and `uint256 y`, consistent with our original setup.
 
-To put it in a relatable context, let's consider a sample piece of code involving mathematical operations. We're dealing with an intriguing function that multiplies two unsigned integer values – let’s call it `modUp`.
-
-Now, we're faced with a challenge: ensuring that this bit of logic stands resilient against all odds, thereby creating an invariant to guarantee this expectation.
-
-## Crafting an Invariant in Solidity
-
-Bear with me as we dive into a bit of code modification. We’ll transition our regular functional test into a hardened, invariant check. Below is how we would turn our `modUp` function test into an invariant:
-
-Notice anything different? Aside from renaming our function to `modUpInvariant`, we boil this potentially complex situation down to a one-liner inside our function body. After all, invariants should ideally be as precise and direct as possible.
-
-However, in programming and life, context is crucial. This line of code presumes that certain preconditions are met. Without them, it’s like expecting your houseplants to thrive without sunlight and water!
-
-## Preserved Blocks: Embedding Context
-
-In the world of Sartora, a specialized prover for smart contracts, we encounter a notion called the `preserved block`. Here, we can state something along the lines of, "Hey, this invariant should always hold true, provided these specific conditions are met."
-
-Let's get hands-on and add a `preserved` clause to our `modUpInvariant`:
-
-```js
-function modUpInvariant(uint256 x, uint256 y) private pure {
-    assert(uint256(modUp(x, y)) == x * y);
-    preserved {
-        require(x > 0 && y > 0, "x and y must be positive");
-        }
-    }
+```solidity
+invariant mulWadUpInvariant(uint256 x, uint256 y)
 ```
 
-By adding this nifty block, we've set preconditions that `x` and `y` should both be positive numbers. It's like telling a story – our invariant has a backstory of these preconditions that need to remain constant, much like a superhero whose strength is contingent on their mystical amulet.
+#### Defining the Invariant
+Our invariant is straightforward:
 
-Moving forward, when we run our `modUp` computations, these blocks are not just random snippets of code but guardians that ensure the operation stays within the safe bounds of our intentions.
+```solidity
+mulWadUP(x,y) == assert_uint256(x + y == 0 ? 0 : (x * y - 1) / WAD() + 1);
+```
 
-## Running the Gauntlet: Simulating Failure and Triumph
 
-Upon initiating our test with the prover, tense moments pass by as we anticipate whether our code, both the rule and the invariant, will be proven robust. And there it is – both tests fail, but with our proverbial safety net, the counterexamples provided make it clear why they did.
 
-Importing these counterexamples back into our testing suite would confirm their validity, driving home the importance of comprehensively considering all scenarios where our code might face a duel of wits with the unexpected.
+#### Handling Preconditions with Preserved Blocks
+It's crucial to recognize that the validity of our invariant depends on certain preconditions. In Certora, we manage this through what is known as a preserved block. Here’s how we set it up:
 
-## Why Choose One Over the Other?
 
-With all this talk about invariants and rules, you might wonder, "Why bother with one approach over the other?" The essence lies in simplicity. Invariants, in their compact, assertive glory, serve as sweeping declarations – such as confirming that the total supply of an ERC-20 token should never exceed the total number of shares.
+```solidity
+{
+    preserved {
+        require(x == 0 || y == 0 || y <= type(uint256).max / x);
+    }
+}
+```
+Inside the preserved block, we specify the preconditions that need to be true for the invariant to hold reliably. This approach helps in clearly delineating the dependencies of our invariant.
 
-Rules, on the other hand, allow for more nuanced discussions – they whisper the detailed conditions, the when-s and the how-s, offering a narrative that underpins the raw assertiveness of an invariant.
+#### Running and Testing the Invariant
+Once the invariant and its preconditions are defined, we proceed to test it alongside our original rule. Both are executed in the context of proving their validity:
 
-## Conclusion: The Synergy of Structure and Flexibility
+s
+We anticipate that both might fail under certain conditions, providing valuable counterexamples that reveal the limitations or errors in our assumptions or logic.
 
-Coding, much like craftsmanship, requires precision, foresight, and an appreciation for the structures that support our creations. Invariants and preserved blocks are akin to the load-bearing walls and solid foundations of programming. By understanding and properly implementing these concepts, we fortify our digital edifices against the tremors of uncertainty.
-
-When to deploy a rule, and when to solidify an invariant? That's a strategic choice, a reflection of your broader vision. Every smart contract you breathe life into reverberates the philosophy of balance: between flexibility and ironclad consistency. And as programmers, it's up to us to sculpt this equilibrium with deft hands and an astute mind.
-
-Remember, each line of code has a ripple effect with the potential to cascade through the system, for better or worse. So, as you go forth and script your next masterpiece, consider the humble invariant. Let it guide you like a beacon of unwavering truth, even amidst the stormy seas of programming.
-
-After all, as they say, "A well-written invariant is worth a thousand lines of debug logs."
-
-Happy coding, fellow architects of the virtual landscape! May your invariants always hold strong, and your code remain elegantly preserved.
+### Analyzing Results
+Upon testing, we observe failures in both the invariant and the rule, with specific counterexamples pinpointed in the call trace. These examples are crucial for understanding why the failures occur, offering insights into potential issues within the variables or logic used.
+ 
