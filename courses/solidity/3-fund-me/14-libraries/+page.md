@@ -37,12 +37,13 @@ Let's move our `getPrice`, `getConversionRate` and `getVersion` functions from t
 Now, mark all these functions as internal, and you've done setting up your library!
 
 ```js
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+
 library PriceConverter {
-    // SPDX-License-Identifier: MIT
-    pragma solidity ^0.8.18;
-
-    import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
-
     function getPrice() internal view returns (uint256) {
         AggregatorV3Interface priceFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
         (, int256 answer, , , ) = priceFeed.latestRoundData();
