@@ -14,7 +14,7 @@ _Follow along the course with this video._
 ### Key Concepts
 
 1. `git clone` - command used to make a copy of a repository on your local machine. 
-2. live server - a VS Code extension that opens in your browser and automatically updates with your code.
+2. `live server` - a VS Code extension that opens in your browser and automatically updates with your code.
 
 ### Overview
 
