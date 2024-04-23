@@ -8,7 +8,7 @@ _Follow along the course with this video._
 
 ### In this lesson, we are going to learn:
 
-1. how to quickly clone a repo in our terminal. 
+1. How to quickly clone a repo in our terminal. 
 2. use Live Server in VS Code to see our changes 'live' as we code. 
 
 ### Key Concepts
