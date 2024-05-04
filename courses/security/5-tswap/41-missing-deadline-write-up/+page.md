@@ -1,48 +1,128 @@
 ---
-title: Missing Deadline Write up
+title: Missing Deadline Write-up
 ---
 
-
-
 ---
 
-# Addressing Deadlines in TSWAP Pool Deposits
+### Missing Deadline Write-up
 
-Today, we dive deep into an issue that has surfaced in blockchain tech involving TSWAP, a liquidity pool. The problem here is just like the proverbial time bomb that ticks regardless of one's awareness, in this case, an unused deadline set for pool transactions, which allows for the completion of transactions past the stipulated deadline. We will discuss the issue in detail, the impact it could potentially have, and offer a possible solution. So, let's roll!
+With our informationals out of the way, we're moving on to our first `medium severity` finding write-up.
 
-## The TSWAP Pool Deposit Deadline Issue
+Since the lesson in which we identified this I had a change of heart about the severity here. Since this isn't a `swap` function and is `deposit` the impact of not having a deadline is less severe than if users were able to remove liquidity from the pool. As such, we're going with `medium`!
 
-At the center of the storm is an issue where deadlines, when set, are unused in TSWAP pool deposits. If someone sets a deadline(let's say they plan to set it to execute the next block), paradoxically they could still deposit even after that deadline, resulting in a deadline dispute.
+Within `TSwapPool::deposit` we identified that the `deadline` parameter wasn't being used! This is a critical oversight as it will allow people to continue to deposit even when it's expected that they'll have been disallowed, severly altering the protocol's expected functionality.
 
-The TSWAP pool's function for deposits is missing a functionality check for deadlines. This lapse has graspable consequences, leading to transactions being completed even after the deadline.
+Our write up is going to start with our template as always.
 
-## Breakdown of the Issue
+```
+### [S-#] TITLE (Root Cause + Impact)
 
-The heart of this problem lies within the transaction **deposit function**. This function accepts a **deadline parameter**, as according to the documentation. The purpose of this parameter is to set a deadline to complete a transaction. However, this parameter is never utilized, which leads to unfortunate outcomes.
+**Description:**
 
-Transactions that aim to add liquidity to the pool may be executed at unexpected times and under unpredictable market conditions, where the deposit rate may not be favorable. This issue can also make these transactions susceptible to MEV(Maximal Extractable Value) attacks.
+**Impact:**
 
-Here, the impact could be that transactions get sent when market conditions are not ideal for deposit, even in the presence of a deadline parameter.
+**Proof of Concept:**
 
-## Proof of Concept, and Potential Solution
-
-We could illustrate the issue in a more demonstrable manner by writing a 'Proof of Concept' here, but we'll dive into more about 'Proof of Concepts' in later content.
-
-```markdown
-- Consider making the following adjustment to the deposit function.- We'll grab this entire function here:
-- Include a revert if the deadline has passed.
+**Recommended Mitigation:**
 ```
 
-This revision will cause the function to halt and revert if the deadline is exceeded.
+Following our title syntax should be fairly straightforward
 
-As you can see in the preview, we've successfully included a revert function for an exceeded deadline, marking a critical step towards a viable resolution.
+```
+### [M-1] `TSwapPool::deposit` is missing deadline check causing transactions to complete even after the deadline
+```
 
-## The Medium versus High Debate
+The description section is an opportunity for us to be more verbose in detailing the vulnerability and it's impact.
 
-An intriguing query came about while attending to this dilemma: is the urgency of this a high or just a medium?
+```
+**Description:** The `deposit` function accepts a deadline parameter, which according to the documentation is "The deadline for the transaction to be completed by". However, this parameter is never used. As a consequence, operations that add liquidity to the pool might be executed at unexpected times, in market conditions where the deposit rate is unfavorable.
+```
 
-Discussing the impact of the issue offers some clarity. A likelihood of transactions being executed when market conditions are unfavorable does exist, even in the presence of a deadline parameter. However, remember that this is purely a deposit, not a swap.
+In addition to the above, this makes the function susceptible to MEV attacked, which we'll learn more about later.
 
-We're still acquiring liquidity tokens that signify ownership of the pool. Even if everyone else exited the pool, we'd still have these tokens. Consequently, it could be argued that this issue qualifies as 'medium' in terms of urgency and risk, rather than 'high'. One cannot explicitly overlook the fact, but under the abovementioned circumstances, it's fair to categorize this as a medium.
+What's our impact?
 
-In conclusion, deadlines exist for a reason and respecting them within the blockchain world, quite like in the real world, ensures smooth transactions and user trust. Ignoring them, as seen in this TSWAP pool deposit issue, can lead to unwanted complications with potentially damaging impacts. Always stick to deadlines, folks!
+```
+**Impact:** Transactions could be sent when market conditions are unfavorable, even when adding a deadline parameter.
+```
+
+For our write-ups `proof of concept`, this would be a great opportunity to show an MEV exploit, but since we're saving that for later, we can simply state the obvious.
+
+```
+**Proof of Concept:** The `deadline` parameter is unused.
+
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> src/TSwapPool.sol:96:9:
+   |
+96 |         uint64 deadline
+   |         ^^^^^^^^^^^^^^^
+```
+
+Lastly, our `recommended mitigation`. Fortunately TSwap already has a modifier for us to use, it just wasn't implemented here, `revertIfDeadlinePassed`
+
+```
+**Recommended Mitigation:** Consider making the following change to the function:
+```
+
+```diff
+function deposit(
+        uint256 wethToDeposit,
+        uint256 minimumLiquidityTokensToMint,
+        uint256 maximumPoolTokensToDeposit,
+        uint64 deadline
+    )
+        external
++       revertIfDeadlinePassed(deadline)
+        revertIfZero(wethToDeposit)
+        returns (uint256 liquidityTokensToMint)
+    {...}
+
+```
+
+### Wrap Up
+
+Great! This one wasn't too tough. Let's look at what the write-up looks like when we put it all together befor moving to the next finding!
+
+<details>
+<summary> [M-1] `TSwapPool::deposit` is missing deadline check causing transactions to complete even after the deadline</summary>
+
+### [M-1] `TSwapPool::deposit` is missing deadline check causing transactions to complete even after the deadline
+
+**Description:** The `deposit` function accepts a deadline parameter, which according to the documentation is "The deadline for the transaction to be completed by". However, this parameter is never used. As a consequence, operations that add liquidity to the pool might be executed at unexpected times, in market conditions where the deposit rate is unfavorable.
+
+**Impact:** Transactions could be sent when market conditions are unfavorable, even when adding a deadline parameter.
+
+**Proof of Concept:** The `deadline` parameter is unused.
+
+```
+Warning (5667): Unused function parameter. Remove or comment out the variable name to silence this warning.
+  --> src/TSwapPool.sol:96:9:
+   |
+96 |         uint64 deadline
+   |         ^^^^^^^^^^^^^^^
+```
+
+**Recommended Mitigation:** Consider making the following change to the function:
+
+```diff
+function deposit(
+        uint256 wethToDeposit,
+        uint256 minimumLiquidityTokensToMint,
+        uint256 maximumPoolTokensToDeposit,
+        uint64 deadline
+    )
+        external
++       revertIfDeadlinePassed(deadline)
+        revertIfZero(wethToDeposit)
+        returns (uint256 liquidityTokensToMint)
+    {...}
+
+```
+
+</details>
+
+---
+
+### Wrap Up
+
+Great work as always, let's keep going. See you in the next lesson!

@@ -1,43 +1,56 @@
 ---
-title: Invariant & Properties Introduction
+title: Invariant/Properties Introduction
 ---
 
-
-
 ---
 
-# Demystifying Core Invariants in Blockchain Protocols
+### Invariant/Properties Introduction
 
-Diving deep into the world of Blockchain, I thought to explore something fundamental yet intriguing: the concept of **invariants**. Invariants form the bedrock of most blockchain protocols, a feature you will encounter in almost every protocol ranging from ERC 20s to ERC 721s. Understanding this critical element is vital for anyone looking into the inner workings of these protocols.
+> Invariant - A property or condition of a system which must always hold true.
 
-In this blog, we'll cover invariants thoroughly while also touching on how to inspect them properly. We'll hope to do so by investigating the TSWAP protocol and its core invariant. Create a hot beverage, loosen up, and let’s probe these invariants together!
+We now should have a tonne of context of what TSwap is supposed to do and how it's supposed to function.
 
-## What are Protocol Invariants?
+One of the last sections of the TSwap [**README**](https://github.com/Cyfrin/5-t-swap-audit/blob/main/README.md) details the protocols `core invariant`.
 
-Invariants, in blockchain terms, are properties or conditions within a system that remain unaltered regardless of the actions carried out within the system. They are dynamic rules ensuring the system's safety, and they play a pivotal role in designing tokens in blockchain protocols.
+Most protocols are going to have some type of invariant, even something as simple as an ERC20 will have some condition which must always be true.
 
-For instance, various types of tokens like ERC 20, ERC 721, or ERC 626 have numerous invariants to their names. Each ERC 20 has 20 properties or invariants while an ERC 721 has 19. As you'll discover later in this course, ERC 626 tokens, which we'll cover in the _Vault Guardians_ section, boast of whopping 37 properties.
+There's a great [**repo by the Trail of Bits**](https://github.com/crytic/properties) team that catalogs invariant/property examples for a number of tokens and Ethereum operations.
 
-To get a hang of these properties, you can pay a visit [here](https://blog.trailofbits.com/2023/10/05/introducing-invariant-development-as-a-service/), at the _Trail of Bits repository_. This repository neatly lays out the invariants of an array of tokens.
+In TSwap, we're fortunate enough that the developers have provided us their core invariant to read through and understand:
 
-## TSWAP Protocol and Invariants
+```
+## Core Invariant
 
-Now, let's turn our gaze towards the TSWAP protocol. If you explore the protocol, you'll encounter the gift the developers have graciously provided: the core invariant.
+Our system works because the ratio of Token A & WETH will always stay the same. Well, for the most part. Since we add fees, our invariant technially increases.
 
-However, it's noteworthy to understand that sometimes developers may not correctly establish the invariant. In such cases, the onus falls on us, the _Security Experts_, to ensure accuracy. While the developers hand you the necessary details, understanding and breaking down the invariants becomes a task of paramount importance.
+`x * y = k`
+- x = Token Balance X
+- y = Token Balance Y
+- k = The constant ratio between X & Y
 
-Unfortunately, many developers do not fully grasp their own created invariants. Bearing this in mind, you might come across instances where you need to discern the invariants by referring to the documentation. Therefore, it's crucial for every developer to understand invariants better or properties.
+y = Token Balance Y
+x = Token Balance X
+x * y = k
+x * y = (x + ∆x) * (y − ∆y)
+∆x = Change of token balance X
+∆y = Change of token balance Y
+β = (∆y / y)
+α = (∆x / x)
 
-## Invariants and Fuzz Testing
+Final invariant equation without fees:
+∆x = (β/(1-β)) * x
+∆y = (α/(1+α)) * y
 
-As we've already laid some groundwork on invariants, let's now head towards a deeper understanding of them by considering fuzz testing.
+Invariant with fees
+ρ = fee (between 0 & 1, aka a percentage)
+γ = (1 - p) (pronounced gamma)
+∆x = (β/(1-β)) * (1/γ) * x
+∆y = (αγ/1+αγ) * y
 
-> “Fuzz testing or fuzzing is a method for discovering coding errors and security loopholes in software, networks, or operating systems by inputting massive amounts of random data to the system in an attempt to make it crash.”
 
-I've brought together a series of fuzz testing videos which we will delve into dipping our toes into the in-depth understanding of invariants and fuzzing.
+Our protocol should always follow this invariant in order to keep swapping correctly!
+```
 
-But before that, if you are an alumnus of the **Foundry Course**, you may already have a basic understanding of fuzzing. Nevertheless, a refresher would surely help as we dig deeper into the concept with a more in-depth pedagogical approach.
+I'll stress that this is not the norm! Typically we're provided documentation and it's our job to determine, through recon, which properties of a protocol qualify as invariants.
 
-In the next phase, we will examine a quick informative video to enhance our understanding of invariants and the varied tactics to evaluate them, with a specific focus on fuzz testing.
-
-Buckle up, recalibrate your focus, and let’s take this enlightening journey on understanding the invariances better. After all, there's no better time to learn something new than right now. Stay curious!
+We've touched on invariants in the past, so in the next lesson we'll be watching a refresher which walks us through fuzz tests and how they relate to invariants.

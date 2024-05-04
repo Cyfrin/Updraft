@@ -2,52 +2,51 @@
 title: Phase 2 Recon - Reading the Docs
 ---
 
-
-
 ---
 
-# Thunder Loans: In-depth Dive into Flash Loan Protocols
+### Phase 2 Recon - Reading the Docs
 
-Welcome to this comprehensive deep dive into flash loan protocols. In particular, we will be focusing on the Thunder Loan protocol heavily based on Aave and Compound.
+Let's continue gaining context of Thunder Loan in this lesson by proceeding to read through more of the provided documentation.
 
-If you're not familiar with Aave, I recommend checking out this explainer video available at [Whiteboard Crypto](https://www.whiteboardcrypto.com/). It's a fantastic resource to learn the ins and outs of borrowing and lending protocols at a high level.
+The README has more contextual information about the project that we should take advantage of as well. The team states that Thunder Loan is:
 
-For this particular blog, we're going to thrust ourselves much deeper to dissect these protocols and thoroughly understand how they make Thunder Loans possible.
+> _A flash loan protocol based on [Aave](https://aave.com/) and [Compound](https://compound.finance/)._
 
-Let's kick-off the discussion by outlining what is Thunder Loans.
+If we're unfamiliar with Aave, we're even directed to a [**short explainer video**](https://www.youtube.com/watch?v=dTCwssZ116A) by Whiteboard Crypto that I encourage you to take a moment to watch for a high-level understanding of things.
 
-## Thunder Loan Protocol: A Flash Loan Blueprint
+We'll be doing a much more comprehesive dive into these DeFi systems in this section of course! It's just good to be prepared.
 
-The Thunder Loan protocol is designed with two main objectives. Firstly, it aims to provide users with the ability to construct flash loans. Secondly, it offers liquidity providers a chance to profit off their capital.
+### About Section
 
-> "What's a flash loan?"
+The about section of the README gives us some explicit detail about the protocol and its intended functionality.
 
-If you posed this question, I urge you to hang on as we will delve into it later in this post. But first, let's get up to speed on some terminology.
+```
+The ⚡️ThunderLoan⚡️ protocol is meant to do the following:
 
-A _liquidity provider_, as some of you might be aware, is an individual who pours money into a protocol to yield interest. An inevitable question that follows is, "where does the interest come from?" It's a question vital to both an investor and a security researcher's perspective.
+1. Give users a way to create flash loans
+2. Give liquidity providers a way to earn money off their capital
+```
 
-Taking t-swap as an example, the interest generated is sourced from the fees levied on swaps. Translating the same logic, in Thunder Loans, the interest is likely derived from the fees attached to these flash loans.
+We learnt about Liquidity Providers in the TSwap section of this course, but flash loans may be new. Let's define some of these terms explicitly in our notes for reference.
 
-Remember, when you deposit money into Thunder Loans, you're given an asset token, which gradually accrues interest over time depending on the prevalence of flash loans.
+```
+Liquidity Provider - Someone who deposits money into a protocol to earn interest.
 
-Alright, let's dissect what exactly is a flash loan.
+    - Something we should always ask is - where's the interest coming from? In TSwap this was coming from swap fees.
 
-## Flash Loans: A Simple Explanation
+    - In Thunder Loan - Liquidity providers can `deposit` assets into `ThunderLoan` and be given `AssetTokens` in return. These `AssetTokens` gain interest over time depending on how often people take out flash loans
 
-The term 'Flash Loan' refers to a loan that spans precisely one transaction. In simpler terms, a user can borrow any sum of assets from a loan protocol as long as they completely pay it back within the same transaction. Failure to adhere to this rule causes the transaction to revert, cancelling the loan automatically.
+Flash Loan - A flash loan is a loan that exists for exactly 1 transaction. A user can borrow any amount of assets from the protocol as long as they pay it back in the same transaction. If they don't pay it back, the transaction reverts and the loan is cancelled.
+```
 
-Additionally, a tiny fee is imposed to the protocol depending on the borrowed amount. In Thunder Loans, to determine these fees, we utilize the renowned on-chain T-swap price Oracle.
+Something of note by the Thunder Loan protocol:
 
-![](https://cdn.videotap.com/NZwarBK1M4rlkUCCFnyN-120.67.png)Thunder loans are currently planning to progress from the existing Thunder Loan contract to an upgraded one. This upgrade forms part of our security review's scope.
+- Users additionally have to pay a small fee to the protocol depending on how much money they borrow. To calculate the fee, we're using the famous on-chain TSwap price oracle.
 
-To effectively navigate these waters, we must develop a solid understanding of flash loans and get better acquainted with this lending and borrowing protocol. Hopefully, some graphical diagrams could perhaps simplify our learning process.
+This fee must be where the interest for Liquidity Providers is coming from, I'm sure we'll soon confirm. Additionally we see that Thunder Loan is leveraging a price oracle.
 
-Therefore, to understand this innovative DeFi primitive, I implore you to delve more into flash loans. Its knowledge is crucial to dissect the intricacies of Thunder Loans.
+### Wrap Up
 
-## Wrapping Up
+These are all important considerations as we approach this code base. Our first step should be to gain a deeper understanding of flash loans and how they work within a borrowing and lending protocol. We may even choose the start with some protocol diagrams to better visualize Thunder Loan.
 
-In this modern era of DeFi, understanding flash loans is remarkably essential. This blog is intended to provide a leap pad that gets you from novice to advanced levels of understanding how Thunder Loans operates and what are Flash Loans.
-
-So, pull out your notes, and let’s dive more in-depth into the world of flash loans. Understanding and leveraging flash loans can potentially change your perspective on lending and borrowing protocols.
-
-That's all for today. Stay tuned for more insightful blogs on the expansive DeFi universe!
+What's certain is that we're just getting started. Let's take a closer look at flash loans in the next lesson.

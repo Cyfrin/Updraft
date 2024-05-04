@@ -2,76 +2,121 @@
 title: Debugging Fuzz Sequences
 ---
 
-
-
 ---
 
-# Invariant Testing, Fuzzing, and a Weird ERC-20 Exploit
+### Debugging Fuzz Sequences
 
-## Introduction
+Alright! The moment of truth, let's run our test with:
 
-Hello, folks! In this blog post we'll embark on an exciting journey of executing invariant testing using a fuzzer. We will encounter misconfigurations, understand the output generated, identify the source of confused states (yes, we're going to meet a weird ERC20 token variant!), and unveil the importance of writing good tests, especially when dealing with external contracts.
-
-Ready? Let's get started!
-
-## The Initial Fuzzing Scenario
-
-The first thing we need to do is run our fuzzer, which is already configured to a contract, in our case, the "Mock USDC." We have coded a fuzzer test, `forge test --mt`, that we'll apply here.
-
-**_Code to be inserted:_**
-
-```shell
-forge test --mt name-of-test
+```bash
+forge test --mt statefulFuzz_testInvariantBreaksHandler
 ```
 
-As we eagerly anticipate a successful test run...
+<img src="/security-section-5/16-debugging-fuzz-sequences/debugging-fuzz-sequences1.png" width="100%" height="auto">
 
-### Problem Identification: The Fuzzer’s Anarchy
+Oh no! Something went wrong. We can see `assertion violated` in the output, but there's not a lot of information. In situations like this, we should leverage the `-vvvv` flag.
 
-![](https://cdn.videotap.com/dJ9d44aCK4jLbP02SRGT-77.81.png)
+> `-vvvv` can be used to increase the _verbosity_ of an output, often providing additional data or insight.
 
-Unfortunately, things don't turn out as planned. The fuzzer is attempting to interact with every possible edge, not just the "handler" contract we intended to speculate. To tether its leash back, we explicitly identify the target contract.
+Let's try it again:
 
-After the amendment, another run of the test is conducted.
+```bash
+forge test --mt statefulFuzz_testInvariantBreaksHandler -vvvv
+```
 
-### Signalling Errors: The Test Output
+A couple things stand out in this more robust output now (I've highlighted them in blue in the screenshot above). First, the error we're getting seems to be `ERC20InsufficientAllowance`.
 
-Run again, we are greeted with an error message from a call to `withdrawYield` (ERC20).
+The reason seems to be that we're calling `transferFrom` on a random address. Whoops! It seems we didn't set our handler as the targetContract in our test - we only set the function selectors! Let's rectify this now.
 
-The output isn't clear, but running the command `-VVV` (very, very verbose) may shed light on the error. The detailed output points fingers at an "insufficient balance," raising questions why our fuzzer-guided users are struggling to withdraw tokens they own.
+```js
+function setUp() public {
+    vm.startPrank(user);
+    mockUSDC = new MockUSDC();
+    yeildERC20 = new YeildERC20();
+    startingAmount = yeildERC20.INITIAL_SUPPLY();
+    mockUSDC.mint(user, startingAmount);
+    vm.stopPrank();
+    supportedTokens.push(IERC20(address(yeildERC20)));
+    supportedTokens.push(IERC20(address(mockUSDC)));
+    handlerStatefulFuzzCatches = new HandlerStatefulFuzzCatches(supportedTokens);
+    handler = new Handler(handlerStatefulFuzzCatches, mockUSDC, yeildERC20, user); // HANDLER INITIALIZED
 
-Attempting to better understand this scenario, we consciously decide to ignore the revert conditions. However, the issue persists, generating a mountain of output data.
+    bytes4[] memory selectors = new bytes4[](4); // SPECIFY SELECTORS TO FUZZ
+    selectors[0] = handler.depositYeildERC20.selector;
+    selectors[1] = handler.depositMockUSDC.selector;
+    selectors[2] = handler.withdrawYeildERC20.selector;
+    selectors[3] = handler.withdrawMockUSDC.selector;
 
-A new strategy is formulated to drop ‘the seed’ controlling the fuzz, re-running the test in search of more comprehensible output.
+    targetSelector(FuzzSelector({addr: address(handler), selectors: selectors})); // SET TARGET SELECTORS
+    targetContract(address(handler)); // SET TARGET CONTRACT TO HANDLER
+}
+```
 
-## Deep Dive: The Problematic ERC20 Token
+Now let's try it.
 
-Analysis of new output traces reveal that the `depositYield` function is also encountering a revert condition. A comparison of the pre and post-amendment data validates the improvement acquired through the fuzz restriction.
+<img src="/security-section-5/16-debugging-fuzz-sequences/debugging-fuzz-sequences2.png" width="100%" height="auto">
 
-The error persists through multiple test runs, so we opt to investigate the contract code, revealing nothing out of the ordinary in the `withdrawToken` function, a likely suspect. Maybe the issue lies within the token itself?
+Alright! It looks like we may have found something! We're seeing an error of `ERC20InsufficientBalance` when calling `withdrawToken` on `yeildERC20`. That's odd. Let's look at the `withdrawToken` function again.
 
-A scrutiny of `yieldYear20` also reveals nothing amiss, except one: a custom error message.
+```js
+function withdrawToken(IERC20 token) external requireSupportedToken(token) {
+    uint256 currentBalance = tokenBalances[msg.sender][token];
+    tokenBalances[msg.sender][token] = 0;
+    token.safeTransfer(msg.sender, currentBalance);
+}
+```
 
-The error signals a lack of balance, an oddity since the user’s balance should align with the deposit amount. But it's the fine print that throws a spanner in the works.
+Nothing out of the ordinary it seems, we're just calling `safeTransfer` on the token. Maybe we need to take a closer look at `YeildERC20.sol`.
 
-## Unraveling the Truth: A Sinister Token
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
 
-Looking further into the `yieldYear20` token, we notice an eccentric mechanism: for every 10 transactions, a 10% fee is deducted and transferred to the owner. Smelling a rat, this erratic behavior is the root of the violation of our invariant.
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-### An Unexpected Result: Violation of the Invariant
+contract YeildERC20 is ERC20 {
+    uint256 public constant INITIAL_SUPPLY = 1_000_000e18;
+    address public immutable owner;
+    // We take a fee once every 10 transactions
+    uint256 public count = 0;
+    uint256 public constant FEE = 10;
+    uint256 public constant USER_AMOUNT = 90;
+    uint256 public constant PRECISION = 100;
 
-Here’s what unfolds: after back-to-back deposit and withdrawal transactions of the `yieldYear20` tokens, the 10th transaction deducts this 'fee,' dispatching 10% of tokens to the owner's contract. This act violates our invariant, which demands that users can always withdraw the exact balance fraction amount.
+    constructor() ERC20("MockYeildERC20", "MYEILD") {
+        owner = msg.sender;
+        _mint(msg.sender, INITIAL_SUPPLY);
+    }
 
-## Importance of a Well-Written Test Suite
+    /**
+     * @dev Transfers a `value` amount of tokens from `from` to `to`, or alternatively mints (or burns) if `from`
+     * (or `to`) is the zero address. All customizations to transfers, mints, and burns should be done by overriding
+     * this function.
+     *
+     * Every 10 transactions, we take a fee of 10% and send it to the owner.
+     */
+    function _update(address from, address to, uint256 value) internal virtual override {
+        if (to == owner) {
+            super._update(from, to, value);
+        } else if (count >= 10) {
+            uint256 userAmount = value * USER_AMOUNT / PRECISION;
+            uint256 ownerAmount = value * FEE / PRECISION;
+            count = 0;
+            super._update(from, to, userAmount);
+            super._update(from, owner, ownerAmount);
+        } else {
+            count++;
+            super._update(from, to, value);
+        }
+    }
+}
 
-Luckily, our top-notch stateful fuzzing test suite spotted the anomaly. It showcased the significance of having well-detailed tests, especially when external contracts, such as tokens, are involved. This informal audit brought attention to a significant pitfall potential, “Weird ERC-20 tokens.”
+```
 
-### Wrap Up: Invitations, Exploitations, and Auditations
+Ah ha! This `_update` function is sending a 10% fee to the owner of YeildERC20 every 10 transactions. This is why our `withdrawTokens` function was throwing an `ERC20InsufficientBalance` error - `HandlerStatefulFuzzCatches.sol` doesn't have enough `YeildERC20` to pay the fee!
 
-“Congratulations for digesting this massive chunk of knowledge! Don't fret if you're perplexed; it's a lot to take in, especially without hands-on practice. But remember, Rome wasn't built in a day!
+This is actually a fairly common situation known is a `Fee on Transfer` token and they exist in a classification of vulnerabilities known as `Weird ERC20s`.
 
-The key takeaway here is the importance of writing detailed test suites, accurately capturing potential anomalies that could break our system. As for our journey, you've just witnessed the first exploit of this session, the "Weird ERC-20 Tokens," a concept we will explore in-depth in coming sessions.
+We executed handler-based stateful fuzz testing in order to pinpoint this potential problem in our contract! This should clearly demonstrate how powerful a tool this method of fuzz testing can be.
 
-> “To iterate is human, to recurse, divine.” – L. Peter Deutsch
-
-Having unraveled the problem, we're now geared up for the final leg of our expedition, auditing the ‘T-Swap protocol.' Stay tuned, as exciting discoveries await!"
+Let's recap everything we've learn about fuzzing.

@@ -2,46 +2,90 @@
 title: AssetToken.sol - updateExchangeRate
 ---
 
-## The Function: Update Exchange Rate
+### AssetToken.sol - updateExchangeRate
 
-Let's dive into a seemingly vital function called `updateExchangeRate()`. The comments clarify that it obtains the current exchange rate (#1) and computes it by dividing the fee size by the total supply. An intriguing remark states that the exchange rate should consistently increase—never decrease—an invariant principle at work. **But why should this exchange rate always escalate and never decline?**
+Next we have the `updateExchangeRate` function!
 
-**CODE BLOCK HERE**
+```js
+function updateExchangeRate(uint256 fee) external onlyThunderLoan {
+    // 1. Get the current exchange rate
+    // 2. How big the fee is should be divided by the total supply
+    // 3. So if the fee is 1e18, and the total supply is 2e18, the exchange rate be multiplied by 1.5
+    // if the fee is 0.5 ETH, and the total supply is 4, the exchange rate should be multiplied by 1.125
+    // s_exchangeRate should always go up, never down
+    // newExchangeRate = oldExchangeRate * (totalSupply + fee) / totalSupply
+    // newExchangeRate = 1 (4 + 0.5) / 4
+    // newExchangeRate = 1.125
+    uint256 newExchangeRate = s_exchangeRate * (totalSupply() + fee) / totalSupply();
 
-As we delve deeper, we set:`newExchangeRate = oldExchangeRate * (totalSupply + fee) / totalSupply`.
+    if (newExchangeRate <= s_exchangeRate) {
+        revert AssetToken__ExhangeRateCanOnlyIncrease(s_exchangeRate, newExchangeRate);
+    }
+    s_exchangeRate = newExchangeRate;
+    emit ExchangeRateUpdated(s_exchangeRate);
+}
+```
 
-![](https://cdn.videotap.com/gi422wVmQ3SFrgJrvlSw-84.97.png)
+We can infer that `updateExchangeRate` is updating the rate of exchange between `AssetToken` and the `underlying`. This comes into play when liquidity providers deposit or withdraw from the protocol and governs how many `AssetTokens` are exchanged for underlying collateral and vice versa.
 
-As we break down how this formula functions:
+This a great example of a function that will make more sense when we have more context of Thunder Loan.
 
-- If the old exchange rate is 1,
-- The total supply of asset tokens is 4,
-- Fee is 0.5,
+**_s_exchangeRate should always go up, never down._**
 
-Computing ((4 + 0.5)/ 4), we result with a new exchange rate of 1.125. From this, it seems that `updateExchangeRate()` is likely responsible for updating the asset tokens' exchange rate to their underlying assets.
+This is an invariant! Absolutely make a note of this. At this point in our review we might wonder _why?_, we don't really understand the impact, but let's keep going and we'll figure it out.
 
-To illustrate, imagine this hypothetical scenario where a whale deposits or withdraws shares. The amount that gets deposited or withdrawn hinges upon the exchange rate, which can change, presumably having something to do with the fee. In a scenario where the exchange rate is two to one, if a user were to deposit $1,000, they would receive 2000 asset tokens in return.
+```js
+// @Audit-Question: What if totalSupply is 0? Is that possible?
+uint256 newExchangeRate = s_exchangeRate * (totalSupply() + fee) / totalSupply();
+```
 
-**But why are we updating the exchange rate?**
+The next bit of code is actually pretty clever.
 
-Let's revisit the above formula: What happens if the total supply is zero?As per the formula, `S exchange rate starts at 1 * 0 + let's say the fee is zero divided by zero`, the computation breaks. Would this pose an issue? Could there be a way that this could break and make the total supply zero? Questions to consider.
+```js
+if (newExchangeRate <= s_exchangeRate) {
+    revert AssetToken__ExhangeRateCanOnlyIncrease(s_exchangeRate, newExchangeRate);
+}
+```
 
-![](https://cdn.videotap.com/SLGckrl4g0AjIi7bUdwS-230.62.png)
+This is explicitly checking for the invariant mentioned in the function comments. If the newExchangeRate is less than or equal to the old exchange rate, we revert with a custom error `AssetToken__ExhangeRateCanOnlyIncrease`.
 
-We check for a condition `if newExchangeRate <= oldExchangeRate`, then instruct it to revert, with a message saying, "Exchange rate can only increase." The condition itself is a clear implementation of the invariant principle stated earlier. On the other hand, if the new exchange rate is higher, it sets `sExchangeRate = newExchangeRate` before emitting an event.
+Then we're updating the exchange rate and emitting an event.
 
-At a first glance, this function seems correct and ready to run. It updates the exchange rate, a crucial variable in the relationship between the shares and the underlying assets. The rate update mainly seems to be triggered by fees.
+```js
+s_exchangeRate = newExchangeRate;
+emit ExchangeRateUpdated(s_exchangeRate);
+```
 
-## Some Possible Improvements
+At first glance this function seems pretty tight. I don't really see an issue here, maybe that'll change with future testing, but for now, let's keep going.
 
-An important aspect that one could focus on is the multiple storage reads in the `updateExchangeRate( )` function— `s_ exchangeRate`, `s_totalSupply`, and `s_fee`. Given that storage reads are gas expensive, you could possibly optimize this by storing them as a memory variable—an aspect to consider during an audit for gas usage.
+Even though we didn't find a bug in updateExchangeRate, we've gained a lot of context.
 
-Note: Sometimes, it is the experience that helps spot these potential storage issues. For instance, if you see multiple s\_ syntax terms, that might be a hint about multiple storage operations.
+There are only two small functions remaining in `AssetToken.sol`, let's review them now!
 
-![](https://cdn.videotap.com/tGc23bAltPLCCdT51Y39-303.45.png)
+### getExchangeRate & getUnderlying
 
-Despite not discovering any immediate problem with the contract, analyzing this function helped us understand the contract better. We now know how the exchange rate behaves, and it's clear that the fee plays a significant role in its computation.
+getExchangeRate and getUnderlying seem to be two basic getter functions which return s_exchangeRate and i_underlying respectively.
 
-In the next phase, we plan on investigating two more functions—ThunderLoan and ThunderLoanUpgraded. We'll tackle ThunderLoan first, understand its functionalities thoroughly, then move onto ThunderLoanUpgraded to identify the upgrades.
+```js
+function getExchangeRate() external view returns (uint256) {
+    return s_exchangeRate;
+}
 
-Stay tuned in for our exciting journey as we delve deeper to explore these functions. Keep coding!
+function getUnderlying() external view returns (IERC20) {
+    return i_underlying;
+}
+```
+
+Both of the returned variables here are declared as private, so these functions look great.
+
+> **Protip:** `s_exchangeRate` brought to mind an optimization in the previous function. `updateExchangeRate` loads `s_exchangeRate` from storage _a lot_. Storing this in memory is a better use of gas!
+
+### Wrap Up
+
+We didn't find too many issues with AssetToken.sol, but we got a much better understanding of the role it plays within Thunder Loan. We can check this one off our list!
+
+<img src="../../../../static/security-section-6/25-asset-token-update-exchange-rate/asset-token-update-exchange-rate1.png" width="100%" height="auto">
+
+We'll finally approach ThunderLoan.sol itself in the next lesson. While technically a little bigger, we expect a lot of overlap between ThunderLoan.sol and ThunderLoanUpgraded.sol as well as valuable context regarding what's being changed between the two versions.
+
+With all the information we've gained from the smaller code bases so far, let's dive into the main contract next!

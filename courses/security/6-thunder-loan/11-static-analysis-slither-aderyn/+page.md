@@ -2,46 +2,89 @@
 title: Static Analysis Slither + Aderyn
 ---
 
-
-
 ---
 
-# Solidity Foundry Project: Running Slither and Aderyn
+### Static Analysis Slither + Aderyn
 
-Welcome back! In today's blog, we're going to throw ourselves into the heart of a Solidity foundry project. Unfortunately, there are no diagrams to help us along the way, but no worries, because we've got two brilliant tools at our disposal: **Slither** and **Aderyn**.
+Ok! We're ready to start attacking this code base and indentifying vulnerabilities. A good first step is our static analyzers of course.
 
-## Setting the Stage: Your Make File
+### Slither
 
-For this project, and any Solidity project moving forward, a typical **make file** will embrace a little Slither command line action and be embellished with a Slither Config JSON file.
+Moving forward each of our lesson repos is going to have configured a `make` command for `Slither`. I'm including this to make our lives a little easier by having it consider a slither.config.json for our tests.
 
-The Slither Config JSON that I am fond of using, you can tailor as per your project needs. What makes it special is the string of flags that are manually turned on or off to procure meaningful Slither outputs. _Fun Fact: You might notice I don’t include a few detectors like conformance to Solidity naming conventions or incorrect versions of Solidity. That’s because I have a fair share of taste for unconventional naming and most folks aren’t using 0.8.18 versions but rather zero point 20._
+You can customize your configuration file however you'd like, but this is an example of one I like to use which includes several popular flags to toggle on or off based on circumstance.
 
-Next, in our mission to make the Slither output as concise and helpful as possible, we make sure to filter paths to avoid pulling in redundant information from mocks, tests, scripts, upgraded protocol, or dependencies. This ensures we don't muddle our results with data from libraries.
+```json
+{
+  "detectors_to_exclude": "conformance-to-solidity-naming-conventions,incorrect-versions-of-solidity",
+  "exclude_informational": false,
+  "exclude_low": false,
+  "exclude_medium": false,
+  "exclude_high": false,
+  "disable_color": false,
+  "filter_paths": "(mocks/|test/|script/|upgradedProtocol/)",
+  "legacy_ast": false,
+  "exclude_dependencies": true
+}
+```
 
-## The Bug Hunt Begins
+In this config there are just a few settings I prefer that make our `Slither` output a little more meaningful to us.
 
-On initiating Slither, we did hit something noteworthy, a bug! The first info detected was thunderloan update. The problem lay in that the action of the code `s_flashloan fee = new fee` was not triggering an event emission. This was in Thunder Loan line 269.
+Detectors for things like naming conventions and solidity versions will be excluded for example. Additionally, I will filter the paths that `Slither` covers to avoid things like tests and mocks being caught by it!
 
-Now, let's get to the heart of the update flash loan fee function. We spotted a `s_flashloan fee` variable. When we investigated further, it was found to be a storage variable.
+As always, I encourage you to have a look at some of the options available to you within the `Slither` config that suit you best.
 
-> Important: Whenever a storage update occurs, it is mandatory to emit an event.
+With the above said, we can run `Slither` with
 
-To make a note of it for the auditor, we wrote `@audit: low must emit an event.`But that's not the end of it. We found more issues with Slither.
+```bash
+make slither
+```
 
-## Fishy Thunderloan
+Our output is more concise than ever, but already we can see some vulnerabilities detected. This is a great place to start our review.
 
-Slither also pointed out the possibility of reentrancy vulnerabilities in the Thunderloan flash loan because of external calls being made. We're not entirely sure of the severity, but we mark these for a follow-up review.
+<img src="../../../../static/security-section-6/11-static-analysis-slither-aderyn/static-analysis-slither-aderyn1.png" width="100%" height="auto">
 
-> Note: Be sure to check out the mentioned lines (#204, #181) in Thunderloan for potential reentrancy vulnerabilities.
+Let's even just begin by taking a look at the very first issue detected.
 
-## Beware the Old Yellow
+```
+ThunderLoan.updateFlashLoanFee(uint256) (src/protocol/ThunderLoan.sol#265-270) should emit an event for:
+        - s_flashLoanFee = newFee (src/protocol/ThunderLoan.sol#269)
+```
 
-Finally, Slither pointed out a yellow alert, which was a little concerning. The problem was that the return value of an external call was not stored in a local or state variable. Again, we must make a follow-up note of this and verify later if it's a grave issue.
+It looks like at `line-269` in `ThunderLoan.sol` we're executing a state change without emitting an event. Our first finding!
 
-With the last yellow alert, we've run through all theing that Slither had to offer. However, we're still not done. Next, we need to run Aderyn.
+```js
+function updateFlashLoanFee(uint256 newFee) external onlyOwner {
+    if (newFee > s_feePrecision) {
+        revert ThunderLoan__BadNewFee();
+    }
+    // @Audit-Low: Events should be emitted on state change
+    s_flashLoanFee = newFee;
+}
+```
 
-## Round Two: Aderyn
+Next, in our `Slither` output, it looks like we have a number of `reentrancy` situations being detected. These are a little different to the reentrancy we're used to, so let's make a note to follow up on these later.
 
-After running Aderyn, a report is generated. The report can be checked for any potential issues and, if need be, compared with Slither's findings.
+```js
+// @Audit - Follow Up
+```
 
-And voila, that's how you navigate through a Solidity project with the help of Slither and Aderyn. By doing so, you can identify potential vulnerabilities and build better, safer code. Until next time, happy coding!
+Add the above tag to the external calls identified in the `Slither` output.
+
+### Aderyn
+
+Great! Not a tonne from `Slither`, but always worth the check. We can now run `Aderyn` in much the same way.
+
+```bash
+make aderyn
+```
+
+or
+
+```bash
+aderyn .
+```
+
+<img src="../../../../static/security-section-6/11-static-analysis-slither-aderyn/static-analysis-slither-aderyn2.png" width="100%" height="auto">
+
+Looking good, thanks `Aderyn`! Let's go through some of the issues detected by `Aderyn` together, in the next lesson.

@@ -1,79 +1,102 @@
 ---
-title: Phase 4 Reporting   The first few Informationals
+title: Phase 4 Reporting
 ---
 
+---
 
+### Reporting
+
+**Before we do anything - I'm going to challenge you to do write ups yourself _first_ before returning and walking through the process with me.**
+
+Reference our [**finding_layout.md**](https://github.com/Cyfrin/security-and-auditing-full-course-s23/blob/main/finding_layout.md) template for your reports and then compare your write ups to mine in the dropdowns below (you can use the titles as hints!). Our informational findings can be a little lower effort...
 
 ---
 
-# Decoding a Code Audit Session: Understanding the Process
+<details>
+<summary>[I-1] `PoolFactory::PoolFactory___PoolDoesNotExist` is not used and should be removed</summary>
 
-Hello, readers!
+### [I-1] `PoolFactory::PoolFactory___PoolDoesNotExist` is not used and should be removed
 
-Today, we'll take a deep dive into some lessons learned from a thorough code review session. Without further ado, let's get the ball rolling!
-
-## Step 1: Reviewing the Code Base
-
-To start off, we took an initial sweep through a code base - our first chance to spot errors, find potential areas of improvement, and generally see how things stack up.
-
-"_Are we done yet?_" you might ask. Well, not quite. Just like any meticulous auditing process, it's essential to ask questions as they pop up. For instance, if a variable appears to be used from its initial state, it's worth asking, "**If it's empty, how does it warm up?**"
-
-It's also critical to loop back to any points of confusion or curiosity you see. Got that one lingering question begging for an answer? Mark it down, note it for later and see what comes out of a second, or even a third, look-through.
-
-## Iterative Passes: A Beginner's Best Friend
-
-Here's the clincher: you don't have to get it all on the first pass. We only had one run since we're still in the process of learning, and that's perfectly okay. Here's a simple yet crucial piece of advice:
-
-> Never hesitate to go back for another pass if you feel unsure or if there are questions left unanswered.
-
-At the end of the day, the goal is to build a clear understanding, and rushing might just lead us away from that objective.
-
-## Step 2: Reporting Findings
-
-With our checks and observations noted down, it's time to dive into some report writing. For the purpose of maintaining good organization, I created a new file for our findings, cleverly named "Findings MD," and put it in a newly created "audit data" folder.
-
-```markdown
-New File - > findings.md -> audit data folder
+```diff
+- error PoolFactory__PoolDoesNotExist(address tokenAddress);
 ```
 
-Let's break down how we can structure this report.
+</details>
 
-### The Grouping of Discoveries
+---
 
-Starting with the first finding, in our example, we found an error that wasn't actually used at all - a classic case of surplus code. Considering its nature, we classified this as an "Informational" finding. This categorization allows us to flag potentially important data points without necessarily marking them as critical faults or errors.
+<details>
+<summary>[I-2] `PoolFactory::constructor` Lacking zero address check</summary>
 
-```markdown
-Informational Finding: Unused Error
+### [I-2] `PoolFactory::constructor` Lacking zero address check
+
+```diff
+constructor(address wethToken) {
++   if(wethToken == address(0)){
++    revert();
++}
+    i_wethToken = wethToken;
+}
 ```
 
-With the help of a bookmarked layout from a previous project, the otherwise tedious task of finding organization become a simple copy-paste job.
+</details>
 
-```markdown
-Finding Layout -> Copy Layout -> Paste in New File
+---
+
+<details>
+<summary>[I-3] `PoolFactory::createPool should use .symbol() instead of .name()</summary>
+
+### [I-3] `PoolFactory::createPool should use .symbol() instead of .name()
+
+```diff
+- string memory liquidityTokenSymbol = string.concat("ts", IERC20(tokenAddress).name());
++ string memory liquidityTokenSymbol = string.concat("ts", IERC20(tokenAddress).symbol());
 ```
 
-### Adding Detail to Findings
+</details>
 
-The key to a helpful report lies in its detail. For the very first finding, we established a lack of use for a certain pool factory and suggested its removal. This was done by manually inserting '-pool factory' to indicate its extraneous existence.
+---
 
-```markdown
-- Pool Factory (This is not used and should be removed)
+<details>
+<summary>[I-4] `TSwapPool::constructor` Lacking zero address check - wethToken & poolToken</summary>
+
+### [I-4] `TSwapPool::constructor` Lacking zero address check - wethToken & poolToken
+
+```diff
+constructor(
+    address poolToken,
+    address wethToken,
+    string memory liquidityTokenName,
+    string memory liquidityTokenSymbol
+)
+    ERC20(liquidityTokenName, liquidityTokenSymbol)
+{
++   if(wethToken || poolToken == address(0)){
++       revert();
++   }
+    i_wethToken = IERC20(wethToken);
+    i_poolToken = IERC20(poolToken);
+}
 ```
 
-Similarly, all information points were individually detailed under their respective headers, ensuring an informative but clean look to the report.
+</details>
 
-```markdown
-I2 - Lack of Zero Address ChecksI3 - Symbol, Not Name
+---
+
+<details>
+<summary>[I-5] `TSwapPool` events should be indexed</summary>
+
+### [I-5] `TSwapPool` events should be indexed
+
+```diff
+- event Swap(address indexed swapper, IERC20 tokenIn, uint256 amountTokenIn, IERC20 tokenOut, uint256 amountTokenOut);
++ event Swap(address indexed swapper, IERC20 indexed tokenIn, uint256 amountTokenIn, IERC20 indexed tokenOut, uint256 amountTokenOut);
 ```
 
-As a bonus, we even added a section for the "Weird ERC 20" occurances, which don't have a dedicated audit tag but are no less vital to note.
+</details>
 
-And there you have it. The layout's simplicity and clarity make complex ideas digestible and easy to understand.
+---
 
-## Conclusion
+### Wrap Up
 
-Ultimately, the code audit is a practice in thoroughness, attention to detail, and iterative learning. Along the way, you'll encounter a host of ruinous bugs, confusing variables, and, yes, even a "Weird ERC 20" here and there. But the key takeaway should always be this:
-
-> Always be willing to make multiple passes, make detailed notes, and never shy away from asking questions. Only then you will fully unlock the true potential of a code audit.
-
-In the end, just know that with each pass you take, each note you make, each error you find — you're becoming a better coder for it. Good luck, and happy coding!
+How'd you do!? In the next lesson we're going to go through some more severe vulnerabilities with more complex write ups. See you there.

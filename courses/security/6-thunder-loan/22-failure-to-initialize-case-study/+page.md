@@ -2,42 +2,33 @@
 title: Exploit - Failure to Initialize - Case Study
 ---
 
-# Failure to Initialize: A Lesson from Smart Contract Exploits
+### Exploit - Failure to Initialize - Case Study
 
-If you've ever dabbled in the realm of smart contracts, you may be familiar with an infamous exploit called "Failure to Initialize." This notorious event unfolded in the Web Three Ethereum Ecosystem, involving a GitHub issue that potentially devastated the contract behind the Parity Wallet. It serves as a harsh reminder to all smart contract developers to initialize their contracts properly, or risk catastrophic failure.
+<img src="../../../../static/security-section-6/22-failure-to-initialize-case-study/failure-to-initialize-case-study1.png" width="100%" height="auto">
 
-In this blog post, we'll dissect the event and analyze the lessons learned. This way, we aim to prevent a similar misstep from reoccurring in our own projects or those of others.
+The post above lives in infamy in the Web3 ecosystem.
 
-## The Initial Issue
+You can check out the thread and read more about the hack [**here**](https://github.com/openethereum/parity-ethereum/issues/6995), but in a nut shell, Parity Wallet failed to initialize their contracts and a curious user bricked their protocol.
 
-![](https://cdn.videotap.com/OY6Xn3YTnnAcgF4AnFtX-17.09.png)The tale starts with an innocent-looking [Git issue](https://github.com/paritytech/parity-ethereum/issues/6995) submitted to the Parity Wallet. Someone had unintentionally "killed" the contract - a possibility they were unaware of until it happened. This shocking event triggered a cascade of errors that brought to light a serious vulnerability in the smart contract.
+Within that thread there's a [**link to the transaction**](https://etherscan.io/tx/0x05f71e1b2cb4f03e547739db15d080fd30c989eda04d37ce6264c5686e0722c9) that caused the Parity Bug. Let's have a look at what was done.
 
-The Etherscan transaction associated with it confirms the event. When we navigate down to the transaction details, click "Show more," and decode the input data, we can see the parameters they entered when they accidentally invoked the contract's kill function.
+<img src="../../../../static/security-section-6/22-failure-to-initialize-case-study/failure-to-initialize-case-study2.png" width="100%" height="auto">
 
-The user was merely experimenting with the contract — not anticipating that their "play" would cause such devastation. They had overlooked a significant precaution in the preparation: initializing their initializer function.
+We can see in the transaction which function was called `initWallet`. This function is taking important parameters such as `_owners` and `_required`.
 
-Tragically, the initializer, which was initially neglected, was later invoked. This act inadvertently caused the breakdown of a contract hosting a considerable sum. It's a tale that triggers despair among developers and serves as a potent reminder: **Never forget to initialize your contracts**.
+Because the contract hadn't been initialized, the hacker was able to set their own wallet as the owner of the contract and the required multisig signatures to zero.
 
-> "Initialize your initializers. This might seem like a simple step, but one oversight can cause catastrophic consequences for your contracts."
+<img src="../../../../static/security-section-6/22-failure-to-initialize-case-study/failure-to-initialize-case-study3.png" width="100%" height="auto">
 
-## Lessons You Should Carry
+This ultimately resulted in a scramble to free locked funds and chaos in the ecosystem, all because the initialize function had been forgotten.
 
-What enlightenment can we glean from this unfortunate event? Well, it screams out the need for initialization. It also raises questions about potential methods to ensure initialization is never omitted, like incorporating it into a deployment script or implementing a parameter that blocks the rest of the system from interacting until initialization has occurred.
+### Wrap Up
 
-While we are discussing potential solutions, it is crucial to note that merely attaching a “onlyInitialized” modifier to functions won’t cut it. This strategy is often ignored by developers who are looking to save on gas fees. However, the primary concern here is to guarantee initialization, irrespective of how it is achieved.
+The above outlines the importance of properly initializing smart contracts on deployment.
 
-In the dissected smart contract, there were no blockers placed to prevent interaction with the contract until initialization was complete. This absence is a glaring shortfall needing rectification.
+It's becoming an increasingly good idea to protect against this type of exploit using method such as:
 
-Remember, **initialization can be front-run**. It's vital you put mechanisms in place to prevent such actions from happening, which might wreak havoc akin to the Parity Wallet incident.
+- assuring initialization functions are called _in_ deploy scripts.
+- adding modifiers that require a protocol be initialized before it can be interacted with
 
-## Remember This Tale
-
-This event, classified under the infamous hack, is widely known as "Failure to Initialize". To avoid facing this unfortunate situation, get familiar with the case study, and make sure to initialize your initializers appropriately.
-
-With the constant evolution of the Ethereum ecosystem, it's crucial to learn from our predecessors' missteps. Let this serve as a lesson to you: Pay attention to initializations, or you might accidentally "kill" something you didn't intend to.
-
-The dark tale of this smart contract mishap should remain a beacon guiding you away from similar pitfalls. It's a call to ensure attentive and thorough development processes, bearing in mind that one small oversight can lead to the interruption of an entire system.
-
-> "Even the smallest oversight in a contract can lead to the destruction of the entire protocol. Understanding the importance of the initialization steps is critical. Remember, don't let a similar fate befall your contracts."
-
-And lastly, let the grim tale of "Failure to Initialize" remind you: it's wiser to prevent than lament.
+Let's continue with `OracleUpgradeable.sol` in the next lesson.

@@ -2,56 +2,46 @@
 title: Recon (continued)
 ---
 
-
-
 ---
 
-# Understanding the Thunder Loan Protocol: A Comprehensive Review
+### Recon (continued)
 
-Welcome to another intriguing blog post where we'll dive deep into the world of cryptocurrencies, specifically focusing on the Thunder Loan protocol. This post is rooted in our continued commitment to simplify complex subjects in decentralized finance for you.
+Alright! We've gained tonnes of additional context by taking the time to better understand concepts like arbitrage and flash loans, which seem to be integral to Thunder Loan's functionality.
 
-## Contextualizing the Thunder Loan Protocol
+As security researchers it's often important for us pro-actively seek out a deeper understanding of protocol features to properly understand how a protocol works.
 
-Thunder Loan protocol, like many other DeFi (Decentralized Finance) protocols, is based on borrowing, lending, and flash loans. To fully grasp how this protocol operates, one must first comprehend how flash loans and borrowing/lending processes work.
+If you haven't already, I encourage you to read up on [**Aave**](https://aave.com/) and [**Compound**](https://compound.finance/), on which Thunder Loan is based. I previous also linked this [**Aave explainer video**](https://www.youtube.com/watch?v=dTCwssZ116A) from Whiteboard Crypto that you should definitely check out.
 
-> _"Sometimes when you're doing security reviews, you got to look up stuff that might not seem related."_
+As we continue to read through the documentation of Thunder Loan, something sticks out to me.
 
-I recommend learning more about these protocols by exploring [Aave](https://aave.com) and [Compound](https://compound.finance). You could also watch related deep-dive videos to get more context.
+```
+Users additionally have to pay a small fee to the protocol depending on how much money they borrow. To calculate the fee, we're using the famous on-chain TSwap price oracle.
+```
 
-## Breaking Down Flash Loans and Liquidity
+`TSwap` price oracle!?
 
-So, what is a flash loan? In essence, flash loans involve users borrowing substantial sums, completing arbitrage trades, then returning the borrowed sum in the same transaction. They are rapid transactions that thoroughly leverage the capabilities of smart contracts.
+That's the protocol we just audited! The inclusion of `TSwap` here is meant to highlight an important feature of DeFi, its `composability`.
 
-Users, also known as liquidity providers, deposit their funds into the protocol. In exchange, they receive asset tokens, representing their stake in the protocol. Users also need to pay a small fee to the protocol, which depends on the borrowed sum.
+`Composability` effectively means it can be written off of or added to. Protocols in DeFi may use other protocols and it's important to remember that any vulnerabilities present within a protocol that is inherited could absolutely affect the child contracts! We'll need to keep this in mind.
 
-One might be curious: how is this fee calculated?
+**_What is an Oracle?_**
 
-Enter the **on-chain Tswap price oracle**.
+As we should all know by this point in the course (it's covered in [**Advanced Foundry**](https://updraft.cyfrin.io/courses/advanced-foundry)!), an oracle is a system or device which brings real-world data on-chain. Chainlink price feeds or an AMM Dex like TSwap can serves as examples of oracles.
 
-## The Critical Role of the Tswap Price Oracle
+We'll find out why Thunder Loan needs an oracle as we continue our review!
 
-Price oracles play a crucial role in crypto trading platforms. They act as a bridge, bringing external real-world data or computation on-chain.
+### Upgradeability
 
-> _"An Oracle is going to be a device that takes external real-world data or computation and brings it on-chain."_
+The last thing I notice in the docs here is this:
 
-For instance, a price oracle could determine the price of Ethereum – a concept forgotten by the material world. It's fascinating to note that the Thunder Loan protocol uses TSwap's Dex that we reviewed in our previous section as a price oracle.
+```
+We are planning to upgrade from the current ThunderLoan contract to the ThunderLoanUpgraded contract. Please include this upgrade in scope of a security review.
+```
 
-Now, one might wonder: why would the protocol need a price oracle?
+If we look at ThunderLoan.sol we can see that it's inheriting a bunch of upgradeablity libraries such as `Initializable`, `OwnableUpgradeable`, `UUPSUpgradeable`, and `OracleUpgradeable`. We aren't going to go over the specifics of upgradeability or proxy functionality, in this course (again you can find further information on that in [**Advanced Foundry**](https://updraft.cyfrin.io/courses/advanced-foundry)), but this is a vital consideration for our review moving forward and represents a whole host of unique attack vectors we haven't seen yet.
 
-Let's dig in further.
+### Wrap Up
 
-## The Thunder Loan Protocol Upgrade
+Now that we have so much context and understanding of Thunder Loan, I think we're ready to dive in and start breaking it.
 
-We have one more puzzling detail. Thunder Loan Protocol is planning to upgrade their current contract to the Thunder Loan upgraded contract.
-
-This upgrade is a crucial element to be considered under the scope of our security review. The Thunder Loan seems to be an upgradable smart contract, following the Ownable Upgradable, UUPS Upgradable and Oracle Upgradable paths.
-
-## Wrapping Up
-
-Finally, we've learned how the protocol sheds light on flash loans, arbitrage, and provides various opportunities for liquidity providers apart from their usual asset token interest.
-
-We've also noticed some unique features like the TSwap Price Oracle embedded into the protocol's ecosystem, contributing prominently to its functionality.
-
-This post should have given you a thorough overview of the Thunder Loan protocol. Now would be an ideal time for you to reach out to the protocol or prepare their diagrams, detailing how their whole system actually works.
-
-Remember to have fun, stay curious, and keep exploring!
+In the next lesson we'll start with applying some of our tools to weed out some low hanging fruit. See you there!

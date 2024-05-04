@@ -1,62 +1,102 @@
 ---
-title: IFLashLoanReceiver.sol
+title: IFlashLoanReceiver.sol
 ---
 
-
-
 ---
 
-# Deep diving into Flash Loan Audits
+### IFlashLoanReceiver.sol
 
-Going through audits especially when it involves assert checking can be a bit of a challenge even for seasoned programmers. Today, we will be looking into **IFlash Loan Receiver** contracts, finding out potential loopholes and code clean ups that we can perform to ensure our contract is as secure and tight-knit as possible.
-
-![](https://cdn.videotap.com/nmh2iNPnadGsdWNfaTx7-13.81.png)## Understanding the Flash Loan receiver contracts
-
-A quick look at our code shows that we use a lot of import statements like `import IThunderLoan from ../IThunderLoan`. Now it might seem okay to import libraries and classes that we might not really use directly in our codebase, but there's reason to trim down on that. Let's delve in.
-
-While this line of code might seem harmless initially, closer inspection reveals that we don't really need to import this. Why is it there? One may think there could be an underpinning connection by another class or component. So let's try to find out where exactly this particular import is being utilized.
-
-Using the handy keyboard shortcut **Command Shift F** (or Control Shift F for Windows) in Visual Studio, we can quickly locate where `IFlashLoanReceiver` file is and where `IThunderLoan` is being imported.
-
-To our surprise, we found out that `IThunderLoan` isn't imported or used anywhere in the `IFlashLoanReceiver`. So it begs the question, why is it there?
-
-## Cleaning Up Unused Imports
-
-While it's tempting to leave unused imports like this in your code (who knows, you might need it later, right?), this could be seen as bad practice in general. This is largely because it makes the code harder to read and understand, especially for new people coming onto the project and also, it could introduce potential security risks.
-
-We went ahead to comment out the `IThunderLoan` import to see if anything breaks. Running `forge build` in the terminal, we confirmed that, indeed, we didn't actually need this import.
-
-> **Note:** It's a fundamental principle of smart contract engineering to avoid altering live codes for test mocks. Hence we need to remove the import from `MockLoanReceiver.sol`.
-
-After removing the redundant import, our build is still in great shape, and we've made our project slightly cleaner and easier to understand.
-
-## Exploring Flash Loan mechanics with Aave
-
-With the code cleaned up, we now shift focus to understanding some foundational concepts. Looking at the Flash Loan receiver contracts available on [Aave](https://github.com/aave), we realize that the implementation here is somewhat similar to what we have in our own codebase. The perfect opportunity to learn!
-
-Here's a snippet of the Aave code we were going through:
+Alright, IFlashLoanReceiver.sol is next! Let's have a look.
 
 ```js
-function executeOperation(address _reserve,uint256 _amount,uint256 _fee,bytes memory _params)external returns (bool);
+// SPDX-License-Identifier: AGPL-3.0
+pragma solidity 0.8.20;
+
+import { IThunderLoan } from "./IThunderLoan.sol";
+
+/**
+ * @dev Inspired by Aave:
+ * https://github.com/aave/aave-v3-core/blob/master/contracts/flashloan/interfaces/IFlashLoanReceiver.sol
+ */
+interface IFlashLoanReceiver {
+    function executeOperation(
+        address token,
+        uint256 amount,
+        uint256 fee,
+        address initiator,
+        bytes calldata params
+    )
+        external
+        returns (bool);
+}
 ```
 
-This part of the code piqued our curiosity. We came up with some assumptions about what each parameter might be doing:
+If we check the implementation of our imported `IThunderLoan`, we can see that it's literally not here. This interface isn't using this import at all.
 
-- `_reserve` could be the token being borrowed.
-- `_amount` probably is the amount of tokens.
-- `_fee` seems like it could be the fee of the Flash loan protocol.
-- `_params` could likely be the callback function.
+We can check if the import is being inherited anywhere by searching our workspace for `IFlashLoanReceiver`. We can also comment this line out and we'll find out where it's needed really quick with `forge build`.
 
-At this point, the code isn't elaborating on what these parameters are doing (a big shoutout to @audit for the Nat spec!), so we will need to do some more digging to find out.
+> **Protip:** You can use the keyboard shortcuts `ctrl + shift + f`(windows) and `cmd + shift + f`(mac) to open the workspace search menu.
 
-> **Quote:** "A big part of becoming proficient in contract auditing involves making well-educated guesses and then verifying those guesses."
+<img src="../../../../static/security-section-6/18-flashloan-receiver/flashloan-receiver1.png" width="100%" height="auto">
 
-As we are going through the process, we find that the `executeOperation` is implemented in the `ThunderLoan.sol` which on running looks sufficiently secure.
+It seems as though this import is only being used in one of Thunder Loan's mock files for testing.
 
-## Wrapping Up and Taking Breaks
+This isn't a good practice, we're changing a live contract file solely to fascilitate testing. Our test should be importing it's own instance of this interface if it's needed.
 
-With this deeper understanding, we actually managed to find some informationals that we can pass on to our client - which, at the end of the day is what it's all about: making the protocol safer, more successful, and better. And let's not forget, adhering to best practices in engineering.
+```js
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+// This is bad practice!
+import { IFlashLoanReceiver, IThunderLoan } from "../../src/interfaces/IFlashLoanReceiver.sol";
+// Preferred:
+// import {IThunderLoan} from "../../src/interfaces/IThunderLoan.sol"
 
-During this audit process, don't forget to take breaks! Applying the Pomodoro technique helps maintain focus, where one works for about 50 minutes and then takes a break for 5-10 minutes.
+contract MockFlashLoanReceiver {...}
+```
 
-**And there you have it, folks! Remember, keep your code clean, follow good engineering practices, and always, always remember to question everything. Happy auditing!**
+Let's make a note of this in `IFlashLoanReceiever.sol`.
+
+```js
+// @Audit-Informational: Unused Import: It's bad practice to edit live code for tests/mocks, we must remove the import from `MockFlashLockReceiver.sol`
+```
+
+Another informational, let's go!
+
+`IFlashLoadReceiver.sol` has a note we should pay attention to before moving on.
+
+```js
+/**
+ * @dev Inspired by Aave:
+ * https://github.com/aave/aave-v3-core/blob/master/contracts/flashloan/interfaces/IFlashLoanReceiver.sol
+ */
+```
+
+Now would be a great time to pause and read into [**how Aave is handling flash loans**](https://github.com/aave/aave-v3-core/blob/master/contracts/flashloan/interfaces/IFlashLoanReceiver.sol).
+
+By and large this interface looks pretty good to me, the informational we found withstanding. There aren't any obvious or glaring bugs, but the function's lack of NATSPEC does leave us with a number of questions we may want to follow up on.
+
+```js
+// @Audit-Informational: Where's the NATSPEC?
+// @Audit-Question: Is `token` the token being borrowed?
+// @Audit Question: Is `amount` the amount of tokens?
+// @Audit Question: Who is the initiator?
+function executeOperation(
+        address token,
+        uint256 amount,
+        uint256 fee,
+        address initiator,
+        bytes calldata params
+    )
+```
+
+### Wrap Up
+
+We've completed our first pass of all of Thunder Loan's interfaces!
+
+<img src="../../../../static/security-section-6/18-flashloan-receiver/flashloan-receiver2.png" width="100%" height="auto">
+
+We haven't really found anything _meaty_ but we've found some informationals to call out. It's important to remember that our ultimate goal is to improve the protocol not just with security but with engineering best practices as well. This is just one example of adding value to the review you're performing.
+
+You could even step into the test suite and buff it out if you wanted to be _really exceptional_.
+
+You're doing great. Breaks are important - take one now if it's been a while and we'll start in on an actual contract, `OracleUpgradeable.sol`, in the next one.

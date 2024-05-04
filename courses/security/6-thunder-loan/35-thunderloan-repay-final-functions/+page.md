@@ -1,57 +1,130 @@
 ---
-title: Thunderloan.sol - Repay and Final Functions
+title: ThunderLoan.sol - Repay and Final Functions
 ---
 
-Title: Simplifying Cryptocurrency - Understanding and Breaking Down the Repay Function on Thunder Loan Contracts
+### ThunderLoan.sol - Repay and Final Functions
 
-Welcome to the intriguing world of Thunder loan contracts! Today, we'll dive into the complexities of the repay function and how it fits into the broader cryptosphere.
+We'll wrap up our first pass of `ThunderLoan.sol` in this lesson! We've only got a few functions remaining, so let's get started straight away with reviewing the `repay` function.
 
-## Repay Function: An Overview
+```js
+// @Audit-Informational: Where's the NATSPEC?
+function repay(IERC20 token, uint256 amount) public {
+    if (!s_currentlyFlashLoaning[token]) {
+        revert ThunderLoan__NotCurrentlyFlashLoaning();
+    }
+    AssetToken assetToken = s_tokenToAssetToken[token];
+    token.safeTransferFrom(msg.sender, address(assetToken), amount);
+}
+```
 
-You may wonder why users are expected to use this foundation of Thunder loan contracts. The repay function could be termed a helper function as it essentially facilitates the transfer of tokens from the message sender to the asset token.You could choose to use this function or proceed with a direct transfer.
+`repay`, in this circumstance, serves as a helper function more than anything. A user taking a flash loan could also just call `transfer`, in their `executeOperations` functionm, to return the borrowed funds, but this exists to make things a little easier. Repay performs a check to assure a token is in the `currentlyFlashLoaning` state before performing any transfers.
 
-![](https://cdn.videotap.com/clirVfwioc458w6aVh7V-53.02.png)> _Quick Note:_ Direct transfers can be initiated by simply calling the transfer function and then directing tokens to the asset.
+Moving on!
 
-In our evaluation, the repay function passed the net spec check with flying colors. It contributes significantly to the handling of allowed tokens in the contract.
+### getCalculatedFee
 
-## Decoding getCalculatedFee
+We've seen `getCalculatedFee` pop up a few times in our recon of `Thunder Loan`, but never really took the time to see how it works. Well, now's the time!
 
-One question that is often asked is whether this function calculates the fees of the flash loan. To answer this straightforwardly, yes, it does! The getCalculatedFee function appears not only in the flash loan but is also utilized in the deposit aspect.
+```js
+function getCalculatedFee(IERC20 token, uint256 amount) public view returns (uint256 fee) {
+    uint256 valueOfBorrowedToken = (amount * getPriceInWeth(address(token))) / s_feePrecision;
+    fee = (valueOfBorrowedToken * s_flashLoanFee) / s_feePrecision;
+}
+```
 
-![](https://cdn.videotap.com/6mvrIM7OsjoztStUZ3t8-127.26.png)
+- **token** - token being borrowed
+- **amount** - amount being borrowed
 
-In terms of decision-making, the question now arises: how does getCalculatedFee calculate the fee?
+This function is calling `getPriceInWeth` (inherited from `OracleUpgrableable.sol`), and if we swing back to that contract some additional pieces will fall into play for us.
 
-In simple words, it first gets the value of the borrowed token by multiplying the amount by the price in WETH. Importantly, this is sourced from the Oracle upgradable getPriceInWETH, which in turn uses the TSWAP Oracle to calculate the value of the borrowed token.
+```js
+function getPriceInWeth(address token) public view returns (uint256) {
+    address swapPoolOfToken = IPoolFactory(s_poolFactory).getPool(token);
+    return ITSwapPool(swapPoolOfToken).getPriceOfOnePoolTokenInWeth();
+}
+```
 
-The 'flash loan fee,' then calculated, divides the calculated value by some fee precision. From here, it applies a 0.3% fee based on the value of the token rather than the actual token amount.
+This function is where TSwap comes into play! We're using `TSwap` to determine what the price of a given token is in WETH. This also tells us that the fees being calculated in `getCalculatedFee` are actually based on the value or price, not the number of tokens.
 
-## Digging Deeper
+> **Remember:** `s_flashLoanFee` is an initialized constant set to 3e15 aka 3%. `s_feePrecision` is another constant, set to 1e18.
 
-In delving into the code, we find that getPriceInWETH derives the price of one pool token in WETH.
+At this point, I'll say it's really beneficial for us as security researches to perhaps go a little out of scope to better understand `TSwap` and how it handles requests like these. Fom `TSwap` we can see:
 
-![](https://cdn.videotap.com/jZtPSFvT2rr7Jszw6QmJ-286.33.png)
+```js
+function getPriceOfOnePoolTokenInWeth() external view returns(uint256){
+    return getOutputAmountBasedOnInput(
+        1e18,
+        ipoolToken.balanceOf(address(this)),
+        i_wethToken.balanceOf(address(this))
+    );
+}
+```
 
-Firstly, it's important to revisit TSWAP to further understand this function, particularly how it calculates the amount based on input and output reserves. It raises a potential area of concern. Within an auditing context, we could ask:"What if the token has six decimals? Would it then distort the price calculation?"
+Hmm. This all seems to be pretty secure! 1e18 stands out in this function in TSwap for me though. We should be keeping in the back of our mind that USDC is expected to be compatible with `Thunder Loan`. So it begs the question:
 
-> _Critical Outlook:_ Ignoring token decimals could result in inaccurate price calculations, especially when working on the basis of TSWAP decks for determining the flash loan fee.
+```js
+// @Audit-Question: What happens if a token has 6 decimals? Is the price wrong?
+```
 
-While this looks plausible, it may still not be entirely correct. Circumspection is needed at this point, and we would do well to return and probe further.
+Some good questions asked in the `getCalculatedFee` function. Leave some notes and we'll come back to them soon.
 
-## Addressing Minor Questions
+### Remaining Functions
 
-After reviewing the functions like updateFlashLoanFee, isAllowedToken, and getAssetFromToken, we now move on to view functions. The authorizeUpgrade function is particularly interesting as it underlines why we ought to understand proxies in detailed terms.
+First up - updateFlashLoanFee.
 
-![](https://cdn.videotap.com/xKIHOvSLAXgodeugEkw9-381.77.png)
+```js
+function updateFlashLoanFee(uint256 newFee) external onlyOwner {
+    if (newFee > s_feePrecision) {
+        revert ThunderLoan__BadNewFee();
+    }
+    s_flashLoanFee = newFee;
+}
+```
 
-In essence, adding the _only owner_ stipulation in the authorized upgrade function restricts contract upgrades to the owner alone. Take away this extra layer, and you throw open the door to anyone upgrading the contract!
+This function is pretty clear, this allows the owner to set a new `flash loan` fee. The function performs a check which assures that the new fee must be less than or equal to 100%, makes sense.
 
-In conclusion, our initial pass through the Thunder Loan contracts codebase may not have uncovered any distinct issues. But it certainly has left us with questions that need answering, and that’s where the real fun begins!
+The next several functions are view functions/getters. Always worth checking, but these all look good to me:
 
-## Onwards and Upwards
+```js
+function isAllowedToken(IERC20 token) public view returns (bool) {
+    return address(s_tokenToAssetToken[token]) != address(0);
+}
 
-Cracking the code behind algorithms in the cryptosphere may seem incredibly daunting. But remember that the key lies in taking one step at a time, going back to your questions, and digging deeper to find the answers.
+function getAssetFromToken(IERC20 token) public view returns (AssetToken) {
+    return s_tokenToAssetToken[token];
+}
 
-![](https://cdn.videotap.com/SeBnhlFpXSRHJX757F1r-434.79.png)
+function isCurrentlyFlashLoaning(IERC20 token) public view returns (bool) {
+    return s_currentlyFlashLoaning[token];
+}
 
-Join us in our next post for a further breakdown of these questions – who knows, we might uncover new insights in our exploration of Thunder Loan contracts. Until then, happy coding!
+function getFee() external view returns (uint256) {
+    return s_flashLoanFee;
+}
+
+function getFeePrecision() external view returns (uint256) {
+    return s_feePrecision;
+}
+```
+
+> **Protip:** Keep an eye out for instances where view functions aren't called internally. These can be limited to external visibility for gas savings!
+
+Now, the final line of this contract may seem subtle or innocuous, but it's incredibly important.
+
+```js
+function _authorizeUpgrade(address newImplementation) internal override onlyOwner { }
+```
+
+This line is part of the `UUPSUpgradeable` library and effectively authorized the upgrade of the protocol to a new implementation. This internal function is overridden and has had access control added such that _only the protocol owner may call it_.
+
+A small line, but potentially _very_ impactful.
+
+### Wrap Up
+
+Well - we've completed our whole first pass of this code base (save the upgrade to ThunderLoan) and we didn't find anything significant!?
+
+<img src="../../../../static/security-section-6/35-thunderloan-repay-final-functions/thunderloan-repay-final-functions1.png" width="100%" height="auto">
+
+In this process we've gained a tonne of context and understanding, but we've also left a number of unanswered questions throughout the code. I think our best approach is going to be diving into the questions we've left ourselves, answering them and seeing what becomes of them.
+
+See you in the next lesson!

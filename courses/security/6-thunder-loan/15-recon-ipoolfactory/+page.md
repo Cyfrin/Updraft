@@ -1,69 +1,65 @@
 ---
-title: Recon Manual Review IPoolFactory sol
+title: Recon - Manual Review - IPoolFactory.sol
 ---
 
-
-
 ---
 
-# Manual Code Review: Getting Started
+### Manual Review - IPoolFactory.sol
 
-After setting our initial context and utilizing our suite of auditing tools, it's time to get our hands dirty with some thorough manual review. Much like our previous auditing process, one viable option available to us is to start from the test suite.
+After setting our initial context and utilizing our suite of auditing tools, it's time to get our hands dirty with some thorough manual review. Much like our previous auditing process, one viable option available to us is to start from the test suite. Just look at this test coverage, it'll probably be an informational on it's own.
 
-## Diving Into the Test Suites
+<img src="../../../../static/security-section-6/15-recon-ipoolfactory/recon-ipoolfactory3.png" width="100%" height="auto">
 
-The project at hand features an invariant test suite, which, unfortunately, is rather redundant, hence ineffective. Additionally, there are some unit tests that warrant our attention. Consequently, an excellent first step is to run the `forge coverage` command to get an idea of the current test suite under scrutiny.
+This time we're going to dive right into manual review however.
 
-## Reviewing Test Coverage
+We're also going to be apply The Tincho method a little more seriously this time around.
 
-Our preliminary exploration reveals that the test coverage is unsatisfactory. Therefore, it's mute to map out our plan of action: We need to scrutinize this test suite, comprehend its shortcomings, infer the invariants, and consequently pen a robust invariant test suite. Afterward, all related findings would be relayed to the client—highlighting their dire need to improve test coverage, expressed as an informal suggestion.
+Run solidity metrics again and let's take another look at what we're working with.
 
-Our last venture had us initially peering into their test suite and buffing it up. By taking this approach, revealing the hidden bugs was a breeze, and it seems likely that this strategy would prove beneficial once more. Nevertheless, this journey would also incorporate a thorough manual review.
+> **Remember:** You can run solidity metrics by right-clicking the `src` folder and selecting `Solidity: Metrics` to generate the report.
 
-## Focus on Proof of Code
+<img src="../../../../static/security-section-6/15-recon-ipoolfactory/recon-ipoolfactory1.png" width="100%" height="auto">
 
-An essential part of the auditing process would involve digging deep into the provided code with a fine-toothed comb. While no single approach guarantees success, we'll be implementing the 'Tincho method' with considerably more gravity this time around.
+Copy this table into a spreadsheet of your choice, it will allow us to sort and manage our scope more easily through this process, tracking what we've done as we go.
 
-### Workflow Setup with the Tincho Method
+I used Google Sheets and I've set my table up like below. I've only kept the file and complexity columns.
 
-Our journey begins in the SRC, using the `solidity metrics` command. The output would be copied in entirety and pasted into a document of choice. I personally prefer Google Sheets due to its easy to use interface and sorting abilities.
+<img src="../../../../static/security-section-6/15-recon-ipoolfactory/recon-ipoolfactory2.png" width="100%" height="auto">
 
-![](https://cdn.videotap.com/UrVcjpzYpZgiEY4KluYE-96.32.png)
+### The Tincho Method Applied
 
-After eliminating any unnecessary columns, it is sensible to sort the code by size, in ascending order. This list forms the foundation of our audit, providing a linear path of progression from smaller contracts to larger ones.
+Alright, we're set up! The Tincho method would have us starting small and working our way up, collecting little wins along the way. So, that' what we're going to do. The first file we'll assess is `IPoolFactory.sol`.
 
-### Mining the Code: Ifactory sol and ipoolfactory sol
+```js
+// SPDX-License-Identifier: AGPL-3.0-only
+pragma solidity 0.8.20;
 
-Using the Tincho method, we start by tackling the smallest contract: 'ifactory.sol'. The microscopic size may make it seem insignificant, but give it due diligence.
+interface IPoolFactory {
+    function getPool(address tokenAddress) external view returns (address);
+}
+```
 
-Shortly after, 'ipoolfactory.sol' comes under scrutiny—the first contract addressed in this session. Notably, this contract seems to interface with the T swap pool factory, as signified by the function 'get pool'.
+That's it, that's the whole interface. Talk about starting small.
 
-On closer inspection of the TSWAP code base, we can see that there is indeed a 'get pool' function present in the 'pool factory' ('poolfactory.sol').
+From our context gathering we can infer that `PoolFactory` is likely referencing TSwap's `PoolFactory` and this must be an interface for it.
 
-A useful annotation to consider:
+This can be confirmed by checking `PoolFactory` for the `getPool` function, which exists!
 
-> 'ipoolfactory' is likely the interface used for communication with 'poolfactory.sol' from TSWAP.
+Let's make some notes adding our review context to the `IPoolFactory` interface.
 
-It would be beneficial to jot down these insights as an organized mind note or Google Sheets document, with sections such as 'About', 'Potential attack vectors', 'Ideas', and 'Questions'.
+> **Note:** Keeping notes in a notes.md file can be a great method to supplement your review and keep track of context, ideas, thoughts and questions. Organize things in a way that makes sense to you!
 
-A few starting points include:
+```js
 
-- Write about the protocol in your own words.
-- Why are we using TSWAP in this context?
-- How do flash loans correlate with this usage of TSWAP?
+// @Audit-Explainer: This is the interface for the TSwap PoolFactory.sol contract
+// @Audit-Question: Why are we using TSwap?
+interface IPoolFactory {
+    function getPool(address tokenAddress) external view returns (address);
+}
+```
 
-This document acts as a brain dump, helping record initial thoughts, insights, and potential attack vectors. Maintaining an organized note system would likely make your work more efficient.
+I otherwise see no glaring issues here!
 
-At first glance, 'ifactory.sol' seems sound without any evident issues, which is a good sign. This quick win aligns with our ideology: to confirm the validity of the smaller parts before progressing onto larger sections.
+Let's check this file off, celebrate our little win and move on to the next one!
 
-## Keeping An Audit Trail
-
-Every reviewed snippet is ticked off, allowing us to keep track of our journey and ensure that ground covered is not tread twice.
-
-Our first milestone? 'ipoolfactory.sol': reviewed successfully.
-
-To improve our workflow, we could even factor in stages of review ('first pass', 'second pass', etc.). Our current initiative involves only a single comprehensive review to keep things simple.
-
-## Wrapping It Up: First Review
-
-After this successful review of 'ipoolfactory.sol', we realise that the audited code interacts with an external contract: the pool factory. By understanding these relationships and ensuring the correctness of the smaller contracts, we're paving the way to a comprehensive project audit. Armed with keen eyes and perseverance, we're ready for our next task—be it large or small.
+<img src="../../../../static/security-section-6/15-recon-ipoolfactory/recon-ipoolfactory4.png" width="100%" height="auto">

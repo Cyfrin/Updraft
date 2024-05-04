@@ -1,48 +1,41 @@
 ---
-title: Stateless and Stateful Fuzzing Practice Introduction
+title: Stateless and Stateful Fuzzing Practice Intro
 ---
 
-
-
 ---
 
-# Proficiency in Invariant Tests and Fuzzing Tests: Professional Insights and Practicum
+### Stateless and Stateful Fuzzing Practice Intro
 
-Hello everyone, today we delve deeper into the intriguing world of invariant tests and fuzzing tests. Buckle up as we gear up to break some contracts by exploring these tests, intentionally leaving the code unexamined for now. Our curiosity piqued? Let’s get into it!
+In this lesson we're going to put some of the concepts of stateful and stateless fuzzing to the test and practice these skills.
 
-## Diving into Code Bases
+In a live security review the repo we're auditing may be huge (spoiler: the `TSwapPool.sol` contract is huge) and while manual review is incredibly important, automating the process as much as we can and leveraging tools to catch what we miss can really improve the efficiency of a security review.
 
-We can’t help but sneak a peek into the code now, can we? Since we are here, let's analyze this exemplary TSWAP pool code base.
+We're going to be using Foundry's Fuzzer here, but I encourage you to look into [**Echidna**](https://github.com/crytic/echidna) as well, which integrates `slither` to execute "smarter" fuzzing.
 
-![](https://cdn.videotap.com/9DXkrFHNdYGt3CJIJuAh-39.png)
+### Setup
 
-It's filled with a plethora of comments, functions, and other intricate elements - it's enough to make the most seasoned of us a tad bit overwhelmed. Amongst us is the pool factory that stands minimal. We notice that the primary responsibility of pool factory is to create pool functions. Isn’t it interesting to note the stark contrast between TWSAP pool code base and pool factory?
+If you haven't already, clone the [**sc-exploits-minimized**](https://github.com/Cyfrin/sc-exploits-minimized) repo.
 
-## What About the Security Review Test?
+```bash
+git clone https://github.com/Cyfrin/sc-exploits-minimized
+cd sc-exploits-minimized
+code .
+```
 
-Good question! We’ll get there, but remember, we are just humans, and the chance for errors and omissions is high. We might fail to spot certain defects during the manual review of the security test. This is precisely why leveraging automated tools as much as possible for these reviews is essential. Trust me, the experiences we collect from the practice of working with these tools are going to be invaluable.
+This should open the repo in VS Code.
 
-## Plunge into Fuzzing: Stateless and Stateful
+> **Note:** You can use `git pull` to make sure your local copy of the repo is up to date.
 
-In this chapter, we will focus on working with **stateless** and **stateful** fuzzing along with some advanced strategies. These techniques have personally worked wonders for me in competitive audits. My method has been to comprehend a protocol's invariant without really examining the code base, write an invariant test suite, and voila – bugs are unveiled effortlessly.
+In the following sections we're going to focus on 3 types of testing to check for invariant breaks:
 
-There are also other fuzzers to explore. Take the [Echidna Fuzzer](https://github.com/crytic/echidna) by the Trail of Bits team, for instance. Famed for being a smart fuzzer and powered by 'Slither', it is a fantastic tool indeed. Another outstanding option is the [Consensys Fuzzer](https://github.com/Consensys/diligence-fuzzing). This is a paid corporate cloud fuzzer and hence we won't be able to provide a walkthrough for it. [Foundry](https://github.com/foundry-rs/foundry) is yet another promising candidate with built-in fuzzing.
+1. Stateless Fuzzing (easiest)
+2. Open Stateful Fuzzing (harder)
+3. Closed Stateful Fuzzing w/ Handler (Hardest)
 
-Here is the content that these READMEs possess:
+Now, before moving forward, I strong encourage you to read through and understand the infomation in the [**invariant-break README**](https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/invariant-break/README.md). Understanding the concepts contained therein will give you a big advantage in the next sections as we employ them practically.
 
-- An understanding of what invariants are
-- A better insight into the different strategies we plan to employ to break invariants and discover vulnerabilities.
+The next thing I want you to do, is delete the `test/invariant-break` folder in the `sc-exploits-minimized` repo you just cloned. Actually writing out this code is and understanding how these tests work is what will allow you to master these skills.
 
-I strongly recommend that you go ahead, pause this session, and thoroughly read through this. Trust me, understanding it now will make it easier when we get into the hands-on segment.
+Finally, once we've covered these concepts and practiced these testing methods, we're going to circle back to TSwap and apply our learnings to that code base.
 
-## Breaking Invariants: The Game Begins
-
-Let's now move forward to the fun segment – you will write code along with me and understand every snippet. I assure you that by the end of this, you will have become an invariant testing pro. This mastery over the subject will help you discover vulnerabilities quicker and more effectively.
-
-First, in your code base, find the Invariant Break folder and remove it. Yes, you heard it right – remove it! Doing so is a sure-shot way to ensure you are not merely copy-pasting but genuinely understanding every piece of code. Let's start with stateless fuzzing.
-
-Once we are through with learning these strategies for fuzzing, we'll return to our Uniswap code base and familiarize ourselves with its 'x times y equals k' core invariant. We'll then try to break it and uncover bugs without examining the code base and solely understand the invariants.
-
-So let's gear up and set out on this exciting and insightful journey of breaking invariants and fuzzing, navigating through this incredible world of coding and contracts. Let's learn, practice, improve, and ultimately – strive towards becoming super badasses in smart contract testing and auditing.
-
-> "The only way to learn a new programming concept is by writing programs." - Dennis Ritchie
+Let's get started!

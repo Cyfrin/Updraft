@@ -2,46 +2,74 @@
 title: Testing Deleting Mappings and Fixing Our Tools
 ---
 
-# Smart Contracts and Data Management: A Deep Dive into Token Mapping and Deletion
+### Deleting Mappings
 
-Welcome to our deep dive discussion on asset tokens, deleting mappings, and the peculiarities of Solidity smart contracts. Today, we'll unravel how smart contracts interact with asset tokens and the possible pitfalls and bugs that can arise as we develop our applications.
+Alright, so what happens if the owner passed False and is looking to disallow a token from the protocol?
 
-## Deletion and Checks in Asset Token Mappings
+- **If False:**
+  - the passed token is used to acquire the AssetToken to which it's mapped
+    ```js
+    AssetToken assetToken = s_tokenToAssetToken[token];
+    ```
+  - the existing mapping is deleted
+    ```js
+    delete s_tokenToAssetToken[token];
+    ```
+  - an event is emitted, `AllowedTokenSet`. The same parameters are passed of course, but this time we emit `False` indicating that the token is being disallowed
+    ```js
+    emit AllowedTokenSet(token, assetToken, allowed);
+    ```
+  - Finally, we again return the AssetToken which was disallowed.
+    ```js
+    return assetToken;
+    ```
 
-In a smart contract, we typically assign values and map `address` to `assetToken`.
+What's we're ultimately doing above is removing an allowed token mapping. Something to keep in mind at this point is that many of our conditional checks so far have been dependent on this mapping returning `address(0)` if a token is _not_ allowed.
 
-This line means, simply, we're assigning the token located at `assetToken` to a variable also named `assetToken`.
+We should definitely verify that this is the case.
 
-Now, this can lead to a critical question:
+> **Note:** I wish I could tell you that chisel is a great way to quickly check this, but currently chisel doesn't delete mappings properly! Regrettably, this doesn't work. There's currently an open issue on their GitHub you can view [**here**](https://github.com/foundry-rs/foundry/issues/7318).
 
-> Does deleting a mapping work?
+Fortunately we can check this pretty quickly in Remix.
 
-![](https://cdn.videotap.com/EFG0Cihz1p7oQkV1y9Hx-36.9.png)
+Here's a contract you can copy over:
 
-It's a valid question because let's say we have several checks on `assetToken == 0`. If the deletion process doesn't work as expected, our asset won't return to 0. So, how do we test this?
+<details>
+<summary>Remix Delete Mapping</summary>
 
-## Testing Deletion with Chisel
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.25;
 
-To explore this, I decided to pull up Chisel, a Solidity language extension for Visual Studio, and create a mapping with the structure `address` to `address`.
+contract DeleteMappingTest {
+    mapping(address => address) public token2token;
 
-In theory, when I look up `tokenToToken[address1]`, I'll get `address2`. Now, let's go ahead and attempt deletion:
+    function set(address token, address token2) public {
+        token2token[token] = token2;
+    }
 
-Consequently, when I look up `tokenToToken[address1]` after the deletion, I'm still getting `address2`. Clearly, something is off here.
+    function remove(address token) public {
+        delete token2token[token];
+    }
 
-![](https://cdn.videotap.com/nqmehgM9xG2CGsHOR1yI-80.5.png)
+    function get (address token) public view returns (address) {
+        return token2token[token];
+    }
+}
+```
 
-## Digging Deeper with Remix
+</details>
 
-To further understand the issue, let's pull up Remix, a powerful, open-source tool used for writing Solidity smart contracts. We'll create a simple contract, aimed at mapping `address` to `address`.
+---
 
-Following similar steps as before, we'll set the mapping between an account address and the contract address, then delete the mapping, and finally, check the mapping again.
+If we deploy the above contract in Remix we can then set two addresses as `token` and `token2` to see the mapping working as expected:
 
-This time we get zero, contrary to what Chisel showed.
+<img src="../../../../static/security-section-6/28-testing-deleting-mappings/testing-deleting-mapping1.png" width="100%" height="auto">
 
-## A Bug in Foundry
+We can then call the `remove` function, passing token. We see that our getter is now returning `address(0)`.
 
-The probable conclusion? There's likely a bug with Foundry.
+### Wrap Up
 
-Your logical next step should be heading to Foundry's GitHub page and opening an issue. Check out the existing issues first, of course. Search for "Chisel mappings" and see if there's a relevant issue already there. If nothing matches, make a new issue indicating the problem with Chisel mappings deletion.
+Everything is working the way `Thunder Loan` hopes, but this is a perfect example of an assumption that is worth testing during security reviews.
 
-Here we've encountered a real-life bug, and we have done our part to inform the community about it. So, until next time, keep exploring, keep debugging, and keep developing.
+See you in the next lesson, let's keep going!

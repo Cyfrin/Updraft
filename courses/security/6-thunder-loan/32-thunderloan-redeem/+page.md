@@ -1,56 +1,116 @@
 ---
-title: Thunderloan.sol - Redeem
+title: ThunderLoan.sol - Redeem
 ---
 
-# How to Deposit and Redeem Asset Tokens: A Deep Dive into Blockchain Functions
+### ThunderLoan.sol - Redeem
 
-Welcome back to the world of token functions! Today, we're going to dive deep into deposit and redeem functions in a blockchain-based system. Strap in!
+With the `deposit` function well scoped (and notes to return!), let's continue our first pass with the `redeem` function.
 
-## Diving into the 'Deposit' Function
+<details>
+<summary>Redeem Function</summary>
 
-First, let's revisit the `deposit` function. This function allows a user to deposit an underlying token in exchange for an asset token. In essence, the user puts their underlying token into the pool and receives the equivalent amount of asset tokens in return. We may return to it later, but it's critical to understand this function before we dig deeper into the `redeem`.
-
-## Understanding the 'Redeem' Function
-
-![](https://cdn.videotap.com/PFna6Zl1YqUpuTWXUXwx-48.27.png)
-
-Moving on, the `redeem` function plays the opposite role. Where the `deposit` function pulls in an underlying token, the `redeem` function withdraws the underlying token from the asset token. When using this function, we must specify the token from which we want to withdraw, and how much therein we want to withdraw.
-
-#### The Token Ambiguity
-
-At this point, you might be wondering - does "token" refer to the asset token or the underlying token? After a detailed scrutiny, we confirmed that it refers to the actual token to be withdrawn, not the asset token.
-
-![](https://cdn.videotap.com/ez1kq5fAGd1OgsIQfDqE-86.88.png)
-
-Coming back to our code, we need to determine the exact asset token to withdraw (let's call it the 'actual asset token'). We have a revert of zero if the token is not allowed to be withdrawn, thus eliminating any unauthorized tokens.
-
-#### On User Experience and Exchange Rates
-
-This code incorporates an eye for user experience. If the amount equals the maximum, the contract returns the balance of asset tokens for the address (or 'message sender'). This function essentially lets a user say, "I have ten asset tokens for USDC, I want USDC equivalent to these ten tokens." And our function does exactly this.
-
-![](https://cdn.videotap.com/54JcHcJspGCdA0pezifC-125.5.png)
-
-The maths underline the code logic:
-
-```javascript
-amount_underlying =
-  (amount_of_asset_token * exchange_rate) / asset_token_exchange_rate_precision;
+```js
+/// @notice Withdraws the underlying token from the asset token
+/// @param token The token they want to withdraw from
+/// @param amountOfAssetToken The amount of the underlying they want to withdraw
+function redeem(
+    IERC20 token,
+    uint256 amountOfAssetToken
+)
+    external
+    revertIfZero(amountOfAssetToken)
+    revertIfNotAllowedToken(token)
+{
+    AssetToken assetToken = s_tokenToAssetToken[token];
+    uint256 exchangeRate = assetToken.getExchangeRate();
+    if (amountOfAssetToken == type(uint256).max) {
+        amountOfAssetToken = assetToken.balanceOf(msg.sender);
+    }
+    uint256 amountUnderlying = (amountOfAssetToken * exchangeRate) / assetToken.EXCHANGE_RATE_PRECISION();
+    emit Redeemed(msg.sender, token, amountOfAssetToken, amountUnderlying);
+    assetToken.burn(msg.sender, amountOfAssetToken);
+    assetToken.transferUnderlyingTo(msg.sender, amountUnderlying);
+}
 ```
 
-This takes into account the precision of the exchange rate - if the user wants `1 E 18` and the exchange rate is `1 E 18`, dividing by `1 E 18` would yield a `1 E 18` back.
+</details>
 
-The function then emits a `redeemed` event and calls `assetsBurn` to burn the asset tokens from the user's holdings. This mirrors the process of deposit, but in reverse: where deposit multiplied the precision by the exchange rate, this instead multiplies the exchange rate by the precision.
+---
 
-#### Handling Weird ERC 20 Tokens
+We would expect this function to behave in opposite to the `deposit` function. Thankfully we have `NATSPEC` this time to verify the function's intent!
 
-Looking at it from the outside, everything seems to be falling into place. But what if we're dealing with a non-standard ERC 20 token? Let's consider `USDT`, which has six decimals instead of eighteen (thus being referred to as a 'weirdo'). Would the equation still hold? After some calculations and investigations, we found that it does!
+Two modifiers can be seen in `redeem`, `revertIfZero(amountOfAssetToken)` and `reverIfNotAllowedToken(token)`. This clarifies somewhat that the token parameter being passed to this function is intended to be the underlying `token`, not the `asset token`.
 
-![](https://cdn.videotap.com/jWxqkTW1E5Jz4AjmtCqu-202.73.png)
+```js
+revertIfZero(amountOfAssetToken);
+revertIfNotAllowedToken(token);
+```
 
-The redeem function came out looking pretty solid. There was no apparent issue with re-entry and it seemed to follow "Checks-Effects-Interactions" (CEI) principle, where it checks upfront, performs certain effects, and then carries out any required interactions. DEI is a widely-accepted guideline in Ethereum community to avoid common issues such as reentrancy attacks.
+The next code chunk is setting us up for some logic and accounting some UX.
 
-With `redeem` function now in tow, we have two important functions - `deposit` and `redeem` - both seemingly bug-free.
+```js
+AssetToken assetToken = s_tokenToAssetToken[token];
+uint256 exchangeRate = assetToken.getExchangeRate();
+if (amountOfAssetToken == type(uint256).max) {
+    amountOfAssetToken = assetToken.balanceOf(msg.sender);
+}
+```
 
-![](https://cdn.videotap.com/nNvbG3E0OfsqbxJORxX2-231.69.png)
+Here, the function is getting values for the asset token mapped to the passed token parameter, and the exchange rate of that token.
 
-In conclusion, while blockchain functions like `deposit` and `redeem` can look complicated, breaking them down and understanding what each element does turns these seemingly convoluted calculations into understandable steps. As with anything in blockchain, the devil is in the detail - and it's safe to say we've captured all of them here. Stay tuned for more deep dives into the world of blockchain functions!
+The condition statement may be a bit confusion, but it's really just saying _If the amount to be redeemed is this huge number, just transfer the whole balance of msg.sender_
+
+Our next line is **_mathy_**, but important. This is where the function calculates how many of the underlying tokens should be transferred for the redeemed `amountOfAssetToken`
+
+```js
+// redeem function math
+uint256 amountUnderlying = (amountOfAssetToken * exchangeRate) / assetToken.EXCHANGE_RATE_PRECISION();
+```
+
+This _does_ look like the opposite of the calculation in our `deposit` function:
+
+```js
+// deposit function math
+uint256 mintAmount = (amount * assetToken.EXCHANGE_RATE_PRECISION()) / exchangeRate;
+```
+
+If we test the redeem function math with a test case, we can see things calculate as we'd expect.
+
+```js
+// exchangeRate = 2e18
+// call redeem(IUSDC, 50)
+// uint256 mintAmount = (100 * 2e18) / 1e18;
+// uint256 mintAmount = 100e18;
+```
+
+With an exchange rate of 2 USDC for 1 asset token, by redeeming 50 asset tokens, we would have returned 100 USDC.
+
+Finally, the redeem function emits an event (check parameters!), burns the asset tokens being redeemed, and transfers the underlying token to msg.sender.
+
+```js
+emit Redeemed(msg.sender, token, amountOfAssetToken, amountUnderlying);
+assetToken.burn(msg.sender, amountOfAssetToken);
+assetToken.transferUnderlyingTo(msg.sender, amountUnderlying);
+```
+
+All-in-all this looks pretty good to me. nothing obvious sticks out. There are a few questions we may be asking ourselves though.
+
+```js
+// How do weird ERC20s behave?
+```
+
+There's an explicit allow list with `Thunder Loan`, but none the less, USDC is included and it's only got 6 decimal places! How would that affect a protocol like `Thunder Loan`?
+
+As we perform our review we should constantly be looking for questions like this to answer, to challenge the state of the protocol.
+
+We can use `chisel` to answer this question for us quite quickly. Try it out! We would expect to receive `2e6` USDC given an `exchangeRate` of `2`.
+
+<img src="../../../../static/security-section-6/32-thunderloan-redeem/thunderloan-redeem1.png" width="100%" height="auto">
+
+And it does!
+
+### Wrap Up
+
+Wow, we're having a hard time finding any significant bugs here so far, but we mustn't give up! Deposit and redeem seem to be pretty solid, but we still have functions to review.
+
+The audit isn't over yet! See you in the next lesson.

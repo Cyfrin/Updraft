@@ -2,68 +2,101 @@
 title: OracleUpgradeable.sol (Continued)
 ---
 
-# Oracle Upgradable: A Thorough Review
+### OracleUpgradeable.sol (Continued)
 
-Welcome back, Code Critiques! We’re continuing our journey through the world of blockchain programming and today, we're examining the Oracle Upgradable back-end.
+Ok, we've delved pretty thoroughly into the importance of initialization, but we've got the rest of OracleUpgradeable.sol to review.
 
-## When It Gets Interesting - getPrice in WETH
+<details>
+<summary>OracleUpgradeable.sol</summary>
 
-One striking feature that piqued our interest is the `getPrice in WETH`. It is an external public view. Here’s how it works:
+```js
+// SPDX-License-Identifier: AGPL-3.0-only
+pragma solidity 0.8.20;
 
-- An address swap of pool tokens is initiated.
-- A specific token is passed through, utilizing the command `Ipool_factory_s_pool_token`.
-- To round this up, `Getpool pool` is then invoked, which is where `get pool tokens` comes in.
+import { ITSwapPool } from "../interfaces/ITSwapPool.sol";
+import { IPoolFactory } from "../interfaces/IPoolFactory.sol";
+import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-![](https://cdn.videotap.com/wbYYfuMAg04eG7LYpZp8-48.15.png)
+contract OracleUpgradeable is Initializable {
+    address private s_poolFactory;
 
-To be put simply, we capture the pool swap token, call on `getPrice of one pool token in WETH`, and voila!
+    function __Oracle_init(address poolFactoryAddress) internal onlyInitializing {
+        __Oracle_init_unchained(poolFactoryAddress);
+    }
 
-Interestingly, this entire process could be completed sans any knowledge of TSWAP. We could still continue with our security review and audit, completely ignoring TSWAP. That being said, it invariably adds value to understand the inner workings of TSWAP.
+    function __Oracle_init_unchained(address poolFactoryAddress) internal onlyInitializing {
+        s_poolFactory = poolFactoryAddress;
+    }
 
-> If we can identify a loophole or break in this function on TSWAP, it could potentially lead us to finding cracks in Oracle Upgradable as well.
+    function getPriceInWeth(address token) public view returns (uint256) {
+        address swapPoolOfToken = IPoolFactory(s_poolFactory).getPool(token);
+        return ITSwapPool(swapPoolOfToken).getPriceOfOnePoolTokenInWeth();
+    }
 
-In essence, whenever we invoke an external contract, one should instantly scan for attack vectors. Questions to ask include: could the price be manipulated? Is there potential for reentrancy attacks?
+    function getPrice(address token) external view returns (uint256) {
+        return getPriceInWeth(token);
+    }
 
-## The Mystery of TSWAP
+    function getPoolFactoryAddress() external view returns (address) {
+        return s_poolFactory;
+    }
+}
 
-Having explored the intriguing aspects of getPrice in WETH, let's unravel TSWAP. Within TSWAP, the main operational functions appear to be `getPrice of pool token in WETH` and `getPool`.
+```
 
-![](https://cdn.videotap.com/5cZTXH0KnXV4ii8uCDjE-96.3.png)
+</details>
 
-To an unskilled eye, it might seem as though the getPrice command redundantly repeats itself. That might be true. Nevertheless, it is doing two distinctly separate tasks — it computes the output amount based on an input utilising reserves to ascertain the asset price and pulls out the pool.
+---
 
-## Tests Evaluation
+```js
+function getPriceInWeth(address token) public view returns (uint256) {
+    address swapPoolOfToken = IPoolFactory(s_poolFactory).getPool(token);
+    return ITSwapPool(swapPoolOfToken).getPriceOfOnePoolTokenInWeth();
+}
+```
 
-Now let's move to testing, using `units thunderloane test sol` or `Oracleupgradable sol`. If we individualise each point, we can see they are using a mock pool factory for interaction.
+This is our next function and it comes with it some interesting considerations.
 
-Upon closer examination, we can ascertain they are using constraints, which might be a potential issue. An audit informational note would be to recommend them to use forked tests for live protocols.
+We've just reviewed the TSwap protocol, which we see is being leveraged as a oracle here, and we _know_ it has issues, but with respect to the scope of the Thunder Loan audit - it's out of scope.
 
-Why you may ask? Forked tests simply offer higher guarantees of successful operation.
+**_What do we do?_**
 
-![](https://cdn.videotap.com/fEeOEcrvj5RmWqYZn9Sd-128.4.png)
+As a general rule, I recommend at least investigating and gaining context for how TSwap (or any external call) touches the in-scope contract. What affects are there if the external protocol isn't behaving as expected? These are important questions that we, as security researchers, should bring to the attention of our client.
 
-## Attack Vector Investigation
+So as far as our `recon` step is concerned, this function raises a bunch of questions in me that we should consider in the future:
 
-Let's take potential attack vectors as an example.
+```js
+// What if the price is manipulated?
+// Can I manipulate the price?
+// Reentrancy?
+```
 
-The `getPrice in WETH` function poses few directly observable issues. However, as we dig deeper, doubts start to emerge. What if someone could break this function? Could the priveleges be misused?
+In addition to the above, when I see external calls I often wonder how tests are set up. If a protocol being audited relies on a live protocol in some way, it can often be preferred to use `forked tests` over `mocks`, to assure the most accurate behavior in testing.
 
-A seemingly harmless function like `getPool, factory address` also needs to be observed closely. On the surface, it looks quite uncomplicated, with a private variable being used to extract the address — all good so far.
+I can tell you right now, `Thunder Loan` is using `mocks`. And spoiler - we're going to find a big bug here soon. I may even report this as an informational.
 
-## Initializer Front Run – A Possibility?
+```js
+// @ Audit-Informational: Forked tests are preferred when testing reliance on live code
+```
 
-Nevertheless, while reviewing the `getPrice in WETH` function, we stumble upon an issue - the possibility of initializer front runs. Although in competitive audits such threats are usually overlooked, protocols still need to be warned of this possibility.
+Let's look at the remaining functions of `OracleUpgradeable.sol`
 
-Remembering the infamous attack: What delicate maneuvers are being employed to ensure there's no front run?
+```js
+function getPrice(address token) external view returns (uint256) {
+    return getPriceInWeth(token);
+}
 
-## Wrapping it Up
+function getPoolFactoryAddress() external view returns (address) {
+    return s_poolFactory;
+}
+```
 
-![](https://cdn.videotap.com/4CT0yiquS1CTN2jjVFe4-176.55.png)
+These are pretty basic getters. The `getPrice` function is a little redundant with our last function, but no big deal. These functions look just fine.
 
-Our intense review journey culminates here, having done a fairly comprehensive review, exploring the Oracle Upgradable in its entirety, bringing potential lows to light, such as the chance of initializer front-runs.
+### Wrap Up
 
-But nonetheless, completing yet another successful review delivers a sense of accomplishment. And so, Oracle Upgradable – ticked off and aced!
+Awesome! We've finished our recon of `OracleUpgradeable.sol`! That's one more contract checked off our first pass list. We managed to find a low severity bug in our risks associated with intializion and we asked lots of good follow up questions to come back to for the `getPriceInWeth` function.
 
-Our checklist continues to shorten. Stay tuned for the next fascinating code critique in our series. Happy coding!
+Let's mark this first pass done for now and move on to `AssetToken.sol` in the next lesson!
 
-> "Security is a process, not a product. Let's continue this journey together!"
+<img src="../../../../static/security-section-6/23-oracle-upgradeable-continued/oracle-upgradeable-continued1.png" width="100%" height="auto">

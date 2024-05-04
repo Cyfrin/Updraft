@@ -1,54 +1,40 @@
 ---
-title: T-SWAP Recon Continued
+title: TSwap Recon Continued
 ---
 
-
-
 ---
 
-# Decoding the AMM Swapping Process using Pool Factory Contracts
+### TSwap Recon Continued
 
-In our last conversation, we delved into the complexities of the AMM (Automated Market Maker) swapping process. This blog post builds on that foundation, unravelling other critical sections and explaining how a pool factory contract fits into the picture.
+With a deeper understanding of DEXes and AMMs, let's continue our recon of TSwap by proceeding with the docs.
 
-![](https://cdn.videotap.com/KhZyFmTzPcrusQqCBOsj-8.05.png)
+The next thing our repo's [**README**](https://github.com/Cyfrin/5-t-swap-audit/blob/main/README.md) says is that the protocol begins as a PoolFactory Creating pools of assets, all of the logic handing those assets is contained within the TSwapPool contract that's generated. From the docs:
 
-## Diving into a Pool Factory Contract
-
-At its core, the protocol begins as a pool factory contract, which you can use to create new pools of tokens. Glancing through the audit data branch, you'll notice the `poolfactory.sol` that includes this `Create Pool` function. This function is responsible for forming these AMM pools, hallmarking a major component of our swapping process.
-
-```js
-function createPool(address tokenA, address tokenB) external returns (address pool) {
-    // ...
-    return pool;
-}
+```
+You can think of each TSwapPool contract as it's own exchange between exactly 2 assets. Any ERC20 and the WETH token. These pools allow users to permissionlessly swap between an ERC20 that has a pool and WETH. Once enough pools are created, users can easily "hop" between supported ERC20s
 ```
 
-Made it more evident, when we zoom into the `poolfactory.sol`, it's seen that various token pairs can be created. For instance, there's a USDC WETH pool being created with the `Create Pool` function. Yes! You just don't create pools; it's also about combining different token pairs to form these pools.
+The developers here have even provided us an example of how TSwap is supposed to work.
 
-## Understanding the Logic behind Pool Contract
+```
+Example:
 
-The contract used to create new pools ensures that each pool token adheres to the correct logic. Nonetheless, the real allure of these pool contracts comes alive with each T swap pool contract.
+1. User A has 10 USDC
+2. They want to use it to buy DAI
+3. They swap their 10 USDC -> WETH in the USDC/WETH pool
+4. Then they swap their WETH -> DAI in the DAI/WETH pool
 
-To highlight this point, I navigated the SRC, where I found the `create pool` function in play (highlighted in the `poolfactory.sol`). This function sprung my curiosity, and I began exploring it more.
+Every pool is a pair of TOKEN X & WETH.
+```
 
-To my delight, I discovered that the function seemingly calls this new TSWAP pool function. Though information-dense, the sequence makes sense as the `Create Pool` function is being called to create a new pool contract.
+This may be a great point in our process to go through the code base and make connections to what functions are actually performing these actions described in the docs. We may even create ....
 
-After investing some time into exploring the process, I realized that each TSWAP contract operates as an exclusive exchange between two specific assets, as originally depicted in our early diagram with ne ERC 20 and the WETH token.
+<img src="/security-section-5/8-tswap-recon-continued/tswap-recon-cont1.png" width="75%" height="auto">
 
-## Bridging the Gap via Pools and WETH
+A Protocol Diagram!
 
-The magic of WETH lies in its ability to specifically provide pools with the power to allow users to freely swap between an ERC 20 having a pool and WETH (Wrapped Ether). With a sufficient number of pools created, they enable an easy hop between supportive ERC 20s.
+These can be super valuable when trying to gain an understanding of how each of the disparate parts of a system work together.
 
-If this sounds like a challenge, consider this; if I possess USDC, I could swap from USDC to WETH. Then, switching from WETH to Link becomes feasible because there's likely going to be a USDC WETH pool and a Link WETH pool.
+Further down our TSwap docs they detail liquidity providers, which we've already covered.
 
-Now, let’s explain the process with an easy example,
-
-> User A has ten USDC. They want to swap it for die. So, they swap their ten USDC for WETH in the USDC WETH pool. They then swap their WETH for die in the Dai WETH pool.
-
-It falls into place now, doesn't it? Every pool designates a unique pair between some tokens and WETH. Not only does it provide functionality for swapping but also gives developers insight into the two functions enabling the swap process.
-
-At the higher level, this is how swapping works, and playing around with the sample codes will only enrich your understanding of the process.
-
-## Role of Liquidity Providers
-
-Hopefully, this article provided you with useful insights into the process of pool creation, swapping, and the essence of LPs. However, there's much more to explore and understand, and it's fascinating to see how these different components intricately work together to enable seamless AMMs.
+Great! The next section of the protocol README is going to be integral to how we proceed. Let's look at `invariants` in the next lesson.

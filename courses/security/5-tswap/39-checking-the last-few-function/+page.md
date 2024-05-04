@@ -1,35 +1,58 @@
 ---
-title: T-Swap Manual Review T-Swap Pool - Checking the last few functions
+title: Manual Review - TSwapPool.sol - Final Functions
 ---
 
-
-
 ---
 
-# Understanding Swap: A Deep Dive into Pool Tokens and WETH
+### TSwapPool Final Functions
 
-In this post, we're going to drill down into a topic that's obscure for many: Pool tokens and WETH in a Swap setting. We've already touched on these aspects a little, but they are so critical to more significant parts of DeFi that they deserve their own dedicated discussion.
+The outstanding functions to check in TSwapPool are getters it seems, let's give them a review.
 
-## Pool Tokens, Liquidity, and the WETH Equations
+### totalLiquidityTokenSupply
 
-In a Swap context, one of the fundamental functions is what we call `getPoolTokensToDepositBasedOffWETH`. You might recall that we've discussed this function before. It operates based on a core DeFi mathematical concept: `X * Y = K`.
+```js
+/// @notice a more verbose way of getting the total supply of liquidity tokens
+// @ Audit-Informational - should be marked external
+function totalLiquidityTokenSupply() public view returns (uint256) {
+    return totalSupply();
+}
+```
 
-As a refresher, `K` is a constant value, while `X` and `Y` represent the pool balances of two cryptocurrencies, say ETH and DAI. The function's purpose is to maintain the constant `K` during a swap, which keeps the market prices stable.
+Looks _mostly_ good, but we should note that getters like these can be marked `external` to save gas.
 
-## Peeling Back the Layers of the Liquidity pool
+### getPoolToken, getWeth, getMinimumWethDepositAmount
 
-Apart from the `getPoolTokensToDepositBasedOffWETH` function, another intriguing aspect of the system is the `totalLiquidityTokenSupply`. This term is just a more verbose way of expressing the total supply of liquidity tokens in the pool. The function, shown below, can be called to retrieve this information:
+```js
+function getPoolToken() external view returns (address) {
+    return address(i_poolToken);
+}
+function getWeth() external view returns (address) {
+    return address(i_wethToken);
+}
 
-## Understanding Swap Prices
+function getMinimumWethDepositAmount() external pure returns (uint256) {
+    return MINIMUM_WETH_LIQUIDITY;
+}
+```
 
-An essential pair of functions that we encounter are `getPriceOfOneWETHInPoolTokens()` and `getPriceOfOnePoolTokeninWeth()`.
+These three functions all look great, with proper visibilities set.
 
-The first, `getPriceOfOneWETHInPoolTokens()`, calls a separate function `getOutputAmountBasedOffInput()`, which takes one WETH as input and returns the resulting number of pool tokens.
+Now our final two functions:
 
-In conclusion, understanding Swap contracts, particularly those involving Pool Tokens and WETH, entails delving into these intricate details. By deploying functions like `getPoolTokensToDepositBasedOffWETH` and `getPriceOfOnePoolTokeninWETH`, users can interact seamlessly with the DeFi ecosystem.
+```js
+function getPriceOfOneWethInPoolTokens() external view returns (uint256) {
+    return getOutputAmountBasedOnInput(
+        1e18, i_wethToken.balanceOf(address(this)), i_poolToken.balanceOf(address(this))
+    );
+}
 
-And as we always say:
+function getPriceOfOnePoolTokenInWeth() external view returns (uint256) {
+    return getOutputAmountBasedOnInput(
+        1e18, i_poolToken.balanceOf(address(this)), i_wethToken.balanceOf(address(this))
+    );
+}
+```
 
-> "The true art of coding is not in just writing code, but also in understanding other's code.”
+These are returning the price of 1 weth in PoolTokens and 1 PoolToken in weth respectively. At face value, I'll tell you that these functions look fine. Their math checks out, simple enough. Though in a later section - Thunder Load - you'll learn that functions like these can be deceiving 😉
 
-So don't hesitate to study every function and each line of code, for they are your stepping stones to mastering DeFi and the entire world of blockchain!
+Having concluded our manual review, we can jump into the reporting phase in the next lesson - let's go!

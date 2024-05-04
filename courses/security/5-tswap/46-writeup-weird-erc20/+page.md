@@ -1,45 +1,41 @@
 ---
-title: Write up Weird ERC20 You Try This
+title: Write up Weird ERC20s
 ---
 
-
-
 ---
 
-# Unveiling the Mystery of Tokens while Penning an Audit Report for TSWAP
+### Weird ERC20s
 
-Cracking the codes and giving insight into the deep trenches of developmental methods, we're all set to discuss and dig into the topic of tokens. For us, ERC20s proved to be peculiar to work with, challenging some of our pre-established perceptions and notions. We're going to rewind a little and talk about the one crucial aspect we didn't happen to discuss in detail, the token matter.
+One very important thing we've yet to discuss about TSwap is it's vulnerability to `Weird ERC20s`.
 
-## Unpacked: The Token Hidden Conundrum
+A Weird ERC20 is an ERC20 token which doesn't behave in a standardized way and may include unintended or unusual functionality.
 
-An interesting observation was that we didn't host this test on a TSWAP pool. Let me take you back to our chapter on the TSWAP pool. This episode demonstrated our swap function falling apart, breaking the invariant as an extra transfer was conducted in the process.
+There's a great repository of Weird ERC20 tokens available on GitHub [**here**](https://github.com/d-xo/weird-erc20). I encourage you to familiarize yourself with common examples!
 
-> Blockquote: Diving into this will reveal that the fee-on-transfer tokens echo the same effect, transmitting extra tokens. Remember, when the fee-on-transfer tokens come into play, they pose a threat to the protocol invariance, demanding attention.
+We identified a `fee on transfer` issue within TSwapPool::\_swap that outlined a critical consideration - situations where extra tokens are sent will break the protocol invariant. Well, this can be the case with certain ERC20s (among other weird situations).
 
-## Transparency - The Token Assassins
+We saw an exampe of this when building our first stateful fuzz test suite where the YieldERC20 token was sending 10% of a transaction value as a fee every 10 transfers.
 
-Here's an interesting fact - in the TSWAP audit GitHub repository associated with this course, we unfolded some significant details.
+```js
+function statefulFuzz_testInvariantBreakHandler() public {
+    vm.startPrank(owner);
+    handlerStatefulFuzzCatches.withdrawToken(mockUSDC);
+    handlerStatefulFuzzCatches.withdrawToken(yeildERC20);
+    vm.stopPrank();
 
-```markdown
-Go to - Audit Data -> README -> Bottom Page
+    assert(mockUSDC.balanceOf(address(handlerStatefulFuzzCatches)) == 0);
+    assert(yeildERC20.balanceOf(address(handlerStatefulFuzzCatches)) == 0);
+    assert(mockUSDC.balanceOf(owner) == startingAmount);
+    assert(yeildERC20.balanceOf(owner) == startingAmount);
+}
 ```
 
-This process reveals two audits previously conducted for the Uniswap v1. Further venturing into the Uniswap v1 audit report fashioned by Consensus Diligence, we found several issues with websites and liquidity.
+`Weird ERC20s` and things like `fee on transfer` are unfortunately _very_ common in DeFi. In fact, Uniswap V1 when audited had a similar vulnerability wherein a certain token would allow re-entrancy. I encourage you to read about it [**here**](https://github.com/Consensys/Uniswap-audit-report-2018-12?tab=readme-ov-file#31-liquidity-pool-can-be-stolen-in-some-tokens-eg-erc-777-29).
 
-The v1 of Uniswap suffered a condition where the liquidity pool could be hijacked by certain tokens, for instance, ERC777.
+Now, we're not going to go through a write-up for this TSwap Vulnerability together, but of course I encourage you to before moving on. We've created example tests and mock token contracts earlier in this course that you can use to help you.
 
-> Think of these tokens as smoke and mirrors. If these tokens paved the way for reentrancies on the transfer, the liquidity could be drained, leaving us high and dry. The introduction of these strange ERC20s into the original Uniswap v1 caused series of issues for protocols.
+Here's a title to get started with.
 
-## The TSWAP Paradox
+### [M-3] Rebase, fee-on-transfer, and ERC-777 tokens break protocol invariant
 
-What's worth noting is that these confusing ERC20s are a significant issue in DFI. They can be a handful to work with due to their distinct characteristics. It might seem enticing if they were all similar, but alas, that's not the case. This issue tends to pop up often, particularly in competitive audits, as many protocols are oblivious to this aspect.
-
-## Drafting the Audit Report
-
-In our discoveries, our conclusive medium (not fully penned down) anticipates additional exploration and experimentation from you. Accept the challenge and bask in the experience of creating proof codes and get playful with the process.
-
-Surprisingly, you'll come across these familiar ERC20s repeatedly. It almost feels as though they're playing peekaboo, secretly popping out at the most unexpected times.
-
-## Conclusion
-
-There's a great deal of satisfaction in unlayering these complexities and jotting down findings. The ordeal of wielding together an audit report surprisingly paves the way to add more to our developmental platter. The report initiates the process of understanding and recognising the challenges and solutions in protocol handling, making the world of tokens and audits a little less complicated and a lot more intriguing.
+When you're done, I'll see you in the next lesson to create our PDF report!

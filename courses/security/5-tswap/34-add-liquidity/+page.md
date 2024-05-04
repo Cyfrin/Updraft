@@ -1,78 +1,240 @@
 ---
-title: T-Swap Manual Review T-Swap Pool - Add Liquidity
+title: Manual Review - TSwapPool.sol - Add Liquidity
 ---
 
+---
 
+### Manual Review Continued
+
+Ok! We went on a bit of a tangeant following up with our compiler warnings, but let's continue where we left off, in the `deposit` function.
+
+<details>
+<summary>Deposit Function</summary>
+
+```js
+function deposit(
+    uint256 wethToDeposit,
+    uint256 minimumLiquidityTokensToMint,
+    uint256 maximumPoolTokensToDeposit,
+    uint64 deadline
+)
+    external
+    revertIfZero(wethToDeposit)
+    returns (uint256 liquidityTokensToMint)
+{
+    if (wethToDeposit < MINIMUM_WETH_LIQUIDITY) {
+        revert TSwapPool__WethDepositAmountTooLow(MINIMUM_WETH_LIQUIDITY, wethToDeposit);
+    }
+    if (totalLiquidityTokenSupply() > 0) {
+        uint256 wethReserves = i_wethToken.balanceOf(address(this));
+        uint256 poolTokenReserves = i_poolToken.balanceOf(address(this));
+        // Our invariant says weth, poolTokens, and liquidity tokens must always have the same ratio after the
+        // initial deposit
+        // poolTokens / constant(k) = weth
+        // weth / constant(k) = liquidityTokens
+        // aka...
+        // weth / poolTokens = constant(k)
+        // To make sure this holds, we can make sure the new balance will match the old balance
+        // (wethReserves + wethToDeposit) / (poolTokenReserves + poolTokensToDeposit) = constant(k)
+        // (wethReserves + wethToDeposit) / (poolTokenReserves + poolTokensToDeposit) =
+        // (wethReserves / poolTokenReserves)
+        //
+        // So we can do some elementary math now to figure out poolTokensToDeposit...
+        // (wethReserves + wethToDeposit) / poolTokensToDeposit = wethReserves
+        // (wethReserves + wethToDeposit)  = wethReserves * poolTokensToDeposit
+        // (wethReserves + wethToDeposit) / wethReserves  =  poolTokensToDeposit
+        uint256 poolTokensToDeposit = getPoolTokensToDepositBasedOnWeth(wethToDeposit);
+        if (maximumPoolTokensToDeposit < poolTokensToDeposit) {
+            revert TSwapPool__MaxPoolTokenDepositTooHigh(maximumPoolTokensToDeposit, poolTokensToDeposit);
+        }
+
+        // We do the same thing for liquidity tokens. Similar math.
+        liquidityTokensToMint = (wethToDeposit * totalLiquidityTokenSupply()) / wethReserves;
+        if (liquidityTokensToMint < minimumLiquidityTokensToMint) {
+            revert TSwapPool__MinLiquidityTokensToMintTooLow(minimumLiquidityTokensToMint, liquidityTokensToMint);
+        }
+        _addLiquidityMintAndTransfer(wethToDeposit, poolTokensToDeposit, liquidityTokensToMint);
+    } else {
+        // This will be the "initial" funding of the protocol. We are starting from blank here!
+        // We just have them send the tokens in, and we mint liquidity tokens based on the weth
+        _addLiquidityMintAndTransfer(wethToDeposit, maximumPoolTokensToDeposit, wethToDeposit);
+        liquidityTokensToMint = wethToDeposit;
+    }
+}
+```
+
+</details>
 
 ---
 
-# Deep Dive into Cryptocurrency Smart Contract Deposits
+Continuing down from `uint63 deadline`, we see a modifier we assessed earlier being applied - `revertIfZero(wethToDeposit)`.
 
-In today's post, we're going to perform a deep-dive into the world of cryptocurrency smart contracts, specifically focusing on the deposit function. We'll be performing a detailed audit of a contract and identifying potential flaws.
+The function then performs a conditional check on the deposit amount, assuring that it is not less than the `MINIMUM_WETH_LIQUIDITY`. Our function will revert with the custom error `TSwapPool__WethDepositAmountTooLow(MINIMUM_WETH_LIQUIDITY, wethToDeposit)` if this condition isn't met. Of note is that our custom error is emitting `MINIMUM_WETH_LIQUIDITY`. This is a constant in our contract and thus emitting this value is not providing any additional information to us. Anyone could check this constant!
 
-We'll start off with the deposit function and eventually move our way down to analyze all aspects of the contract line-by-line. So, let's dive in!
-
-## Analysing the Deposit Function
-
-Let's take the state of the contract where we're trying to determine how much should be deposited.
-
-If `WETH` is zero in the contract, we encounter a scenario where it reverts. We also have a condition where if the `WETH` deposit is less than a minimum defined _WETH liquidity deposit_; again a revert scenario.
-
-Another thing to note is that we probably don't need the emission of the minimum `WETH` because it is, in a sense, redundant. It would be more effective as _audit info_. To put it simply, any user could look up the contract and see what the minimum `WETH` value is.
-
-Next, there are two potential scenarios that initiate heating up the deposit function. These are:
-
-1. If it's a user's first deposit (also called the initial funding of the protocol)
-2. If the user has already deposited
-
-## Exploring Internal Functions
-
-Within the deposit function, it looks like it's calling an internal function, so let's go and check what that does.
-
-Here, we interpret `weth_to_deposit` as the amount of `WETH` a user is going to deposit, `pool_tokens_to_deposit` as the number of pool tokens they're going to deposit, and `liquidity_tokens_to_mint` as the number of liquidity tokens they're planning to mint.
-
-Given it's a sensitive function, it's marked private, meaning it can only be invoked within the contract. Inside this function, it seems like we mint the amount of `liquidity_tokens_to_mint` to the `msg.sender`.
-
-There's also an event trigger called `Liquidity Added`. However, a closer look reveals an audit issue as the parameters are in the wrong order.
+Let's make a note.
 
 ```js
-emit LiquidityAdded(msg.sender, pool_tokens, WETH)
+if (wethToDeposit < MINIMUM_WETH_LIQUIDITY) {
+    //@Audit-Informational: MINIMUM_WETH_LIQUIDITY is a constant, emitting unnecessary
+    revert TSwapPool__WethDepositAmountTooLow(MINIMUM_WETH_LIQUIDITY, wethToDeposit);
+}
 ```
 
-The correct code should look like this:
+From this point our function has two deviating branches of logic. It's going to behave one way if it is the _first time_ someone has deposited vs subsequent deposits. These branches are represented by this conditional (I've removed commented lines for brevity).
 
 ```js
-emit LiquidityAdded(msg.sender, WETH, pool_tokens)
+if (totalLiquidityTokenSupply() > 0) {
+    uint256 wethReserves = i_wethToken.balanceOf(address(this));
+    uint256 poolTokenReserves = i_poolToken.balanceOf(address(this));
+    // Our invariant says weth, poolTokens, and liquidity tokens must always have the same ratio after the
+    // initial deposit
+    uint256 poolTokensToDeposit = getPoolTokensToDepositBasedOnWeth(wethToDeposit);
+    if (maximumPoolTokensToDeposit < poolTokensToDeposit) {
+        revert TSwapPool__MaxPoolTokenDepositTooHigh(maximumPoolTokensToDeposit, poolTokensToDeposit);
+    }
+
+    // We do the same thing for liquidity tokens. Similar math.
+    liquidityTokensToMint = (wethToDeposit * totalLiquidityTokenSupply()) / wethReserves;
+    if (liquidityTokensToMint < minimumLiquidityTokensToMint) {
+        revert TSwapPool__MinLiquidityTokensToMintTooLow(minimumLiquidityTokensToMint, liquidityTokensToMint);
+    }
+    _addLiquidityMintAndTransfer(wethToDeposit, poolTokensToDeposit, liquidityTokensToMint);
+} else {
+    // This will be the "initial" funding of the protocol. We are starting from blank here!
+    // We just have them send the tokens in, and we mint liquidity tokens based on the weth
+    _addLiquidityMintAndTransfer(wethToDeposit, maximumPoolTokensToDeposit, wethToDeposit);
+    liquidityTokensToMint = wethToDeposit;
+}
 ```
 
-> Always make sure to check if the events are correctly emitted with the right parameters. This kind of mistake is not a high risk but it's important to avoid confusion.
+The `else` condition of when the pool has zero balance when the function is called is more approachable and identifies the first warm up of the protocol. Let's start there.
 
-## Checks and Interactions
+### \_addLiquidityMintAndTransfer
 
-After validating the event, we conduct some checks and interactions. It's good to see the external transactions happening towards the end of the function, which adheres to the Checks-Effects-Interactions (CEI) pattern.
+If `deposit` is called and the pool doesn't have balance, it looks like `_addLiquidityMintAndTransfer` is called. We definitely have to take a closer look at this function.
 
-The next steps include transferring the tokens from the `msg.sender` to the smart contract, and then updating the state variable `LiquidityTokensMinted`.
+```js
+/// @dev This is a sensitive function, and should only be called by deposit
+/// @param wethToDeposit The amount of WETH the user is going to deposit
+/// @param poolTokensToDeposit The amount of pool tokens the user is going to deposit
+/// @param liquidityTokensToMint The amount of liquidity tokens the user is going to mint
+function _addLiquidityMintAndTransfer(
+    uint256 wethToDeposit,
+    uint256 poolTokensToDeposit,
+    uint256 liquidityTokensToMint
+)
+    private
+{
+    _mint(msg.sender, liquidityTokensToMint);
+    emit LiquidityAdded(msg.sender, poolTokensToDeposit, wethToDeposit);
 
-```code
-transferFrom(msg.sender, address(this), ...);...liquidityTokensMinted = weth_to_deposit;
+    // Interactions
+    i_wethToken.safeTransferFrom(msg.sender, address(this), wethToDeposit);
+    i_poolToken.safeTransferFrom(msg.sender, address(this), poolTokensToDeposit);
+}
 ```
 
-Ideally, we would want to follow the Checks-Effects-Interactions paradigm regularly to streamline the function operations.
+Immediately we see that the function is "sensitive". We should verify that it's only called as described, during `deposit`. As it stands, it is and this is assured by the function's visibility being set to `private`.
 
-## Updating Liquidity and Deposit Checks
+The method begins by minting `msg.sender` the passed number of `liquidityTokensToMint` and emit an event, we should always check that events are emitting the parameters expected.
 
-Once the contract is warmed up and receiving liquidity, it's time to perform some checks and balances.
+Here's the event in our function:
 
-First, we crunch the numbers on how many pool tokens should be deposited based on the `WETH` balance. If we calculate too many pool tokens to deposit, the function reverts.
+```js
+emit LiquidityAdded(msg.sender, poolTokensToDeposit, wethToDeposit);
+```
 
-Next, similar checks are performed for liquidity. If the calculated `LiquidityTokensToMint` is less than the minimum, the function again reverts.
+Here's the event declaration:
 
-And voila! If everything goes well, the deposit function works smoothly.
+```js
+event LiquidityAdded(address indexed liquidityProvider, uint256 wethDeposited, uint256 poolTokensDeposited);
+```
 
-## Concluding Thoughts
+Do you spot the bug?
 
-While auditing a smart contract, thoroughness is essential. The deposit function in our example had a high-severity issue where the deadline was being ignored, but function-wise, it looked solid.
+Our second and third parameters have been switched in our event emission! This is going to provide any system relying on these events with inaccurate data and should be noted in our report.
 
-Remember, the aim is always to leave notes with our thoughts anywhere possible and follow up at a later stage if doubt persists.
+```js
+//@Audit-Low - Ordering of event emissions incorrect, should be `emit LiquidityAdded(msg.sender, wethToDeposit, poolTokensToDeposit)`
+```
 
-Join me in the next blog post as we examine the `addLiquidityMintAndTransfer` function!
+I always set bugs if this nature related to event data as `low`, but there's a bit of contention. Let's break down the impact/likelihood.
+
+- **Impact:** Low - protocol is giving the wrong information
+- **Likelihood:** High - Always happens
+
+It's really hard to justify a situation like this as a `medium`, but we can imagine other parts of a protocol relying on events (such as an oracle) that could easily bump something like this up to a `medium` or even a `high`.
+
+The last thing our `_addLiquidityMintAndTransfer` function does is its interactions, it actually performs the transfers of tokens. This is great! The protocol team is following `CEI (checks, efffects, interactions)`. I may even make a note for myself indicating that this has been considered and confirmed.
+
+```js
+// Follows CEI
+```
+
+### Back to Deposit
+
+Back to our `deposit` function, after `_addLiquidityMintAndTransfer` is called it looks like we're setting `liquidityTokensToMint = wethToDeposit`.
+
+At first glance this worries me. We're making external calls in our `_addLiquidityMintAndTransfer` function and then we're updating a variable. In this circumstance `liquidityTokensToMint` isn't a state variable, so we're _technically_ ok, but I would make a note of this and always remember to verify similar situations.
+
+```js
+_addLiquidityMintAndTransfer(
+  wethToDeposit,
+  maximumPoolTokensToDeposit,
+  wethToDeposit
+);
+// @Audit-Informational - Not a state variable but would be better to follow CEI
+liquidityTokensToMint = wethToDeposit;
+```
+
+Alright, we've checked all of the logic handled by the protocol's warm up, when there's no balance in the pool. Let's take a look at how things are managed when liquidity already exists.
+
+```js
+if (totalLiquidityTokenSupply() > 0) {
+    uint256 wethReserves = i_wethToken.balanceOf(address(this));
+    uint256 poolTokenReserves = i_poolToken.balanceOf(address(this));
+    ...
+}
+```
+
+We first assign values to `wethReserves` and `poolTokenReserves`, of course we noted earlier that `poolTokenReserves` is never actually used.
+
+`Deposit` is then calling `getPoolTokensToDepositBasedOnWeth`, this function is effectively applying the math of our token ratio to assure the ratio doesn't change and returns `(wethToDeposit * poolTokenReserves) / wethReserves;`. For the purposes of this course - this function looks fine to me, but perhaps you want to look more closely here on your own.
+
+Continuing down our deposit function, we next hit a conditional statement.
+
+```js
+if (maximumPoolTokensToDeposit < poolTokensToDeposit) {
+    revert TSwapPool__MaxPoolTokenDepositTooHigh(maximumPoolTokensToDeposit, poolTokensToDeposit);
+}
+```
+
+If too many poolTokens are calculated, the deposit function will revert - good!
+
+Finally it seems the `deposit` function is performing a similar step for liquidity tokens where in the amount to mind is calculated, the amount is checked for validity and then the tokens are minted and transferred.
+
+```js
+liquidityTokensToMint = (wethToDeposit * totalLiquidityTokenSupply()) / wethReserves;
+if (liquidityTokensToMint < minimumLiquidityTokensToMint) {
+    revert TSwapPool__MinLiquidityTokensToMintTooLow(minimumLiquidityTokensToMint, liquidityTokensToMint);
+}
+_addLiquidityMintAndTransfer(wethToDeposit, poolTokensToDeposit, liquidityTokensToMint);
+```
+
+### Wrap Up
+
+Great! We're all done our review of the `deposit` function. At this point I would likely leave a note inidicating that this section of the code has been assessed and to follow-up as needed.
+
+Leaving regular notes in the code base as you go will make report writing much easier in the future, so get into this habit!
+
+```js
+// @Audit - Review Complete - follow up
+function deposit(
+uint256 wethToDeposit,
+uint256 minimumLiquidityTokensToMint,
+uint256 maximumPoolTokensToDeposit,
+uint64 deadline
+)
+```
+
+See you in the next lesson where we tackle the `withdraw` function.

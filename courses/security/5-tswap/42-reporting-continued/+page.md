@@ -2,62 +2,171 @@
 title: Reporting Continued
 ---
 
+---
 
+### Reporting Continued
+
+> **Note:** You may have additional `informational severity` issues that we identified in your project. The write ups for these should be fairly easy with all the experience we have, as such we won't explicitly cover them further in this course, but I encourage you to write them anyway for practice.
+
+In this lesson we'll continue to create write-ups for the vulnerabilities we've identified in TSwap. The next bug noted is `low severity` and found in the `_addLiquidityMintAndTransfer` function.
+
+```js
+function _addLiquidityMintAndTransfer(
+   uint256 wethToDeposit,
+   uint256 poolTokensToDeposit,
+   uint256 liquidityTokensToMint
+)
+   private
+{
+   _mint(msg.sender, liquidityTokensToMint);
+   //@Audit-Low - Ordering of event emissions incorrect, should be `emit LiquidityAdded(msg.sender, wethToDeposit, poolTokensToDeposit)`
+   emit LiquidityAdded(msg.sender, poolTokensToDeposit, wethToDeposit);
+
+   // Interactions
+   i_wethToken.safeTransferFrom(msg.sender, address(this), wethToDeposit);
+   i_poolToken.safeTransferFrom(msg.sender, address(this), poolTokensToDeposit);
+}
+```
+
+Let's write this up!
+
+My example of each section of the write-up template is below, but I encourage you to write your own first and then compare!
+
+<details>
+<summary>[L-1] `TSwapPool::LiquidtyAdded` event has parameters out of order</summary>
+
+### [L-1] `TSwapPool::LiquidtyAdded` event has parameters out of order
+
+**Description:** What the `LiquidityAdded` event is emitted in the `TSwapPool::_addLiquidityMintAndTransfer` function, it logs values in an incorrect order. The `poolTokensToDeposit` value should go in the third parameter position, whereas the `wethToDeposit` value should go second.
+
+**Impact:** Event emission is incorrect, leading to off-chain functions potentially malfunctioning.
+When it comes to auditing smart contracts, there are a lot of nitty-gritty details that one needs to pay attention to in order to prevent possible vulnerabilities.
+
+**Recommended Mitigation:**
+
+```diff
+- emit LiquidityAdded(msg.sender, poolTokensToDeposit, wethToDeposit);
++ emit LiquidityAdded(msg.sender, wethToDeposit, poolTokensToDeposit);
+```
+
+</details>
 
 ---
 
-# Audit Deep Dive: Understanding Smart Contract Vulnerabilities
+> **Note:** We omitted a PoC in our write up above. This vulnerability is pretty self-evident, but if you wanted to write one as a challenge, I encourage you to try!
 
-When it comes to auditing smart contracts, there are a lot of nitty-gritty details that one needs to pay attention to in order to prevent possible vulnerabilities.
+Next up, our first `high severity`! This one we found in `getInputAmountBasedOnOutput` (the video marks this as `H-2`, but we've since reassessed the missing deadline vulnerability).
 
-Throughout this detailed walkthrough, we're going to focus on the process of identifying issues within code, their potential impact, and proposed solutions.
+```js
+function getInputAmountBasedOnOutput(
+   uint256 outputAmount,
+   uint256 inputReserves,
+   uint256 outputReserves
+)
+   public
+   pure
+   revertIfZero(outputAmount)
+   revertIfZero(outputReserves)
+   returns (uint256 inputAmount)
+{
+   // @Audit-High - Erroneous fee calculation resulting in 90.03% fees
+   return ((inputReserves * outputAmount) * 10000) / ((outputReserves - outputAmount) * 997);
+}
+```
 
-But before we dive in, let's address some essential concepts:
+We identified a magic number resulting in an inaccurate fee caculation! This one is big. Again, I challenge you to write your own `Proof of Concept`, keep those skills sharp.
 
-- **Constants**: These are unchanging variables that are quite common within code and should always be treated as such.
-- **Informationals**: These are facts or pieces of data provided in the code intended to be helpful, but if not emitted correctly, they can cause confusion.
-- **Audit comments**: These serve as notes during code reviews, particularly useful when something needs to be addressed later.
+<details>
+<summary>[H-1] Incorrect fee calculation in `TSwapPool::getInputAmountBasedOnOutput` causes protocol to take too many tokens from users, resulting in lost fees</summary>
 
-## Highlighting the Importance of Reporting
+### [H-1] Incorrect fee calculation in `TSwapPool::getInputAmountBasedOnOutput` causes protocol to take too many tokens from users, resulting in lost fees
 
-During an audit, it's important to report anything that could potentially refactor the code to improve its overall quality. One simple way is to state "reported" whenever we encounter any issues in the code.
+**Description:** The `getInputAmountBasedOnOutput` function is intended to calculate the amount of tokens a user should deposit given an amount of tokens of output tokens. However, the function currently miscalculates the resulting amount. When calculating the fee, it scales the amount by `10_000` instead of `1_000`.
 
-## Understanding the Importance of Code Layout
+**Impact:** Protocol takes more fees than expected from users.
 
-The code layout plays a crucial role in readability, maintainability, and usability. It is not uncommon to suggest relocating a section of code (such as ‘audit info’) that might provide more clarity in another position.
+**Recommended Mitigation:**
 
-## Liquidity Add Misstep
+```diff
+    function getInputAmountBasedOnOutput(
+        uint256 outputAmount,
+        uint256 inputReserves,
+        uint256 outputReserves
+    )
+        public
+        pure
+        revertIfZero(outputAmount)
+        revertIfZero(outputReserves)
+        returns (uint256 inputAmount)
+    {
+-       return ((inputReserves * outputAmount) * 10_000) / ((outputReserves - outputAmount) * 997);
++       return ((inputReserves * outputAmount) * 1_000) / ((outputReserves - outputAmount) * 997);
+    }
+```
 
-At one point in our code, we encountered an instance where 'liquidity added' was incorrectly ordered. Missteps such as these could lead to the emission of incorrect data. To provide clarity:
+</details>
 
-Liquidity added has parameters out of order.The root cause is the TSWAP pool.The event has parameters out of order, causing the event to emit incorrect information.
+---
 
-## Severe Impact Issues
+Attempting to write the `PoC` for the above is really important. Writing lots of `PoCs` is how you'll get better at them and `PoCs` are how you _prove_ there's an issue, often they help you _test_ if there's an issue.
 
-We found two severe issues during our audit:
+Continuing on, we'll next do a quick write up for a `low severity` vulnerability our compiler identified in `swapExactInput`.
 
-1. **Order of Parameters Issue:**
+```js
+function swapExactInput(
+   IERC20 inputToken,
+   uint256 inputAmount,
+   IERC20 outputToken,
+   uint256 minOutputAmount,
+   uint64 deadline
+)
+   public
+   revertIfZero(inputAmount)
+   revertIfDeadlinePassed(deadline)
+   //@Audit-Low - Return value not updated/used
+   returns (uint256 output)
+{...}
+```
 
-   In the function `addLiquidityMintAndTransfer`, a liquidity added event is emitted, but the values are logged in the wrong order:
+This will be our second low, compare your write up to mine below:
 
-   When the `liquidity added` event is emitted in the `add liquidity mint and transfer` function, it logs values in an incorrect order. The pool tokens to deposit value should go in the third parameter position, whereas the WETH to deposit value should go second.
+<details>
+<summary>[L-2] Default value returned by `TSwapPool::swapExactInput` results in incorrect return value given</summary>
 
-2. **Fee Calculation Error:**
+### [L-2] Default value returned by `TSwapPool::swapExactInput` results in incorrect return value given
 
-   The `getInputAmountBasedOnOutput` function was found to have an incorrect fee calculation, which causes the protocol to take too many tokens from users:
+**Description:** The `swapExactInput` function is expected to return the actual amount of tokens bought by the caller. However, while it declares the named return value `output` it is never assigned a value, nor uses an explict return statement.
 
-   The `get input amount based on output` function in the TSWAP pool is intended to calculate the amount of tokens a user should deposit given an amount of output tokens. However, the function currently miscalculates the resulting amount when calculating the fee.
+**Impact:** The return value will always be `0`, giving incorrect information to the caller.
 
-Both of these issues cause a significant detriment to the users and need immediate addressing.
+**Recommended Mitigation:**
 
-## Power of Writing Proof of Codes
+```diff
+{
+   uint256 inputReserves = inputToken.balanceOf(address(this));
+   uint256 outputReserves = outputToken.balanceOf(address(this));
 
-Writing 'proof of codes' is a crucial skill that every auditor should have. It helps not only in proving the existence of issues but also in testing the codebase for other potential vulnerabilities. For example, a 'proof of code' was written for the incorrect fee calculation issue to highlight how much the protocol takes as fees and the actual value.
+-        uint256 outputAmount = getOutputAmountBasedOnInput(inputAmount, inputReserves, outputReserves);
++        output = getOutputAmountBasedOnInput(inputAmount, inputReserves, outputReserves);
 
-## Impact of Small Code Errors
+-        if (output < minOutputAmount) {
+-            revert TSwapPool__OutputTooLow(outputAmount, minOutputAmount);
++        if (output < minOutputAmount) {
++            revert TSwapPool__OutputTooLow(outputAmount, minOutputAmount);
+   }
 
-Even small errors or inconsistencies in the code can have large implications and result in incorrect information being disseminated. Such was the case with the `Swap exact input` function, where an incorrect return value was always being given(0) irrespective of the actual values.
+-        _swap(inputToken, inputAmount, outputToken, outputAmount);
++        _swap(inputToken, inputAmount, outputToken, output);
+}
+}
+```
 
-In conclusion, auditing requires a keen eye for details, significant knowledge of smart contract coding, and a thorough understanding of possible vulnerabilities. Avoiding magic numbers, maintaining consistency in reporting, and having proficiency in writing 'proof of codes' are all crucial factors to conducting a successful audit.
+</details>
 
-We hope that this detailed walkthrough gives you perspective and jumpstarts your journey towards becoming a proficient smart contract auditor!
+---
+
+### Wrap Up
+
+Great work! We've only got a few more write-ups to add to our findings.md before generating our professional PDF audit report.
+
+Up next is our `slippage protection` vulnerability!
