@@ -44,4 +44,4 @@ The limited nature of tokens being used may raise questions pertaining to the pr
 
 Wow, another quick one down, we're flying through these quick wins. Thanks Tincho Method!
 
-<img src="../../../../static/security-section-6/16-itswappool/itswappool1.png" width="100%" height="auto">
+<img src="/security-section-6/16-itswappool/itswappool1.png" width="100%" height="auto">

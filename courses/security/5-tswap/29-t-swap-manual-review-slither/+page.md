@@ -10,7 +10,7 @@ The first step in our manual review should be to run some of our static analyzer
 
 The protocol team has already configured a make command for `Slither`, using this config, so let's just run `make slither` and assess the output.
 
-<img src="../../../../static/security-section-5/29-t-swap-manual-review-slither/t-swap-manual-review-slither1.png" width='100%' height="auto">
+<img src="/security-section-5/29-t-swap-manual-review-slither/t-swap-manual-review-slither1.png" width='100%' height="auto">
 
 ### Red Detectors
 

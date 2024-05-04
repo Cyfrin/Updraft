@@ -4,7 +4,7 @@ title: Exploit - Failure to Initialize - Case Study
 
 ### Exploit - Failure to Initialize - Case Study
 
-<img src="../../../../static/security-section-6/22-failure-to-initialize-case-study/failure-to-initialize-case-study1.png" width="100%" height="auto">
+<img src="/security-section-6/22-failure-to-initialize-case-study/failure-to-initialize-case-study1.png" width="100%" height="auto">
 
 The post above lives in infamy in the Web3 ecosystem.
 
@@ -12,13 +12,13 @@ You can check out the thread and read more about the hack [**here**](https://git
 
 Within that thread there's a [**link to the transaction**](https://etherscan.io/tx/0x05f71e1b2cb4f03e547739db15d080fd30c989eda04d37ce6264c5686e0722c9) that caused the Parity Bug. Let's have a look at what was done.
 
-<img src="../../../../static/security-section-6/22-failure-to-initialize-case-study/failure-to-initialize-case-study2.png" width="100%" height="auto">
+<img src="/security-section-6/22-failure-to-initialize-case-study/failure-to-initialize-case-study2.png" width="100%" height="auto">
 
 We can see in the transaction which function was called `initWallet`. This function is taking important parameters such as `_owners` and `_required`.
 
 Because the contract hadn't been initialized, the hacker was able to set their own wallet as the owner of the contract and the required multisig signatures to zero.
 
-<img src="../../../../static/security-section-6/22-failure-to-initialize-case-study/failure-to-initialize-case-study3.png" width="100%" height="auto">
+<img src="/security-section-6/22-failure-to-initialize-case-study/failure-to-initialize-case-study3.png" width="100%" height="auto">
 
 This ultimately resulted in a scramble to free locked funds and chaos in the ecosystem, all because the initialize function had been forgotten.
 

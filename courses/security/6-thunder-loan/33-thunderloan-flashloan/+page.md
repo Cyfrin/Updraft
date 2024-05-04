@@ -366,7 +366,7 @@ Alright - strictly speaking, it doesn't look like this is doing anything. This f
 
 A whole loan flow looks something like this:
 
-<img src="../../../../static/security-section-6/33-thunderloan-flashloan/thunderloan-flashloan1.png" width="100%" height="auto">
+<img src="/security-section-6/33-thunderloan-flashloan/thunderloan-flashloan1.png" width="100%" height="auto">
 
 After the flash loan is executed, this function closes with a very important check:
 

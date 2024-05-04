@@ -64,7 +64,7 @@ contract DeleteMappingTest {
 
 If we deploy the above contract in Remix we can then set two addresses as `token` and `token2` to see the mapping working as expected:
 
-<img src="../../../../static/security-section-6/28-testing-deleting-mappings/testing-deleting-mapping1.png" width="100%" height="auto">
+<img src="/security-section-6/28-testing-deleting-mappings/testing-deleting-mapping1.png" width="100%" height="auto">
 
 We can then call the `remove` function, passing token. We see that our getter is now returning `address(0)`.
 
