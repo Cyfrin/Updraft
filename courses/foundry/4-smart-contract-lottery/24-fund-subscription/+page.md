@@ -26,7 +26,8 @@ To fund your subscription, you will need three important elements:
 - VRF Coordinator V2 address
 - Link address
 
-*UPDATE: on the recent versions of Chainlink VRF, the subscription ID is a uint256 instead of a uint64.*
+>UPDATE: on the recent versions of Chainlink VRF, the subscription ID is a uint256 instead of a uint64.*
+
 
 Start by specifying the `VRFCoordinator` address and the `uint64` `subId`. The `subID` corresponds to the subscription you want to fund.
 
