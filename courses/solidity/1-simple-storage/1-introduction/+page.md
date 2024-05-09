@@ -2,7 +2,7 @@
 title: Repository Access and Navigation
 ---
 
-_If you'd like, you can follow along with the course here._
+_You can follow along with the video course from here._
 
 <a name="top"></a>
 ## Introduction
