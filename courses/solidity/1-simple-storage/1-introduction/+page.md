@@ -39,7 +39,7 @@ Having an account on the following platforms is highly recommended:
 
 - [x] [GitHub](https://github.com/)
 - [x] [Stack Exchange Ethereum](https://ethereum.stackexchange.com/)
-- [x] [Chat GPT](https://openai.com/blog/chatgpt) (remember to always verify its correctness)
+- [x] [Chat GPT](https://openai.com/blog/chatgpt) - Keep in mind to always confirm the accuracy of its responses
 
 ## Let's Start Coding!
 
@@ -58,6 +58,6 @@ The best way to get the most out of this guide is to **code along**. You're enco
 <img src="/solidity/remix/remix-screenshot.png" style="width: 100%; height: auto;">
 
 
-By the end of this lesson, you'll have built and deployed your first smart contract to a blockchain. Let's jump right into it!
+🏆 By the end of this lesson, you'll have built and deployed your first smart contract to a blockchain. Let's jump right into it!
 
 [Back to top](#top)
