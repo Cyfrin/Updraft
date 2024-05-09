@@ -2,37 +2,47 @@
 title: Setting Up Your First Contract
 ---
 
-*If you'd like, you can follow along with the course here.*
+_You can follow along with the video course from here._
 
 
 
 
-# Introduction
+# Introduction 
+In this lesson you are going to learn how to use Remix, and how to create and compile your first contract.
 
-To get started, we want to open up <a href="https://remix.ethereum.org/" target="_blank" style="color: blue; text-decoration: underline;">remix</a>. When you open it up, you'll be greeted with a site that looks like this.
+## The IDE: Remix
 
-<img src="/solidity/remix/remix-screenshot.png" style="width: 100%; height: auto;">
+Open <a href="https://remix.ethereum.org/" target="_blank" style="color: blue; text-decoration: underline;">Remix</a> to get started. 
 
-You may select "Accept" or just ignore. 
+Remix it's a powerful tool used to build and develop smart contracts in Solidity. It's and IDE (Integrated Development Environment), which means that has a lot of features that can help the deployment process. 
+As a professional, you want to be able to also use a local environment, but It's used to quickly check out code.
 
-
-## Using Remix IDE
-
-Remix IDE is a powerful tool used for developing smart contracts in Solidity. In this section, we will be creating our smart contract and deploying it on a blockchain.
-
-1. Open Remix IDE by either searching on Google or visiting the link provided in the GitHub repository.
-2. If it's your first time using Remix, it will provide you a tutorial walkthrough of its features. You can choose to go through it.
-3. Clean the environment by right-clicking and deleting the existing folders (optional).
-4. Create a new file by clicking on the "create new file" button and give it a name, e.g., SimpleStorage.sol. The `.sol` extension indicates it is a Solidity file.
+It helps visualizing what contracts do and facilitates the interact with them.
+1. It has a File explorer: Clean the environment by right-clicking and deleting the existing folders (optional). A clean environment cleans up your mind.
+2. We can create a new file, e.g., SimpleStorage.sol. The `.sol` extension tells the compiler that this is a Solidity file.
 
 <!--TODO: Add Support for Solidity on svelte-->
 
+## Compiler directive
+
+The `pragma` directive specifies the version of Solidity you want to use. When the compiler encounters this line, it will check its version against the one specified. If the compiler is outside the specified range, it will generate an error. 
+
+You can specify the compiler version in 3 ways:
+
+1. Using exactly one compiler version to build the current contract
 ```js
-// Your first line in SimpleStorage.sol
-pragma solidity ^0.8.19;
+pragma solidity 0.8.19; // use only version 0.8.19
 ```
 
-This line specifies the version of Solidity you are using. The caret (^) symbol specifies that the code is compatible with the mentioned version and any new version till (but not including) 0.9.0.
+2. Use versions that are between a lower and upper range
+
+```js
+pragma solidity ^0.8.19; // use only versions included from 0.8.19 til 0.9 (excluded)
+pragma solidity  >=0.8.19 < 0.9.0; //use only the complier versions between 0.8.15 and 0.8.18 included to build this contract (no upper limit)
+```
+
+> [!NOTE]
+You should write comments in your own code for you to refer later on
 
 ## SPDX License Identifier
 
@@ -40,7 +50,7 @@ It's a good practice to start your smart contract with an SPDX License Identifie
 
 ```js
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.19;
 ```
 
 MIT is known as one of the most permissive licenses which means anybody can use this code and pretty much do whatever they want with it.
