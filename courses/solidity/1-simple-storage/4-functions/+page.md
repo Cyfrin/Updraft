@@ -18,10 +18,10 @@ contract SimpleStorage {
 
 ## Building the **store** function
 
-In Solidity, functions (or methods) are subsections of code that, when called, will execute a very specific small piece of our entire codebase. 
+In Solidity, functions - or methods, are portions of code designed to execute specific tasks within the overall codebase.
 
-Functions are identified by the keyword `function`, followed by the function's name (e.g. `store`) and additional **parameters** enclosed in parentheses `()`. 
-These parameters are the values that we are going to send to our function. In our case, we need to inform the `store` function that we want to update `favoriteNumber` with some other value `_favoriteNumber`:
+Functions are identified by the keyword `function`, followed by the function's name (e.g. `store`) and any additional **parameters** enclosed in rounded parentheses `()`. 
+These parameters represent the values sent to our function. In this cose, we inform the `store` function that we want to update `favoriteNumber` with some other value `_favoriteNumber`:
 
 ```solidity
 contract SimpleStorage {
@@ -34,11 +34,11 @@ contract SimpleStorage {
 }
 ```
 The content of the function is placed within the curly brackets `{}`. 
-The prefix `_` before `_favoriteNumber` is used to emphathise that the *local* variable `_favoriteNumber` is a **different** variable from the *state* variable `favoriteNumber`. This helps prevent potential confusion when dealing with different variables with similar names in complex codebases.
+The prefix `_` before `_favoriteNumber` is used to emphashise that the *local* variable `_favoriteNumber` is a **different** variable from the *state* variable `favoriteNumber`. This helps prevent potential confusion when dealing with different variables with similar names in complex codebases.
 
 ## Deploying the Smart Contract
 
-You can test out this function on the Remix VM environment, a fake local chain.
+You can test out this function on the Remix VM environment.
 At this stage, you can compile your code by navigating to the compile tab and hitting Compile. After compiling, navigate to the tab **Deploy and Run Transactions** to test your function.
 
 The **Deploy and Run Transactions** tab holds a variety of parameters that are used during the deployment process.
@@ -46,26 +46,26 @@ You'll be assigned an *account* with some ETH to deploy your smart contract.
 
 <img src="/solidity/remix/lesson-2/functions/deploy_and_run.png" style="width: 100%; height: auto;">
 
-In this environment, your contract will have been assigned a unique address. You can re-access your deployed contract by expanding the **Deployed Contracts** interface and simultaneously opening the terminal, which shows log data of all contract deployment and transactions.
+🗺️ In this environment, your contract is assigned a unique address. You can re-access your deployed contract by expanding the **Deployed Contracts** interface and simultaneously opening the terminal, which shows log data of all contract deployments and transactions.
 
 <img src="/solidity/remix/lesson-2/functions/deployment_address.png" style="width: 100%; height: auto;">
 
-If we open the terminal we can see that deploying the contract has just sent a (simulated) transaction on the Remix environment. You can check out the transaction details such as status, hash, from, to and gas.
+If we open the terminal we can see that deploying the contract has just sent a simulated transaction on the Remix environment. You can check out its details such as status, hash, from, to and gas.
 
 > [!IMPORTANT]
-The process of sending a transaction is the same for deploying a contract and for sending Ethers. The only difference is that inside the *data* field of the deployment transaction, is placed the machine-readable code of the deployed contract.
+The process of sending a transaction is the **same** for deploying a contract and for sending Ethers. The only difference is that the machine-readable code of the deployed contract is placed inside the *data* field of the deployment transaction.
 
 ### Making Transactions with the Store Function
 
-You can now send a transaction to your `store` function to change the variable `favoriteNumber`: you can insert a number and press the `store` button. A transaction is initiated and after some time, the transaction's status will change from pending to complete.
+Let's send a transaction to the `store` function to change the value of the variable `favoriteNumber`: you can insert a number and press the `store` button in Remix. A transaction is initiated and after some time, its status will change from pending to complete.
 
-It becomes visible from the accounts section that your ETH are being consumed every time you submit a transaction. When the state of the blockchain is modified (e.g. deploying a contract, sending ETH, ..), it's done by sending a transaction that consumes gas. The `store` function is consuming a lot more ETH than just sending ETH between accounts: increasing gas costs are related (but not only) to the length of the code.
+From the accounts section, it becomes visible that ETH is being consumed every time a transaction is submitted. When the state of the blockchain is modified (e.g. deploying a contract, sending ETH, ..), is done by sending a transaction that consumes gas. Executing the `store` function is more expensive than just transferring ETH between accounts, with the rising gas expenses primarily associated (though not exclusively) with the code length.
 
 ### Checking the stored value
 
-The contract is missing a way to check if the number has been updated. Because now we cannot be sure if the transaction **actually** changed the state variable.
+👓 This contract is missing a way to check if the number has been updated. Now we can store a value but we cannot be sure if the transaction **actually** changed the state variable.
 
-The visibility of the `favoriteNumber` variable, is defaulted to internal thereby not allowing outside contracts and people to view it. Appending the `public` keyword next to a storage or state variable will automatically change its visibility and it will generate a getter function.
+The default visibility of the `favoriteNumber` variable is internal, disallowing outside contracts and people from view it. Appending the `public` keyword next to this variable will automatically change its visibility and it will generate a getter function.
 
 ```solidity
 uint256 public favoriteNumber;
@@ -94,35 +94,29 @@ If a visibility specifier is not given, it defaults to `internal`.
 
 ## Pure and View keywords
 
-In the case of retrieving a value from the blockchain without modification, Solidity provides `view` and `pure` keywords.
-
-Disallows any modification of state. A function marked as `view` is used when we simply need to read the state from the blockchain. I will not send a transaction and it will then not modify the blockchain. It corresponds to the blue buttons in the Remix interface. This function will not send a transaction but it will make a call.
-
-The `return` keyword will specify what is this function giving back.
+The terms `view` and `pure` are used when the function will read values from the blockchain without altering its state. Such functions will not initiate transactions but rather make calls, represented as blue buttons in the Remix interface. A `pure` function will prohibit any reading from the state or storage.
 
 ```solidity
 function retrieve() public view returns(uint256){
     return favoriteNumber;
 }
 ```
-
 <img src="/solidity/remix/lesson-2/functions/blue-button.png" style="width: 50%; height: auto;">
 
-
-A `pure` function, on the other hand, disallows any reading from the state or storage or any modification of the state.
+The `return` keyword will specify the value type(s) a function returns.
 
 ```solidity
 function retrieve() public pure returns(uint256){
     return 7;
+}
 ```
 
 > [!WARNING]
-While calling `view` or `pure` functions doesn’t require gas, they do require it when called by another function that modifies the state or storage through a transaction (e.g. calling `retrieve` inside `storage`). This cost is called **execution cost** and it will add up to the transaction cost.
+While calling `view` or `pure` functions doesn’t tipically require gas, they do require it when called by another function that modifies the state or storage through a transaction (e.g. calling the function `retrieve` inside the function `storage`). This cost is called **execution cost** and it will add up to the transaction cost.
 
-## Understanding the Scope of a Variable
+## The scope of a variable
 
-The scope of a variable is determined by the curly braces in which it is declared. A variable can only be accessed within its declared scope. Therefore, if you need to access a variable on different functions, you should declare it outside the functions but inside the contract.
-
+The scope of a variable is defined by the curly braces enclosing its declaration. A variable is accessible only within its defined scope. To access the same variable across different functions, it should be declared inside the scope of the main contract.
 
 ```solidity
 function store(uint256 _favoriteNumber) public {
@@ -132,22 +126,20 @@ function store(uint256 _favoriteNumber) public {
 
 function something() public {
    testVar = 6; // will raise a compilation error
-   favoriteNumber = 7; // this can be accessed because it's in the contract scope
+   favoriteNumber = 7; // this can be accessed because it's in the main contract scope
 }
 ```
 
 ## Conclusion
 
-In this walk-through, you have learnt how to build a function in Solidity, define its visibility, and understand how it operates on values within a smart contract. You have also explored different transactions and how they consume gas. By understanding functions and their operations, you can take the next step in creating and deploying sophisticated smart contracts on the Ethereum blockchain.
-
-Let's keep learning!
+In this lesson, you have learned how to build a function in Solidity, define its visibility, and understand how it operates on values within a smart contract. You have also explored different transactions their gas consumption. Let's continue learning!
 
 ## 🧑‍💻 Test yourself
-1. 📕 Describe four function visibility keywords and how they affect the code.
-2. 📕 What's the difference between `view` and `pure`?
-3. 📕 In which case a pure function will cost gas?
-4. 📕 What's a variable scope?
-5. 🧑‍💻 Write a contract that contains 3 functions:
+1. 📕 Describe four function visibility keywords and their impact on the code.
+2. 📕 Distinguish between `view` and `pure`.
+3. 📕 In which circumnstances a pure function will incur gas costs?
+4. 📕 Explain variable scope and provide an example of an incorrect scope.
+5. 🧑‍💻 Write a contract that features 3 functions:
     - a view function that can be accessed only by the current contract
     - a pure function that's not accessible within the current contract
     - a view function that can be accessed from children's contracts
