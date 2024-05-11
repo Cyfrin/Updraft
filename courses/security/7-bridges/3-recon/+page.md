@@ -16,7 +16,7 @@ The Boss Bridge repo includes make commands for us!
 make slither
 ```
 
-<img src="../../../../static/security-section-7/3-recon/recon1.png" width="100%" height="auto">
+<img src="/security-section-7/3-recon/recon1.png" width="100%" height="auto">
 
 Oh .. ok, wow, we've got some work to do. We'll .. go through these later 😅
 

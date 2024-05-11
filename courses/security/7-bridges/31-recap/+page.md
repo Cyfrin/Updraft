@@ -16,7 +16,7 @@ Before we recap things, I see I overlooked a tool that could be valuable. Boss B
 
 [**evmdiff**](https://www.evmdiff.com/) Allows you to directly compare two chains and clearly identify their differences. For example, Arbitrum One has a number of additional precompiles that aren't present on Ethereum:
 
-<img src="../../../../static/security-section-7/31-recap1/recap1.png" width="100%" height="auto">
+<img src="/security-section-7/31-recap1/recap1.png" width="100%" height="auto">
 
 Another common difference between chains is op code support - Arbitrum, until recently, didn't support the PUSH0 op code!
 

@@ -8,7 +8,7 @@ _Follow along with the video lesson:_
 
 ### TokenFactory.sol
 
-<img src="../../../../static/security-section-7/9-tokenfactory/tokenfactory1.png" width="100%" height="auto">
+<img src="/security-section-7/9-tokenfactory/tokenfactory1.png" width="100%" height="auto">
 
 Two down, two to go! The next contract we should take a look at is TokenFactory.sol. We should recall from our diagram this is is responsible for deploying L1Token.sol.
 

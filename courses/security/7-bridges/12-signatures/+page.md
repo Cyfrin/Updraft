@@ -132,19 +132,19 @@ To run the required server we can then run:
 
 When can then open `http://localhost:3000` in a browser to access the locally hosted demo. Once set up, you can click on `signatures` in the top right and it should look something like this:
 
-<img src="../../../../static/security-section-7/12-signatures/signatures1.png" width="100%" height="auto">
+<img src="/security-section-7/12-signatures/signatures1.png" width="100%" height="auto">
 
 Fundamentally a message signature takes a message, and hashes it with a user's private key.
 
-<img src="../../../../static/security-section-7/12-signatures/signatures2.png" width="100%" height="auto">
+<img src="/security-section-7/12-signatures/signatures2.png" width="100%" height="auto">
 
 A public key can then be used to verify the signature on a message.
 
-<img src="../../../../static/security-section-7/12-signatures/signatures3.png" width="100%" height="auto">
+<img src="/security-section-7/12-signatures/signatures3.png" width="100%" height="auto">
 
 If the message being verified has been changed, or if the public key doesn't match the signature, a message won't be verified.
 
-<img src="../../../../static/security-section-7/12-signatures/signatures4.png" width="100%" height="auto">
+<img src="/security-section-7/12-signatures/signatures4.png" width="100%" height="auto">
 
 With this understanding of how signatures work refreshed in our minds, we can come back to the MessageHashUtils contract. In order to make messaging and hashes more standardized a few Improvement Proposals have been made and adopted. One of which is [**ERC-191: Signed Data Standard**](https://eips.ethereum.org/EIPS/eip-191).
 
@@ -172,7 +172,7 @@ The standard proposed was that all signed data would follow the format:
 
 In this format the `version` denotes the type and structure of the data being signed.
 
-<img src="../../../../static/security-section-7/12-signatures/signatures5.png" width="100%" height="auto">
+<img src="/security-section-7/12-signatures/signatures5.png" width="100%" height="auto">
 
 The example provided in the ERC does a great job at detailing how this works in practice.
 
