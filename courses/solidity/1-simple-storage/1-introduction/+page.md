@@ -58,6 +58,14 @@ The best way to get the most out of this guide is to **code along**. You're enco
 <img src="/solidity/remix/remix-screenshot.png" style="width: 100%; height: auto;">
 
 
-🏆 By the end of this lesson, you'll have built and deployed your first smart contract to a blockchain. Let's jump right into it!
+After concluding the next lesson, you'll have already built and deployed your first smart contract to a blockchain. Let's jump right into it!
+
+
+## Test yourself
+At the end of each lesson, you will find a *Test Yourself* section. This part will help you reinforce the concepts you just learned and coded about.
+There will be theoretical questions (marked with 📕) as well as coding questions (marked with 👨‍💻).
+
+> [!NOTE]
+> Be sure that you *truly understand* the answers before going on to the next lesson.
 
 [Back to top](#top)
