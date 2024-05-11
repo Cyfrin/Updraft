@@ -83,7 +83,3 @@ If you see a green checkmark, it means your compilation was successful. If there
 1. 📕 What does IDE mean and what are Remix main features?
 2. 📕 What's the keywork `pragma` used for?
 3. 🧑‍💻 Write an empty contract that contains a SPDX License Identifier and compiles with version 0.8.11 or 0.8.13.
-
-
-
-
