@@ -6,16 +6,16 @@ _You can follow along with the video course from here._
 
 ## Solidity Types
 
-Solidity supports several **elementary types** that can be combined to create more complex ones. You can read more about them in the [Solidity documentation](https://docs.soliditylang.org/en/v0.8.20/types.html#types).
+Solidity supports various **elementary types** that can be combined to create more complex ones. You can read more about them in the [Solidity documentation](https://docs.soliditylang.org/en/v0.8.20/types.html#types).
 
-🕵️‍♂️ For now, let's focus on the most commonly used ones:
+🕵️‍♂️ For now, let's focus on the most commonly used:
 
-| Name | Symbol | Value representation |
+| name | symbol | value representation |
 | ---- | ---- | ---- |
 |Boolean |bool|`true` or `false`|
 |Unsigned integer| uint| _unsigned_ whole number (positive) |
 |Integer|int| _signed_ whole number (positive and negative)
-|Address|address| 20 bytes value. An example of an address can be found within your Metamask cccount.
+|Address|address| 20 bytes value. An example of an address can be found within your Metamask account.
 |Bytes|bytes| low-level raw byte data
 
 ## Variables definition in Solidity
@@ -34,7 +34,7 @@ It's possible to specify the number of **bits** used for `uint` and `int`. For e
 
 Strings are equivalent to bytes: they are identically encoded, but designed specifically for text. For this reason, a string can easily be converted into bytes.
 
-The _semicolon_ at the end of each line signifies that a statement is completed. Here you have a list of 
+The _semicolon_ at the end of each line signifies that a statement is completed.
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -55,7 +55,7 @@ contract Simple Storage{
 
 Bytes are a _collection of characters_ written in hexadecimal representation.
 
-```bash
+```solidity
 bytes1 minBytes = "I'm a fixes size byte array of 1 byte";
 bytes32 maxBytes = "I'm a fixes size byte array of 32 bytes";
 bytes dynamicBytes = "I am a dynamic array, so you can manipulate my size";
@@ -67,10 +67,9 @@ Bytes can also be allocated in size (up to `bytes32`). However, bytes and bytes3
 
 ## The contract logic
 
-📋 Let's consider a task involving the storage of favourite numbers for different people.
-We can start storing the variable `favoriteNumber` of type `uint` for this purpose.
+📋 Let's consider a task that asks to store a favourite number for different people. For this purpose, we can start storing the variable `favoriteNumber` of type `uint`:
 
-```bash
+```solidity
 uint256 favoriteNumber;
 ```
 
@@ -80,4 +79,4 @@ uint256 favoriteNumber;
 
 ## Congratulations!
 
-🏆 You've just filled your first smart contract with variables and you explored the fundamental types of variables in Solidity in the process.
+🏆 You've just filled your first smart contract with variables and you explored the fundamental data types in Solidity.
