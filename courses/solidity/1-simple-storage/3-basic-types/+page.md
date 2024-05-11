@@ -67,7 +67,7 @@ Bytes can also be allocated in size (up to `bytes32`). However, bytes and bytes3
 
 ## The contract logic
 
-📋 Let's consider a task that asks to store a favourite number for different people. For this purpose, we can start storing the variable `favoriteNumber` of type `uint`:
+📋 Let's explore a scenario where there is a task involving the storage of a favourite number. For this purpose, we can start storing the variable `favoriteNumber` of type `uint`:
 
 ```solidity
 uint256 favoriteNumber;
