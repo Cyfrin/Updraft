@@ -15,10 +15,10 @@ Solidity supports several **elementary types** that can be combined to create mo
 |Boolean |bool|`true` or `false`|
 |Unsigned integer| uint| _unsigned_ whole number (positive) |
 |Integer|int| _signed_ whole number (positive and negative)
-|Address|address| 20 bytes value. An example of address can be found within your Metamask Account.
+|Address|address| 20 bytes value. An example of an address can be found within your Metamask cccount.
 |Bytes|bytes| low-level raw byte data
 
-## Variables definitions in Solidity
+## Variables definition in Solidity
 
 Variables are just placeholders for **values**. A value can be one **data type** described in the table.  For instance, we could create a Boolean variable named `hasFavoriteNumber`, which would represent whether someone has a favourite number or not (`true` or `false`).
 
@@ -27,6 +27,14 @@ bool hasFavoriteNumber = true; //the variable `hasFavoriteNumber` represents the
 ```
 
 It's possible to specify the number of **bits** used for `uint` and `int`. For example, uint256 specifies that the variable has 256 bits. uint is a shorthand for uint256.
+
+
+> [!NOTE]
+> It's always advisable to be **explicit** when specifying the length of the data type.
+
+Strings are equivalent to bytes: they are identically encoded, but designed specifically for text. For this reason, a string can easily be converted into bytes.
+
+The _semicolon_ at the end of each line signifies that a statement is completed. Here you have a list of 
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -42,13 +50,6 @@ contract Simple Storage{
     bytes32 favoriteBytes32 = "cat";
 }
 ```
-
-> [!NOTE]
-> It's advisable to be explicit when specifying the **length** of the data type.
-
-Strings are equivalent to bytes: they are identically encoded, but designed specifically for text. For this reason, a string can easily be converted into bytes.
-
-The _semicolon_ at the end of each line signifies that a statement is completed.
 
 ## Magic bytes
 
