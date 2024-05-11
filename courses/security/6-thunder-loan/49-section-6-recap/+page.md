@@ -2,6 +2,8 @@
 title: Section 6 - Recap
 ---
 
+_Follow along with the video lesson:_
+
 ---
 
 ### Section 6 - Recap

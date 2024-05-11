@@ -2,6 +2,10 @@
 title: Oracle Manipulation Recap
 ---
 
+_Follow along with the video lesson:_
+
+---
+
 ### Oracle Manipulation Recap
 
 Alright! Let's review everything up to this point, starting from the top.

@@ -2,62 +2,52 @@
 title: Recap
 ---
 
-
+_Follow along with the video lesson:_
 
 ---
 
-# ![Blockchain](https://images.unsplash.com/photo-1560185004-65a33335a867?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8) GUIDE TO WALLET KEY MANAGEMENT, EVM, DIFF AND THE IMPORTANCE OF POST DEPLOYMENT IN BLOCKCHAIN
+### Recap
 
-Hello folks! You're in for an exciting ride as today we'll be diving deeper into the world of blockchain. We've covered a lot, but there's a whole universe waiting to be explored.
+Whew, this feels really good. We've learnt a tonne and you should feel incredibly proud of what you've accomplished (especially those last two write ups you did on your own! 😐). After the next section, I want you to go to [**CodeHawks**](https://www.codehawks.com/) and participate in a competitive audit. Full Stop. You'll have the skills to start applying what you've learnt and begin building real world experience. You need to take that step.
 
-Before we jump into the next section, here's an assignment. Conduct a complete competitive audit. The essence of this exercise is to immerse you in Wallet Key management, which plays a significant role in blockchain.
+### Pause
 
-There's more! We'll then delve into the depths of the Ethereum Virtual Machine (EVM), Yule, Huff and Opcodes. We will close our session with four of verification and formal verification, symbolic execution - a mandatory code review that will boost your understanding of the subject.
+Before we recap things, I see I overlooked a tool that could be valuable. Boss Bridge didn't really demonstrate the differences between chains due to the L2 side being out of scope, but it's important to know that different chains _do_ often behave differently.
 
-Before that, let's quickly touch upon a DeFi Stablecoin and discuss the crucial step of post-deployment.
+[**evmdiff**](https://www.evmdiff.com/) Allows you to directly compare two chains and clearly identify their differences. For example, Arbitrum One has a number of additional precompiles that aren't present on Ethereum:
 
-So let's take a breath, buckle up and review what we have learned so far!
+<img src="../../../../static/security-section-7/31-recap1/recap1.png" width="100%" height="auto">
 
-## A Deep Dive into EVM Diff
+Another common difference between chains is op code support - Arbitrum, until recently, didn't support the PUSH0 op code!
 
-Did I mention we will be exploring EVM Diff also? It's a fantastic tool that allows for comparison of different chains, say Ethereum to Optimism or Arbitrum, highlighting the nuances between these chains.
+Use this tool in your security reviews and you'll be better prepared to identify issues which arise as a product of chain incompatibility. Now back to our regularly scheduled programming...
 
-Through EVM Diff, you can observe how the chain IDs, names, block explorers vary, and how precompiles work differently. This makes it a constructive tool to test compatibility across various EVM compatible chains.
+### Unpause
 
-![](https://cdn.videotap.com/d3RNbllZQnlENKKuA1Rp-72.28.png)
+Ok, let's quickly recap all the topics we covered in this section.
 
-Now, it's not all smooth sailing. There might be some hiccups, like finding some precompiles in Arbitum which are absent in EVM or Arbitum’s different transaction and signature types. Plus, their Opcodes function a bit differently, with some key Opcodes like Push Zero being unsupported on Arbitrum.
+To start, we were introduced to even more tooling to assist in our security reviews. Tools such as:
 
-## Harnessing the Power of Artificial Intelligence
+- evmdiff (😉): a powerful browser based tool for comparing the details and compatibilities of different blockchains.
+- AI: We didn't explicitly cover using AI, but AI is pretty pervasive in the space these days. Find a model you like, ChatGPT, Phind, Claude - you should be using AI.
+- [**"The Hans" Checklist**](https://solodit.xyz/checklist): a systematic approach to security reviews whereby a literal exhaustive checklist is applied to a protocol, to leave no stone unturned. Check it out on [**Solodit**](https://solodit.xyz/).
 
-![](https://cdn.videotap.com/swSuUGyJFrnTQu8g4kzs-104.41.png)
+We learnt about precompiles, like `ecrecover` and the part it plays in the signing of transactions. We saw through our [**Polygon case study**](https://www.youtube.com/watch?v=QdIG7TfjUiM) the potentially disasterous effects of overlooking precompiles and how a white hat profited $2.2 million for finding the bug.
 
-We haven’t delved too much into AI yet, but it's worth mentioning its relevance especially for the crypto enthusiast. Use AI, like Chat GPT, Elon Musk's new 'Find, Use Grok' to simplify things in blockchain. It can be a helpful tool when decoding intricate patterns or asking pertinent questions.
+In addition to this we dove deep into signatures, how they work and the vulnerabilities possible such as `Signature Replay Attacks`. We learnt the importance of restricting the use of signatures put on chain through a `nonce` or `deadline` to protect against their repeated use.
 
-In our roadmap, we have upcoming plans for an AI helper for [Cyfrin Updraft](https://updraft.cyfrin.io) that will be a game-changer. So, that's something to look forward to!
+We learnt that different blockchain are different! Surpising, I know! `EVM Equivalency` is not `EVM Compatibility`. We outlined a [**case study**](https://medium.com/coinmonks/gemstoneido-contract-stuck-with-921-eth-an-analysis-of-why-transfer-does-not-work-on-zksync-era-d5a01807227d) where overlooking this on zkSync resulted in 921 ETH being stuck because `transfer()` wouldn't work!
 
-## The Importance of Checklist: A Lesson from Tenderly and The Hans
+And, in the process we identified a bunch of new vulnerabilites like `gas bombs`, `unlimited minting`, `centralization` and the risks of `arbitrary code`. We learnt **a lot**.
 
-Yes, the age-old practice of running through checklists is crucial, even in something as modern as blockchain.
+One thing we didn't cover with as much depth was the actual writing of the findings. This is very much intentional. I'm trying to wean you off the hand holding so that you're able to perform reviews solo, confident in your ability to spot all these new exploits in your repertoire.
 
-Although we didn’t discuss [Tenderly](https://tenderly.co/), it's a notable tool in this domain. Our focus was on the lessons from 'the Hans' stressing on the essentiality of having a checklist. These lists keep you on track, enabling a methodical approach to your manual review process.
+Another thing we actually didn't cover is the myriad of specific example of bridge hacks that have occured. Hacks like `Ronin`, `Poly Network`, `Nomad`, `Wormhole` - these are $100 Million + hacks. I highly encourage you to familiarize yourself with them, though to be frank - most of them boil down to: **_Centralization is bad_**.
 
-## Understanding Precompiles, Private Keys and Signatures
+### Wrap Up
 
-We mentioned polygon precompile during our case study, emphasizing on how crucial it is to cross-verify and how failing to do so can be costly.
+Whew, another section down. Again - be proud, take a break, pat yourself on the back. You've earned it.
 
-We've delved into the concept of public and private keys and how these signatures work on-chain. The importance of nonce in signature replays was discussed - they work as a one-time pass for usage ensuring your signatures don't get misused.
+In the next lesson I'll have some additional exercises for you to test your skills with before moving onto the next and final section of this course [**`MEV & Governance`**](https://updraft.cyfrin.io/courses/security/mev-and-governance/introduction).
 
-We touched on several critical aspects, like undertaking low-level calls and dealing with the sign in it, and also brushed up on L1s and L2s.
-
-![](https://cdn.videotap.com/wx8Rvhp7nAsmP3hocQLb-200.78.png)
-
-By now, you should be competent enough to write your own Proof of Concepts (POCs). The ball is in your court!
-
-## Historic Bridge Hacks - Ronan, Polly Nomad and Wormhole
-
-We intentionally didn't touch upon these major blockchain hacks. Each of these hacks had a devastating effect, with losses running into hundreds of millions. However, they were mainly due to centralized processes, rather than any significant bug.
-
-Reading [Rekt.news](https://www.rekt.news/) articles about these hacks will help you comprehend the magnitude of these events. The rise of protocols like chainlink CCIP is to address these vulnerabilities, aiming to diminish our reliance on centralized technology.
-
-This is a lot to absorb, but remember, the world of crypto and blockchain is a non-stop learning journey. So keep exploring and evolving.
+Let's Gooooo! 🚀

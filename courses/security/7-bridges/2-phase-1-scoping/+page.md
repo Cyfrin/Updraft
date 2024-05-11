@@ -1,63 +1,119 @@
 ---
-title: Phase 1: Scoping
+title: Phase 1 - Scoping
 ---
 
 _Follow along with the video lesson:_
 
-
-
 ---
 
-# Kick-starting our Security Audit: The Boss Bridge Project Case Study
+### Phase 1 - Scoping
 
-In this extensive blog post, we're going to dive into the world of security auditing, using an example project: Boss Bridge. We'll begin in a familiar place, assuming you've just downloaded the project through GitHub, opened a fresh VS Code window, and you're ready to explore.
+Ok, let's get started with the scoping phase of Boss Bridge. We'll start again with cloning a copy of the repo locally and navigating to it in VS Code.
 
-## Getting Started: The Importance of Pre-boarding
+```bash
+git clone https://github.com/Cyfrin/7-boss-bridge-audit
+cd 7-boss-bridge-audit
+code .
+```
 
-When auditing any project’s codebase, a key step in your preparation should be notetaking: scribbling down your thoughts, ideas and key points in your 'notes' section or equivalent. Think of it as your own personal checkpoint system.
+### README: Scope
 
-As you delve further into the codebase, your entity list should grow into a robust compilation. This helps keep track of vulnerabilities, concepts to revisit, and potential threat vectors that could minimise attacks. Just like a detective unravelling the clues, your notes provide the foundation of a thorough investigation.
+We've 4 contracts within `src`, but let's start with the [**README**](https://github.com/Cyfrin/7-boss-bridge-audit/blob/main/README.md) and get a better idea of our scope. There's a specific section for `Audit Scope Details`.
 
-## Understanding the project scope
+    ## Audit Scope Details
 
-Once you've downloaded the code, the next step is to determine the overall project scope. Begin by investigating the 'src' folder, opening the README file, and understand its core facets.
+    - Commit Hash: 07af21653ab3e8a8362bf5f63eb058047f562375
+    - In scope
 
-![](https://cdn.videotap.com/Z6FwLQhDRCyW6ZPk1OQ4-80.11.png)
+    ```
+    ./src/
+    #-- L1BossBridge.sol
+    #-- L1Token.sol
+    #-- L1Vault.sol
+    #-- TokenFactory.sol
+    ```
+    - Solc Version: 0.8.20
+    - Chain(s) to deploy contracts to:
+    - Ethereum Mainnet:
+        - L1BossBridge.sol
+        - L1Token.sol
+        - L1Vault.sol
+        - TokenFactory.sol
+    - ZKSync Era:
+        - TokenFactory.sol
+    - Tokens:
+        - L1Token.sol (And copies, with different names & initial supplies)
 
-To determine the full extent of the project, you'll need to scrutinize the audit scope details particularly. Here, you'll uncover details of the commit hash, the contracts and tokens, any unusual behaviors, and even the expected deployment chains.
+Looks like all 4 contracts are within scope of this review, great! The protocol has also detailed some compatibilities for us, which will be very important.
 
-### Holler Out for More Information
+> **Note:** We'll be skipping over the `onboarding process` and the back and forth with the protocol in this section, but remember if things were unclear, or if something was missing from the provided documentation, absolutely work with the protocol for clarification.
 
-Don't hesitate to reach out if you need additional data. Developing a comprehensive understanding of this project is pivotal, and while speed is critical, you want to ensure you aren't missing critical elements. Request more diagrams, data, and subsequent supporting information as needed.
+### README: Compatibilities
 
-### An Overview of the Contracts
+The provided solc version looks great, fairly current. We're also provided a number of chains to deploy to and which contracts will be deployed to each respective chain.
 
-From our initial study, we gather that our contracts will deploy to the Ethereum Mainnet. Interestingly, we're deploying a new entity, `tokenfactory.sol`, for the first time to ZKsync era.
+- Ethereum Mainnet: - L1BossBridge.sol - L1Token.sol - L1Vault.sol - TokenFactory.sol
+- ZKSync Era:
+  - TokenFactory.sol
 
-![](https://cdn.videotap.com/SYHd0AD9SPTDOeE3c8j6-148.78.png)
+It looks like only a single ERC20 token is supported, `L1Token`, so it should be easy enough to check it for oddities.
 
-You will notice several roles or 'actors', one of which has the authority to pause and unpause the bridge in event of an emergency - a common design pattern known as the Emergency Stop pattern.
+### README: Actors/Roles
 
-## Acknowledging known issues
+The Boss Bridge devs have detailed for us the Actors and Roles within the protocol. We can see `Bridge Owner` clearly as a red flag to the centralization risks we'll be approaching in this review.
 
-From the outset, it's evident that there's an element of centralization with the project. This sort of authority vested with an individual or a single entity has its own pros and cons. On one hand, it's beneficial for effective and quick resolution of discrepancies. On the other, it tends to undermine the fundamental principle of blockchain's decentralization. However, such centrality aspects could be disregarded in a competitive audit.
+```
+## Actors/Roles
 
-Upon further review, we notice that zero-address checking seems to be intentionally disabled, presumably to save gas. Also, there are some magic numbers that, instead of being recognized as constants, have been distinguished as literals.
+- Bridge Owner: A centralized bridge owner who can:
+  - pause/unpause the bridge in the event of an emergency
+  - set `Signers` (see below)
+- Signer: Users who can "send" a token from L2 -> L1.
+- Vault: The contract owned by the bridge that holds the tokens.
+- Users: Users mainly only call `depositTokensToL2`, when they want to send tokens from L1 -> L2.
+```
 
-Despite these hiccups, it's clear that the protocol has a decent understanding of 'weird ERC20s'. They've incorporated `make slither` and `make aderyn` into the codebase as tools, key signs of protocol's awareness towards security.
+### README: Known Issues
 
-## Checking Code Coverage
+Finally, the README outlines some of the vulnerabilities of Boss Bridge that the team is already aware of. As such, these items wouldn't be valid in a competitive audit, but in a private review you may absolutely still call these out in your final report.
 
-To get an idea of the code coverage, we need to install the necessary libraries and run `forge coverage`. While our coverage might not be exhaustive, it could be considerably better. The `tokenfactory` is fully covered. However, the `vault` entity misses out entirely, which might result in several attack vectors.
+```
+## Known Issues
 
-![](https://cdn.videotap.com/gS0LrDyx1XBys7mxdaUB-240.33.png)
+- We are aware the bridge is centralized and owned by a single user, aka it is centralized.
+- We are missing some zero address checks/input validation intentionally to save gas.
+- We have magic numbers defined as literals that should be constants.
+- Assume the `deployToken` will always correctly have an L1Token.sol copy, and not some [weird erc20](https://github.com/d-xo/weird-erc20)
+```
 
-In such scenarios, stateful fuzzing test suites could compensate for the shortcoming in manual reviews. At the moment, this approach is increasingly becoming a standard requirement for security.
+### Coverage
 
-## Running Solidity Metrics
+Alright, things look pretty good. Let's see how thorough the test coverage on Boss Bridge is currently.
 
-Finally, as part of your project scope, remember to run a couple of tools – even if it blurs into vulnerability identification. This instance of the project has a complexity score of 106 and 101 lines of code – nearly half the size of the Thunder Loan project, which makes it quite simple to work through.
+```bash
+forge coverage
+```
 
-With this comprehensive understanding of the README and documentation, it's time to start your reconnaissance. From here on, with the context you've gained from the project scope, you're ready to probe further and uncover potential vulnerabilities and exploits.
+<img src="../../../../static/security-section-7/2-phase-1-scoping/phase-1-scoping1.png" width="100%" height="auto">
 
-Happy auditing!
+Ok, ok.. I see you Boss Bridge. This team clearly has _some_ knowledge about security best practices. We've got some room for improvement though with a couple missing functions/branches. We'll have to take a closer look at this test suite for sure.
+
+Just by viewing the folders we can see they're missing fuzz tests, maybe they don't really understand their invariants?
+
+Invariant testing is becoming a staple of security reviews and stateful fuzzing test suites will always be needed by protocols. They bring so much value to those projects that lack them. Make this skill one of your focuses to strengthen.
+
+### Solidity Metrics
+
+Before moving on we should definitely acquire a sense of the size of this code base and how complex it is. Time for our old friend `Solidity Metrics`.
+
+Right-click the `src` folder and select `Solidity: Metrics`.
+
+<img src="../../../../static/security-section-7/2-phase-1-scoping/phase-1-scoping2.png" width="100%" height="auto">
+
+We can see this code base is quite a bit smaller and arguably less complex than some we've been over already. It's about half the size of ThunderLoan!
+
+### Wrap Up
+
+Ok! With the protocol onboarded and some preliminary scoping complete, let's dip our toes in the code with some Recon, in the next lesson.
+
+See you there!

@@ -1,57 +1,35 @@
 ---
-title: Exploit: Gas Bomb
+title: Exploit: Exploit - Gas Bomb
 ---
 
-
+_Follow along with the video lesson:_
 
 ---
 
-# Demystifying Gas Bomb and Other Blockchain Vulnerabilities
+### Exploit - Gas Bomb
 
-The world of blockchain is buzzing with fascinating features and vulnerabilities. One such intriguing element I'd like to shed some light on is the phenomena known as the gas bomb. This seemingly complex occurrence has sparked much debate, and I hope this post will provide you with some clarity on what exactly it is, how it works, and the kind of impact it can have.
+One more to go! This issues is actually _also_ found within `sendToL1` (this function is a mess).
 
-## What is a Gas Bomb Anyway?
+So, what is a `gas bomb`?
 
-A gas bomb in blockchain terms is a low-level call where Solidity, the smart contract programming language, and the Ethereum Virtual Machine (EVM), the runtime environment, struggle to estimate the amount of computational effort (gas) needed to execute certain transactions.
+In essence it's a circumstance where an unexpectedly large amount of gas is suddenly required to execute the function of a protocol.
 
-![](https://cdn.videotap.com/ffmuYOJbZ3iqYxllhGBD-5.94.png)
+In `Boss Bridge`, we see this as a product of taking arbitrary message data _again_.
 
-> **Note**: Gas refers to the computational effort required to execute an operation in the Ethereum network.
+```js
+function sendToL1(uint8 v, bytes32 r, bytes32 s, bytes memory message) public nonReentrant whenNotPaused {...}
+```
 
-A malicious user can exploit this to trick the network into allocating absurd amounts of gas, and thereby charging other network participants excessively to execute a function.
+Solidity and the EVM have a hard time estimating the gas costs of a situation like this. In the past, malicious actors have sent message data which cost **_insane_** amounts of gas to execute, costing the caller a tonne of money, or in some cases bricking a protocol.
 
-## Understanding the Implications
+Some people just want to watch the world burn.
 
-What's interesting about gas bombs is how they're used in the network. For instance, while some users might employ this method to gain profits, others seem to have darker motivations. Often, these users utilise this exploit for seemingly no tangible benefits. Their motivations? To disrupt the system and cause chaos.
+### Wrap Up
 
-> "Some people just want to watch the world burn."
+I'm going to encourage you once more to write up these two findings, write the proof of code and go through the motions.
 
-It's a poignant phrase that well encapsulates the mentality of these malicious actors. They create chaos without expecting any monetary gain in return. Their goal isn’t to profit, but simply to disrupt the system - no rhyme, no reason, just pure anarchy.
+Work those muscles to build your experience and familiarity.
 
-![](https://cdn.videotap.com/l0jIWaD8hhNflUJypCfy-22.29.png)
+When you're done, I'll see you in the next lesson to recap everything we've learnt!
 
-## Ready To Dive Deep?
-
-If by now, you're wrapped in a whirlwind of questions, I'm glad! Because what's learning without a little bit of challenge? But, if you're wondering what the hoo-ha I am talking about, now would be a good time to pause and take a breather.
-
-I encourage you to delve in, try to construct the proof of code for the vulnerabilities we discussed, and even to try your hand at crafting your gas bombs.
-
-To get started, consider:
-
-1. Studying the structure of a low-level call in Solidity and the EVM,
-2. Understanding the significance of gas in the Ethereum network,
-3. Exploring how it's possible for the network to be fooled into allocating excess gas,
-4. Unveiling the motivations of malicious actors, and
-5. Learning how to protect yourself against such exploits.
-
-To aid you in your quest, I've left a plethora of resources and exciting ensemble of ideas for you to navigate through in our [GitHub repo](https://github.com/Cyfrin/security-and-auditing-full-course-s23).
-
-![](https://cdn.videotap.com/IqGVeU9yKyYfHHDeOCnY-41.6.png)
-
-## Never Stop Learning
-
-Now, we've been walking through these attacks, learning about them, discussing many proofs of code, and a lot of low-level calls. Remember, we are only at the beginning of our journey. Similar to any other journey you undertake, remember that what matters is your perseverance.
-
-> "Pretty soon, you're going to need to start jogging or running."
-
-The world of Blockchain is massive and ever-evolving. As we make our way through, be ready to pick up speed and adrenaline, from a casual amble to a determined sprint. I hope you are as excited as I am to continue this journey. Let's learn, explore, and grow together.
+See you soon! (DO THE WRITE UPS)

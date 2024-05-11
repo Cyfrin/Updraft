@@ -2,6 +2,10 @@
 title: ThunderLoan.sol - Repay and Final Functions
 ---
 
+_Follow along with the video lesson:_
+
+---
+
 ### ThunderLoan.sol - Repay and Final Functions
 
 We'll wrap up our first pass of `ThunderLoan.sol` in this lesson! We've only got a few functions remaining, so let's get started straight away with reviewing the `repay` function.

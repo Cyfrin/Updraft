@@ -2,57 +2,171 @@
 title: EIP-712
 ---
 
-
+_Follow along with the video lesson:_
 
 ---
 
-# Untangling the Beauty of Smart Contracts: A Dive Into EIP 712 Structured Data
+### EIP-712
 
-Smart contracts have revolutionized the way we do transactions and communicate data in the blockchain arena. At the crux of it all lies `MessageHashUtils`, a fundamental tool that greatly simplifies our interactions with these contracts. In this post, we'll take a closer look at the EIP 712 and EIP 191 hash functions, and demonstrate their implementation in an actual contract.
+To bring things back to Boss Bridge, for a moment, `MessageHashUtils`, is a library that ultimately assists developers in managing different standard messaging formats. One of which is ERC-191, which we discussed, and the other is [**EIP-712**](https://eips.ethereum.org/EIPS/eip-712).
 
-Remember, smart contracts and untangling their complexities might feel intimidating, but once you get the hang of it, it's an engaging puzzle worth solving. So let's get started!
+EIP-712 introduced a standardized way to handle hashing and signing typed and structured data.
 
-## Breaking Down EIP 712 and EIP 191
+In a practical sense this has transactions formatting data in such a way that rather than messages being a bytesstring, they could be parsed into meaningful, human readable information.
 
-Introducing, the **EIP 712** and **EIP 191**! These are hashing and signing standards for Ethereum smart contracts, making the signing process easier for users.
+From this:
 
-Before these standards, users were just told 'hey, sign this message,' and a cryptic byte string was shown. With the advent of EIP 712, Ethereum made user experience way better with formatted requests: 'hey, sign this message: from, to, contents'.
+<img src="../../../../static/security-section-7/14-eip-712/eip-7121.png" width="100%" height="auto">
 
-Are you a fan of typed, structured data instead of just byte strings? Well, EIP 712 is perfect for you!
+To this:
 
-For those who want to do a deep dive, you can read more about the implementation of EIP 712 and EIP 191 [here](https://eips.ethereum.org/EIPS/eip-712) and [here](https://eips.ethereum.org/EIPS/eip-191) respectively.
+<img src="../../../../static/security-section-7/14-eip-712/eip-7122.png" width="100%" height="auto">
 
-![](https://cdn.videotap.com/Q9EBgPOu5axhNmcCfrNw-49.3.png)
+### EIP-712 Example
 
-## Working with EIP 712: An Example
+I've included an example contract, in the [**GitHub Repo for this course**](https://github.com/Cyfrin/security-and-auditing-full-course-s23/blob/main/eip712hashing.sol), which demonstrates how EIP-712 is meant to be employed. Let's take a look!
 
-To illustrate how to work with EIP 712, let's look at a simple example. We've defined a struct `Mail`, with struct `Person`(from, to) and string contents. This is our structured data. After this, we can break the signed message into its essential components - `V`, `R`, and `S`, and verify this signed data using the `verify` function from the EIP 712 hashing contract (refer to the [github repo](https://github.com/Cyfrin/security-and-auditing-full-course-s23)).
+<details>
+<summary>eip712hashing.sol</summary>
 
-![](https://cdn.videotap.com/3vXpOBtPGNOYDzTe7xew-92.43.png)
+```js
+pragma solidity ^0.4.24;
 
-## Verifying the Magic: EIP 712 Verification
+contract Example {
+    struct EIP712Domain {
+        string name;
+        string version;
+        uint256 chainId;
+        address verifyingContract;
+    }
 
-Now that we've signed the data, how do we verify it?
+    struct Person {
+        string name;
+        address wallet;
+    }
 
-The `ECRRecover` function of Solidity comes in handy here. The function hashes the data into a format called a 'digest'. The `ECRRecover` then checks whether the 'from' component of the message is correct using specific input parameters.
+    struct Mail {
+        Person from;
+        Person to;
+        string contents;
+    }
 
-> Don't miss out on learning more about how important `ecrecover` is by checking out the Solidity documentation [here](https://docs.soliditylang.org/en/v0.8.23/smtchecker.html#function-calls).
+    bytes32 constant EIP712DOMAIN_TYPEHASH =
+        keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
 
-NOTES
+    bytes32 constant PERSON_TYPEHASH = keccak256("Person(string name,address wallet)");
 
-1. The digest is essentially the hashed data put into a specific format.
-2. Breaking the signed message into `V`, `R`, `S` components forms the input for `ecrecover`.
+    bytes32 constant MAIL_TYPEHASH =
+        keccak256("Mail(Person from,Person to,string contents)Person(string name,address wallet)");
 
-You can explore a bit more about this part with a practical example in the `Example.sol` contract in the course's GitHub repository.
+    bytes32 DOMAIN_SEPARATOR;
 
-![](https://cdn.videotap.com/3Bx9eDqrngeXdafn4LDv-197.19.png)
+    constructor() public {
+        DOMAIN_SEPARATOR = hash(
+            EIP712Domain({
+                name: "Ether Mail",
+                version: "1",
+                chainId: 1,
+                // verifyingContract: this
+                verifyingContract: 0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC
+            })
+        );
+    }
 
-## Let's Watch a Mistake: Polygon Case Study
+    function hash(EIP712Domain eip712Domain) internal pure returns (bytes32) {
+        return keccak256(
+            abi.encode(
+                EIP712DOMAIN_TYPEHASH,
+                keccak256(bytes(eip712Domain.name)),
+                keccak256(bytes(eip712Domain.version)),
+                eip712Domain.chainId,
+                eip712Domain.verifyingContract
+            )
+        );
+    }
 
-Ordinarily, low-level signature signing seems like a tedious task. But here's an interesting case study on how forgetting to double-check a precompiled `ECRRecover` function return value led to an exploitable vulnerability on Polygon...
+    function hash(Person person) internal pure returns (bytes32) {
+        return keccak256(abi.encode(PERSON_TYPEHASH, keccak256(bytes(person.name)), person.wallet));
+    }
 
-![](https://cdn.videotap.com/BjhKxp4Deaz9YZi3bwyj-215.68.png)
+    function hash(Mail mail) internal pure returns (bytes32) {
+        return keccak256(abi.encode(MAIL_TYPEHASH, hash(mail.from), hash(mail.to), keccak256(bytes(mail.contents))));
+    }
 
-## Wrapping Up
+    function verify(Mail mail, uint8 v, bytes32 r, bytes32 s) internal view returns (bool) {
+        // Note: we need to use `encodePacked` here instead of `encode`.
+        bytes32 digest = keccak256(abi.encodePacked("\x19\x01", DOMAIN_SEPARATOR, hash(mail)));
+        return ecrecover(digest, v, r, s) == mail.from.wallet;
+    }
 
-So that's a quick run-through on `EIP 712` and `EIP 191`, two important specifications that make handling and signing Ethereum smart contracts a breeze. Though it might seem a little complex, with a bit of practice, you'll find it's not so scary after all! Don't forget to check out the next part where we dive into a Polygon case study. Happy coding!
+    function test() public view returns (bool) {
+        // Example signed message
+        Mail memory mail = Mail({
+            from: Person({name: "Cow", wallet: 0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826}),
+            to: Person({name: "Bob", wallet: 0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB}),
+            contents: "Hello, Bob!"
+        });
+
+        uint8 v = 28;
+        bytes32 r = 0x4355c47d63924e8a72e509b65029052eb6c299d53a04e167c5775fd466751c9d;
+        bytes32 s = 0x07299936d304c153f6443dfa05f40ff007d72911b6f72307f996231605b91562;
+
+        assert(DOMAIN_SEPARATOR == 0xf2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f);
+        assert(hash(mail) == 0xc52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e);
+        assert(verify(mail, v, r, s));
+        return true;
+    }
+}
+```
+
+</details>
+
+---
+
+The test function at the bottom of the contract shows how everything ultimately comes together.
+
+```js
+function test() public view returns (bool) {
+    // Example signed message
+    Mail memory mail = Mail({
+        from: Person({name: "Cow", wallet: 0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826}),
+        to: Person({name: "Bob", wallet: 0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB}),
+        contents: "Hello, Bob!"
+    });
+
+    uint8 v = 28;
+    bytes32 r = 0x4355c47d63924e8a72e509b65029052eb6c299d53a04e167c5775fd466751c9d;
+    bytes32 s = 0x07299936d304c153f6443dfa05f40ff007d72911b6f72307f996231605b91562;
+
+    assert(DOMAIN_SEPARATOR == 0xf2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f);
+    assert(hash(mail) == 0xc52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e);
+    assert(verify(mail, v, r, s));
+    return true;
+}
+```
+
+A `Mail` struct is created with our typed and formatted data. The contents of this struct is then hashed with the `from` and `to` data. This is what's being send in our transaction.
+
+```js
+function hash(Mail mail) internal pure returns (bytes32) {
+    return keccak256(abi.encode(MAIL_TYPEHASH, hash(mail.from), hash(mail.to), keccak256(bytes(mail.contents))));
+}
+```
+
+On the other side of a transaction we can then verify this hashed data by leveraging ecrecover and the `v, r, and s` values provided (these come from the `ECDSA algorithm`). The ecrecover precompile returns the wallet which signed the transaction. If this matches our expected `from` address, the message is verified!
+
+```js
+function verify(Mail mail, uint8 v, bytes32 r, bytes32 s) internal view returns (bool) {
+    // Note: we need to use `encodePacked` here instead of `encode`.
+    bytes32 digest = keccak256(abi.encodePacked("\x19\x01", DOMAIN_SEPARATOR, hash(mail)));
+    return ecrecover(digest, v, r, s) == mail.from.wallet;
+}
+```
+
+### Wrap Up
+
+This is complex stuff. Don't be discouraged if it doesn't click for you right away. I encourage you to take the time to read more into signatures and how `ecrecover` works in the verification process. You can read more on `ecrecover` [**here, in the Solidity documentation**](https://docs.soliditylang.org/en/latest/units-and-global-variables.html#mathematical-and-cryptographic-functions).
+
+In the next lesson we'll investigate a case study featuring `Polygon` where an overlooked return value from `ecrecover` wasn't verified and it had dire consequences.
+
+See you soon!

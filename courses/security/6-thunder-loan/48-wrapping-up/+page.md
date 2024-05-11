@@ -2,6 +2,10 @@
 title: Wrapping Up
 ---
 
+_Follow along with the video lesson:_
+
+---
+
 ### Wrapping Up
 
 This time, I'm not going to walk you through the reporting. This section is going to be a challenge I set to you to generate your own PDF report for this `Thunder Loan` section.

@@ -2,6 +2,10 @@
 title: Improving Test Coverage To Find A High
 ---
 
+_Follow along with the video lesson:_
+
+---
+
 ### Improving Test Coverage To Find A High
 
 We have a couple more outstanding questions to consider in our notes from throughout our review.

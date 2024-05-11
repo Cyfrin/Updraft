@@ -2,6 +2,8 @@
 title: Answering Our Questions
 ---
 
+_Follow along with the video lesson:_
+
 ---
 
 ### Answering Our Questions

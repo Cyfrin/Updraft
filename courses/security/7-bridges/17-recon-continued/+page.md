@@ -2,69 +2,132 @@
 title: Recon (continued)
 ---
 
-
+_Follow along with the video lesson:_
 
 ---
 
-# Decrypting OpenZeppelin's ECDSA Utility Library: An In-Depth Look
+### Recon (continued)
 
-In the vast world of smart contracts, a significant part of understanding how everything works involves understanding Elliptic Curve Digital Signature Algorithm (ECDSA) operations. ECDSA is crucial in secure data transactions in these systems. In this article, we will delve deep into OpenZeppelin's ECDSA assembly code, dissecting its content and functions.
+Alright! We went on a bit tangent, but its very important to understand how signatures and signing verification work. This should help us in understanding what MessageHashUtils in L1BossBridge is doing for us.
 
-## Understanding ECDSA and OpenZeppelin
+What that said, we've one more import we should understand, `ECDSA (Elliptic Curve Digital Signature Algorithm)`.
 
-ECDSA and related technologies help sign and validate data. OpenZeppelin is a comprehensive utility library that provides a plethora of functions to cater to these needs. The given transcript discusses two Ethereum functions written in assembly.
+```js
+import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+```
 
-> "These are all basically ways to help sign and validate data. And this is important for us for reasons you'll see in a bit."
+While `MessageHashUtils` essentially handles the formatting of our message/signature data, it's `ECDSA` which handles the actual encryption. Consider the `tryRecover` function:
 
-Following this, we have the ECDSA library, sourced from OpenZeppelin, which focuses on elliptical curve digital signature algorithm operations.
+```js
+/* @dev Returns the address that signed a hashed message (`hash`) with `signature` or an error.
+*/
+function tryRecover(bytes32 hash, bytes memory signature) internal pure returns (address, RecoverError, bytes32) {
+        if (signature.length == 65) {
+            bytes32 r;
+            bytes32 s;
+            uint8 v;
+            // ecrecover takes the signature parameters, and the only way to get them
+            // currently is to use assembly.
+            /// @solidity memory-safe-assembly
+            assembly {
+                r := mload(add(signature, 0x20))
+                s := mload(add(signature, 0x40))
+                v := byte(0, mload(add(signature, 0x60)))
+            }
+            return tryRecover(hash, v, r, s);
+        } else {
+            return (address(0), RecoverError.InvalidSignatureLength, bytes32(signature.length));
+        }
+    }
+```
 
-## ECDSA Implementation: Try Recover Function
+We can learn a lot from this function. For example, we can see that a valid signature length _must be_ `65`. Additionally we can see the types that `v, r, and s` should be, `uint8`, `bytes32` and `bytes32` respectively.
 
-As we progress further into the script, we encounter another core utility `Try Recover`. This function extracts the signature constituents `R`, `S` and `V`— the value components of the signature all housed in a signature with length 65. An understanding of how `Try Recover` operates is significant in achieving signatures and verifications.
+Encourage you to investigate further into the math in this contract and how it handles the determining of signers, if you're interested.
 
-![](https://cdn.videotap.com/Groo7EeK5U7DGEFAK2UT-131.57.png)
+For our purposes, it's enough to understand that `ECDSA` handles the encryption side of message signing and `MessageHashUtils` manages the EIP necessary formatting of the data.
 
-The `Try Recover` function retrieves the address responsible for signing a hashed message with a signature or an error, should that arise.
+It's good to have a high-level understanding of how signatures and signing are handled, we will be going through some examples soon.
 
-## L One Vault &amp; Signatory Examples
+<detail>
+<summary>Spoiler</summary>
 
-Following this, we introduce L One Vault. As part of subsequent steps, we will take you through some signing examples and elaborate on the ins-and-outs of signing.
+There's a bug related to signatures in Boss Bridge 😲
 
-If you're not too familiar with signing or cryptography, I recommend `ChatGPT`.
+</details>
 
-## Deep Diving into the L One Boss Bridge
+### Continuing With Boss Bridge
 
-The `L1BossBridge` contract uses several features, including Safe ERC20, to process ERC20 tokens smoothly. A feature of this contract is that it deals with only a single token— `L1Token.sol`.
+Ok, with our imports well understood, we can continue with our review of L1BossBridge.sol.
 
-![](https://cdn.videotap.com/IbRV6yoOBBUIBRWA1Ic2-191.37.png)
+```js
+contract L1BossBridge is Ownable, Pausable, ReentrancyGuard {
+    using SafeERC20 for IERC20;
 
-The contract also incorporates a deposit limit mechanism that restricts the number of tokens one can deposit. It operates on principles which allow one bridge per token and one vault per token.
+    uint256 public DEPOSIT_LIMIT = 100_000 ether;
+```
 
-```javascript
-// Immutable vault and token declaration
+We see the contract is inheriting `Ownable`, `Pausable` and `ReentrancyGuard`. It's also using `SafeERC20 for IERC20`. Lots of security related considerations here by the developers, love to see it.
+
+We're next declaring a `DEPOSIT_LIMIT` variable, I'm definitely curious as to how and where this is implemented. If you `ctrl+click`, you can see it's using in a conditional statement within the `depositTokensToL2` function.
+
+```js
+function depositTokensToL2(address from, address l2Recipient, uint256 amount) external whenNotPaused {
+        if (token.balanceOf(address(vault)) + amount > DEPOSIT_LIMIT) {
+            revert L1BossBridge__DepositLimitReached();
+        }
+```
+
+Seems easy enough to understand, there's a limit to how many tokens can be deposited. We can add this note for ourselves for context if needed.
+
+```js
 IERC20 public immutable token;
 L1Vault public immutable vault;
+mapping(address account => bool isSigner) public signers;
+
+error L1BossBridge__DepositLimitReached();
+error L1BossBridge__Unauthorized();
+error L1BossBridge__CallFailed();
+
+event Deposit(address from, address to, uint256 amount);
 ```
 
-![](https://cdn.videotap.com/0eRk64LOa0VdtxK4nKoF-227.25.png)
+The errors are fairly standard, but the state variables reveal and confirm valuable information. We see that `token` and `vault` are immutable, which confirms our previous suspicions that there's to be one `token` and one `vault` per `bridge`. We also see a `signers` mapping. `Signers`, we can see in the `Actor/Roles` section of the protocol README are `Users who can "send" a token from L2 -> L1.`. Setting `signers` we expect to be access controlled, so we should watch out for that.
 
-To facilitate token movement from L1 to L2, certain user accounts are distinguished as signers. The contract also incorporates event triggers and error handling mechanisms to manage prospective situations effectively.
+Next we've the constructor and what seem to be some admintrator functions.
 
-## Contract Approval and Miscellaneous Functions
+```js
+constructor(IERC20 _token) Ownable(msg.sender) {
+    token = _token;
+    vault = new L1Vault(token);
+    // Allows the bridge to move tokens out of the vault to facilitate withdrawals
+    vault.approveTo(address(this), type(uint256).max);
+}
 
-Another key feature to note here is the `vault.approveTo` function where the `L1BossBridge` provides max withdrawal power and approves ERC20s inside the vault.
+function pause() external onlyOwner {
+    _pause();
+}
 
-```javascript
-// Vault Approval to handle withdrawals
-vault.approveTo(address(this), type(uint256).max);
+function unpause() external onlyOwner {
+    _unpause();
+}
+
+function setSigner(address account, bool enabled) external onlyOwner {
+    signers[account] = enabled;
+}
 ```
 
-In addition to these, there are more, straightforward functions like `pause` and `unpause` that can halt and resume contract processes.
+Importantly, we see the constructor approving `L1BossBridge` to move tokens from the `vault` - makes sense given the purpose of the bridge!
 
-Finally, the functionality to set signers is available to the owner only. There is also a provision for disabling an account, prompting necessary questions about handling situations where an account is disabled mid-process.
+We know that this protocol is `pausable`, so we would expect to see the `pause` and `unpause` functions somewhere. Here they are, note that they are crucially modified by `onlyOwner` as they should be.
 
-## Conclusion
+THe next function is setSigner. This is what allows the protocol owner to authorize addresses to moderate the cross chain interaction of the protocol. I find myself thinking adversarially here and wondering..
 
-Through this exploration, we see the ECDSA utility library's vast potential, specifically OpenZeppelin's library. Not only does it allow for more effective and streamlined worksheet functions within the Ethereum environment, but it also provides a window into secure transactions in the blockchain world.
+```js
+// @Audit-Question: What would happen if a signer was disabled mid-flight?
+function setSigner(address account, bool enabled) external onlyOwner {
+    signers[account] = enabled;
+}
+```
 
-Remember, just as the speaker in the transcript alluded, there might be bugs related to signatures, so consider delving into these libraries and try deconstructing them yourself to foster your understanding of how they work.
+Maybe this question won't even apply, but it's good to adopt this mindset when trying to identify how a protocol may be vulnerable to attack.

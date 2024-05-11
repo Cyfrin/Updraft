@@ -2,6 +2,10 @@
 title: A Note On Being Discouraged During The Audit Process
 ---
 
+_Follow along with the video lesson:_
+
+---
+
 ### A Note On Being Discouraged During The Audit Process
 
 <details>
