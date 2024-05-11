@@ -65,7 +65,7 @@ After concluding the next lesson, you'll have already built and deployed your fi
 At the end of each lesson, you will find a *Test Yourself* section. This part will help you reinforce the concepts you just learned and coded about.
 There will be *theoretical* questions (marked with 📕) as well as *coding* questions (marked with 👨‍💻).
 
-> [!NOTE]
+> [!TIP]
 > Be sure that you *truly understand* the answers before going on to the next lesson.
 
 [Back to top](#top)
