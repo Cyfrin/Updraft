@@ -78,5 +78,10 @@ uint256 favoriteNumber;
 > uninitialized uint256 for example, defaults to `0` (zero) and an uninitialized boolean defaults to `false`.
 
 ## Congratulations!
+You've just filled your first smart contract with variables and you explored the fundamental data types in Solidity.
 
-🏆 You've just filled your first smart contract with variables and you explored the fundamental data types in Solidity.
+## 🧑‍💻 Test yourself
+1. 📕 What's the difference between a variable and a value?
+2. 📕 Describe the default value of the following types: bool, uint, int256, string, address, bytes
+3. 📕 How does uint differ from bytes?
+4. 🧑‍💻 Write a smart contract that contains at least five state variables, each with a distinct data type.
