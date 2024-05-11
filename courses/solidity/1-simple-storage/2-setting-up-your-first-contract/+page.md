@@ -25,13 +25,13 @@ The `pragma` directive specifies the *version* of the solidity compiler that you
 You can specify the compiler version(s) in the following ways:
 
 1. use exactly **one** version 
-```js
+```solidity
 pragma solidity 0.8.19; // use only version 0.8.19
 ```
 
 2. use versions that fall **within** a lower and upper range
 
-```js
+```solidity
 // use versions between 0.8.19 and 0.9.0 (excluded)
 pragma solidity ^0.8.19; 
 pragma solidity  >=0.8.19 < 0.9.0;
@@ -44,7 +44,7 @@ Remember to write comments in your code for you to refer to later on.
 
 It's a good practice (even not mandatory) to start your smart contract with an SPDX License Identifier. It helps in making licensing and sharing code easier from a legal perspective.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 ```
@@ -57,7 +57,7 @@ Start by writing your contract using the keyword `contract`. Give it a name, e.g
 
 If you are familiar with Object Oriented Programming Languages, you can think of a *contract* as a concept similar to a *class*.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
@@ -77,6 +77,13 @@ Compiling your code means taking human-readable code and transforming it into co
 If you see a green checkmark, it means your compilation was successful. If there is any error, Remix will point out where the error is, and you can debug it accordingly.
 
 ## Congratulations
-
 🏆 Well done! You just created and compiled your first smart contract in solidity.
+
+## Test yourself
+1. 📕 What does IDE mean and what are Remix main features?
+2. 📕 What's the keywork `pragma` used for?
+3. 🧑‍💻 Write an empty contract that contains a SPDX License Identifier and compiles with version 0.8.11 or 0.8.13.
+
+
+
 
