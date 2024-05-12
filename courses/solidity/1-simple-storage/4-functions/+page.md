@@ -92,9 +92,11 @@ In Solidity, functions and variables can have one of these four visibility speci
 
 If a visibility specifier is not given, it defaults to `internal`.
 
-> [!IMPORTANT] > **Public functions** are visible both internally and externally. On the other hand, **private functions** can only be accessed by the _current contract_. Private does not hide a value; rather, it restricts access.
+> [!IMPORTANT] 
+> **Public functions** are visible both internally and externally. On the other hand, **private functions** can only be accessed by the _current contract_. Private does not hide a value; rather, it restricts access.
 
-> [!IMPORTANT] > **External functions** are only visible externally and are not accessible within the contract. **Internal functions** are accessible only by the current contract and any contract that is inherited from it.
+> [!IMPORTANT]
+> **External functions** are only visible externally and are not accessible within the contract. **Internal functions** are accessible only by the current contract and any contract that is inherited from it.
 
 ## Pure and View keywords
 
