@@ -12,7 +12,7 @@ _Follow along the course with this video._
 
 When developing on a blockchain, you inevitably come across challenges – like managing private keys in plaintext – that can potentially compromise the security of your solution. Third Web Deploy, a product of Third Web, offers a hassle-free and secure solution to such challenges.
 
-Kira from the Third Web team has provided a comprehensive overview of how Third Web can help you effortlessly deploy contracts on any EVM chain that you prefer. For those unfamiliar with the `npx` command, it comes pre-bundled with the node.js and NPM installation. You can refer to our GitHub repository to learn more. Now, let's dive into Kira’s explanation.
+Ciara from the Third Web team has provided a comprehensive overview of how Third Web can help you effortlessly deploy contracts on any EVM chain that you prefer. For those unfamiliar with the `npx` command, it comes pre-bundled with the node.js and NPM installation. You can refer to our GitHub repository to learn more. Now, let's dive into Ciara’s explanation.
 
 <img src="/foundry/17-thirdweb/thirdweb1.png" style="width: 100%; height: auto;">
 
@@ -51,12 +51,12 @@ Once these transactions are completed, your contract is successfully deployed, a
 On successful deployment, the contract address will be visible, which you can copy for future use. The dashboard also offers several features for easy contract management:
 
 - The **Build tab** facilitates effortless front-end interface creation for contracts with easy-to-use hooks in various languages.
-- The **Explorer tab** allows the view and modifies the read and write functions of your contract—essentially, all functions you have in your contract are listed here.
-- You can monitor the events related to your contract and even access the source code.
+- The **Explorer tab** allows you to view the read and write functions on your contract, all functions you have in your contract are listed here.
+- You can also monitor the events related to your contract and even access the source code.
 
 <img src="/foundry/17-thirdweb/thirdweb3.png" style="width: 100%; height: auto;">
 
-In a nutshell, Third Web provides a swift, easy, and secure way to deploy contracts. It's a one-stop-shop for your web three development needs with multiple language SDKs, prebuilt contracts, and a solid infrastructure for all your web three development requirements.
+In a nutshell, Third Web provides a swift, easy, and secure way to deploy contracts. It's a one-stop-shop for your web three development needs with multiple language SDKs, prebuilt contracts, and a solid infrastructure for all your web3 development requirements.
 
 For more information, visit [Third Web](https://www.thirdweb.com/) or refer to their detailed [Documentation](https://docs.thirdweb.com/).
 
