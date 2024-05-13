@@ -6,7 +6,6 @@ _Follow along with this video:_
 
 ---
 
-
 <a name="top"></a>
 ### Introduction
 
@@ -38,15 +37,21 @@ It’s very likely that during your journey you’ll have questions. It’s reco
 
 <img src="/solidity/remix/lesson-2/section-1/lesson-2-section-1-quoute.png" style="width: 100%; height: auto;">
 
+
 ### Setting Up
 
 Before we dive into coding, it is essential that you have access to the code repository and educational resources provided.
 
 Having an account on the following platforms is highly recommended:
 
-- [x] [GitHub](https://github.com/)
-- [x] [Stack Exchange Ethereum](https://ethereum.stackexchange.com/)
-- [x] [Chat GPT](https://openai.com/blog/chatgpt) - Keep in mind to always confirm the accuracy of its responses
+
+Also, I recommend creating accounts on the following platforms if you haven't already:
+
+- [GitHub](https://github.com/)
+- [Stack Exchange Ethereum](https://ethereum.stackexchange.com/)
+- [ChatGPT](https://openai.com/blog/chatgpt) (but remember it might not always provide accurate information).
+- [Google Gemini](https://gemini.google.com/) (Google's Free GPT Alternative that understands youtube videos for summarization, data extraction and content-seek).
+
 
 ### Let's Start Coding!
 
@@ -60,10 +65,6 @@ The best way to get the most out of this guide is to **code along**. You're enco
     <img src="/solidity/remix/lesson-2/section-1/4.png" style="width: 30%; height: auto;">
 </div>
 
-### The Deployment Tool: Remix
-
-<img src="/solidity/remix/remix-screenshot.png" style="width: 100%; height: auto;">
-
 After concluding the next lesson, you'll have already built and deployed your first smart contract to a blockchain. Let's jump right into it!
 
 
@@ -75,4 +76,3 @@ There will be *theoretical* questions (marked with 📕) as well as *coding* que
 > Be sure that you *truly understand* the answers before going on to the next lesson.
 
 [Back to top](#top)
-
