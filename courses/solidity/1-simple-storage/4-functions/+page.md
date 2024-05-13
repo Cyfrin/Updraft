@@ -2,13 +2,15 @@
 title: Functions & Deployment
 ---
 
-_You can follow along with the video course from here._
+_Follow along with this video:_
 
-## Introduction
+---
+
+### Introduction
 
 In the previous lesson, we added a store variable `favoriteNumber` within our first smart contract and explored different solidity types. In this lesson, you'll discover how to update and retrieve this number, while also learning about functions, visibility, deployment, transactions, gas usage and variable scope.
 
-## Building the **store** function
+### Building the **store** function
 
 📋 To store this variable, we need to implement a new **function**. In Solidity, functions - or methods, are portions of code designed to execute specific tasks within the overall codebase. We'll call this new function `store`, and it will be responsible for updating the `favoriteNumber` variable.
 
@@ -39,7 +41,7 @@ contract SimpleStorage {
 The content of the function is placed within the curly brackets `{}`.
 The prefix `_` before `_favoriteNumber` is used to emphasise that the _local_ variable `_favoriteNumber` is a **different** variable from the _state_ variable `favoriteNumber`. This helps prevent potential confusion when dealing with different variables with similar names in complex codebases.
 
-## Deploying the Smart Contract
+### Deploying the Smart Contract
 
 You can test out this function in the Remix VM environment.
 At this stage, you can compile your code by navigating to the compile tab and hitting Compile. After compiling, navigate to the tab **Deploy and Run Transactions** to test your function.
@@ -81,7 +83,7 @@ After compilation and deployment, a button labelled `favoriteNumber` will become
 
 <img src="/solidity/remix/lesson-2/functions/favorite-number.png" style="width: 100%; height: auto;">
 
-## Visibility
+### Visibility
 
 In Solidity, functions and variables can have one of these four visibility specifiers:
 
@@ -98,7 +100,7 @@ If a visibility specifier is not given, it defaults to `internal`.
 > [!IMPORTANT]
 > **External functions** are only visible externally and are not accessible within the contract. **Internal functions** are accessible only by the current contract and any contract that is inherited from it.
 
-## Pure and View keywords
+### Pure and View keywords
 
 The terms `view` and `pure` are used when a function reads values from the blockchain without altering its state. Such functions will not initiate transactions but rather make calls, represented as blue buttons in the Remix interface. A `pure` function will prohibit any reading from the state or storage.
 
@@ -121,7 +123,7 @@ The `return` keyword will specify the value type(s) a function returns.
 > [!WARNING]
 > While calling `view` or `pure` functions doesn’t typically require gas, they do require it when called by another function that modifies the state or storage through a transaction (e.g. calling the function `retrieve` inside the function `storage`). This cost is called **execution cost** and it will add up to the transaction cost.
 
-## The scope of a variable
+### The scope of a variable
 
 The scope of a variable is defined by the curly braces enclosing its declaration. A variable is accessible only within its defined scope. To access the same variable across different functions, it should be declared inside the scope of the main contract.
 
@@ -137,11 +139,11 @@ function something() public {
 }
 ```
 
-## Conclusion
+### Wrap Up
 
 In this lesson, you have learned how to build a function in Solidity, define its visibility, and understand how it operates on values within a smart contract. You have also explored different transactions and their gas consumption. Let's continue learning!
 
-## 🧑‍💻 Test yourself
+### 🧑‍💻 Test yourself
 
 1. 📕 Describe four function visibility keywords and their impact on the code.
 2. 📕 What's the difference between `view` and `pure`?
