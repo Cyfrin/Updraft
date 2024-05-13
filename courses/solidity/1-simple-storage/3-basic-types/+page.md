@@ -2,9 +2,11 @@
 title: Basic Solidity Types
 ---
 
-_You can follow along with the video course from here._
+_Follow along with this video:_
 
-## Solidity Types
+---
+
+### Solidity Types
 
 Solidity supports various **elementary types** that can be combined to create more complex ones. You can read more about them in the [Solidity documentation](https://docs.soliditylang.org/en/v0.8.20/types.html#types).
 
@@ -18,7 +20,7 @@ Solidity supports various **elementary types** that can be combined to create mo
 |Address|address| 20 bytes value. An example of an address can be found within your Metamask account.
 |Bytes|bytes| low-level raw byte data
 
-## Variables definition in Solidity
+### Variables definition in Solidity
 
 Variables are just placeholders for **values**. A value can be one **data type** described in the table.  For instance, we could create a Boolean variable named `hasFavoriteNumber`, which would represent whether someone has a favourite number or not (`true` or `false`).
 
@@ -51,7 +53,7 @@ contract Simple Storage{
 }
 ```
 
-## Magic bytes
+### Magic bytes
 
 Bytes are a _collection of characters_ written in hexadecimal representation.
 
@@ -65,7 +67,7 @@ Bytes can also be allocated in size (up to `bytes32`). However, bytes and bytes3
 
 [Bits and Bytes overview](https://www.youtube.com/watch?v=Dnd28lQHquU)
 
-## The contract logic
+### The contract logic
 
 📋 Let's explore a scenario where there is a task involving the storage of a favourite number. For this purpose, we can start storing the variable `favoriteNumber` of type `uint`:
 
@@ -77,10 +79,10 @@ uint256 favoriteNumber;
 > Every variable in Solidity comes with a _default value_ which may or may not be initialized.
 > uninitialized uint256 for example, defaults to `0` (zero) and an uninitialized boolean defaults to `false`.
 
-## Congratulations!
+### Congratulations!
 You've just filled your first smart contract with variables and you explored the fundamental data types in Solidity.
 
-## 🧑‍💻 Test yourself
+### 🧑‍💻 Test yourself
 1. 📕 What's the difference between a variable and a value?
 2. 📕 Describe the default value of the following types: bool, uint, int256, string, address, bytes
 3. 📕 How does uint differ from bytes?
