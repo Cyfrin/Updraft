@@ -12,7 +12,7 @@ _Follow along the course with this video._
 
 When developing on a blockchain, you inevitably come across challenges – like managing private keys in plaintext – that can potentially compromise the security of your solution. Third Web Deploy, a product of Third Web, offers a hassle-free and secure solution to such challenges.
 
-Kira from the Third Web team has provided a comprehensive overview of how Third Web can help you effortlessly deploy contracts on any EVM chain that you prefer. For those unfamiliar with the `npx` command, it comes pre-bundled with the node.js and NPM installation. You can refer to our GitHub repository to learn more. Now, let's dive into Ciara’s explanation.
+Ciara from the Third Web team has provided a comprehensive overview of how Third Web can help you effortlessly deploy contracts on any EVM chain that you prefer. For those unfamiliar with the `npx` command, it comes pre-bundled with the node.js and NPM installation. You can refer to our GitHub repository to learn more. Now, let's dive into Ciara’s explanation.
 
 <img src="/foundry/17-thirdweb/thirdweb1.png" style="width: 100%; height: auto;">
 
