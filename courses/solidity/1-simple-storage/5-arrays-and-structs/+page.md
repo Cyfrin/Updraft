@@ -2,80 +2,83 @@
 title: Solidity Arrays & Structs
 ---
 
-*Follow along with the course here.*
+_You can follow along with the video course from here._
 
+<a name="top"></a>
+## Introduction
+The `SimpleStorage` contract can be used to store, update, and view a single favourite number. In this lesson we'll adapt its code to store multiple numbers, so more than one person can store values. We'll learn how to create a list of favourite numbers using **arrays** and we'll investigate the keyword `structs` for creating new types in Solidity.
 
+## Arrays
+First we need to replace the `uint256 favoriteNumber`  with a list of `uint256` numbers:
 
-## Storing and Tracking Favorite Numbers in Our Contract
-
-Our smart contract, as is, does an excellent job. It primarily enables users to store their favorite numbers, update them, and view them later. Sounds brilliant, right? Yet, it has been specifically designed to store a single favorite number at a time. What if we wanted to maintain not just our favorite number, but others as well?
-
-In this lesson, we will explore how we can extend this functionality. We'll learn how to create a list of favorite numbers using arrays. Additionally, we will delve into using `structs` for creating new types in Solidity. Let's get started!
-
-### An Array of Favorite Numbers
-
-The idea is to say goodbye to one `uint256` favorite number and say hello to a list of `uint256` numbers, or in our case, a list of favorite numbers. Here's the magic syntax:
-
-```bash
+```solidity
 uint256[] list_of_favorite_numbers;
 ```
 
-The bracket syntax identifies that we have a list of `uint256`, a list or array of numbers. An array of numbers would look something like this:
+The brackets indicate that we have a list of `uint256`, an array of numbers. If we want to initialize this array we can do so by specifying its content:
 
-```bash
+```solidity
 Array_Example_list_of_favorite_numbers = [0, 78, 90];
 ```
 
-Arrays are very dominant in computer science and programming, and an array in Solidity bears resemblance to an array in any other programming language. If you're new to arrays or lists, remember arrays are zero indexed. The first element starts from index zero, the second from index one, and so on.
+🗒️ **NOTE** <br>
+Arrays are zero-indexed: the first element stays at position zero (0), the second stays position (index) 1, and so on.
 
-### Creating a Struct for `Person`
+## Struct
+The issue with this method is that we cannot link the owner with its favorite value. One solution is to establish a new type using the `struct` keyword, named `Person`, which is made of two attributes: a favorite number and a name.
 
-But an array of numbers is not enough - we wouldn't know whose favorite number is which! We need a way to tie favorite numbers to people. So let's evolve our code by defining a new type `Person` using the `Struct` keyword.
-
-```bash
-struct Person {uint256 favorite_number;string name;}
+```solidity
+struct Person {
+    uint256 my_favorite_number;
+    string name;
+}
 ```
 
-Realize the beauty of this new type? Now each `Person` has a favorite number and a name! Remember we need to be particular about scope - don't let your internal variable names clash.
+🚧 **WARNING** <br>
+Rename the variables `favorite_number` to avoid name clashes
 
-```bash
-Renaming to avoid clashuint256 my_favorite_number;
-```
+From this struct, we can instantiate a variable `my_friend` that has the type `Person`, with a favorite number of seven and the name 'Pat'. We can retrieve these details using the getter function that was generated thanks to the `public` keyword.
 
-We can now create a variable of type `Person` the same way we did for `uint256`. Meet our friend Pat!
-
-```bash
+```solidity
 Person public my_friend = Person(7, 'Pat');
+/* equals to 
+Person public my_friend = Person({
+    favoriteNumber:7,
+    name:'Pat'});
+*/
 ```
 
-So, we've now created our own type `Person` and defined Pat who has a favorite number of seven and a name of 'Pat'. We can retrieve these details using the generated getter function thanks to the `public` visibility.
+## Array of Struct
 
-### An Array of `Person`
+Creating individual variables for several people might become a tedious task.We can solve this issue combining the two concepts we just learned about: arrays and structs. 
 
-Creating individual variables for each friend might become a tedious task, especially when we'd like to add a large number of friends. What we can do instead is use the array syntax we've learned and create an array or list of `Person`.
-
-```bash
-Person[] public list_of_people;
+```solidity
+Person[] public list_of_people; // this is a dynamic array
+Person[3] public another_list_of_three_people; // this is a static array
 ```
 
-When using a dynamic array, we can add as many `Person` objects as we wish to our list, as the size of the array can now grow and shrink dynamically in Solidity. We can access each `Person` object in our array by its index.
+When using a **dynamic** array, we can add as many `Person` objects as we like, as the size of the array it's not static but can grow and shrink. We can access each `Person` object in our array by its index.
 
-### Adding Persons to the List
+### Populating the array
 
-Next, we need to create a function that will allow us to add people to our list.
+To add people to this list we can create a function:
 
-```bash
+```solidity
 function add_person(string memory _name, uint256 _favorite_number) public {
     list_of_people.push(Person(_favorite_number, _name));
 }
 ```
 
-`add_person` is a function that takes two variables as input - the name and favorite number of the person. It creates a new `Person` object and adds it to our `list_of_people` array.
+`add_person` is a function that takes two variables as input - the name and favourite number of the person. It creates first a new `Person` object and then it pushes it to our `list_of_people` array.
 
-### Final Thoughts
+### Conclusion
 
-With these additions, our Solidity contract is now able to store multiple favorite numbers, each tied to a specific person. When called, our `add_person` function will create a new `Person`, add them to the dynamic array and we can view each person and corresponding favorite number via their array index.
+With these features, our Solidity contract is now able to store multiple favourite numbers, each tied to a specific person. The `add_person` function will create a new object `Person` and add it to the state variable `list_of_people`. We can view then each person's name and his favorite number by accessing the Person object via the array index.
 
-And that's it! We've now gone from a simple contract that stores just one favorite number to one that can handle multiple favorite numbers from different people. Happy coding!
 
-<img src="/solidity/remix/lesson-2/arrays-structs/note.png" style="width: 100%; height: auto;">
+## 🧑‍💻 Test yourself
+1. 📕 Define the difference between a dynamic array and a static array. Make an example of each.
+2. 📕 What is an array and what is a struct?
+3. 🧑‍💻 Create a smart contract that can store and view a list of animals. Add manually three (3) animals and give the possibility to the user to manually add an indefinite number of animals into the smart contract.
+
+[Back to top](#top)
