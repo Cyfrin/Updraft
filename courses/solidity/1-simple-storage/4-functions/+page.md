@@ -89,7 +89,6 @@ If a visibility specifier is not given, it defaults to `internal`.
 **External functions** are only visible externally and are not accessible within the contract. **Internal functions** are accessible only by the current contract and any contract that is inherited from it.
 
 ### Pure and View keywords
-
 The terms `view` and `pure` are used when a function reads values from the blockchain without altering its state. Such functions will not initiate transactions but rather make calls, represented as blue buttons in the Remix interface. A `pure` function will prohibit any reading from the state or storage.
 
 ```solidity
@@ -128,7 +127,6 @@ function something() public {
 In this lesson, you have learned how to build a function in Solidity, define its visibility, and understand how it operates on values within a smart contract. You have also explored different transactions and their gas consumption. Let's continue learning!
 
 ## 🧑‍💻 Test yourself
-
 1. 📕 Describe four function visibility keywords and their impact on the code.
 2. 📕 What's the difference between `view` and `pure`?
 3. 📕 In which circumstances a pure function will incur gas costs?
