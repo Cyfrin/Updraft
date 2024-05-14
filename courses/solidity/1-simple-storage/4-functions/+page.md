@@ -124,7 +124,7 @@ function something() public {
 }
 ```
 
-### Conclusion
+## Conclusion
 In this lesson, you have learned how to build a function in Solidity, define its visibility, and understand how it operates on values within a smart contract. You have also explored different transactions and their gas consumption. Let's continue learning!
 
 ## 🧑‍💻 Test yourself
