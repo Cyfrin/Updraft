@@ -4,6 +4,7 @@ title: Repository Access and Navigation
 
 _Follow along with this video:_
 
+---
 <a name="top"></a>
 ## Introduction
 
