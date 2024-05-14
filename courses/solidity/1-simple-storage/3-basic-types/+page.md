@@ -5,7 +5,7 @@ title: Basic Solidity Types
 _Follow along with this video:_
 
 ---
-
+<a name="top"></a>
 ## Solidity Types
 Solidity supports various **elementary types** that can be combined to create more complex ones. You can read more about them in the [Solidity documentation](https://docs.soliditylang.org/en/v0.8.20/types.html#types).
 
@@ -73,3 +73,5 @@ You've just filled your first smart contract with variables and you explored the
 2. 📕 Describe the default value of the following types: bool, uint, int256, string, address, bytes
 3. 📕 How does uint differ from bytes?
 4. 🧑‍💻 Write a smart contract that contains at least five state variables, each with a distinct data type.
+
+[Back to top](#top)
