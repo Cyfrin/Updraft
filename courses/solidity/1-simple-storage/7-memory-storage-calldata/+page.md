@@ -82,4 +82,3 @@ Remember, you can't use the `storage` keyword for temporary variables inside a f
 - When passed as function parameters, structs, mappings, and arrays in Solidity need to use the explicit `memory` keyword.
 - Strings, considered an array of bytes, require explicit `memory` or `calldata` keyword.
 
-Congratulations for reaching this point, now let's delve into Solidity mappings.
