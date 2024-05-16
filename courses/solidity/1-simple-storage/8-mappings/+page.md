@@ -2,74 +2,60 @@
 title: Solidity Mappings
 ---
 
-*Follow along with the course here.*
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+## Introduction
 
+We previously created a contract that can store people and their favorite numbers inside an array. In this session, you'll learn about mappings, what are they and when it's better to use them.
 
+## Avoiding Costly Iterations
 
-## Understanding the Problem with Arrays
+If we want to know just one person's favorite number (e.g. Chelsea) and our contract holds a (long) array of People, we would need to iterate through the whole list to find the desired value:
 
-Imagine you have a contract that holds a list of individuals along with their favorite numbers:
+```solidity
+list_of_people.add(Person("Pat", 7));
+list_of_people.add(Person("John", 8));
+list_of_people.add(Person("Mariah", 10));
+list_of_people.add(Person("Chelsea", 232));
 
-```json
-[
-    ("Pat", 7),
-    ("John", 8), 
-    ("Mariah", 10), 
-    ("Chelsea", 232)
-]
+/* go through all the list:
+if name is chelsea -> return 232
+*/
 ```
 
-Now, if you want to know Chelsea's favorite number, you will have to run a loop through the array. This might seem fine when managing data of a few individuals, but imagine scaling this up to 1,000 or more. Constantly iterating through large arrays to locate a specific element can be incredibly time-consuming and inefficient.
+Iterating through a long list of data is usually expensive and time-consuming, especially when we do not need to access elements by their index.
 
-Take the scenario:
+## Mapping
 
-```json
-Oh, what was Chelsea's favorite number?
-    Array element at 0 - Pat.
-    Array element at 1 - John.
-    Array element at 2 - Mariah.
-    Array element at 3 - Chelsea => favorite number: 232.
-```
+To directly access the desired value without the need to iterate through the whole array, we can use mappings. Mappings are sets of (unique) keys linked to a value and they are similar to hash tables or dictionaries in other programming languages. In our case, looking up a name (key) will return its correspondent favorite number (value).
 
-Is there a better data structure that can improve this access process and make finding individual information a breeze?
+A mapping is defined using the mapping keyword, followed by the key type, the value type, the visibility, and the mapping name. In our example, we can construct an object that maps every name to its favorite number.
 
-Meet `mapping`.
-
-## Mapping: A Simpler Way to Link Information
-
-Think of mapping in coding like a dictionary: each word in a dictionary has a unique meaning or a chunk of text associated with it. Similarly, a mapping in code is essentially a set of keys with each key returning a unique set of information. Thus, if you look up a word or a 'string' in coding terms, the corresponding output will be the text or 'number' associated only with that string.
-
-A typical way of defining a mapping starts with the keyword 'mapping', the key type, the datatype of data to be linked with each key and the visibility type. Let's create a mapping type:
-
-```javascript
+```solidity
 mapping (string => uint256) public nameToFavoriteNumber;
 ```
 
-With this, we have constructed a mapping that maps every string to a uint256 number emulating a link between a person's name and their favorite number. Now, rather than iterating through an array, we can directly enter the name and get their favorite number.
+Previously, we created an `addPerson` function that was adding a struct `Person` to an array `list_of_people`. Let's modify this function and add the struct `Person` to a mapping instead of an array:
 
-## Augmenting the AddPerson Function
-
-Previously, we had an `addPerson` function that enabled us to add someone to our list. Let's modify this function to update our mapping every time a person is added:
-
-```javascript
-// Adding someone to the mapping
+```solidity
 nameToFavoriteNumber[_name] = _favoriteNumber;
 ```
 
-This line will add a person's name to the mapping where each name will point to their favorite number. The result? A far quicker way to access a person's favorite number just by knowing their name.
+👀❗**IMPORTANT** <br>
+Mappings have a constant time complexity for lookups, meaning that retrieving a value by its key is done in constant time,
 
-<img src="/solidity/remix/lesson-2/mappings/mappings1.png" style="width: 100%; height: auto;">
+🗒️ **NOTE** <br>
+The default value for all key types is zero. In our case, `nameToFavoriteNumber["ET"]` will be equal to 0.
 
+## Conclusion
 
-## A Test Run
+Mapping can be a versatile tool to increase efficiency when attempting to find elements within a larger set of data.
 
-<img src="/solidity/remix/lesson-2/mappings/mappings2.png" style="width: 100%; height: auto;">
+## 🧑‍💻 Test yourself
 
+1. 📕 In which cases is better to use an array instead of a mapping?
+2. 🧑‍💻 Create a Solidity contract with a mapping named `addressToBalance`. Implement functions to add and retrieve data from this mapping.
 
-The last example illustrates an important point. In a mapping, the default value for all key types is zero. Therefore, if you look up a key (person's name in this case) that hasn't been added yet, it will return the default value which is zero.
-
-## Wrapping Up
-
-In conclusion, mapping in code can be a versatile tool to increase efficiency when attempting to find elements within larger lists or arrays. By streamlining the process with the use of a mapping, you can avoid the woes of constant iteration and instead achieve results more directly. As such, mapping is a useful tool every programmer should have in their toolbox.
+[Back to top](#top)
