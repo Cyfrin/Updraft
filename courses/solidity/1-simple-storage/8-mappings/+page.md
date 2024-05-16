@@ -7,11 +7,9 @@ _You can follow along with the video course from here._
 <a name="top"></a>
 
 ## Introduction
-
-We previously created a contract that can store people and their favorite numbers inside an array. In this session, you'll learn about mappings, what are they and when it's better to use them.
+We just created a contract that can store people and their favorite numbers inside an array. In this session, you'll learn about mappings, what are they and when it's better to use them.
 
 ## Avoiding Costly Iterations
-
 If we want to know just one person's favorite number (e.g. Chelsea) and our contract holds a (long) array of People, we would need to iterate through the whole list to find the desired value:
 
 ```solidity
@@ -28,7 +26,6 @@ if name is chelsea -> return 232
 Iterating through a long list of data is usually expensive and time-consuming, especially when we do not need to access elements by their index.
 
 ## Mapping
-
 To directly access the desired value without the need to iterate through the whole array, we can use mappings. Mappings are sets of (unique) keys linked to a value and they are similar to hash tables or dictionaries in other programming languages. In our case, looking up a name (key) will return its correspondent favorite number (value).
 
 A mapping is defined using the mapping keyword, followed by the key type, the value type, the visibility, and the mapping name. In our example, we can construct an object that maps every name to its favorite number.
@@ -54,7 +51,6 @@ The default value for all key types is zero. In our case, `nameToFavoriteNumber[
 Mapping can be a versatile tool to increase efficiency when attempting to find elements within a larger set of data.
 
 ## 🧑‍💻 Test yourself
-
 1. 📕 In which cases is better to use an array instead of a mapping?
 2. 🧑‍💻 Create a Solidity contract with a mapping named `addressToBalance`. Implement functions to add and retrieve data from this mapping.
 
