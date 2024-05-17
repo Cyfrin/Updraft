@@ -40,7 +40,7 @@ When you compile your smart contract, the Solidity code is converted into EVM-co
 Mastering the fundamentals of Solidity, including contract setup, data management, and function behaviors, provides a robust foundation for developing powerful decentralized applications. This foundational knowledge is essential for navigating the complexities of blockchain technology and leveraging its full potential. Well done!
 
 ## 🧑‍💻 Test yourself
-🏆 Attempt to answer all questions from lesson 1 through 9, and then go back again too complete all the coding tasks.
+🏆 Attempt to answer all questions from lesson 1 through 9, and then go back again to complete all the coding tasks.
 
 [Back to top](#top)
 
