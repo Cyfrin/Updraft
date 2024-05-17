@@ -7,7 +7,7 @@ _Follow along with this video:_
 ---
 <a name="top"></a>
 ## Solidity Types
-Solidity supports various **elementary types** that can be combined to create more complex ones. You can read more about them in the [Solidity documentation](https://docs.soliditylang.org/en/v0.8.20/types.html#types).
+Solidity supports various *elementary* types that can be combined to create more *complex* ones. You can read more about them in the [Solidity documentation](https://docs.soliditylang.org/en/v0.8.20/types.html#types).
 
 🕵️‍♂️ For now, let's focus on the most commonly used
 - Boolean (bool): true or false
@@ -17,17 +17,15 @@ Solidity supports various **elementary types** that can be combined to create mo
 - Bytes (bytes): low-level raw byte data
 
 ### Variables definition
-Variables are just placeholders for **values**. A value can be one **data type** described in the table. For instance, we could create a Boolean variable named `hasFavoriteNumber`, which would represent whether someone has a favourite number or not (`true` or `false`).
+Variables are just placeholders for **values**. A value can be one **data type** described in the list above. For instance, we could create a Boolean variable named `hasFavoriteNumber`, which would represent whether someone has a favourite number or not (constant `true` or `false`).
 
 ```solidity
-bool hasFavoriteNumber = true; //the variable `hasFavoriteNumber` represents the constant `true`
+bool hasFavoriteNumber = true; //the variable hasFavoriteNumber` represents the value `true`
 ```
 It's possible to specify the number of **bits** used for `uint` and `int`. For example, uint256 specifies that the variable has 256 bits. uint is a shorthand for uint256.
 
-🗒️ **NOTE** <br>
+> 🗒️ **NOTE** <br>
 It's always advisable to be **explicit** when specifying the length of the data type.
-
-Strings are equivalent to bytes: they are identically encoded, but designed specifically for text. For this reason, a string can easily be converted into bytes.
 
 The _semicolon_ at the end of each line signifies that a statement is completed.
 ```solidity
@@ -47,12 +45,13 @@ contract Simple Storage{
 ### Magic bytes
 Bytes are a _collection of characters_ written in hexadecimal representation.
 ```solidity
-bytes1 minBytes = "I'm a fixes size byte array of 1 byte";
-bytes32 maxBytes = "I'm a fixes size byte array of 32 bytes";
+bytes1 minBytes = "I am a fixed size byte array of 1 byte";
+bytes32 maxBytes = "I am a fixed size byte array of 32 bytes";
 bytes dynamicBytes = "I am a dynamic array, so you can manipulate my size";
 ```
+Bytes can be allocated in size (up to `bytes32`). However, bytes and bytes32 represent distinct data types.
 
-Bytes can also be allocated in size (up to `bytes32`). However, bytes and bytes32 represent distinct data types.
+**Strings** are internally represented as dynamic byte arrays (`bytes` tipe) and designed specifically for text. For this reason, a string can easily be converted into bytes.
 
 [Bits and Bytes overview](https://www.youtube.com/watch?v=Dnd28lQHquU)
 
@@ -61,17 +60,17 @@ Bytes can also be allocated in size (up to `bytes32`). However, bytes and bytes3
 ```solidity
 uint256 favoriteNumber;
 ```
-👀❗**IMPORTANT** <br>
-Every variable in Solidity comes with a _default value_ which may or may not be initialized. uninitialized uint256 for example, defaults to `0` (zero) and an uninitialized boolean defaults to `false`.
+> 👀❗**IMPORTANT** <br>
+Every variable in Solidity comes with a _default value_. Uninitialized uint256 for example, defaults to `0` (zero) and an uninitialized boolean defaults to `false`.
 
 ## Conclusion
-You've just filled your first smart contract with variables and you explored the fundamental data types in Solidity.
+You've just filled in your first smart contract with variables and you explored the fundamental data types in Solidity.
 
 ## 🧑‍💻 Test yourself
 
 1. 📕 What's the difference between a variable and a value?
-2. 📕 Describe the default value of the following types: bool, uint, int256, string, address, bytes
+2. 📕 Describe the default value of the following types: bool, uint, int256, string, address, bytes, bytes32
 3. 📕 How does uint differ from bytes?
-4. 🧑‍💻 Write a smart contract that contains at least five state variables, each with a distinct data type.
+4. 🧑‍💻 Write a smart contract that contains at least five storage variables, each with a distinct data type.
 
 [Back to top](#top)

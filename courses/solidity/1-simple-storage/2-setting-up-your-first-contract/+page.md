@@ -33,7 +33,7 @@ pragma solidity 0.8.19; // use only version 0.8.19
 pragma solidity ^0.8.19; 
 pragma solidity  >=0.8.19 < 0.9.0;
 ```
-🗒️ **NOTE** <br>
+> 🗒️ **NOTE** <br>
 Remember to write comments in your code for you to refer to later on.
 
 ## SPDX License Identifier
@@ -43,19 +43,19 @@ It's a good practice (even not mandatory) to start your smart contract with an S
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 ```
-MIT is known as one of the most permissive licenses which means anybody can use this code and pretty much do whatever they want with it.
+The MIT license is recognized as one of the most permissive, granting anyone the freedom to use the following code and essentially use it as they see fit.
 
 ## Writing the Smart Contract
-Start by writing your contract using the keyword `contract`. Give it a name, e.g., `SimpleStorage`. All the code inside the curly brackets will be considered part of this contract.
+You can start writing your contract using the keyword `contract` followed by a name, e.g., `SimpleStorage`. All the code inside the curly brackets will be considered part of this contract.
 
-If you are familiar with Object Oriented Programming Languages, you can think of a *contract* as a concept similar to a *class*.
+If you are familiar with Object Oriented Programming languages, you can think of a *contract* as a concept similar to a *class*.
 
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
 contract SimpleStorage {
-    //here we'll place the content of the contract
+    //this is where we'll place the content of the contract
 }
 ```
 
@@ -64,16 +64,17 @@ contract SimpleStorage {
 2. Choose the version of the compiler that matches the version specified in your Solidity file.
 3. Hit the `Compile` button.
 
-Compiling your code means taking human-readable code and transforming it into computer-readable code or bytecode.
+Compiling your code means taking **human-readable code** and transforming it into **computer-readable code** or **bytecode**.
 
 If you see a green checkmark, it means your compilation was successful. If there is any error, Remix will point out where the error is, and you can debug it accordingly.
 
 ## Congratulations
-Well done! You just created and compiled your first smart contract in olidity.
+Well done! You just created and compiled your first smart contract in Solidity.
 
 ## 🧑‍💻 Test yourself
 1. 📕 What does IDE mean and what are Remix main features?
 2. 📕 What's the keywork `pragma` used for?
-3. 🧑‍💻 Write an empty contract that contains a SPDX License Identifier and compiles with version 0.8.11 or 0.8.13.
+3. 📕 Explain what compiling a contract means.
+4. 🧑‍💻 Write an empty contract that contains a SPDX License Identifier and compiles with version 0.8.11 or 0.8.13.
 
 [Back to top](#top)
