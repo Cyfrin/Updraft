@@ -65,7 +65,7 @@ function addPerson(string memory _name, uitn256 _favoriteNumber) public {  //can
 }
 ```
 ## Conclusion
-Well done! You've learned the differences between storage, memory, and calldata in Solidity, enhancing your skills to develop robust Ethereum-based applications.
+Well done! You've learned the differences between the keywords storage, memory, and calldata in Solidity, enhancing your skills to develop robust Ethereum-based applications.
 
 ## 🧑‍💻 Test yourself
 1. 📕 How does the Solidity compiler handle primitive types and strings in terms of memory management?
