@@ -7,10 +7,10 @@ _You can follow along with the video course from here._
 <a name="top"></a>
 
 ## Introduction
-We just created a contract that can store people and their favorite numbers inside an array. In this session, you'll learn about mappings, what are they and when it's better to use them.
+We have just created a contract that stores multiple `Person`'s' names and favorite numbers in a list. In this session, you will learn about mappings, their functionality, and when it is more advantageous to use them.
 
 ## Avoiding Costly Iterations
-If we want to know just one person's favorite number (e.g. Chelsea) and our contract holds a (long) array of People, we would need to iterate through the whole list to find the desired value:
+If we want to know just one person's favorite number (e.g. Chelsea's) but our contract holds a (long) array of `Person`, we would need to iterate through the whole list to find the desired value:
 
 ```solidity
 list_of_people.add(Person("Pat", 7));
@@ -18,15 +18,15 @@ list_of_people.add(Person("John", 8));
 list_of_people.add(Person("Mariah", 10));
 list_of_people.add(Person("Chelsea", 232));
 
-/* go through all the list:
-if name is chelsea -> return 232
+/* go through all the people to check their favorite number.
+If name is "Chelsea" -> return 232
 */
 ```
 
 Iterating through a long list of data is usually expensive and time-consuming, especially when we do not need to access elements by their index.
 
 ## Mapping
-To directly access the desired value without the need to iterate through the whole array, we can use mappings. Mappings are sets of (unique) keys linked to a value and they are similar to hash tables or dictionaries in other programming languages. In our case, looking up a name (key) will return its correspondent favorite number (value).
+To directly access the desired value without the need to iterate through the whole array, we can use **mappings**. They are sets of 🔑 (unique) **keys** linked to a 🍱 **value** and they are similar to _hash tables_ or _dictionaries_ in other programming languages. In our case, looking up a _name_ (key) will return its correspondent _favorite number_ (value).
 
 A mapping is defined using the mapping keyword, followed by the key type, the value type, the visibility, and the mapping name. In our example, we can construct an object that maps every name to its favorite number.
 
@@ -40,10 +40,10 @@ Previously, we created an `addPerson` function that was adding a struct `Person`
 nameToFavoriteNumber[_name] = _favoriteNumber;
 ```
 
-👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT** <br>
 Mappings have a constant time complexity for lookups, meaning that retrieving a value by its key is done in constant time,
 
-🗒️ **NOTE** <br>
+> 🗒️ **NOTE** <br>
 The default value for all key types is zero. In our case, `nameToFavoriteNumber["ET"]` will be equal to 0.
 
 ## Conclusion
