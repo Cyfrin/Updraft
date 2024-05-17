@@ -10,8 +10,8 @@ _Follow along with this video:_
 
 To get started, navigate to the official *Cyfrin Updraft* [GitHub repository](https://github.com/Cyfrin/foundry-full-course-f23)
 
-👀❗**IMPORTANT** <br>
-> Each course will have an associated link, where you’ll find all the **code** that you will be working on within in each lesson and a
+> 👀❗**IMPORTANT** <br>
+Each course will have an associated link, where you’ll find all the **code** that you will be working on within in each lesson and a
 **README** section, that contains instructions on how to work with the code.
 
 The interface might look slightly different when you first access it. What you're looking for is the repository associated specifically with this lesson. This repository will contain all the code required for this stage of the course, together with a `README` section. The `README` will provide you with a wealth of notes on how to work with the code.
@@ -23,8 +23,8 @@ The repository serves two main purposes:
 - 🚪 **Easy access:** each lesson can be consulted and cloned effortlessly
 - 🗣 👥 **Discussion and Network:** you can engage with fellow students, ask questions, and participate in collaborative learning.
 
-🔥 **CAUTION** <br>
-> To raise issues or start discussions based on a specific repository, please use the [**Discussions tab**](https://github.com/Cyfrin/foundry-full-course-f23/discussions) of the *Cyfrin Updraft - Career Path* instead of creating issues directly on the repository itself.
+> 🔥 **CAUTION** <br>
+To raise issues or start discussions based on a specific repository, please use the [**Discussions tab**](https://github.com/Cyfrin/foundry-full-course-f23/discussions) of the *Cyfrin Updraft - Career Path* instead of creating issues directly on the repository itself.
 
 ### Asking Questions
 
@@ -51,7 +51,6 @@ We're going to be utilizing a tool called [Remix](https://remix.ethereum.org/), 
 The best way to get the most out of this guide is to **code along**. You're encouraged to change the speed of the tutorial video to match your coding pace. Remember that **space repetition** is critical while building a new skill.
 
 After concluding the next lesson, you'll have already built and deployed your first smart contract to a blockchain. Let's jump right into it!
-
 
 ## 👨‍💻 Test yourself
 At the end of each lesson, you will find a *Test Yourself* section. This part will help you reinforce the concepts you just learned and coded about.

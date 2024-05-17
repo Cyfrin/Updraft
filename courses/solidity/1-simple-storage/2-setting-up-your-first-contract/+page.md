@@ -31,7 +31,7 @@ pragma solidity 0.8.19; // use only version 0.8.19
 ```solidity
 // use versions between 0.8.19 and 0.9.0 (excluded)
 pragma solidity ^0.8.19; 
-pragma solidity  >=0.8.19 < 0.9.0;
+pragma solidity >=0.8.19 <0.9.0;
 ```
 > 🗒️ **NOTE** <br>
 Remember to write comments in your code for you to refer to later on.
@@ -68,7 +68,7 @@ Compiling your code means taking **human-readable code** and transforming it int
 
 If you see a green checkmark, it means your compilation was successful. If there is any error, Remix will point out where the error is, and you can debug it accordingly.
 
-## Congratulations
+## Conclusion
 Well done! You just created and compiled your first smart contract in Solidity.
 
 ## 🧑‍💻 Test yourself

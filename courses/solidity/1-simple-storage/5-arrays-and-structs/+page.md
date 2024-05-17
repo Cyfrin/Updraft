@@ -6,9 +6,9 @@ _You can follow along with the video course from here._
 
 <a name="top"></a>
 ## Introduction
-Up to this point, the `SimpleStorage` contract allows for storing, updating, and viewing a single favorite number. In this lesson, we'll enhance the code to store multiple numbers, enabling more than one person to store their values. We'll learn how to create a list of favorite numbers using **arrays**, and we'll explore the `structs` keyword for creating new types in Solidity.
+Up to this point, the `SimpleStorage` contract allows for storing, updating, and viewing a single favorite number. In this lesson, we'll enhance the code to store multiple numbers, enabling more than one person to store their values. We'll learn how to create a list of favorite numbers using **arrays**, and we'll explore the **`structs`** keyword for creating new types in Solidity.
 
-## Arrays and Struct
+## Arrays and struct
 First we need to replace the `uint256 favoriteNumber`  with a list of `uint256` numbers:
 ```solidity
 uint256[] list_of_favorite_numbers;
@@ -41,7 +41,7 @@ Person public my_friend = Person({
 */
 ```
 
-## Array of Struct
+## Array of struct
 Creating individual variables that represent several people might become a tedious task, due to the repetitive steps of the process. Instead of manually instantiating a variable for each person, we can combine the two concepts we just learned about: arrays and structs. 
 ```solidity
 Person[] public list_of_people; // this is a dynamic array

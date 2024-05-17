@@ -42,7 +42,7 @@ contract Simple Storage{
     bytes32 favoriteBytes32 = "cat";
 }
 ```
-### Magic bytes
+### Bytes and strings
 Bytes are a _collection of characters_ written in hexadecimal representation.
 ```solidity
 bytes1 minBytes = "I am a fixed size byte array of 1 byte";
@@ -51,7 +51,7 @@ bytes dynamicBytes = "I am a dynamic array, so you can manipulate my size";
 ```
 Bytes can be allocated in size (up to `bytes32`). However, bytes and bytes32 represent distinct data types.
 
-**Strings** are internally represented as dynamic byte arrays (`bytes` tipe) and designed specifically for text. For this reason, a string can easily be converted into bytes.
+**Strings** are internally represented as _dynamic byte arrays_ (`bytes` tipe) and designed specifically for working with text. For this reason, a string can easily be converted into bytes.
 
 [Bits and Bytes overview](https://www.youtube.com/watch?v=Dnd28lQHquU)
 
