@@ -8,14 +8,14 @@ _You can follow along with the video course from here._
 
 ## Introduction
 
-In the previous lesson, we learned how to combine arrays and structs to store information and how to manipulate this information with the function `addPerson`. This time we'll explore errors and warnings and how to leverage forums, search engines and AI resources.
+In the previous lesson, we learned how to combine *arrays* and *structs* to store information and how to manipulate this information with the function `addPerson`. This time we'll explore **errors** and **warnings** and how to leverage forums, search engines and AI resources.
 
 ## Errors and Warnings
 If we remove a semicolon from the code and then try to compile it, you'll encounter some 🚫 **error messages**. They will prevent the compiler from converting the code into a machine-readable form.
 
 <img src="/solidity/remix/lesson-2/errors-warnings/errors2.png" style="width: 100%; height: auto;">
 
-Placing the semicolon back in its place, will prevent any errors and lets us proceed to deploy the code to the Remix VM. 
+Restoring the semicolon to its correct position will prevent any errors, enabling us to proceed with deploying the code to the Remix VM.
 On the other hand, if we delete the SPDX license identifier from the top of our code and recompile, we will receive a yellow box showing a ⚠️ **warning**.
 ```markdown
 > Warning: SPDX license identifier not provided in source file
@@ -48,11 +48,10 @@ It is advised to make active use of AI tools, as they can substantially boost yo
 You can also take part of online communities like **GitHub discussions** and **Stack Exchange**, where you'll find valuable insights, answers to your questions, and support from fellow developers.
 
 💡 **TIP** <br>
-**One of the key pieces of being a really good software engineer or a good prompt engineer is less about actually knowing the information and more about knowing where to find the information**
+**_One of the key pieces of being a really good software engineer or a good prompt engineer is less about actually knowing the information and more about knowing where to find the information_**
 
 ## Conclusion
-
-You’ve just learning to confront errors and warnings directly. In the following lesson, we will delve deeper into Solidity’s data locations and the advanced functionalities of Remix.
+You’ve just learned how to effectively identifying and managing errors and warnings, enhancing your ability to maintain robust and reliable code. In the following lesson, we will delve deeper into Solidity’s data locations and some advanced Remix functionalities.
 
 ## 🧑‍💻 Test yourself
 
