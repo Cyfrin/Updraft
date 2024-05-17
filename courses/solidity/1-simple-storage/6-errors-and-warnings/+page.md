@@ -54,7 +54,7 @@ It is advised to make active use of AI tools, as they can substantially boost yo
 You can also take part of online communities like **GitHub discussions** and **Stack Exchange**, where you'll find valuable insights, answers to your questions, and support from fellow developers.
 
 > 💡 **TIP** <br> 
-> One of the most important aspects of being an excellent software engineer or prompt engineer is not just having the information but knowing where to find it.
+One of the most important aspects of being an excellent software engineer or prompt engineer is not just having the information but knowing where to find it.
 
 ## Conclusion
 
@@ -63,6 +63,6 @@ You’ve just learned how to effectively identifying and managing errors and war
 ## 🧑‍💻 Test yourself
 
 1. 📕 What's the difference between a warning and an error? Make an example of each.
-2. 🧑‍💻 Make a written list (or a bookmark in your browser) with at least 3 useful online resources that can help you solve future bugs.
+2. 🧑‍💻 Make a written list (or a bookmark in your browser) with at least 3 useful online resources will help you solve future bugs.
 
 [Back to top](#top)

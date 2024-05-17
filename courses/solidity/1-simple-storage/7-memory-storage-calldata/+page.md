@@ -6,7 +6,7 @@ _You can follow along with the video course from here._
 
 <a name="top"></a>
 ## Introduction
-This part we will explore how Solidity handles data storage, including the distinctions between storage, memory, and calldata, and why these concepts are essential for writing optimized and secure smart contracts.
+In this section, we will explore how Solidity manages data storage, focusing on the differences between storage, memory, and calldata, and why these concepts are crucial for writing optimized and secure smart contracts.
 
 ## Data Locations
 Solidity can store data in **six** different locations. In this lesson, we will focus on the first three:
@@ -18,10 +18,10 @@ Solidity can store data in **six** different locations. In this lesson, we will 
 6. Logs
    
 ## Calldata and Memory
-In Solidity, `calldata` and `memory` pertain to variables that are *temporary* and only exist during the execution of the function. These variables cannot be retrieved in future function calls and can be modified.
+In Solidity, `calldata` and `memory` pertain to variables that are *temporary* and only exist during the execution of the function. These variables cannot be retrieved in future function calls but can be modified.
 
-🚧 **WARNING** <br>
-Most variable types default to `memory` automatically, but for **strings**, you must specify either `memory` or `calldata` due to the way arrays are handled in memory.
+> 🚧 **WARNING** <br>
+Most variable types default to `memory` automatically. However, for **strings**, you must specify either `memory` or `calldata` due to the way arrays are handled in memory.
 ```solidity
 string memory variableName = "someValue";
 ```
@@ -38,24 +38,24 @@ function addPerson(string calldata _name, uitn256 _favoriteNumber) public {
 <img src="/solidity/remix/lesson-2/memory/calldata.png" style="width: 100%; height: auto;">
 
 ## Storage
-Variables that reside in `storage` are persistent on the blockchain. Variables here remain between function calls and transactions.
+Variables stored in `storage` are persistent on the blockchain, retaining their values between function calls and transactions.
 
-In our contract, the variable `myFavoriteNumber` is a storage variable. Variables declared outside any function, directly under the contract scope, are implicitly converted to storage variables.
+In our contract, the variable `myFavoriteNumber` is a storage variable. Variables which are declared outside any function are implicitly converted to storage variables.
 ```solidity
 contract MyContract {
     uint256 favoriteNumber; //this is a storage variable
 };
 ```
 ## Strings and primitive types
-If you try to specify the `memory` keyword for `uint256`, you'll encounter this error:
+If you try to specify the `memory` keyword for an `uint256` variable, you'll encounter this error:
 ```markdown
 > Data location can only be specified for array, struct, or mapping type
 ```
 <img src="/solidity/remix/lesson-2/memory/memory-err.png" style="width: 100%; height: auto;">
 
-In Solidity, a `string` is recognized as an **array of bytes** and it's handled as such. On the other hand, primitive types, like `uint256` have built-in mechanisms that dictate how and where they are stored, accessed, and manipulated.
+In Solidity, a `string` is recognized as an **array of bytes**. On the other hand, primitive types, like `uint256` have built-in mechanisms that dictate how and where they are stored, accessed and manipulated.
 
-🚧 **WARNING** <br>
+> 🚧 **WARNING** <br>
 You can't use the `storage` keyword for variables inside a function. Only `memory` and `calldata` are allowed here, as the variable only exists temporarily.
 
 ```solidity
