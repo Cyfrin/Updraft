@@ -6,7 +6,7 @@ _You can follow along with the video course from here._
 
 <a name="top"></a>
 
-## Introduction
+### Introduction
 Over the past eight lessons, we crafted the `SimpleStorage` contract. It defines a custom type `Person`, includes an internal variable that can be read and updated, and contains a public array and mapping that can also be modified. In this lesson, we will deploy the contract to a **real testnet**, which fully simulates a live blockchain environment without using real Ether.
 
 > 🔥 **CAUTION** <br>
@@ -14,7 +14,7 @@ You could be tempted to immediately deploy this contract to a testnet. As a gene
 
 Before deploying, be always sure to make a **compilation check**. This ensures that the contract has no errors or warnings and is fit for deployment.
 
-## Deployment on a testnet
+### Deployment on a testnet
 We can start the deployment process by going into the deployment tab and switching from the local virtual environment (Remix VM) to the Injected Provider - MetaMask. This action will allow Remix to send requests and interact with your MetaMask account.
 <img src="/solidity/remix/lesson-2/deploying/deploying2.png" style="width: 100%; height: auto;">
 
@@ -29,7 +29,7 @@ After that, MetaMask will ask to sign and send the transaction on the testnet.
 Once the transaction is executed, the contract address will be listed under deployed contracts, along with the transaction details. This is how the deployment transaction is displayed on Etherscan.
 <img src="/solidity/remix/lesson-2/deploying/deploying6.png" style="width: 100%; height: auto;">
 
-## Contract interaction
+### Contract interaction
 Since the contract has been deployed, we can now interact with it and **update the blockchain**. For example, if you want to store a number, you can do so by clicking the button 'store': MetaMask will ask for another transaction confirmation, that will update the favorite number. We can check the details on etherscan at the deployed address:
 <img src="/solidity/remix/lesson-2/deploying/deploying7.png" style="width: 100%; height: auto;">
 
@@ -41,11 +41,11 @@ View and pure functions will not send transactions
 
 It's possible to deploy a contract to different testnets or a real mainnet, just by switching the Metamask network. Be sure to have enough net-compatible ETHs to deploy your contract.
 
-## Conclusion
+### Conclusion
 
 Deploying a Solidity contract to a testnet is a crucial step in the development process, allowing you to test its functionality in a live blockchain environment without the risk of using real Ether. Always remember to perform necessary audits and tests to confirm the contract's safety and correctness before deployment.
 
-## 🧑‍💻 Test yourself
+### 🧑‍💻 Test yourself
 
 1. 📕 What steps should you take before deploying a contract to a testnet?
 2. 🧑‍💻 Deploy one simple Solidity contract to the Sepolia testnet. Which important information can you see on [etherscan](https://sepolia.etherscan.io/)?
