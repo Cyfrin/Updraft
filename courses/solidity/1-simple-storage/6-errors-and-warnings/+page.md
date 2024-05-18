@@ -6,11 +6,11 @@ _You can follow along with the video course from here._
 
 <a name="top"></a>
 
-## Introduction
+### Introduction
 
 In the previous lesson, we learned how to combine _arrays_ and _structs_ to store information and how to manipulate this information with the function `addPerson`. This time we'll explore **errors** and **warnings** and how to leverage forums, search engines and AI resources.
 
-## Errors and Warnings
+### Errors and Warnings
 
 If we remove a semicolon from the code and then try to compile it, you'll encounter some 🚫 **error messages**. They will prevent the compiler from converting the code into a machine-readable form.
 
@@ -30,7 +30,7 @@ Unlike errors, **warnings** allow the code to be compiled and deployed but it's 
 - If it's <span style="color:red">_red_</span>, there is a compilation error in the code and it needs to be solved before deployment.
 - If it's <span style="color:#808000">_yellow_</span>, you might want to double-check and adjust your code.
 
-## Leverage your resources
+### Leverage your resources
 
 In situations when you do not understand the error that's prompted, using some online resources can make the situation clearer:
 
@@ -39,7 +39,7 @@ In situations when you do not understand the error that's prompted, using some o
 - Stack Exchange Ethereum
 - Peeranha
 
-### Phind
+#### Phind
 
 Let's now attempt to resolve the semicolon error we intentionally created before by using [Phind](https://www.phind.com/). Phind is an AI-powered search engine for developers. It operates by first conducting a Google search based on your query, and then parsing the results to give you a contextual response.
 
@@ -47,7 +47,7 @@ We can input the compiler error under the drop-down menu, execute the search, an
 
 <img src="/solidity/remix/lesson-2/errors-warnings/phind-answer.png" style="width: 100%; height: auto;">
 
-### Othe resources
+#### Othe resources
 
 It is advised to make active use of AI tools, as they can substantially boost your understanding and skills. Later in this course, we will explore how to ask effective questions, utilize AI prompts, structure your inquiries, and improve your search and learning techniques.
 
@@ -56,11 +56,11 @@ You can also take part of online communities like **GitHub discussions** and **S
 > 💡 **TIP** <br> 
 One of the most important aspects of being an excellent software engineer or prompt engineer is not just having the information but knowing where to find it.
 
-## Conclusion
+### Conclusion
 
 You’ve just learned how to effectively identifying and managing errors and warnings, enhancing your ability to maintain robust and reliable code. In the following lesson, we will delve deeper into Solidity’s data locations and some advanced Remix functionalities.
 
-## 🧑‍💻 Test yourself
+### 🧑‍💻 Test yourself
 
 1. 📕 What's the difference between a warning and an error? Make an example of each.
 2. 🧑‍💻 Make a written list (or a bookmark in your browser) with at least 3 useful online resources will help you solve future bugs.
