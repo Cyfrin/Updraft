@@ -2,62 +2,47 @@
 title: Setting up
 ---
 
-*If you'd like, you can follow along with the course here.*
+_You can follow along with the video course from here._
 
+<a name="top"></a>
+### Introduction
+This is the setup part we'll explore what *composability* means and create the `StorageFactory` contract, that will deploy and interact with another `SimpleStorage` contract.
 
+### StorageFactory setup
+You can start going to the [Github repository of the previous section](https://github.com/cyfrin/remix-simple-storage-f23) and copying the contract `SimpleStorage` inside Remix.
+This contract allows storing a favorite number, a list of people with their favorite number, a mapping and different functionalities to interact with them.
+This lesson aims to create a **new contract** that can deploy and interact with `SimpleStorage`.
 
+> 👀❗**IMPORTANT** <br>
+One of the fundamental aspects of blockchain development is the seamless and permissionless interaction between contracts, known as **composability**. This is particularly crucial in decentralized finance (DeFi), where complex financial products interact effortlessly through common smart contract interfaces.
 
-## What is Composability in Smart Contracts?
+Let's set up the backbone of the code, that contains the function `createSimplestorageContract`. This function will deploy a `SimpleStorage` contract and save the result into a *storage variable*:
 
-<img src="/solidity/remix/lesson-3/setting-up/setting-up2.png" style="width: 100%; height: auto;">
-
-
-One of the key aspects of blockchain development is the seamless and permissionless interaction among contracts, referred to as composability. This becomes especially important in decentralized finance (DeFi), where intricate financial products interact compatibly using the same smart contract interface.
-
-In this lesson, we'll be creating a contract titled `StorageFactory` that will interact with and deploy our existing `SimpleStorage` contract.
-
-## Setting Up the StorageFactory Contract
-
-Creating our new contract in Remix follows the same steps we've previously covered. The power of repetition is indeed vastly underrated — and this principle will hold even more merit when we begin working with AI pair programming tools.
-
-The primary structure of every Solidity smart contract begins with the SPDX License Identifier and the desired version of Solidity expressed as a pragma statement.
-
-```js
-// SPDX-License-Identifier: MITpragma solidity ^0.8.18;
-```
-
-Next, we'll define our contract:
-
-```dart
-contract StorageFactory {}
-```
-
-Once your contract is defined, remember to hit `Compile` The caret sign `(^)` before the solidity version implies that any version greater than or equal to 0.8.18 is acceptable.
-
-## Creating and Deploying the SimpleStorage Contract
-
-The StorageFactory contract needs to deploy a SimpleStorage contract. For it to do this, the StorageFactory contract should know and understand what the SimpleStorage contract is and how it works.
-
-One way to ensure this is by placing the SimpleStorage contract code within the same file as the StorageFactory. This can be done by copying the SimpleStorage code and pasting it above the StorageFactory contract but below the pragma solidity line.
-
-```dart
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-contract SimpleStorage {SimpleStorage code here}
+contract StorageFactory {
 
-contract StorageFactory {}
+    function createSimplestorageContract() public {
+        //how does StorageFactory know what SimpleStorage looks like?
+    }
+}
 ```
 
-This option does allow for successful compilation, and both contracts can exist within the same file. However, this isn't best practice, especially with larger projects where multiple contracts in a single file can cause confusion and difficulty in code navigation. As a best practice, each contract should reside in its own file.
+We need to establish a connection between the two contracts, since `StorageFactory` needs to have a complete knowledge of `SimpleStorage`. One first approach could be copying the `SimpleStorage` contract above `StorageFactory`.
 
-When deploying contracts, if you select Remix VM and scroll down to the `Choose Contract` section, you'll notice that both contracts (SimpleStorage and StorageFactory) appear if the StorageFactory.sol file is open.
+> 🗒️ **NOTE** <br>
+It's allowed to have multiple contracts in the same file. As best practice, however, it's recommended to use only one file for each contract
 
-<img src="/solidity/remix/lesson-3/setting-up/setting-up3.png" style="width: 100%; height: auto;">
+> 💡 **TIP** <br>
+You can avoid confusion by keeping open **only** the file(s) you're currently working on.
 
-Next, in our StorageFactory.sol file, we'll create a function - `createSimpleStorageContract` that can deploy the SimpleStorage contract.
+### Conclusion
+In this setup, we'll delve into the concept of *composability* and develop the `StorageFactory` contract, which will be capable of deploying and interacting with a `SimpleStorage` contract.
 
-The journey of harnessing the full potential of Solidity across these lessons is both challenging and exciting, stay tuned for more updates.
-Happy coding!
+### 🧑‍💻 Test yourself
+1. 📕 What does *composability* mean?
+2. 📕 How many contracts is possible to deploy inside one .sol file?
 
-<img src="/solidity/remix/lesson-3/setting-up/setting-up1.png" style="width: 100%; height: auto;">
+[Back to top](#top)

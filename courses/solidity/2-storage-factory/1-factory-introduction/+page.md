@@ -24,16 +24,16 @@ contract SimpleStorage {
     function sfGet(uint256 _simpleStorageIndex) public view returns (uint256) {}
     }
 ```
-After deploying `StorageFactory` and execute its function `createSimpleStorageContract`, we can observe a new transaction appear in the Remix terminal. It's a *deploymnet transaction* of the `SimpleStorage` contract, executed by `StorageFactory` contract.
+After deploying `StorageFactory` and executing its function `createSimpleStorageContract`, we can observe a new transaction appear in the Remix terminal. It's a *deployment transaction* of the `SimpleStorage` contract, executed by the `StorageFactory` contract.
 
 
-It's possible then to interact with this newly deployed `SimpleStorage` via the `store` function. We'll do this by using the `sfStore` function from the `StorageFactory` contract. This function accepts two parameters: the index of a deployed `SimpleStorage` contract, which will be `0` since we just deployed one contract, and a number. The function `sfGet`, with input `0` will indeed return the number that was given in the previous function.
-The address of the `SimpleStorage` contract can then be retrieved clicking on the get function `listOfSimpleStorageContracts`.
+It's possible then to interact with this newly deployed `SimpleStorage` via the `store` function. We'll do this by using the `sfStore` function from the `StorageFactory` contract. This function accepts two parameters: the index of a deployed `SimpleStorage` contract, which will be `0` since we just deployed one contract and a number. The function `sfGet`, with input `0` will indeed return the number that was given in the previous function.
+The address of the `SimpleStorage` contract can then be retrieved by clicking on the get function `listOfSimpleStorageContracts`.
 
 <img src="/solidity/remix/lesson-3/setting-up/graph-1.png" style="width: 100%; height: auto;">
         
 ### Conclusion
-The `StorageFactory` contract manages multiple instances of another contract: it allows deploying new instances, storing and retrieving values from them. The contract tracks these instances in an array. This setup simplifies managing and interacting with multiple contract instances.
+The `StorageFactory` contract manages multiple instances of another contract: it allows deploying new instances, and storing and retrieving values from them. The contract tracks these instances in an array. This setup simplifies managing and interacting with multiple contract instances.
 
 ### 🧑‍💻 Test yourself
 1. 📕 What is the primary role of the `StorageFactory` contract?
