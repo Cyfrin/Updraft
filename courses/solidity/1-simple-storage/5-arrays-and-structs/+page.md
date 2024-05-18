@@ -5,10 +5,10 @@ title: Solidity Arrays & Structs
 _You can follow along with the video course from here._
 
 <a name="top"></a>
-## Introduction
+### Introduction
 Up to this point, the `SimpleStorage` contract allows for storing, updating, and viewing a single favorite number. In this lesson, we'll enhance the code to store multiple numbers, enabling more than one person to store their values. We'll learn how to create a list of favorite numbers using **arrays**, and we'll explore the **`structs`** keyword for creating new types in Solidity.
 
-## Arrays and struct
+### Arrays and struct
 First we need to replace the `uint256 favoriteNumber`  with a list of `uint256` numbers:
 ```solidity
 uint256[] list_of_favorite_numbers;
@@ -41,7 +41,7 @@ Person public my_friend = Person({
 */
 ```
 
-## Array of struct
+### Array of struct
 Creating individual variables that represent several people might become a tedious task, due to the repetitive steps of the process. Instead of manually instantiating a variable for each person, we can combine the two concepts we just learned about: arrays and structs. 
 ```solidity
 Person[] public list_of_people; // this is a dynamic array
@@ -57,11 +57,11 @@ function add_person(string memory _name, uint256 _favorite_number) public {
 ```
 `add_person` is a function that takes two variables as input - the name and favourite number of the person. It creates first a new `Person` object and then it pushes it to our `list_of_people` array.
 
-## Conclusion
+### Conclusion
 With these features, our Solidity contract can now store multiple favorite numbers, each associated with a specific person. The `add_person` function creates a new `Person` struct and adds it to the `list_of_people` state variable. We can then view each person's name and favorite number by accessing the `Person` object through the array index.
 
 
-## 🧑‍💻 Test yourself
+### 🧑‍💻 Test yourself
 1. 📕 Define the difference between a *dynamic* array and a *static* array. Make an example of each.
 2. 📕 What is an *array* and what is a *struct*?
 3. 🧑‍💻 Create a smart contract that can store and view a list of animals. Add manually three (3) animals and give the possibility to the user to manually add an indefinite number of animals into the smart contract.
