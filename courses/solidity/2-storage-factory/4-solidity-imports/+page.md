@@ -2,63 +2,56 @@
 title: Solidity Imports
 ---
 
-*If you'd like, you can follow along with the course here.*
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
+In the previous lesson, we integrated the `SimpleStorage` code directly into the `StorageFactory` contract. This allowed `StorageFactory` to have full awareness and access to the `SimpleStorage` contract’s functionality. In this lesson, we will explore a more efficient way to arrange and organize the code by using the `import` statement.
 
-In this lesson, we will look at a more improved way of organizing your Solidity contract files using the `import` statement, making the task of making any changes in your contract files much simpler. We’ll also address potential issues around consistency in Solidity version between multiple files, and we'll focus primarily on the more advanced import method called `named imports` that you should always use.
+### Importing code
 
-## The Immaculate Import
+The `import` keyword enables a contract to utilize code from other files without needing to include the entire codebase directly within the contract. Here are two of the main advantages that the import keyword provides:
 
-Most programmers are familiar with the concept of import – it's like adding a new tool to your toolbox, allowing you to use code from different files without cluttering your current project file. In Solidity, this is no different.
+1. **No cluttering**: it prevents your current file from being cluttered with numerous lines of code, keeping it clean and organized.
+2. **Simplified maintenance**: by keeping the code in separate files, it becomes easier to maintain and update individual components without affecting the entire codebase. For example, if we change some lines inside `SimpleStorage`, you would have to constantly copy-paste the modified content into `StorageFactory`
 
-Let's say we are dealing with two contract files: `SimpleStorage.sol` and `StorageFactory.sol`. Prior to using `import`, you would have to constantly copy-paste your contents of `SimpleStorage.sol` into `StorageFactory.sol` and vice-versa if any changes are made. If you're thinking that's too much work, then you are absolutely right!
+You can now remove the previously added `SimpleStorage` code and replace it with the `import` shorthand:
 
-Instead, you can just use the `import` statement:
-
-```js
+```solidity
 import "./SimpleStorage.sol";
 ```
 
-With this single line of code, you can effortlessly incorporate `SimpleStorage.sol` into `StorageFactory.sol`, drastically improving your workflow. It's as good as planting the entire `SimpleStorage.sol` within `StorageFactory.sol`, but without the mess.
+> 🚧 **WARNING** <br>
+> All the solidity contracts should be compiled together using the _same_ compiler version. It's important to ensure consistency between compiler versions across files since each one will have its own `pragma` statement.
 
-## Manage Your Solidity Versions
+### Named Imports
 
-With multiple contracts in place, a word of caution: be wary of the versions of Solidity you're using. This is crucial because while Remix will automatically adjust the version upwards to ensure compatibility (e.g., bumping `0.8.16` to `0.8.18`), going the other direction can lead to compile errors. Ensuring that you are consistent with your version of Solidity is vital for smooth compiling of all your contracts.
+Let's assume for a moment that `SimpleStorage` would contain multiple contracts, e.g. `SimpleStorage`, `SimpleStorage1`, `SimpleStorage2`, which are quite extensive in size. If we import the whole file as we did before, the statement will replace the `import` directive with all the code contained in `SimpleStorage.sol`. This will result in an unnecessary expensive deployment of the `StorageFactory` contract.
 
-## Named Imports: Your New Best Friend
+This can be prevented with **named imports**, which allow you to selectively import only the specific contracts you intend to use:
 
-Although the import statement brings a breath of fresh air into your code organization, diving a little deeper will reveal a even better way of handling imports - the named imports.
-
-Imagine `SimpleStorage.sol` has multiple contract files (`SimpleStorage2`, `SimpleStorage3`, `SimpleStorage4`) which are quite extensive in size.
-
-```js
-import "./simplestorage.sol"
-```
-
-Using this statement will import everything from `SimpleStorage.sol`, including all the bulky contract files, leading to a far more expensive deployment of the `StorageFactory.sol`.
-
-Here's where named imports come into play. Named imports allow you to cherry pick the exact contracts you need:
-
-```js
+```solidity
 import { SimpleStorage } from "./SimpleStorage.sol";
 ```
 
-Even if your `SimpleStorage.sol` has other contracts, named imports allow you to just import what you need (`SimpleStorage`), thus avoiding any unecessary imports.
+You can also use named imports to import multiple contracts:
 
-If you need multiple contracts, named imports have got you covered:
-
-```js
-import { SimpleStorage, SimpleStorage2 } from "./SimpleStorage.sol";
+```solidity
+import { SimpleStorage, SimpleStorage1 } from "./SimpleStorage.sol";
 ```
 
-Now, this will only import `SimpleStorage` and `SimpleStorage2`, without bringing in any other possibly gargantuan contracts present in your `SimpleStorage.sol` file.
+> 👀❗**IMPORTANT** <br>
+> Try to always default to named imports instead of importing the entire file.
 
-By sticking to named imports, you're not just making your future coding lives simpler, but you're also staying ahead of the curve. Incredibly, just by employing named imports, you're setting yourself apart, ahead of 80% of current Solidity developers.
+## Conclusion
 
-## Wrapping Up
+The import keyword allows a contract to use code from other files without including the entire codebase. However, it can introduce compilation issues if different compiler versions are used in these files.
 
-Now we've explored a more effective way of managing our Solidity contract files through the use of import statements, understood the need for solidity version management, and learned how to go one step further with named imports. Congratulations, you're now more equipped to organize your code, manage multiple contract files, and make your Solidity programming more efficient and tidy.
+### 🧑‍💻 Test yourself
 
-Remember, in coding and in life, always aim to be incredibly efficient, even if that means being a little lazy.
+1. 📕 What's a named import and what are the advantages of using it?
+2. 📕 In which way the `pragma` keyword can cause issues while using the `import` statement? Make 2 examples.
+
+[Back to top](#top)
