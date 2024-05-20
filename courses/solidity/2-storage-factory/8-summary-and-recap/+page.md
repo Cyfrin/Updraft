@@ -22,9 +22,8 @@ Solidity lets you interact with other contracts. To do so we need the contract's
 contract AddFiveStorage is SimpleStorage {}
 ```
 ### Inheritance and overriding
-A contract can also inherit functions from other contracts in the form of inheritance. This can be obtained through the `is` keyword.
-To explicitly override a function of the parent class, the `override` keyword is used inside the child method. In this case, the parents' function must be marked as `virtual`.
-
+A contract can also acquire functions from other contracts through **inheritance**. This can be obtained through the `is` keyword.
+To explicitly override a function from the parent contract, the `override` keyword is used in the child method. The parent's function must be marked as `virtual` to allow this interaction.
 
 ```solidity
 //child contract
