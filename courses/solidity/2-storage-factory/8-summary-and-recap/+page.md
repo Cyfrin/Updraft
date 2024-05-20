@@ -1,62 +1,54 @@
 ---
 title: Summary and Recap
 ---
+_You can follow along with the video course from here._
 
+<a name="top"></a>
+### Introduction
+This is a recap of the section Storage Factory. 
 
+### Deploying
+In this section, we learned how to use the `new` keyword to deploy multiple instances of a contract.
 
-
-## Deploying contracts using new keyword
-
-One of the initial things we explored is how to deploy contracts from other contracts using the `new` keyword. Solidity enables us to clone existing contracts and produce new ones on the fly. This feature allows developers to deploy multiple instances of a contract without manually copy-pasting code – a handy tool, particularly for applications with multiple contract instances.
-
-## Importing other contracts
-
-Beyond deploying contracts from within contracts, Solidity also equips us with the capability to import other contracts. Essentially, importing contracts is equivalent to copying and pasting the code into a file. This feature enhances reusability and modularity of code. A sample of importing contracts can be represented as:
-
-```js
-import './myOtherContract.sol';
-```
-
-## Named Imports
-
-In the journey of mastering Solidity, we also encountered the nifty concept of 'Named Imports'. Named imports can help make your code more organized and easier to read. They're going to elevate your coding game and make you shine among other Solidity devs out there.
-
-```js
+### Importing other contracts
+Contracts can be imported. This is equivalent to copying the code into the file but with the advantage of enhanced code reusability and modularity. It's good practice to use named imports, selecting only the contracts we intend to use from the file
+```solidity
 import { Contract as MyContract } from './myOtherContract.sol';
 ```
+### Contracts interaction
+Solidity lets you interact with other contracts. To do so we need the contract's address and its ABI (Application Binary Interface):
 
-## Interacting with contracts
+```solidity
+contract AddFiveStorage is SimpleStorage {}
+```
+### Inheritance and overriding
+A contract can also inherit functions from other contracts in the form of inheritance. This can be obtained through the `is` keyword.
+To explicitly override a function of the parent class, the `override` keyword is used inside the child method. In this case, the parents' function must be marked as `virtual`.
 
-Solidity enables interaction with other contracts, given that we have the contract's address and its Application Binary Interface (ABI). In our tutorial, we realized that the `simple storage` type conveniently provides both the address and the ABI, simplifying our interaction with it.
 
-```js
-SimpleStorage storage = SimpleStorage(address);
-uint256 storedData = storage.retrieve();
+```solidity
+//child contract
+import './ParentContract.sol';
+contract ChildContract is ParentContract {
+    function store(uint256 _num) public override {}
+}
 ```
 
-As of now, we haven't delved too much regarding ABIs. However, in subsequent sections, we will explore more about ABIs
-
-## Contract Inheritance
-
-Solidity also offers a powerful feature in the form of contract inheritance. If you want to create a child contract and inherit the features of another contract, import the parent contract and use the `is` keyword.
-
-To override a function of the base class, the `override` keyword is used. But the base (parent) class must tag the function we want to override with the `virtual` keyword. The syntax can be represented as below:
-
-```js
-import './BaseContract.sol';
-contract ChildContract is BaseContract {
-    function foo() public override { Override functionality here}
-    }
+```solidity
+//parent contract
+function store(uint256 _num) public virtual {
+    // function body
+}
 ```
 
+### Conclusion
+In this section, you've learned how a contract can deploy and interact with other contracts, and how to use code modularity with imports and inheritance.
 
+💡 **TIP** <br>
+When you finish a lesson or a section, take a moment to acknowledge your progress, celebrate it and share your achievements with your community.
 
-### Celebrating Progress
+### 🧑‍💻 Test yourself
+1. 📕 
+2. 🧑‍💻 
 
-And that's it! You've made it to the end of this section. By now, you've acquired some potent capabilities in Solidity. So take a moment to give yourself a resounding pat on the back! Embrace a well-deserved break because taking mental pauses is good for your cognitive health. Go for a walk, indulge in a cup of coffee or some ice cream, or better yet, share your achievements with your friends be it in person or across the world via social media.
-
-Remember, each stride you make in mastering Solidity is a significant one. So be sure to celebrate these crucial little wins that keep you excited and fuel your curiosity.
-
-Keep learning, keep coding, and above all, keep pushing the boundaries.
-
-*Congratulations! You have successfully completed Lesson 3 of the Solidity Course.*
+[Back to top](#top)
