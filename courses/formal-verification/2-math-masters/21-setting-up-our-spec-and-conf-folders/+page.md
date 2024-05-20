@@ -4,114 +4,41 @@ title: Setting up our spec and conf folders
 
 ---
 
-## Tone &amp; Vocabulary Breakdown
+### Getting Started with Certora Verification
 
-Before rolling up our sleeves and diving into the meaty part, let's set some groundwork. Based on the provided transcript, we notice a casual tone that feels accessible and friendly. It is not overly formal, making the material approachable, especially when dealing with the intricacies of coding and formal verification.
+Now that we have our API key, we're ready to dive into writing our first formal verification proof using Certora's Verification Language (CVL). We'll start with a minimal example to understand the basics of the Certora Prover, focusing initially on a function called `hellFunc`. Our goal is to demonstrate how to set up and use Certora to detect potential bugs, similar to what we might find in a square root function. Let's get started with setting up the necessary environment and files for our Certora formal verification.
 
-The vocabulary level leans toward the complex side, but don't fret! This complexity stems from the specificity needed when discussing programming and formal verification topics. Even so, we'll aim to keep things as simple and digestible as possible.
+### Creating the Environment for Certora Formal Verification
 
-Our target audience comprises developers and those with an interest in blockchain technology, specifically users looking to leverage Certora's verification tools. If terms like "API key," "CVL language," and "proofs" get your gears turning, you're in the right place!
+1. **Project Folder Structure**:
+   - Navigate to the root of your project directory.
+   - Create a new folder named `Certora` to house our verification files. Normally, this would be at the root, but for our example, we'll place it under an `invariant break` folder.
+   - Inside the `Certora` folder, create another folder called `specs` where we will store our specification files.
 
-## Let's Begin Our Formal Verification Adventure
+2. **Writing Specifications**:
+   - In the `specs` folder, create a new file named `FvcatchesSpec`. This file will contain the rules and invariants needed for verification.
+   - If using Visual Studio Code, consider installing the Certora Verification Language extension for better syntax highlighting and file formatting.
 
-Alright, let's get our hands dirty with some Certora coding. We're setting our sights on a fundamental example — a 'hello world' of sorts within the realm of formal verification. Our purpose? To ensure that a function, affectionately termed 'hellfunk,' behaves as intended without any unexpected reverts.
+### Defining Rules and Invariants in CVL
 
-Once we've grasped the Certora prover basics, we'll revisit the 'mathmasters' arena, wielding our newfound skills to identify and expose bugs lurking in square root functions.
+1. **Introduction to CVL**:
+   - CVL, or Certora Verification Language, is a domain-specific language used in formal verification, similar to Solidity but with additional features tailored for formal methods.
 
-### Setting Up Our Environment
+2. **Specifying Invariants and Rules**:
+   - Start by defining an invariant for our `hellFunc` function. The invariant might be something like "hellFunc must never revert," which asserts that under no conditions should the function revert.
+   - Write this specification directly in the `FvcatchesSpec` file, using CVL syntax to outline the expected behavior and constraints.
 
-To march forward with Certora, we'll replicate a setup seen among the big-hitter protocols. Imagine protocols like Aave; they typically house a 'certora' folder at the root of their project. Within, you'll find at least a 'specs' folder and possibly other directories tailored to their specific needs.
+3. **Understanding the Difference Between Rules and Invariants**:
+   - **Rules**: These are sequences of commands simulated during verification to test specific conditions or sequences of actions. They can be described as procedural checks, such as "If X and Y occur, then Z must hold."
+   - **Invariants**: These describe a state or property of the system that must always hold true, regardless of the system's state or the actions performed.
 
-Here's what you need to do:
+### Configuring the Verification Environment
 
-1. **Create a new folder:** Name it 'Certora' — this is your command center.
-2. **Specs Folder:** This is where your invariants and rules reside — the brain of the operation.
+1. **Setup Configuration File**:
+   - Create another folder within `Certora` named `comp` and add a configuration file, typically named something like `fvches.com`.
+   - This configuration file includes parameters and settings for the Certora Prover, specifying the files to be verified and any other necessary flags or commands.
 
-Remember, we're building our fortress one step at a time; let's not rush the process. Detailed tutorials and documentation are a click away in the Certora documentation if you need extra guidance.
+2. **Running the Prover**:
+   - The actual command to run the Certora Prover would be `certoraRun`, which will use the details specified in your configuration file.
+   - The setup in `fvches.com` will detail the files to include, the specific contracts to verify, and the specifications to use for this verification.
 
-### Writing Our First Spec
-
-Time to craft your first spec! In a file named `Fvcatches.spec`, begin outlining the rules or invariants for your contract. If you prefer a polished workspace (who doesn't?), consider utilizing VS Code with the Certora Verification Language extension for snazzy syntax highlighting.
-
-A handy tip for visual learners:
-
-```markdown
-// Define your rule or invariant above your code block for clarity// Rule: Health funk must never revertrule healthFunkInvariant() {// Your Certora proof will go here}
-```
-
-Think of rules as sequences commanding how your code should sustain specific scenarios. Invariants, on the other hand, embody properties your contract must maintain consistently.
-
-### The Guts of the Operation — config Files
-
-Config files act as the schematics of our operation. They dictate files and parameters for the formal verification process. Create a file aptly named `fvcatches.conf` to house these details.
-
-```json
-{
-  "files": ["Src/invariantBreak/hellfunk.sol"],
-  "verify": {
-    "contract": "FormalVerificationCatches.sol",
-    "spec": "Fvcatches.spec"
-  }
-}
-```
-
-Add this simple JSON snippet to your conf file as a starting point. This provides Certora with the necessary information on what files to consider and what specifications to apply for the verification process.
-
-Remember, we're translating our transcript into a full-fledged blog post. So, keep your eyes peeled for more elaborate config parameters as we delve deeper into our example.
-
-### Embarking on the Verification Pathway
-
-After setting the foundation, it's time to commence the proving. Execute the Certora prover with the `certoraRun` command alongside your configurations.
-
-### Blog Post Specification and Flavor
-
-As we convert this transcript into a blog post masterpiece, we must bear in mind several pivotal factors:
-
-- Our tone remains casual and insightful, mirroring the original transcript.
-- Clarity over complexity — we choose plain speak over jargon to keep our diverse audience hooked.
-- Brevity is not our friend today — we aim for a hearty 2,000 words, ensuring depth and detail.
-
-We are working within these constraints to ensure our blog post faithfully represents the transcript's essence while being informative and enjoyable to read.
-
-## Bridging Theorems and Code: The Heart of Formal Verification
-
-Formal verification is where the deterministic nature of math meets the abstract creativity of code. It's about ensuring that our smart contracts are not just good but mathematically proven to be secure and robust against all adversities.
-
-In the blockchain space, this isn't just beneficial; it's essential.
-
-### The Invariant Dance — Rules vs. Invariants
-
-Let’s delve into the nuance between rules and invariants in the Certora narrative. Imagine rules as a series of gestures in a dance, dictating movements to land on a precise beat. This beat represents the conditions under which your contract should validate.
-
-Invariants, on the other hand, are that confident posture you must maintain throughout the dance. They personify the unchanging truths that your contract should uphold, regardless of the steps taken.
-
-### Crafting Rules with Human Touch
-
-Here's a rule for you: Humanize your proofs. Yes, even in the stark landscape of code, there's room for personality. Our proofs are not a mere call to logic but a story we tell — one where each function's fate hangs in balance, and it's our job to ensure a happy ending.
-
-### Invariants — The Eternal Checkpoints
-
-Invariants are more than just conditions; they are eternal checkpoints that your contract must clear at every stage of its lifecycle. They're like the lifeguards of your code, ensuring no line of Solidity goes off the deep end.
-
-### Putting It All Together
-
-Once we've pieced together our rule, our invariant, and our config file, it’s time to let the Certora prover take the wheel. Like a meticulous examiner, it combs through our code with a fine-toothed comb, verifying that each line of code adheres to the promises we've made.
-
-This is the moment of truth, where we find out if our preparations stand firm or if we need to go back to the drafting table.
-
-## Sailing Through Spec Files and Config Seas
-
-As our journey nears the end, let's reflect on the key points:
-
-- Specs files are your lighthouse, guiding the prover through the verification storm.
-- Config files are your map, charting the course for a successful verification journey.
-
-## Final Voyage Thoughts
-
-Today, we've barely scratched the surface of what Certora and formal verification have to offer. What we've covered here is just the beacon, illuminating your path to becoming a formal verification maestro.
-
-So, keep practicing, keep learning, and in the wise words of a blockchain philosopher:
-
-> "In the realm of code, let formal verification be your armor, Certora your sword."
-
-With these tools at your disposal, you're well on your way to proving that not only can code be functional, beautiful, and efficient — but also, unequivocally correct.

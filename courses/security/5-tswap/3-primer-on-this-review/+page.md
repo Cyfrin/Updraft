@@ -4,8 +4,6 @@ title: Primer on This Specific Review
 
 _Follow along with this video:_
 
-
-
 ---
 
 Welcome, committed developers! If you've successfully traversed the onboarding phase of your latest project, not without its fair share of glitches, but overall a positive experience, let's now sail into the realms of uncharted territory. Here's where we dig deeper into documentation and imbibe the magic potion of protocol invariants. Sound unfathomable? Stay hooked!

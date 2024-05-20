@@ -31,7 +31,7 @@ Our report is looking great, but the next section, `Proof of Code/Concept`, is i
 First we need a local chain running.
 
 ```bash
-forge anvil
+anvil
 ```
 
 > Note: Most PoC's won't require a local blockchain

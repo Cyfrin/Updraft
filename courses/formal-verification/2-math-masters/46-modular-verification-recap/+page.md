@@ -4,60 +4,38 @@ title: Modular Verification Recap
 
 ---
 
-## The Puzzle of Mathmasters' Sol
 
-It all started with a head-scratcher of a question: Is Mathmasters' square root function doing its job correctly? For those of you who might be new to this, the function in question is written in assembly language—yep, the low-level stuff that talks almost directly to a computer's hardware. We tackled this by learning how to make sense of it, which as you can imagine, with all its complexities, is like trying to read ancient hieroglyphs without a Rosetta Stone.
+### Review of Square Root Function Verification and Methodologies Used
 
-![](https://cdn.videotap.com/618/screenshots/5glvFTHYEUB6qZgzU7qg-147.14.png)
+#### Introduction to the Task and Initial Observations
+We started with the question: Is this square root function correct? The challenge revolved around analyzing a large amount of assembly code implementing the Babylonian method for computing square roots. This method itself might have been unfamiliar to many, and understanding it was crucial to progressing in our task.
 
-One of the standout characteristics of the function is the use of the age-old Babylonian method for computing square roots. If that sounds Greek to you, don't worry, it was new to us too. Sure, we could've meticulously walked through every line of assembly code, but that's like looking for a needle in a haystack.
+#### Decision Against Direct Analysis
+Instead of directly dissecting the assembly code line by line, which likely would have exposed the error in the "two a" (lffff) section, we opted for a more comprehensive testing approach. We believed this would allow us to catch more bugs effectively.
 
-## An Unexpected Turn: Switching to Testing
+#### Implementation of Fuzz Testing
+Our first strategy was fuzz testing. We leveraged existing functions known as "soulmate" and "uniswap square root," which had undergone extensive testing previously. By running the test suites `test square root fuzz uni` and `test square root fuzz soulmate`, both functions passed, indicating no immediate errors under standard conditions.
 
-Rather than following the traditional route, we turned a corner and embraced a more testing-focused strategy. It's all about being practical and letting our tools do some of the heavy lifting. And, when we talk about tools, we're referring to ones that hunt down bugs like they're going out of style.
+#### Advancing to Formal Verification
+Not fully satisfied with fuzz testing, we advanced to formal verification to uncover any potential hidden edge cases. We utilized the Certora tool to set up a verification process, initially trying to replicate the fuzz test in a formal environment. However, we faced limitations with the solver, encountering the "path explosion problem" due to the complexity of the function, pushing us to reconsider our approach.
 
-So, with a dash of pragmatism, we rolled up our sleeves and decided to fuzz it!
+#### Modular Verification of Function Segments
+Our next step involved a more segmented approach to verification. We compared equivalent segments of the MathMasters and soulmate functions, focusing on the top halves of each. This comparison revealed discrepancies leading to the discovery of a bug in the MathMasters function.
 
-### The Fuzzing Phenomenon
+#### Correcting and Re-verifying the Function
+Upon correcting the identified issues and re-running the formal verification, Certora confirmed that the revised MathMasters function aligned perfectly with the soulmate function, validating our corrections.
 
-For the uninitiated, fuzzing is like throwing a bunch of random inputs at a program to see if it trips and falls somewhere. The end goal? Find the bugs that are hiding in the dark corners. We've played around with `soulmate` and `uniswap` square root functions before, both of which are pretty robust contenders.
+### Learning Outcomes and Tools Utilized
 
-Interestingly, the developers behind this protocol had the same idea. They set up their fuzzing duels, `test_square_root_fuzz_uni` and `test_square_root_fuzz_soulmate`, both came out swinging and passed with flying colors. But hold your horses! This didn't mean the battle was over; it was just getting started.
+- **Understanding Assembly and the Babylonian Method**: Key to tackling the initial problem.
+- **Fuzz Testing**: Effective for broad testing but not definitive for edge cases.
+- **Formal Verification with Certora**: While challenging due to computational limits, it was crucial for definitive testing.
+- **Modular Verification**: Breaking down the code into manageable parts proved essential for isolating and addressing errors.
 
-### Formally Verifying the Troublesome Function
+### Documentation and Community Contributions
 
-Could there be an edge case, we pondered, hiding like a sly fox? Only one way to find out—formal verification, the Sherlock Holmes of bug detection.
+The importance of robust documentation was highlighted, encouraging users to contribute to open-source documentation improvements through pull requests. Additionally, the community's role in enhancing security practices through detailed write-ups and reports was emphasized.
 
-We strutted into `certora`, our trusty tool, slapped on our detective hats, and set up a formal verification test using the same logic as our fuzz tests. And guess what? Turns out our case was too enigmatic for our solver—it faced the infamous path explosion problem. Simply put, it was too much of a labyrinth for our solver to tackle in any reasonable amount of time.
+### Encouragement and Next Steps
 
-## A Revelation in Modular Verification
-
-Back at square one, we had a eureka moment. By comparing the first halves of the `soulmate` and `mathmasters` Sol functions, we concluded if they matched, our puzzle would be closer to completion.
-
-In our testing sandbox, we set up a modular verification for just the top halves. And eureka! We uncovered a bug in the `mathmasters` Sol, which led us to scrutinize a suspiciously random number filled with `FF`s. That was our smoking gun.
-
-### Debugging with Hex Conversion
-
-After decoding the hex, the oddity stood out like a sore thumb. With the issue corrected and another round of formal verification, `certora` gave us the all-clear—the two functions were now identical twins.
-
-> "The moment when `certora` agrees that the `soulmate` is correct, you can bet your bottom dollar that our `mathmasters` square root function is just as accurate."
-
-## Learning Beyond the Code
-
-This journey was not just about squashing bugs; it was an enlightening path to mastering tools like `certora` and `halmos`. If technical terms and concepts made you feel cross-eyed, there's salvation in documentation. And for the open-source advocates, you can even contribute to making the docs better.
-
-## Embarking on the Final Challenge
-
-Now, rising stars of the dev world, pat yourselves on the back. Tackling the `mathmasters' sol` was equivalent to climbing a coding Everest. We navigated the treacherous terrains of `certora` and are now preparing to don our explorers' gear for one last odyssey—the advanced formal verification lesson with `gas bad NFT marketplace`.
-
-### Advanced Verification: Into the Unknown
-
-Dark mode aficionados, beware; the NFT marketplace visualization might not be the prettiest on the eyes. Nevertheless, it's ripe for our exploratory dives.
-
-As we embark on this next foray, we're not just teaching you to verify contracts—we're handing you the keys to a kingdom of skills few have conquered. With less than a thousand samurai warriors wielding this power, you're in for an elite transformation.
-
-## Afterword: The "Power Break" Suggestion
-
-Now, before your brain combusts from an overload of knowledge, treat yourself. Whether it's a scoop of ice cream, lifting weights, or just a breath of fresh air—recharge, rejuvenate, and come back ready to conquer `gas bad`.
-
-Remember, the power of modular verification is now at your fingertips, and with each step you take, the cryptic world of complex contracts becomes a little less baffling.
+The journey through this verification process was not just about solving a technical problem but also about learning to use sophisticated tools in real-world applications. With the upcoming lessons on advanced formal verification in the GasBad NFT marketplace, the opportunity to deepen these skills awaits. This progression underscores the rarity and value of these capabilities in the tech industry.

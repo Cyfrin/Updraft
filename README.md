@@ -118,9 +118,11 @@ Here's how you can contribute:
    git push origin your-branch-name
    ```
 
-7. **Create a Pull Request (PR):** Go to the original Cyfrin Updraft repository on GitHub and create a pull request from your forked repository. In your PR, explain the changes you've made and why they're beneficial.
+7. **Create an Issue**: This repo reviews pull requests that have an associated issue, so please make an issue and tag the issue somewhere in your pull request (which you'll make in the next step). 
 
-8. **Await Review:** The Cyfrin team or community maintainers will review your PR. Be responsive to any feedback or requested changes.
+8. **Create a Pull Request (PR):** Go to the original Cyfrin Updraft repository on GitHub and create a pull request from your forked repository. In your PR, explain the changes you've made and why they're beneficial.
+
+9. **Await Review:** The Cyfrin team or community maintainers will review your PR. Be responsive to any feedback or requested changes.
 
 ### Best Practices for Contribution
 
@@ -151,11 +153,4 @@ Cyfrin Updraft content is open-sourced [licensed as GPLv3](https://github.com/cy
 [![Cyfrin Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/cyfrinupdraft)
 [![Cyfrin YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@CyfrinAudits)
 [![Cyfrin LinkedIn](https://img.shields.io/badge/Linkedin-0e76a8?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/school/cyfrin-updraft/)
-# Usage
 
-```
-git clone https://github.com/Cyfrin/Updraft
-cd Updraft
-pnpm install
-pnpm dev
-```
