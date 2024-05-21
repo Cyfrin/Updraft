@@ -5,13 +5,12 @@ _You can follow along with the video course from here._
 
 <a name="top"></a>
 ### Introduction
-This is a recap of the section Storage Factory. 
+This section covered how to deploy contracts, how to import and interact with them, and using inheritance to customize their functionalities.
 
-### Deploying
-In this section, we learned how to use the `new` keyword to deploy multiple instances of a contract.
+### Deploying and importing
+We delved into the use of the **`new`** keyword to deploy multiple instances of a contract, allowing for the creation of numerous contract instances as needed.
 
-### Importing other contracts
-Contracts can be imported. This is equivalent to copying the code into the file but with the advantage of enhanced code reusability and modularity. It's good practice to use named imports, selecting only the contracts we intend to use from the file
+Contracts can also be **imported**, which is equivalent to copying the code into the file but with the advantage of enhanced code reusability and modularity. It's good practice to use *named imports*, selecting only the contracts we intend to use from the file.
 ```solidity
 import { Contract as MyContract } from './myOtherContract.sol';
 ```
@@ -22,7 +21,7 @@ Solidity lets you interact with other contracts. To do so we need the contract's
 contract AddFiveStorage is SimpleStorage {}
 ```
 ### Inheritance and overriding
-A contract can also acquire functions from other contracts through **inheritance**. This can be obtained through the `is` keyword.
+A contract can also derive functions from other contracts through **inheritance**. This can be obtained through the `is` keyword.
 To explicitly override a function from the parent contract, the `override` keyword is used in the child method. The parent's function must be marked as `virtual` to allow this interaction.
 
 ```solidity
@@ -32,22 +31,18 @@ contract ChildContract is ParentContract {
     function store(uint256 _num) public override {}
 }
 ```
-
 ```solidity
 //parent contract
 function store(uint256 _num) public virtual {
     // function body
 }
 ```
-
 ### Conclusion
-In this section, you've learned how a contract can deploy and interact with other contracts, and how to use code modularity with imports and inheritance.
-
+In this section, we explored deploying multiple contract instances using the `new` keyword and enhancing code reusability through contract *imports*. We also covered interacting with other contracts using their address and ABI. Additionally, we learned about inheritance and function overriding, allowing derived contracts to customize inherited functionalities.
 💡 **TIP** <br>
-When you finish a lesson or a section, take a moment to acknowledge your progress, celebrate it and share your achievements with your community.
+When you finish a section, take a moment to acknowledge your progress, celebrate it and share your achievements with your community.
 
 ### 🧑‍💻 Test yourself
-1. 📕 
-2. 🧑‍💻 
+🏆 Attempt to answer all theoretical questions from lesson 1 through 7, and then go back again to complete all the coding tasks.
 
 [Back to top](#top)
