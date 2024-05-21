@@ -6,11 +6,11 @@ _You can follow along with the video course from here._
 
 <a name="top"></a>
 ### Introduction
-This is the setup part we'll explore what *composability* means and create the `StorageFactory` contract, that will deploy and interact with another `SimpleStorage` contract.
+In this `StorageFactory` setup, we'll explore what *composability* means, showing its ability to deploy and interact with external `SimpleStorage` contracts.
 
 ### StorageFactory setup
-You can start going to the [Github repository of the previous section](https://github.com/cyfrin/remix-simple-storage-f23) and copying the contract `SimpleStorage` inside Remix.
-This contract allows storing a favorite number, a list of people with their favorite number, a mapping and different functionalities to interact with them.
+You can begin by visiting the [Github repository of the previous section](https://github.com/cyfrin/remix-simple-storage-f23) and copying the contract `SimpleStorage` inside Remix.
+This contract allows to store a favorite number, a list of people with their favorite number, a mapping and different functionalities to interact with them.
 This lesson aims to create a **new contract** that can deploy and interact with `SimpleStorage`.
 
 > 👀❗**IMPORTANT** <br>
