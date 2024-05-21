@@ -26,20 +26,13 @@ We can ask the AI to clarify it by:
 This is the AI prompt:
 ```
 Hi, I'm having a hard time understanding the difference between these simple storages on this line:
-```
-```
 ```// paste the confusing line of code here```
-```
-
-```
 Here is my full code:
-```
-```
 ```// paste the full code here```
 ```
 
 ### AI answer
-The AI can provide insightful and very complete answers. For instance, an AI may indicate that `simpleStorage` is a variable of type `SimpleStorage`, which is a contract defined in the file `SimpleStorage.sol`.
+The AI can provide insightful and very comprehensive answers. For instance, an AI may indicate that `simpleStorage` is a variable of type `SimpleStorage`, which is a contract defined in the file `SimpleStorage.sol`.
 
 > 👀❗**IMPORTANT** <br>
 AI systems are highly efficient at solving basic coding tasks. However, as the complexity of codebases and projects increases, the effectiveness of AI begins to diminish. Advanced tasks often require deep contextual understanding, innovative problem-solving, and area integrations where current AI capabilities fall short. 

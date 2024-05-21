@@ -43,6 +43,6 @@ In this section, we explored deploying multiple contract instances using the `ne
 When you finish a section, take a moment to acknowledge your progress, celebrate it and share your achievements with your community.
 
 ### 🧑‍💻 Test yourself
-🏆 Attempt to answer all theoretical questions from lesson 1 through 7, and then go back again to complete all the coding tasks.
+🏆 Attempt to answer all the theoretical questions from lesson 1 through 7, and then go back again to complete all the coding tasks.
 
 [Back to top](#top)

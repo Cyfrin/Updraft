@@ -34,7 +34,7 @@ We can also modify existing functions from `SimpleStorage` by using the **`overr
 function store(uint256 _newFavNumber) public {}
 ```
 ```
-*TypeError: Overriding function is missing "override" specifier.*
+TypeError: Overriding function is missing "override" specifier.
 ```
 
 >🗒️ **NOTE** <br>
@@ -44,7 +44,7 @@ function store(uint256 _newFavNumber) public override {}
 ```
 Yet, another error will pop up:
 ```
-*TypeError: Trying to override a non-virtual function.*
+TypeError: Trying to override a non-virtual function.
 ```
 To address this, we need to mark the `store` function in `SimpleStorage.sol` as **virtual**, enabling it to be overridden by child contracts:
 ```solidity

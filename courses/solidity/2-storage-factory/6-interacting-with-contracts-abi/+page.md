@@ -52,8 +52,8 @@ If you go to Solidity's compile tab, you will find a button that lets you copy t
 
 <img src="/solidity/remix/lesson-3/interacting/interacting-contract1.png" style="width: 100%; height: auto;">
 
-🗒️ **NOTE** <br>
-In Solidity, it's possible to **type cast** an *address* to a type *contract*
+>🗒️ **NOTE** <br>
+>In Solidity, it's possible to **type cast** an *address* to a type *contract*
 
 We can now proceed to store a new number on a `SimpleStorage` contract:
 
