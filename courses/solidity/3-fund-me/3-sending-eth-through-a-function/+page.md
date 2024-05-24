@@ -12,8 +12,8 @@ In this part, we'll explore how to transfer Ethereum (ETH) to a smart contract b
 
 ### Value and payable
 
-When a transaction it's sent to the blockchain, a **value** field is always included in the transaction data. This field indicates the amount of the native cryptocurrency being transferred in that particular transaction.
-For the function `fund` to be able to receive Ethereum, it must be declared `payable`. In the Remix UI, this keyword will turn the function red, signifying that it can accept cryptocurrency.
+When a transaction it's sent to the blockchain, a **value** field is always included in the _transaction data_. This field indicates the **amount** of the native cryptocurrency being transferred in that particular transaction.
+For the function `fund` to be able to receive Ethereum, it must be declared **`payable`**. In the Remix UI, this keyword will turn the function red, signifying that it can accept cryptocurrency.
 
 _Wallet addresses_ and _smart contracts_ are capable of **holding** and **managing** cryptocurrency funds. These entities can interact with the funds, perform transactions, and maintain balance records, just like a wallet.
 
@@ -21,7 +21,7 @@ _Wallet addresses_ and _smart contracts_ are capable of **holding** and **managi
 function fund() public payable {
  // allow users to send $
  // have a minimum of $ sent
- // 1. How do we send ETH to this contract?
+ // How do we send ETH to this contract?
  msg.value;
 
  //function withdraw() public {}
@@ -32,7 +32,7 @@ In Solidity, the **value** of a transaction is accessible through the [`msg.valu
 
 ### Require
 
-We can use the **`require keyword`** as a checker, to enforce our function to receive a minimum `value` of one (1) whole ether:
+We can use the`require` keyword as a checker, to enforce our function to receive a minimum `value` of one (1) whole ether:
 
 ```solidity
 require(msg.value > 1e18); // 1e18 = 1 ETH = 1 * 10 ** 18 
