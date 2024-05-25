@@ -2,53 +2,41 @@
 title: Quick Recap II
 ---
 
-*Follow along this chapter with the video bellow*
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
-# Advanced Solidity: A Comprehensive Refresher
+In this recap, we'll review how to interact with an external contract and utilize its functions, understand Chainlink Price Feeds, perform Solidity math, and explore global properties.
 
-Hey you, welcome back! Having ventured into the depths of Advanced Solidity, We are sure you have been inundated with loads of information, from compiler instructions to price feeds. Let's re-trace our learning path and perform a detailed recap of what we've tackled so far. Remember, every move in the arduous world of Solidity programming counts.
+### Interacting with an External Contract
 
-## Starting With a Contract: Address and Abi
+To interact with any external contract, you need the contract's _address_ and _ABI_ (Application Binary Interface). Think of the `address` as a _house number_ that identifies the specific contract on the blockchain, while the `ABI` serves as a _manual_ that explains how to interact with the contract.
 
-The bedrock of any smart contract is the `address` and `Abi` (Application Binary Interface.) Remember, to interact with any contract, you need these two elements ideally. In the most straightforward terms, an `address` is similar to a house number that helps identify the specific contract in the blockchain universe. The `Abi`, on the other hand, is a manual revealing how the contract can be used.
+To obtain the contract ABI, you can compile a Solidity **interface** that the target contract implements. Then, create a new instance of the interface pointing to the specific address of the deployed contract.
 
-```js
-    // In JavaScript
-    let contractAddress = "0x....";
-    let contractAbi = [...];
+### Chainlink Price Feeds
+
+[Chainlink Price Feeds](https://docs.chain.link/docs/using-chainlink-reference-contracts/) provide a reliable way to access real-world data, such as pricing data, and inject it into smart contracts. This is particularly useful for executing mathematical operations in Solidity and the Ethereum Virtual Machine (EVM), where floating-point numbers are not used.
+
+### Solidity Global Properties
+
+The [Solidity documentation](https://docs.soliditylang.org/en/latest/cheatsheet.html#block-and-transaction-properties) provides several global properties that are essential for interacting with the Ethereum blockchain. Here are two key properties:
+
+- `msg.sender`: this property refers to the address of the account that **initiated the current function call**
+- `msg.value`: this property represents the **amount of Wei** sent with a function call
+
+```solidity
+function updateValue() public payable {
+    require(msg.value >= 1 ether, "Not enough Ether provided.");
+}
 ```
 
-<img src="/solidity/remix/lesson-4/recap/recap1.png" style="width: 100%; height: auto;">
+By understanding these concepts, you can effectively interact with external contracts, leverage Chainlink Price Feeds for real-world data, and utilize Solidity's global properties for more robust smart contract development.
 
-## Interfacing with the Contract
+### 🧑‍💻 Test yourself
 
-To get the Abi easily and subsequently interact with another contract, you need to compile an interface. This is a critical step, akin to building a radio set that helps you tune into the contract's frequency. Combining the contract `address` with the interface essentially streamlines calling on the contract's functions.
+1. 🏆 Attempt to answer all the theoretical questions from lessons 1 through 12, and then go back again to complete all the coding tasks.
 
-
-## Linking Up: Using Chainlink Price Feeds
-
-In our sturdy armor of Solidity programming, [Chainlink Price Feeds](https://docs.chain.link/docs/using-chainlink-reference-contracts/) are the trusty sword. They provide an efficient way to access real-world data, particularly **pricing data**, and inject it into our smart contracts – a process that's as seamless as sipping coffee while going through the morning news!
-
-<img src="/solidity/remix/lesson-4/recap/recap2.png" style="width: 100%; height: auto;">
-
-
-## Making Math Work in the EVM
-
-When it comes to working with mathematics in Solidity and the Ethereum Virtual Machine (EVM) in general, decimals are a no-go zone - they just don't play well in here. So, make sure you're always using the correct unit conversion when dealing with your contracts.
-
-
-## Getting to Grips with Global Units in Solidity
-
-Dominated by two players: `msg.value` and `msg.sender`, globally available units in Solidity tell a lot about the transaction at hand. `msg.sender` refers to the account that started the current function call, while `msg.value` represents the number of wei sent with that particular function call.
-
-```js
-    function updateValue() public payable {
-        require(msg.value >= 1 ether, "Not enough Ether provided.");
-    }
-```
-
-<img src="/solidity/remix/lesson-4/recap/recap3.png" style="width: 100%; height: auto;">
-
-To wrap it up, I believe you now have a thorough understanding - if not a complete masterclass of what we've learned so far in Advanced Solidity. As we continue our journey, always remember that understanding and mastering the basics create a solid foundation for the complex elements to come as we further demystify Solidity!
+[Back to top](#top)
