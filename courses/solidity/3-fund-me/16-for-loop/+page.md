@@ -76,7 +76,8 @@ In this lesson, we learned how to implement the `withdraw` function to manage ac
 
 ### 🧑‍💻 Test yourself
 
-1. 📕
-2. 🧑‍💻
+1. 📕 What are the shortcuts we addressed in this lesson?
+2. 📕 How does a `for loop` work in Solidity?
+3. 🧑‍💻 Implement a function named `pushNumbers` to populate a `numbers` array with values from 1 to 10.
 
 [Back to top](#top)
