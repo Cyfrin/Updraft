@@ -14,8 +14,6 @@ Let's dive into creating our first Solidity function called `Store`. The functio
 
 ### Building the **store** function
 
-## Building the Store Function
-
 📋 To store this variable, we need to implement a new **function**. In Solidity, functions - or methods, are portions of code designed to execute specific tasks within the overall codebase. We'll call this new function `store`, and it will be responsible for updating the `favoriteNumber` variable.
 
 In Solidity programming, functions are identified by the keyword `Function`. You write the `Function` keyword, followed by the function's name, and additional parameters enclosed in parentheses. The parameters define the data a function needs to execute. For instance, to inform our `Store` function about the value it should use to update `favoriteNumber`, we pass a variable of type `uint256` named `_FavoriteNumber`.
@@ -51,8 +49,6 @@ This function can be tested out on the local Remix VM.
 The content of the function is placed within the curly brackets `{}`.
 The prefix `_` before `_favoriteNumber` is used to emphasise that the _local_ variable `_favoriteNumber` is a **different** variable from the _state_ variable `favoriteNumber`. This helps prevent potential confusion when dealing with different variables with similar names in complex codebases.
 
-## Deploying the Smart Contract
-
 ### Deploying the Smart Contract
 
 At this stage, you can compile your code by navigating to the compile tab and hitting Compile. After compiling, navigate to the tab titled **Deploy and Run Transactions** to test your function.
@@ -82,8 +78,6 @@ The Address of our Contract is: 0xd9145CCE52D386f254917e481eB44e9943F39138 This 
 > [!IMPORTANT]
 > The process of sending a transaction is the **same** for deploying a contract and for sending Ethers. The only difference is that the machine-readable code of the deployed contract is placed inside the _data_ field of the deployment transaction.
 > Again, you can re-access your deployed contract by expanding the **Deployed Contracts** interface and simultaneously opening the terminal, which shows log data of all contract deployment and transactions.
-
-### Transactions creation
 
 ### Making Transactions with the Store Function
 
@@ -120,8 +114,6 @@ After compilation and deployment, a button labelled `favoriteNumber` will become
 
 ### Visibility
 
-## Understanding Function &amp; Variable Visibility
-
 In Solidity, functions and variables can have one of these four visibility specifiers:
 
 In Solidity, functions and variables can have one of four visibility specifiers:
@@ -138,11 +130,8 @@ If a visibility specifier is not given, it defaults to `internal`.
 <img src="/solidity/remix/lesson-2/functions/f1.png" style="width: 100%; height: auto;">
 <img src="/solidity/remix/lesson-2/functions/f2.png" style="width: 100%; height: auto;">
 
-> [!IMPORTANT]
-> **Public functions** are visible both internally and externally. On the other hand, **private functions** can only be accessed by the _current contract_. Private does not hide a value; rather, it restricts access.
+> [!IMPORTANT] > **Public functions** are visible both internally and externally. On the other hand, **private functions** can only be accessed by the _current contract_. Private does not hide a value; rather, it restricts access.
 > [!IMPORTANT] > **External functions** are only visible externally and are not accessible within the contract. **Internal functions** are accessible only by the current contract and any contract that is inherited from it.
-
-## Deeper Understanding of Functions
 
 ### Pure and View keywords
 
@@ -194,14 +183,10 @@ function something() public {
 }
 ```
 
-## Understanding the Scope of a Variable
-
 ### Wrap Up
 
 The scope of a variable is determined by the curly braces `{'{'}...{'}'}` in which it is declared. A variable can only be accessed within its declared scope. Therefore, if you need to access a variable on different functions, you should declare it outside the functions but inside the contract.
 In this lesson, you have learned how to build a function in Solidity, define its visibility, and understand how it operates on values within a smart contract. You have also explored different transactions and their gas consumption. Let's continue learning!
-
-## Conclusion
 
 ### 🧑‍💻 Test yourself
 

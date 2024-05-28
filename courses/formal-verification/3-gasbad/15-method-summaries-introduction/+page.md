@@ -12,7 +12,7 @@ We've learnt that the `persistent` keyword could be leveraged in our situation t
 
 This is where `methods summaries` come into play. We've previously touched on the `methods block`, but we haven't really demonstrated how important this section can be.
 
-<img src="../../../../static/formal-verification-3/15-method-summaries-introduction/methods-summaries-introduction1.png" width="100%" height="auto">
+<img src="/formal-verification-3/15-method-summaries-introduction/methods-summaries-introduction1.png" width="100%" height="auto">
 
 As detailed in the [**Certora Docs**](https://docs.certora.com/en/latest/docs/cvl/methods.html), declarations in the methods block come in two flavours, `non-summary declarations` (these are like the ones we made in our `NftMock.conf`) and `summary declarations`.
 

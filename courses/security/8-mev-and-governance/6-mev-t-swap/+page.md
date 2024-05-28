@@ -102,7 +102,7 @@ Imagine a node operator happened to be a `liquidity provider` in `TSwap`. This o
 
 This malicious node operator would have the power to delay the processing of this `deposit` transaction in favor of validating more swap transactions maximizing the fees they would obtain from the protocol at the expensive of the new depositer!
 
-<img src="../../../../static/security-section-8/6-tswap-mev/mev-in-tswap1.png" width="100%" height="auto">
+<img src="/security-section-8/6-tswap-mev/mev-in-tswap1.png" width="100%" height="auto">
 
 ### Wrap Up
 
