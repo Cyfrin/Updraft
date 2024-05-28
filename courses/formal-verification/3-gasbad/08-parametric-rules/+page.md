@@ -1,41 +1,62 @@
 ---
-title: parametric rules
+title: Parametric Rules
 ---
 
-## Exploring the Power of Parametric Rules in Smart Contract Development
+_Follow along with this video:_
 
-In the realm of smart contract development, the ability to create flexible and adaptive systems is vital. The concept of parametric rules opens up a world of possibilities in this space, allowing developers to craft rules that respond dynamically to various method calls and states. Today, we're delving into the fascinating tutorial of parametric rules – an advanced, yet incredibly potent, feature in the toolkit of smart contract developers.
+---
 
-### The Essence of Parametric Rules
+### Parametric Rules
 
-At its core, a parametric rule is a construct that invokes a method in an ambiguous manner. This could mean employing a method variable or an overloaded function name to achieve the desired flexibility. When you create a parametric rule, the system is empowered to generate separate reports for each possible version of the method’s instantiation. To put it simply, this refers to rules encompassing undefined method variables. Let’s break this down further.
+In this lesson we'll go through a `parametric` formal verification example. You can read more about Parametric rules [**here in the Certora docs**](https://docs.certora.com/en/latest/docs/user-guide/parametric.html), but in brief they're rules which take ambiguious methods as parameters and differ from invariants in two key ways:
 
-Consider a typical sanity check rule in smart contracts – it verifies that fundamental invariants or properties hold true before and after transactions occur. Now, imagine this regular sanity rule transforms by integrating an undefined method variable. Voilà! It becomes what we know as a parametric rule.
+1. Invariants are also testing after the constructor
+2. Invariants are used to assert properties of the storage (between function calls), while parametric rules are used to assert properties of _changes_ in the storage (caused by function calls).
 
-### What Makes a Method Parametric?
+Ultimately, any rule which contains an arbitrary method can be considered a `parametric rule`. What this allows us to do is configure a rule which calls any random method in our scene, we can further abstract this and pass the method random calldata and environment variables. A minimalistic example of this would look something like:
 
-By introducing this `method f`, the doors to calling any function, with any selector, and with any conceivable set of parameters, are flung wide open. This flexibility offers smart contract developers a tool with unparalleled power and adaptability.
+```js
+rule sanity {
+    method f;
+    env e;
+    calldataarg arg;
+    f(e, arg);
+    satisfy true;
+}
+```
 
-### From Theory to Practice
+So, let's set up a simple example that applies to our NftMock. This example will be a little silly, as we expect it to fail, but it should demonstrate the concept clearly enough.
 
-The beauty of these parametric rules lies in their practical applications. Let’s consider a real-world scenario in the context of token supply within a contract:
+```js
+rule no_change_to_total_supply(method f) {
+    uint256 totalSupplyBefore = totalSupply();
 
-By stating that there must be no alteration to the `totalSupply`, you are creating a rule that applies to any arbitrary method denoted by `f`. This holds the potential to act as an invariant check, ensuring that regardless of which method is invoked, the `totalSupply` remains constant. Of course, in systems like ERC-721 tokens with mint functions, this rule is bound to fail, as minting inherently changes the total supply.
+    env e;
+    calldataarg arg;
+    f(e, arg);
 
-### Testing the Rule's Strength
+    assert totalSupply() == totalSupplyBefore, "Total supply should not change!"
+}
 
-The next step is to put our parametric rule to the test. By doing so, we're affirming the smart contract's robustness – it should maintain the `totalSupply` no matter the state it's in or the function it executes. When this test is conducted, and it predictably fails, it highlights the specific methods that violate the rule.
+```
 
-In the case of an NFT smart contract, methods like `mint` or `transferFrom` will alter the total supply, thereby failing the test. While it demonstrates a rule violation, it also emphasizes the rule's ability to comprehensively evaluate various methods under different contract conditions.
+> [!NOTE]
+> Passing a variable as an input parameter is almost identical to defining it within the rule body.
 
-### A Peek Under the Hood of Parametric Rules
+What's cool about this set up is that it nearly functions like our `stateful fuzz testing`. `Certora` is going to `HAVOC` the storage variables (replace them with random values), and simulate the contract in different states. At each step it calls a method, our rule is going to assure that the `totalSupply` variable never changes.
 
-What's unique here is that the failure of the rule isn't just an end, but rather a starting point. It offers an insight into the contract's behavior under various operations. For instance, upon failure, if you observe that the `safeTransferFrom` method is one of the culprits, you may uncover nested contract calls that lead to changes in the total supply.
+Again, we expect this to fail, since the contract contains a mint function, but we can run this to see how it performs.
 
-Such discoveries are invaluable as they unravel the nuanced interactions within the contract's ecosystem, proving the unmistakable power of parametric rules.
+```bash
+certoraRun ./certora/conf/NftMock.conf
+```
 
-### Concluding Thoughts
+<img src="../../../../static/formal-verification-3/8-parametric-rules/parametric-rules1.png" width="100%" height="auto">
 
-As we wrap up our deep dive into parametric rules, it's clear that they serve more than just as a feature of smart contract development. They are an embodiment of flexibility, strength, and adaptability within the code. With each function call, whether it’s a direct behavior or an unintended side effect, parametric rules open our eyes to the multifaceted outcomes of our codes. Exploring their capabilities is not just about enforcing invariants but about pushing the boundaries of what our smart contracts can endure and how they behave in the chaotic, unforeseen states of the blockchain world.
+As expected, we can see this fails, but by taking a closer look we can ascertain why and better understand the conclusion the prover came to. Intuitively we know that the `totalSupply` of `NftMock` is going to increase with `mint` function calls, but perhaps less intuitively the prover has pointed out that callback functions through `onERC721Received` can recursively call the `mint` function _also_ calling this assertion to fail!
 
-This exploration into parametric rules is a clear indicator of the advances in smart contract development, paving the way for developers to gain more profound insights and create more robust applications. As the field evolves, so does our understanding – and parametric rules are at the forefront of this evolution, as both a tool and a tutor in the world of blockchain technology.
+### Wrap Up
+
+Clearly `parametric rules` can be a powerful tool in an auditor's belt when performing formal verification with `Certora`. We've covered a few concepts in our little trial run through `NftMock` verification, so let's recap in the next lesson.
+
+See you there!

@@ -1,46 +1,174 @@
 ---
-title: section 3 recap
+title: Section 3 Recap
 ---
 
-### Understanding Summaries and Their Role in Verification
+_Follow along with this video:_
 
-Summaries – these aren't your typical end-of-chapter notes. In our context, we learned that summaries like the 'dispatcher summary' and 'always, always one' could effectively substitute a function with desired behavior within our verification specs.
+---
 
-Take for example the `safeTransferFrom` function. It's a staple in contracts adhering to the ERC-721 standard, but through summaries, we could channel all related calls to our tailored `NFTMock safeTransferFrom`. It was our way of saying, "In our world, this is how `safeTransferFrom` behaves – no exceptions."
+### Section 3 Recap
 
-### Ghost Variables and "Havoc-ing": The Art of Managing Change
+We just learnt a tonne, and in record time. Let's recap some of the things we covered in this sections.
 
-Who could forget the bewitching concept of ghost variables? Invisible at first, but once we cast the initial state with an axiom – akin to a requisite spell of `require` statements – they manifest to join the dance of our contract logic. But, what's magic without a little chaos?
+### .conf
 
-Enter the stage of "havoc-ing." If you're envisioning a villain in our verification plot, this would be it. When Certora, our verification ally, identifies an opportunity to wreak havoc, it will! By manipulating ghost variables to potentially snap our invariants, it tested our mettle in safeguarding these intangible actors.
+By writing 2 more .conf files, we gained a bunch more experience in configurating our formal verification tests. We learnt different options within this configuration such as:
 
-### The All-Seeing Certora Hooks and Minimalistic Invariant Mastery
+- `rule_sanity` - We experimented with `basic` and `none` and saw how this affected Certora's assessment of the `sanity` or soundness of our tests
+- `prover_args` - options we can pass our CLI to fine tune the assumptions of the prover.
 
-We then delved into the realm of Certora hooks – think of them as the vigilant guards monitoring every storage alteration or opcode execution. We witnessed firsthand how crafting actions triggered by `sStore` or `log4` could bolster our invariants.
+> [!IMPORTANT]
+> Remember, that while we can tweak our assumptions, it's important to be cautious when doing so. Setting `optimistic_fallback` to avoid HAVOCing external calls is a bad idea if you have reason to believe those external calls can be malicious. These assumptions configure the prover to rate situations as valid, but they may be **_unsound_**.
 
-And who could ignore our minimalist masterpiece? An invariant that simply tallied listing updates, storage alterations, and log emissions to declare, with an air of sternness, "For each storage change, a log shall exist!"
+```js
+{
+    "files": [
+        "src/GasBadNftMarketplace.sol:GasBadNftMarketplace",
+        "src/NftMarketplace.sol:NftMarketplace",
+        "test/mocks/NftMock.sol:NftMock"
+    ],
+    "verify": "GasBadNftMarketplace:certora/spec/GasBadNft.spec",
+    "wait_for_results": "all",
+    "rule_sanity": "basic",
+    "optimistic_loop": true,
+    "msg": "Verification of NftMarketplace",
+    "prover_args": [
+        "optimistic_fallback": true
+    ]
+}
+```
 
-### Equivalence Testing: A Symphony of Fidelity in Smart Contracts
+### Methods Block
 
-As we orchestrated the grand finale of our journey – the parametric function finesse – we set a benchmark. Two methods, `f` and `f2`, with the same function selector, became the cornerstone to prove an ambitious proposition. Starting from the same state, 'gas bad' and 'NFT marketplace' should mirror each other's state post-function execution, no matter what. This, my friends, is the blueprint for future gas optimization – a testament to the power of formal verification.
+**Summary Declarations**
 
-### Envisioning the Future of High-Performance Smart Contracts
+We also learnt about summary declarations, the DISPATCHER summary in particular. Summary Declaractions allow us to tell the Certora provers to replace any function logic with whatever behaviour we want. In the case of our external calls, we use the DISPATCHER summary in order to restrict what the prover expects to be the result of these calls, which is otherwise unpredicatable.
 
-Perhaps, the most exhilarating tangent we explored was the future of smart contract development. Imagine crafting your contract in the readable realms of Solidity, then morphing it into the bytecode ballet of Huff or Assembly. You then perform equivalence testing, a formal verification ritual, to confirm that both versions, however different in syntax, sing the same tune of logic.
+```js
+function _.onERC721Received(address, address, uint256, bytes) external => DISPATCHER(true);
+function _.safeTransferFrom(address,address,uint256) external => DISPATCHER(true);
+```
 
-Yes, it takes more time. But the result? You obtain the holy grail – smart contracts that zip and zoom with unmatched efficiency. It's an endeavor worth considering, and, dare I say, one that will elevate your game in the burgeoning ecosystem of smart contracts.
+**currentContract**
 
-### A Hat Tip and Your March Forward
+Additionally, we learnt that when we call a function in our methods block, it defaults to being called on the currentContract - the contract currently being verified.
 
-As our section comes to a close, I won't simply bid you farewell. Rather, I implore you – let your GitHub showcase your prowess in smart contracts and formal verification. It's your digital portfolio that whispers tales of capacity to prospective collaborators.
+```js
+function getListing(address,uint256) external returns (INftMarketplace.Listing) envfree;
+function getProceeds(address) external returns (uint256) envfree;
+```
 
-Now, what's next? Well, Codehox is your playground. Engage in contests, hone your skills, and maybe even fill your coffers a bit. Look around – a new age of security beckons, and it yearns for brilliant minds like yours to usher it in.
+This above is functionally identical to:
 
-Don't be a stranger – let's connect on Twitter, Farcaster, or wherever you call your digital home. Tag me (@cypherupdraft) and share your thoughts, your projects, or simply say hello. Your journey might seem solitary, but together, as we forge towards a fortified Web3, you're never alone.
+```js
+function currentContract.getListing(address,uint256) external returns (INftMarketplace.Listing) envfree;
+function currentContract.getProceeds(address) external returns (uint256) envfree;
+```
 
-And while the links on GitHub may entice you with paths to further enlightenment, take a moment to breathe. Go on, grab that coffee, ice cream, or hit the gym. You've just armored yourself with knowledge – put it to good use in your conquest of Web3 excellence.
+It's possible to abstract the contract on which a function is being called however by implementing a `wildcard entry`, such as we employed in our `_.onERC721Received` and `_.safeTransferFrom` functions. `_.` denotes a [**wildcard entry**](https://docs.certora.com/en/latest/docs/cvl/methods.html#wildcard-entries). In combination with our summary declarations, this allows us to configure particular functions to behave an expected way, regardless of the contract from which they are called.
 
-Until our paths cross again in the digital cosmos – great job. Keep it froggy out there.
+### Ghost Variables
 
-Signing off,  
-Patrick Collins
+We learnt about Ghost Variables and how to initialize them. By setting an initial\_\_state and axiom, we assure the prover assigns a particular value as a starting point for these variables.
+
+```js
+ghost mathint listingUpdatesCount {
+    init_state axiom listingUpdatesCount == 0;
+}
+```
+
+These variables function like contract state variables, and as such if the prover fails to predict an outcome of a prove, they are liable to being HAVOC'd (randomized). We can assure these variables are **not** HAVOC'd by applying the `persistent` keyword to them.
+
+```js
+persistent ghost mathint listingUpdatesCount {
+    init_state axiom listingUpdatesCount == 0;
+}
+```
+
+HAVOCing is an integral part of Certora proofs. If the prover is able to find a path in which it's able to potentially do anything - it will. It accomplishes this by randomizing our storage variables. When this happens, our ghost variables will be set to anything Certora can find that will break our rule.
+
+### Hooks
+
+We also learnt that any time our protocol executes any number of op codes, we can configure Certora hooks to perform custom actions when executed. We demonstrated this by hooking SSTORE and LOG4 opcodes and used them to increment our ghost variables to be compared!
+
+```js
+hook Sstore s_listings[KEY address nftAddress][KEY uint256 tokenId].price uint256 price {
+    listingUpdatesCount = listingUpdatesCount + 1;
+}
+
+hook LOG4(uint offset, uint length, bytes32 t1, bytes32 t2, bytes32 t3, bytes32 t4) uint v {
+    log4Count = log4Count + 1;
+}
+```
+
+### Rules and Invariants
+
+We warmed up with a gorgeous, minimalistic invariant which we used to verify that every time storage was updated, an event would be emitted.
+
+```js
+invariant anytime_mapping_updated_emit_event()
+    listingUpdatesCount <= log4Count;
+```
+
+Finally, we also build a badass `parametric rule` which, after confirming the starting states of our contracts match, goes on to call the same function on both implementations (this function is randomized, but checked to match). We're then asserting that the states following our function calls also match, **_PROVING MATHEMATICALLY_** that our Solidity and Assembly implementations execute with the same behaviour!
+
+```js
+rule calling_any_function_should_result_in_each_contract_having_the_same_state(method f, method f2, address listingAddr, uint256 tokenId, address seller){
+    env e;
+    calldataarg args;
+
+    // They start in the same state
+    require(gasBadMarketplace.getProceeds(e, seller) == marketplace.getProceeds(e, seller));
+    require(gasBadMarketplace.getListing(e, listingAddr, tokenId).price == marketplace.getListing(e, listingAddr, tokenId).price);
+    require(gasBadMarketplace.getListing(e, listingAddr, tokenId).seller == marketplace.getListing(e, listingAddr, tokenId).seller);
+
+    // It's the same function on each
+    require(f.selector == f2.selector);
+    gasBadMarketplace.f(e, args);
+    marketplace.f2(e, args);
+
+    // They end in the same state
+    assert(gasBadMarketplace.getListing(e, listingAddr, tokenId).price == marketplace.getListing(e, listingAddr, tokenId).price);
+    assert(gasBadMarketplace.getListing(e, listingAddr, tokenId).seller == marketplace.getListing(e, listingAddr, tokenId).seller);
+    assert(gasBadMarketplace.getProceeds(e, seller) == marketplace.getProceeds(e, seller));
+}
+```
+
+This kind of equivalence checking is _exactly_ how the community will make Web3's future sustainable and accessible from a gas perspective.
+
+### Wrap Up
+
+With that, we've come to the end of the Assembly, Formal Verification and EVM Opcodes course.
+
+This course was pretty quick compared to some others we've hosted, but it wasn't easy. You tackled a lot of advanced concepts and masters some really low level implementations. You should be very proud.
+
+> [!TIP]
+> Make sure you push your projects to your GitHub account. Your GitHub profile should serve as your billboard to advertise your accomplishments and it's one of the first places companies will look when hiring.
+
+Now that you've gone through this whole thing, there are a number of things you _can_ and _should_ do.
+
+1. [**CodeHawks**](https://www.codehawks.com/) - Full Stop. By now you have the experience and know what to expect when approaching complex code bases and you should absolutely dive into the challenge of live audits. Put your knowledge to the test. If you don't use it, you lose it. Keep an eye out for `Formal Verification` contests.
+2. [**Dive into the Community**](https://discord.gg/cyfrin) - Join the Cyfrin discord and connect with like-minded students and auditors. The engaged community can help push you into your next steps.
+
+And as a personal favour, if you're on social media, post about your accomplishments here. Ping us in your post, tweet at us, get loud about what you've overcome and make the world aware of how far you've made it.
+
+Of course the course GitHub repo has a [**number of links**](https://github.com/Cyfrin/assembly-evm-opcodes-and-formal-verification-course?tab=readme-ov-file#where-do-i-go-now) to things you should consider doing next.
+
+Thanks so much for joining me, and I'll see you in Web3!
+
+🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮
+
+🧮 Exercises:
+
+1. Compete in a formal verification contest!
+
+### Section 3 NFT
+
+- [I can't stop you anymore (Arbitrum)](https://arbiscan.io/address/0x349364769030dAB260eF2771610C4860EE367202#code)
+- [I can't stop you (Sepolia)](https://sepolia.etherscan.io/address/0x7D4a746Cb398e5aE19f6cBDC08473664ADBc6da5)
+
+🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮🧮
+
+# Congratulations
+
+🎊🎊🎊🎊🎊🎊🎊 Completed The Course! 🎊🎊🎊🎊🎊🎊🎊

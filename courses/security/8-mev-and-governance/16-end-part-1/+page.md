@@ -4,25 +4,60 @@ title: End of Part 1
 
 _Follow along with this video:_
 
-<!-- TODO -->
-
-
 ---
 
-# Congratulations on Nailing Part One of the Security Curriculum: Here's What's Next
+### End of Part 1
 
-Hey, friends. Great to see you again. What a journey it's been so far!
+What a journey it's been so far!
 
-Getting through the first part of this majorly intense curriculum deserves a massive round of applause. We've covered a variety of crucial topics. From `Mev signature replays` and `reentrancy attacks`, we've gone over the `audit process`, to `stateful fuzzing`. We've also touched on interesting concepts like `invariants`, `arbitrage`, `DeFi`, `borrowing and lending`, `flash loans`, and much more.
+Getting through the first part of this majorly intense curriculum deserves a massive round of applause. We've covered a variety of crucial topics. We've learnt about:
 
-In just completing the last five security reviews, you've not only established a formidable portfolio but also demonstrated that persistent practice pays off. Remember: repetition is the mother of skill.
+- MEV
+- Signature Replay
+- Reentrancy Attacks
+- The Audit Process
+- Multiple Auditing Strategies
+  - The Tincho
+  - The Hans
+- Testing Methods
+  - stateless and stateful fuzzing
+  - invariants
+- Arbitrage
+- DeFi
+  - Borrowing/Lending
+  - Flash Loans
+  - Uniswap
+  - Compound
+- EVM Compatibility between chains
+- Verifiable Randomness
+- Centralization
+- Denial of Service
+- Failure to Initiate
+- Access Control
+- Oracle Manipulation
 
+...and so much more.
 
-## You got this
+In completing this course, and the last 5 section specifically, you've built up a portfolio to show case what you've learnt and what you're capable of as a security researcher. I've said it since the beginning, the way to get better is by continuing to practice this skill:
 
-And here is the thing, we've just trained you on the EXACT process the professionals do. So you know how to do this!!
+> [!IMPORTANT]
+> "Repetition is the mother of skill."
 
-## The Game Plan
+So, what's next?
+
+Well, the one code base I've alluded to, but we didn't go through together is `Vault Guardians`. As I mentioned before, this is _the most_ challenging security review out of any we've done til now. `Vault Guardians` may be the largest code base and we learnt that often the bugs you find won't show themselves until the end of a review, this can tend to make reviewing longer code bases as being demoralizing and overwhelming.
+
+This is normal. Take a deep breath. You've got this. You have 5 security reviews worth of experience and you have the tools and a game plan to approach harder things.
+
+Remember the steps of our process:
+
+1. Initial Review
+   a. Scoping
+   b. Reconnaissance
+   c. Vulnerability identification
+   d. Reporting
+
+### The Game Plan
 
 **1. Scoping**
 
@@ -38,31 +73,38 @@ Time to dive into the code. It’s okay if you don’t find anything at first �
 
 **4. Identifying Vulnerabilities**
 
-Your final mission is the most challenging - finding vulnerabilities. Use your checklist for guidance, looking for any weird ERC20s or potential MEV.
+Your final mission is the most challenging - finding vulnerabilities. Use your checklist for guidance, leverage the strategies we've used over and over like `The Tincho`. Assess the test suite, write stateful fuzzing test. Now's your chance to put your skills to work and break the thing.
 
-## Testing Your Skills
+### Testing Your Skills
 
-The Vault Guardians code base offers greater complexity than any previous codebases. Embrace this new level of difficulty. Seize this opportunity to test your prowess in the face of adversity.
+The Vault Guardians code base offers greater complexity than any previous codebases. Embrace this new level of difficulty, and challenge yourself. It's how you improve.
 
-My suggestion to you: team up with a peer. This vault presents numerous bugs and issues for you to uncover, which will help build your confidence and improve your bug-finding skills.
+> [!TIP]
+> Vault Guardians can be daunting, consider teaming up with a fellow student to tackle this challenge! Find someone on the [**Cyfrin Discord**](https://discord.gg/cyfrin).
 
-**And remember: do not proceed to part two just yet.**
+### A Valuable Detour
 
-## A Valuable Detour
+> [!IMPORTANT]
+> **DO NOT GO TO PART 2**
 
-Now, it's time. You have 2 options. 
+Now, it's time. You have 2 options.
 
-\**Option 1: Compete in a real competitive audit on platforms like Code Hawks. The excitement of the competition will keep you on edge and the real code base is sure to test all your abilities*.
+\*_Option 1: Compete in a real competitive audit on platforms like Code Hawks. The excitement of the competition will keep you on edge and the real code base is sure to test all your abilities_.
 
-\*\*Option 2: Pair up and tackle the Vault Guardians codebase as a learning experience.
+\*_Option 2: Pair up and tackle the Vault Guardians codebase as a learning experience._
 
-## To Recap:
+### Wrap Up
 
 1. First of all, great job! By just getting this far, you outdo more than 70% of the current security landscape.
-2. Do not move to part two yet. Either try your hand at a Code Hawks competitive audit or complete the Vault Guardians audit with a partner.
+2. Do not move to part two yet. Either try your hand at a CodeHawks competitive audit or complete the Vault Guardians audit with a partner.
 
-Remember your security journey is far from over. Part two is where we (will) dig even deeper into assembly, EVM, formal verification, and more. 
+Remember your security journey is far from over. Part two is where we (will) dig even deeper into `Assembly`, `EVM`, `formal verification`, and `post deployment best practices`.
 
-So... We are looking forward to seeing you back for Part 2 after you try your hand at either Vault Guardians or Code Hawks.
+Good luck!!!
 
-Good luck!!
+<details>
+<summary>Super Secret Alpha</summary>
+
+For real, go do Vault Guardians, or a real audit. See you soon. <3
+
+</details>

@@ -1,67 +1,202 @@
 ---
-title: summary implementations
+title: Summary Implementations
 ---
 
-## Crafting Smart Contract Methods for Verification
+_Follow along with this video:_
 
-Let's talk code and start with crafting a methods block in our smart contract. We'll create an external function, `safeTransferFrom`, that takes in two addresses and a `uint256` argument:
+---
+
+### Summary Implementations
+
+Let's dive right into writing the methods block for our `GasBad.spec`. We know from our error in the Certora proof we ran that we saw our issue in the safeTransferFrom function. Because this function is calling externally, the prover can't predict what the effects will be, so things HAVOC. This will be a good place to start.
 
 ```js
-function safeTransferFrom(address _from, address _to, uint256 _tokenId) external {
-    // Function code here
+methods {
+    function safeTransferFrom(address,address,uint256) external => DISPATCHER(true)
 }
 ```
 
-Pretty standard thus far, right? But here's where it gets exciting. We use the Certora verification tool to rigorously test our contracts. In particular, we're looking to prevent `safeTransferFrom` from doing anything it shouldn't.
+With our `DISPATCHER` summary set to `true` we're telling the prover not to assume anything about this function and to only draw logic from examples of this function found within _known_ contracts.
 
-## Certora's Dispatcher: Friend or Foe?
+Certora will look through known contracts, searching for a function declaration for `safeTransferFrom` and will only apply that logic to our verification. In the case of our GasBad protocol, Certora will see that NftMock.sol is ERC721Enumerable, which inherits from ERC721 ... which means the prover is going to assume this external call does this:
 
-For those unfamiliar, Certora is a prover tool that rigorously analyzes smart contracts to ensure they behave as intended. A key feature we'll focus on today is its "dispatcher." When set to `true`, it ensures that `safeTransferFrom` can only perform actions as defined in the contracts Certora is aware of.
-
-In the smart contract world, this is a major game-changer. It prevents unwanted behavior by limiting function calls to their defined behavior within known contracts.
-
-When we flip the switch on our dispatcher, Certora doesn't assume `safeTransferFrom` could do "literally anything." Instead, it diligently combs through known contract instances, finding and referencing the various `safeTransferFrom` functions.
-
-For example, if our smart contract code includes:
-
-Then Certora might say, "Ah, there's `safeTransferFrom` declared in `MockERC721.sol`. However, I only recognize these other three contracts. Let's check if `NFTMock` implements this function." Trust me, this small change can significantly impact the security posture of our smart contracts.
-
-## Auto-Summary: The Unsung Hero
-
-While we're on the subject, let me introduce you to another useful feature called "auto-summary." As the name suggests, Certora automatically appends an auto-summary to called methods. This automated speculation helps determine what the function should do.
-
-For view and pure methods, it uses nondeterministic approximations (essentially educated guesses), while for others, such as those involving library methods and delegate calls, assumptions are made that storage might be arbitrarily changed.
-
-In coding terms, when you see an auto-summary like the one below in Certora's output, it's essentially saying, "I'm defaulting to havoc scenarios for all unspecified cases."
-
-## Fine-Tuning Our Methodology
-
-Now, here's the kicker: our `GasBadNFTMarketplace.sol` contract might not be the one invoking `transfer`. So we need to instruct Certora that not just any contract calling `safeTransferFrom` should be havoced, but it should reference an existing implementation from known contracts in our configuration file.
-
-By setting dispatcher to `true`, we're guiding Certora to utilize our `NFTMock` contract's `safeTransferFrom` for every related call. This standardizes our expectations and the behavior Certora will analyze.
-
-## Real-World Verification Conundrums
-
-When we run verification with Certora, we might face peculiar puzzles, such as errors that point to `default havoc`. It's like a treasure hunt — you scan through the calls and conditions to catch that havoc action responsible for unexpected outcomes. This helps us identify which piece of code needs refinement.
-
-A real-world scenario would be scrutinizing the `onERC721Received` function. Certora might apply havoc to this function based on assumptions extrapolated from other contracts, so we must configure it explicitly to call the correct function within `GasBadNFTMarketplace.sol`.
-
-```solidity
-function onERC721Received(address operator, address from, uint256 tokenId, bytes calldata data) external returns (bytes4) {// Function code herereturn this.onERC721Received.selector;}
+```js
+function safeTransferFrom(address from, address to, uint256 tokenId) public {
+    safeTransferFrom(from, to, tokenId);
+}
 ```
 
-With precise specification, such as making the function only execute certain defined actions (`dispatcher = true`), we restrict its behavior to what's expected. Hence, when Certora verifies the contract, any ambiguity that could lead to havocing is eliminated.
+**_or_**
 
-## Pulling Back the Curtain on Smart Contract Verification
+```js
+function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) private {
+    transferFrom(from, to, tokenId);
+    _checkOnERC721Received(from, to, tokenId, data);
+}
+```
 
-Let's pull back the curtain for a moment and glimpse the dramatic theatre of smart contract verification. When we initiate a `call` within our `withdrawProceeds` function, it's akin to unleashing pandemonium (havoc): A `call` could literally do anything, from re-entering functions to other chaotic scenarios!
+**Dispatcher Function Summary:**
+If "true", Certora will look through its list of known contracts for functions that have matching function signatures. It will then assume the function will act the same as one of the _known_ functions.
 
-Our job as vigilant developers then becomes crafting our specifications to keep our contract's assumptions clear and enforceable. We would do this by being explicit about what we expect from our functions, rather than taking the easy way out with making all state variables persistent, which might hide underlying assumptions.
+### Auto Summaries
 
-## Final Thoughts
+If we look closely as our error in Certora we can see something labelled `AUTO summary`.
 
-In practice, fine-tuning our methods block to tell Certora how to treat functions like `safeTransferFrom` and `onERC721Received` clarifies what we assume about our contract's behavior. It allows us to write more secure, verifiable code, even if it's a little more difficult than just setting variables to persist through havoc.
+<img src="../../../../static/formal-verification-3/18-summary-implementations/summary-implementations1.png" width="100%" height="auto">
 
-By now, I hope you've grasped the fundamental relevance of dispatchers, how they shape the verification process, and how carving out specific behaviors can prevent unwanted disruptions in your contracts. So next time you're knee-deep in smart contract code, remember to be explicit about your assumptions and let tools like Certora ensure they hold up under scrutiny.
+[**Auto summaries**](https://docs.certora.com/en/latest/docs/cvl/methods.html#auto-summaries) effectively represent the Certora prover just trying to figure out what should be happening when not explicitly told. It's specific affect will vary dependent on the type of call being performed.
 
-Remember, robust smart contracts aren't just written — they're proven. Keep questioning, keep verifying, and until next time, happy coding!
+<img src="../../../../static/formal-verification-3/18-summary-implementations/summary-implementations2.png" width="100%" height="auto">
+
+Our `safeTransferFrom` scenario would be classified as `other calls`, as a result `HAVOC_ECF` is employed, and this is why we see our function HAVOCing in our test.
+
+### Further Consideration
+
+Remember, in our methods block right now, we're effectively saying:
+
+```js
+methods {
+    function currentContract.safeTransferFrom(address,address,uint256) external => DISPATCHER(true)
+}
+```
+
+The currentContract syntax is implied. So, when the prover is run, it's looking for this function declaration to be contained within the current contract it's verifying. We have an issue, however. Look at how this function is actually being called within `GasBadNftMarketplace.sol`:
+
+```js
+function listItem(address nftAddress, uint256 tokenId, uint256 price) external {
+    ...
+    // Interactions (External)
+    IERC721(nftAddress).safeTransferFrom(msg.sender, address(this), tokenId);
+}
+```
+
+> [!NOTE]
+> Similar calls to this function in `IERC721` can be seen in the `buyItem` and `cancelListing` functions as well.
+
+This means that the function declaration we're using won't actually be in the contract we're verifying. Fortunately, we've learnt a way we can resolve this.
+
+```js
+methods {
+    function _.safeTransferFrom(address,address,uint256) external => DISPATCHER(true)
+}
+```
+
+By employing the `wildcard entry` we can avoid issues with where this function is called from. The `wildcard entry` will tell the prover to apply our `summary declaration` to any function of this signature called from any contract.
+
+Because the scope we're providing the prover includes `NftMock.sol`, we're instructing `Certora`, through our above configuration, to treat every `safeTransferFrom` call as though it behaves like the one in our `NftMock.sol` contract.
+
+Now, it's worth pointing out that by employing our declaraction this way we're adopting some assumptions. Primarily, we're assuming that our NFTs `safeTransferFrom` function won't alter storage and that the `safeTransferFrom` function behaves fairly innocuously. This may not necessarily be a safe assumption, but for the purposes of our example this is fine.
+
+### Running the Prover
+
+Ok, we've just been buried in new information, I know. Let's just run things as they are now and see what happens, then we can recap what we've learnt and how things are working.
+
+For reference, here's where we stand with our GasBad.spec so far:
+
+<details>
+<summary>GasBad.Spec</summary>
+
+```js
+/*
+ * Certora Formal Verification Spec for GasBadNftMarketplace
+ *
+ * This spec is technically unsound because we make summaries about the functions, and are using optimistic fallback
+ */
+
+using GasBadNftMarketplace as gasBadMarketplace;
+using NftMock as nft;
+using NftMarketplace as marketplace;
+
+methods {
+    function _.safeTransferFrom(address,address,uint256) external => DISPATCHER(true);
+}
+
+ghost mathint listingUpdatesCount {
+    init_state axiom listingUpdatesCount == 0;
+}
+
+ghost mathint log4Count {
+    init_state axiom log4Count == 0;
+}
+
+hook Sstore s_listings[KEY address nftAddress][KEY uint256 tokenId].price uint256 price {
+    listingUpdatesCount = listingUpdatesCount + 1;
+}
+
+hook LOG4(uint offset, uint length, bytes32 t1, bytes32 t2, bytes32 t3, bytes32 t4) uint v {
+    log4Count = log4Count + 1;
+}
+
+/*//////////////////////////////////////////////////////////////
+                                RULES
+//////////////////////////////////////////////////////////////*/
+
+// It shouldn't be possible to have more storage updates than events
+invariant anytime_mapping_updated_emit_event()
+    listingUpdatesCount <= log4Count;
+```
+
+</details>
+
+---
+
+<img src="../../../../static/formal-verification-3/18-summary-implementations/summary-implementations3.png" width="100%" height="auto">
+
+Uh oh, we're still seeing an issue. Let's drill into the call trace to determine what's happening. If we navigate through the call trace Certora provides to the safeTranferFrom call that was previously failing, we can see a few interesting things.
+
+<img src="../../../../static/formal-verification-3/18-summary-implementations/summary-implementations4.png" width="100%" height="auto">
+
+It looks like our `safeTransferFrom` function is being called from `NftMock`'s implementation of it, like we'd expect. This function is subsequently calling `_checkOnERC721Received`, and ultimately `onERC721Received`!
+
+**_We_** know that onERC721Received is being called on our `to` address, which in this case is the `GadBadNftMarketplace`, but from Certora's point of view, this is a random address and the function being called on it could do anything! Certora's response is to HAVOC again, randomizing our ghost variables and breaking our invariant.
+
+Fortunately for us, with what we've learnt so far, we should be able to account for this in our GasBad.spec file. Our goal will be to tell the prover to only run the implementation of onERC721 received that's contained within GasBadNftMarketplace.sol itself. There's actually a couple ways we can handle this.
+
+One way we could approach this is exactly how we solve the issue with `safeTransferFrom`. We can add a `wildcard entry` and a `DISPATCHER summary declaration`.
+
+```js
+function _.onERC721Received(address, address, uint256, bytes) external => DISPATCHER(true);
+```
+
+Alternatively, if we consider what the implementation of `onERC721Received` in GasBadNftMarketplace is doing...
+
+```js
+function onERC721Received(address, /*operator*/ address, /*from*/ uint256, /*tokenId*/ bytes calldata /*data*/ )
+    external
+    pure
+    returns (bytes4)
+{
+    // return this.onERC721Received.selector;
+    // This saves 0 gas - good job solidity!
+    return bytes4(0x150b7a02);
+}
+```
+
+...we can see that this function is returning a static value. We could also handle our `HAVOC` situation by leveraging one of the view summaries such as `CONSTANT` or `NONDET`.
+
+```js
+function _.onERC721Received(address, address, uint256, bytes) external => CONSTANT(0x150b7a02);
+```
+
+> [!IMPORTANT]
+> While we expect this to solve our HAVOC issue with the prover, it's always important to consider the restrictions we're putting on the validity of our verification. If these functions _don't_ always perform this way, this may be a bad idea!
+
+Let's try running the prover again, now that we've added this additional method block function.
+
+<img src="../../../../static/formal-verification-3/18-summary-implementations/summary-implementations5.png" width="100%" height="auto">
+
+Well, at least our number of violations are falling. We're also getting lots of practice at debugging these call traces! Let's see what's happening this time.
+
+<img src="../../../../static/formal-verification-3/18-summary-implementations/summary-implementations6.png" width="100%" height="auto">
+
+Of course this would HAVOC, `call` can _literally_ do anything! As we've seen, if a situation arises which `Certora` can't predict outcomes of, it's going to let slip its dogs of war (cry HAVOC), breaking our invariant.
+
+### Wrap Up
+
+We're making lots of progress and gaining tonnes of experience reading through `Certora` reports. This is a good thing. The more familiar you are, the more natural this process will be when it's needed.
+
+Now, we're still getting errors. At some point we could throw our hands up and make our `ghost variables persistent` - this _would_ solve the issue of them being `HAVOC`'d, but accounting for these outlying situations within our `methods block` allows us explicit visibility into the assumptions we're making about our tests.
+
+Where does this leave us? We can't really add `call` as a function within our `methods block`, it isn't defined in our scope anywhere. Call exists as a low level primitive in the language.
+
+We aren't without options. Let's take a look at how we can manage the `HAVOC` we're seeing now, in the next lesson!

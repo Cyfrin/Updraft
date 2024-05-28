@@ -1,57 +1,111 @@
 ---
-title: MEV - T-Swap
+title: MEV - TSwap
 ---
 
 _Follow along with this video:_
 
-<!-- TODO -->
+---
 
+### MEV - TSwap
+
+Ok, so Puppy Raffle wasn't safe - what about TSwap, was there a problem there?
+
+Absolutely! Recall from TSwapPool.sol, the deposit function:
+
+<details>
+<summary>TSwapPool.sol::deposit</summary>
+
+```js
+function deposit(
+    uint256 wethToDeposit,
+    uint256 minimumLiquidityTokensToMint,
+    uint256 maximumPoolTokensToDeposit,
+    uint64 deadline
+)
+    external
+    revertIfZero(wethToDeposit)
+    returns (uint256 liquidityTokensToMint)
+{
+    if (wethToDeposit < MINIMUM_WETH_LIQUIDITY) {
+        revert TSwapPool__WethDepositAmountTooLow(
+            MINIMUM_WETH_LIQUIDITY,
+            wethToDeposit
+        );
+    }
+    if (totalLiquidityTokenSupply() > 0) {
+        uint256 wethReserves = i_wethToken.balanceOf(address(this));
+        uint256 poolTokenReserves = i_poolToken.balanceOf(address(this));
+        // Our invariant says weth, poolTokens, and liquidity tokens must always have the same ratio after the
+        // initial deposit
+        // poolTokens / constant(k) = weth
+        // weth / constant(k) = liquidityTokens
+        // aka...
+        // weth / poolTokens = constant(k)
+        // To make sure this holds, we can make sure the new balance will match the old balance
+        // (wethReserves + wethToDeposit) / (poolTokenReserves + poolTokensToDeposit) = constant(k)
+        // (wethReserves + wethToDeposit) / (poolTokenReserves + poolTokensToDeposit) =
+        // (wethReserves / poolTokenReserves)
+        //
+        // So we can do some elementary math now to figure out poolTokensToDeposit...
+        // (wethReserves + wethToDeposit) = (poolTokenReserves + poolTokensToDeposit) * (wethReserves / poolTokenReserves)
+        // wethReserves + wethToDeposit  = poolTokenReserves * (wethReserves / poolTokenReserves) + poolTokensToDeposit * (wethReserves / poolTokenReserves)
+        // wethReserves + wethToDeposit = wethReserves + poolTokensToDeposit * (wethReserves / poolTokenReserves)
+        // wethToDeposit / (wethReserves / poolTokenReserves) = poolTokensToDeposit
+        // (wethToDeposit * poolTokenReserves) / wethReserves = poolTokensToDeposit
+        uint256 poolTokensToDeposit = getPoolTokensToDepositBasedOnWeth(
+            wethToDeposit
+        );
+        if (maximumPoolTokensToDeposit < poolTokensToDeposit) {
+            revert TSwapPool__MaxPoolTokenDepositTooHigh(
+                maximumPoolTokensToDeposit,
+                poolTokensToDeposit
+            );
+        }
+
+        // We do the same thing for liquidity tokens. Similar math.
+        liquidityTokensToMint =
+            (wethToDeposit * totalLiquidityTokenSupply()) /
+            wethReserves;
+        if (liquidityTokensToMint < minimumLiquidityTokensToMint) {
+            revert TSwapPool__MinLiquidityTokensToMintTooLow(
+                minimumLiquidityTokensToMint,
+                liquidityTokensToMint
+            );
+        }
+        _addLiquidityMintAndTransfer(
+            wethToDeposit,
+            poolTokensToDeposit,
+            liquidityTokensToMint
+        );
+    } else {
+        // This will be the "initial" funding of the protocol. We are starting from blank here!
+        // We just have them send the tokens in, and we mint liquidity tokens based on the weth
+        _addLiquidityMintAndTransfer(
+            wethToDeposit,
+            maximumPoolTokensToDeposit,
+            wethToDeposit
+        );
+        liquidityTokensToMint = wethToDeposit;
+    }
+}
+```
+
+</details>
 
 ---
 
-## Exploring the T Swap Issue
+We identified, during our review, that the `deadline` parameter wasn't being used. How would that potentially lead to an `MEV` attack in `TSwap`?
 
-While working with T swap, there was a prominent issue that surfaced - an issue which was rooted right in the `deposit` function. The problematic player at hand was an unused `deadline` parameter.
+Before a transaction is sent to the `MemPool`, it is sent to a node. Node operators have priviledged information with respect to transactions about to be added to the blockchain and in some circumstances they can delay when a transaction is processed by up to a whole block. If the `deadline` parameter was properly employed it could have prevented this!
 
-To find the culprit, we navigated to the `SRC` and inspected the `TswapPool.sol` in T swap, where we saw the troublesome `deadline` input parameter laying idly in the `deposit` function.
+Imagine a node operator happened to be a `liquidity provider` in `TSwap`. This operator would be able to see pending deposits into the protocol, the practical effect of which would be that their shares and fees are lowered as the `LPTokens` are diluted.
 
-```javascript
-    function deposit(
-        uint256 wethToDeposit,
-        uint256 minimumLiquidityTokensToMint,
-        uint256 maximumPoolTokensToDeposit,
-        uint64 deadline
-    )
-```
+This malicious node operator would have the power to delay the processing of this `deposit` transaction in favor of validating more swap transactions maximizing the fees they would obtain from the protocol at the expensive of the new depositer!
 
-And, you ask, what was the consequence of this unutilized parameter? Well, its existence led to a scenario where a deposited transaction could potentially be delayed without encountering a timeout, thereby enabling 'front running'. 
+<img src="../../../../static/security-section-8/6-tswap-mev/mev-in-tswap1.png" width="100%" height="auto">
 
-A node who receives this transaction could hold your deposit transaction until it benefits them to deposit you in!
+### Wrap Up
 
-## Understand the Impact: An Simple Illustration
+Oh geez, are _any_ of our previous reviews safe from this massive exploit!?
 
-<img src="/security-section-8/6-tswap-mev/t-swap-mev.png" style="width: 100%; height: auto;" alt="t-swap mev">
-
-Let's understand the implications with an example. Suppose a user, 'User A', initiates a `deposit` call. However, this call was sent to a particular node connected to an MEV bot, let's call this 'User B'.
-
-The node, upon receiving the transaction, realizes that the deposit from 'User A' would dwindle its share in the pool. Just by chance, it also knows of certain larger imminent transactions, which will result in big fees. Therefore, the node chooses to stall the transaction from 'User A' temporarily, permitting 'User B' or the MEV bot to collect the big fees – effectively front running 'User A'.
-
-## Introducing 'Sandwich attacks'
-
-Beyond just front running, there are worst forms of deceiving manoeuvres - one such issue that potentially arises in T swap is known as 'Sandwich attacks'. These are when someone front-runs you, and then also "back runs" you.
-
-```
--> Their Transaction
--> Your Transaction
--> Their Transaction
-```
-
-They "sandwich" you between two of their transactions. One such example looks like such:
-
-1. You send a TX to buy 1 ETH for 1,000 DAI
-2. An MEV bot sees this:
-   1. Buys up all the ETH, pumping the price to 2,000
-   2. Your transaction goes through, buying 1 ETH for 2,000 DAI
-   3. They then sell their ETH for it's inflated price 
-
-Seeing your big order of 1 ETH come in, the MEV bot manipulated the market so you paid more, and they profited. 
+Let's check `Thunder Loan` next!

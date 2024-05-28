@@ -1,51 +1,107 @@
 ---
-title: init state and axions
+title: Init State and Axions
 ---
 
-## Starting at Square One: The Perplexing Case of Ghost Variables
+_Follow along with this video:_
 
-Picture this: You've typed away at your keyboard, creating a shiny new rule that does some heavy lifting, and you expect your smart contract's storage to update accordingly. But to your bewilderment, it's not working. Say hello to a typical superhero downfall – understanding the initialization of ghost variables.
+---
 
-In Solidity, our friendly ghost variables aren't the spooky kind, but they can haunt you if you don't treat them right. Unlike standard variables in programming, which often default to zero, ghost variables break the mold – they don't automatically initialize themselves. Yep, they need a bit of a push to get started. Enter `init state`.
+### Init State and Axions
 
-By using the `init state` keyword, we've essentially told our smart contract, "Begin the count from zero," much like setting up a starting line for a race. But now, how do we ensure that this zero is truly the hero of the show?
+Welcome back! We're almost ready to start verifying this protocol, but we've left out an important component. As things stand in `GasBad.spec` currently, nothing will work. Unlike Solidity, the ghost variables we've declared aren't initialized with any value. The `Certora Verification Language (CVL)` requires [**Initial State Axioms**](https://docs.certora.com/en/latest/docs/cvl/ghosts.html#initial-state-axioms) in order to assign starting points to our `listingUpdatesCount` and `log4Count` variables.
 
-## Embracing The Constants: Axioms Aren't Just For Philosophers
+<img src="../../../../static/formal-verification-3/12-init-state-and-axioms/init-state-and-axioms1.png" width="100%" height="auto">
 
-Axioms in smart contract lingo are steadfast truths, the non-negotiables, the 'you can bet your bottom ether on these.' When we declare an axiom, we're telling the smart contract, "Hey, hold this to be true, ALWAYS."
+---
 
-What we've done here is akin to etching it in stone. It's the smart contract's commandment: "Thou shalt consider listing updates count as zero at the onset." But we must inform our tool, Certora, of this commandment so it can uphold it with integrity.
+#### init_state
 
-## The Visuals Make It Real: Snapshots for the Brain
+- Sets the initial state or value of a variable, the starting point
 
-Just as a well-placed image can illuminate a thousand words, initializing variables in a contract makes the implicit explicit, casting light on the unseen rules and setting the stage for predictable behavior.
+#### axiom
 
-## Hook, Line, and Sinker: Catching Every Storage Update and Event Emission
+- declare that something must always hold true. Tells the prover to assume this to always be the case. Acts similar to `require`
 
-With our initialization sorted, we need to cast a wider net to track when and how our contract's storage and event logs get updated. Hooks come to the rescue here – think of them as vigilant guardians monitoring each significant act.
+Let's apply this to our GasBad.spec ghost variables.
 
-By employing hooks, we create an automated tally of updates and event emissions, a ledger that never sleeps. And with this, we're almost ready to create the rules of the game.
+```js
+/*
+ * Verification of GasBadNftMarketplace
+ */
 
-## The Rules are Simple, Yet Mighty
+ghost mathint listingUpdatesCount {
+    // initial state will be 0
+    // require such to be true
+    init_state axiom listingUpdatesCount == 0;
+}
 
-A smart contract's behavior is governed by rules and invariants – the checks and balances that ensure its operations don't spiral into chaos. After setting up our initial variables and hooks, we prepare for the grand act of declaring our invariant.
+ghost mathint log4Count {
+    // initial state will be 0
+    // require such to be true
+    init_stat axiom log4Count == 0;
+}
+```
 
-This line is where the magic happens, where we say, "Let there be no update without an equal event." The beauty of Certora and similar tools is in transforming the intricate dance of updates and checks into a clear, concise declaration.
+> [!TIP]
+> Try running the prover _without_ initializing these variables. What happens?
 
-## The Proof is in the `Certora`: Validating Our Smart Contract's Morals
+### The Rule
 
-Now, what good are rules and invariants if we don't put them to the test? Certora steps up once again to shine its analytical light through our contract's inner workings.
+We now have 2 hooks configured. One is tracking whenever our s_listings storage variable is updated and the other is tracking when our LOG4 events are emitted. All that's missing now is to write the rule/invariant to assert that these match.
 
-By running our contract through Certora's verification process, we validate the inherent truths we've enshrined in our code. It's the proverbial 'try and break it' that solidifies our confidence in the contract.
+Because we've set things up with these hooks, we can just write a very simple invariant pertaining to them.
 
-## Wrapping Up the Wonders of `init state` and Axioms
+```js
+invariant anytime_mapping_updated_emit_event()
+    listingUpdatesCount <= log4Count;
+```
 
-And there you have it – a stroll through the mystical yet highly logical world of `init state` and axioms in smart contract programming. With these tools, we don't just write code; we craft wise, self-aware contracts that carry their purpose and restrictions close to their digital hearts.
+That's it, that's all we need. The reason we chose `<=` is because there may be other LOG4 emissions we aren't accounting for, when other storage variables are emitted, but this should allow us to verify this one case!
 
-Remember, every time we set up a smart contract, we're not just programming; we're instilling values, setting the stage for how it interacts with the blockchain world. And just like our favorite superheroes with their origin stories, our contracts have their foundational elements that shape their destiny. Keep these thoughts close, fellow developers, as you breathe life into the code.
+> [!NOTE]
+> In an audit scenario you would **definitely** want to expand on what we've done here, assuring that _any time_ storage is updated an event is emitted, but for simplicity's sake we've pared down our example.
 
-> "In the realm of smart contracts, `init state` isn't just a keyword; it's a genesis, and axioms are the undisputable truths that govern the blockchain universe."
+### Wrap Up
 
-Who knew that a chat about `init state` and axioms could be so enlightening? Alright, coders and crypto-enthusiasts, take this knowledge, and go forth – create, build, and verify. And let's not forget to have some fun along the way; after all, isn't that what innovation is all about?
+<details>
+<summary>GasBad.spec</summary>
 
-Until next time, keep those spirits (and variables) initialized, and your truths axiomatic. Happy coding!
+```js
+/*
+ * Verification of GasBadNftMarketplace
+ */
+
+ghost mathint listingUpdatesCount {
+    init_state axiom listingUpdatesCount == 0;
+}
+
+ghost mathint log4Count {
+    init_state axiom log4Count == 0;
+}
+
+hook Sstore s_listings[KEY address nftAddress][KEY uint256 tokenId].price uint256 price STORAGE {
+    listingUpdatesCount = listingUpdatesCount + 1;
+}
+
+hook LOG4(uint offset, uint length, bytes32 t1, bytes32 t2, bytes32 t3, bytes32 t4) uint v {
+    log4Count = log4Count + 1;
+}
+
+/*//////////////////////////////////////////////////////////////
+                                RULES
+//////////////////////////////////////////////////////////////*/
+
+// It shouldn't be possible to have more storage updates than events
+invariant anytime_mapping_updated_emit_event()
+    listingUpdatesCount <= log4Count;
+```
+
+</details>
+
+---
+
+### Wrap Up
+
+We've taken a bit of an easier approach to things, but that's ok. This is a great stepping stone towards what's more complex. What we've set up here _should_ hold. The number of times storage is updated should always be less than or equal to our `LOG4` count.
+
+In the next lesson, let's run the prover and see what happens.

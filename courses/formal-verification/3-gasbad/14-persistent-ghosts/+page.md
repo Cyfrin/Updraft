@@ -1,41 +1,39 @@
 ---
-title: persistent ghosts
+title: Persistent Ghosts
 ---
 
-## What's Haunting Your Code?
+_Follow along with this video:_
 
-Let's talk disruption. In programming, especially when you're dealing with smart contracts, there's this thing called a havoc. It’s not a smoke machine and eerie lighting effect. Instead, it's a moment of chaos where randomization screws with your otherwise pristine variables, making everything go haywire.
+---
 
-Now, imagine you've got some ghost variables wandering through your codebase. These aren't your typical variables; these are meant for verification purposes, to check if your smart contracts behave as expected. But non-persistent ghosts and havoc? It's like a haunted house - pure mayhem.
+### Persistent Ghosts
 
-That's where the keyword `persistent` struts in, cape billowing like a hero in a tech novella. It’s the magic incantation that tells the havoc, "Nope, you're not touching my ghost variables!"
+So where does our `Certora` situation leave us? The call trace we were provided actually provides a clue we can use to side step this issue of our ghost variables being HAVOC'd.
 
-### The Brilliant Fix and its Kryptonite
+<img src="../../../../static/formal-verification-3/14-persistent-ghosts/persistent-ghosts1.png" width="100%" height="auto">
 
-So you've gone ahead and marked your ghost variables as persistent – smart move. You run your satora tool to verify your code, and bingo, all is well in the kingdom. You might think, “This is awesome! Let there be a mapping update and emit an event while we're at it.” But hold your horses for a second.
+It can be seen, within the function call which resulted in our HAVOC, a flag which indicates:
 
-The idea seems bulletproof, yet therein lies the catch - it's a tad unsound. In tech-speak, that means what you're doing is kind of like ignoring a sneaky bug because you don't want to deal with it. Persistent ghosts will indeed let you pass the verification test with flying colors, but at what cost?
+**_All non-persistent ghosts were havoc'd_**
 
-For every external call, every `saveTransferFrom` that could update storage, your persistent ghosts stand their ground, blissfully oblivious. Sounds good? Well, not quite. In certain scenarios, this is precisely what you want - for specific side effects to get the cold shoulder from your variables. But let's not make it a habit to sweep things under the rug, shall we?
+Well, how do we make our ghosts persistent? The required adjustment is pretty simple, but comes with further considerations.
 
-### The Real Deal with Persistent Ghosts
+Certora CVL has a keyword `persistent` which we can use to resolve this issue. You can read more on [**Ghosts vs Persistent Ghosts**](https://docs.certora.com/en/latest/docs/cvl/ghosts.html#ghosts-vs-persistent-ghosts) in the Certora docs.
 
-Here's the crux of it - persistent ghosts are handy, no doubt. They let you keep your sanity when havoc ensues, ensuring your ghost variables are steadfastly consistent. But they also teach you a valuable lesson: writing formal verification specs requires a lot of thought, a ton of attention to the what-ifs, and a sprinkle of foresight.
+```js
+persistent ghost mathint listingUpdatesCount {
+    init_state axiom listingUpdatesCount == 0;
+}
 
-You might find yourself in a situation where the smart contract has some unknown side effects - stuff you didn't anticipate. The persistent ghosts, in their unyielding nature, would simply turn a blind eye.
+persistent ghost mathint log4Count {
+    init_state axiom log4Count == 0;
+}
+```
 
-> _"But oftentimes we don't want to just make these persistent..."_
+This would technically _solve_ our HAVOC problem, but it's worth considering that while this make our proof `valid`, it does not allow it to be `sound`. Simple put, these external calls _could_ change the value of variables in storage, but the use of the `persistent` keyword is effectly choosing to ignore this.
 
-This quote from the original talk strikes right at the heart of the issue. As inviting as it might be to wield the persistent attribute like an all-conquering sword, we need to be mindful of its power.
+### Wrap Up
 
-## The Bigger Picture
+Great, we've learnt of a work around for our HAVOC situation, but... we don't really want to employ it. Applying the `persistent` keyword is going to ignore some real world potentialities that are worth taking into account with our protocol, so let's leave them off our Ghosts for the time being.
 
-So what's the take-home lesson here? It's not that using persistent ghosts is wrong - far from it. It’s about using the right tool for the job. In some cases, persistent ghosts can be your best friend, offering a simple workaround to a verification quagmire. In other cases, they can lull you into a false sense of security, masking the true behavior of your smart contracts.
-
-The art and science of formal verification are like balancing on a tightrope. You're constantly weighing the pros and cons, figuring out how to maintain the integrity of your code while accounting for every possible scenario.
-
-To sum it up, persistent ghosts are an ace up your sleeve - a clever tactic in the coder’s handbook. But use them wisely, and always with a keen eye on the broader impacts they might have. Moving beyond the cheap and easy fix is what will ultimately future-proof your code and elevate your verification specs to new heights.
-
-Remember, in the end, it's not just about getting that green checkmark from a verification tool. It’s about knowing, beyond a shadow of a doubt, that your smart contracts are as robust, secure, and foolproof as they can be. So, the next time havoc comes knocking at your door, you can be ready - with or without persistent ghosts.
-
-Happy coding, and may your variables ever be (persistently) ghostly!
+In the next lesson, we'll investigate a different approach to better control the scope of our formal verification runs.

@@ -1,48 +1,63 @@
 ---
-title: MEV - Minimized
+title: MEV - Puppy Raffle
 ---
 
 _Follow along with this video:_
 
-<!-- TODO -->
+---
 
+### Front Running in Puppy Raffle
+
+Let's look at how Puppy Raffle was vulnerable to front running. Our Puppy Raffle's core function is `selectWinner`.
+
+<details>
+<summary>PuppyRaffle.sol::selectWinner</summary>
+
+```js
+function selectWinner() external {
+    require(block.timestamp >= raffleStartTime + raffleDuration, "PuppyRaffle: Raffle not over");
+    require(players.length >= 4, "PuppyRaffle: Need at least 4 players");
+    uint256 winnerIndex =
+        uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.difficulty))) % players.length;
+    address winner = players[winnerIndex];
+    uint256 totalAmountCollected = players.length * entranceFee;
+    uint256 prizePool = (totalAmountCollected * 80) / 100;
+    uint256 fee = (totalAmountCollected * 20) / 100;
+    totalFees = totalFees + uint64(fee);
+
+    uint256 tokenId = totalSupply();
+
+    // We use a different RNG calculate from the winnerIndex to determine rarity
+    uint256 rarity = uint256(keccak256(abi.encodePacked(msg.sender, block.difficulty))) % 100;
+    if (rarity <= COMMON_RARITY) {
+        tokenIdToRarity[tokenId] = COMMON_RARITY;
+    } else if (rarity <= COMMON_RARITY + RARE_RARITY) {
+        tokenIdToRarity[tokenId] = RARE_RARITY;
+    } else {
+        tokenIdToRarity[tokenId] = LEGENDARY_RARITY;
+    }
+
+    delete players;
+    raffleStartTime = block.timestamp;
+    previousWinner = winner;
+    (bool success,) = winner.call{value: prizePool}("");
+    require(success, "PuppyRaffle: Failed to send prize pool to winner");
+    _safeMint(winner, tokenId);
+}
+```
+
+</details>
 
 ---
 
-# Front Running
+Effectively, when the `selectWinner` function is called, the transaction is then sent to the MemPool. At this point anyone can see the results of the selectWinner function. If a user participating in the raffle identifies that they didn't win, the potential exists for them to refund their entry fee!
 
-## The Puppy Raffle Demo
+A user does this by recognizing that they lost, and then paying more gas to have their refund request processed before the `selectWinner` transaction.
 
-Our Puppy Raffle's core function is `selectWinner`, which allows users to select a winner in any given transaction. While this `selectWinner` transaction is in flight (pending confirmation), it is readable by other parties involved in the transaction. This means they can potentially see that the impending winner is user A (let's call them MevBot for the sake of argument) and then strategize accordingly.
+This will lower the prize of the winner!
 
-```javascript
-function selectWinner() { // Winner selection codewinner = User A
-```
+<img src="../../../../static/security-section-8/5-puppy-mev/mev-in-puppy-raffle1.png" width="100%" height="auto">
 
-## When Front Running Strikes
+### Wrap Up
 
-<img src="/security-section-8/5-puppy-mev/puppy-mev.png" style="width: 100%; height: auto;" alt="puppy raffle mev">
-
-Imagine user B - let's call them the Frontrunner - realizing that they're not about to win the raffle. Naturally, they may not want to continue participating in it. Sensing impending loss, Frontrunner springs into action.
-
-*A simple plan*: Before the `selectWinner` transaction goes through, they initiate another function - `refund` - which allows them to pull out their betted money.
-
-```javascript
-function refund() {// Refund code// User B pulls out their betted money}
-```
-
-They are essentially saying, '*No, not on my watch! I'm getting my refund.*' And voila, Frontrunner's transaction gets refunded, while the `selectWinner` function will eventually be executed resulting in (User A) receiving less money. Why? Because Frontrunner (User B) had effectively front-run them and withdrew their betted money!
-
-## The Full Example: Implications of Front Running
-
-Let's add some numbers to visualize this more clearly:
-
-1. Let's say the Puppy Raffle has a total of 10 ETH.
-2. Frontrunner sees that User A is about to win.
-3. Frontrunner and all their peers launch their own transactions to call the `refund` function, effectively withdrawing a substantial portion of the betted money.
-4. Suddenly, there are only 1 ETH left in the pool, instead of the initial 10 ETH.
-5. Finally, the `selectWinner` transaction goes through, and MevBot ends up with a meager prize of 1 ETH instead of the expected 10 ETH.
-
-Here, front running literally robs User A of their full winnings. Frontrunner — observing the transaction in the mempool and acting just in time — was able to drastically alter the outcome.
-
-> "The ability to 'spy' on pending transactions opens up the possibility for opportunists to front-run your transactions. They can swiftly act in ways that are in their favor but can potentially be detrimental to others, as the 'Puppy Raffle' scenario demonstrates."
+What a sore loser. Let's see how TSwap is affected next!

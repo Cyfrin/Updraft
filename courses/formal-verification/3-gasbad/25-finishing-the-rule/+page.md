@@ -1,63 +1,254 @@
 ---
-title: finishing the rule
+title: Finishing The Rule
 ---
 
-### Understanding the Context
-
-Before diving into the mechanics of the code, let's set the stage. Smart contracts are like unyielding robots - they follow instructions to the T. Given their immutable nature once deployed, it's critical to ensure they behave as expected under every possible scenario. Now, imagine you have two NFT marketplaces. These platforms should function identically when executing the same tasks, despite their separate implementations. To verify this, developers call the same function on both platforms and compare the results. But, as the transcripts reveal, we've hit a snag: due to a nuance in smart contract design, we can't just proceed as initially planned.
-
----
-
-### The Challenge: A Documentation Discovery
-
-Typically, one would call the same method variable across different contracts to compare their behaviour. However, we learn from the documentation that such an approach is, in fact, a programming faux pas. Every contract needs to communicate through its own set of unique method variables - think of them as individual languages spoken by each contract.
-
-### Crafting a Solution
-
-So, how do we navigate this hiccup? We create two distinct variables, `method f` and `method f2`, each assigned to their respective contract. Nevertheless, for our comparison to be valid, we ensure that both methods effectively perform the same action. This requires a little programming assertion:
-
-> "Essentially, this is a safeguard ensuring that we're comparing apples with apples, and not inadvertently throwing an orange into the mix."
-
-By incorporating this `require` statement, we make sure that while the variables may be labelled differently, they are, in effect, the same function. We're not changing the recipe; we're just using different bowls to whisk our ingredients.
+_Follow along with this video:_
 
 ---
 
-### Synchronizing the Starting Line
+### Finishing The Rule
 
-Our next step is akin to lining up runners on a starting block, making certain they're at the same position before the race begins. This translates to initializing the state of `get listing` and `get proceeds` methods to be identical for both contracts.
+```js
+rule calling_any_function_should_result_in_each_contract_having_the_same_state(method f){
+    env e;
+    calldataarg args;
+    gasBadNftMarketplace.f(e, args);
+    nftMarketplace.f(e, args);
+}
+```
 
-To accomplish this, our toolset expands. We introduce new parameters such as `listing address`, `token ID`, and the `seller address`. These are the coordinates we'll use to navigate the terrain of each contract's state and ensure they start from the same set point.
+With things as we've set them up, we'd expect our rule to call the same method on each of our in scope contracts ... except the [**Certora Documentation**](https://docs.certora.com/en/latest/docs/cvl/rules.html#parametric-rules) says this is wrong 😅.
 
-Additionally, the transcript mentioned a struct called `listing`. For those unfamiliar, a struct is essentially a custom data type in Solidity, allowing developers to group related properties together. But for comparisons to work between our two contracts, they both need to understand this 'listing' struct. Cleverly, by referencing a base contract from which both NFT marketplaces inherit, we can achieve this shared understanding.
+<img src="../../../../static/formal-verification-3/25-finishing-the-rule/finishing-the-rule1.png" width="100%" height="auto">
+
+So, this means we'll need to use a different variable for the method called on each contract. The catch is, we need to assure the **same** method is called on each, this is where we'll use a require to ensure the selectors of both arbitrary methods match.
+
+```js
+rule calling_any_function_should_result_in_each_contract_having_the_same_state(method f, method f2){
+    require(f.selector == f2.selector);
+
+    env e;
+    calldataarg args;
+    gasBadNftMarketplace.f(e, args);
+    nftMarketplace.f2(e, args);
+}
+```
+
+Our next step is to assure that our different contracts both begin in the same state. Since we'll be working with the 2 getter functions, `getListing` and `getProceeds`, we can configure these prior to function calls to accomplish this. Let's first add these to our methods block.
+
+```js
+methods {
+    function getListing(address, uint256) external returns(INftMarketplace.Listing) envfree;
+    function getProceeds(address) external returns(uint256) envfree;
+    function _.onERC721Received(address, address, uint256, bytes) external => DISPATCHER(true);
+    function _.safeTransferFrom(address,address,uint256) external => DISPATCHER(true);
+}
+```
+
+> [!NOTE]
+> Because the getListing function returns a struct, we're using INftMarketplace, which is inherited by both `NftMarketplace` and `GasBadNftMarketplace`, as a base class to reference this return type.
+
+With these added to our methods block, we can then write the require statements assuring these calls match between implementations, in our rule. We'll also need to declare variables to pass to our methods.
+
+```js
+rule calling_any_function_should_result_in_each_contract_having_the_same_state(method f, method f2){
+    require(f.selector == f2.selector);
+
+    env e;
+    calldataarg args;
+    address listingAddr;
+    uint256 tokenId;
+    address seller;
+
+    require(gasBadNftMarketplace.getProceeds(seller) == nftMarketplace.getProceeds(seller));
+    require(gasBadNftMarketplace.getListing(seller, tokenId).price == nftMarketplace.getListing(seller, tokenId).price); // we use .price because Certora doesn't understand structs!
+    require(gasBadNftMarketplace.getListing(seller, tokenId).seller == nftMarketplace.getListing(seller, tokenId).seller); // we use .price because Certora doesn't understand structs!
+
+    gasBadNftMarketplace.f(e, args);
+    nftMarketplace.f2(e, args);
+}
+```
+
+The last thing we should need to do is assert that all of our required values remain equal after our function calls are executed on both our contracts.
+
+```js
+gasBadNftMarketplace.f(e, args);
+nftMarketplace.f2(e, args);
+
+assert(
+  gasBadNftMarketplace.getProceeds(seller) == nftMarketplace.getProceeds(seller)
+);
+assert(
+  gasBadNftMarketplace.getListing(seller, tokenId).price ==
+    nftMarketplace.getListing(seller, tokenId).price
+);
+assert(
+  gasBadNftMarketplace.getListing(seller, tokenId).seller ==
+    nftMarketplace.getListing(seller, tokenId).seller
+);
+```
+
+With things in place, let's try to run the prover! I've included our total spec file so far below for reference.
+
+<details>
+<summary>GasBad.Spec</summary>
+
+```js
+/*
+ * Certora Formal Verification Spec for GasBadNftMarketplace
+ *
+ * This spec is technically unsound because we make summaries about the functions, and are using optimistic fallback
+ */
+
+using GasBadNftMarketplace as gasBadMarketplace;
+using NftMock as nft;
+using NftMarketplace as marketplace;
+
+// // The methods that we acknowledge in CVL
+methods {
+
+    // View Functions
+    function getListing(address,uint256) external returns (INftMarketplace.Listing) envfree;
+    function getProceeds(address) external returns (uint256) envfree;
+
+    // // View Summary Example
+    function _.onERC721Received(address, address, uint256, bytes) external => DISPATCHER(true);
+    // Dispatcher Summary Example, means the safeTransferFrom function will only be called by an NftMock
+    function _.safeTransferFrom(address,address,uint256) external => DISPATCHER(true);
+}
+
+ghost mathint listingUpdatesCount {
+    init_state axiom listingUpdatesCount == 0;
+}
+
+ghost mathint log4Count {
+    init_state axiom log4Count == 0;
+}
+
+// Can't do `s_listings[KEY address nftAddress][KEY uint256 tokenId]` since that returns a struct
+hook Sstore s_listings[KEY address nftAddress][KEY uint256 tokenId].price uint256 price {
+    listingUpdatesCount = listingUpdatesCount + 1;
+}
+
+// Hooks don't get applied sequentially.
+hook LOG4(uint offset, uint length, bytes32 t1, bytes32 t2, bytes32 t3, bytes32 t4) uint v {
+    log4Count = log4Count + 1;
+}
+
+/*//////////////////////////////////////////////////////////////
+                                RULES
+//////////////////////////////////////////////////////////////*/
+
+// It shouldn't be possible to have more storage updates than events
+invariant anytime_mapping_updated_emit_event()
+    listingUpdatesCount <= log4Count;
+
+
+
+rule calling_any_function_should_result_in_each_contract_having_the_same_state(method f, method f2){
+    env e;
+    calldataarg args;
+    address listingAddr;
+    address seller;
+    uint256 tokenId;
+
+    // They start in the same state
+    require(gasBadMarketplace.getProceeds(seller) == marketplace.getProceeds(seller));
+    require(gasBadMarketplace.getListing(listingAddr, tokenId).price == marketplace.getListing(listingAddr, tokenId).price);
+    require(gasBadMarketplace.getListing(listingAddr, tokenId).seller == marketplace.getListing(listingAddr, tokenId).seller);
+
+    // It's the same function on each
+    require(f.selector == f2.selector);
+    gasBadMarketplace.f(e, args);
+    marketplace.f2(e, args);
+
+    // They end in the same state
+    assert(gasBadMarketplace.getListing(listingAddr, tokenId).price == marketplace.getListing(listingAddr, tokenId).price);
+    assert(gasBadMarketplace.getListing(listingAddr, tokenId).seller == marketplace.getListing(listingAddr, tokenId).seller);
+    assert(gasBadMarketplace.getProceeds(seller) == marketplace.getProceeds(seller));
+}
+```
+
+</details>
 
 ---
 
-### Zooming In: How Does Code Know About Structs?
+<img src="../../../../static/formal-verification-3/25-finishing-the-rule/finishing-the-rule2.png" width="100%" height="auto">
 
-The question arises, how do we familiarize our codebase with the structure of `listing`? Here's the catch: contracts imported from an interface share knowledge of their structs by default. Think of it as a family trait passed down through generations. Therefore, by using this shared lineage, known as inheritance in code-speak, both marketplaces can recognize and implement `listing` without confusion.
+Uh oh, what's happening here? The error is telling us we have a missing environment variable, even though we tagged these functions as `envfree`...
 
-![](https://cdn.videotap.com/618/screenshots/83tbejODMkKdGq06f5LZ-337.85.png)
+```js
+function getListing(address,uint256) external returns (INftMarketplace.Listing) envfree;
+function getProceeds(address) external returns (uint256) envfree;
+```
 
-What's next? We want to verify that the initial states of our 'getProceeds' and 'getListing' functions are equivalent across both platforms. To quote the source, we must make certain that "all of these view functions return the same values prior to the start." This step is essential. It ensures that any changes observed post-transaction are the result of the function call itself, and not pre-existing discrepancies.
+Remember, these calls above are equivalent to:
 
-### Putting It to the Test
+```js
+function currentContract.getListing(address,uint256) external returns (INftMarketplace.Listing) envfree;
+function currentContract.getProceeds(address) external returns (uint256) envfree;
+```
 
-Armed with our setup, we move on. After calling the same function on both marketplaces, we transform our `require` statements into `asserts`. Why? Because now we're not just setting up. We're validating that our post-transaction outcomes are identical, proving that the optimizations we've made to Gaspad NFT marketplace haven't altered the fundamental functionality.
+This doesn't align with how we're calling these functions in our rule:
 
-As we run the test, we encounter an all-too-expected hiccup, the infamous 'variable e has not been declared' error. The corrective measure is straightforward: add back in the environment parameter 'e'. Always a good reminder to double-check even the minute details.
+```js
+require(gasBadMarketplace.getProceeds(seller) ==
+  marketplace.getProceeds(seller));
+```
 
----
+Because of this, we need to add the environment variable `e` to our function calls, telling `Certora` where this rule should be applied.
 
-### Unraveling Output Mysteries
+```js
+rule calling_any_function_should_result_in_each_contract_having_the_same_state(method f, method f2){
+    env e;
+    calldataarg args;
+    address listingAddr;
+    address seller;
+    uint256 tokenId;
 
-Our transcript narrator takes us through an output that, at first glance, screams 'something's wrong!' with multiple 'sanity check failed' messages. But there's gold amidst the rubble. On closer inspection, we discover that some functions pass with flying colors. Indeed, our 'getListing' and 'buyItem' functions emerge unscathed, basking in checkmarks.
+    // They start in the same state
+    require(gasBadMarketplace.getProceeds(e, seller) == marketplace.getProceeds(e, seller));
+    require(gasBadMarketplace.getListing(e, listingAddr, tokenId).price == marketplace.getListing(e, listingAddr, tokenId).price);
+    require(gasBadMarketplace.getListing(e, listingAddr, tokenId).seller == marketplace.getListing(e, listingAddr, tokenId).seller);
 
-And then, we uncover the crux of our sanity check issue. Not all function calls were meant to pass - they were never designed to! The 'require' clause we wrote earlier blocks any methods with differing selectors. We unpeel another layer of complexity and realize that certain checks were bound to fail because they didn't meet our predefined conditions. The culprit? Our own code, that which we dutifully inserted to ensure we weren't comparing dissimilar functions.
+    // It's the same function on each
+    require(f.selector == f2.selector);
+    gasBadMarketplace.f(e, args);
+    marketplace.f2(e, args);
 
----
+    // They end in the same state
+    assert(gasBadMarketplace.getListing(e, listingAddr, tokenId).price == marketplace.getListing(e, listingAddr, tokenId).price);
+    assert(gasBadMarketplace.getListing(e, listingAddr, tokenId).seller == marketplace.getListing(e, listingAddr, tokenId).seller);
+    assert(gasBadMarketplace.getProceeds(seller) == marketplace.getProceeds(e, seller));
+}
+```
 
-### The Endgame: Refinement
+With this adjustment in place, we can run the prover again.
 
-In light of these revelations, the transcript guides us toward a decision point. We could modify our specifications or opt for a config change, setting our rule checks to 'none' to silence false alarms. The path we choose requires caution. Inadvertently bypassing vital verification checks could lead to false positives - essentially, a thumbs-up to potentially flawed code.
+<img src="../../../../static/formal-verification-3/25-finishing-the-rule/finishing-the-rule3.png" width="100%" height="auto">
 
-Ultimately, the blog post underscores a visceral lesson for blockchain developers and enthusiasts alike: verification is a multifaceted choreography between rigorous testing, meticulous attention to detail, and an unyielding commitment to accuracy. Through this transcript-turned-tutorial, we've navigated a microcosm of smart contract development, a complex yet rewarding endeavour that ensures the integrity of our digital assets and their transactions.
+It looks like it found a bunch of violations, but the CLI output doesn't provide many details, we should dig deeper into the calls and investigate. If we turn the the `Certora` UI, we can see that a huge number of our function calls failed their `sanity` check!
+
+<img src="../../../../static/formal-verification-3/25-finishing-the-rule/finishing-the-rule4.png" width="100%" height="auto">
+
+This is actually a product of how we're handling the functions in `GasBad.spec`.
+
+```js
+require(gasBadMarketplace.getProceeds(e, seller) ==
+  marketplace.getProceeds(e, seller));
+require(gasBadMarketplace.getListing(e, listingAddr, tokenId).price ==
+  marketplace.getListing(e, listingAddr, tokenId).price);
+require(gasBadMarketplace.getListing(e, listingAddr, tokenId).seller ==
+  marketplace.getListing(e, listingAddr, tokenId).seller);
+```
+
+Because we're using `require` statements, instead of a `filter block`, `Certora` recognizes calls that don't satisfy these requires as unsound and thus flags them as failing our `sanity` check. If we look closely, we can see the calls with were successfully verified were those in which the function signatures match between our implementations, while those without matches fail this `sanity` check.
+
+<img src="../../../../static/formal-verification-3/25-finishing-the-rule/finishing-the-rule5.png" width="100%" height="auto">
+
+### Wrap Up
+
+Despite the `sanity` errors, we can clearly see that any time the function selectors being called match, our rule is verifying the call. This test is indeed proving to us that the contracts are functioning identically under indentical circumnstances.
+
+> [!TIP]
+> We _could_ set `"rule_sanity": "none"`, in our `GasBad.conf`, in order for these sanity checks to reflect `passed`, but we should always be cautious when removing these checks.

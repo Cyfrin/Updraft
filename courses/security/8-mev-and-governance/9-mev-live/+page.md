@@ -4,12 +4,12 @@ title: MEV - LIVE
 
 _Follow along with this video:_
 
-<!-- TODO -->
-
-
 ---
 
-# Now, we are going to watch a video of me getting front-ran, LIVE
+### MEV - LIVE
+
+> [!IMPORTANT]
+> The true value in this (and the following lesson) is found in seeing this exploit in action. If you're unable to watch this currently, I encourage you to return when you can!
 
 Here is [the code we are going to use to see it](https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/MEV/Frontran.sol)
 
@@ -48,5 +48,6 @@ contract FrontRan {
 ```
 
 Watch the video to see:
+
 1. Me get front-ran
 2. How we prevent it with [Flashbots Protect](https://docs.flashbots.net/flashbots-protect/overview)

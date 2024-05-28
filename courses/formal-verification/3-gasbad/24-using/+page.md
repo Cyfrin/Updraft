@@ -1,33 +1,46 @@
 ---
-title: using
+title: Using
 ---
 
-## Setting the Coding Scene
+_Follow along with this video:_
 
-Imagine you've concocted a brilliant method aptly named `f`, and your goal is to invoke this little wizard on both your NFT marketplace smart contract and another platform that we will refer to as `gas bad`. The idea here is to unleash `f` onto these different contracts to compare what they return. That’s where the magic starts and, trust me, we’re about to roll up our coding sleeves and delve right in.
+---
 
-### Initialize the Environment
+### Using
 
-This snippet of code could very well be the preliminary incantation we cast to get the ball rolling. Now, it's important to note that in the realm of smart contracts, when you invoke a function like this, you're calling it on the current contract that we are in.
+Now, we have something to keep in mind. Much like as was the case in our `methods block`, when we configure our `parametric rule` like so:
 
-But if you've indulged in a bit of blockchain code, you know it's not just about casting spells on your own turf. You want those spells to travel far and wide—or in our case, to `gas bad NFT marketplace` and the `NFT marketplace`.
+```js
+rule calling_any_function_should_result_in_each_contract_having_the_same_state(method f){
+    env e;
+    calldataarg args;
+    f(e, args);
+}
+```
 
-## Linking our Sorcerous Command to Multiple Recesses
+...we are calling `method f` on _whichever contract is currently being verfied_. Remember that functionally `f(e, args) == currentContract.f(e, args)`. With that said, we need a way to reference the specific contracts we mean for our rule to compare, and this is where the `using` keyword comes in.
 
-Enter the keyword `using`. This is our portal, our bridge to connect with the external contracts we wish to interact with:
+<img src="../../../../static/formal-verification-3/24-using/using1.png" width="100%" height="auto">
 
-Now, take a step back. Inhale the lines of code that stare back at you from the abyss of your coding screen. When you use the `using` directive, what you’re essentially aiming for is to bring another contract into your sphere of command to invoke `f`. It might sound mystical, but it's as practical as it gets.
+By declaring these variables at the top of our spec file, we can use them to reference particular contracts within our verification scope.
 
-### Comparing Contractual Conundrums
+```js
+using GasBadNftMarketplace as gasBadMarketplace;
+using NftMock as nft;
+using NftMarketplace as marketplace;
 
-The real twist in our tale comes when we want to juxtapose the outputs of `f` from `gas bad NFT marketplace` and `NFT marketplace`. Why, you ask? Well, wouldn't you want to know how your NFT hotspot reacts as compared to `gas bad` when predicated with the same set of incantations? It's a bout of smart contract gladiators, if you will.
+...
 
-And this brings us to a crucial point in our journey—coding is not just about making functions work. It's also about observation, hypothesis, and analysis.
+rule calling_any_function_should_result_in_each_contract_having_the_same_state(method f){
+    env e;
+    calldataarg args;
+    gasBadNftMarketplace.f(e, args);
+    nftMarketplace.f(e, args);
+}
+```
 
-### Navigating the Quirks of Contract Calls
+### Wrap Up
 
-Contract interactions in the blockchain world can be tricky business. It's not just about writing impeccable code; it's also about understanding the environment that your code lives in. Each blockchain platform has its rules, its gas computations, and its quirky behaviors that can turn a simple function call into something akin to negotiating with a sly genie.
+With some finer control over which files are being tested against eachother, we're ready to finish fleshing out our rule, in the next lesson.
 
-This where our `f` function becomes less of a lone ranger and more of a knight in shining armor, galloping across contracts, seeking truth and consistency in a network that's inherently trustless.
-
-Do you follow me? Good, because we're about to embark on a deeper journey, one that takes our initial spells and incantations and wraps them into a real-world context that can either make or break your next big NFT venture.
+Almost done!

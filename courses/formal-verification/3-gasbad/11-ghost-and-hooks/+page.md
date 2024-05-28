@@ -1,51 +1,133 @@
 ---
-title: ghost and hooks
+title: Ghost and Hooks
 ---
 
-## What Exactly Are Ghost Variables?
+_Follow along with this video:_
 
-Alright, first things first! Ghost variables, despite their spooky moniker, are actually super helpful in smart contract verification. Picture them as the hidden helpers that let you monitor and check the inner workings of your contracts during the verification process. These variables can communicate crucial info between rules and, you guessed it, hooks—which by the way, we'll explore in just a moment.
+---
 
-Think of ghost variables as your contract's secret diary, keeping tabs on what's going on under the hood. So, in Sartora-land, we give these special variables the name "ghost" to signal their role in tracking and verification processes.
+### Ghost and Hooks
 
-This line of code is like enlisting a silent guardian watching over your contract's variables, ensuring everything's on the up-and-up.
+As a reminder of where we're at in our game plan, let's look back to our `README` and see what's next.
 
-## Tracking State Changes with Ghosts
+**Game Plan:**
 
-Let's get our hands dirty, shall we? Suppose you want to track every time a mapping is updated in your contract, and of course, emit an event when it happens. Tracking updates sounds tricky, but fear not—it's feasible with a little ingenuity and the right tools.
+1. Warm up by verifying some stats of our NftMock ✅
+   1. Sanity Checks ✅
+   2. Total Supply is never negative ✅
+   3. Minting mints 1 NFT ✅
+   4. Parametric Example ✅
+2. Formally Verify GasBadNftMarketplace
+   1. Anytime a mapping is updated, an event is emitted
+   2. Calling ANY function on the GasBadMarketplace OR the NftMarketplace results in the same contract state
 
-Imagine we have a mapping like `s_listings` in our contract. To keep an eye on its updates, we might use a ghost variable with a bit more muscle than a uint256—let's call in the big guns, the `mathint`:
+Alright, next up is assuring that events are emitted any time a mapping is updated.
 
-With this line, we're crafting a counter specifically designed to monitor `s_listings` every time there's an update. A nifty trick, right?
+Sounds hard.
 
-## Hanging on Every Change: Enter Hooks
+This may be a little tricky, but it's entirely possible. However, we first need to learn about [**Ghost Variables**](https://docs.certora.com/en/latest/docs/cvl/ghosts.html).
 
-Enter the world of hooks—Sartora's way to attach actions to our smart contract's operations like a trained falcon grips its perch. We can create hooks to listen for specific activities, like a storage slot being updated, and then... do stuff! Yes, it's as cool as it sounds.
+### Ghost Variables
 
-Consider the above piece as the conductor of an orchestra, ensuring every instrument (or in our case, contract storage operation) plays its part precisely at the right moment. By declaring a hook, we're setting up a sort of tripwire that, whenever our `s_listings` mapping updates, it springs into action, adjusting our `listing_updates_count` by one, like a vigilant abacus.
+<img src="../../../../static/formal-verification-3/11-ghosts-and-hooks/ghosts-and-hooks1.png" width="100%" height="auto">
 
-## Ensuring Event and State Parity
+At their core, `Ghost Variables` are variable which are declared specifically to be used by `Certora`. Declaring them this way allows them to act as extentions to contract state and their values will mimic the behaviour of contract storage (reverting and resetting when appropriate).
 
-Our ultimate magic trick? Making sure that the tally of emitted events is in perfect harmony with the number of state changes. This balance is a cornerstone of smart contract integrity, akin to a high-wire act gracefully performed without a safety net. Here's where our ghost variable shines, as it allows us to match the count of changes (`listing_updates_count`) with the events erupted from our smart contract's eventful volcano.
+The most common use of `Ghost Variables` is in conjunction with `Hooks` to communication information back to specified `rules`.
 
-What we have here is a simple parity check. It's the equivalent of double-checking that you've turned off the stove when you leave the house—a healthy practice to prevent your smart contract kitchen from catching fire.
+A fitting Ghost Variable that we might want to track for our current situation is how many times listings are updated.
 
-## A Look at Event-Related Hooks
+```js
+/*
+ * Verification of GasBadNftMarketplace
+ */
 
-Our journey through the foggy path of verification continues with another set of hooks that focus on events. Remember when we spoke about the `log4` operation? We can apply the same counting strategy to track emitted events.
+ghost mathint listingUpdatesCount;
+```
 
-This hook flies into action whenever `log4` operation (a type of event emission in EVM) is invoked. Inside it, we do a similar dance step—incrementing the counter, `log4_count`, to keep pace with the emitted events.
+### Hooks
 
-## Why You Should Care About Ghosts and Hooks
+<img src="../../../../static/formal-verification-3/11-ghosts-and-hooks/ghosts-and-hooks2.png" width="100%" height="auto">
 
-By now, you might be thinking, "Neat story, but why should this matter to me?" Well, here's your golden nugget of wisdom: a well-monitored smart contract is like a fortress. With these spectral tools, we can build a verification suite that ensures our contracts behave as expected, leaving no stone unturned or event unlogged.
+[**`Hooks`**](https://docs.certora.com/en/latest/docs/cvl/hooks.html) allow us to specify an operation which triggers the `hook` and logic that is executed when the `hook` is triggered. For example - any time a particular variable is invoked with `SLOAD` - a `hook` could trigger something to happen.
 
-Every smart contract—yours, mine, and the next Satoshi Nakamoto's—should implement this level of meticulous oversight. Because in the end, it's not just about writing code; it's about writing code that's as trustworthy as a Swiss bank.
+**_How does this apply to GasBadNftMarketplace?_**
 
-## Crafting a Smarter Future with Ghosts and Hooks
+Hooks will be perfect for our current situation. We can configure a hook to increment our `listingUpdatesCount` ghost variable each time SSTORE is called
 
-In this post, we've opened up the arcane tomes to a world where ghost variables and hooks play pivotal roles in smart contract verification. As we forge ahead, crafting more complex and capable contracts, these tools become invaluable allies.
+```js
+/*
+ * Verification of GasBadNftMarketplace
+ */
 
-Whether you are a code conjurer or a blockchain believer, understanding this spooktacular side of Sartora and EVM gives you the power to craft smarter and more reliable contracts. The future of blockchain relies on the solidity (pun intended) of smart contracts, and with ghosts and hooks in your arsenal, you're well-equipped to contribute to a robust and secure decentralized landscape.
+ghost mathint listingUpdatesCount;
 
-So, to all coders and creators out there, it's time to harness the power of these ethereal entities. Experiment, explore, and let your smart contracts embody the highest standards of reliability and transparency, one ghost variable and hook at a time.
+hook Sstore s_listings[KEY address nftAddress][KEY uint256 tokenId].price uint256 price {...}
+```
+
+Ok, so our hook looks kinda gross, let me break it down.
+
+<img src="../../../../static/formal-verification-3/11-ghosts-and-hooks/ghosts-and-hooks3.png" width="100%" height="auto">
+
+> [!NOTE]
+> The STORAGE keyword was made unnecessarily in later updates to Certora
+
+Now that we have this hook, what do we want to do whenever this value is updated in our contract's storage? We want to increment our listingsUpdateCount!
+
+> [!TIP]
+> We're just hooking SSTORE in our example here, but hooks are compatible with a wide range of EVM opcodes. Check out the full list [**here**](https://docs.certora.com/en/latest/docs/cvl/hooks.html#evm-opcode-hooks).
+
+```js
+/*
+ * Verification of GasBadNftMarketplace
+ */
+
+ghost mathint listingUpdatesCount;
+
+hook Sstore s_listings[KEY address nftAddress][KEY uint256 tokenId].price uint256 price {
+    listingUpdatesCount = listingUpdatesCount + 1;
+}
+```
+
+We're now tracking each time our `s_listings` storage variable is updated in our contract, we _could_ improve this even further by having `listingUpdatesCount` be an array, and we could track that the `price` variable is actually being emitted etc. For the purposes of our lesson this is sufficient.
+
+> [!TIP]
+> This set up is so simple, there's really no reason something this couldn't be verified on every protocol. Go out there and write formal verification tests!
+
+Alright, we're only half done. We're counting the number of times our s_listing variable is updated, but we should also track how many events are called. Let's do that now. Remember to reference the hook patterns details on the [**Certora docs**](https://docs.certora.com/en/latest/docs/cvl/hooks.html#evm-opcode-hooks) if you're confused about where the syntax is coming from.
+
+```js
+ghost mathint log4Count;
+
+hook LOG4(uint offset, uint length, bytes32 t1, bytes32 t2, bytes32 t3, bytes32 t4) {
+    log4Count = log4Count + 1;
+}
+```
+
+### Wrap Up
+
+Our spec file looks great so far! We've learnt about Ghost Variables, Hooks and how they can be used to track the details and changes of our protocol during formal verification.
+
+We'll continue setting up the implementation of our ghosts and hooks, in the next lesson. See you soon!
+
+<details>
+<summary>GasBad.spec</summary>
+
+```js
+/*
+ * Verification of GasBadNftMarketplace
+ */
+
+ghost mathint listingUpdatesCount;
+ghost mathint log4Count;
+
+hook Sstore s_listings[KEY address nftAddress][KEY uint256 tokenId].price uint256 price STORAGE{
+    listingUpdatesCount = listingUpdatesCount + 1;
+}
+
+hook LOG4(uint offset, uint length, bytes32 t1, bytes32 t2, bytes32 t3, bytes32 t4) {
+    log4Count = log4Count + 1;
+}
+```
+
+</details>
