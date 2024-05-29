@@ -2,56 +2,34 @@
 title: Recap & Congratulations
 ---
 
-_Follow along this chapter with the video bellow_
+### Introduction
 
+In this second part of the `FundMe` section, we have covered the majority of Solidity basics, including special functions, custom errors, immutable variables, modifiers, constructors, arrays, for loops, libraries, and much more.
 
+### Special Functions
 
-We've ventured into the advanced realm of Solidity, and it has been an enlightening journey, to say the least. Brace yourselves, because we're about to dig deeper. However, we're not using Remix this time around. We are migrating to a code editor for a more comprehensive view and working process of Solidity. And as we transition into advanced sections, let's pat ourselves on the back for mastering the majority of Solidity basics!
+We have encountered the special functions `receive`, `fallback`, and `constructor`. These functions do not require the `function` keyword before their name. The `receive` function is triggered when Ether is sent to a contract and the **data** field is empty. The `fallback` function is triggered when data is sent with a transaction, but no matching function is found.
 
-But do not rest on your laurels just yet, there's a whole ocean of knowledge still waiting to be explored.
+### Saving Gas
 
-## Advanced Sections of Solidity
+To save gas, Solidity provides keywords like `constant` and `immutable` for variables that can only be set once:
 
-There's plenty to learn still, starting from `enums` `event_`, `try/catch` `function selectors`, and `abi encoding hashing`. It may seem daunting at first, but if you've made it this far, chances are, you can already decipher most Solidity code. Great job!
-
-But for now, let’s summarize some of the advanced aspects we've come across.
-
-## Special Functions in Solidity
-
-In the dazzling sphere of Solidity, we have some special functions, namely `receive`, `fallback`, and `constructor`.
-
-These unique functions don't need the `function` keyword to be called.
-
-```js
-function receive() external payable { }
-```
-
-Both `receive` and `fallback` are unique. They come into play when data is sent through a transaction, but no function was specified. Here, the transaction will default to the fallback function, provided it exists.
-
-And, if this data is empty and there's a `receive` function, the transaction will call this function instead.
-
-## Saving Gas with Keywords
-
-In an era of rising gas prices, Solidity offers a couple of handy keywords like `constant` and `immutable` to help you save gas.
-
-These keywords are for variables that can only be declared and updated once. A perfect example is:
-
-```js
+```solidity
 uint constant minimumUSD = 50 * 1e18;
 ```
 
-In this case, `minimumUSD` can never be changed again, thus saving gas.
+In this example, `minimumUSD` is a constant and cannot be changed, saving gas. Unlike `constant`, which is set at compile time, `immutable` allows a variable to be assigned once during deployment. Attempts to change either `constant` or `immutable` variables will result in a compilation error.
 
-While similar to `constant`, `immutable` differs in allowing one-time variable declaration within the `constructor`. After declaration, the variable cannot be changed.
+### Sending Ether
 
-Attempts to update either `constant` or `immutable` variables will be met with compiler errors explicitly stating they cannot be written to.
+Remix offers a simple way to send Ether to a contract. After deploying the contract, you can press the `transact` button without including call data while setting the transaction's value. If no call data is provided, the `receive` function will be triggered (if it exists); otherwise, the `fallback` function will be triggered.
 
-## Sending Ether with Remix
+### Conclusion
 
-Remix provides a simple way to send Ether to a contract on the JavaScript virtual machine. Simply deploy the contract, then press the `transact` button without any call data while updating the transaction's value. A lack of call data will trigger the `receive` function (if it exists); otherwise it will set off the `fallback` function.
+In the next section, we will move from Remix to a code editor to experiment with more advanced Solidity features. We will explore enums, events, try-catch, function selectors, abi.encode, hashing, Yul, and assembly.
 
-<img src="/solidity/remix/lesson-4/end/recapend.png" style="width: 100%; height: auto;">
+### 🧑‍💻 Test yourself
 
-As we delve deeper into the advanced features of Solidity, there's much more to explore. Here's to unraveling the ins and outs of Solidity, and celebrating more milestones together on our coding journey!
+1. 🏆 Attempt to answer all the theoretical questions from lessons 13 through 25, and then go back again to complete all the coding tasks.
 
-Congratulations again for making it this far! You're doing great!
+[Back to top](#top)
