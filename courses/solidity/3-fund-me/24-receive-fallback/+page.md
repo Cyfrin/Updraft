@@ -2,75 +2,63 @@
 title: Receive & Fallback
 ---
 
-_Follow along this chapter with the video bellow_
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
-In Solidity, a hurdle can arise when users send Ether directly to a contract without passing through necessary function calls. This lesson provides a step-by-step guide on how to mitigate this issue using Solidity's special functions, namely `_receive_` and `_fallback_`.
+In Solidity, if Ether is sent to a contract without a `receive` or `fallback` function, the transaction will be **rejected**, and the Ether will not be transferred. In this lesson, we'll explore how to handle this scenario effectively.
 
-To illustrate, take a contract that requires funding. Without passing through the specified function calls (e.g., the "fund" function), the contract would not track the funder nor update their details. If the contract aimed to reward funders, those who funded directly, bypassing the necessary function calls, would be overlooked. This lack of tracking could be whether the user misdialed the function or did not use a tool that notifies on probable transaction failure. But there is a solution — the _receive_ and _fallback_ functions.
+### `receive` and `fallback` functions
 
-## Special Functions in Solidity
+`receive` and `fallback` are _special functions_ triggered when users send Ether directly to the contract or call non-existent functions. These functions do not return anything and must be declared `external`.
 
-Two special functions in Solidity allow the triggering of certain code when users send Ether directly to the contract or call non-existent functions. These are the _receive_ function and the _fallback_ function. They cannot have arguments and don't return anything, thus needing external visibility and payable state mutability.
+To illustrate, let's create a simple contract:
 
-In simple terms, they are coded as follows:
-
-```js
-receive() external payable { }
-fallback() external payable { }
-```
-
-To experiment with this, let's create a separate contract.
-
-```js
-//SPX-License-Identifier: MIT
+```solidity
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
+
 contract FallbackExample {
     uint256 public result;
+
     receive() external payable {
         result = 1;
+    }
+
+    fallback() external payable {
+        result = 2;
     }
 }
 ```
 
-In this contract, `result` is initialized to zero. Upon sending Ether to the contract, the `receive` function is triggered, hence `result` equals one.
+In this contract, `result` is initialized to zero. When Ether is sent to the contract, the `receive` function is triggered, setting `result` to one. If a transaction includes **data** but the specified function _does not exist_, the `fallback` function will be triggered, setting `result` to two. For a comprehensive explanation, refer to [SolidityByExample](https://solidity-by-example.org/fallback/).
 
-For an added twist, we can code the contract to call a non-existent function upon sending Ether.
+### Sending Ether to `fundMe`
 
-```js
-fallback() external payable {result = 2;}
-```
+When a user sends Ether **directly** to the `fundMe` contract without calling the `fund` function, the `receive` function can be used to _redirect_ the transaction to the `fund` function:
 
-With data in the transaction, the `receive` function isn't triggered. Instead, the contract seeks a matching function for the data input without finding one. Consequently, it defers to the `fallback` function. Hence, `result` equals two.
-
-As an aside, the `fallback` function is also triggered when a contract is called with no valid function.
-
-These two functions are brilliantly elucidated in a chart on SolidityByExample.org [here](https://solidity-by-example.org/fallback/).
-
-## Application on FundMe Contract
-
-With this understanding, let's consider how to apply the special functions to our FundMe contract to ensure that every funder is tracked.
-
-```js
+```solidity
 receive() external payable {
     fund();
 }
+
 fallback() external payable {
     fund();
 }
 ```
 
-In the event of a user sending Ether directly to the contract, instead of calling the `fund` function, the `receive` function picks it up and re-routes the transaction to `fund`.
+To test this functionality, send some Sepolia Ether to the `fundMe` contract using MetaMask. This does not directly call the `fund` function, but the `receive` function will trigger it. After confirming the transaction, you can check the `funders` array to see that it has been updated, reflecting the successful invocation of the `fund` function by the `receive` function.
 
-<img src="/solidity/remix/lesson-4/fallback/fallback1.png" style="width: 100%; height: auto;">
+This approach ensures that all transactions are processed as intended. Although directly calling the `fund` function costs less gas, this method ensures the user's contribution is properly acknowledged and credited.
 
-Test our updated FundMe contract on Sepolia, a 'real' testnet, substituting your contract's address:
+### Conclusion
 
-Copy the contract's address and send some Ether to it via MetaMask. On confirming the transaction, we should ideally see that the 'fund' function is being called.
+By implementing `receive` and `fallback` functions, contracts can handle direct Ether transfers and non-existent function calls effectively, ensuring that transactions are processed as intended and users' contributions are properly tracked.
 
-Checking back at Remix, the `funders` array will update to reflect the successful transaction. This signifies that the `receive` function rerouted the funding to the `fund` function properly.
+### 🧑‍💻 Test yourself
 
-This workaround ensures all transactions - correct or misdialed - are processed in the intended manner. Although a direct call to the `fund` function costs less gas, the user's contribution is acknowledged and credited.
+1. 📕 How does the `fallback` function differ from the `receive` function?
 
-Thanks for reading! Keep learning and we'll see you in the next lesson.
+[Back to top](#top)
