@@ -10,13 +10,13 @@ _You can follow along with the video course from here._
 
 In Solidity, if Ether is sent to a contract without a `receive` or `fallback` function, the transaction will be **rejected**, and the Ether will not be transferred. In this lesson, we'll explore how to handle this scenario effectively.
 
-### `receive` and `fallback` functions
+### receiv and fallback functions
 
 `receive` and `fallback` are _special functions_ triggered when users send Ether directly to the contract or call non-existent functions. These functions do not return anything and must be declared `external`.
 
 To illustrate, let's create a simple contract:
 
-```solidity
+```js
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
@@ -35,11 +35,22 @@ contract FallbackExample {
 
 In this contract, `result` is initialized to zero. When Ether is sent to the contract, the `receive` function is triggered, setting `result` to one. If a transaction includes **data** but the specified function _does not exist_, the `fallback` function will be triggered, setting `result` to two. For a comprehensive explanation, refer to [SolidityByExample](https://solidity-by-example.org/fallback/).
 
-### Sending Ether to `fundMe`
+// Ether is sent to the contract
+//      is msg.data empty?
+//          /        \
+//         yes        no
+//         /            \
+//      receive() ?       fallback()
+//       /     \
+//     yes     no
+//    /           \
+// receive()    fallback()
+
+### Sending Ether to fundMe
 
 When a user sends Ether **directly** to the `fundMe` contract without calling the `fund` function, the `receive` function can be used to _redirect_ the transaction to the `fund` function:
 
-```solidity
+```js
 receive() external payable {
     fund();
 }
@@ -60,5 +71,6 @@ By implementing `receive` and `fallback` functions, contracts can handle direct 
 ### 🧑‍💻 Test yourself
 
 1. 📕 How does the `fallback` function differ from the `receive` function?
+2. 📕 What does it happen when Ether is sent with _data_ but in the contract only a `receive` function exist?
 
 [Back to top](#top)

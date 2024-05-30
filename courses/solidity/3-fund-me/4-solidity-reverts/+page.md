@@ -8,28 +8,28 @@ _You can follow along with the video course from here._
 
 ### Introduction
 
-In this lesson, we will explore the mechanics of reverts and gas in the context of executing Ethereum transactions.
+In this lesson, we will delve into how do _transaction reverts_ work, what is _gas_ where is used.
 
 ### Revert
 
-Let's start adding some logic to the `fund` function:
+Let's start by adding some logic to the `fund` function:
 
-```solidity
+```js
  uint256 public myValue = 1;
  function fund() public {
- myValue = myValue + 2;
+    myValue = myValue + 2;
  }
 ```
 
-A _revert_ action undoes all prior operations and returns the remaining gas to the transaction's sender. In this `fund` function, `myValue` increases by two (2) units with each successful execution. However, if a revert statement is encountered right after, all actions performed from the start of the function are undone. `myValue` will then reset to its initial state value, one (1).
+A _revert_ action **undoes** all prior operations and returns the remaining gas to the transaction's sender. In this `fund` function, `myValue` increases by two (2) units with each successful execution. However, if a revert statement is encountered right after, all actions performed from the start of the function are undone. `myValue` will then reset to its initial state value, or one.
 
-```solidity
+```js
  uint256 public myValue = 1;
  function fund() public {
- myValue = myValue + 2;
- require(msg.value > 1e18, "didn't send enough ETH"); 
- // a function revert will undo any actions that have been done.
- // It will send the remaining gas back
+    myValue = myValue + 2;
+    require(msg.value > 1e18, "didn't send enough ETH"); 
+    // a function revert will undo any actions that have been done.
+    // It will send the remaining gas back
  }
 ```
 
@@ -41,7 +41,7 @@ A _revert_ action undoes all prior operations and returns the remaining gas to t
 Users can specify how much gas they're willing to allocate for a transaction. In the case where the `fund` function will contain a lot of lines of code after the `require` and we did indeed set a limit, the gas which was previously allocated but not used will not be charged to the user
 
 > 🗒️ **NOTE** <br>
-> If a transaction reverts, is classified as a failed transaction
+> If a transaction reverts, is defined as failed
 
 ### Transaction Fields
 
@@ -67,7 +67,7 @@ During a **_contract interaction transaction_**, it will instead be populated wi
 
 ### Conclusion
 
-**Reverts** and **gas** help maintain the integrity of the blockchain state. _Reverts_ ensure integrity by reversing transactions when failures occur, while _gas_ powers transactions and runs the EVM. When a transaction fails, the gas consumed is not recoverable. To manage this, Ethereum allows users to set the maximum amount of gas they're willing to pay for each transaction.
+**Reverts** and **gas usage** help maintain the integrity of the blockchain state. _Reverts_ will undo transactions when failures occur, while _gas_ enables transactions execution and runs the EVM. When a transaction fails, the gas consumed is not recoverable. To manage this, Ethereum allows users to set the maximum amount of gas they're willing to pay for each transaction.
 
 ### 🧑‍💻 Test yourself
 

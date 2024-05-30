@@ -8,7 +8,7 @@ _You can follow along with the video course from here._
 
 ### Introduction
 
-Let's begin coding `FundMe`, a crowdfunding contract allowing users to send funds, which the owner can later withdraw. Before we start, let's clean up our Remix IDE workspace
+Let's begin by coding `FundMe`, a crowdfunding contract allowing users to send funds, which the owner can later withdraw. Before we start, let's clean up our Remix IDE workspace
 
 ### Setting up the project
 
@@ -31,7 +31,7 @@ pragma solidity ^0.8.18;
 contract FundMe {}
 ```
 
-### fund and withdraw
+### fund and withdraw functions
 
 The FundMe contract will have two primary functions that serve as the main interaction points:
 
@@ -40,19 +40,21 @@ The FundMe contract will have two primary functions that serve as the main inter
 
 First, let's code the `fund` function and leave the `withdraw` function commented out for the moment.
 
-```solidity
+```js
 contract FundMe {
- // send funds into our contract
- function fund() public {}
- // owner can withdraw funds
- /*function withdraw() public {}*/
+    // send funds into our contract
+    function fund() public {}
+    // owner can withdraw funds
+    /*function withdraw() public {}*/
 }
 ```
 
 ### Conclusion
+
 In this lesson, we created a new `FundMe` contract and broadly defined the logic that will be performed.
 
 ### 🧑‍💻 Test yourself
+
 1. 📕 Why should a developer always outline his coding goals before starting to code?
 
 [Back to top](#top)

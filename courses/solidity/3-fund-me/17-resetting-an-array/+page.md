@@ -13,9 +13,10 @@ In this section, we'll focus on one of the final steps to complete the `withdraw
 
 The simplest way to reset the `funders` array is similar to the method used with the mapping: iterate through all its elements and reset each one to 0. Alternatively, we can create a brand new `funders` array.
 
-```solidity
+```js
 funders = new address ;
 ```
+
 >🗒️ **NOTE** <br>
 > You might recall using the `new` keyword when deploying a contract. In this context, however, it resets the `funders` array to a zero-sized, blank address array.
 

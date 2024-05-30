@@ -45,7 +45,7 @@ However, if we start at index 3, end at index 12, and increment by 2 each time, 
 
 To implement this concept in the `FundMe` contract:
 
-```solidity
+```js
 uint256 funderIndex;
 for (funderIndex = 0; funderIndex < funders.length; funderIndex++) {
     address funder = funders[funderIndex];

@@ -14,7 +14,7 @@ This lesson explores three different methods of sending ETH from one account to 
 
 The `transfer` function is the simplest way to send Ether to a recipient address:
 
-```solidity
+```js
 payable(msg.sender).transfer(amount); // the current contract sends the Ether amount to the msg.sender
 ```
 
@@ -26,7 +26,7 @@ However, `transfer` has a significant limitation. It can only use up to 2300 gas
 
 The `send` function is similar to `transfer`, but it differs in its behaviour:
 
-```solidity
+```js
 bool success = payable(msg.sender).send(address(this).balance);
 require(success, "Send failed");
 ```
@@ -37,7 +37,7 @@ Like `transfer`, `send` also has a gas limit of 2300. If the gas limit is reache
 
 The `call` function is flexible and powerful. It can be used to call any function **without requiring its ABI**. It does not have a gas limit, and like `send`, it returns a boolean value instead of reverting like `transfer`.
 
-```solidity
+```js
 (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
 require(success, "Call failed");
 ```
@@ -46,7 +46,8 @@ To send funds using the `call` function, we convert the address of the receiver 
 
 The `call` function returns two variables: a boolean for success or failure, and a byte object which stores returned data if any.
 
-> 👀❗**IMPORTANT** <br> > `call` is the recommended way of sending and receiving Ethereum or other blockchain native tokens.
+> 👀❗**IMPORTANT** <br>
+> `call` is the recommended way of sending and receiving Ethereum or other blockchain native tokens.
 
 ### Conclusion
 

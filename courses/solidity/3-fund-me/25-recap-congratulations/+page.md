@@ -14,7 +14,7 @@ We have encountered the special functions `receive`, `fallback`, and `constructo
 
 To save gas, Solidity provides keywords like `constant` and `immutable` for variables that can only be set once:
 
-```solidity
+```js
 uint constant minimumUSD = 50 * 1e18;
 ```
 
@@ -22,7 +22,7 @@ In this example, `minimumUSD` is a constant and cannot be changed, saving gas. U
 
 ### Sending Ether
 
-Remix offers a simple way to send Ether to a contract. After deploying the contract, you can press the `transact` button without including call data while setting the transaction's value. If no call data is provided, the `receive` function will be triggered (if it exists); otherwise, the `fallback` function will be triggered.
+Remix provides an easy method to send Ether to a contract. After deploying the contract, you can press the `transact` button, set the transaction's value, and omit the call data. If no call data is included, the `receive` function, if exists, will be triggered. Otherwise will be executed the `fallback` function.
 
 ### Conclusion
 

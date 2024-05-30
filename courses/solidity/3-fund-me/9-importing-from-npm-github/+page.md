@@ -7,15 +7,15 @@ _You can follow along with the video course from here._
 
 ### Introduction
 
-As we delve into smart contract development, interfacing with external smart contracts is a common necessity. This often involves handling multiple interfaces, which can clog up the source code and make it difficult to read.
+As we delve into smart contract development, **interacting** with external smart contracts will become increasingly frequent. This can involve the use of multiple interfaces, which can clog up the source code and make it difficult to read.
 
 ### Interfaces
 
 Let's take a look at the `SmartContract` interface as an example:
 
-```solidity
+```js
 interface SmartContract {
- function someFunction() external view returns(uint, uint);
+    function someFunction() external view returns(uint, uint){};
 }
 ```
 
@@ -27,13 +27,13 @@ Smart Contracts _hosted on GitHub_ can be imported directly into your project. F
 
 Instead of manually copying all its code into your project and then importing it like this:
 
-```solidity
+```js
 import {AggregatorV3Interface} from "./AggregatorV3Interface.sol";
 ```
 
 we can import it more efficiently, as specified in the [Chainlink documentation](https://docs.chain.link/docs/using-chainlink-reference-contracts):
 
-```solidity
+```js
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 ```
 
@@ -45,7 +45,7 @@ The `@chainlink/contracts` package, available on NPM, follows **Semantic Version
 
 Remix interprets `@chainlink/contracts` as a reference to the [NPM package](https://www.npmjs.com/package/@chainlink/contracts), and downloads all the necessary code from it.
 
-```solidity
+```js
  pragma solidity ^0.8.18;
  import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
  contract FundMe {}

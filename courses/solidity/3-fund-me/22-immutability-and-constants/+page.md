@@ -8,7 +8,7 @@ _You can follow along with the video course from here._
 
 ### Introduction
 
-In this lesson, we'll explore tools to optimize **gas usage** for variables that are set only once.
+In this lesson, we'll explore tools to optimize **gas usage** for variables that are set only _once_.
 
 ### Optimizing Variables
 

@@ -8,7 +8,7 @@ _You can follow along with the video course from here._
 
 ### Introduction
 
-In this lesson, we will guide you through converting the value of ETH to USD using the previously defined `getPrice` function within the new `getConversionRate` function.
+In this lesson, we will guide you through converting the value of ETH to USD. We'll use the previously defined `getPrice` function within the new `getConversionRate` function.
 
 ### The `getPrice` and `getConversionRate` Functions
 

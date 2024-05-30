@@ -20,13 +20,13 @@ Introduced in **Solidity 0.8.4**, custom errors can be used in `revert` statemen
 
 We can start by creating a custom error:
 
-```solidity
+```js
 error NotOwner();
 ```
 
 Then, we can replace the `require` function with an `if` statement, using the `revert` function with the newly created error:
 
-```solidity
+```js
 if (msg.sender != i_owner) {
  revert NotOwner();
 }

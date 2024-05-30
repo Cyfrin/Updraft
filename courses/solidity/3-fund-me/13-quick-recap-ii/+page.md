@@ -27,7 +27,7 @@ The [Solidity documentation](https://docs.soliditylang.org/en/latest/cheatsheet.
 - `msg.sender`: this property refers to the address of the account that **initiated the current function call**
 - `msg.value`: this property represents the **amount of Wei** sent with a function call
 
-```solidity
+```js
 function updateValue() public payable {
     require(msg.value >= 1 ether, "Not enough Ether provided.");
 }

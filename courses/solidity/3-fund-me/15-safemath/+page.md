@@ -16,16 +16,16 @@ In this lesson, we will explore `SafeMath`, a widely used library before Solidit
 
 Let's begin by creating a new file called `SafeMathTester.sol` and adding a function `add` that increments the `bigNumber` state variable.
 
-```solidity
+```js
 // SafeMathTester.sol
 pragma solidity ^0.6.0;
 
 contract SafeMathTester {
- uint8 public bigNumber = 255;
+    uint8 public bigNumber = 255;
 
- function add() public {
- bigNumber = bigNumber + 1;
- }
+    function add() public {
+    bigNumber = bigNumber + 1;
+    }
 }
 ```
 
@@ -37,11 +37,11 @@ Before Solidity version **0.8.0**, signed and unsigned integers were **unchecked
 
 `SafeMath.sol` provided a mechanism to revert transactions when the maximum limit of a `uint256` data type was reached. It was a typical security measure across contracts to avoid erroneous calculations and potential exploits.
 
-```solidity
+```js
 function add(uint a, uint b) public pure returns (uint) {
- uint c = a + b;
- require(c >= a, "SafeMath: addition overflow");
- return c;
+    uint c = a + b;
+    require(c >= a, "SafeMath: addition overflow");
+    return c;
 }
 ```
 
@@ -51,12 +51,12 @@ With the introduction of Solidity version 0.8, automatic checks for overflows an
 
 For scenarios where mathematical operations are known not to exceed a variable's limit, Solidity introduced the `unchecked` construct to make code more _gas-efficient_. Wrapping the addition operation with `unchecked` will _ignore the overflow and underflow checks_: if the `bigNumber` exceeds the limit, it will wrap its value to zero.
 
-```solidity
+```js
 uint8 public bigNumber = 255;
 
 function add() public {
- unchecked {
- bigNumber = bigNumber + 1;
+    unchecked {
+    bigNumber = bigNumber + 1;
  }
 }
 ```

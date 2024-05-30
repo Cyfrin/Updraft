@@ -28,7 +28,7 @@ library PriceConverter {}
 
 Let's copy `getPrice`, `getConversionRate`, and `getVersion` functions from the `FundMe.sol` contract into our new library, remembering to import the `AggregatorV3Interface` into `PriceConverter.sol`. Finally, we can mark all the functions as `internal`.
 
-```solidity
+```js
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
@@ -36,16 +36,16 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/Ag
 
 library PriceConverter {
  function getPrice() internal view returns (uint256) {
- AggregatorV3Interface priceFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
- (, int256 answer, , , ) = priceFeed.latestRoundData();
- return uint256(answer * 10000000000);
+    AggregatorV3Interface priceFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
+    (, int256 answer, , , ) = priceFeed.latestRoundData();
+    return uint256(answer * 10000000000);
  }
 
  function getConversionRate(uint256 ethAmount) internal view returns (uint256) {
- uint256 ethPrice = getPrice();
- uint256 ethAmountInUsd = (ethPrice * ethAmount) / 1000000000000000000;
- return ethAmountInUsd;
- }
+    uint256 ethPrice = getPrice();
+    uint256 ethAmountInUsd = (ethPrice * ethAmount) / 1000000000000000000;
+    return ethAmountInUsd;
+    }
 }
 ```
 
@@ -53,20 +53,20 @@ library PriceConverter {
 
 You can import the library in your contract and attach it to the desired type with the keyword `using`:
 
-```solidity
+```js
 import {PriceConverter} from "./PriceConverter.sol";
 using PriceConverter for uint256;
 ```
 
 The `PriceConverter` functions can then be called as if they are native to the `uint256` type. For example, calling the `getConversionRate()` function will now be changed into:
 
-```solidity
+```js
 require(msg.value.getConversionRate() >= minimumUsd, "didn't send enough ETH");
 ```
 
 Here, `msg.value`, which is a `uint256` type, is extended to include the `getConversionRate()` function. The `msg.value` gets passed as the first argument to the function. If additional arguments are needed, they are passed in parentheses:
 
-```solidity
+```js
 uint256 result = msg.value.getConversionRate(123);
 ```
 
