@@ -1,0 +1,13 @@
+name: vitto
+super: true
+id: 1cf03090-dbde-49b1-932b-c85920ba7e67
+password_hash: $2y$10$TKbnEDRYNd8Sfa8LGPqFAuNr5FFknQNOn2P5x54QiAfyxJ1ge2Qyq
+preferences:
+  collections:
+    redirects:
+      columns:
+        - status
+        - new_url
+        - old_url
+        - slug
+        - title

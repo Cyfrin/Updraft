@@ -1,0 +1,94 @@
+title: 'Dashboard Announcements'
+tabs:
+  main:
+    display: Main
+    sections:
+      -
+        fields:
+          -
+            handle: icon
+            field:
+              mode: select
+              create: false
+              collections:
+                - icons
+              type: entries
+              display: Icon
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              replicator_preview: true
+              hide_display: false
+              max_items: 1
+          -
+            handle: title
+            field:
+              type: text
+              required: true
+              validate:
+                - required
+          -
+            handle: content
+            field:
+              type: markdown
+              display: Content
+              localizable: true
+          -
+            handle: order
+            field:
+              type: integer
+              display: order
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              replicator_preview: true
+              hide_display: false
+      -
+        display: CTA
+        fields:
+          -
+            handle: show_cta
+            field:
+              default: false
+              type: toggle
+              display: 'Show CTA'
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              replicator_preview: true
+              hide_display: false
+          -
+            handle: cta_url
+            field:
+              input_type: text
+              antlers: false
+              type: text
+              display: URL
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              replicator_preview: true
+              hide_display: false
+          -
+            handle: cta_label
+            field:
+              input_type: text
+              antlers: false
+              type: text
+              display: Label
+              listable: hidden
+              instructions_position: above
+              visibility: visible
+              replicator_preview: true
+              hide_display: false
+  sidebar:
+    display: Sidebar
+    sections:
+      -
+        fields:
+          -
+            handle: slug
+            field:
+              type: slug
+              localizable: true
+              validate: 'max:200'
