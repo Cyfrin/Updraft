@@ -1,0 +1,15 @@
+title: Link
+tabs:
+  main:
+    sections:
+      -
+        fields:
+          -
+            handle: title
+            field:
+              type: text
+          -
+            handle: redirect
+            field:
+              type: link
+              required: true

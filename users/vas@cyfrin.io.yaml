@@ -1,0 +1,6 @@
+name: Vas
+roles:
+  - editor
+super: false
+id: 734e3548-eb4d-47ae-bc3c-d46ffddb3b1d
+password_hash: $2y$10$zy6j7TpXJLg0HH4MhO0gNOWOOYFLGlmccuPAqaxfro0y931R2LkeS

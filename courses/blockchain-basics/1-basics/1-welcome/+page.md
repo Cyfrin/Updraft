@@ -2,7 +2,7 @@
 title: Welcome to the course!
 ---
 
-_Follow along with this video:_
+_Follow along with this video!_
 
 ---
 
