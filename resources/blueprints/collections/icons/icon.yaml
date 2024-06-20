@@ -1,0 +1,26 @@
+title: Icon
+tabs:
+  main:
+    display: Main
+    sections:
+      -
+        fields:
+          -
+            handle: title
+            field:
+              type: text
+              required: true
+              validate:
+                - required
+  sidebar:
+    display: Sidebar
+    sections:
+      -
+        display: 'New Section'
+        fields:
+          -
+            handle: slug
+            field:
+              type: slug
+              localizable: true
+              validate: 'max:200'

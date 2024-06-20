@@ -1,0 +1,12 @@
+name: lucas
+super: true
+id: cc157d9d-27aa-4afe-95db-a3d1b1e51eff
+password_hash: $2y$10$RluZ3U6WZiHYNXwBnGDxTet0JDH9L7hm0jkW5REJ7/o6S/vmoIY8W
+preferences:
+  collections:
+    dashboard_announcement:
+      columns:
+        - order
+        - title
+        - slug
+        - status
