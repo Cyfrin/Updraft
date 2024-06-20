@@ -1,6 +1,0 @@
-name: Travis
-roles:
-  - editor
-super: false
-id: 5ac4f361-6f8c-4f3b-9f87-b3ee3a150900
-password_hash: $2y$10$//COopACiTmhlO9DEEEGkevL3HGejSQAVwScNfF5qE6zCW5BWmqlG
