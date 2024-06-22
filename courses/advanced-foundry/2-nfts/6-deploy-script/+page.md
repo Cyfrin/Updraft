@@ -30,6 +30,6 @@ contract DeployBasicNft is Script {
 
 That's literally all there is to it. Run a quick `forge compile` as a sanity check to assure things build.
 
-<img src="../../../../static/foundry-nfts/6-deploy-script/deploy-script1.png" width="100%" height="auto">
+<img src="/foundry-nfts/6-deploy-script/deploy-script1.png" width="100%" height="auto">
 
 Great work!

@@ -116,7 +116,7 @@ verify:
 
 Now, by running `make anvil` (open a new terminal once your chain has started!) followed by `make deploy`...
 
-<img src="../../../../static/foundry-erc20s/4-erc20-deploy-script/erc20-deploy-script1.png" width="100%" height="auto">
+<img src="/foundry-erc20s/4-erc20-deploy-script/erc20-deploy-script1.png" width="100%" height="auto">
 
 ### Wrap Up
 

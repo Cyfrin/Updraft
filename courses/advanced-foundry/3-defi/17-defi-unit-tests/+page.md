@@ -10,7 +10,7 @@ _Follow along the course with this video._
 
 Alright, back at it. It's time to start putting the DecentralizedStableCoin protocol to the test (literally). If you run `forge coverage` you'll see.. we have some work to do.
 
-<img src="../../../../static/foundry-defi/17-defi-unit-tests/defi-open-fuzz-tests1.png" width="100%" height="auto">
+<img src="/foundry-defi/17-defi-unit-tests/defi-open-fuzz-tests1.png" width="100%" height="auto">
 
 Let's jump right in with some constructor tests. What's our constructor doing?
 
@@ -56,7 +56,7 @@ Run the test with:
 forge test --mt testRevertsIfTokenLengthDoesntMatchPriceFeedLength
 ```
 
-<img src="../../../../static/foundry-defi/17-defi-unit-tests/defi-open-fuzz-tests2.png" width="100%" height="auto">
+<img src="/foundry-defi/17-defi-unit-tests/defi-open-fuzz-tests2.png" width="100%" height="auto">
 
 Great! Things seem to revert as we'd expect.
 
@@ -76,7 +76,7 @@ We know that the mocked price of ETH for our tests is set to $2000, so with $100
 
 Run the test! `forge test --mt testGetTokenAmountFromUsd`
 
-<img src="../../../../static/foundry-defi/17-defi-unit-tests/defi-open-fuzz-tests3.png" width="100%" height="auto">
+<img src="/foundry-defi/17-defi-unit-tests/defi-open-fuzz-tests3.png" width="100%" height="auto">
 
 Nailed it!
 
@@ -96,7 +96,7 @@ function testRevertsWithUnapprovedCollateral() public {
 
 So, as mentioned, we deploy a new ERC20Mock which is not approved with DSCEngine, assure the users has a balance of this token, then use the Foundry cheatcode vm.expectRevert to assert that the next function call will revert with the provided custom error. Run the test! `forge test --mt testRevertsWithUnapprovedCollateral`
 
-<img src="../../../../static/foundry-defi/17-defi-unit-tests/defi-open-fuzz-tests4.png" width="100%" height="auto">
+<img src="/foundry-defi/17-defi-unit-tests/defi-open-fuzz-tests4.png" width="100%" height="auto">
 
 There's more to test within depositCollateral, so we shouldn't move on yet. Specifically, let's test that the user's balances are updated when a deposit _does_ go through. In addition to this we'll check that our getAccountInformation function is working.
 
@@ -148,7 +148,7 @@ function testCanDepositedCollateralAndGetAccountInfo() public depositedCollatera
 
 Run it! Assuming it passes for you, let's check our coverage.
 
-<img src="../../../../static/foundry-defi/17-defi-unit-tests/defi-open-fuzz-tests5.png" width="100%" height="auto">
+<img src="/foundry-defi/17-defi-unit-tests/defi-open-fuzz-tests5.png" width="100%" height="auto">
 
 Oof. A little better, but we've a long way to go.
 

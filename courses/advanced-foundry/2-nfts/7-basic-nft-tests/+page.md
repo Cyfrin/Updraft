@@ -46,7 +46,7 @@ Now, you may believe that we can simply do something like the above. We know the
 
 We actually run into an issue here.
 
-<img src="../../../../static/foundry-nfts/7-basic-nft-tests/basic-nft-tests1.png" width="100%" height="auto">
+<img src="/foundry-nfts/7-basic-nft-tests/basic-nft-tests1.png" width="100%" height="auto">
 
 ### Comparing Strings
 
@@ -71,11 +71,11 @@ string memory dog = "dog";
 
 Now if you type `cat`, you should get a kinda crazy output that's representing the hex of that string.
 
-<img src="../../../../static/foundry-nfts/7-basic-nft-tests/basic-nft-tests2.png" width="100%" height="auto">
+<img src="/foundry-nfts/7-basic-nft-tests/basic-nft-tests2.png" width="100%" height="auto">
 
 We'll leverage abi.encodePacked to convert this to bytes, then finally we can use keccak256 to hash the value into bytes32, which we can can use in our value comparison.
 
-<img src="../../../../static/foundry-nfts/7-basic-nft-tests/basic-nft-tests3.png" width="100%" height="auto">
+<img src="/foundry-nfts/7-basic-nft-tests/basic-nft-tests3.png" width="100%" height="auto">
 
 > [!NOTE]
 > I know we haven't covered encoding or abi.encodePacked in great detail yet, but don't worry - we will.
@@ -93,7 +93,7 @@ function testNameisCorrect() public view {
 
 In the above, we're encoding and hashing both of our strings before comparing them in our assertion. Now, if we run our test with `forge test --mt testNameIsCorrect`...
 
-<img src="../../../../static/foundry-nfts/7-basic-nft-tests/basic-nft-tests4.png" width="100%" height="auto">
+<img src="/foundry-nfts/7-basic-nft-tests/basic-nft-tests4.png" width="100%" height="auto">
 
 Great work! Let's write a couple more tests together.
 
@@ -120,7 +120,7 @@ contract BasicNftTest is Test {
 
 With this, we again should just be able to run `forge test` and see how things resolve.
 
-<img src="../../../../static/foundry-nfts/7-basic-nft-tests/basic-nft-tests5.png" width="100%" height="auto">
+<img src="/foundry-nfts/7-basic-nft-tests/basic-nft-tests5.png" width="100%" height="auto">
 
 ### Wrap Up
 

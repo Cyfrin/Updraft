@@ -119,7 +119,7 @@ All that's left is to run our test!
 forge test --mt testConvertSvgToUri
 ```
 
-<img src="../../../../static/foundry-nfts/15-svg-deploy/svg-deploy1.png" width="100%" height="auto">
+<img src="/foundry-nfts/15-svg-deploy/svg-deploy1.png" width="100%" height="auto">
 
 Nailed it! Our solidity scripted encoding is working just like our command line.
 
@@ -178,7 +178,7 @@ Because we're now using a deployment script, our testing framework is changing a
 
 Create the directories `test/integration` and `test/unit`. Within `test/integration` create a copy of our `MoodNftTest.t.sol` and name it something like `MoodNftIntegrationsTest.t.sol`, and move our `BasicNft.t.sol` file here as well (it uses a deployer too!).
 
-<img src="../../../../static/foundry-nfts/15-svg-deploy/svg-deploy2.png" width="100%" height="auto">
+<img src="/foundry-nfts/15-svg-deploy/svg-deploy2.png" width="100%" height="auto">
 
 We'll adjust `MoodNftIntegrationsTest.t.sol` to use our deployer next.
 
@@ -259,7 +259,7 @@ Let's run it!
 forge test --mt testFlipMoodIntegration
 ```
 
-<img src="../../../../static/foundry-nfts/15-svg-deploy/svg-deploy3.png" width="100%" height="auto">
+<img src="/foundry-nfts/15-svg-deploy/svg-deploy3.png" width="100%" height="auto">
 
 Uh oh. That ain't right.
 

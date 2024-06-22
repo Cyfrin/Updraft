@@ -97,7 +97,7 @@ An example of this is delegateCall, a low-level function whereby the logic of a 
 
 Through this, and a fallback function, proxies are able to take any call sent to them, and route it to a specified implementation contract.
 
-<img src="../../../../static/foundry-upgrades/1-intro/intro1.png" width="100%" height="auto">
+<img src="/foundry-upgrades/1-intro/intro1.png" width="100%" height="auto">
 
 So, whenever a protocol wants to upgrade, they would simply deploy the upgraded implementation and then point the proxy to the new deployment.
 
@@ -139,7 +139,7 @@ Let's look at these in a little more detail.
 
 Remember, in a proxy pattern, we're using the storage of our proxy to perform the logic of our implementation contract. What this means is that changes to storage in our implementation contract are actually performed on our proxy contract. Let's visualize this.
 
-<img src="../../../../static/foundry-upgrades/1-intro/intro2.png" width="100%" height="auto">
+<img src="/foundry-upgrades/1-intro/intro2.png" width="100%" height="auto">
 
 This is really important to know as it means that we can only `append` or add additional storage data to an implementation contract, we're unable to reorder or change old storage slots.
 
@@ -175,7 +175,7 @@ This methodology will actually have all of the upgradeability logic contained _w
 
 The Diamond Proxy Pattern is unique in that it supports _multiple implementation contracts_. This solves a few issues such as contract size limitations. In addition to this, a diamond pattern allows for more granular upgrades to a protocol, not requiring a whole new deployment for each change.
 
-<img src="../../../../static/foundry-upgrades/1-intro/intro3.png" width="100%" height="auto">
+<img src="/foundry-upgrades/1-intro/intro3.png" width="100%" height="auto">
 
 ### Wrap Up
 

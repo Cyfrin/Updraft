@@ -26,7 +26,7 @@ Alison Haire brings us her expert take from the Filecoin Foundation, providing a
 
 ### Filecoin
 
-<img src="../../../../static/foundry-nfts/18-filecoin-arweave/filecoin-arweave1.png" width="100%" height="auto">
+<img src="/foundry-nfts/18-filecoin-arweave/filecoin-arweave1.png" width="100%" height="auto">
 
 Filecoin, since its launch in 2020, has been working tirelessly towards decentralizing the data infrastructure for the internet. Their layer one solution, Filecoin Virtual Machine (FVM), has launched some impressive functionalities.
 
@@ -38,7 +38,7 @@ And many more use cases are being developed, showcased in the [Filecoin docs](ht
 
 To get started with Filecoin, try deploying a smart contract to FVM, or use the storage helper - [**Web3 Storage**](https://web3.storage/) or [**NFT Storage**](https://nft.storage/), to engage with the technology directly.
 
-<img src="../../../../static/foundry-nfts/18-filecoin-arweave/filecoin-arweave2.png" width="100%" height="auto">
+<img src="/foundry-nfts/18-filecoin-arweave/filecoin-arweave2.png" width="100%" height="auto">
 
 ### Wrap Up
 

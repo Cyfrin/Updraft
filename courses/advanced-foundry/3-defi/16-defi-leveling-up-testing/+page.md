@@ -46,7 +46,7 @@ function testSetNumber() public {
 
 Running this test, we'd see:
 
-<img src="../../../../static/foundry-defi/16-defi-leveling-up-testing/defi-leveling-up-testing1.png" width="100%" height="auto">
+<img src="/foundry-defi/16-defi-leveling-up-testing/defi-leveling-up-testing1.png" width="100%" height="auto">
 
 The unit test catches this right away. All of the most popular frameworks have unit tests built in!
 
@@ -88,7 +88,7 @@ Here's an example of a fuzz test we could perform:
 
 You can see, we don't explicitly declare the value for `data` in our test, and instead pass it as an argument to the test function. The Foundry framework will satisfy this argument with random data until it breaks our invariant (or stops based on configurations set). When run, we can see the framework identifies the edge case which breaks our asserted property.
 
-<img src="../../../../static/foundry-defi/16-defi-leveling-up-testing/defi-leveling-up-testing2.png" width="100%" height="auto">
+<img src="/foundry-defi/16-defi-leveling-up-testing/defi-leveling-up-testing2.png" width="100%" height="auto">
 
 ### Layer 3 Static Analysis
 
@@ -108,7 +108,7 @@ function withdraw() external {
 
 The above withdraw function has a classic reentrancy attack. We know an issue like this arrises from not following the CEI pattern! A static analysis tool like Slither will be able to pick up on this quite easily.
 
-<img src="../../../../static/foundry-defi/16-defi-leveling-up-testing/defi-leveling-up-testing3.png" width="100%" height="auto">
+<img src="/foundry-defi/16-defi-leveling-up-testing/defi-leveling-up-testing3.png" width="100%" height="auto">
 
 ### Layer 4 Formal Verification
 

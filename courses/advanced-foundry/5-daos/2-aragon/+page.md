@@ -12,43 +12,43 @@ In this lesson we're guided by Juliette Chevalier in the process of creating a D
 
 Begin by navigating to [**app.aragon.org**](https://app.aragon.org/). Once on the landing page you can connect a wallet and jump right into `Create your DAO`.
 
-<img src="../../../../static/foundry-daos/2-aragon/aragon1.png" width="100%" height="auto">
+<img src="/foundry-daos/2-aragon/aragon1.png" width="100%" height="auto">
 
 ---
 
 You should be met with a wonderful breakdown of the steps we'll take to create our DAO, select `Build your DAO` again to continue.
 
-<img src="../../../../static/foundry-daos/2-aragon/aragon2.png" width="100%" height="auto">
+<img src="/foundry-daos/2-aragon/aragon2.png" width="100%" height="auto">
 
 ---
 
 Next, you'll be asked to select a chain you expect to deploy on, with Sepolia available as a testnet.
 
-<img src="../../../../static/foundry-daos/2-aragon/aragon3.png" width="100%" height="auto">
+<img src="/foundry-daos/2-aragon/aragon3.png" width="100%" height="auto">
 
 ---
 
 Following this you'll be tasked with describing some details of the DAO, giving it a name, logo and personality. This is also where links to DAO socials would be included such as LinkedIn, Twitter, Discord etc.
 
-<img src="../../../../static/foundry-daos/2-aragon/aragon4.png" width="100%" height="auto">
+<img src="/foundry-daos/2-aragon/aragon4.png" width="100%" height="auto">
 
 ---
 
 Next is all about defining membership and who/how governance is allocated. In this stage you can decide the details of a new ERC20 governance token and to whom they are minted, or even import an existing token that the community can use.
 
-<img src="../../../../static/foundry-daos/2-aragon/aragon5.png" width="100%" height="auto">
+<img src="/foundry-daos/2-aragon/aragon5.png" width="100%" height="auto">
 
 ---
 
 From here, we need to define the specific, granular details pertaining to how governance and proposals are handled by the protocol. These details include the threshold needed for successful proposals, duration to vote, who can create proposals etc.
 
-<img src="../../../../static/foundry-daos/2-aragon/aragon7.png" width="100%" height="auto">
+<img src="/foundry-daos/2-aragon/aragon7.png" width="100%" height="auto">
 
 ---
 
 And finally, we need to verify our configurations before deployment! Importantly, all of our configurations can be adjusted after deployment with a successful proposal (with the exception of the blockchain we're deployed on).
 
-<img src="../../../../static/foundry-daos/2-aragon/aragon6.png" width="100%" height="auto">
+<img src="/foundry-daos/2-aragon/aragon6.png" width="100%" height="auto">
 
 ---
 

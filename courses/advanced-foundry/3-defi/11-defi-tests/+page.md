@@ -134,7 +134,7 @@ When you're ready, let see how we've done!
 forge test --mt testGetUsdValue
 ```
 
-<img src="../../../../static/foundry-defi/11-defi-tests/defi-tests1.png" width="100%" height="auto">
+<img src="/foundry-defi/11-defi-tests/defi-tests1.png" width="100%" height="auto">
 
 It works! We're clearly still on track. This is great. It's good practice to test things as you go to avoid getting too far down the rabbit-hole of compounding errors. Sanity checks along the way like this can save you time in having to refactor and change a bunch of code later.
 
@@ -201,7 +201,7 @@ Let's run it!
 forge test --mt testRevertsIfCollateralZero
 ```
 
-<img src="../../../../static/foundry-defi/11-defi-tests/defi-tests2.png" width="100%" height="auto">
+<img src="/foundry-defi/11-defi-tests/defi-tests2.png" width="100%" height="auto">
 
 ### Wrap Up
 

@@ -93,7 +93,7 @@ Some of the adjustments to this contract which improve gas efficiency include:
 
 What does all of this mean for the gas spent with this contract?
 
-<img src="../../../../static/foundry-daos/7-recap/recap1.png" width="100%" height="auto">
+<img src="/foundry-daos/7-recap/recap1.png" width="100%" height="auto">
 
 Over 600,000 gas savings! Simple changes and gas conscious development is all it takes!
 

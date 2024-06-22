@@ -12,11 +12,11 @@ What we've learnt so far is that any `EVM compatible` chain is looking for the `
 
 What these two things combined mean is that we can encode our own function calls as data that we send to a contracts address.
 
-<img src="../../../../static/foundry-nfts/20-evm-encoding/evm-encoding1.png" width="100%" height="auto">
+<img src="/foundry-nfts/20-evm-encoding/evm-encoding1.png" width="100%" height="auto">
 
 If we view a function call on Etherscan, we can see the input data in a human readable form as well as its original form, which is the `bytecode` representing that function (`function selector`).
 
-<img src="../../../../static/foundry-nfts/20-evm-encoding/evm-encoding2.png" width="100%" height="auto">
+<img src="/foundry-nfts/20-evm-encoding/evm-encoding2.png" width="100%" height="auto">
 
 The ability to do this empowers us as developers to do a lot of cool low-level things like making arbitrary function calls.
 
@@ -100,8 +100,7 @@ function withdraw(address recentWinner) public {
 
 **staticcall:** How we call view or pure functions
 
-> [!TIP]
-> `send` and `delegatecall` also exist as options for low-level calling to the blockchain, but we'll go over these in greater detail later!
+> [!TIP] > `send` and `delegatecall` also exist as options for low-level calling to the blockchain, but we'll go over these in greater detail later!
 
 When we write `recentWinner.call{value: address(this).balance}("");` we're directly updating the value property of the transaction we're sending. The parenthesis at the end of this call are where we provide our transaction data.
 

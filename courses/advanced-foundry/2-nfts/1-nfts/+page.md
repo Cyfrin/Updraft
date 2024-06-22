@@ -17,13 +17,13 @@ Welcome back! In this section of the course we'll be investigate Non-fungible To
 
 As mentioned, we'll be learning two approaches to simple NFT development in this course. This first will be a basic implementation using these cute puppies!
 
-<img src="../../../../static/foundry-nfts/1-nfts/nfts1.png" width="100%" height="auto">
+<img src="/foundry-nfts/1-nfts/nfts1.png" width="100%" height="auto">
 
 In this first basic implementation our images are going to be stored in [**IPFS**](https://ipfs.tech/).
 
 With our second NFT, the art is going to be stored _on-chain_ and dynamic, changing based on a criteria we set, setting our mood from happy to sad or vice versa!
 
-<img src="../../../../static/foundry-nfts/1-nfts/nfts2.png" width="100%" height="auto">
+<img src="/foundry-nfts/1-nfts/nfts2.png" width="100%" height="auto">
 
 And, perhaps most excitingly, by the end of this section you'll have you're very own NFTs imported into your own wallet/metamask. You can also view them on service like OpenSea which will allow you to sell, trade, view and collect all sorts of NFTs!
 

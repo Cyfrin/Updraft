@@ -20,12 +20,11 @@ The Web3 and blockchain ecosystem is fundamentally democratic and open source. A
 
 If `EIPs` get enough traction to warrant genuine consideration they will often generate a `Request for Comments`, in Ethereum these are known as `Ethereum Request for Comments` (`ERCs`).
 
-> [!NOTE]
-> `EIPs` and `ERCs` are numbered chronologically! `ERC20` is the 20th request for comments that was created.
+> [!NOTE] > `EIPs` and `ERCs` are numbered chronologically! `ERC20` is the 20th request for comments that was created.
 
 New `Improvement Proposals` and `Requests for Comments` are tracked on websites such as [**eips.ethereum.org**](https://eips.ethereum.org/), where you can watch these proposals go through the process real time and be adopted or rejected by the community.
 
-<img src="../../../../static/foundry-erc20s/1-erc20-basics/erc20-basics1.png" width="100%" height="auto">
+<img src="/foundry-erc20s/1-erc20-basics/erc20-basics1.png" width="100%" height="auto">
 
 ### ERC20
 
