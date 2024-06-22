@@ -4,104 +4,174 @@ title: Foundry Setup
 
 _Follow along the course with this video._
 
-
-
 ---
 
-Hello, coders! Now that we have an idea about NFTs, we're all set to start coding our first-ever Non-fungible tokens. If you want to follow along, feel free to pass by the course materials where the GIT code associated with this lesson is located.
+### Foundry Setup
 
-## Setting Up the Environment
+Now that we know what an NFT is, let's investigate how we can build our own. As always the code we're writing will be available in the [**GitHub Repo**](https://github.com/Cyfrin/foundry-nft-f23) associate with this section.
 
-First, as usual, we create a new directory for our project.
+To start, let's initialize our workspace. Create a new directory in your course folder.
 
-```shell
+```bash
 mkdir foundry-nft-f23
 ```
 
-Then, let's switch to our newly created directory.
+We can then switch to this directory and open it in VSCode.
 
-```shell
+```bash
 cd foundry-nft-f23
+code .
 ```
 
-Next, we'll launch our text editor (I'm using the popular Visual Studio Code in this case) from the terminal.
+Finally, we can initialize our foundry project.
 
-```shell
-code foundry-nft-f23
-```
-
-Before anything else, let's fire up the terminal, close the explorer and initiate our working directory to clean any residual files.
-
-```shell
+```bash
 forge init
 ```
 
-Check if the '.env' file exists and also add 'broadcast.'
+Once initialized, be sure to remove the example contracts `src/Counter.sol`, `test/Counter.t.sol` and `script/Counter.s.sol`. Finally, assure that your `.gitignore` contains `.env` and `broadcast/`
 
-## Creating Our Basic NFT
+### NFT Contracts
 
-The NFT we are about to create is a token standard, similar to the ERC 20. The best part about this is that we don't need to walk through all the functions. We can save some time using our trusty package `OpenZeppelin`.
+Now, as mentioned previously, NFTs are just another type of [**Token Standard**](https://eips.ethereum.org/EIPS/eip-721), similar to ERC20s. As such, we could simply write our contract and begin implementing all the necessary methods to comply with this standard. However, like ERC20s, we can also just import a library (like OpenZeppelin) which does all this heavy lifting for us.
 
-Looking at the Open Zeppelin contracts, there's a token folder that hosts an ERC721.sol contract. This contract has almost all the functionality that we need for our NFT.
-
-```shell
-forge install OpenZeppelin/openzeppelin-contracts
-```
-
-By now, already you know that SPDX license identifier, MIT, and Pragma, solidity version are mandatory elements in a solidity file. Here's how we're defining our 'basicNFT.sol' file –
+Begin by creating `src/BasicNft.sol` and setting up our usual boilerplate.
 
 ```js
-//SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.18;
-contract BasicNFT {...}
+
+contract BasicNft{}
 ```
 
-We'll import the OpenZeppelin contracts package, point to the ERC 721 protobuf file, and declare our basic NFT contract.
+We can install the OpenZeppelin Contracts library with:
+
+```bash
+forge install OpenZeppelin/openzeppelin-contracts --no-commit
+```
+
+To make things a little easier on ourselves, we can add this as a remapping to our `foundry.toml`. This remapping allows us to use some short-hand when importing from this directory.
 
 ```js
-import { ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+[profile.default];
+src = "src";
+out = "out";
+libs = ["lib"];
+remappings = ["@openzeppelin/contracts=lib/openzeppelin-contracts/contracts"];
 ```
 
-Voila, our basic NFT ecosystem is ready for use, and its name will be dog and symbol as doggy.
+Now we can import and inherit the ERC721 contract into `BasicNft.sol`
 
-```shell
- constructor() ERC721("Dogie", "DOG") {}
+```js
+// SPDX-License-Identifier: MIT
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
+pragma solidity ^0.8.18;
+
+contract BasicNft is ERC721 {}
 ```
 
-But are we done yet? No. Now, we need to define the appearance of our NFTs and define how to obtain these tokens.
+Your IDE will likely indicate an error until we've passed the necessary arguments to the ERC721 constructor. You can ctrl + left-click (cmd + left-click) on the imported ERC721.sol to navigate to this contract and confirm what the constructor requires.
 
-## Token Standard and Counter
+```js
+constructor(string memory name_, string memory symbol_) {
+    _name = name_;
+    _symbol = symbol_;
+}
+```
 
-Looking at the ERC 20 token standard, it has a balanceOf function. But in NFTs, the 'amount' of tokens doesn't matter as each of them is unique and thus can have distinct values. Here, the 'ownerOf' function is used to give each token a unique ID.
+Just like the ERC20, we need to give our token a name and a symbol, that makes sense. Feel free to choose your own, but I'm going to go with the name `Doggie` and the symbol `DOG`.
 
-The unique NFT is denoted by a combination of the contract's address that represents the entire collection and the token's ID. So, we are going to use a 'token counter' to keep track of each token's unique ID.
+```js
+// SPDX-License-Identifier: MIT
 
-```shell
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
+pragma solidity ^0.8.18;
+
+contract BasicNft is ERC721 {
+
+    constructor() ERC721("Doggie", "DOG"){}
+}
+```
+
+Great! While this contract may have the basic functionality of an NFT protocol, there's a lot to be done yet. Because each token is unique and possesses a unique tokenId, we absolutely need a token counter to track this in storage. We'll increment this each time a token is minted.
+
+```js
 uint256 private s_tokenCounter;
+
+constructor() ERC721("Doggie", "DOG"){
+    s_tokenCounter = 0;
+}
 ```
 
-Our token counter's initial value will be zero, and it will increase as we mint new 'dog' tokens.
+### TokenURI
 
-<img src="/foundry-nfts/3-setup/setup1.png" style="width: 100%; height: auto;">
+It's hard to believe, but once upon a time the tokenUri was once considered an optional parameter, despite being integral to how NFTs are used and consumed today.
 
-## Minting the Puppy NFT
+TokenURI stands for Token Uniform Resource Identifier. At its core it serves as an endpoint that returns the metadata for a given NFT.
 
-The minting function that we're about to define will allow us to produce our puppy tokens. This function is very crucial in the EIP721, the tokenUri. Although initially considered an optional parameter, the tokenUri, which stands for Token Uniform Resource Identifier, returns an API endpoint containing the NFT's metadata.
+**Example TokenURI Metadata Schema:**
 
-<img src="/foundry-nfts/3-setup/setup2.png" style="width: 100%; height: auto;">
+```
+{
+    "title": "Asset Metadata",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Identifies the asset to which this NFT represents"
+        },
+        "description": {
+            "type": "string",
+            "description": "Describes the asset to which this NFT represents"
+        },
+        "image": {
+            "type": "string",
+            "description": "A URI pointing to a resource with mime type image/* representing the asset to which this NFT represents. Consider making any images at a width between 320 and 1080 pixels and aspect ratio between 1.91:1 and 4:5 inclusive."
+        }
+    }
+}
+```
 
-This metadata outlines the appearance of our NFT, including a title, a type, properties, and an image. The Uri points to the object that dictates the NFT's looks.
+It's this metadata that defines what the properties of the NFT are, including what it looks like! In fact, if you go to [**OpenSea**](https://opensea.io/) and look at any NFT there, all the the data and images you're being served come from calls to the tokenURI function.
 
-```shell
+What this means to us is - any time someone mints a Doggie NFT, we need to assign a TokenURI to the minted TokenID which contains all the important information about the Doggie. Let's consider what this function would look like.
+
+> [!NOTE]
+> The OpenZeppelin implementation of ERC721, which we've imported, has it's own virtual tokenURI function which we'll be overriding.
+
+By navigating to any NFT on OpenSea, you can find a link to the collection's contract on Etherscan. Click on `Read Contract` and find the tokenURI function (here's a link to [**Pudgy Penguins**](https://etherscan.io/address/0xbd3531da5cf5857e7cfaa92426877b022e612cf8#readContract) if you need it).
+
+Entering any valid tokenId should return the TokenURI of that NFT!
+
+<img src="../../../../static/foundry-nfts/3-foundry-setup/foundry-setup1.png" width="100%" height="auto">
+
+By opening this URI in your browser, the details of that token's metadata should be made available:
+
+<img src="../../../../static/foundry-nfts/3-foundry-setup/foundry-setup2.png" width="100%" height="auto">
+
+Note the imageURI property. This is what defines what the NFT actually looks like, you can copy this into your browser as well to view the NFT's image.
+
+<img src="../../../../static/foundry-nfts/3-foundry-setup/foundry-setup3.png" width="100%" height="auto">
+
+Both the tokenUri and imageUri for this example are hosted on IPFS (Inter-planetary file system), a service offering decentralized storage that we'll go into in greater detail, in the next lesson.
+
+So what's this tokenURI function going to look like for us? Well, our BasicNFT is going to also use IPFS, so similarly to our example above, we'll need to set up our function to return this string, pointing to the correct location in IPFS.
+
+```js
+
 function tokenURI(uint256 tokenId) public view override returns (string memory) {}
 ```
 
-Here we override the base’s tokenUri method with our custom method. Notice that whenever we want to look at what an NFT looks like, we call this function. The NFT’s look is determined by the image that this function returns.
+Now, I've prepared some images you can choose from to use in your project, but feel free to use your own. Making these projects _yours_ goes a long way towards committing these things to memory. You can find the images I've provided in the [**GitHub Repo**](https://github.com/Cyfrin/foundry-nft-f23/tree/main/images/dogNft) for this section.
 
-## Deploying Images for NFT
+<img src="../../../../static/foundry-nfts/3-foundry-setup/foundry-setup4.png" width="100%" height="auto">
 
-Our puppy NFTs are ready to be brought to life. In our GitHub repository, we have the NFT images you can use for your first NFT. Once you select and download your desired puppy, let’s save it to the 'img' folder that we created in the project's directory.
+Create a new folder in your workspace names `img` (image) and add the image of your choice to this directory.
 
-<img src="/foundry-nfts/3-setup/setup3.png" style="width: 100%; height: auto;">
+In the next lesson, we'll learn how to host our NFT images in a decentralized manner by leveraging IPFS.
 
-Wow! It was a smooth journey, and we have successfully prepared our NFT images which are ready to be deployed using IPFS. Stay tuned for the next section where we will delve deeper into IPFS and how we can use it.
+I'll see you there!

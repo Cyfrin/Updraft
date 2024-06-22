@@ -33,9 +33,9 @@ These parameters represent the values sent to our function. In this case, we inf
 function Store(uint256 _favoriteNumber) public {favoriteNumber = _favoriteNumber;}
 ```
 
-```solidity
+```js
 contract SimpleStorage {
-Within these brackets `{'{'}...{'}'}`, we indicate that the `favoriteNumber` variable is updated to `_favoriteNumber` whenever the `Store` function is called.
+//Within these brackets `{'{'}...{'}'}`, we indicate that the `favoriteNumber` variable is updated to `_favoriteNumber` whenever the `Store` function is called.
     uint256 favoriteNumber; // storage variable: it's stored in a place called "Storage"
 The prefix `_` indicates that `_favoriteNumber` is different from the favoriteNumber variable outside the function. This helps prevent potential confusion when dealing with different variables with similar names.
     function store(uint256 _favoriteNumber) public {

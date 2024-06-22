@@ -1,81 +1,78 @@
 ---
-title: SVG NFT Intro
+title: SVG NFT
 ---
 
 _Follow along the course with this video._
 
-
-
 ---
 
-Creating SVG NFTs is a fascinating endeavor, especially if these NFTs can change their mood! In this practical guide, we'll build our dynamic SVG NFT—an innovative NFT whose image changes and whose data is 100% stored on-chain.
+### SVG NFT
 
-## What Are We Building?
+Ok, we've gained lots of context and understand about data storage in general and the benefits of `SVGs` specifically. Let's begin creating our very own dynamic `MoodNFT` with its `SVG` art stored on-chain.
 
-Our ultimate task is to create a mood-changing NFT—bam, a Mood NFT! That's right, we're developing an NFT that can switch from happy to sad and vice versa.
+At the core of the NFT we'll build is a `flipMood` function which allows the owner to flip their NFT between happy and sad images.
 
-Our Mood NFT is housed with an intelligent function we call "Flip Mood." This function alternates the mood of our NFT—if its mood is happy, it turns sad, and vice versa. As per the mood, our NFT will either display a happy or sad SVG that we will store on-chain.
+<img src="../../../../static/foundry-nfts/12-svg-nft/svg-nft1.png" width="100%" height="auto">
 
-## Setting the Mood
-
-Time to roll up our sleeves and kick-off our Mood NFT project. Open up your SRC, create a new file—let's name it `MoodNft.sol`. Remember, before we start writing our contract, we need to define the SPDX license Identifier (MIT) and establish which version of Solidity we're working with (0.8.18 in our case). Now, let's begin to define our `MoodNft` contract.
+Start with creating the file `src/MoodNft.sol` and filling out the usual boilerplate. We're definitely getting good at this by now.
 
 ```js
-//SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.18;
-contract MoodNft {}
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
+contract MoodNft is ERC721 {
+    constructor() ERC721("Mood NFT", "MN"){}
+}
 ```
 
-Our NFT contract will contain several vital elements from the basic NFT, so let’s take some of that and import it into our new folder. Next, our NFT will be defined as an ERC721 token. Sustaining the moods (happy and sad SVGs) of our NFT is critical, so we'll pass these mood SVGs in our constructor. You can make your personalized Sad SVG. For this tutorial, we'll use this happy SVG.
+Looking good! We want to store the `SVG` art on chain, we we're actually going to pass these to our `constructor` on deployment.
 
 ```js
-constructor(
-        string memory sadSvgUri,
-        string memory happySvgUri
-    ) ERC721("Mood NFT", "MN") {}
-
+constructor(string memory sadSvg, string memory happySvg) ERC721("Mood NFT", "MN"){}
 ```
 
-## Mood Tracking: Creat a Token Counter
-
-A token counter is an essential part of our Mood NFT. Hence, we need to create a private token counter `uint256 private s_tokenCounter`. We'll initiate the token counter in the constructor to zero.
+We know we'll need a `tokenCounter`, along with this let's declare our `sadSvg` and `happySvg` as storage variables as well. All together, before getting into our functions, things should look like this:
 
 ```js
- uint256 private s_tokenCounter;
+// SPDX-License-Identifier: MIT
 
-constructor(
-        string memory sadSvgUri,
-        string memory happySvgUri
-    ) ERC721("Mood NFT", "MN") {
+pragma solidity ^0.8.18;
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
+contract MoodNft is ERC721 {
+    string private s_sadSvg;
+    string private s_happySvg;
+    uint256 private s_tokenCounter;
+
+    constructor(string memory sadSvg, string memory happySvg) ERC721("Mood NFT", "MN"){
         s_tokenCounter = 0;
+        s_sadSvg = sadSvg;
+        s_happySvg = happySvg;
     }
-
+}
 ```
 
-Let's save these SVGs as `string private s_sadSvgUri` and `string private s_happySvgUri`, and pass them:
+Now we need a `mint` function, anyone should be able to call it, so it should definitely be `public`. This shouldn't be anything especially new to us so far.
 
 ```js
-string private s_sadSvgUri;
-string private s_happySvgUri;
+function mintNft() public {
+    _safeMint(msg.sender, s_tokenCounter);
+    s_tokenCounter++;
+}
 ```
 
-## Minting the Mood NFT
-
-Our mood NFT is now ready for anybody to mint! We'll define a public function `mintNFT()` that enables anyone to mint their Mood NFT. This function will contain a `safemint` statement that provides the `msg.sender` their Token ID. Also, remember to increment the token counter so that every new token gets a unique ID.
+And now the moment of truth! As we write the `tokenURI` function, we know this is what defines what our NFT looks like and the metadata associated with it. Remember that we'll need to `override` this `virtual` function of the `ERC721` standard.
 
 ```js
-  function mintNft() public {
-        // how would you require payment for this NFT?
-        _safeMint(msg.sender, s_tokenCounter);
-        s_tokenCounter = s_tokenCounter + 1;
-        emit CreatedNFT(s_tokenCounter);
-    }
+function tokenURI(uint256 tokenId) public view override returns (string memory){}
 ```
 
-Finally, we need to define what our NFT will look like. This is done using the `TokenURI` function, which takes the token ID as a parameter and returns a string memory.
+### Wrap Up
 
-```js
-function tokenURI(uint256 _tokenId) public view override returns (string memory) {}
-```
+Our on-chain, dynamic, `SVG NFT` is slowly coming to life! In the next lesson let's walk through the contents of our `tokenURI` function and how we can encode our `SVGs` in a way such that they can be reasonably stored on the blockchain.
 
-And that's a wrap! Developing mood-changing NFTs can be as fun as it sounds. Now it's your turn to create your mood NFT and bring your crazy, creative ideas to life!
+See you there!

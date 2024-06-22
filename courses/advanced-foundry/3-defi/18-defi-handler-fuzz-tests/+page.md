@@ -4,133 +4,297 @@ title: Handler Fuzz Tests
 
 _Follow along the course with this video._
 
+---
 
+### Handler Fuzz Tests
 
-# Decoding the Magic of Fuzz Testing in Foundry
+Ok, welcome back! I hope you had a chance to take a break, and I _also_ hope you took the time to try to write your own tests. Hopefully your `forge coverage` is outputting something closer to this:
 
-Chances are, you're here because you've heard about the magic that is **fuzz testing** or **invariant testing**. As developers, it's absolutely crucial for us to gain confidence that our code works as intended, especially when it comes to complex projects.
+<img src="../../../../static/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests1.png" width="100%" height="auto">
 
-And trust me, there's no better way to do this than by writing robust invariant tests.
+If not...I **_strongly_** encourage you to pause the video and practice writing some tests.
 
-## Fuzz Testing - An Overview
+Otherwise, let's continue!
 
-Fuzz testing, also known as fuzzing, is a software testing technique that involves providing invalid, unexpected, or random data as inputs to a computer program. The program is then monitored for exceptions such as crashes, failing built-in code assertions, or potential memory leaks.
+So that we're all on the same page, I suggest taking a look at the GitHub Repo for this course to see what's been added to my contracts and test suite. Quite a bit of refactoring has happened since last lesson.
 
-<img src="/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests1.png" style="width: 100%; height: auto;">
+- [**DSCEngineTest.t.sol**](https://github.com/Cyfrin/foundry-defi-stablecoin-f23/blob/main/test/unit/DSCEngineTest.t.sol)
+- [**DSCEngine.sol**](https://github.com/Cyfrin/foundry-defi-stablecoin-f23/blob/main/src/DSCEngine.sol)
 
-It's like throwing a wrench into a machine and watching to see if and how the machine breaks, giving you a better understanding of the machine's robustness, and how it might break in the future.
+One example of an addition made is the internal \_calculateHealthFactor function and the public equivalent calculateHealthFactor. These functions allow us to access expected Health Factors in our tests.
 
-We could compare fuzz testing to an open basketball court where you get to shoot from anywhere you like. It's a fun way to get warmed up and get a feel for the game, especially at the beginning. But the problem is, you could be wasting valuable shots from improbable distances or awkward angles. Instead, you might want to focus on the three-point line or the free-throw line, which hold a higher value in an actual game scenario.
+```js
+uint256 expectedHealthFactor =
+dsce.calculateHealthFactor(amountToMint, dsce.getUsdValue(weth, amountCollateral));
+vm.expectRevert(abi.encodeWithSelector(DSCEngine.DSCEngine__BreaksHealthFactor.selector, expectedHealthFactor));
+```
 
-That's where targeted invariants and fuzz testing with handlers come in!
+### The Bug
 
-## Fuzz Testing Vs Invariant Testing
+In the previous lesson I alluded to there being a severe bug, one of the changes made in the code base since then is mitigating this bug.
 
-To clarify, invariant testing is simply a type of fuzz testing. 'Invariant' just means stateful, or persistent.
+Did you find it?
 
-The basic methodology, like we saw in the previous video, works okay. But as we start building more complex systems, we begin to see its limitations. Suffice to say, it represents an "open" targeted fuzz testing where all functions in a contract are called in any order, attempting to break the invariants.
+The issue was found in how we calculated our Health Factor originally.
 
-Enter **invariant testing with handlers**, the more advanced sibling, which curtails these seemingly random efforts with more focused techniques, and is what we'll be focusing more on in this piece.
+```js
+function _healthFactor(address user) private view returns(uint256){
+    (uint256 totalDscMinted, uint256 collateralValueInUsd) = _getAccountInformation(user);
 
-## Let's Get To Testing!
+    uint256 collateralAdjustedForThreshold = (collateralValueInUsd * LIQUIDATION_THRESHOLD) / LIQUIDATION_PRECISION;
 
-Enough explanation, let's get our hands dirty! We are about to create some very detailed invariant tests to increase your confidence in your code.
+    return (collateralAdjustedForThreshold * PRECISION) / totalDscMinted;
+}
+```
 
-### Setting Up Your Environment
+In the above, we need to account for when a user has deposited collateral, but hasn't minted DSC. In this circumstance our return value is going to be dividing by zero! Obviously not good, so what we do is account for this with a conditional, if a user's minted DSC == 0, we just set their Health Factor to a massive positive number and return that.
 
-<img src="/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests2.png" style="width: 100%; height: auto;">
+```js
+function _calculateHealthFactor(uint256 totalDscMinted, uint256 collateralValueInUsd)
+    internal
+    pure
+    returns (uint256)
+{
+    if (totalDscMinted == 0) return type(uint256).max;
+    uint256 collateralAdjustedForThreshold = (collateralValueInUsd * LIQUIDATION_THRESHOLD) / LIQUIDATION_PRECISION;
+    return (collateralAdjustedForThreshold * PRECISION) / totalDscMinted;
+}
+```
 
-For our testing purposes, we're going to be using Foundry, a core framework which has a built-in test runner with invariants and handlers.
+### Change 3
 
-To set up your test, create a new test directory within your contract's root directory and add two test files; an invariants test file ( `InvariantsTest.t.sol` ) and a handlers file ( `Handlers.t.sol` ).
+The last major change in the repo since our last lesson is the addition to a number of view/getter functions in DSCEngine.sol. This is just to make it easier to interact with the protocol overall.
 
-In your invariants test file, you will specify the properties of your system that should remain unaltered or invariant. Handlers, on the other hand, will ensure that these properties are observed in an orderly manner without wastage.
+<details>
+<summary>View Functions</summary>
 
-### Invariants and Handlers Uncovered
+```js
+function getPrecision() external pure returns (uint256) {
+    return PRECISION;
+}
 
-Let's take a deeper dive into our two new scripts — the invariants and handlers.
+function getAdditionalFeedPrecision() external pure returns (uint256) {
+    return ADDITIONAL_FEED_PRECISION;
+}
 
-Your invariants test file should look something like this:
+function getLiquidationThreshold() external pure returns (uint256) {
+    return LIQUIDATION_THRESHOLD;
+}
+
+function getLiquidationBonus() external pure returns (uint256) {
+    return LIQUIDATION_BONUS;
+}
+
+function getLiquidationPrecision() external pure returns (uint256) {
+    return LIQUIDATION_PRECISION;
+}
+
+function getMinHealthFactor() external pure returns (uint256) {
+    return MIN_HEALTH_FACTOR;
+}
+
+function getCollateralTokens() external view returns (address[] memory) {
+    return s_collateralTokens;
+}
+
+function getDsc() external view returns (address) {
+    return address(i_dsc);
+}
+
+function getCollateralTokenPriceFeed(address token) external view returns (address) {
+    return s_priceFeeds[token];
+}
+
+function getHealthFactor(address user) external view returns (uint256) {
+    return _healthFactor(user);
+}
+```
+
+</details>
+
+---
+
+If you managed to improve your coverage, even if not to this extent, you should be proud of getting this far. This code base is hard to write tests for and a lot of it comes with experience, practice and familiarity.
+
+> [!TIP]
+> Repetition is the mother of skill.
+
+### Fuzzing
+
+With all this being said, we're not done yet. We're going to really take a security minded focus and build out a thorough fuzz testing suite as well. While developing a protocol and writing tests, we should always be thinking **"What are my protocol invariants?"**. Having these clearly defined will make advanced testing easier for us to configure.
+
+Let's detail Fuzz Testing at a high-level before diving into it's application.
+
+Fuzz Testing is when you supply random data to a system in an attempt to break it. If you recall the example used in a previous lesson:
 
 ```js
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.0;
 
-import {Test} from "forge-std/Test.sol";
-import {StdInvariant} from "forge-std/StdInvariant.sol";
-import {DeployDSC} from "../../script/DeployDSC.s.sol";
-import {DSCEngine} from "../../src/DSCEngine.sol";
-import {DecentralizedStableCoin} from "../../src/DecentralizedStableCoin.sol";
-import {HelperConfig} from "../../script/HelperConfig.s.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+contract MyContract {
+    uint256 public shouldAlwaysBeZero = 0;
+    uint256 hiddenValue = 0;
 
-contract OpenInvariantsTest is StdInvariant, Test {
-    DeployDSC deployer;
-    DSCEngine dsce;
-    HelperConfig config;
-    address weth;
-    address wbtc;
-
-    function setUp() external {
-        deployer = new DeployDSC();
-        (dsc,dsc,config) = deployer.run();
-        (,, weth, wbtc,) = config.activeNetworkConfig();
-        targetContract(address(dsce));
+    function doStuff(uint256 data) public {
+        if (data == 2){
+            shouldAlwaysBeZero = 1;
+        }
     }
-
-    function invariant_protocolMustHaveMoreValueThanTotalSupply() public view{
-        //get the value of all the collateral in the protocol
-        //compare it to all the debt (dsc)
-        uint256 totalSupply = dsc.totalSupply();
-        uint256 totalWethDeposited = IERC20(weth).balanceOf(address(dsce));
-        uint256 totalBtcDeposited = IERC20(wbtc).balanceOf(address(dsce));
-
-        uint256 wethValue = dsce.getUsdValue(weth, totalWethDeposited);
-        uint256 wbtcValue = dsce.getUsdValue(wbtc, totalBtcDeposited);
-
-        assert(wethValue + wbtcValue > totalSupply);
-    }
+}
 ```
 
-Here, `totalSupply()` represents one such property that should always hold, geared towards maintaining the total supply of tokens.
+In the above `shouldAlwaysBeZero` == 0 is our `invariant`, the property of our system that should always hold. By fuzz testing this code, our test supplies our function with random data until it finds a way to break the function, in this case if 2 was passed as an argument our invariant would break. This is a very simple example, but you could imagine the complexity scaling quickly.
 
-Now, let's move on to the handlers file. The handlers help you make efficient test runs and avoid wastage, by ensuring the invariants are checked in a specific order.
-
-For instance, if you want to test the deposit of a token, the handlers ensure that the token is approved before depositing; this helps to avoid a wasted test run.
-
-### Using Invariant in Foundry
-
-In the Foundry docs, we can see, the [invariant](https://book.getfoundry.sh/forge/invariant-testing) section allows you to
-
-- set the total number of `runs` for a test.
-- specify `depth`, representing the number of calls in a single run.
-- use `fail_on_revert`, to indicate whether the test should fail upon encountering a revert.
-
-We can include the following in our `foundry.toml`:
+Simple unit test for the above might look something like:
 
 ```js
-[invariant];
-runs = 128;
-depth = 128;
-fail_on_revert = true;
+function testIAlwaysGetZero() public {
+    uint256 data = 0;
+    myContract.doStuff(data);
+    assert(myContract.shouldAlwaysBeZero() == 0);
+}
 ```
 
-Let's dissect the `fail_on_revert` keyword a bit further. By setting it to false, the test runner tolerates transaction reverts without causing the entire test run to fail. This is useful when you're first getting started or dealing with larger and more complex systems, where not all calls might make sense. This aligns better with the spirit of fuzz testing, where the tests can make wild attempts at breaking the invariants and those that fail with a revert are quietly ignored.
+The limitation of the above should be clear, we would have the assign data to every value of uin256 in order to assure our invariant is broken... That's too much.
 
-On the other hand, if set to true, any transaction that reverts is immediately flagged as a test failure. This is useful when you want a stricter assertion of behavioral norms and to quickly identify the condition that’s causing the revert.
+Instead we invoke fuzz testing by making a few small changes to the test syntax.
 
-Here's some free advice for you: don't get overly excited if your tests pass initially. Instead, aim to find issues, by increasing the number of runs and depth, thus giving our fuzz testing more opportunities to find any hidden bugs.
+```js
+function testIAlwaysGetZero(uint256 data) public {
+    myContract.doStuff(data);
+    assert(myContract.shouldAlwaysBeZero() == 0);
+}
+```
 
-You're also likely to find calls that reverted in the process, which should ring some alarm bells and prompt you to look into what could have caused these to fail. This is a easier job with `fail_on_revert: true`.
+That's it. Now, if we run this test with Foundry, it'll throw random data at our function as many times as we tell it to (we'll discuss runs soon), until it breaks our assertion.
 
-The reason for most reverts is that the fuzz may have tested a function with random values that didn't make sense in that context. To prevent such erroneous testing, this is where handlers come knocking once more, as they ensure your functions are called with values in the correct order and format.
+<img src="../../../../static/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests2.png" width="100%" height="auto">
 
-## In Conclusion, Invariance and Handlers are Your Allies
+I'll mention now that the fuzzer isn't using _truly_ random data, it's pseudo-random, and how your fuzzing tool chooses its data matters! Echidna and Foundry are both solid choices in this regard, but I encourage you to research the differences on your own.
 
-The benefit of working with handlers is that they guide the testing process in a way that makes sense within the context of your protocol, unlike traditional fuzz testing which can end up causing a multitude of function calls in random and improbable combinations.
+Important properties of the fuzz tests we configure are its `runs` and `depth`.
 
-So, one of our key takeaways from this deep dive into advanced testing practices is the utility and effectiveness of invariant testing with handlers. As our contract systems become more complex, traditional methods of fuzz testing become increasingly inefficient and can lead to significantly wastage.
+**Runs:** How many random inputs are provided to our test
 
-So let's embrace the utility of handlers and tailor our testing specifically to the nuances of our contracts to get the most out of the process and shine a light on any hidden bugs that may be lurking in the shadows.
+In our example, the fuzz tester took 18 random inputs to find our edge case.
 
-I hope this guide sheds some light on fuzz and invariant testing, their upsides, and downsides, and how to get started writing such tests. I’ll love to hear how implementing these testing strategies work out for you. Keep coding!
+<img src="../../../../static/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests3.png" width="100%" height="auto">
+
+However, we can customize how many attempts the fuzzer makes within our foundry.toml by adding a section like:
+
+```js
+[fuzz];
+runs = 1000;
+```
+
+Now, if we adjust our example function...
+
+```js
+function doStuff(uint256 data) public {
+    // if (data == 2){
+    //     shouldAlwaysBeZero = 1;
+    // }
+}
+```
+
+... and run the fuzzer again...
+
+<img src="../../../../static/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests4.png" width="100%" height="auto">
+
+We can see it will run all .. 1001 runs (I guess zero counts 😅).
+
+Let's look at an example where the fuzz testing we've discussed so far will fail to catch our issue.
+
+### Stateful Fuzz Testing
+
+Take the following contract for example:
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+contract CaughtWithTest {
+    uint256 public shouldAlwaysBeZero = 0;
+    uint256 private hiddenValue = 0;
+
+    function doStuff(uint256 data) public {
+        // if (data == 2) {
+        //     shouldAlwaysBeZero = 1;
+        // }
+        if (hiddenValue == 7) {
+            shouldAlwaysBeZero = 1;
+        }
+        hiddenValue = data;
+    }
+}
+```
+
+In this situation, even if we mitigate the previous issue spotted by our fuzz tester, another remains. We can see in this simple example that if hiddenValue == 7, then our invariant is going to be broken. The problem however is that two subsequent function calls must be made for this to be the case. First, the function must be called wherein data == 7, this will assign 7 to hiddenValue. Then the function must be called again in order for the conditional to break our invariant.
+
+What this is describing is the need for our test to account for changes in the state of our contract. This is known as `Stateful Fuzzing`. Our fuzz tests til now have been `Stateless`, which means the state of a run is discarded with each new run.
+
+Stateful Fuzzing allows us to configure tests wherein the ending state of one run is the starting state of the next.
+
+### Stateful Fuzz Test Setup
+
+In order to run stateful fuzz testing in Foundry, it requires a little bit of setup. First, we need to import StdInvariant.sol and have our contract inherit this.
+
+```js
+// SPDX-License-Identifier: None
+pragma solidity ^0.8.13;
+
+import {CaughtWithTest} from "src/MyContract.sol";
+import {console, Test} from "forge-std/Test.sol";
+import{StdInvariant} from "forge-std/StdInvariant.sol";
+
+contract MyContractTest is StdInvariant, Test {
+    CaughtWithTest myContract;
+
+    function setUp() public {
+        myContract = new CaughtWithTest();
+    }
+}
+```
+
+The next step is, we need to set a target contract. This will be the contract Foundry calls random functions on. We can do this by calling targetContract in our setUp function.
+
+```js
+contract NFT721Test is StdInvariant, Test {
+    CaughtWithTest myContract;
+
+    function setUp() public {
+        myContract = new CaughtWithTest();
+        targetContract(address(myContract));
+    }
+}
+```
+
+Finally, we just need to write our invariant, we must use the keywords invariant, or fuzz to begin this function name, but otherwise, we only need to declare our assertion, super simple.
+
+```js
+function invariant_testAlwaysReturnsZero() public view {
+    assert(myContract.shouldAlwaysBeZero() == 0);
+}
+```
+
+Now, if our fuzzer ever calls our doStuff function with a value of 7, hiddenValue will be assigned 7 and the next time doStuff is called, our invariant should break. Let's run it.
+
+<img src="../../../../static/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests5.png" width="100%" height="auto">
+
+We can see in the output the two subsequent function calls that lead to our invariant breaking. First doStuff was called with the argument of `7`, then it was called with `429288169336124586202452331323751966569421912`, but it doesn't matter what it was called with next, we knew our invariant was going to break.
+
+### Wrap Up
+
+In a real smart contract scenario, the invariant may actually be the most difficult thing to determine. It's unlikely to be something as simple as x shouldn't be zero, it might be something like
+
+- `newTokensMinted < inflation rate`
+- A lottery should only have 1 winner
+- A user can only withdraw what they deposit
+
+Practice and experience will lend themselves to identifying protocol invariants in time, but this is something you should keep in the back of your mind throughout development.
+
+Stateful/Invariant testing should be the new bare minimum in Web3 security.
+
+In the next lesson we're applying these concepts to our DecentralizedStableCoin protocol.
+
+Get ready, see you soon.

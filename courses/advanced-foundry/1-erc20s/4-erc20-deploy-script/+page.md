@@ -4,43 +4,36 @@ title: ERC20 Deploy Script
 
 _Follow along the course with this video._
 
+---
 
+### ERC20 Deploy Script
 
-# Deploying Our Token: A Step By Step Guide
+With our simple token contract written, we'll of course want to test and deploy it. Let's get started with writing a deploy script.
 
-If you've ever wondered how to deploy a token, and more importantly, test it and write scripts to deploy it - then you've come to the right place. Buckle up, because we're about to journey through this process. Let's get started!
+In your workspace's `script` folder, create a file named `DeployOurToken.s.sol`.
 
-## Initiating the Deployment
+We expect OurToken to behave the same, regardless of the chain it's deployed on, so we don't really need a `HelperConfig` for this example. We'll skip that step and move write into writing the deploy script.
 
-<img src="/foundry-erc20s/4-erc20-deploy-script/erc20-deploy-script1.png" style="width: 100%; height: auto;">
+To begin, we can import Script and OurToken as well as add the skeleton of our run function:
 
-To initiate this, we're going to deploy OurToken.sol. Now, you might be asking why we don't need a helper config here - what about those special contracts that we would need to interact with? Well, this deployment is unlike any other because our token will be identical across all chains. No special contracts or config will be needed!
+```js
+// SPDX-License-Identifier: MIT
 
-Let's start with a simple script to keep things light and compact:
-
-```javascript
-SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
 import {Script} from "forge-std/Script.sol";
+import {OurToken} from "../src/OurToken.sol";
 
-contract DeployOurToken is Script {
-
+contract DeployOurToken is Script returns (OurToken){
+    function run() external {}
 }
 ```
 
-## Creating a Function Run
+We're going to keep this really basic, we just want to deploy OurToken. We know that OurToken requires an initial supply as a constructor parameter, so let's declare that and then deploy our contract.
 
-We'll need to import our token like so:
+```js
+// SPDX-License-Identifier: MIT
 
-```javascript
-import { Script } from "forge-std/Script.sol";
-```
-
-Next, let's create a function, run, that will be external. Within the run function, we’ll do `vm.startBroadcast()`. In our run function, we need to initiate the VM broadcast as shown, we'll need to give it an initial supply too, say 1000 ether. That’s right, our token needs an initial amount to start with and finally, we'll want to return OurToken, for use later:
-
-```javascript
-SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
 import {Script} from "forge-std/Script.sol";
@@ -49,31 +42,84 @@ import {OurToken} from "../src/OurToken.sol";
 contract DeployOurToken is Script {
     uint256 public constant INITIAL_SUPPLY = 1000 ether;
 
-    function run() external return(OurToken){
+    function run() external returns (OurToken) {
         vm.startBroadcast();
         OurToken ot = new OurToken(INITIAL_SUPPLY);
         vm.stopBroadcast();
 
         return ot;
-    };
+    }
 }
 
 ```
 
-Following this, we'll deploy our token using the initial supply because, remember, our token requires an initial supply. We then stop the VM broadcast, and voila, our script is ready!
+Our deploy script looks great! To make things a little easier on ourselves when using the CLI to run this script, copy the Makefile from the course GitHub repo and add this to our workspace (I've included it below to copy if needed).
 
-## Adding the Final Touches
+<details>
+<summary>Makefile</summary>
 
-<img src="/foundry-erc20s/4-erc20-deploy-script/erc20-deploy-script2.png" style="width: 100%; height: auto;">
+```
+-include .env
 
-For the final touches, we can use a nifty trick. We can borrow from our previous projects or directly from the git repo that corresponds with this tutorial. We'll generate a Makefile for this. Create this new file in your project's root directory. We'll visit foundry-erc20-f23 and just put everything into this Makefile. Guess what, we can just copy the whole thing!
+.PHONY: all test clean deploy fund help install snapshot format anvil
 
-Find the Makefile to copy [here:](https://github.com/Cyfrin/foundry-erc20-f23/blob/main/Makefile)
+DEFAULT_ANVIL_KEY := 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
-Once you’ve copied over the Makefile, you can simply run the command `make deploy`. If you encounter any errors, just create a new anvil using `make anvil` and once again run `make deploy`.
+help:
+	@echo "Usage:"
+	@echo "  make deploy [ARGS=...]\n    example: make deploy ARGS=\"--network sepolia\""
+	@echo ""
+	@echo "  make fund [ARGS=...]\n    example: make deploy ARGS=\"--network sepolia\""
 
-The compiler should now run successfully and your token is officially deployed to your anvil chain. Congratulations, you have just deployed your token!
+all: clean remove install update build
 
-<img src="/foundry-erc20s/4-erc20-deploy-script/erc20-deploy-script3.PNG" style="width: 100%; height: auto;">
+# Clean the repo
+clean  :; forge clean
 
-By following these steps, you have simplified the process of deploying and testing a token. Who'd have thought it could be this straightforward and efficient?
+# Remove modules
+remove :; rm -rf .gitmodules && rm -rf .git/modules/* && rm -rf lib && touch .gitmodules && git add . && git commit -m "modules"
+
+install :; forge install Cyfrin/foundry-devops@0.0.11 --no-commit --no-commit && forge install foundry-rs/forge-std@v1.5.3 --no-commit && forge install openzeppelin/openzeppelin-contracts@v4.8.3 --no-commit
+
+# Update Dependencies
+update:; forge update
+
+build:; forge build
+
+test :; forge test
+
+snapshot :; forge snapshot
+
+format :; forge fmt
+
+anvil :; anvil -m 'test test test test test test test test test test test junk' --steps-tracing --block-time 1
+
+NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
+
+ifeq ($(findstring --network sepolia,$(ARGS)),--network sepolia)
+	NETWORK_ARGS := --rpc-url $(SEPOLIA_RPC_URL) --private-key $(PRIVATE_KEY) --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
+endif
+
+deploy:
+	@forge script script/DeployOurToken.s.sol:DeployOurToken $(NETWORK_ARGS)
+
+# cast abi-encode "constructor(uint256)" 1000000000000000000000000 -> 0x00000000000000000000000000000000000000000000d3c21bcecceda1000000
+# Update with your contract address, constructor arguments and anything else
+verify:
+	@forge verify-contract --chain-id 11155111 --num-of-optimizations 200 --watch --constructor-args 0x00000000000000000000000000000000000000000000d3c21bcecceda1000000 --etherscan-api-key $(ETHERSCAN_API_KEY) --compiler-version v0.8.19+commit.7dd6d404 0x089dc24123e0a27d44282a1ccc2fd815989e3300 src/OurToken.sol:OurToken
+
+```
+
+</details>
+
+---
+
+Now, by running `make anvil` (open a new terminal once your chain has started!) followed by `make deploy`...
+
+<img src="../../../../static/foundry-erc20s/4-erc20-deploy-script/erc20-deploy-script1.png" width="100%" height="auto">
+
+### Wrap Up
+
+Woo! Deployment to our anvil chain successful, let's go!
+
+In the next lesson we'll test our contracts with the help of some AI tools and recap everything we've gone over so far. See you there!

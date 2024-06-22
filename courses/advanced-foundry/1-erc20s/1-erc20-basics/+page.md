@@ -4,46 +4,52 @@ title: ERC20 Basics
 
 _Follow along the course with this video._
 
+---
 
+### ERC20 Basics
 
-# Understanding ERC20 Tokens in Ethereum: A Comprehensive Guide
+Welcome back! I hope you're ready to move into some more advanced concepts in Web3. In this section we're going to be diving into `ERC20s`, and how to develop, deploy and test them.
 
-Welcome back! We're about to dive deep into the fascinating world of ERC20 tokens.
+You can find the code associated with section in the [**GitHub repo**](https://github.com/Cyfrin/foundry-full-course-f23) associated with this course, and in the [**section repo specifically**](https://github.com/Cyfrin/foundry-erc20-f23).
 
-<img src="/foundry-erc20s/1-erc20-basics/erc20-basics1.PNG" style="width: 100%; height: auto;">
+Before we rush into creating our own `ERC20 Token`, let's take a moment to learn _what_ an `ERC20` is, what `EIPs` are and where all these acronyms mean.
 
-Before we plunge into building an ERC20 token, let's first explore what it is, and understand the concepts of EIP (Ethereum Improvement Proposals) and ERC (Ethereum Request for Comments).
+### ERCs and EIPs
 
-## What is an ERC? What is an EIP?
+The Web3 and blockchain ecosystem is fundamentally democratic and open source. As such major blockchains will often implement methods by which the community can submit suggestions for changes in methodologies and standards. These are typically known is `Improvement Proposals`, and in the Ethereum ecosystem they are `Ethereum Improvement proposals` (`EIPs`).
 
-<img src="/foundry-erc20s/1-erc20-basics/erc20-basics3.PNG" style="width: 100%; height: auto;">
+If `EIPs` get enough traction to warrant genuine consideration they will often generate a `Request for Comments`, in Ethereum these are known as `Ethereum Request for Comments` (`ERCs`).
 
-Both Ethereum and other blockchains like Avalanche, Binance, and Polygon have mechanisms for improving their protocols, known as 'improvement proposals'. In Ethereum's ecosystem, these are called Ethereum Improvement Proposals or EIPs.
+> [!NOTE]
+> `EIPs` and `ERCs` are numbered chronologically! `ERC20` is the 20th request for comments that was created.
 
-Developers submit ideas to enhance Ethereum or other layer one protocols like Polygon, Matic or Avalanche on GitHub or other open source repositories. These improvements range from core blockchain updates to broad, best practice standards for the community to adopt.
+New `Improvement Proposals` and `Requests for Comments` are tracked on websites such as [**eips.ethereum.org**](https://eips.ethereum.org/), where you can watch these proposals go through the process real time and be adopted or rejected by the community.
 
-<img src="/foundry-erc20s/1-erc20-basics/erc20-basics5.PNG" style="width: 100%; height: auto;">
+<img src="../../../../static/foundry-erc20s/1-erc20-basics/erc20-basics1.png" width="100%" height="auto">
 
-In other blockchains, these proposals and request for comments are tagged differently (for example, BEP, PEP, etc), but they contain the same types of information. Interestingly, the numbers following ERC or EIP (like in ERC20 or EIP20), are chronological and shared between the two, signifying the order in which they were introduced. For real-time updates on the process of new EIPs, check out [EIPS Ethereum.org](https://eips.ethereum.org/).
+### ERC20
 
-## What is the ERC20 Token Standard?
+One of the most recognized `Ethereum Requests for Comments` is the [**ERC20 Token Standard**](https://eips.ethereum.org/EIPS/eip-20). This is a proposal in which the methodology for creating and managing these tokens on the Ethereum blockchain was tabled.
 
-<img src="/foundry-erc20s/1-erc20-basics/erc20-basics4.png" style="width: 100%; height: auto;">
+These tokens essentially exists as records of value within smart contracts on chain and this smart contract tracking of balances is a very powerful thing in Web3.
 
-Among these EIPs and ERCs, the ERC20, or Token Standard for smart contracts, is one of the most significant. It delineates how to create tokens within smart contracts.
+**_Why make an ERC20?_**
 
-ERC20 tokens are those deployed on a blockchain using the ERC20 token standard. Essentially, it's a smart contract that represents a token - both a token and a smart contract in one. Check out the [ERC20 Token standard](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) for a deep dive.
+There are a few common reasons that someone may choose to launch an `ERC20 token`, but there's very little limit to the possibilities of their application in a digital space. A few common usecases include:
 
-Notable examples of ERC20 tokens include Tether, Chainlink, Uni Token, and Dai. Interestingly, while Chainlink qualifies as an ERC677, it is fully compatible with ERC20 and just offers some additional functionality.
+- Governance Tokens
+- Securing an underlying network
+- Synthetic Assets
+- Stable Coins
 
-## Why Create an ERC20 Token?
+...and more.
 
-<img src="/foundry-erc20s/1-erc20-basics/erc20-basics2.PNG" style="width: 100%; height: auto;">
+**_How do I build an ERC20?_**
 
-There are multiple applications of ERC20 tokens. They are used for governance, securing an underlying network, or creating synthetic assets, among other things.
+All anyone has to do to develop and `ERC20` is to deploy a smart contract which follows the [**token standard**](https://eips.ethereum.org/EIPS/eip-20). This ultimate boils down to assuring our contract includes a number of necessary functions: `transfer`, `approve`, `name`, `symbol`, `balanceOf` etc.
 
-## Building an ERC20 Token
+### Wrap Up
 
-How do we go about creating an ERC20 token? Simple. By creating a smart contract that adheres to the token standard. This involves building a smart contract with certain functions, including name, symbol, decimals, etc. Also, it should be transferable and display its balance.
+With a better understanding of what `ERCs/EIPs` are and where they come from, we'll be looking at how we can create and deploy our own simple `ERC20` token, in the next lesson.
 
-You can explore more advanced, ERC20 compatible tokens with improvements (such as ERC677 or ERC777), just make sure they align with your project requirements. Enjoy the process of building your ERC20 token and the new possibilities it opens up!
+Exciting!

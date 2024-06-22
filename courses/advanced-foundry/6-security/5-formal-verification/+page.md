@@ -4,68 +4,168 @@ title: Formal Verification
 
 _Follow along with this video._
 
-
-
 ---
 
-# Understanding Symbolic Execution and Formal Verification in Web3
+### Layers of Testing and Formal Verification
 
-So you're interested in enhancing your security testing toolkit with symbolic execution and formal verification? You've come to the right place. In this post, we're going to break down these complex concepts and equip you with the knowledge to begin incorporating them into your security audits.
+In this lesson we're joined by Josselin and Troy from the Trail of Bits team and they impart upon us their expertise in testing and how formal verification can be used for greater security in smart contract development and security audits.
 
-This post has been inspired by valuable contributions from [the Trail of Bits team](https://www.trailofbits.com/) - renowned for their expertise in this domain. Thanks to them, we'll be able to delve into the nuances of symbolic execution and formal verification.
+### Layer 1: Unit Tests
 
-Sounds exciting? Let's jump in!
+These are the _bare minimum_ of testing in Web3 security. Unit test will propose a specific situation to our function and validate for us that this specific situation works as intended.
 
-## Deepening Your Understanding of Testing Methodologies
+For example, take the contract below.
 
-Before we advance to the heart of the matter - symbolic execution and formal verification - let's review the testing methodologies we use in Web3 development. To understand what follows, you'll need a high-level understanding of Solidity and some familiarity with foundational testing approaches like unit testing and fuzzing testing.
+```js
+// SPDX-License-Identifier
+pragma solidity ^0.8.13;
 
-### Unit Testing
+contract CaughtWithTest {
+    uint256 public number;
 
-Unit testing forms the first layer of our testing "onion." It's a method where you test a specific "unit" (like a function) to ensure it performs as expected. In other words, unit testing involves checking whether a function does what it should. But you already knew that, right? we have coded together a lot of tests in the previous videos.
+    function setNumber(uint256 newNumber) public {
+        number = newNumber + 1;
+    }
+}
+```
 
-A unit test can catch bugs in the execution of this function. When using Solidity testing frameworks like [Foundry](https://github.com/foundry-rs/foundry).
+In a situation like this, if the expectation was that `number` is being set to `newNumber`, a unit test would catch this. In our unit test, we would assert our expected outcome and pass a test value to our function:
 
-### Fuzz Testing
+```js
+function testSetNumber() public {
+    uint256 myNumber = 55;
+    caughtWithTest.setNumber(myNumber);
+    assertEq(myNumber, caughtWithTest.number());
+}
+```
 
-<img src="/auditing-intro/5-formal/formal2.png" alt="Auditing Image" style="width: 100%; height: auto;">
+Running this test, we'd see:
 
-Fuzz testing serves as the second layer. In essence, fuzzing is the process of running your program with a range of random inputs to see if it breaks. Here, you need to define your code's invariants - the properties you expect to be true regardless of the program's state.
+<img src="../../../../static/foundry-defi/16-defi-leveling-up-testing/defi-leveling-up-testing1.png" width="100%" height="auto">
 
-Let's consider a function that should never return zero. We can create a fuzz test that throws a bunch of random numbers at the function to try to make it return zero.
+The unit test catches this right away. All of the most popular frameworks have unit tests built in!
 
-The fuzz test tries to break our property by passing in random numbers. If it finds something that causes the function to return zero, it means we have an edge case that needs to be addressed.
+### Layer 2 Fuzz Tests
 
-### Static Analysis
+Fuzz tests are configured to have random inputs supplied to a function in an effort to identify and edgecase which breaks a protocol's invariant.
 
-The third layer of our testing onion is Static Analysis. Unlike fuzz and unit testing, static analysis doesn't involve running the code. Instead, it involves inspecting the code as-is, checking for known vulnerabilities.
+An invariant is a property of a protocol which much always hold true. Fuzz testing suites attempt to break these invariants with random data.
 
-Static analysis tools can be valuable for rapidly identifying sections of your code that employ bad practices. Besides Slither, the Solidity compiler itself can serve as a static analysis tool.
+Consider a slightly more complex contract such as below.
 
-Now that we have some background on essential testing methodologies, let's delve into formal verification and symbolic execution.
+```js
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-## Formal Verification &amp; Symbolic Execution
+contract MyContract {
+    uint256 public shouldAlwaysBeZero = 0;
+    uint256 hiddenValue = 0;
 
-Our exploration starts with formal verification - the process of proving or disproving a system property using mathematical models. Various techniques exist for this, including symbolic execution and abstract interpretation. We'll be focusing on symbolic execution.
+    function doStuff(uint256 data) public {
+        if (data == 2){
+            shouldAlwaysBeZero = 1;
+        }
+    }
+}
+```
 
-### Symbolic Execution Demystified
+In this simple example, we can easily see that if we pass `2` as an argument to the `doStuff` function, the invariant of `shouldAlwaysBeZero` is broken, but assigning a value of 1. In a more complex function, the edge case may not be so clear, but we can handle complex functions the same way we handle this one.
 
-<img src="/auditing-intro/5-formal/formal1.png" alt="Auditing Image" style="width: 100%; height: auto;">
+Here's an example of a fuzz test we could perform:
 
-Symbolic execution is a technique wherein you explore the different paths your program can take and create a mathematical representation for each path.
+```js
+    ...
+    function testIAlwaysGetZeroFuzz(uint256 data) public {
+        myContract.doStuff(data);
+        assert(myContract.shouldAlwaysBeZero() == 0);
+    }
+```
 
-Consider a function we want to verify using symbolic execution. First, we need to identify the invariant - what we want to prove or disprove about the function. For our needs, let's say our invariant is: this function should never revert.
+You can see, we don't explicitly declare the value for `data` in our test, and instead pass it as an argument to the test function. The Foundry framework will satisfy this argument with random data until it breaks our invariant (or stops based on configurations set). When run, we can see the framework identifies the edge case which breaks our asserted property.
 
-## The Limitations
+<img src="../../../../static/foundry-defi/16-defi-leveling-up-testing/defi-leveling-up-testing2.png" width="100%" height="auto">
 
-While symbolic execution is powerful, it's not a magic bullet. It can struggle with a 'path explosion' problem, where there are too many paths for the tool to explore in a reasonable timeframe.
+### Layer 3 Static Analysis
 
-Additionally, symbolic execution requires a deep understanding to use effectively and maintain. This often results in a high skill requirement. However, a sufficiently powerful fuzzer may be adequate for many requirements.
+Unit testing and fuzz testing as examples of **_dynamic tests_**, this is when code is actually executed to determine if there's a problem.
 
-So, there we have it! From unit testing to symbolic execution, we've stepped through the necessary layers to fortify your coding practices. Continue to ask questions, explore, and keep coding safely!
+Alternatively to this, we have static analysis as a tool available to us. In static analysis testing, a tool such as [**Slither**](https://github.com/crytic/slither) or [**Aderyn**](https://github.com/Cyfrin/aderyn), will review the code and identify vulnerabilities based on things like layout, ordering and syntax.
 
-## Wrapping Up
+```js
+function withdraw() external {
+    uint256 balance = balances[msg.sender];
+    require(balance > 0);
+    (bool successs, ) = msg.sender.call{value:balance}("");
+    require(success, "Failed to send Ether");
+    balances[msg.sender] = 0;
+}
+```
 
-I hope you enjoyed this post and found it useful. If you're interested in learning more about security testing, check out the [Trail of Bits blog](https://blog.trailofbits.com/). They have a ton of great content on this topic.
+The above withdraw function has a classic reentrancy attack. We know an issue like this arrises from not following the CEI pattern! A static analysis tool like Slither will be able to pick up on this quite easily.
 
-We are to close to finishing this course. In the next video, we will be looking at the final topic of this course, a huge huge huge congratulations for making it this far!
+<img src="../../../../static/foundry-defi/16-defi-leveling-up-testing/defi-leveling-up-testing3.png" width="100%" height="auto">
+
+### Layer 4 Formal Verification
+
+At a high-level, formal verification is the act of proving or disproving a property of a system. It does this by generating a mathematical model of the system and using mathematical proofs to identify if a property can be broken.
+
+There are many ways to perform formal verification including:
+
+- Symbolic Execution
+- Abstract Interpretation
+- Model Checking
+
+We'll only really cover Symbolic Execution in this course. If you want to dive deeper into Symbolic Execution, I encourage you to take a look at [**this video**](https://www.youtube.com/watch?v=yRVZPvHYHzw) by MIT OpenCourseWare for additional context.
+
+At a high-level, Symbolic Execution models each path in the code mathematically to identify if any path results in the breaking of an asserted property of the system.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.16;
+
+contract SmallSol {
+    // Invariant: Must never revert.
+    function f(uint256 a) public returns (uint256) {
+        a = a + 1;
+        return a;
+    }
+}
+```
+
+In the above simple contract example, the obvious path is returning the `result of a + 1`. Another less obvious path would be this function `f` reverting due to overflow. Symbolic Execution, through it's mathetmatical modelling, would traverse all possible paths, looking for criteria that break our invariant. These paths might be represented something like this:
+
+**Path 1:** `assert(a not 2**256 - 1); a:= a+1; return a;`
+
+**Path 2:** `assert(a := 2**256); revert;`
+
+In the first path, a is anything less than uint256.max. In the second path, it's equal to the max and reverts.
+
+Both of these situations can't simultaneously be true, so the formal verification solver would take the SMT-LIB code and determine which paths it's able to "satisfy". If path 2 can be satisfied, this represents a breaking of the protocol invariant/property.
+
+> [!NOTE]
+> Formal verification tools use a special language to process the mathematical models of code called SMT_LIB.
+
+Some formal verification tools available include things like Manitcore, Halmos and Certora, but even the Solidity Compiler can do many of these steps behind the scenes:
+
+1. Explore Paths
+2. Convert Paths to a set of Boolean expressions
+3. Determine if paths are reachable
+
+You can read more about the Solidity Compiler SMTChecker [**here**](https://docs.soliditylang.org/en/v0.8.26/smtchecker.html).
+
+### Limitations of Formal Verification
+
+Now, Formal Verification isn't a silver bullet, it does have its limitations. One of the most common of which is known as the **path explosion problem**. In essence, when a solver is presented with code that is non-deterministic or contains infinite looping, the number of possible paths approaches infinity. When this happens, a solver is unable to resolve a valid proof due to the time and computation necessary to solve.
+
+### Wrap Up
+
+At the end of the day, each testing methodology brings advantages and disadvantages. From my point of view, a thorough fuzz testing suite should be the _bare minimum_ standard in Web3 protocol security in 2024.
+
+It's important to employ a robust and diverse set of testing tools to assure the greatest security coverage of a protocol.
+
+The Trail of Bits team offers an amazing resource on building secure contracts on secure-contracts.com that is worth a read for everyone getting serious about smart contract security.
+
+> [!IMPORTANT]
+> Even all this isn't a guarantee that your code is bug free.
+
+Hopefully this has shed some light on the layers of smart contract testing and the importance of a thorough test suite and using the tools available to us.

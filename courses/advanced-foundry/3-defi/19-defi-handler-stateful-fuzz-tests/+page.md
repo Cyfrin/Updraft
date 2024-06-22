@@ -4,130 +4,214 @@ title: Handler Fuzz Tests
 
 _Follow along the course with this video._
 
+---
 
+### Handler Fuzz Tests
 
-# Smart Contract Fuzz Testing: Crafting Handlers for Optimized Valid Calls
+Now that we've spent time investigating the types of tests available to us, and the strength of methodologies like fuzzing for protocols, we're going to build out our own `Stateful Fuzz Testing` suite for `DecentralizedStableCoin`.
 
-Software fuzz testing employs a variety of techniques, one of which is handling functions in a manner to ensure valid calls. This section takes you on a comprehensive examination on how to create handlers for smart contracts that will allow you to make valid calls and scan for potential vulnerabilities in your contracts.
+Navigate to the [**Fuzz Testing section**](https://book.getfoundry.sh/forge/fuzz-testing) in the Foundry Docs to read more on advanced fuzz testing within this framework.
 
-## Establishing the Groundwork
+In our previous fuzz testing examples, we were demonstrating "open testing". This kinda gives control to the framework and allows it to call any functions in a contract randomly, in a random order.
 
-In simple terms, handlers are scripts we create that handle the way we make calls to the Decentralized Stablecoin Engine (`dsce`) - only enabling calls under the condition that the required variables or functions for the call are available and valid.
+More advanced fuzz tests implement [`handler based testing`](https://book.getfoundry.sh/forge/invariant-testing#handler-based-testing).
 
-This minimizes the chance of wasted function calls which attempt to execute tasks with no valid foundation.
+Larger protocols will have so many functions available to them that it's important to narrow the focus of our tests for a better chance to find our bugs. This is where handlers come in. They allow us to configure aspects of a contract's state before our tests are run, as well as set targets for the test functions to focus on.
+
+In the example provided by the Foundry Docs, we can see how the functionality of the deposit function can be fine tuned to assure that approvals and mints always occur before deposit is actually called.
+
+```js
+function deposit(uint256 assets) public virtual {
+    asset.mint(address(this), assets);
+
+    asset.approve(address(token), assets);
+
+    uint256 shares = token.deposit(assets, address(this));
+}
+
+```
+
+To illustrate, as show in the Foundry Docs as well, open testing has our framework calling functions directly as defined in the contracts within scope.
+
+<img src="../../../../static/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests1.png" width="100%" height="auto">
+
+Conversely, handler based tests route our frameworks function calls through our handler, allowing us to configure only the functions/behaviour we want it to perform, filtering out bad runs from our tests.
+
+<img src="../../../../static/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests2.png" width="100%" height="auto">
+
+Let's finally start applying this methodology to our code base.
+
+### Setup
+
+The first thing we want to do to prepare our stateful fuzzing suite is to configure some of the fuzzer options in our `foundry.toml`.
+
+```js
+[invariant];
+runs = 128;
+depth = 128;
+fail_on_revert = false;
+```
+
+Adding the above to our foundry.toml will configure our fuzz tests to attempt `128 runs` and make `128 calls` in each run (depth). We'll go over `fail_on_revert` in more detail soon.
+
+Next, create the directory `test/fuzz`. We'll need to create 2 files within this folder, `InvariantsTest.t.sol` and `Handler.t.sol`.
+
+`InvariantsTest.t.sol` will ultimately hold the tests and the invariants that we assert, while the handler will determine how the protocol functions are called. If our fuzzer makes a call to `depositCollateral` without having minted any collateral, it's kind of a wasted run. We can filter these with an adequate handler configuration.
+
+Before writing a single line of our invariant tests we need to ask the question:
+
+**_What are the invariants of my protocol?_**
+
+We need to ascertain which properties of our system must always hold. What are some for `DecentralizedStableCoin`?
+
+1. The total supply of DSC should be less than the total value of collateral
+2. Getter view functions should never revert
+
+I challenge you to think of more, but these are going to be the two simple invariants we work with here.
+
+### InvariantsTest.t.sol
+
+This file will be setup like any other test file to start, we've lots of practice here.
 
 ```js
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+
+pragma solidity 0.8.18;
 
 import {Test} from "forge-std/Test.sol";
+import {StdInvariant} from "forge-std/StdInvariant.sol";
+
+contract InvariantsTest is StdInvariant Test {}
+```
+
+StdInvariant is quite important for our purposes, this is where we derive the ability to set a `targetContract` which we point to our Handler.
+
+Again, just like the tests we've written so far, we're going to begin with a `setUp` function. In this setUp we'll perform our usual deployments of our needed contracts via our deployment script. We'll import our `HelperConfig` as well.
+
+```js
+// SPDX-License-Identifier: MIT
+
+pragma solidity 0.8.18;
+
+import {Test} from "forge-std/Test.sol";
+import {StdInvariant} from "forge-std/StdInvariant.sol";
+import {DeployDSC} from "../../script/DeployDSC.s.sol";
 import {DSCEngine} from "../../src/DSCEngine.sol";
 import {DecentralizedStableCoin} from "../../src/DecentralizedStableCoin.sol";
+import {HelperConfig} from "../../script/HelperConfig.s.sol";
 
-contract Handler is Test {
-    DSCEngine dsce;
-    DecentralizedStablecoin dsc;
-
-    constructor(DSCEngine _dscEngine, DecentralizedStablecoin _dsc) {
-        dsce = _dsce;
-        dsc = _dsc;
-        }
-}
-```
-
-To make sure we generate valid calls, we consider several factors. For instance, there's no logic in calling the 'redeemCollateral' function when there is no collateral to redeem. The handler-script becomes a fail-safe mechanism to avoid such redundancies.
-
-## Handling Function Calls
-
-To guard against invalid random calls, we define how to make function calls in the handler. For example, the `depositCollateral` function should first validate the collateral before calling it.
-
-```js
-...
-contract Handler is Test {
-    ...
-    function depositCollateral(address collateral, uint256 amountCollateral) public {
-        dsce.depositCollateral(collateral, amountCollateral);
-    }
-}
-```
-
-We need to adjust our `Invariants.t.sol` script to leverage the handler contract we're creating. To do this, we change the target contract the test script is referencing for it's fuzz testing:
-
-```js
-...
-import {Handler} from "./Handler.t.sol";
-...
-contract OpenInvariantsTest is StdInvariant, Test {
+contract InvariantsTest is StdInvariant Test {
     DeployDSC deployer;
     DSCEngine dsce;
+    DecentralizedStableCoin dsc;
     HelperConfig config;
-    address weth;
-    address wbtc;
-    Handler handler;
 
     function setUp() external {
         deployer = new DeployDSC();
-        (dsc,dsc,config) = deployer.run();
-        (,, weth, wbtc,) = config.activeNetworkConfig();
-        handler = new Handler(dsce,dsc);
-        targetContract(address(handler));
-    }
-...
-```
-
-Now, when we run our invariant tests, they will target our `Handler` and only call the functions we've specified within the `Handler` contract, in this case `depositCollateral`. However, the function is still being called randomly, with random data and we can do better. We know that random data for the collateral addresses is going to fail, so we can mitigate unnecessary calls be providing our function with seed addresses:
-
-```js
-...
-import {ERC20Mock} from "@openzeppelin/contracts/mocks/ERC20Mock.sol";
-...
-contract Handler is Test {
-    ...
-    ERC20Mock weth;
-    ERC20Mock wbtc;
-    ...
-    constructor (DSCEngine _dscEngine, DecentralizedStableCoin _dsc){
-        dsce = _dsce;
-        dsc = _dsc;
-
-        address[] memory collateralTokens = dsce.getCollateralTokens();
-        weth = ERC20Mock(collateralTokens[0]);
-        wbtc = ERC20Mock(collateralToken[1]);
-    }
-
-    function depositCollateral(uint256 collateralSeed, uint256 amountCollateral) public {
-        ERC20Mock collateral = _getCollateralFromSeed(collateralSeed)
-        dsce.depositCollateral(address(collateral), amountCollateral);
-    }
-
-    // Helper Functions
-    function _getCollateralFromSeed(uint256 collateralSeed) private view returns (ERC20Mock){
-        if (collateralSeed % 2 == 0){
-            return weth;
-        }
-        return wbtc;
+        (dsc, dsce, config) = deployer.run();
     }
 }
 ```
 
-Whew, that's a lot! Now when we call the tests in our handler, the `depositCollateral` functon will only use valid addressed for collateral provided by our `_getCollateralFromSeed()` function
+From this point, it's very easy for us to wrap this up quickly with an Open Testing methodology. All we would need to do is set our `targetContract` to our `DSCEngine (dsce)`, and then declare an invariant in our test function.
 
-## Improving Efficiency
+In order to test the invariant that our collateral value must always be more than our total supply, we can leverage our `HelperConfig` to acquire the collateral addresses, and check the total balance of each collateral type within the protocol. That would look something like this (don't forget to import your `IERC20 interface` for these tokens):
 
-The key to handling function calls is efficiency. Unnecessary or invalid function calls increase iteration loops, resulting in performance issues.
+```js
+...
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+...
+contract InvariantsTest is StdInvariant Test {
+    DeployDSC deployer;
+    DSCEngine dsce;
+    DecentralizedStableCoin dsc;
+    HelperConfig config;
+    address weth;
+    address wbtc;
 
-As you gradually cut down on unnecessary calls, monitor your error reports. Configuring the `failOnRevert` parameter to `true` helps you identify why a test is failing.
+    function setUp() external {
+        deployer = new DeployDSC();
+        (dsc, dsce, config) = deployer.run();
+        (,,weth, wbtc, ) = config.activeNetworkConfig();
+        targetContract(address(dsce));
+    }
 
-Lastly, remember not to artificially narrow down your handler function to a state where valid edge cases get overlooked.
+    function invariant_protocolMustHaveMoreValueThanTotalSupply() public view {
+        uint256 totalSupply = dsc.totalSupply();
+        uint256 totalWethDeposited = IERC20(weth).balanceOf(address(dsce));
+        uint256 totalWbtcDeposited = IERC20(wbtc).balanceOf(address(dsce));
+    }
+}
+```
 
-<img src="/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests1.PNG" style="width: 100%; height: auto;">
+To this point our test function is only acquiring the balanced of our collateral tokens, we'll need to convert this to it's USD value for a sound comparison to our DSC total supply. We can do this with our `getUsdValue` function!
 
-## Wrapping Up
+```js
+function invariant_protocolMustHaveMoreValueThanTotalSupply() public view {
+    uint256 totalSupply = dsc.totalSupply();
+    uint256 totalWethDeposited = IERC20(weth).balanceOf(address(dsce));
+    uint256 totalWbtcDeposited = IERC20(wbtc).balanceOf(address(dsce));
 
-In conclusion, the vital role of handler-functions in making valid calls during fuzz testing is to optimize performance and catch potential vulnerabilities in the smart contracts. The process demands a continuous balance between weeding out invalid calls and maintaining allowance for valid edge cases.
+    uint256 wethValue = dsce.getUsdValue(weth, totalWethDeposited);
+    uint256 wbtcValue = dsce.getUsdValue(wbtc, totalWbtcDeposited);
+}
+```
 
-However, always aim for a minimal rejection rate i.e., the `failOnRevert` parameter set to `false`. A perfect handler function will maximize successful runs and reduce reverts to zero.
+And now, all we would need to do is add our assertion.
 
-You may need to adjust the deposit size to a feasible limit to prevent an overflow when depositing collateral. Ideally, the collateral deposited is lower than the maximum valid deposit size. After completion, every function call should pass successfully, signifying a well-secured contract with high potential for longevity.
+```js
+assert(wethValue + wbtcValue > totalSupply);
+```
 
-Happy testing!
+With this in place our open invariant test is ready! Try to run it.
+
+> [!TIP]
+> Import `console` and add `console.log("Weth Value: ", wethValue)`, `console.log("Wbtc Value: ", wbtcValue)`, `console.log("Total Supply: ", totalSupply)` for more clear readouts from your test.
+
+```bash
+forge test --mt invariant_protocolMustHaveMoreValueThanTotalSupply -vvvv
+```
+
+<img src="../../../../static/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests3.png" width="100%" height="auto">
+
+Our test identified a break in our assertion immediately.. but it's because we have no tokens or collateral. We can adjust our assertion to be `>=`, but it's a little bit cheaty.
+
+```js
+assert(wethValue + wbtcValue >= totalSupply);
+```
+
+<img src="../../../../static/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests4.png" width="100%" height="auto">
+
+Things pass! We didn't find any issues. This is where we may want to bump up the number of runs we're performing, you can see in the image above our fuzzer executed `128 runs` and `16,384 function calls`. If we bump this up to `1000 runs`, our fuzz test will be more thorough, but will take much longer to run. Try it out!
+
+<img src="../../../../static/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests5.png" width="100%" height="auto">
+
+Things pass again, but you can see how much more intense the test process was. There's a catch, however. In the image above, notice how many calls were made vs how many times a function call reverted. Every single call is reverting! This in essence means that our test wasn't able to _do_ anything. This is not a very reassuring test.
+
+The reason our test is still passing, despite all these reverts is related to the `fail_on_revert` option we touched on in our `foundry.toml`. If we adjust this to `true` we'll see that our test fails right away.
+
+**_Why are all the calls reverting?_**
+
+Without any guidance, Foundry is going to throw truly random data at the function calls. For example, our `depositCollateral` function is only configured to accept the two authorized tokens for our protocol, wbtc and weth, the fuzzer could be calling this function with thousands of invalid addresses.
+
+fail_on_revert can be great for quick testing and keeping things simple, but it can be difficult to narrow the validity of our runs when this is set to `false`.
+
+Let's set this option to `true` and run our test once more.
+
+<img src="../../../../static/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests6.png" width="100%" height="auto">
+
+We can see the first function being called by the fuzzer is `depositCollateral` and its passing a random `tokenAddress` argument causing our revert immediately.
+
+<img src="../../../../static/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests7.png" width="100%" height="auto">
+
+### Wrap Up
+
+We've just done a quick run down on Open Invariant tests for our `DecentralizedStableCoin` protocol, but we've seen some limitations of letting the fuzzer determine how to behave and which functions to call.
+
+We can do better.
+
+For now, rename `test/fuzz/InvariantsTest.t.sol` to `test/fuzz/OpenInvariantsTest.t.sol`, and comment the whole file out. Create a _new_ file `test/fuzz/Invariants.t.sol`. Copy over OpenInvariants.t.sol into this new file and uncomment. Rename the contract to `Invariants`. We'll be leveling this up soon.
+
+In the next lesson, we'll go over how we can use our `Handler` as the target of our tests to focus which functions in our protocol are called and how. By guiding our tests in this way, we'll be able to assure fewer runs reverts and more valid function calls are made.
+
+See you in the next one!

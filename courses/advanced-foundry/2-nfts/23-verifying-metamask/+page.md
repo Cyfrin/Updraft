@@ -1,70 +1,78 @@
 ---
-title: Verifying MetaMask transactions
+title: Verifying MetaMask Transactions
 ---
 
 _Follow along with this video._
 
-
-
 ---
 
-Today, we're embarking on an exciting journey to unveil the mystery behind decoding transaction data using MetaMask. This wallet is used to perform many activities in the cryptocurrency world, but one activity that may seem challenging is the "decoding of transaction data." Here, we explain this process using Wet, a contract that wraps native ETH into an ERC-20 token.
+### Verifying MetaMask Transactions
 
-## Setting up MetaMask
+Possessing this better understanding of encoding empowers us to do something very cool, and that's verify the transactions in our Metamask wallet before signing them.
 
-The first step in our journey is as easy as pie. It's the setup phase which calls for the connection to MetaMask. Here, we will be using the Sepolia Contract, as it is one of the existing contracts.
+If we write to a contract on Etherscan, a transaction will pop up in our Metamask wallet, by navigating to the HEX tab, we can see the data being sent in this transaction.
 
-For this stage, all you need to do is:
+<img src="../../../../static/foundry-nfts/23-verifying-metamask/verifying-metamask1.png" width="100%" height="auto">
 
-1. Navigate to your contract.
-2. Click on "Write Contract."
-3. Connect to web3 and open up your MetaMask.
+We should recognize this calldata as similar to the data we sent in our previous lessons.
 
-In this scenario, we will be calling the "Transfer From" function. As an aside, you should note that at times, MetaMask may fail to identify the function you are trying to call—this is where the fun begins.
+```
+0xfb37e883000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000076578616d706c6500000000000000000000000000000000000000000000000000
+```
 
-<img src="/foundry-nfts/23-metamask/metamask1.png" style="width: 100%; height: auto;">
+Foundry includes a cast command which can conveniently decode bytecode like this for us.
 
-## Decoding the Call Data
+```bash
+--calldata-decode: Decode ABI-encoded input data [aliases: cdd]
+```
 
-After setting up MetaMask, transacting, and the transaction confirmation pops up, you’re now ready to decode the transaction data.
+> [!TIP]
+> You can run `cast --help` for an exhaustive list of available cast commands!
 
-The next step to take here is to copy the hex data and proceed to your terminal. Within your terminal, you'll use the `cast` helper. This tool comes with a vast array of commands like `call data decode` which is designed to decode ABI-encrypted input data.
+Now, if we just run `cast calldata-decode` it's going to tell us we need a function signature (SIG) and our calldata (CALLDATA). We know how we can verify the function signature of our contract easily enough. In the image above, it looks like we're intending to call `"MintNFT(string)"`. What happens when we run:
 
-_Equation 1: cast call data decode SIG call data_
+```bash
+cast sig "mintNFT(string)"
+0xfb37e883
+```
 
-<img src="/foundry-nfts/23-metamask/metamask2.png" style="width: 100%; height: auto;">
+We can see that this matches the first 4 bytes of the calldata in our Metamask transaction, `0xfb37e883`! Great, now we can verify the calldata being sent with the transaction.
 
-If your function selector doesn't match, you can use a different signature database to find the correct function. In some unusual cases, a contract might have two functions with the same signature, which is unsupported in Solidity.
+```bash
+cast --calldata-decode "mintNFT(string)" 0xfb37e883000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000076578616d706c6500000000000000000000000000000000000000000000000000
+```
 
-## Variance Check
+<img src="../../../../static/foundry-nfts/23-verifying-metamask/verifying-metamask2.png" width="100%" height="auto">
 
-From there, you need to verify if your transaction data is accurate.
+Worked like a charm!
 
-To do this, you decode the function you’re calling and its parameters by pasting the hex string from the transaction into the call data decode command.
+### Signature Collision
 
-_Equation 2: cast call data decode SIG call data_
+There's something important to keep in mind with respect to function signatures. Sometimes, as a quirk of the encoding, two completely different functions will encode into the same function signature.
 
-When you complete these steps, MetaMask will display your decoded data. This data keeps the essence of your transaction, the information about the function you're calling and the parameters it utilizes.
+To see this yourselves, navigate to [**openchain.xyz/signatures**](https://openchain.xyz/signatures).
 
-## Performing Transactions Safely
+In the search field, enter `0x23b872dd`. You'll see that this function signature is attributed to multiple, completely different functions!
 
-The said steps are applicable when performing transactions of any form in the cryptocurrency world.
+<img src="../../../../static/foundry-nfts/23-verifying-metamask/verifying-metamask3.png" width="100%" height="auto">
 
-### An example:
+Importantly, the Solidity compiler **will not** allow a contract to contain two or more functions which share a selector. You'll receive a compiler error:
 
-Let's say you wish to swap ETH for a token using Uniswap. After initiating the "swap" process, MetaMask shows you a transaction, but are you sure it's the transaction you want to make?
+<img src="../../../../static/foundry-nfts/23-verifying-metamask/verifying-metamask4.png" width="100%" height="auto">
 
-To confirm, you follow the steps previously outlined:
+I encourage you to try this out yourself in Remix! See if you can find any other conflicting function selectors! This is why it may be important to verify through the contract's code directly, which function is actually being called.
 
-1. Check your contract addresses.
-2. Read the function of the contract.
-3. Check the function selector.
-4. Decode the call data parameters.
+### Wrap Up
 
-By doing so, you can be utterly sure your wallets are performing the expected transactions.
+With these new skills we can now verify any transaction proposed to our wallet! This is incredibly valuable, especially when interacting with frontends. You should always be sure the functions you're calling are behaving exactly as you expect them to.
 
-Meanwhile, it's important to note that some upcoming projects like Fire are working on the creation of wallets that can automatically decode transaction data. Hopefully, this will make for safer transactions and effectively eliminate the chances of falling victim to malicious transactions.
+In order to verify our transactions we need to:
 
-## Wrapping Up
+1. Check the address
+   - Verify the contract we're interacting with is what's expected
+2. Check the function selector
+   - Verify the provided function selector vs the function on the contract we expect to be calling
+3. Decode the calldata
+   - Verify the calldata to assure the parameters being sent to the function are what we expect to be sending.
 
-Always remember to verify the details of your transactions when dealing with large amounts of money in the cryptocurrency world, as transactions cannot be undone. With this guide, sending transactions, especially on MetaMask, should be a walk in the park. Stay safe and Happy Trading!
+It's too easy to unknowingly send a malicious transaction, but by following these steps you can be sure that your wallet is doing exactly what you intend it to.

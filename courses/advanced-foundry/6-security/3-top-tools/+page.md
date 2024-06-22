@@ -4,65 +4,349 @@ title: Top Tools used by Security Professionals
 
 _Follow along with this video._
 
-
-
 ---
 
-Welcome back! Now that you have a basic understanding of what a smart contract audit involves, let's take a deep dive into the auditing process employed by security professionals. More specifically, the tools they leverage, their relevance to protocol developers, and why early-stage security awareness is paramount.
+### Top Tools used by Security Professionals
 
-## Importance of Security Tools for Smart Contract Developers
+Welcome back! Now that you have a basic understanding of what a smart contract audit involves, let's take a deeper look into the auditing process employed by security professionals and some of the tools they use to secure your code.
 
-As a smart contract developer, it is crucial to familiarize yourself with the entire toolkit used in audits. It will make sense to employ these tools even before seeking a professional audit just to streamline the process. Remember: the code base you launch is your responsibility and it is important not to wait until the end to think about security. Instead, your code's safety must be built into the architecture from the onset.
+Being aware of the tools available in this space will even give you as developers the opportunity to employ them _during_ development. Security isn't something you can just tack onto the end of a development cycle as is best approached as a foundational consideration from the very start of development.
 
-Let's take the analogy of a car race. If you build a dysfunctional car and decide to jump on the racetrack, you'll find out that you should have started over. Using time to audit a fundamentally flawed system is therefore not productive. To avoid such situations, smart contract developers have useful tools that can help provide guidance. [Solcurity](https://github.com/transmissions11/solcurity), for instance, offers security and code quality standards for solidity smart contracts and then there's the [simple security toolkit](https://github.com/nascentxyz/simple-security-toolkit) from Nascentxyz, a valuable resource to consult pre-audit.
+A couple useful GitHub repos I'll point out straight away include:
 
-## The Smart Contract Audit Process
+- [**solcurity**](https://github.com/transmissions11/solcurity)
+- [**simple-security-toolkit**](https://github.com/nascentxyz/simple-security-toolkit)
 
-The audit process is rather complex with no one-size-fits-all solution. However, typical smart contract audits involve a mix of manual reviews and tool-based evaluations. A multitude of tools exist to ensure code security, but manual review remains arguably the most vital.
+These are great avenues to ensure your protocol is ready for an audit. The latter even includes an [**audit-readiness-checklist**](https://github.com/nascentxyz/simple-security-toolkit/blob/main/audit-readiness-checklist.md) to help you prepare.
 
-### The Power of Manual Review
+### The Audit Process
 
-Manual review primarily involves going through the code line by line and verifying the code's functionality against documentation. It's unsurprising that the developer community often jokes about the gains that 15 minutes of documentation reading could yield. The first step usually involves understanding the protocol's supposed function, given the majority of bugs encountered are more related to business logic than technical errors.
+There's no silver bullet and each individual audit may be slightly different from the last, but here's a general outline of the process a protocol will undergo when under audit.
 
-<img src="/auditing-intro/3-tools/tools1.png" alt="Auditing Image" style="width: 100%; height: auto;">
+- Manual Review
+  - Go through the Code & Docs
+  - Understand what the protocol should do
+- Using Tools
 
-This statement couldn't be truer here. The more code and documentation you read, the better equipped you will be to spot bugs and errors.
+Manual Review is arguably _the most important_ aspect of an audit. Reading the documentation and gaining context of the protocol and how it should behave. Taking the time to properly gain context can save a tonne of confusion later. Remember, most bugs are _business logic_ related, meaning it isn't actually an error in the code that causes a problem, but some inaccurate implementation of what _should_ happen.
 
-For example, consider a simple contract with a 'set number' function. While the code might compile and deploy successfully, reading the corresponding documentation may reveal the intended function is to set a number to a 'new number'. It's only through understanding this that you'll realize setting it to 'new number + 1' is incorrect. Not a code error, but a business logic error, which is just as significant.
+For example:
 
-### The Investigative Tools Used in Audits
+```js
+// SPDX-License-Identifier: MIT
 
-Besides manual review, several tools come in handy during the auditing process. These include:
+pragma solidity ^0.8.18;
 
-1. **Test Suites**: The primary line of defense that highlights potential vulnerabilities during testing. Most popular frameworks integrate test suites, and their importance has been extensively discussed in this course.
-2. **Static Analysis**: Helps in automatically detecting code issues without running any code. Typically, such tools search for specific keyword patterns for potential issues.
-3. **Fuzz Testing**: An approach that involves feeding random data as inputs during testing to unearth bugs that might go undetected during regular testing.
-4. **Stateful Fuzz Testing**: A more complex version of fuzz testing, already covered in this course.
-5. **Differential Testing**: Although not a keen focus area for this course, it involves writing the same code multiple times, and comparing them for discrepancies.
-6. **Formal Verification**: This is a mathematical proof-based code verification methodology to establish the correctness of hardware or software.
+contract CaughtWithTest {
+    uint256 public number;
 
-#### Formal Verification through Symbolic Execution
+    function setNumber(uint256 newNumber) public {
+        number = newNumber + 1;
+    }
+}
+```
 
-Formal verification might seem slightly confusing initially, but think of it as converting solidity code into mathematical expressions that can easily prove or disprove the code's operation. Symbolic execution is a typical method of formal verification. It attracts contrasting preferences within the development community due to its time-intensive nature, with many players choosing to skip it. Although not a direct indicator of error-free code, it becomes crucial when dealing with math and computationally heavy processes.
+Technically, there's nothing wrong with this code. It would only be through reading the documentation that you'd learn `setNumber` should set `number` to `newNumber` and not `newNumber + 1`.
 
-#### The Role of AI in Smart Contract Audits
+### Tools
 
-AI-supported tools are a work in progress in the industry. While sometimes they prove to be vital additions to the toolset, other times they disappoint significantly.
+Let's talk about some of the tools security professionals and developers have in their toolbox.
 
-## Unpacking the Audit Process with Real Code Samples
+1. **Test Suites:** This is the first line of defence and why we placed such an emphasis on them throughout the course. All of the most popular development frameworks include test suites, use them, use them often, catch those bugs.
+2. **Static Analysis:** Static analysis is the process of checking code for issues without executing anything. Popular entries here include [**Aderyn**](https://github.com/Cyfrin/aderyn), [**Slither**](https://github.com/crytic/slither) and [**Mithril**](https://github.com/Consensys/mythril)
+3. **Fuzz Testing:** a specific test suite methodology involving providing random data as inputs during testing.
 
-To grasp this better, consider the following snippets from the Denver Security Rep (a codebase associated with this course) :
+   Two variantions exist including stateless and stateful fuzz testing. Stateless fuzz tests abandon the result of a previous test before running a new test, with a new contract state. Stateful, conversely will remember the ending state of one run and use this as the starting start for the next fuzz run.
 
-1. **Manual Review**: Code that does math incorrectly—identified by direct comparison with documentation.
-2. **Testing**: A function supposed to set a number but adds one to it—discovered with simple unit testing.
-3. **Static Analysis**: A sample reentrancy attack detected automatically by running [Slither](https://github.com/crytic/slither).
-4. **Fuzz Testing**: Failure to maintain variable value within defined bounds—picked up by random data input testing.
-5. **Symbolic Execution**: Use of solidity compiler to check for issues by triggering different code paths, and understanding their outcomes.
+4. **Differential Testing:** We don't cover this in depth, but the idea is to write code in multiple ways and compare the results to eachother to ensure validity.
+5. **Formal Verification:** Formal Verification is a generic term for applying formal methods to verify the correctness of a system.
 
-## Wrapping Things Up with Expert Insights
+   Applying formal methods pertains to anything based on mathematical proofs, these are mathematical expressions that solve for the soundsness and validity of a system, a proof of correctness, or whether or not a bug _must_ exist. ie Symbolic Execution.
 
-To help us better understand manual reviews, we're fortunate to have Tincho, a distinguished Ethereum smart contract researcher. Tincho, through his manual review technique, discovered a critical vulnerability in the Ethereum Name Service (ENS) that earned him a $100,000 payout. His insights will undoubtedly be valuable as you navigate your journey in smart contract auditing.
+   Examples of Formal Verification tools include [**Manticore**](https://github.com/trailofbits/manticore), [**Halmos**](https://github.com/a16z/halmos), [**Certora**](https://www.certora.com/prover) and even the `Solidity Compiler`.
 
-That was it for this lesson, keep learning and happy auditing!
+   There's a great article hosted by hackmd that compares many of these tools and how they work, I encourage you to [**check it out**](https://hackmd.io/@SaferMaker/EVM-Sym-Exec).
 
-<img src="/auditing-intro/2-whatis/whatis1.png" alt="Auditing Image" style="width: 100%; height: auto;">
+6. **AI Tools:** These can be hit or miss, but are absolutely evolving quickly. Any developer can find value in leveraging tools like Copilot, or state of the art models suchs a GPT4o, in their process.
+
+   These tools, I would say, aren't yet reliable enough to be depended upon, but they can go a long way towards helping to quickly understand the context of codebases or summarizing/clarifying documentation. Don't rely on them, but keep AI tooling on your radar.
+
+### Testing Some Tools
+
+Now that we have some understanding of the tools used by security professionals, let's see a couple of them in action. For our purposes in this section we'll be using the [**denver-security**](https://github.com/PatrickAlphaC/denver-security) GitHub repo. Begin by cloning it locally.
+
+```bash
+git clone https://github.com/PatrickAlphaC/denver-security.git
+code denver-security
+```
+
+Once open in it's own instance of VSCode, we should see a number of contracts contained within the `src` folder. Each of these is named in reference to the type of tool or test which is meant to catch the bug hidden inside.
+
+```bash
+├── src
+│   ├── CaughtWithFuzz.sol
+│   ├── CaughtWithManualReview.sol
+│   ├── CaughtWithSlither.sol
+│   ├── CaughtWithStatefulFuzz.sol
+│   ├── CaughtWithSymbolic.sol
+│   └── CaughtWithTest.sol
+```
+
+To start with one the the simpler onces, `CaughtWithManualReview.sol`, this bug is meant to be identified simply by reviewing the code manually.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+contract CaughtWithManualReview {
+    /*
+     * @dev adds 2 to numberToAdd and returns it
+     */
+    function doMath(uint256 numberToAdd) public pure returns(uint256){
+        return numberToAdd + 1;
+    }
+
+    // We should write a test for every issue we find during manual review!
+}
+```
+
+By reading the comments/documentation provided, we can see that this function is not behaving as expected.
+
+Let's look at `CaughtWithTest.sol`. This is a contract we've seen before.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+contract CaughtWithTest {
+    uint256 public number;
+
+    function setNumber(uint256 newNumber) public {
+        // Whoops, this isn't right!
+        number = newNumber + 1;
+    }
+}
+```
+
+We expect the newNumber passed to this function would be assigned to our number state variable. A simple unit test would cast this one, no problem.
+
+Next up, `CaughtWithSlither.sol`. We can use Slither, a static analysis tool to catch the issue here.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+contract CaughtWithSlither {
+    mapping(address => uint256) public balances;
+
+    function deposit() external payable {
+        balances[msg.sender] += msg.value;
+    }
+
+    function withdraw() external {
+        uint256 balance = balances[msg.sender];
+        require(balance > 0);
+        (bool success, ) = msg.sender.call{value: balance}("");
+        require(success, "Failed to send Ether");
+        balances[msg.sender] = 0;
+    }
+
+    function getBalance() external view returns (uint256) {
+        return address(this).balance;
+    }
+}
+```
+
+We haven't gone over the exploit in this code before, but it's known as reentrancy, and it's a nightmare in Web3. You can read more about reentrancy and how it works [**here**](https://solidity-by-example.org/hacks/re-entrancy/). I encourage you to familiarize yourself well with this vulnerability!
+
+> [!TIP]
+> Check out the installation instructions for Slither [**here**](https://github.com/crytic/slither), if you want to install it and try it yourself.
+
+With Slither installed, I can run the command `slither .` and Slither will output all of the issues it detects in our code, right to the terminal.
+
+<img src="../../../../static/foundry-security/3-top-tools/top-tools1.png" width="100%" height="auto">
+
+Look how easy that is. It won't catch everything, but Slither is one of those tools I believe everyone should run on their codebase before going to audit.
+
+The `CaughtWithFuzz.sol` contract looks insane, but we have a clearly defined invariant, `should never return 0`. The fuzz testing we applied in earlier lessons would be perfect for this.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+contract CaughtWithFuzz {
+    /*
+     * @dev Should never return 0
+     */
+    function doMoreMath(uint256 myNumber) public pure returns(uint256){
+        if(myNumber == 7){
+            return myNumber + 78;
+        }
+        if(myNumber == 1238 ){
+            return myNumber + 2 ;
+        }
+        if(myNumber == 7225 ){
+            return (myNumber / 78) + 1;
+        }
+        if(myNumber == 75 ){
+            return (myNumber % 75) + 17 - (1*1);
+        }
+        if(myNumber == 725 ){
+            return (myNumber / 2) + 7;
+        }
+        if(myNumber == 123 ){
+            return (myNumber / 2) + 7;
+        }
+        if(myNumber == 1234 ){
+            return (myNumber / 2) + 7;
+        }
+        if(myNumber == 12345 ){
+            return (myNumber / 2) + 7;
+        }
+        if(myNumber == 1 ){
+            return (myNumber / 2) + 10 - 1 * 5;
+        }
+        if(myNumber == 2 ){
+            return (myNumber % 2) + 6 - 1 * 5;
+        }
+        if(myNumber == 1265 ){
+            return (myNumber % 1265) + 1 - (1*1);
+        }
+        return 1;
+    }
+}
+```
+
+A clever fuzz test like this would have no issues catching vulnerabilities in a complex function as above:
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import "../lib/forge-std/src/Test.sol";
+import "../src/CaughtWithFuzz.sol";
+
+contract CaughtWithFuzzTest is Test {
+    CaughtWithFuzz public caughtWithFuzz;
+
+    function setUp() public {
+        caughtWithFuzz = new CaughtWithFuzz();
+    }
+
+    function testFuzz(uint256 randomNumber) public {
+        uint256 returnedNumber = caughtWithFuzz.doMoreMath(randomNumber);
+        assert(returnedNumber != 0);
+    }
+}
+```
+
+Running this test shows us clearly the power of a thorough fuzz testing suite.
+
+<img src="../../../../static/foundry-security/3-top-tools/top-tools2.png" width="100%" height="auto">
+
+Our fuzz test identifies the counter-example of 1265!
+
+What about `CaughtWithStatefulFuzz.sol`? Well, in this contract a stateless fuzz test won't cut it. The invariant of `should never return zero` is only breakable through subsequent function calls to the contract, with the first altering contract in state, such that the second call breaks our invariant.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+contract CaughtWithStatefulFuzz {
+    uint256 public myValue = 1;
+    uint256 public storedValue = 100;
+    /*
+     * @dev Should never return 0
+     */
+    function doMoreMathAgain(uint128 myNumber) public returns(uint256){
+        uint256 response = (uint256(myNumber) / 1) + myValue;
+        storedValue = response;
+        return response;
+    }
+
+    function changeValue(uint256 newValue) public {
+        myValue = newValue;
+    }
+}
+```
+
+In the above, if changeValue is called with 0, and then doMoreMathAgain is also called with 0, our invariant will break. We'll need a stateful fuzz suite to catch this one.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+import "forge-std/Test.sol";
+import "forge-std/StdInvariant.sol";
+import "../src/CaughtWithStatefulFuzz.sol";
+
+contract CaughtWithStatefulFuzzTest is StdInvariant, Test {
+    CaughtWithStatefulFuzz public caughtWithStatefulFuzz;
+
+    function setUp() public {
+        caughtWithStatefulFuzz = new CaughtWithStatefulFuzz();
+        targetContract(address(caughtWithStatefulFuzz));
+    }
+
+    function testFuzzPasses(uint128 randomNumber) public {
+        caughtWithStatefulFuzz.doMoreMathAgain(randomNumber);
+        assert(caughtWithStatefulFuzz.storedValue() != 0);
+    }
+
+    function invariant_testMathDoesntReturnZero() public {
+        assert(caughtWithStatefulFuzz.storedValue() != 0);
+    }
+}
+```
+
+We can see here the running our stateful fuzz test `invariant_testMathDoesntReturnZero` indentifies the arguments to pass and order of functions to call which breaks our invariant.
+
+<img src="../../../../static/foundry-security/3-top-tools/top-tools3.png" width="100%" height="auto">
+
+Lastly, we have `CaughtWithSymbolic.sol` where we can actually just use the solidity compiler to try and catch some bugs.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+contract CaughtWithSymbolic {
+
+    function functionOne(int128 x) public pure {
+        if (x / 4 == -2022) {
+            revert(); // BUG
+        }
+    }
+
+    function functionOneSymbolic(int128 x) public pure {
+        if (x / 4 == -2022) {
+            assert(false);
+            revert(); // BUG
+        }
+        assert(true);
+    }
+}
+```
+
+We haven't gone over this, but in solidity we can use `assert` statements to tell the compiler that something should, or shouldn't be the case at any given point of our code. In the above, we're saying that x/4 == -2022 should never be the case, as if the if conditional is satisfied, our assertion is true and the function reverts.
+
+We're able to configure a number of details to provide the solidity compiler.
+
+```js
+[profile.default.model_checker]
+contracts = {'./src/CaughtWithSymbolic.sol' = ['CaughtWithSymbolic']}
+engine = 'chc'
+timeout = 1000
+targets = ['assert']
+```
+
+By running `forge build` with these settings, we'll receive an output from our compiler, clearly indicating where the assertion is violated with a counter-example:
+
+<img src="../../../../static/foundry-security/3-top-tools/top-tools4.png" width="100%" height="auto">
+
+### Wrap Up
+
+Great! I hope this lesson has shed some light on some of the tools used by security professions (and developers) to keep a code base secure. We cover much of this in greater detail in the Security & Audit course on Cyfrin Updraft, so for those interested, please dive in.
+
+In the next lesson, we're joined by Tincho of The Red Guild to explore some manual review best practices and the approach he takes while auditing.
+
+See you there!

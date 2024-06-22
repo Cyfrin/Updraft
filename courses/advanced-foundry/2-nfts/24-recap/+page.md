@@ -4,50 +4,57 @@ title: Recap
 
 _Follow along with this video._
 
-
-
 ---
 
-Wow! We’ve traversed quite the technological terrain in this course. We've gained knowledge about NFTs, financial wallets, encoding, transaction viewing, decoding hex data and more. We have also had hands-on exercises to create a basic NFT with all the main functionalities necessary. So, let's do a quick run-through of all that we've covered in this course.
+### Recap
 
-## Understanding NFTs
+Guess what. You just learnt an insane amount in this section. Let's run down the things we covered.
 
-First and foremost, we demystified what an NFT actually is. NFT stands for Non-Fungible Token, a unique cryptographic token on blockchain that represents ownership or proof of authenticity of an item or asset, digital or physical.
+We started off by learning what a `Non-fungible token (NFT)` is. And we explored this technology by creating our very own `BasicNFT`.
 
-We didn't stop at learning theoretically, we created our own basic NFT equipped with all the essential functions, such as the Token URI, which pointed to the metadata, and the Mint NFT function.
+<img src="../../../../static/foundry-nfts/24-recap/recap1.png" width="100%" height="auto">
 
-```js
-  function mintNftOnContract(address basicNftAddress) public {
-        vm.startBroadcast();
-        BasicNft(basicNftAddress).mintNft(PUG_URI);
-        vm.stopBroadcast();
-    }
-```
+While going through this process, we learnt all about options for decentralized data storage including services like
 
-## Storing NFTs: On-chain vs IPFS
+- [**IPFS**](https://ipfs.tech/)
+- [**Pinata**](https://www.pinata.cloud/)
+- [**NFT Storage**](https://nft.storage/)
+- [**Web3 Storage**](https://web3.storage/)
 
-Next, we learnt about NFT storage, specifically the difference between storing the NFT metadata on-chain vs on IPFS. On-chain storage translates into a higher cost but boasts a more decentralized version. Storing on IPFS, on the other hand, is a bit cheaper.
+We also learnt that we could store data and image directly on the blockchain by creating a dynamic, on-chain `SVG NFT` that we can use to reflect our mood!
 
-Aside from IPFS and on-chain, we also briefly explored Filecoin and Rweave, two other decentralized storage platforms to consider. These offer a more decentralized, yet still cost-effective, solution than storing on the ETH mainnet.
+<img src="../../../../static/foundry-nfts/24-recap/recap2.png" width="100%" height="auto">
 
-## Beyond the Basics
+While we're able to store this data on chain, it's important to note that it may become prohibitively expensive from the perspective of gas and computation. We proposed protocols such as [**Filecoin**](https://filecoin.io/) and [**Arweave**](https://arweave.org/) which serve to mitigate these concerns in decentralized data storage.
 
-Our learning journey didn't end there. We delved into more advanced matters like file reading from scripts, base 64 encoding, function signatures, function selectors, different encoding types and diverse methods for data encoding. We also mastered calling any function regardless of whether we have the interface, provided we have the function signature.
+Beyond `NFTs` we learnt a great deal about encoding!
 
-## Behind the Scenes of Transactions
+We used `base64` encoding to encode our `tokenURI` data to store on-chain.
 
-Exploring further, we got a handle on the nitty-gritty of transactions on the blockchain and the data included when sending transactions. We also learnt how to view transactions on a block explorer and delve into the related input data.
+We explored how a compiled contract is broken into not just an ABI, but a bytecode component and that it's this encoded, binary, bytecode that is read and understood by the EVM.
 
-A great example can be found when checking out previous transactions. On any block explorer, select a transaction, and join us as we navigate to more details to discover function information and input data.
+In addition to this we learnt how to encode our transaction data into this bytecode and how we can make low-level calls using this encoded data. We learnt the power of `abi.encode/abi.decode/abi.encodePacked` and how these globally available methods can allow us fine control over our interactions with the `EVM` and our transactions.
 
-<img src="/foundry-nfts/24-recap/recap1.png" style="width: 100%; height: auto;">
+As a result of our greater understanding of how encoded data is used in EVM transactions, we also gained the ability to verify any transaction sent to our wallet and to keep ourselves safe from malicious ones.
 
-## The Journey Ahead
+<img src="../../../../static/foundry-nfts/24-recap/recap3.png" width="100%" height="auto">
 
-Reflecting on the lessons, it's clear we've learnt so much! And it is exciting to see how quickly the knowledge and skills are growing. As we move forward, you'll go through more advanced sections like the Foundry DFI stablecoin, upgrades, governance and introduction to security.
+### Wrap Up
 
-Take a well-deserved break, and when you're ready, tweet your excitement about your super advanced learnings. You're on the path towards becoming a phenomenal smart contract developer. I can't wait to see you in the next lessons.
+Now's a great time to take a break. You've made it through another massive section and just by getting this far you've gained skills that only a small selection of Solidity devs have.
 
-_"By getting this far, you have learned some skills that even some top solidity devs don't even know. You are growing incredibly quickly."_
+You're growing very quickly.
 
-Good job, everyone! Until next time.
+We've only got a few more sections that remain:
+
+- DeFi
+- Upgradeable Contracts
+- Introduction to Security
+
+The next lesson in particular is going to really put you to the test. So, take your break, and I'll see you when you get back!
+
+🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊
+
+NFT Challenge
+
+[**Sepolia**](https://sepolia.etherscan.io/address/0x93c7A945af9c453a8c932bf47683B5eB8C2F8792#code)
