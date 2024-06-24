@@ -2,7 +2,7 @@
 title: Introduction to Gas
 ---
 
-_Follow along with this video:_
+_Follow along with this video! <3_
 
 ---
 
