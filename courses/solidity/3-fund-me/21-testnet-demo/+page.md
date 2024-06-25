@@ -2,68 +2,51 @@
 title: Testnet Demo
 ---
 
-_Follow along this chapter with the video bellow_
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
-In this lesson, we'll explore end-to-end testing of a Solidity contract deployment and execution without actually deploying to a testnet. However, if you wish to follow along and deploy on a testnet, feel free to do so.
+In this lesson, we'll delve into _end-to-end testing_ of a Solidity contract's deployment and execution.
 
-## Getting Started
+### Deployment Transaction
 
-First off, let's compile our `FundMe.sol` Solidity contract to check if our code is correct. If any contracts were deployed previously, delete them so that you can start fresh.
+First, we need to _compile_ the contract to ensure the code is correct. On Remix, set the **injected provider** to MetaMask and confirm it is properly synced to the testnet. Ensure you have some Sepolia Ether (ETH) in your wallet if you plan to deploy the contract on Sepolia.
 
 <img src="/solidity/remix/lesson-4/testnet/testnet1.png" style="width: 100%; height: auto;">
 
-Now, set the **injected provider** to MetaMask and check if it's synced to the correct testnet. Validate that you have some ether (ETH) available in your wallet for testnet transactions.
+We'll deploy the `FundMe` contract by clicking deploy and then confirming the transaction in MetaMask, which may take some time.
 
-<img src="/solidity/remix/lesson-4/testnet/testnet2.png" style="width: 100%; height: auto;">
+### Contract Interaction
 
-## Locating and Selecting the Contract
+After successfully deploying the `FundMe` contract, you'll see several buttons to interact with it:
 
-Next, we'll navigate to our contract area to identify the correct contract we wish to deploy. If you attempt to deploy an interface, an alert message like, _"This contract might be abstract"_ will pop up. However, we'll be deploying the `FundMe` contract. Hit deploy and confirm in MetaMask.
+- **Red button**: Payable functions (e.g., `fund`)
+- **Orange button**: Non-payable functions (e.g., `withdraw`)
+- **Blue buttons**: `view` and `pure` functions
 
-Note that the contract's deployment might take some time, which you can track in the terminal.
+The `fund` function allows us to send ETH to the contract (minimum 5 USD). The `owner` of the contract is our MetaMask account, as the **constructor** sets the deployer as the owner.
 
-## Contract Interaction
+> 🗒️ **NOTE** <br>
+If the `fund` function is called without any value or with less than 5 USD, you will encounter a gas estimation error, indicating insufficient ETH, and gas will be wasted.
 
-Upon successful deployment, you'll find several buttons to interact with your Solidity contract:
+### Successful Transaction
 
-- Red button for payable function `fund`
-- Orange button for non-payable withdrawing function
-- Blue buttons for `view` and `pure` functions
+If you set the amount to `0.1 ETH` and confirm it in MetaMask, you can then track the successful transaction on Etherscan. In the Etherscan transaction log, you will see that the `fundMe` balance has increased by `0.1 ETH`. The `funders` array will register your address, and the mapping `addressToAmountFunded` will record the amount of ETH sent.
 
-The fund button allows us to send ETH to the contract, the `owner` of the contract is our MetaMask account since we deployed this contract. The minimum value will be set to 5 USD.
+### Withdraw Function and Errors
 
-You can call the `fund` function, provided you send some ETH along with it. If called without any value, you will encounter a gas estimation error, indicating insufficient ETH.
+After funding the contract, we can initiate the `withdraw` function. This function can only be called by the owner; if a non-owner account attempts to withdraw, a gas estimation error will be thrown, and the function will revert.
 
-```
-Warning: The fund() function encounter a gas estimation error, hinting that you might not have sent enough ETH along with your transaction!
-```
+Upon successful withdrawal, the `fundMe` balance, the `addressToAmountFunded` mapping, and the `funders` array will all reset to zero.
 
-Avoid wasting gas by cancelling the transaction and providing a sufficient amount.
+### Conclusion
 
-## Ensuring Successful Transaction
+In this lesson, we've explored the end-to-end process of deploying and interacting with a Solidity contract using Remix and MetaMask. We covered the deployment transaction, contract interaction, and how to handle successful transactions and potential errors.
 
-Set the amount to 0.1 ETH (or an amount equivalent to the minimum USD amount) and hit confirm on MetaMask. You can track the transaction on etherscan.
+### 🧑‍💻 Test yourself
 
-Following your transaction's successful processing, you'll see the contract’s balance increase by the set value. The `funders` array will register your address, and the mapping `addressToAmountFunded` will reflect your transaction.
+1. 🧑‍💻 Interact with the `FundMe` contract on Remix and explore all possible outcomes that its functions can lead to.
 
-You can check these changes in the ether scan transaction log, which will show the `fund` function call.
-
-## Withdraw Function and Errors
-
-Next, you can initiate the `withdraw` function to reset the mapping and the array. However, keep in mind that our contract set-up only permits the owner to withdraw.
-
-If a non-owner account tries to withdraw, you will encounter another gas estimation error, indicating that the sender is not an owner. So, we revert to the owner account and initiate a successful withdrawal. Again, this can be tracked in the terminal.
-
-Upon successful withdrawal, the balance resets to zero. Additionally, the `funders` array and mapping also reset to their initial zero states. Attempting to call `addressToAmountFunded` with the same address returns zero.
-
-## Advanced Solidity Concepts
-
-Remember, the following section explores more sophisticated attributes of Solidity. Don't worry if you find difficulty understanding it the first time. Mastery of these concepts isn't necessary to continue.
-
-You may remember that earlier editions of this tutorial deployed to the Rinkeby testnet, while latest versions encourage deployment to the Sepolia testnet or the most contemporary testnet. Alternatively, you can follow along without deploying to a testnet.
-
-In this section, we'll explore advanced Solidity pieces focused on efficient gas usage, coding practices that make your code cleaner, and improving overall coding practices. You'll want to pay close attention to these concepts if you aim to excel as an Ethereum Smart Contract coder.
-
-Always remember that when we refer to the JavaScript VM, we mean the Remix VM. Stay tuned for more fun and learning with Solidity in subsequent posts!
+[Back to top](#top)

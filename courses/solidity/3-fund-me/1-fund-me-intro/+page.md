@@ -2,44 +2,31 @@
 title: Introduction
 ---
 
-*Follow along the course with this video.*
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
+In this section, we'll create a _decentralized crowdfunding_ contract. The complete codebase is available in the [Github repository](https://github.com/Cyfrin/remix-fund-me-f23).
 
-Hello everyone, I’m glad to have you back with us for Lesson 4 in our Web3 Development series. This time we’re diving headfirst into **FundMe.sol**, our very own decentralized crowdfunding contract.
+### Overview
 
-## Breaking Down The Contracts
+For this project, we will be using two contracts: `FundMe`, the main crowdfunding contract, and `PriceConverter`. They function much like _Kickstarter_, allowing users to **send** any native blockchain cryptocurrency. They also enable the owner of the contract to **withdraw** all the funds collected. We will then deploy these contracts on a **testnet**.
 
-In this lesson, we'll be creating one main contract - **FundMe.sol**. However, we'll also use another file called **PriceConverter.sol** which we will discuss later.
+> 🗒️ **NOTE** <br>
+> Use testnet sparingly. Limiting testnet transactions helps prevent network congestion, ensuring a smoother testing experience for everyone.
 
-<img src="/solidity/remix/lesson-4/introduction/intro-fundme1.png" style="width: 100%; height: auto;">
+### fund and withdraw
 
-Our **FundMe contract** is a perfect example of a crowdfunded project. Think of it as your very own decentralized `Kickstarter`, where users can send any native blockchain cryptocurrency. It allows the owner of the contract to withdraw all the funds collected for their new project. It is designed so that it can be deployed on a **testnet**. 
+Once `FundMe` is deployed on Remix, you'll notice a set of _functions_, including a new red button labelled `fund`, indicating that the function is _payable_. A payable function allows you to send native blockchain currency (e.g., Ethereum, Polygon, Avalanche) to the contract.
 
+We'll additionally indicate a **minimum USD amount** to send to the contract when the function `fund` is called. To transfer funds to the `FundMe` contract, you can navigate to the _value section_ of the Remix deployment tab, enter a value (e.g. 0.1 ether) then hit `fund`. A Metamask transaction confirmation will appear, and the contract balance will remain zero until the transaction is finalized. Once completed, the contract balance will be updated to reflect the transferred amount.
 
-<img src="/solidity/remix/lesson-4/introduction/intro-fundme2.png" style="width: 100%; height: auto;">
+The contract owner can then `withdraw` the funds. In this case, since we own the contract, the balance will be removed from the contract's balance and transferred to our wallet.
 
+### Conclusion
 
-Once deployed, you will see a set of buttons along with a new **red button** named **Fund**. The red button is a giveaway that the function is payable where you can send native Ethereum, Polygon, Avalanche, or any other native blockchain currency.
+These 25 lessons will guide you step-by-step through the implementation of a crowdfunding contract, that supports cryptocurrency contributions and owner withdrawals.
 
-
-**Remember**: Fund function is payable. You can send native Ethereum, Polygon, Avalanche, or any other native blockchain currency.
-
-To transfer funds, navigate to the **value section** of the contract user interface then hit **'Fund'**. Following this, your connected wallet (e.g., Metamask) will open for you to confirm the transaction. During this transaction, the contract balance in the functional section will show zero until the fund transfer process completes.
-
-Once the transaction has completed, the contract balance will update to display the transferred amount. The contract owner can then withdraw the funds.
-
-### Practically Speaking....
-
-We can go through the process using 0.1 ether as an example. After input the amount to be sent, and hit the `fund` button, confirm the transaction using my connected wallet (in this case, MetaMask), and the balance of the contract will show as zero. After a while, once the transaction has been completed, we will see a balance of 0.1 ETH appearing on Etherscan and Remix. The slight delay merely reflects transaction processing times.
-
-Following this, we can give permission to the contract owner to withdraw the funds. Since in this case, we are also the owner of the contract, the balance will be transferred back into our account. The balance can also be returned to MetaMask if kept open for long enough. 
- 
-## Wrapping Up 
-
-And that's it! Once you complete this section, you would have grasped most of the fundamentals of working with Solidity! So keep watching this lesson chapters and get learn how to implement this `FundMe` contract yourself step by step.
-
-Be sure to write down any questions you may have and direct them towards our GitHub discussions thread.
-
-Ready to get started? Let's jump back in!
+[Back to top](#top)

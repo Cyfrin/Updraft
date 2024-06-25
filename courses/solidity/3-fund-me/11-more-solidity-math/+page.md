@@ -2,77 +2,70 @@
 title: More Solidity Math
 ---
 
-*Follow along this chapter with the video bellow*
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
+In this lesson, we will guide you through converting the value of ETH to USD. We'll use the previously defined `getPrice` function within the new `getConversionRate` function.
 
-In this lesson, we're going to walk through the conversion of the Ethereum value to USD using Solidity. The purpose of this tutorial is to understand how Ethereum contract operations work, using the `getPrice` and `getConversionRate` functions.
+### The `getPrice` and `getConversionRate` Functions
 
-## Settling Down with the `getPrice` Function
+The `getPrice` function returns the current value of Ethereum in USD as a `uint256`.  
+The `getConversionRate` function converts a specified amount of ETH to its USD equivalent.
 
-The `getPrice` function returns the value of Ethereum in terms of USD. This value is returned as a `uint256`. Armed with this handy function, we can convert message value into dollar terms.
+### Decimal Places
 
-## Breaking Down the `getConversionRate` Function
+In Solidity, only integer values are used, as the language does not support floating-point numbers.
 
-The `getConversionRate` function takes a `uint256` Ethereum (ETH) amount as input. The core objective of this function is to convert ETH into USD dollar value.
-
-
-### Understanding the Importance of Decimal Places
-
-In Solidity, due to the lack of decimal numbers (only whole numbers work), we should always multiply before dividing. Coupled with the fact that both values have 18 decimal places, we have to divide the final calculated product by `1E18`.
-
-<img src="/solidity/remix/lesson-4/math/math1.png" style="width: 100%; height: auto;">
-
-For instance, let's put $2000 as ETH's value in dollar terms. The calculation would look like this:
-
-1. `ETH_Price`= $2000 (with 18 decimal places)
-2. Multiply ETH\_Price by 1 ETH
-3. Now we'll have an extra 36 decimal places since 1 ETH also has 18 decimal places
-4. Divide the result with `1E18`
-
-This function helps to handle the bulk of the math conversions for us. It takes our ETH amount and returns its equivalent in USD.
-
-## Value Validation
-
-Now, if we want to magnify the application of this function, let's assume we want to check if our users are sending at least $5.
-
-```js   
-    getConversionRate(msg.value) >= Minimum_USD
-    // In other terms:
-    require(PriceConverter.getConversionRate(msg.value) >= MINIMUM_USD, "You need to spend more ETH!");
+```solidity
+function getConversionRate(uint256 ethAmount) internal view returns (uint256) {
+    uint256 ethPrice = getPrice(); 
+    uint256 ethAmountInUsd = (ethPrice * ethAmount) / 1e18;
+    return ethAmountInUsd;
+}
 ```
 
-The value returned by `getConversionRate` function are calculated in 18 decimal places, so our $5 threshold would be `5E18` or `5*1E18`.
+> 🗒️ **NOTE** <br>
+> The line `uint256 ethAmountInUsd = (ethPrice * ethAmount)` results in a value with a precision of 1e18 * 1e18 = 1e36. To bring the precision of `ethAmountInUsd` back to 1e18, we need to divide the result by 1e18.
 
-## Deployment to the Testnet
+> 🔥 **CAUTION** <br>
+> Always multiply before dividing to maintain precision and avoid truncation errors. For instance, in floating-point arithmetic, `(5/3) * 2` equals approximately 3.33. In Solidity, `(5/3)` equals 1, which when multiplied by 2 yields 2. If you multiply first `(5*2)` and then divide by 3, you achieve better precision.
 
-Let's say we deploy this to a testnet. After a long pause, we get our deployed contract. Using the `getPrice` function, we would get the current value of Ethereum.
+### Example of `getConversionRate`
 
-Now, if we try to add $5 to the fund, we'll probably get an error saying,
+- `ethAmount` is set at 1 ETH, with 1e18 precision.
+- `ethPrice` is set at 2000 USD, with 1e18 precision, resulting in 2000e18.
+- `ethPrice * ethAmount` results in 2000e18.
+- To scale down `ethAmountInUsd` to 1e18 precision, divide `ethPrice * ethAmount` by 1e18.
 
-```js
+### Checking Minimum USD Value
+
+We can verify if users send at least 5 USD to our contract:
+
+```solidity
+require(getConversionRate(msg.value) >= MINIMUM_USD, "You need to spend more ETH!");
+```
+
+Since `getConversionRate` returns a value with 18 decimal places, we need to multiply `5` by `1e18`, resulting in `5 * 1e18` (equivalent to `5 * 10**18`).
+
+### Deployment to the Testnet
+
+In Remix, we can deploy the `FundMe` contract to a testnet. After deployment, the `getPrice` function can be called to obtain the current value of Ethereum. It's also possible to send money to this contract, and an error will be triggered if the ETH amount is less than 5 USD.
+
+```markdown
 Gas estimation failed. Error execution reverted, didn't send enough ETH.
 ```
-<img src="/solidity/remix/lesson-4/math/math2.png" style="width: 100%; height: auto;">
 
+### Conclusion
 
-This error is triggered when the amount in ETH is less than our $5 benchmark.
+In this lesson, we've demonstrated how to convert ETH to USD using the `getConversionRate` function, ensuring precise calculations by handling decimal places correctly.
 
+### 🧑‍💻 Test yourself
 
-But if we attempt to fund with at least $5 worth of ETH,
+1. 📕 Why is it important to multiply before dividing in Solidity calculations, and how does this practice help maintain precision?
+2. 📕 What is the purpose of the getConversionRate function, and how does it utilize the getPrice function to convert ETH to USD?
+3. 🧑‍💻 Create a function `convertUsdToEth(uint256 usdAmount, uint256 ethPrice) public returns(uint256)`, that converts a given amount of USD to its equivalent value in ETH.
 
-Our transaction gets through probably and shows no sign of the previous gas error.
-
-## Wrapping Up
-
-Solidity is a powerful language for writing smart contracts, and the ability to convert Ethereum into USD is a fundamental task.
-
-As it stands, the `getConversionRate` function is working effectively in routing transactions worth less than $5 and ratifying ones equivalent to or more than $5 worth of ETH.
-
-In our future lessons, the focus will be on withdrawal functions and contract interactions using Solidity. But for now, it's time to move forward!
-
-<img src="/solidity/remix/lesson-4/math/math3.png" style="width: 100%; height: auto;">
-
-
-Happy Coding!
+[Back to top](#top)
