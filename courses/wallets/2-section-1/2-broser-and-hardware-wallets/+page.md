@@ -1,85 +1,82 @@
 ---
-title: Browser & Hardware Wallets
+title: Browser And Hardware Wallets
 ---
 
 ---
 
-## **The Right Wallet for Your Digital Dosh**
-
-When you're starting out in the helm of cryptocurrencies and holding a modest balance, two types of wallets should be on your radar: browser wallets for the short-term and hardware wallets for the longer haul. You've probably heard of some of these: Metamask, Trezor, MyEtherWallet, Rainbow Wallet... the list goes on.
-
-**So, what’s all the fuss about beginner experience and "small monies"?**
-
-It boils down to risk tolerance. Picture a college student stretching every dollar— for them, a $50 loss might be a nightmare. That same student might use Metamask for their modest holdings because it's convenient and straightforward. But a grand? That's enough to make a dent in their ramen stash and then some. On the flip side, imagine a giant hedge fund where $1,000 is a drop in the bucket. They might shrug off a loss of a few thousand like it's nothing but chump change.
-
-**The Golden Rule: Treat browser wallets like the cash in your pocket.**
-
-You wouldn't wander around with life savings stuffed in your jeans, would you? I sure hope not. Browser wallets need similar caution because, in the world of crypto, convenience can sometimes mean vulnerability.
-
-_Remember:_
-
-> "Browser wallets are the digital version of cash: great for small amounts you can afford to lose. For anything larger, look to the security of hardware wallets."
-
-## **Hot Wallets vs. Cold Wallets: What's the Temp?**
-
-Welcome to the lingo lounge! "Hot" wallets are those ever-ready, always-online vaults, like the extensions in your browser—Metamask, Phantom, the whole gang. Accessibility is their charm, but it's also why they're a hot target for cyber bandits.
-
-**Cold Wallets: The Fort Knox of Crypto**
-
-Cold wallets or hardware wallets like Trezor are the superheroes here—their secret power being "air gapping," which sounds fancy, but it just means they're offline until you need to make a transaction. But here's the twist: even our superhero wallet has to connect to the internet at some point, making it feel a bit warm momentarily, you could say.
-
-**The Key to Crypto Storage: Hot for Now, Cold for Later**
-
-If you're dabbling in crypto for the short term, cool—hot wallets have got your back. If you've got your sights on the digital horizon, cold storage is where it's at. It's the difference between keeping your cash in hand versus locking it away in a safe deposit box.
-
-**Hardware Wallets: Leveling Up Security for Beginners**
-
-Escaping the grip of centralized custody, hardware wallets give control back to you. Keep in mind, though, that with great power comes great responsibility. You're the sole guardian of your private keys, the golden ticket to your crypto cache.
-
-**Pros:**
-
-- Full control over your private keys
-- Easy to use with web three apps
-- Ideal for experimenting within the web three playground
-
-![](https://cdn.videotap.com/618/screenshots/Hw2Kb9tAl0imQJSMKbFU-220.24.png)
-
-**Cons:**
-
-- Sole accountability for security
-- Private key exposure equals "Game Over"
-- The risk of hardware theft or software compromise
-
-You’re not just locked into one option, either. Metamask offers Metamask Snaps, which are like little wallet power-ups, giving you added defenses against crypto-goblins trying to sneak into your stash.
-
-**From Casual Crypto to Serious Security: Graduating to Hardware Wallets**
-
-You might start with a hot wallet because of it's all about ease of use. But as you journey deeper into crypto-land, hardware wallets are the trusty steeds that will help you guard your loot for the long term. Sure, they might be a tad tougher to get the hang of, but that complexity is the barrier that keeps your digital gold safe from raiders.
-
-Hardware wallets come with their own list of heroes—think Ledger Nano S, Trezor Model T, and others. They're the physical locks to your virtual vault, holding the keys (quite literally) to your crypto kingdom.
-
-### **Key Takeaways for the Crypto Curious**
-
-- Keep only small, risky-change in your hot wallets
-- Gravitate towards hardware wallets for beefier sums and long-term storage
-- Remember, you're the captain now—security is in your hands
-
-**Upgrading Your Wallet Game with Tools and Tricks**
-
-Even the best hot wallets need a buddy system—tools like Web3 antivirus, Fire XYZ, and others keep an eye on your companions to ensure they're playing nice and not leading you into any dark alleys.
-
-Metamask Snaps is another ace up your sleeve, bolstering your defenses with features like Blocksec, which scans for the virtual equivalent of wallet snatchers.
-
-![](https://cdn.videotap.com/618/screenshots/DrWH4z1CxMoTE1elu2ar-333.18.png)
-
-In the end, whether you're a digital-dime rookie or a veteran of the virtual vault, your crypto's safety is paramount. Browser and hardware wallets each have a place in your arsenal—knowing when to use each is the wisdom that will keep your digital doubloons sailing smoothly on the crypto seas.
-
-_And hey, before I sign off, don't forget:_
-
-> "Your crypto, your keys, your kingdom—keep it safe, keep it smart, and keep on crypto-ing!"
+_Follow along with this video:_
 
 ---
 
-Carefully crafted for the courageous crypto-enthusiasts—may your coins multiply, and your wallets weather the storm.
+So you are not a noob; you are at least a beginner, experienced, and maybe have some small money. For beginners, small amounts of money, and short-term storage, desktop, browser, and hardware wallets are fantastic solutions. This includes wallets like Metamask, Frame, Rabbit Wallet, and others.
 
-Until next time, keep your crypto close, but your security closer!
+If you are thinking, "But Patrick, what do you mean by beginner/small money?" It simply means the amount of money you are okay with losing, and that varies from person to person. It might be okay for a college student to lose $50 but not $1,000. If that college student wants to store a crypto asset worth $1,000, then they better move to the next stage, which is using multi-sig wallets or hardware wallets. On the other hand, for a big firm that wouldn't flinch if they lost $5,000, storing that amount on a browser wallet such as Metamask, Rainbow, and others wouldn't be a problem.
+
+Think of these browser wallets like the real-life wallets you carry around. Any amount of money you feel very comfortable putting in your real-life wallet while you walk down the street should be what you store on your browser wallet. You wouldn't likely put $100,000 in your real-life wallet and walk around the street, as that would be inviting trouble. Treat your browser wallet with the same caution.
+
+Two common terminologies often thrown around regarding browser wallets are `hot wallet` and `cold wallet`. Let's look at what these terms mean in relation to a browser wallet.
+
+### HOT WALLET
+
+A hot wallet is a browser wallet that is connected to any online app or protocol. It is a wallet that you connect to the internet.
+
+### COLD WALLET
+
+A cold wallet, on the other hand, is a wallet that you don't connect to the internet. You don't use it to interact with any protocol or app.
+
+If you want to use the blockchain or any web3 services, you would need to connect your wallet to the internet. So, if you have a cold wallet and you connect it to the internet to quickly use some web3 services, at that moment it becomes a hot wallet.
+
+Cold wallets are better for long-term storage of your assets. The more of a cold wallet your wallet is, the safer your assets are. You may choose to not connect your cold wallet to the internet at all and have a separate hot wallet that you always use to interact with the blockchain world.
+
+### HARDWARE WALLET
+
+Hardware wallets are considered even safer than cold browser wallets for storing crypto assets because they are air-gapped. This means there is a gap between hardware wallets and the internet, making it challenging for assets to be moved. The more air-gapped a wallet is, the safer it is for storing crypto assets.
+
+Hardware wallets provide a secure way to store crypto assets, suitable for beginners with small amounts of money to experts. However, a major concern with hardware wallets is how their private keys are stored directly on the physical device.
+
+Hot wallets are typically good for beginners entering the web3 space as they are easier to use. Hardware wallets serve a similar purpose but are more advanced and can be more challenging to use. Further details on hardware wallets will be covered in upcoming sections.
+
+### PROS OF BROWSER WALLETS AND HARDWARE WALLETS
+
+Browser wallets and hardware wallets have several advantages:
+
+- In browser wallets and hardware wallets, you are in charge of your private key and have complete control over your assets. This gives you a sense of security and ownership.
+- Browser wallets are particularly user-friendly when it comes to interacting with web3 applications. They provide an easy and seamless experience.
+- Many people transfer their assets from cold wallets (which are not connected to the internet) to hot wallets (browser wallets) in order to interact with the web3 world. This allows them to conveniently use web3 services while still keeping their assets secure in a cold wallet.
+
+These advantages make browser wallets and hardware wallets popular choices for individuals who want to have control over their assets and easily engage with the web3 ecosystem.
+
+### CONS OF BROWSER WALLETS AND HARDWARE WALLETS
+
+The disadvantages of using both browser wallets and hardware wallets include:
+
+- **Sole Responsibility and Single Point of Attack**: The security of your assets depends solely on you, making you the single point of attack. Any mistakes made with your private key could result in the loss of all your assets.
+
+- **Security Risks**: If your computer gets hacked, all the assets in your browser wallet could be stolen. Similarly, if someone gains access to your hardware wallet, you risk losing the assets stored on it.
+
+- **Supply Chain Attacks**: There is a risk of supply chain attacks where downloading a compromised version of the software or receiving a tampered hardware wallet could lead to security breaches. This threat is particularly concerning as it can be hard to detect.
+
+- **Privacy Concerns**: Some wallets may track your data, raising privacy concerns. It's important to customize your wallet for enhanced privacy and security.
+
+These drawbacks highlight the importance of being cautious and implementing robust security practices when using browser wallets and hardware wallets to safeguard your assets in the volatile crypto space.
+
+### POTENTIAL SUGGESTIONS [HOT WALLET]
+
+Sure! Here are some potential suggestions for hot wallets:
+
+- [**Metamask**](https://metamask.io/)
+- [**Rabby**](https://rabby.io/)
+- [**Frame**](https://frame.sh/)
+- [**Rainbow**](https://rainbow.me/)
+- [**MyEtherWallet**](https://www.myetherwallet.com/)
+
+These wallets are commonly used for interacting with the web3 world and provide a user-friendly experience. Remember to exercise caution and follow security best practices when using any wallet to protect your assets. Let me know if there's anything else I can help with!
+
+### SUGGESTIONS TO LEVEL UP YOUR HOT WALLET
+
+Here are some tools that can help enhance the security of your hot wallet:
+
+- [**Web3 Antivirus**](https://web3antivirus.io/)
+- [**Fire.xyz**](https://www.joinfire.xyz/)
+
+Metamask somewhat recently launched Metamask Snaps, which are customizations for your Metamask to add even more functionality. For example, there is a BlockSec Metamask Snap that checks for malicious transactions, and there are many different snaps available for use with your Metamask.

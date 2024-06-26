@@ -8,12 +8,12 @@ _Follow along the course with this video._
 
 ### In this lesson, we are going to learn:
 
-1. How to quickly clone a repo in our terminal. 
-2. Use Live Server in VS Code to see our changes 'live' as we code. 
+1. How to quickly clone a repo in our terminal.
+2. Use Live Server in VS Code to see our changes 'live' as we code.
 
 ### Key Concepts
 
-1. `git clone` - command used to make a copy of a repository on your local machine. 
+1. `git clone` - command used to make a copy of a repository on your local machine.
 2. `live server` - a VS Code extension that opens in your browser and automatically updates with your code.
 
 ### Overview
@@ -46,22 +46,22 @@ code html-fund-me-f23
 
 In order to spin up a local front end, we're going to use an extension called [**Live Server**](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer). Once installed you can simply press the `Go Live` button in the bottom right.
 
-<img src="/html-fundme/1-setup/live-server.png" style="width: 75%; height: auto;">
+<img src="../../../../static/html-fundme/1-setup/live-server.png" style="width: 75%; height: auto;">
 
 Once installed, you can simply press the 'Go Live' button in the bottom right of your VS Code.
 
-<img src="/html-fundme/1-setup/html-fund-me1.png" style="width: 75%; height: auto;">
+<img src="../../../../static//html-fundme/1-setup/html-fund-me1.png" style="width: 75%; height: auto;">
 
 And with that you should have this simple front end open in a browser.
 
-<img src="/html-fundme/1-setup/html-fund-me2.png" style="width: 75%; height: auto;">
+<img src="../../../../static//html-fundme/1-setup/html-fund-me2.png" style="width: 75%; height: auto;">
 
 <br>
 We'll be using this to glean a deeper understanding of what exactly is happening when we're interacting with websites in the coming lessons.
 
 ### Questions to Consider
 
-Use the following to check your comprehension of the lesson. 
+Use the following to check your comprehension of the lesson.
 
 1. How can I clone an existing repo on my local device?
 2. How can I view changes to my front end code as I develop them?

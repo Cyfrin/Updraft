@@ -1,61 +1,185 @@
 ---
-title: Pushing to GitHub
----
+title: Pushing to Github
 
-_Follow along with this video._
-
-
+_Follow along with this video:_
 
 ---
 
-Welcome fellow developers! In today's lesson, I'll guide you in pushing your work to GitHub using a badass GitHub repo. This action is the concluding step of your project. However, the first thing we want to ensure is that `env` is included in your `.gitignore`. Adding `broadcast` is a personal practice, and I advise you to do the same. The rationale behind this is avoiding a public push of anything inferior to GitHub.
+### Pushing to GitHub
 
-Sometimes, it's beneficial to leave `lib` out, something that I plan to do here as well. The key take-home is learning to push code to GitHub. We are employing hardhat freeCodeCamp because it was used in one of my previous videos and we are kick-starting from an entirely blank GitHub.
+What a journey! Congratulations on reaching this far!
 
-Please note that the application of GitHub, coupled with git and version control, is crucial to the majority of crypto-community interactions and collaboration methods.
+One of the most important parts of development is sharing the stuff you work on for other people to see and contribute to. If you don't want to do that you still need a system for version control, a place where you save different stages of your project that can be accessed as simple as pressing 3 clicks. As you've guessed by now the thing we'll introduce now is GitHub.
 
-## Open Source and the Crypto Community
+Before doing any other actions, please verify that your .gitignore contains at least the `.env` file, to avoid pushing our keys on the internet, and other things that you consider irrelevant for other people, for example, the information about your deployments.
 
-<img src="/foundry-fund-me/21-github/github1.png" style="width: 100%; height: auto;">
+Here is a `.gitignore` example:
 
-With the open-source nature of web3 and crypto, all the smart contracts you create or use are visible. You can scrutinize the code, learn from it and develop your skills.
+```
+# Compiler files
+cache/
+out/
 
-<img src="/foundry-fund-me/21-github/github2.png" style="width: 100%; height: auto;">
+# Ignores development broadcast logs
+!/broadcast
+/broadcast/*/31337/
+/broadcast/**/dry-run/
+/broadcast/
 
-If you are eager to contribute, most of these protocols present grants and will recompense you for your contribution to their code. Alternatively, if you're keen on acquiring knowledge, you can generate pull requests to the codebases.
+# Docs
+docs/
 
-When I was new to web three, one of the potent approaches I applied was making contributions to the Brownie Repo, a Pythonic smart contract framework aligned with Foundry. This process accelerated my learning and enabled me to interact and connect with several individuals in the community. Remember, GitHub profiles are crucial when applying for jobs. Hence, do your best to make your profile stand out.
+# Dotenv file
+.env
 
-## GitHub and Decentralized Git Solutions
+/lib
 
-Although GitHub is a centralized company, there are several decentralized git solutions presently under development. However, none of these are currently popular. If you want to get started or want a quick start, [GitHub docs](https://docs.github.com/en) provides numerous sets of documentation which you can refer to.
+.keystore
+```
 
-You should have a GitHub profile already set up. If you want to create a repo, you can utilize the 'Create a repo' section. Here, you'll learn to establish a repo directly via the website.
+Following this point, we will assume that you have your own GitHub account. If not please read [this page](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github) to find out how to get one. Having a GitHub account opens up a ton of possibilities in terms of developing your project or contributing to existing open-source projects. You have the option of forking an existing project and building on top of it, enhancing or adding extra functionality. You can open up issues on existing projects and make contributions to the codebases of other people, there are a lot of stories about people who contributed to other people's code and formed a strong bond and found business partners and friends that way. Moreover, GitHub profiles are crucial when applying for jobs. Safe to say, that having a great GitHub profile that's interesting and stands out can open up a world of opportunities.
 
-However, creating a repo from the command line is advisable because it enables you to work without logging onto the internet every time you change your code.
+If you want to get started or want a quick start, [GitHub](https://docs.github.com/en) docs provide numerous sets of documentation that you can refer to. In this lesson, we will learn how to do all these using our terminal and not the GitHub website interface.
 
-This process involves following a specific documentation called adding locally-hosted code to GitHub. As the name suggests, we want to push our locally-hosted code to GitHub.
+Before proceeding further, try running `git version` in your terminal. 
 
-Before proceeding further, ensure that Git is installed on your device. Directions on how to install Git can be found [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+If you receive an output similar to this `git version 2.34.1` then you have correctly installed Git on your device. If not please follow the directions on how to install Git. You can find them [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
-A successful installation would display the Git version when `git version` is run. In case it doesn't, pause and install Git. You can utilize chatgbt, an AI tool, to help troubleshoot any installation issues.
+Ok, let's add our project to GitHub. Use the [following page](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github) as a support material.
 
-With Git installed, you can access all of the features of Git, such as commits and logs. Use `git status` to view your repository status and `git log` to view a history of your commits.
+The first thing we need to do is to make sure we are in the **root directory of our project**. Then usually one calls `git init -b main` to init the Git repository. Foundry initiates a Git repository by default.
 
-## Pushing Code to GitHub
+1. Try calling `git status`.
+        You should receive an output that's similar to this:
 
-Use the command `git add .` to add all the folders and all the files to your git status, except for the ones in the git ignore. After adding the files, use `git status` to see what files and folders will be pushed to GitHub. Furthermore, do remember to check if the `env` is included or any sensitive information is included.
+        On branch main
+        Your branch is up to date with 'origin/main'.
 
-The next step involves committing your tasks. You can use `git commit -m "your message`" to commit your tasks. After committing, use `git status` to view your commits. With everything in order, the last step is to push the commit to GitHub using `git push origin main`. In case of any errors, employ chatgbt or any other AI to help troubleshoot the problem.
+        Changes to be committed:
 
-Voila! By now, your project should be visible on your Github repository.
+Git status shows your current status, i.e. what did you modify, what is staged and not staged. It also shows untracked files.
 
-## Updating the README
+**IMPORTANT: Do you see a `.env` file here?**
 
-An often overlooked yet important aspect is updating your README file. It should include an 'About' section explaining your project and a 'Getting Started' section detailing the requirements and quick start instructions.
+You shouldn't! The files you see in `git status` are going to be posted for everyone to see.
 
-Once you have filled out your README, commit it to your repository using `git add .`, `git commit -m "updated README"`, `git push`.
+2. Try running `git init -b main`.
+        You should receive an output that's similar to this:
+        
+        warning: re-init: ignored --initial-branch=main
+        Reinitialized existing Git repository in 
+        
 
-Without a doubt, completing these steps successfully is worthy of celebration. Feel free to share your success and excitement with the developer community on social media. Remember, celebrating small wins on your journey is instrumental to maintaining motivation and enjoying your coding journey.
+The next step is adding our files.
+The `git add` command is a fundamental tool in the Git version control system. It's used to stage changes you've made to files in your working directory for inclusion in the next commit.
 
-That's all the instructions you need to push your project on GitHub with Hardhat FreeCodeCamp. Keep practicing, keep pushing code, and soon enough, you'll be confident in using Git!
+In your terminal call `git add .`.
+Run `git status` again and compare its output to the output you received before. You'll see that the section `Changes to be committed:` is way bigger and green. All these files are `staged` and are waiting to be committed.
+
+We mentioned earlier that Git is used for version control. But what is that?
+
+Version control is a system that tracks changes to a collection of files over time. It allows you to revert to previous versions of files, see who made changes and when, and collaborate with others on projects. 
+
+Run `git log` in your terminal. This provides a list of commits. You can revert your code to these versions.
+
+Let's commit our code. Run `git commit -m 'our first commit!'`
+
+Ok, let's run `git status` again.
+
+```
+On branch main
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+  (commit or discard the untracked or modified content in submodules)
+```
+
+Let's run `git log` again.
+
+You'll get an output similar to:
+```
+commit c3cd23888f84531a9a7a7a0c4e2070039a7a0b63 (HEAD -> main)
+Author: InAllHonesty <inallhonesty92@gmail.com>
+Date:   Wed May 15 12:49:50 2024 +0300
+
+    our first commit!
+```
+
+Great!
+
+All this is stored locally. As the `git status` indicated we will use `git push` to add this code to our profile.
+
+There are multiple ways to do this, we will use `git` to push this code to GitHub. We will follow the indications available on this [page](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github#adding-a-local-repository-to-github-using-git).
+
+Let's go to `GitHub.com` and create a new repository.
+
+1. Go on `GitHub.com`;
+2. Click on `+` then on `New Repository`;
+3. Give it a cool name that is available;
+4. Add a description if you want and make the repository public;
+5. Don't add a README file or a `.gitignore template`;
+6. Click on `Create repository`;
+
+Great! Now go to the `Quick setup — if you’ve done this kind of thing before` and copy the `HTTPS` link (mine looks like this: https://github.com/inallhonesty/fundMe-lesson.git)
+
+Run the following command, replacing my link with your link:
+
+`git remote add origin https://github.com/inallhonesty/fundMe-lesson.git`
+
+Cool! Now run `git remote -v`.
+
+Here we can see all the sources we can pull and push code from/to.
+
+Next call the following command:
+
+`git push -u origin main`
+
+This tells git to push all of our code to the URL associated with the origin URL, on the main branch.
+
+Some things can go wrong at this point, all of them are related to access and configuration. We encourage you to paste the error in ChatGPT or any other similar tool you chose. Ai is good at troubleshooting GitHub!
+
+Hopefully, everything went smoothly! If it didn't, and you are unable to find a solution, please come and ask on Cyfrin Discord, in the Updraft dedicated section and channels.
+
+Go back to the repository we created and refresh.
+
+Great, now your code is on GitHub. The first thing we should do is create a better README.md file. Remember the lesson we had about this!
+
+Go inside the `README.md` file in your VSCode. Create some titles, provide some info about the project, and specify some requirements and a way to quick-start the project. Save and close the file.
+
+Let's repeat the commands we used above:
+
+```
+git add .
+git commit -m 'Update the README.md file'
+git push origin main
+```
+
+Go back on GitHub and refresh to see your new README! Super nice!
+
+Another important git command is `git clone`.
+
+The `git clone` command in Git is used to create a copy of a remote repository on your local machine.
+
+Let's say you find a project that you like on GitHub: https://github.com/Cyfrin/2023-10-PasswordStore
+
+You want to build on top of this project. How do you get it on your local system?
+
+When you open the link above, you will find a green button called `<> Code v`. Press it, then press on `Local` then press `HTTPS`. Now if you copy that link and call the following command in the terminal:
+
+`git clone https://github.com/Cyfrin/2023-10-PasswordStore.git` 
+
+you will obtain a fresh copy of the `PasswordStore` code inside a new folder with the name of the repository. In our case `2023-10-PasswordStore`.
+
+**Note: Keep in mind that the new folder will be created in your current working directory. You might not want to create it inside the FundMe project directory**
+
+You can now run the following commands to open up a new VSCode instance starting from the newly created folder:
+
+```
+cd 2023-10-PasswordStore
+code .
+```
+
+Amazing! You can now show off your newly created GitHub project! Click [here](https://twitter.com/intent/tweet?text=I%20just%20made%20my%20first%20Smart%20Contract%20repo%20using%20@solidity_lang,%20foundry,%20@chainlink,%20@AlchemyPlatform,%20and%20more!%0a%0aThanks%20@PatrickAlphaC!!) to tweet about this celebratory moment! Make sure to link your repository!

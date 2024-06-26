@@ -2,44 +2,40 @@
 title: Incident Response
 ---
 
+**Follow along with this video:**
+
 ---
 
-### The War Room Ethos
+### Introduction to Incident Response
 
-In the face of these digital skirmishes, it's essential to anchor your fortitude. As the saying goes, "Forewarned is forearmed." In the realm of cybersecurity, nothing could be truer. Begin with a time-honored rite—the disaster recovery drill.
+Welcome back! You've learned a lot about setting up security policies, monitoring, and even building your own Forta bot. Now, let's focus on incident response—what to do when something goes wrong.
 
-"Set up a war room call and we're going to figure this out." These should be your words of resolution when the alarm bells ring. Seize control of the chaos. The war room is your command center, the round table where strategies are drawn and victories secured. Here's a pro tip: while still a beta feature, the Seal War Room Practice offers a simulation battleground to hone your skills. Fill out the form, dive into the GitHub document, and conduct an incident response practice. Why? Because when the moment strikes, you should be as collected as a chess grandmaster in a tournament final.
+### Preparing for Incidents
 
-## War Room Prep Steps:
+Having a robust incident response plan is crucial. Here are key steps to ensure you're prepared:
 
-- Sign Up for Seal War Room Beta
-- Review Live Scenario Documentation
-- Engage in Mock Incident Drills with Your Team
+1. **Disaster Recovery Drills**: Regularly conduct drills to practice handling incidents. This helps your team stay calm and collected during actual crises.
+2. **War Rooms**: Participate in war rooms where developers and security researchers come together to handle hacking events. Seal offers a war room practice in beta. Sign up [here](https://form.typeform.com/to/jJoH2ktE?typeform-source=securityalliance.org).
+3. **Live Scenario Documentation**: Refer to the Seal drill documentation [here](https://securityalliance.notion.site/Live-Scenario-Documentation-520e7db48e2143f7bc41b729fb219996) for practicing incident response.
 
-### Stay Frosty, Stay Sharp
+### Tools and Resources
 
-When the digital sirens sound, your team's response should be as swift and composed as a ballet. How to achieve this state of zen? Practice. Assemble your network guardians and—unexpectedly—trigger a fault within the week. Observe their response, scrutinize their approach, and learn. The aftermath is just as critical: the post-mortem. It's in these reflective sessions that your squad becomes wiser, raring to outsmart the next digital breach.
+- **Seal 911 Bot**: Contact the Seal 911 bot on Telegram [here](https://t.me/seal_911_bot) if you discover a vulnerability or need immediate assistance. They act as smart contract firefighters.
+- **Bug Bounty Platforms**: Utilize bug bounty platforms for reporting live code bugs. These platforms handle the entire disclosure process, ensuring vulnerabilities are addressed promptly.
 
-And don't go thinking you're alone in this crusade. Security alliances like Seal are the smart contract firefighters—your beck-and-call battalion ready to extinguish flames of vulnerability. And remember the Seal 911 bot: if you're bewildered about a contact protocol in the heat of an incident, this wingman is there for rescue.
+### Conducting Post-Mortems
 
-### Bookmark the Future
+After an incident, conduct a post-mortem analysis to understand what went wrong and how to prevent it in the future. This process is essential for improving your incident response strategy.
 
-While the current narrative doesn't include a play-by-play of Seal drills or war games, rest assured, stalwart defenders, updates are on the horizon. Cypher and Updraft will be the beacons signaling new information. But don't wait for these tidings. Carve out time with your comrades-in-arms before deployment and run through a mock scenario. Test. Tweak. Troubleshoot. It's in these fire drills that your team's true readiness shines.
+### Recommendations
 
-"Experience is the teacher of all things," as the venerable Caesar once said. So, make certain that you and your team have war room experience—invaluable when the real battle commences, allowing you to make decisions with clarity and precision.
+1. **Run Mock Scenarios**: Before deployment, simulate potential issues to see how quickly your team can resolve them.
+2. **Stay Updated**: Keep an eye on updates from Cyfrin Updraft for new walkthroughs on Seal drills, war games, and disaster recovery scenarios.
 
-### Bounty of the Bug Hunters
+### Conclusion
 
-Let's not forget the unsung heroes of our digital domain: bug bounty hunters. These digital trackers play a pivotal role in the security disclosure landscape. If you discern a bug skittering through live code, lean on bug bounty platforms to bear the weight. These platforms streamline the submission process, mirroring the way you'd tackle an audit report on services like Codehox.
+Experience in handling incidents is invaluable. By practicing in a controlled environment, you'll be better prepared to respond to real threats calmly and effectively. Bug bounties are an integral part of security disclosure, and leveraging these platforms ensures a structured approach to vulnerability management.
 
-Discover an exploit? Share your findings on a bug bounty platform.Draft your proof of code? Dust off those auditing skills and transfer them to your bug bounty submission.
+---
 
-## Bug Bounty Submission Guide:
-
-1. Identify the bug or potential vulnerability.
-2. Prepare a proof of concept code that clearly replicates the issue.
-3. Submit your findings and proof to a reputable bug bounty platform.
-
-In the cyber battlefield, always remember—composure and preparedness are your best allies. Keep the tone confident, the drills regular, and your strategy agile. Let's nurture a community where bug bounty hunters and incident response teams unite, responding to each challenge not with dread but with a collective, composed resolve.
-
-Remember, fellow cyber warriors: when the digital tempest strikes, you aren't just trying to weather it—you're there to command the storm.
+Stay proactive in securing your protocols and regularly update your incident response plans to keep your team prepared for any situation.
