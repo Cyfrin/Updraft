@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ## Setting up Metamask for Ethereum Transactions
 
-In this section, we will learn how to make a transaction on a test Ethereum blockchain using Metamask, a popular cryptocurrency wallet.
+In this lesson, we will learn how to make a transaction on a test Ethereum blockchain using Metamask, a popular cryptocurrency wallet.
 
 ### Visiting Ethereum Website
 
