@@ -19,9 +19,15 @@ Consider the case where we divide 10 by 10 using the mod function. Since there i
 This logic can be extended to all numbers:
 
 - 2 mod 2 equals zero because 2 and 2 divide evenly.
-- 2 mod 3 equals one because there's one left over.
-- 2 mod 6 equals zero because 2 divides into 6 evenly.
-- 2 mod 7 equals one because there's one left over after 2 divides into 7 three times.
+- 3 mod 2 equals one because there's one left over.
+- 6 mod 2 equals zero because 6 divides evenly by 2.
+- 7 mod 2 equals one because there's one left over after 7 divides into 2 three times.
+
+When a smaller number is taken modulo by a larger number, the result will always be the smaller number itself. This is because the smaller number is not large enough to be divided by the larger number even once.
+
+- 2 mod 3 equals two because two is less than three, and two becomes the remainder
+- 2 mod 6 equals two because two is less than six, and two becomes the remainder
+- 2 mod 7 equals two because two is less than seven, and two becomes the remainder
 
 Through these examples, we can see that the modulo function helps us find the remainder of a division operation.
 
