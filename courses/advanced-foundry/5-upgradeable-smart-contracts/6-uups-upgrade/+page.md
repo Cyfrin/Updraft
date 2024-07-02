@@ -2,71 +2,122 @@
 title: UUPS Upgrade
 ---
 
-_**Follow along with this video.**_
-
-
+_Follow along the course with this video._
 
 ---
 
-On this sublesson we are going to write the script to upgrade the Box contract we made on past sublessons using a new contract called `UpgradeBox.s.sol`.
+### UUPS Upgrade
 
-##  Write and Deploy an Upgrade Box Script
-
-Having installed the DevOps tool, let's move to the meat and potatoes: the upgrade box script creation.
-
-We'll start by defining our pragma and importing the necessary dependencies
+Let's keep our momentum from the last lesson and jump right into writing our UpgradeBox.s.sol script. The boilerplate for this will be as expected.
 
 ```js
-pragma solidity ^0.8.19;
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.18;
 
 import {Script} from "forge-std/Script.sol";
-import {BoxV1} from "../src/BoxV1.sol";
-import {BoxV2} from "../src/BoxV2.sol";
-import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
-import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
+
+contract UpgradeBox is Script {
+    function run() external returns (address){}
+}
 ```
 
-Define a function, `run`, which will return the proxy
+Alright, in order to reference our deployment of ERC1967Proxy, we're going to use our DevOps Tools library again to assist. Begin by installing it.
+
+```bash
+forge install Cyfrin/foundry-devops --no-commit
+```
+
+We can then import this and leverage the get_most_recent_deployment functionality to acquire our ERC1967Proxy address.
 
 ```js
-function run() external returns (address) {
-        address mostRecentlyDeployedProxy = DevOpsTools
-            .get_most_recent_deployment("ERC1967Proxy", block.chainid);
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.18;
+
+import {Script} from "forge-std/Script.sol";
+import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
+
+contract UpgradeBox is Script {
+    function run() external returns (address){
+        address mostRecentDeployment = DevOpsTools.get_most_recent_deployment("ERC1967Proxy", block.chainid);
+    }
+}
+```
+
+Next, we'll need to import and deploy BoxV2!
+
+```js
+...
+import {BoxV2} from "../src/BoxV2.sol";
+
+contract UpgradeBox is Script{
+    function run() external returns (address){
+        address mostRecentDeployment = DevOpsTools.get_most_recent_deployment("ERC1967Proxy", block.chainid);
 
         vm.startBroadcast();
         BoxV2 newBox = new BoxV2();
         vm.stopBroadcast();
-        address proxy = upgradeBox(mostRecentlyDeployedProxy, address(newBox));
-        return proxy;
     }
+}
 ```
 
-
-
-## Upgrade the Box
-
-
-Initializing a proxy upgrade, we'll create a new function `upgradeBox`. This function will take in two parameters: the address of our deployed proxy and the address of our newly deployed Box v2. We will then return the proxy address.
+In order to modularize things a bit for the tests we'll write in the next lesson, we'll write an `upgradeBox` function in which our proxy is called.
 
 ```js
- function upgradeBox(
-        address proxyAddress,
-        address newBox
-    ) public returns (address) {
-        vm.startBroadcast();
-        BoxV1 proxy = BoxV1(payable(proxyAddress));
-        proxy.upgradeTo(address(newBox));
-        vm.stopBroadcast();
-        return address(proxy);
-    }
+function upgradeBox(address proxyAddress, address newBox) public returns (address) {
+    vm.startBroadcast();
+    BoxV1 proxy = BoxV1(proxyAddress);
+    proxy.upgradeTo(address(newBox));
+    vm.stopBroadcast();
+
+    return address(proxy);
+}
 ```
 
+> [!NOTE]
+> We're unable to call a function on an address provided as a parameter here, but by wrapping the address in BoxV1 (which needs to be imported), we provide our function the ABI necessary to reference the upgradeTo function within the proxy address.
 
-So if the journey was a bit challenging, let's summarize what's actually happening in layman's terms.
+Now, we can add upgradeBox to our scripts run function.
 
-<img src="/upgrades/6-upgrade/up1.png" style="width: 100%; height: auto;">
+```js
+// SPDX-License-Identifier: MIT
 
-Simple, right? Don't believe it yet? It's alright, let's prove it with a test!
+pragma solidity ^0.8.18;
 
-For now, happy coding!
+import {Script} from "forge-std/Script.sol";
+import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
+import {BoxV1} from "../src/BoxV1.sol";
+import {BoxV2} from "../src/BoxV2.sol";
 
+contract UpgradeBox is Script {
+    function run() external returns (address) {
+        address mostRecentDeployment = DevOpsTools.get_most_recent_deployment("ERC1967Proxy", block.chainid);
+
+        vm.startBroadcast();
+        BoxV2 newBox = new BoxV2();
+        vm.stopBroadcast();
+
+        address proxy = upgradeBox(mostRecentDeployment, address(newBox));
+    }
+
+    function upgradeBox(address proxyAddress, address newBox) public returns (address) {
+        vm.startBroadcast();
+        BoxV1 proxy = BoxV1(proxyAddress);
+        proxy.upgradeTo(address(newBox));
+        vm.stopBroadcast();
+
+        return address(proxy);
+    }
+}
+```
+
+### Wrap Up
+
+We now have the ability to programmatically upgrade our BoxV1 protocol to BoxV2!
+
+In this UpgradeBox script, we are acquiring our most recent ERC1967 deployment by leveraging the DevOpsTools library. We're then deploying BoxV2 and then calling our upgradeBox function. This function passes our new BoxV2 address to our proxy, upgrading the protocol's implementation address!
+
+In the next lesson we'll set up some tests to see this in action.
+
+Let's gooooo!

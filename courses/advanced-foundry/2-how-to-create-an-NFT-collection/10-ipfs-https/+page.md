@@ -4,61 +4,51 @@ title: The issue with IPFS vs HTTPS
 
 _Follow along the course with this video._
 
-
-
 ---
 
+### The issue with IPFS vs HTTPS
 
-In the world of **Non-Fungible Tokens (NFTs)**, several questions often arise about where and how these digital assets should be stored. In this blog post, we'll discuss two main topics: the potential issues related to storing NFTs on IPFS and how to use *abi encode packed* for creating on-chain SVGs.
+In this lesson we'll discuss two ways we can reference our data in `IPFS` and ways we can strengthen the hosting of it to ensure it's always made available.
 
-## Part 1: What's The Issue with IPFS?
+First things first: Let's discuss the **InterPlanetary File System (IPFS)** and the pros and cons associated with it.
 
-First things first: Let's discuss the **InterPlanetary File System (IPFS**), a popular decentralized storage system for NFTs.
+### IPFS
 
-You might wonder - Is it a good idea to host my precious NFTs on IPFS? Isn't it better than the commonly used Https and websites for storing digital assets?
+We learnt previously that there are two ways to reference the location of data hosted by `IPFS`. We can point directly to the `IPFS` network with the syntax `ipfs://<CID>` _or_ we can use the `IPFS Gateway` and point to an IPFS server via `https://ipfs.io/ipfs/<CID>`.
 
-Well, let's paint a clear picture for you.
+There are some important considerations to keep in mind here. If we decide to use the `IPFS Gateway`, this is essentially pointing to a website hosted on a server by `IPFS`. If this website or server goes down for any reason the data we're pointing to will be unretrievable!
 
-### What's Wrong with Using Websites for Storing NFTs?
+Imagine losing the art of your NFT forever!
 
-Many NFT creators use websites—with https—to store their tokens. However, should these websites go offline or worse, collapse, the NFT owner finds themselves with a broken JPEG link and a, dare we say, worthless NFT!
+A safer methodology is pointing to the `IPFS` network directly, but this comes with caveats. While the URI is pointing to a decentralized network, assuring the data is accessible so long as a node is still hosting it, most browsers and services don't natively support interfacing with the `IPFS` network. This can make viewing and interacting with your NFT cumbersome.
 
-Despite the apparent risk, this storage option remains popular because it's significantly cheaper and comfortable to spin up an IPFS node and pin your data to the node.
+In addition to the above, the `IPFS` network doesn't automatically distribute all data amongst all nodes on the network (like a blockchain would). Instead it relies on nodes pinning the data they find valuable to assure it's available to the rest of the network. If I'm the only person pinning my data on `IPFS`, I'm not any more decentralized than using the `IPFS Gateway`.
 
+**_So, how do we solve this?_**
 
-### Why IPFS Might Not Be The Best Option Either
+### Pinning Services
 
-Compared to storing digital assets on a website, IPFS is undoubtedly a better choice. It is a decentralized storage platform, meaning that it allows users to maintain control over their data. Furthermore, on IPFS, anyone can pin the NFT data and keep the image accessible permanently.
+Fortunately, there are services available which developers can use to pin their data for them, decentralizing access to it. One such service is [**Pinata.cloud**](https://www.pinata.cloud/).
 
-However, IPFS has its pitfall. If a creator's IPFS node goes offline (like turning off their PC), it could result in an inaccessible file. That means anyone trying to access that NFT on platforms like MetaMask or OpenSea would stumble upon a broken JPEG image, not the intended item.
+<img src="/foundry-nfts/10-ipfs-https/ipfs-https1.png" width="100%" height="auto">
 
-The fact that others can pin the NFT data offsets this inconvenience to an extent. But, how many users actually pin data and how reliable can that be?
+Once an account is created and you've logged in, the UI functions much like an `IPFS` node and you can simply upload any files you want the service to pin on your behalf.
 
-This is where services like **Piñata Cloud** come into the picture. They keep your metadata for your stored NFTs up even if your IPFS node goes offline. Protocols like these provide an additional security blanket for your digital assets.
+<img src="/foundry-nfts/10-ipfs-https/ipfs-https2.png" width="100%" height="auto">
 
+Once uploaded, `Pinata` will provide a `CID`, just like `IPFS` itself will.
 
-## Part 2: Putting On-chain SVGs to Work
+<img src="/foundry-nfts/10-ipfs-https/ipfs-https3.png" width="100%" height="auto">
 
-While IPFS remains a viable option—despite its potential fallibility—enterprising NFT creators and users have found another way to store NFTs—on-chain SVGs.
+> [!TIP]
+> Whenever I work on a project, I will upload my images/data both to my local `IPFS` node as well as `Pinata` to assure the data is always pinned _somewhere_.
 
-"*So, what exactly is an SVG.*", you ask? Let's delve deeper.
+### Wrap Up
 
-### An Introduction to SVGs
+So, in summary, pointing to the `IPFS Gateway`, not great. Pointing to the `IPFS` network itself is a little better and more decentralized, but comes with it's own issues. What if I told you there's an even better way to store our images?
 
-Scalable Vector Graphics (SVGs) are a way to represent images and graphics. When stored on the blockchain, these images become 100% immutable and decentralized.
+In the next lesson we'll discuss `Scalable Vector Graphics`, or `SVGs` and how images of this type can be stored _on-chain_ making them permanently accessible!
 
-Creators can encode their NFTs as SVG types; thus, the entire image is stored directly on the blockchain. Even though this method may be a little more expensive than IPFS, it's a surefire way to ensure the longevity and accessibility of your precious NFTs.
+See you there!
 
-
-### SVG NFT
-
-
-<img src="/foundry-nfts/10-svg/svg1.png" style="width: 100%; height: auto;">
-
-As illustrious as this looks, the actual visual output of SVGs can sometimes be unsightly. But remember, beauty lies in the eye of the beholder. The real allure of on-chain SVGs is the knowledge that your NFT remains accessible, immutable, and in its truest form, no matter what.
-
-
-<img src="/foundry-nfts/10-svg/svg2.png" style="width: 100%; height: auto;">
-
-By understanding how NFT storage works, you can ensure your digital assets' safety and longevity. The choice—whether IPFS, on-chain SVGs, or a comprehensive mix of both—is yours to make. Happy creating!
-
+<img src="/foundry-nfts/10-ipfs-https/ipfs-https4.png" width="100%" height="auto">

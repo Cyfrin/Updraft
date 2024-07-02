@@ -2,58 +2,47 @@
 title: Introduction
 ---
 
-
-
 ---
 
-# Deep Dive into Security Testing with the Thunder Loan Audit
+### Introduction to Thunderloan
 
-Welcome back to your favorite security course repository! I trust you've spent some time on that fuzzing exercise because this lesson is going to be a _real deep dive_ into security testing. We've already learned tons of tools and skills, and now it's time to really apply and hone those skills as we dig into _Section Six: Thunder Loan Audit._
+I hope you took some time to go through the fuzzing exercises from the last section, because it's only going to ramp up from here.
 
-## The Context: Thunder Loan Protocol
+In Section 6: Thunder Loan we'll be doing _a lot_ of testing. Strap in!
 
-Let's begin by git-cloning this lesson's code fro Github.
+You may as well begin by cloning the Thunder Loan repo into your project folder.
 
-![](https://cdn.videotap.com/iLoskdCcOE28WEUkiXTF-68.76.png)
+```bash
+git clone https://github.com/Cyfrin/6-thunder-loan-audit.git
+cd 6-thunder-loan-audit/
+code .
+```
 
-This richly detailed protocol we'll be auditing has a fantastic logo - a frog with a thunder bolt on its chest standing over a pile of money. However, beneath this cool exterior, there lies a multitude of bugs waiting to be smoked out. This protocol also gives us a detailed experience of two of the most important DeFi protocols in the world, _Aave and Compound_, as it's majorly based on these.
+**_What else will we be covering?_**
 
-## DeFi, Borrowing, and Lending
+Let's go through a few of the things we'll learn, as outlined in the [**GitHub repo**](https://github.com/Cyfrin/security-and-auditing-full-course-s23/tree/main) associated with this course.
 
-These protocols are the crux of DeFi borrowing and lending, a fundamental financial concept in the DeFi universe. Whilst auditing the Thunder Loan protocol, we'll naturally delve a bit into understanding Aave and Compound.
+First off we're going to dive deep into DeFi's borrowing and lending systems. The Thunder Loan protocol is based specifically off of [**Aave**](https://aave.com/) & [**Compound**](https://compound.finance/) which are two of the most significant protocols in DeFi.
 
-## Pricing Information and Oracles
+We're also going to get more exposure to `Oracles` and how a protocol can leverage [**`Chainlink`**](https://chain.link) and similar services to integrate reliable price feed data in a decentralized way.
 
-We had a touch on this in the Puppy Raffle exercise. However, here we delve deep into the significance of sourcing accurate pricing information for assets and how to ace this process effectively as we interact with Oracles.
+Additionally this is going to be our first mock audit of an upgradeable contract. Proxies and the like are very common in live scenarios so your experience assessing them here will be invaluable. Things we'll be covering include:
 
-> "A lot of people use \[upgradable contracts\]. We need to know how to keep them secure."
+- [UUPS & Transparent](https://docs.openzeppelin.com/contracts/4.x/api/proxy)
+- [Multi-facet Proxy (Diamond)](https://eips.ethereum.org/EIPS/eip-2535)
+- [Foundry Proxies & Upgrades](https://github.com/Cyfrin/foundry-upgrades-f23)
+- [What are upgradeable smart contracts?](https://www.youtube.com/watch?v=bdXJmWajZRY)
 
-## Upgradable Contracts
+We'll also be learning a bunch of new tooling such as:
 
-For the first time, we'll be interfacing with an upgradable contract, a common feature in the wild world of Web 3. Now, whether or not these contracts are optimum is up for debate, but their usage is indeed undeniable.
+- [**Upgradehub**](https://upgradehub.xyz/) - Allows you to view a history of changes during upgrades by entering a contract address - very cool!
 
-## Multifaceted Proxies
+Last but not least, we're going to get our hands dirty with `flash loans`, a hot topic in DeFi. We'll learn how they work, what powers them and the types of exploits they enable.
 
-We are not going to be delving deep into the multifaceted proxy, also known as _the diamond standard_, but we're definitely going to talk a bit about its functionalities and distinctive features.
+From the perspective of DeFi, this is section on Thunder Loan is going to be one of **_the most important_** in the whole course. The knowledge you take away from here will be directly applicable to real world security reviews, preparing you for larger and more complex code bases.
 
-![](https://cdn.videotap.com/bnzGy4zQOk9RwQjEXVOh-189.08.png)
+Before we dive into the review, remember the `audit-data` branch of this section's GitHub repo serves as an 'answer key', if you get stuck you can always refer to this branch for clues.
 
-Moreover, we'll be learning about another brilliant tool called the **Upgrade Hub**. This tool comes in handy for discerning which contracts have been upgraded and which upgrades might be construed as rug pulls. By inserting a contract address, you'll be able to view its complete upgrade history, appearing similarly to git diffs.
+> **Note:** As always, there may be bugs in these code bases that we don't cover, feel free to write your own findings for these as well!
 
-> "Upgrades are highly sensitive in the Web 3 world. This \[Upgrade Hub\] is a great place to learn about and work with proxies and view their history."
-
-## Centralization and Defi Security Audits
-
-Our previous interactions with the T-SWAP or Uniswap audit only scratched the surface, introducing us to DEXes, invariants, and important DeFi protocols. With Thunder Loan, we’re moving to a new level.
-
-This protocol’s code base has many common DeFi bugs, which make this one of the most important audits you can learn from. In addition to these security flaws, it introduces the concept of flash loans—a "monster" tool with an enormous amount of information to explore.
-
-By the time you've audited this code base, which consists of multiple folders and contracts and guides you through a more advanced protocol, you'll significantly enhance your understanding of DeFi security audits.
-
-## Price Oracle Manipulations
-
-According to the curriculum, price oracle manipulation was the principal attack for the first half of 2023. So as we audit the Thunder Loan protocol, we'll be learning how to tackle this risk head-on.
-
-> "This course provides an extensive and comprehensive walk-through of the protocol that’s packed with so many common DeFi bugs that you will learn plenty along the way.”
-
-To wrap it up, the full report and notes on how to generate the audit report are waiting in the Thunder Loan git repo’s `audit-data` branch as usual. Brace yourself and get ready to unearth a treasure trove of bugs and become a better security tester while we audit the Thunder Loan protocol!
+Let's get started.

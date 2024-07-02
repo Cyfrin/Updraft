@@ -2,40 +2,141 @@
 title: Final Invariant & Tweaks
 ---
 
-
-
 ---
 
-# Diving into Invariants: Writing Tests in Coding
+### Final Invariant & Tweaks
 
-In this blog post, we will uncover the steps to set up tests for an invariant in our code. Precisely, we will write a simple test and furthermore guide you through the setup for our handler.
+A reminder of where Invariant.t.sol sits currently:
 
-## Writing the Test
+<details>
+<summary>Invariant.t.sol</summary>
 
-After establishing our invariant, it's time to proceed to writing a basic test. This test could be as simple as asserting that the actual `Delta X` from our handler should equal the expected `Delta X`. Here is how we could write this test.
+```js
+// SPDX-License-Identifier: MIT
 
-```python
-assert handler.actualDeltaX == handler.expectedDeltaX
+pragma solidity ^0.8.20;
+
+import { Test } from "forge-std/Test.sol";
+import { StdInvariant } from "forge-std/StdInvariant.sol";
+import { ERC20Mock } from "test/mocks/ERC20Mock.sol";
+import { PoolFactory } from "../../src/PoolFactory.sol";
+import { TSwapPool } from "../../src/TSwapPool.sol";
+
+contract Invariant is StdInvariant, Test {
+    ERC20Mock poolToken;
+    ERC20Mock weth;
+
+    PoolFactory factory;
+    TSwapPool pool; // poolToken, weth
+    int256 public constant STARTING_X = 100e18;
+    int256 public constant STARTING_Y = 50e18;
+
+    function setUp() public {
+        poolToken = new ERC20Mock();
+        weth = new ERC20Mock();
+        factory = new PoolFactory(address(weth));
+        pool = TSwapPool(factory.createPool(address(poolToken)));
+
+        poolToken.mint(address(this), uint256(STARTING_X));
+        weth.mint(address(this), uint256(STARTING_Y));
+
+        poolToken.approve(address(pool), type(uint256).max);
+        weth.approve(address(pool), type(uint256).max);
+
+        // Deposit Into Pool
+        pool.deposit(uint256(STARTING_Y), uint256(STARTING_Y), uint256(STARTING_X), uint64(block.timestamp));
+    }
+
+}
 ```
 
-Though I must confess, I often prefer writing `assertEqual` as it usually provides more detailed information, you can certainly opt for our above statement which succinctly accomplishes the task.
+</details>
 
-The actual test, however, functions in rudimentary terms to ensure that our expected delta is aligned with the actual delta in the handler.The expected delta is assigned using the function `Y times X equals K`, which calculates the expected deltas. We then compare the computed deltas to the actual deltas.
+Now that we have everything set up in our `Handler` we can come back to our `Invariant.t.sol`. Our actual test at this point is going to be surprisingly basic because of all the set up we've done!
 
-## Setting Up the Handler
-
-Now, let's dive into actually setting up the handler, which calls for us to move up a bit, retracing our steps.
-
-To initiate the handler setup, we need to first import it. This can be done using the following code:
-
-```python
-import handler from 'handler.t.sol'
+```js
+function statefulFuzz_constantProductFormulaStaysTheSameY() public {
+    assertEq(handler.actualDeltaY(), handler.expectedDeltaY());
+}
 ```
 
-After successfully importing the handler, we can create a new handler using the `new` keyword. This handler takes the parameter as `poolBytes for Array memory`.
+That's literally it. We call `assertEq` and compare our actuals and expecteds for changes in `poolToken` amounts, we'll do one token at a time starting with poolToken.
 
-> Note: All the variables used above can be replaced depending on the specific needs of a project.
+We just need to set up our `Handler` as our target contract now. We'll also set up target function selectors, just like we saw previously.
 
-In conclusion, we have seen how easily we can write the basic structure of a test and set up our handler. The ease at which we can perform these tasks simplifies our coding endeavors and ensures more stable code in the long run.
+```js
+...
+import {Handler} from "./Handler.t.sol";
 
-Remember, while writing tests, our ultimate goal is to ensure that our code behaves as we expect it to under different circumstances. After all, in the words of a wise coder, "Code without tests is bad code.". Make space for tests the next time you code and watch the number of errors drop significantly.
+contract Invariant is StdInvariant, Test {
+    ...
+    Handler handler;
+    ...
+    function setUp(){
+        ...
+        handler = new Handler(pool);
+        bytes4[] memory selectors = new bytes4[](2);
+        selectors[0] = handler.deposit.selector;
+        selectors[1] = handler.swapPoolTokenForWethBasedOnOutputWeth.selector;
+        targetSelector(FuzzSelector({ addr: address(handler), selectors: selectors }));
+        targetContract(address(handler));
+    }
+}
+```
+
+### Wrap Up
+
+Here's Invariant.t.sol all together before we finally run our test, in the next lesson.
+
+```js
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.20;
+
+import { Test } from "forge-std/Test.sol";
+import { StdInvariant } from "forge-std/StdInvariant.sol";
+import { ERC20Mock } from "test/mocks/ERC20Mock.sol";
+import { PoolFactory } from "../../src/PoolFactory.sol";
+import { TSwapPool } from "../../src/TSwapPool.sol";
+import { Handler } from "./Handler.t.sol";
+
+contract Invariant is StdInvariant, Test {
+    ERC20Mock poolToken;
+    ERC20Mock weth;
+
+    PoolFactory factory;
+    TSwapPool pool; // poolToken, weth
+    int256 public constant STARTING_X = 100e18;
+    int256 public constant STARTING_Y = 50e18;
+
+    Handler handler;
+
+    function setUp() public {
+        poolToken = new ERC20Mock();
+        weth = new ERC20Mock();
+        factory = new PoolFactory(address(weth));
+        pool = TSwapPool(factory.createPool(address(poolToken)));
+
+        poolToken.mint(address(this), uint256(STARTING_X));
+        weth.mint(address(this), uint256(STARTING_Y));
+
+        poolToken.approve(address(pool), type(uint256).max);
+        weth.approve(address(pool), type(uint256).max);
+
+        // Deposit Into Pool
+        pool.deposit(uint256(STARTING_Y), uint256(STARTING_Y), uint256(STARTING_X), uint64(block.timestamp));
+
+        handler = new Handler(pool);
+        bytes4[] memory selectors = new bytes4[](2);
+        selectors[0] = handler.deposit.selector;
+        selectors[1] = handler.swapPoolTokenForWethBasedOnOutputWeth.selector;
+        targetSelector(FuzzSelector({ addr: address(handler), selectors: selectors }));
+        targetContract(address(handler));
+    }
+
+    function statefulFuzz_constantProductFormulaStaysTheSameY() public {
+        assertEq(handler.actualDeltaY(), handler.expectedDeltaY());
+    }
+}
+
+```

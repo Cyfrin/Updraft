@@ -2,48 +2,44 @@
 title: Docs
 ---
 
-## 
+_Follow along with the video lesson:_
 
-# Bridging the Gap: Introducing Boss Bridge for ERC20 Tokens
+---
 
-![](https://cdn.videotap.com/7JrqjCcxUyOafjUdWM9V-11.74.png)
+### Docs
 
-## How Does Boss Bridge Work?
+Alright, let's finally get into this. The `README` is going to continue to be useful at this point as we proceed to gain context and understanding of what `Boss Bridge` is meant to do.
 
-In essence, the key function of our Boss Bridge is providing a pathway for users to deposit their tokens. Upon deposit, these tokens are stored securely in an L1 digital vault. The deposit event triggers a subsequent off-chain event which our mechanism discerningly picks up, parses it, and then mints the corresponding amount in L2.
+<details open>
+<summary>README</summary>
 
-> Remember: The main goal here is ensuring user safety and security.
+### Boss Bridge
 
-The first version of the bridge adheres strictly to this ideal and includes several security features.
+This project presents a simple bridge mechanism to move our ERC20 token from L1 to an L2 we're building.
+The L2 part of the bridge is still under construction, so we don't include it here.
 
-## Key Security Features
+In a nutshell, the bridge allows users to deposit tokens, which are held into a secure vault on L1. Successful deposits trigger an event that our off-chain mechanism picks up, parses it and mints the corresponding tokens on L2.
 
-The current version of our Boss Bridge boasts multiple mechanisms aimed at enhancing the security of deposited tokens:
+To ensure user safety, this first version of the bridge has a few security mechanisms in place:
 
-1. The bridge owner has full authority to pause any operations during emergent situations.
-2. Account deposits are permissionless, but to avoid any potential abuse, we have imposed a strict limit on the number of tokens that can be deposited.
-3. All withdrawal requests must be approved by the bridge owner.
+- The owner of the bridge can pause operations in emergency situations.
+- Because deposits are permissionless, there's an strict limit of tokens that can be deposited.
+- Withdrawals must be approved by a bridge operator.
 
-We are focused on continually improving this system, making it even safer and more secure with each update.
+We plan on launching `L1BossBridge` on both Ethereum Mainnet and ZKSync.
 
-![](https://cdn.videotap.com/DSoIzu6Rtt37d8MackPQ-55.77.png)
+### Token Compatibility
 
-## The Launch
+For the moment, assume _only_ the `L1Token.sol` or copies of it will be used as tokens for the bridge. This means all other ERC20s and their [weirdness](https://github.com/d-xo/weird-erc20) is considered out-of-scope.
 
-We are preparing to launch our L1 Boss Bridge on both the Ethereum Mainnet and ZK Sync platforms. Initially, we will use only L1 tokens, or their duplicates, within the bridge system.
+### On withdrawals
 
-**Please note**: At this early stage, other ERC20 tokens will not be supported, and their 'weirdness' is considered out of scope on withdrawals.
+The bridge operator is in charge of signing withdrawal requests submitted by users. These will be submitted on the L2 component of the bridge, not included here. Our service will validate the payloads submitted by users, checking that the account submitting the withdrawal has first originated a successful deposit in the L1 part of the bridge.
 
-## Withdrawal Process
+</details>
 
-In the context of withdrawals, the bridge operator holds the responsibility of signing each withdrawal request submitted by users. These requests are made on the L2 component of the bridge.
+---
 
-Essential point to mention: For a successful withdrawal, our service will check that the account submitting a withdrawal previously initiated a successful deposit on the L1 part of the bridge.
+The docs seem thorough, but unless we have experience with bridges, or similar protocols this is pretty confusing. This would be the point in a private audit that I would ask for some `protocol diagrams`.
 
-![](https://cdn.videotap.com/oRDUILrsz7wMudIoZwVx-76.32.png)
-
-## Making Sense of the Boss Bridge
-
-If this seems a bit overwhelming, it is natural. This is where you might be getting the urge to delve into the protocol design, or you might want to explore the contract and draw up some diagrams on your own.
-
-In either case, these are healthy steps toward understanding the mechanism better. For those willing to roll up their sleeves and create some diagrams, we encourage you to pause right here, grab your notebook, and start sketching. It's a great learning experience!
+I challenge you to pause right now and create some diagrams yourself. In the next lesson we'll go through some together and gain a clearly understanding of what's happening in `Boss Bridge`.

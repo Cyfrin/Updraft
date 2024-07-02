@@ -1,107 +1,494 @@
 ---
-title: Mint DSC
+title: mintDsc
 ---
 
 _Follow along the course with this video._
 
+---
 
+### mintDsc
 
-# Building a Mechanism for Minting Decentralized StableCoin
+Now that we've a way to deposit collateral, the next logical step would be to mint DSC.
 
-In our exciting journey to developing a decentralized finance system, we have reached the point where we are now able to deposit collateral into our system. Now that we have successfully done this, the next logical step is for us to develop a function for minting our Decentralized StableCoin (DSC).
+The `mintDsc` function is likely going to be surprisely complex. There are a number of things we'll need to accomplish when minting our stablecoin. Primarily we'll need to check if the account's collateral value supports the amount of `DSC` being minted. To do this we'll need to engage `Chainlink` price feeds, do value conversions and more. Let's get started.
 
-The minting function, by its nature, is substantially more complex than the deposit feature. It involves, among other things, checking if the collateral value is greater than the amount of DSC to be minted. This function must also take into consideration price feeds and other essential checks. Therefore, its implementation will be our primary focus in this lesson.
+```js
+///////////////////////////
+//   External Functions  //
+///////////////////////////
 
-## Creating the Mint DSC Function
+...
 
-We start by creating the `mintDsc` function, which accepts as its parameter a unsigned integer256, `amountDscToMint`. The parameter allows users to specify the amount of DSC they want to mint.
-
-Let's look at an illustrative scenario: A user deposits $200 worth of ETH as collateral. They may however only want to mint $20 worth of DSC. In this case, they can specify so using the `amountDSCtoMint` parameter.
-
-```javascript
-function mintDsc(unint256 amountDscToMint){}
+/*
+    * @param amountDscToMint: The amount of DSC you want to mint
+    * You can only mint DSC if you hav enough collateral
+    */
+function mintDsc(uint256 amountDscToMint) public moreThanZero(amountDscToMint) nonReentrant {}
 ```
 
-Now we add checks to validate the functionality. It becomes mandatory to ensure that the users mint an amount greater than zero. Also, the function should be non-reentrant to ensure security and maintain control of function calls against the recursion, although in this case, non-reentrancy might not be strictly necessary as it's our DSC token. Don't forget NatSpec!
+We've added our modifiers to protect against reentrancy and constrain the `amountDscToMint` to being above zero. Much like we track the collateral a user has deposited, we'll also have to track the `DSC` which has been minted. Sounds like another mapping!
 
-```javascript
-    /*
-     * @param amountDscToMint: The amount of DSC you want to mint
-     * You can only mint DSC if you hav enough collateral
-     */
-    function mintDsc(uint256 amountDscToMint) public moreThanZero(amountDscToMint) nonReentrant {}
-```
+```js
+/////////////////////////
+//   State Variables   //
+/////////////////////////
 
-## Keeping Track of the Minted DSC
-
-The minting process corresponds to creating debt within our system. Therefore, we will require to keep track of each user's minted DSC.
-
-A suitable way of achieving this is by creating a state variable to map an `address user` to the `uint256 amountDSCMinted`. This can be achieved as follows:
-
-```javascript
+mapping(address token => address priceFeed) private s_priceFeeds;
+DecentralizedStableCoin private immutable i_dsc;
+mapping(address user => mapping(address token => uint256 amount)) private s_collateralDeposited;
 mapping(address user => uint256 amountDscMinted) private s_DSCMinted;
 ```
 
-Our newly created mapping, `s_DSCMinted`, will ensure we keep track of all the minted DSC. If, for instance, a user tries to mint more DSC than their deposited collateral can cover, our function should instantly revert. We will ensure this via a separate internal function named `revertIfHealthFactorIsBroken` that takes user as the input parameter.
+And now, in following `CEI (Checks, Effects, Interactions)`, we'll want to update the user's mapped balance to reflect the amount being minted in our function.
 
-## Addressing the Health Factor &amp; Account Information
+```js
+/*
+    * @param amountDscToMint: The amount of DSC you want to mint
+    * You can only mint DSC if you hav enough collateral
+    */
+function mintDsc(uint256 amountDscToMint) public moreThanZero(amountDscToMint) nonReentrant {
+    s_DSCMinted[msg.sender] += amountDscToMint;
+}
+```
 
-This is where it gets a bit windy. The health factor is a term borrowed from the Aave documentation, which calculates how close to liquidation a user is. We can determine the ratio of collateral to DSC minted using a function called `getAccountInformation`.
+Our next step is something that will warrant it's own function, this is going to be something we check in a few placed in our protocol. We'll name the function `_revertIfHealthFactorIsBroken`. The purpose of this will be to assure that changes in a user's DSC or collateral balances don't result in the user's position being `under-collateralized`.
 
-```javascript
-    function _getAccountInformation(address user)
-        private
-        view
-        returns (uint256 totalDscMinted, uint256 collateralValueInUsd)
+We'll need a new section for this function, according to our contract layout guideline, so let's jump to it.
+
+```js
+///////////////////////////////////////////
+//   Private & Internal View Functions   //
+///////////////////////////////////////////
+
+function _revertIfHealthFactorIsBroken(address user){}
+```
+
+`Health Factor` is a concept borrowed from Aave.
+
+<img src="/foundry-defi/7-defi-mint-dsc/defi-mint-dsc1.png" width="100%" height="auto">
+
+In addition to the above, we'll need a function which checks an account's `Health Factor`. Let's write that now.
+
+```js
+///////////////////////////////////////////
+//   Private & Internal View Functions   //
+///////////////////////////////////////////
+
+function _revertIfHealthFactorIsBroken(address user) internal view {}
+
+/*
+ * Returns how close to liquidation a user is
+ * If a user goes below 1, then they can be liquidated.
+*/
+function _healthFactor(address user) private view returns(uint256){}
+```
+
+So, how are we going to determine an account's `Health Factor`? What will we need?
+
+1. Total DSC minted
+2. Total Collateral **_value_**
+
+In order to do this, we're actually going to create _another_ function, stick with me here. Our next function will return some basic details of the user's account including their `DSC` minted and the collateral value.
+
+```js
+/*
+ * Returns how close to liquidation a user is
+ * If a user goes below 1, then they can be liquidated.
+*/
+function _healthFactor(address user) private view returns(uint256){
+    (uint256 totalDscMinted, uint256 collateralValueInUsd) = _getAccountInformation(user);
+}
+
+function _getAccountInformation(address user) private view returns(uint256 totalDscMinted,uint256 collateralValueInUsd){
+    totalDscMinted = s_DSCMinted[user];
+    collateralValueInUsd = getAccountCollateralValue(user);
+}
+```
+
+A user's total minted `DSC` is easy enough to acquire by referencing our protocol's mapping of this, but a user's collateral value is going to take some math and a price feed. This logic will be held by a new function, `getAccountCollateralValue`. This function we'll make public, so anyone can call it. Private and view functions are the very last thing in our contract layout, so we'll add our new function to the bottom!
+
+```js
+//////////////////////////////////////////
+//   Public & External View Functions   //
+//////////////////////////////////////////
+
+function getAccountCollateralValue(address user) public pure {}
+```
+
+So, how do we determine the total USD value of a user's collateral? Since the user may have multiple types of collateral (wETH and wBTC in our case), we'll need a way to loop through the collateral a user has, acquire the amount of each collateral token and map those amounts to USD values of those amounts.
+
+Since we're only using wETH and wBTC in our protocol, we _could_ hardcode these tokens into the contract, but let's make the protocol a little more agnostic. This will allow someone to deploy their own fork, which accepts their own types of collateral. We'll accomplish this by declaring a new state variable:
+
+```js
+/////////////////////////
+//   State Variables   //
+/////////////////////////
+
+mapping(address token => address priceFeed) private s_priceFeeds;
+DecentralizedStableCoin private immutable i_dsc;
+mapping(address user => mapping(address token => uint256 amount)) private s_collateralDeposited;
+mapping(address user => uint256 amountDscMinted) private s_DSCMinted;
+address[] private s_collateralTokens;
+```
+
+We'll assign an array of compatible token addresses in our constructor:
+
+```js
+///////////////////
+//   Functions   //
+///////////////////
+constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
+    if(tokenAddresses.length != priceFeedAddresses.length){
+        revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
+    }
+
+    for(uint256 i=0; i < tokenAddresses.length; i++){
+        s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
+        s_collateralTokens.push(tokenAddresses[i]);
+    }
+    i_dsc = DecentralizedStableCoin(dscAddress);
+}
+```
+
+With this array set up, we can now loop through this in our `getAccountCollateral` function to calculate it's total value in USD.
+
+```js
+//////////////////////////////////////////
+//   Public & External View Functions   //
+//////////////////////////////////////////
+
+function getAccountCollateralValue(address user) public view returns (uint256 totalCollateralValueInUsd) {
+    for(uint256 i = 0; i < s_collateralTokens.length; i++){
+        address token = s_collateralTokens[i];
+        uint256 amount = s_collateralDeposited[user][token];
+        totalCollateralValueInUsd += ...
+    }
+    return totalCollateralValueInUsd;
+}
+```
+
+Hmm... We've hit the point where we need to know the USD value of our collateral tokens in order to calculate our totals. This is probably _another_ function we're going to want.
+
+```js
+function getUsdValue(address token, uint256 amount) public view returns(uint256){}
+```
+
+This is where our `Chainlink` price feeds come into play. We're going to need to import the `AggregatorV3Interface`, like we did in previous sections.
+
+```js
+import { ReentrancyGuard } from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { DecentralizedStableCoin } from "./DecentralizedStableCoin.sol";
+import { AggregatorV3Interface } from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+```
+
+> [!NOTE]
+> The import path of `AggregatorV3Interface` has changed since the Video's filming, the above should be updated as of `06/10/2024`. If you run into issues, double check the version you're installing.
+
+If you haven't installed the `Chainlink` contract kit yet, let's do that now.
+
+```bash
+forge install smartcontractkit/chainlink-brownie-contracts@0.6.1 --no-commit
+```
+
+And of course, we'll append this to our remappings within `foundry.toml`.
+
+```js
+remappings = [
+  "@chainlink/contracts/=lib/chainlink-brownie-contracts/contracts",
+  "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts",
+];
+```
+
+Alright, back to our `getUsdValue` function.
+
+```js
+function getUsdValue(address token, uint256 amount) public view returns(uint256){
+    AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
+    (,int256 price,,,) = priceFeed.latestRoundData();
+}
+```
+
+This should return the latest price of our token, to 8 decimal places. We can verify the decimals returned by any given price feed by referencing the [**Chainlink Price Feed Contract Addresses**](https://docs.chain.link/data-feeds/price-feeds/addresses?network=ethereum&page=1) page.
+
+Now, we're unable to simply take this returned price and multiply it by our amount, the precision of both these values is going to be different, the amount passed to this function is expected to have 18 decimal places where as our price has only 8. To resolve this we'll need to multiple our price by `1e10`. Once our precision matches, we can multiple this by our amount, then divide by `1e18` to return a reasonably formatted number for USD units.
+
+```js
+function getUsdValue(address token, uint256 amount) public view returns(uint256){
+    AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
+    (,int256 price,,,) = priceFeed.latestRoundData();
+
+    return ((uint256(price * 1e10) * amount) / 1e18);
+}
+```
+
+This looks good.. but I hate magic numbers. Let's declare constants for `1e10` and `1e18` and replace these in our function.
+
+```js
+/////////////////////////
+//   State Variables   //
+/////////////////////////
+
+mapping(address token => address priceFeed) private s_priceFeeds;
+DecentralizedStableCoin private immutable i_dsc;
+mapping(address user => mapping(address token => uint256 amount)) private s_collateralDeposited;
+mapping(address user => uint256 amountDscMinted) private s_DSCMinted;
+address[] private s_collateralTokens;
+
+uint256 private constant ADDITIONAL_FEED_PRECISION = 1e10;
+uint256 private constant PRECISION = 1e18;
+
+...
+
+function getUsdValue(address token, uint256 amount) public view returns(uint256){
+    AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
+    (,int256 price,,,) = priceFeed.latestRoundData();
+
+    return ((uint256(price) * ADDITIONAL_FEED_PRECISION) * amount) / PRECISION;
+}
+```
+
+Much better.
+
+The last thing we need to return to, to finish up, is our `getAccountCollateralValue` function. We can now call `getUsdValue` in our loop to calculate a user's `totalCollateralValue`.
+
+```js
+//////////////////////////////////////////
+//   Public & External View Functions   //
+//////////////////////////////////////////
+
+function getAccountCollateralValue(address user) public view returns (uint256 totalCollateralValueInUsd) {
+    for(uint256 i = 0; i < s_collateralTokens.length; i++){
+        address token = s_collateralTokens[i];
+        uint256 amount = s_collateralDeposited[user][token];
+        totalCollateralValueInUsd += getUsdValue(token, amount);
+    }
+    return totalCollateralValueInUsd;
+}
+```
+
+### Wrap Up
+
+Whew, this long chain of functions all started with...
+
+```js
+function _getAccountInformation(address user) private view returns(uint256 totalDscMinted,uint256 collateralValueInUsd){
+    totalDscMinted = s_DSCMinted[user];
+    collateralValueInUsd = getAccountCollateralValue(user);
+}
+```
+
+But, we now have a way to calculate the collateral value users hold, in USD.
+
+If you need to take some time to go through this a couple times, I don't blame you. We did some jumping around here, but compartmentalizing all of this logic into its own functions will be beneficial for us long term.
+
+This is the point where I would absolutely be screaming to write some tests, we've got some entwined functions and some math going on, these things definitely need to be checked. We'll hold off for now, let's get through a few more functions first.
+
+<details>
+<summary>DSCEngine.sol</summary>
+
+```js
+// Layout of Contract:
+// version
+// imports
+// errors
+// interfaces, libraries, contracts
+// Type declarations
+// State variables
+// Events
+// Modifiers
+// Functions
+
+// Layout of Functions:
+// constructor
+// receive function (if exists)
+// fallback function (if exists)
+// external
+// public
+// internal
+// private
+// internal & private view & pure functions
+// external & public view & pure functions
+
+// SPDX-License-Identifier: MIT
+
+pragma solidity 0.8.18;
+
+import { ReentrancyGuard } from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { DecentralizedStableCoin } from "./DecentralizedStableCoin.sol";
+import { AggregatorV3Interface } from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+
+/*
+ * @title DSCEngine
+ * @author Patrick Collins
+ *
+ * The system is designed to be as minimal as possible, and have the tokens maintain a 1 token == $1 peg at all times.
+ * This is a stablecoin with the properties:
+ * - Exogenously Collateralized
+ * - Dollar Pegged
+ * - Algorithmically Stable
+ *
+ * It is similar to DAI if DAI had no governance, no fees, and was backed by only WETH and WBTC.
+ *
+ * Our DSC system should always be "overcollateralized". At no point, should the value of
+ * all collateral < the $ backed value of all the DSC.
+ *
+ * @notice This contract is the core of the Decentralized Stablecoin system. It handles all the logic
+ * for minting and redeeming DSC, as well as depositing and withdrawing collateral.
+ * @notice This contract is based on the MakerDAO DSS system
+ */
+contract DSCEngine is ReentrancyGuard {
+
+    ///////////////////
+    //     Errors    //
+    ///////////////////
+
+    error DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch();
+    error DSCEngine__NeedsMoreThanZero();
+    error DSCEngine__TokenNotAllowed(address token);
+    error DSCEngine__TransferFailed();
+
+    /////////////////////////
+    //   State Variables   //
+    /////////////////////////
+
+    mapping(address token => address priceFeed) private s_priceFeeds;
+    DecentralizedStableCoin private immutable i_dsc;
+    mapping(address user => mapping(address token => uint256 amount)) private s_collateralDeposited;
+    mapping(address user => uint256 amountDscMinted) private s_DSCMinted;
+    address[] private s_collateralTokens;
+
+    uint256 private constant ADDITIONAL_FEED_PRECISION = 1e10;
+    uint256 private constant PRECISION = 1e18;
+
+    ////////////////
+    //   Events   //
+    ////////////////
+
+    event CollateralDeposited(address indexed user, address indexed token, uint256 indexed amount);
+
+    ///////////////////
+    //   Modifiers   //
+    ///////////////////
+
+    modifier moreThanZero(uint256 amount){
+        if(amount <=0){
+            revert DSCEngine__NeedsMoreThanZero();
+        }
+        _;
+    }
+
+    modifier isAllowedToken(address token) {
+        if (s_priceFeeds[token] == address(0)) {
+            revert DSCEngine__TokenNotAllowed(token);
+        }
+        _;
+    }
+
+    ///////////////////
+    //   Functions   //
+    ///////////////////
+
+    constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
+        if(tokenAddresses.length != priceFeedAddresses.length){
+            revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
+        }
+
+        for(uint256 i=0; i < tokenAddresses.length; i++){
+            s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
+            s_collateralTokens.push(tokenAddresses[i]);
+        }
+        i_dsc = DecentralizedStableCoin(dscAddress);
+    }
+
+
+    ///////////////////////////
+    //   External Functions  //
+    ///////////////////////////
+
+    /*
+     * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
+     * @param amountCollateral: The amount of collateral you're depositing
+     */
+    function depositCollateral(
+        address tokenCollateralAddress,
+        uint256 amountCollateral
+    )
+        external
+        moreThanZero(amountCollateral)
+        nonReentrant
+        isAllowedToken(tokenCollateralAddress)
     {
+        s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
+        emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
+        bool success = IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);
+        if (!success) {
+            revert DSCEngine__TransferFailed();
+        }
+    }
+
+    /*
+    * @param amountDscToMint: The amount of DSC you want to mint
+    * You can only mint DSC if you hav enough collateral
+    */
+    function mintDsc(uint256 amountDscToMint) public moreThanZero(amountDscToMint) nonReentrant {
+    s_DSCMinted[msg.sender] += amountDscToMint;
+    }
+
+    ///////////////////////////////////////////
+    //   Private & Internal View Functions   //
+    ///////////////////////////////////////////
+
+    /*
+    * Returns how close to liquidation a user is
+    * If a user goes below 1, then they can be liquidated.
+    */
+    function _healthFactor(address user) private view returns(uint256){
+        (uint256 totalDscMinted, uint256 collateralValueInUsd) = _getAccountInformation(user);
+    }
+
+    function _getAccountInformation(address user) private view returns(uint256 totalDscMinted,uint256 collateralValueInUsd){
         totalDscMinted = s_DSCMinted[user];
         collateralValueInUsd = getAccountCollateralValue(user);
     }
-```
 
-To check the health factor, we need to ensure the user's collateral value is greater than the DSC minted in USD. Consequently, we need yet another function, `getAccountCollateralValue`, to evaluate the collateral's total value.
+    function revertIfHealthFactorIsBroken(address user){}
 
-```javascript
+    //////////////////////////////////////////
+    //   Public & External View Functions   //
+    //////////////////////////////////////////
+
     function getAccountCollateralValue(address user) public view returns (uint256 totalCollateralValueInUsd) {
-        for (uint256 index = 0; index < s_collateralTokens.length; index++) {
-            address token = s_collateralTokens[index];
+        for(uint256 i = 0; i < s_collateralTokens.length; i++){
+            address token = s_collateralTokens[i];
             uint256 amount = s_collateralDeposited[user][token];
-            totalCollateralValueInUsd += _getUsdValue(token, amount);
+            totalCollateralValueInUsd += getUsdValue(token, amount);
         }
         return totalCollateralValueInUsd;
     }
-```
 
-The `getAccountInformation` and `getAccountCollateralValue` functions are quite straightforward, but the real challenge is evaluating the USD value.
-
-## Evaluating the USD Value
-
-To get the USD value, we loop through each collateral token, fetch the corresponding deposited amount, and map it to its price in USD. Simple enough, right? This is accomplished by this `for loop`:
-
-```javascript
-    for (uint256 index = 0; index < s_collateralTokens.length; index++) {
-                address token = s_collateralTokens[index];
-                uint256 amount = s_collateralDeposited[user][token];
-                totalCollateralValueInUsd += _getUsdValue(token, amount);
-            }
-```
-
-Finally, we need a way to get each token's value in USD to be added to the account's total collateral. How do we do that? You guessed it, another function `_getUsdValue`. We'll be leveraging Chainlink price feeds for our purposes.
-
-```javascript
-    function _getUsdValue(address token, uint256 amount) private view returns (uint256) {
+    function getUsdValue(address token, uint256 amount) public view returns(uint256){
         AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
-        (, int256 price,,,) = priceFeed.staleCheckLatestRoundData();
-        // 1 ETH = 1000 USD
-        // The returned value from Chainlink will be 1000 * 1e8
-        // Most USD pairs have 8 decimals, so we will just pretend they all do
-        // We want to have everything in terms of WEI, so we add 10 zeros at the end
+        (,int256 price,,,) = priceFeed.latestRoundData();
+
         return ((uint256(price) * ADDITIONAL_FEED_PRECISION) * amount) / PRECISION;
     }
+
+    function depositCollaterAndMintDsc() external {}
+
+    function redeemCollateralForDsc() external {}
+
+    function redeemCollateral() external {}
+
+    function burnDsc() external {}
+
+    function liquidate() external {}
+
+    function getHealthFactor() external view {}
+}
 ```
 
-## Wrapping Up
+</details>
 
-Wow, we've learnt a lot! This section was dense and complex, so don't hesitate to go back over what we've done here and really commit to understanding the workflow. In the next part we'll be learning about an account's `Health Factor` and how we use it grade a user's account health and available collateral.
-
-<img src="/foundry-defi/7-defi-mint-dsc/defi-mint-dsc1.PNG" style="width: 100%; height: auto;">
+---

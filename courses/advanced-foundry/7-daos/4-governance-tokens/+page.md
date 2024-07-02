@@ -4,69 +4,73 @@ title: Governance Tokens
 
 _Follow along with this video._
 
-
-
 ---
 
-Hello there, tech enthusiasts! Are you interested in creating a voting token to govern your smart contracts? Then today's sublesson will lead you step-by-step through the process, using Open Zeppelin's Contracts Wizard.
+### Governance Tokens
 
-To create these tokens, we will use an ERC-20 token with specific extensions to allow for advanced behaviors and control. So buckle up, and let's get coding!
+As mentioned in the previous closing remarks, I suspect this will mostly be review, as we set up this token, so let's keep our momentum and jump right into it. Start with creating `src/GovToken.sol`. The token we'll use in this demonstration will be _so standard_ that we can just lean on [**OpenZeppelin's Contract Wizard**](https://wizard.openzeppelin.com/) and select `ERC20` and `votes`.
 
-## **Step 1: Using Open Zeppelin's Contracts Wizard**
+<img src="/foundry-daos/4-governance-tokens/governance-tokens1.png" width="100%" height="auto">
 
-Open Zeppelin, a provider of software libraries for Ethereum, offers numerous contracts that developers can implement for tokens. We'll use the Contracts Wizard, a user-friendly tool to generate smart contracts.
-
-Navigate over to the wizard, select ERC-20 contract and within it, you'll see a tab named _votes_. Once you’ve selected this, copy the given code and then paste it into your new file named `GovToken.sol`. This will serve as the core of our voting token.
-
-## **Step 2: Understanding the Code**
-
-Now, we have successfully copied the code, let's delve into what we have:
+Copying this into our contract and we're already almost set (I've adjusted below to utilize named imports).
 
 ```js
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+// Compatible with OpenZeppelin Contracts ^5.0.0
+pragma solidity ^0.8.20;
 
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
+import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import {ERC20Votes} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 
 contract GovToken is ERC20, ERC20Permit, ERC20Votes {
-constructor() ERC20("MyToken", "MTK") ERC20Permit("MyToken") {}
+    constructor() ERC20("GovToken", "GT") ERC20Permit("MyToken") {}
 
     // The following functions are overrides required by Solidity.
 
-    function mint(address to, uint256 amount) public {
-        _mint(to, amount);
+    function _update(address from, address to, uint256 value)
+        internal
+        override(ERC20, ERC20Votes)
+    {
+        super._update(from, to, value);
     }
 
-    function _afterTokenTransfer(address from, address to, uint256 amount) internal override(ERC20, ERC20Votes) {
-        super._afterTokenTransfer(from, to, amount);
+    function nonces(address owner)
+        public
+        view
+        override(ERC20Permit, Nonces)
+        returns (uint256)
+    {
+        return super.nonces(owner);
     }
-
-    function _mint(address to, uint256 amount) internal override(ERC20, ERC20Votes) {
-        super._mint(to, amount);
-    }
-
-    function _burn(address account, uint256 amount) internal override(ERC20, ERC20Votes) {
-        super._burn(account, amount);
-    }
-
 }
 ```
 
-What we have here are two crucial extensions to our ERC-20 token:
+Let's go over how this differs from a standard ERC20. Primarily it's the same base token contract with 2 extentions to the functionality, Permit and Votes.
 
-- **ERC20Permit**: This extension allows approvals to be made via signatures. Simply put, you can sign a transaction without sending it, allowing someone else to send the transaction instead. This function is based on the EIP-2612, which, if you're interested, I'd recommend checking out [here](https://eips.ethereum.org/EIPS/eip-2612) for more information.
-- **ERC20Votes**: This is the heart of our voting functionality. It performs key actions like keeping the history of each account's voting power, and enabling the delegation of voting rights to another party.
+**ERC20Permit:**
 
-## **Delegating with ERC20Votes**
+From the documentation:
 
-An interesting function of the ERC20Votes is token delegation. Sometimes, you might trust another party's judgement more than your own on certain topics. ERC20Votes' delegation function lets you delegate the voting rights of your token to this party, even though the tokens are still legally yours.
+```js
+/* @dev Implementation of the ERC20 Permit extension allowing approvals to be made via signatures, as defined in
+ * https://eips.ethereum.org/EIPS/eip-2612[EIP-2612].
+```
 
-## **Conclusion**
+We won't go too deeply into this, but essentially it allows people to sign transactions without sending them, such that someone else can send it, paying for the gas.
 
-Congratulations! You've successfully created a secure, flexible voting token. This ERC20 token not only maintains checkpoints of voting power but also enables token holders to delegate their voting rights.
+More interesting for us now is:
 
-Remember, Open Zeppelin’s Contracts Wizard is an excellent tool for exploring various token functionalities as per your requirements. Happy coding!
+**ERC20Votes:**
 
-<img src="/daos/4-token/token1.png" alt="Dao Image" style="width: 100%; height: auto;">
+ERC20Votes is "Compound-like" in how it implementing voting and delegation. It does a number of import things such as:
+
+- Keeps a checkpoint history of each account's voting power. Using snapshots of voting power is important, as assessing realtime voting power is susceptible to exploitation!
+  - Any time a token is bought, or transferred checkpoints are typically updated in a mapping with the user addresses involved
+- Allows the delegation of voting power to another entity while retaining possession of the tokens
+
+### Wrap Up
+
+That's all there really is to the governance token implementation we'll be employing. Some of the more complex functionality available through these extensions we won't be covered, but as always I encourage you to do your own exploration beyond the course material if you find yourself interested in learning more.
+
+In the next lesson we'll start in on the main contract which will handle much of the protocol's administration, the Governor.

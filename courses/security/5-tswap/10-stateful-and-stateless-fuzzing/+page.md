@@ -2,68 +2,188 @@
 title: Stateful and Stateless Fuzzing to Test Invariants
 ---
 
-
-
 ---
 
-# Mastering Fuzz Testing to Secure Your Code
+### Stateful and Stateless Fuzzing to Test Invariants
 
 Ah, contracts written, tests conducted — time to ship your code, right?
 
 Wrong.
 
-![](https://cdn.videotap.com/tSLOq12UEqMlEKM1ZYUu-34.65.png)
+Often times exploits are going to arise from situations you haven't accounted for, or a circumstance you haven't thought of.
 
-The answer is a straightforward no, as your code can easily fall prey to a flash loan attack. This post will guide you through the complex but fascinating world of Fuzz Testing and how it can help you safeguard your code from unexpected exploits.
+Fuzz Testing is a way to bombard your protocol with random data in an attempt to break it, it comes in two forms:
 
-## The Notorious Flash Loan Attack
+- Stateless Fuzzing - Each test run starts with a fresh instance of the protocol or a new state. A test suite will call a function with random data -> start over -> call a function with random data -> start over etc.
 
-In essence, a flash loan attack could jeopardize your whole system, regardless of how well you've written or tested your code. As intriguing as it may sound, this breach results from already prepared and unthought-of scenarios that lack appropriate tests.
+- Stateful Fuzzing - Each run remembers the state of the previous run. Function is called with random data -> another function is called with random data etc
 
-> "Most of the time, hacks will come from a scenario that you didn't think about or write a test for."
+Let's take a look at a simple contract with a simple invariant to get a sense of how powerful fuzz testing can be.
 
-## Enter: Fuzz Testing
+```js
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-Fuzz testing (also known as fuzzing) is a robust fix to cope with these random yet deadly exploits. It involves supplying random data to your system with an aim to break it — just like relentlessly trying to pop a balloon until it finally gives in, serving as a metaphor for our system code here.
+contract MyContract {
+    uint256 public shouldAlwaysBeZero = 0;
 
-Sounds a bit odd, huh? Why would we want to break our own system?
+    function doStuff(uint256 data) public {
+        if(data == 2){
+            shouldAlwaysBeZero = 1;
+        }
+    }
+}
+```
 
-![](https://cdn.videotap.com/EkFB4lChiHAsfS8axMsP-150.16.png)
+In the above, `shouldAlwaysBeZero` is our `invariant`. This is a property of our protocol which must always be true.
 
-Glad you asked. Here's where the concept of invariants or properties of a system come into play. These are the untouchable rules or the inviolable conditions in our system that should always hold true. For instance, in a function that mandates our variable outcome to always be zero, this condition would be our invariant.
+A normal unit test for our contract may look something like:
 
-## Testing: Unit Test vs. Fuzz Test
+```js
+MyContract exampleContract;
+function testIAlwaysGetZero() public {
+    uint256 data = 0;
+    exampleContract.doStuff(data);
+    assert(exampleContract.shouldAlwaysBeZero() == 0);
+}
+```
 
-Consider our function called `doStuff` which accepts an integer as an input parameter and promises to always return zero.
+While the above test might give us peace of mind for that specific scenario, a close look at our contract tells us if `data == 2` then our invariant will break because `shouldAlwaysBeZero` will become `1`.
 
-This code passes a single data point, calls the function and then asserts that the variable `shouldAlwaysBeZero` is indeed zero. With such a test, our function seems to be covered for the given data input.
+This contract is a very transparent example of an invariant breaking condition, but you could imagine a much more complex function being tested and results of our passed data being less obvious.
 
-### - Fuzz Test:
+Fortunately, configuring our test to perform fuzzing is very easy. All we need to do is pass the variable we want to fuzz to our function and remove the assignment of that variable we had earlier.
 
-However, what if the data input is different? What if it’s two, causing `shouldAlwaysBeZero` to become one and thereby breaking our invariant?
+```js
+MyContract exampleContract;
+function testIAlwaysGetZero(uint256 data) public {
+    exampleContract.doStuff(data);
+    assert(exampleContract.shouldAlwaysBeZero() == 0);
+}
+```
 
-In this Fuzz test, we replace the manually selected data in the original unit test parameter with randomized data (commenting out the previous line of code). When you run a test here, the program will automatically randomize the data, resulting in different examples.
+Instead of using a unit test to assess a single situation, we can leverage fuzz testing to test a wide range of scenarios for us. When we run this test now with `forge test --mt testIAlwaysGetZero` We can see that we do actually catch the broken invariant when `2` is passed as data to our function!
 
-Running the aforementioned unit test will pass, but running the equivalent Fuzz test will actually highlight where our system fails. It'll show an output where it says "assertion violated" and provide the data and arguments that caused the fail, all by randomly throwing data at our function.
+<img src="/security-section-5/10-stateful-and-stateless-fuzzing/stateful-and-stateless-fuzzing1.png" width="100%" height="auto">
 
-That said, it's important to understand that Fuzzers won’t cover every single possible input, hence, understanding how your Fuzzers pick the random data is a crucial skill to develop.
+Great job, Foundry!
 
-## Moving on to Stateful Fuzzing
+I do need to mention that it's not technically choosing random data it's `semi-random data` being passed to our function and the way your fuzzer chooses its random data _matters_. This is a separate advanced concept though, I suggest diving into these differences on your own.
 
-A Fuzz test is usually a stateless fuzz test, meaning the state of the previous run is discarded for the next run. However, in some cases like our example, we need the outcome of the previous run to influence the next one. For this, we bring in Stateful Fuzzing.
+### Runs
 
-Stateful Fuzzing is where the ending state of our previous fuzz run is the starting state of the next fuzz run. For example, instead of creating a new instance of our contract for each test run, we use the same contract and perform multiple operations on it.
+Now, an important concept to understand when running fuzz tests is that of `runs`.
 
-We can use Foundry's invariant keyword to perform stateful fuzzing, but first, we need to import the `STD invariant` contract, let Foundry know which contract to call random functions on, and then, write our invariant.
+<img src="/security-section-5/10-stateful-and-stateless-fuzzing/stateful-and-stateless-fuzzing2.png" width="100%" height="auto">
 
-Upon running this test, we will finally discover a sequence where our assertion fails, providing us with the information to adjust our code accordingly.
+In the successful test above, I've highlighted the number of runs the fuzzer performed. This represents the number of times random inputs were passed to our test function.
 
-While fuzzing with Foundry, an important distinction to keep in mind is between fuzzing or stateless fuzzing and invariants or stateful fuzzing.
+We can adjust the number of runs foundry performs in our `foundry.toml`.
 
-## Embedding Fuzz Testing into Your Routine
+```toml
+[fuzz]
+runs=1000
+```
 
-In a real-world setting, your invariant might not be as simple as our example. It could look something like ensuring new tokens minted are less than the inflation rate or creating a lottery game where there should only be one winner. Although fuzz testing isn't a substitute for expert manual review, it is certainly a critical tool to thwart vulnerabilities in your code.
+The resulting test:
 
-Finally, we hope you've gained a solid knowledge of the basics of fuzz testing. Fear not, you're not alone in your journey. At [cyfrin](https://www.cyfrin.io/), we use invariants during our audits to identify vulnerabilities that are frequently difficult to catch purely with manual reviews.
+<img src="/security-section-5/10-stateful-and-stateless-fuzzing/stateful-and-stateless-fuzzing3.png" width="100%" height="auto">
 
-Stay tuned for our next post where we'll delve into the advanced fuzzing techniques and help you become a fuzzing pro. Together, let's strive to make Web 3.0 even better! Happy coding!
+Higher runs will take longer to run, but will give your functions a more thorough coverage of potential cases. That's all there is to stateless fuzzing!
+
+Let's look at a situation where stateless fuzzing is going to fail us though and how we can resolve that.
+
+### Stateful Fuzzing
+
+```js
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract MyContract {
+    uint256 public shouldAlwaysBeZero = 0;
+
+    uint256 private hiddenValue = 0;
+
+    function doStuff(uint256 data) public {
+        // if (data == 2) {
+        //     shouldAlwaysBeZero = 1;
+        // }
+        if (hiddenValue == 0) {
+            shouldAlwaysBeZero = 1;
+        }
+        hiddenValue = data;
+    }
+}
+```
+
+Take a look at the adjusted contract above (we've commented out the line that was breaking our invariant previously). With these changes, by running stateless fuzz tests everything looks fine and will pass.
+
+This is deceiving however.
+
+We can see that if our `hiddenValue` constant is ever `7` then our invariant will break, but `hiddenValue` is only ever changed after a function is called. We need our test to remember how our `hiddenValue` variable changes with each run in order to catch this vulnerability. This is what is meant by `stateful fuzzing`. `Stateful fuzzing is a means to fuzz test our contracts while retaining changes of state across each run.
+
+Stateful Fuzz Testing requires a little bit of set up, but let's see what that looks like. We first need to import `StdInvariant` fom `forge-std` and inherit it with our test contract.
+
+```js
+import {StdInvariant} from "forge-std/StdInvariant.sol";
+
+contract MyContractTest is StdInvariant, Test {
+    exampleContract = new MyContract();
+}
+```
+
+We then need to set a `target contract` which tells foundry which contract random functions should be called on.
+
+```js
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0
+
+import {MyContract} from "../src/MyContract.sol";
+import {Test} from "forge-std/Test.sol";
+import {StdInvariant} from "forge-std/StdInvariant.sol";
+
+contract MyContractTest is StdInvariant, Test {
+    MyContract exampleContract;
+
+    function setUp() public {
+        exampleContract = new MyContract();
+        targetContract(address(exampleContract));
+    }
+}
+```
+
+Now we can write the invariant test.
+
+> **Note:** Stateful Fuzz tests must always start with the `fuzz` or `invariant` keywords.
+
+```js
+function invariant_testAlwaysReturnsZero() public {
+    assert(exampleContract.shouldAlwaysBeZero() == 0);
+}
+```
+
+And that's all that's required. Now Foundry will pass data to random functions (in this case our single function) over and over again while carrying state changes over from each run.
+
+<img src="/security-section-5/10-stateful-and-stateless-fuzzing/stateful-and-stateless-fuzzing4.png" width="100%" height="auto">
+
+In the screenshot above, the Foundry Fuzzer is passing 7 to our `doStuff` function (this is actually a coincidence lol), this is setting our `hiddenValue` to `7` because of:
+
+```js
+hiddenValue == data;
+```
+
+We're then calling `doStuff` a second time (passing an absurd random number), but because `hiddenValue` is `7`, and state is remembered from our last run, we get caught by:
+
+```js
+if (hiddenValue == 7) {
+  shouldAlwaysBeZero = 1;
+}
+```
+
+Boom invariant broken in our second run.
+
+### Wrap Up
+
+In a real smart contract, invariant will be harder to define and functions will be much more complex. The general principles learnt here will still hold true however.
+
+Congrats, you've just learnt the basics of fuzzing, both stateless and stateful and you should be incredible proud. Let's look at how we can practice these new skills in the next lesson.

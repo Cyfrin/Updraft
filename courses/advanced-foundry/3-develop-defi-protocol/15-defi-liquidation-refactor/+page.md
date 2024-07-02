@@ -4,160 +4,509 @@ title: Liquidation Refactor
 
 _Follow along the course with this video._
 
+---
 
+Our current DSCEngine.sol for reference:
 
-# Creating a Robust DeFi Protocol
-
-Hello everyone and welcome back! In this section, we will discuss the importance of thorough testing and regular refactoring to build a robust and reliable decentralized finance (DeFi) protocol, we will also illustrate how code modifications can improve protocol functionality.
-
-## Refining a DeFi protocol
-
-Let's talk about the `redeemCollateral()` function in our DeFi protocol. Currently, it's a public function and takes token collateral address and amount collateral as inputs. It's hardcoded to the message sender, which works perfectly if the token collateral, address, and amount collateral belong to the person calling the function. However, it fails when we need to redeem someone else's collateral, as in the case of a third-party user with bad debt.
-
-<img src="/foundry-defi/15-defi-liquidation-refactor/defi-liquidation-refactor1.PNG" style="width: 100%; height: auto;">
-
-With our DeFi protocol, we need to enhance this feature by augmenting our code. Thankfully, code modification can resolve this.
-
-### Internal redeem collateral function
-
-<img src="/foundry-defi/15-defi-liquidation-refactor/defi-liquidation-refactor2.PNG" style="width: 100%; height: auto;">
-
-Refactoring the code lets us create an internal `_redeemCollateral()` function to redeem collateral from anyone. Creating an internal function makes it accessible only by other functions within the contract, therefore enhancing the protocol's security by preventing unauthorized usage.
+<details>
+<summary>DSCEngine.sol</summary>
 
 ```js
-function _redeemCollateral (address tokenCollateralAddress, uint256 amountCollateral, address from, address to) private {...}
-```
+// Layout of Contract:
+// version
+// imports
+// errors
+// interfaces, libraries, contracts
+// Type declarations
+// State variables
+// Events
+// Modifiers
+// Functions
 
-We can include `address from` and `address to` in our input parameters in our internal function to enhance functionality. So, when someone undergoes liquidation, an address can be given from which to redeem and another one to receive the rewards.
+// Layout of Functions:
+// constructor
+// receive function (if exists)
+// fallback function (if exists)
+// external
+// public
+// internal
+// private
+// internal & private view & pure functions
+// external & public view & pure functions
 
-We then move the original code in the public redeem collateral function to our newly created private function. We revise `msg.sender` to `from` and update our `CollateralRedeemed` event info accordingly.
+// SPDX-License-Identifier: MIT
 
-```js
-...
+pragma solidity 0.8.18;
+
+import { ReentrancyGuard } from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { DecentralizedStableCoin } from "./DecentralizedStableCoin.sol";
+import { AggregatorV3Interface } from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+
+/*
+ * @title DSCEngine
+ * @author Patrick Collins
+ *
+ * The system is designed to be as minimal as possible, and have the tokens maintain a 1 token == $1 peg at all times.
+ * This is a stablecoin with the properties:
+ * - Exogenously Collateralized
+ * - Dollar Pegged
+ * - Algorithmically Stable
+ *
+ * It is similar to DAI if DAI had no governance, no fees, and was backed by only WETH and WBTC.
+ *
+ * Our DSC system should always be "overcollateralized". At no point, should the value of
+ * all collateral < the $ backed value of all the DSC.
+ *
+ * @notice This contract is the core of the Decentralized Stablecoin system. It handles all the logic
+ * for minting and redeeming DSC, as well as depositing and withdrawing collateral.
+ * @notice This contract is based on the MakerDAO DSS system
+ */
 contract DSCEngine is ReentrancyGuard {
-    ...
-    event CollateralRedeemed(address indexed redeemFrom, address indexed redeemTo, address token, uint256 amount); // if redeemFrom != redeemedTo, then it was liquidated
-    ...
-    function _redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral, address from, address to)
-        private
+
+    ///////////////////
+    //     Errors    //
+    ///////////////////
+
+    error DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch();
+    error DSCEngine__NeedsMoreThanZero();
+    error DSCEngine__TokenNotAllowed(address token);
+    error DSCEngine__TransferFailed();
+    error DSCEngine__BreaksHealthFactor(uint256 healthFactor);
+    error DSCEngine__MintFailed();
+    error DSCEngine__HealthFactorOk();
+
+    /////////////////////////
+    //   State Variables   //
+    /////////////////////////
+
+    mapping(address token => address priceFeed) private s_priceFeeds;
+    DecentralizedStableCoin private immutable i_dsc;
+    mapping(address user => mapping(address token => uint256 amount)) private s_collateralDeposited;
+    mapping(address user => uint256 amountDscMinted) private s_DSCMinted;
+    address[] private s_collateralTokens;
+
+    uint256 private constant ADDITIONAL_FEED_PRECISION = 1e10;
+    uint256 private constant PRECISION = 1e18;
+    uint256 private constant LIQUIDATION_THRESHOLD = 50;
+    uint256 private constant LIQUIDATION_PRECISION = 100;
+    uint256 private constant MIN_HEALTH_FACTOR = 1e18;
+    uint256 private constant LIQUIDATION_BONUS = 10;
+
+    ////////////////
+    //   Events   //
+    ////////////////
+
+    event CollateralDeposited(address indexed user, address indexed token, uint256 indexed amount);
+    event CollateralRedeemed(address indexed user, address indexed token, uint256 indexed amount);
+
+    ///////////////////
+    //   Modifiers   //
+    ///////////////////
+
+    modifier moreThanZero(uint256 amount){
+        if(amount <=0){
+            revert DSCEngine__NeedsMoreThanZero();
+        }
+        _;
+    }
+
+    modifier isAllowedToken(address token) {
+        if (s_priceFeeds[token] == address(0)) {
+            revert DSCEngine__TokenNotAllowed(token);
+        }
+        _;
+    }
+
+    ///////////////////
+    //   Functions   //
+    ///////////////////
+
+    constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
+        if(tokenAddresses.length != priceFeedAddresses.length){
+            revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
+        }
+
+        for(uint256 i=0; i < tokenAddresses.length; i++){
+            s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
+            s_collateralTokens.push(tokenAddresses[i]);
+        }
+        i_dsc = DecentralizedStableCoin(dscAddress);
+    }
+
+
+    ///////////////////////////
+    //   External Functions  //
+    ///////////////////////////
+
+    /*
+     * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
+     * @param amountCollateral: The amount of collateral you're depositing
+     */
+    function depositCollateral(
+        address tokenCollateralAddress,
+        uint256 amountCollateral
+    )
+        external
+        moreThanZero(amountCollateral)
+        nonReentrant
+        isAllowedToken(tokenCollateralAddress)
     {
-        s_collateralDeposited[from][tokenCollateralAddress] -= amountCollateral;
-        emit CollateralRedeemed(from, to, tokenCollateralAddress, amountCollateral);
-        bool success = IERC20(tokenCollateralAddress).transfer(to, amountCollateral);
+        s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
+        emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
+        bool success = IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);
         if (!success) {
             revert DSCEngine__TransferFailed();
         }
     }
+
+    /*
+    * @param amountDscToMint: The amount of DSC you want to mint
+    * You can only mint DSC if you hav enough collateral
+    */
+    function mintDsc(uint256 amountDscToMint) external moreThanZero(amountDscToMint) nonReentrant {
+        s_DSCMinted[msg.sender] += amountDscToMint;
+        _revertIfHealthFactorIsBroken(msg.sender);
+        bool minted = i_dsc.mint(msg.sender, amountDscToMint);
+
+        if(!minted){
+            revert DSCEngine__MintFailed();
+        }
+    }
+
+    /*
+    * @param tokenCollateralAddress: the collateral address to redeem
+    * @param amountCollateral: amount of collateral to redeem
+    * @param amountDscToBurn: amount of DSC to burn
+    * This function burns DSC and redeems underlying collateral in one transaction
+    */
+    function redeemCollateralForDsc(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountDscToBurn) external {
+        burnDsc(amountDscToBurn);
+        redeemCollateral(tokenCollateralAddress, amountCollateral);
+    }
+
+    /*
+    * @param collateral: The ERC20 token address of the collateral you're using to make the protocol solvent again.
+    * This is collateral that you're going to take from the user who is insolvent.
+    * In return, you have to burn your DSC to pay off their debt, but you don't pay off your own.
+    * @param user: The user who is insolvent. They have to have a _healthFactor below MIN_HEALTH_FACTOR
+    * @param debtToCover: The amount of DSC you want to burn to cover the user's debt.
+    *
+    * @notice: You can partially liquidate a user.
+    * @notice: You will get a 10% LIQUIDATION_BONUS for taking the users funds.
+    * @notice: This function working assumes that the protocol will be roughly 150% overcollateralized in order for this
+    to work.
+    * @notice: A known bug would be if the protocol was only 100% collateralized, we wouldn't be able to liquidate
+    anyone.
+    * For example, if the price of the collateral plummeted before anyone could be liquidated.
+    */
+    function liquidate(address collateral, address user, uint256 debtToCover) external moreThanZero(debtToCover) nonReentrant {
+        uint256 startingUserHealthFactor = _healthFactor(user);
+        if(startingUserHealthFactor > MIN_HEALTH_FACTOR){
+            revert DSCEngine__HealthFactorOk();
+        }
+        uint256 tokenAmountFromDebtCovered = getTokenAmountFromUsd(collateral, debtToCover);
+
+        uint256 bonusCollateral = (tokeAmountFromDebtCovered * LIQUIDATION_BONUS) / LIQUIDATION_PRECISION;
+
+        uint256 totalCollateralRedeemed = tokenAmountFromDebtCovered + bonusCollateral;
+    }
+
+    /////////////////////////
+    //   Public Functions  //
+    /////////////////////////
+
+    function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral) public moreThanZero(amountCollateral) nonReentrant{
+        s_collateralDeposited[msg.sender][tokenCollateralAddress] -= amountCollateral;
+        emit CollateralRedeemed(msg.sender, tokenCollateralAddress, amountCollateral);
+
+        bool success = IERC20(tokenCollateralAddress).transfer(msg.sender, amountCollateral);
+        if(!success){
+            revert DSCEngine__TransferFailed();
+        }
+
+        _revertIfHealthFactorIsBroken(msg.sender);
+    }
+
+    function burnDsc(uint256 amount) public moreThanZero(amount){
+        s_DSCMinted[msg.sender] -= amount;
+        bool success = i_dsc.transferFrom(msg.sender, address(this), amount);
+        if(!success){
+            revert DSCEngine__TransferFailed();
+        }
+        i_dsc.burn(amount);
+        _revertIfHealthFactorIsBroken(msg.sender);
+    }
+
+    ///////////////////////////////////////////
+    //   Private & Internal View Functions   //
+    ///////////////////////////////////////////
+
+    /*
+    * Returns how close to liquidation a user is
+    * If a user goes below 1, then they can be liquidated.
+    */
+    function _healthFactor(address user) private view returns(uint256){
+        (uint256 totalDscMinted, uint256 collateralValueInUsd) = _getAccountInformation(user);
+
+        uint256 collateralAdjustedForThreshold = (collateralValueInUsd * LIQUIDATION_THRESHOLD) / LIQUIDATION_PRECISION;
+
+        return (collateralAdjustedForThreshold * PRECISION) / totalDscMinted;
+    }
+
+    function _getAccountInformation(address user) private view returns(uint256 totalDscMinted,uint256 collateralValueInUsd){
+        totalDscMinted = s_DSCMinted[user];
+        collateralValueInUsd = getAccountCollateralValue(user);
+    }
+
+    function _revertIfHealthFactorIsBroken(address user) internal view {
+        uint256 userHealthFactor = _healthFactor(user);
+        if(userHealthFactor < MIN_HEALTH_FACTOR){
+            revert DSCEngine__BreaksHealthFactor(userHealthFactor);
+        }
+    }
+
+    //////////////////////////////////////////
+    //   Public & External View Functions   //
+    //////////////////////////////////////////
+
+    function getAccountCollateralValue(address user) public view returns (uint256 totalCollateralValueInUsd) {
+        for(uint256 i = 0; i < s_collateralTokens.length; i++){
+            address token = s_collateralTokens[i];
+            uint256 amount = s_collateralDeposited[user][token];
+            totalCollateralValueInUsd += getUsdValue(token, amount);
+        }
+        return totalCollateralValueInUsd;
+    }
+
+    function getUsdValue(address token, uint256 amount) public view returns(uint256){
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
+        (,int256 price,,,) = priceFeed.latestRoundData();
+
+        return ((uint256(price) * ADDITIONAL_FEED_PRECISION) * amount) / PRECISION;
+    }
+
+    /*
+    * @param tokenCollateralAddress: the address of the token to deposit as collateral
+    * @param amountCollateral: The amount of collateral to deposit
+    * @param amountDscToMint: The amount of DecentralizedStableCoin to mint
+    * @notice: This function will deposit your collateral and mint DSC in one transaction
+    */
+    function depositCollateralAndMintDsc(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountDscToMint){
+        depositCollateral(tokenCollateralAddress, amountCollateral);
+        mintDsc(amountDscToMint);
+    }
+
+    function getTokenAmountFromUsd(address token, uint256 usdAmountInWei) public view returns (uint256) {
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
+        (, int256 price,,,) = priceFeed.latestRoundData();
+
+        return (usdAmountInWei * PRECISION) / (uint256(price) * ADDITIONAL_FEED_PRECISION);
+    }
+
+    function getHealthFactor() external view {}
+}
+```
+
+</details>
+
+---
+
+### Liquidation/Refactoring
+
+In the last lesson we left off with our `liquidate` function still needing to redeem the unhealthy position's collateral, and burn the `liquidator`'s `DSC`. If we look at the `redeemCollateral` function, we can see why achieving our goal won't be as simple as calling `redeemCollateral` and `burnDsc`.
+
+```js
+function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral) public moreThanZero(amountCollateral) nonReentrant{
+    s_collateralDeposited[msg.sender][tokenCollateralAddress] -= amountCollateral;
+    emit CollateralRedeemed(msg.sender, tokenCollateralAddress, amountCollateral);
+
+    bool success = IERC20(tokenCollateralAddress).transfer(msg.sender, amountCollateral);
+    if(!success){
+        revert DSCEngine__TransferFailed();
+    }
+
+    _revertIfHealthFactorIsBroken(msg.sender);
+}
+```
+
+Currently this function has `msg.sender` hardcoded as the user for which collateral is redeemed _and_ sent to. This isn't the case when someone is being `liquidated`, the `msg.sender` is a third party. So, how do we adjust things to account for this?
+
+What we'll do is refactor the contract to include an _internal_ `_redeemCollateral` function which is only callable by permissioned methods within the protocol. This will allow our liquidate function to redeem the collateral of an arbitrary user when appropriate conditions are met.
+
+We'll add this new internal function under our `Private & Internal View Functions` header.
+
+```js
+///////////////////////////////////////////
+//   Private & Internal View Functions   //
+///////////////////////////////////////////
+
+function _redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral, address from, address to){
+    s_collateralDeposited[from][tokenCollateralAddress] -= amountCollateral;
+    emit CollateralRedeemed(msg.sender, tokenCollateralAddress, amountCollateral);
+
+    bool success = IERC20(tokenCollateralAddress).transfer(to, amountCollateral);
+    if(!success){
+        revert DSCEngine__TransferFailed();
+    }
+}
+```
+
+The above internal version of `redeemCollateral` contains the same logic as our public one currently, but we've changed the collateral balance change and transfer to reflect the `from` and `to` addresses respectively.
+
+At this point let's adjust our `CollateralRedeemed` event. We're going to adjust the emission and the declaration of the event to handle this new from/to structure. We'll adjust this in our public `redeemCollateral` function soon.
+
+```js
+////////////////
+//   Events   //
+////////////////
+
+event CollateralDeposited(address indexed user, address indexed token, uint256 indexed amount);
+event CollateralRedeemed(address indexed redeemedFrom, address indexed redeemedTo, address indexed token, uint256 amount);
+
+...
+
+function _redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral, address from, address to){
+
+    ...
+
+    emit CollateralRedeemed(from, to, tokenCollateralAddress, amountCollateral);
+
     ...
 }
 ```
 
-This provides internal function usage in our public redeem collateral function. We then replace the original code with a call to our `_redeemCollateral` function, passing appropriate addresses for liquidation or redemption.
+Now, back in our public `redeemCollateral` function, we can simply call this internal version and hardcode the appropriate `msg.sender` values.
 
 ```js
-    function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral)
-        external
-        moreThanZero(amountCollateral)
-        nonReentrant
-    {
-        _redeemCollateral(tokenCollateralAddress, amountCollateral, msg.sender, msg.sender);
-        revertIfHealthFactorIsBroken(msg.sender);
-    }
+function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral) public moreThanZero(amountCollateral) nonReentrant{
+    _redeemCollateral(msg.sender, msg.sender, tokenCollateralAddress, amountCollateral);
+    _revertIfHealthFactorIsBroken(msg.sender);
+}
 ```
 
-Finally, in the liquidation process, we use `_redeemCollateral` to pull collateral from the user undergoing liquidation and transfer the amount to whoever called the `liquidate` function.
+### Back to Liquidate
+
+Now that we've written this internal `_redeemCollateral` function, we can leverage this within our `liquidate` function.
 
 ```js
-    function liquidate(address collateral, address user, uint256 debtToCover)
-        external
-        moreThanZero(debtToCover)
-        nonReentrant
-    {
-        uint256 startingUserHealthFactor = _healthFactor(user);
-        if (startingUserHealthFactor >= MIN_HEALTH_FACTOR) {
-            revert DSCEngine__HealthFactorOk();
-        }
-        // If covering 100 DSC, we need to $100 of collateral
-        uint256 tokenAmountFromDebtCovered = getTokenAmountFromUsd(collateral, debtToCover);
-        // And give them a 10% bonus
-        // So we are giving the liquidator $110 of WETH for 100 DSC
-        // We should implement a feature to liquidate in the event the protocol is insolvent
-        // And sweep extra amounts into a treasury
-        uint256 bonusCollateral = (tokenAmountFromDebtCovered * LIQUIDATION_BONUS) / 100;
-        // Burn DSC equal to debtToCover
-        // Figure out how much collateral to recover based on how much burnt
-        _redeemCollateral(collateral, tokenAmountFromDebtCovered + bonusCollateral, user, msg.sender);
-        ...
+function liquidate(address collateral, address user, uint256 debtToCover) external moreThanZero(debtToCover) nonReentrant {
+    uint256 startingUserHealthFactor = _healthFactor(user);
+    if(startingUserHealthFactor > MIN_HEALTH_FACTOR){
+        revert DSCEngine__HealthFactorOk();
     }
+    uint256 tokenAmountFromDebtCovered = getTokenAmountFromUsd(collateral, debtToCover);
+
+    uint256 bonusCollateral = (tokeAmountFromDebtCovered * LIQUIDATION_BONUS) / LIQUIDATION_PRECISION;
+
+    uint256 totalCollateralRedeemed = tokenAmountFromDebtCovered + bonusCollateral;
+
+    _redeemCollateral(user, msg.sender, collateral, totalCollateralToRedeem);
+}
 ```
 
-## Iterative Refactoring
-
-Iterative refactoring is indispensable for boosting protocol performance. In our case, besides revising the `redeemCollateral()` function, the `burnDSC()` function required a similar treatment. Just as in the redeem function, we created an internal `_burnDSC()` function to allow burning from any address.
-
-The principal code changes entailed revising `msg.sender` to `onBehalfOf` and `dscFrom` within the burning event. Ensuring proper comments inside our code, specify that this internal function should only be called if the health factor checks are in place.
+With the refactoring we've just done, we can be sure that the `liquidator` will be awarded the collateral (after some testing of course). We're going to need to do the same thing with our `burnDsc` function, which is currently public and hardcoded with `msg.sender` as well.
 
 ```js
-    ...
-    function burnDsc(uint256 amount) external moreThanZero(amount) {
-        _burnDsc(amount, msg.sender, msg.sender);
-        revertIfHealthFactorIsBroken(msg.sender); // I don't think this would ever hit...
-    }
-    ...
-    function _burnDsc(uint256 amountDscToBurn, address onBehalfOf, address dscFrom) private {
-        s_DSCMinted[onBehalfOf] -= amountDscToBurn;
+function burnDsc(uint256 amount) public moreThanZero(amount){
+    _burnDsc(amount, msg.sender, msg.sender)
+    _revertIfHealthFactorIsBroken(msg.sender);
+}
 
-        bool success = i_dsc.transferFrom(dscFrom, address(this), amountDscToBurn);
-        // This conditional is hypothetically unreachable
-        if (!success) {
-            revert DSCEngine__TransferFailed();
-        }
-        i_dsc.burn(amountDscToBurn);
+...
+
+function _burnDsc(uint256 amountDscToBurn, address onBehalfOf, address dscFrom) private moreThanZero(amount){
+    s_DSCMinted[onBehalfOf] -= amount;
+    bool success = i_dsc.transferFrom(dscFrom, address(this), amount);
+    if(!success){
+        revert DSCEngine__TransferFailed();
     }
-    ...
+    i_dsc.burn(amount);
+}
 ```
 
-Applying these changes to the public `burnDSC()` function allows us to incorporate the burn DSC feature into the liquidation process. Here, the liquidator pays down the debt, thus reducing the minted DSC.
+And, just like before, we can go back to our `liquidate` function and leverage this internal `_burnDsc`.
 
 ```js
-    ...
-    function liquidate(address collateral, address user, uint256 debtToCover)
-        external
-        moreThanZero(debtToCover)
-        nonReentrant
-    {
-        ...
-        _redeemCollateral(collateral, tokenAmountFromDebtCovered + bonusCollateral, user, msg.sender);
-        _burnDsc(debtToCover, user, msg.sender);
-
-        uint256 endingUserHealthFactor = _healthFactor(user);
-        // This conditional should never hit, but just in case
-        if (endingUserHealthFactor <= startingUserHealthFactor) {
-            revert DSCEngine__HealthFactorNotImproved();
-        }
-        revertIfHealthFactorIsBroken(msg.sender);
+function liquidate(address collateral, address user, uint256 debtToCover) external moreThanZero(debtToCover) nonReentrant {
+    uint256 startingUserHealthFactor = _healthFactor(user);
+    if(startingUserHealthFactor > MIN_HEALTH_FACTOR){
+        revert DSCEngine__HealthFactorOk();
     }
-    ...
+    uint256 tokenAmountFromDebtCovered = getTokenAmountFromUsd(collateral, debtToCover);
+
+    uint256 bonusCollateral = (tokeAmountFromDebtCovered * LIQUIDATION_BONUS) / LIQUIDATION_PRECISION;
+
+    uint256 totalCollateralRedeemed = tokenAmountFromDebtCovered + bonusCollateral;
+
+    _redeemCollateral(user, msg.sender, collateral, totalCollateralToRedeem);
+
+    _burnDsc(debtToCover, user, msg.sender);
+}
 ```
 
-Note that we've also created Health Factor checks to ensure the integrity of the accounts of both the liquidator and the liquidatee is safe throughout this process.
+Importantly, we're calling these low level internal calls, so we've going to want to check some `Health Factors` here. If the `liquidation` somehow doesn't result in the user's `Health Factor` improving, we should revert. This will come with a new custom error.
 
-<img src="/foundry-defi/15-defi-liquidation-refactor/defi-liquidation-refactor3.PNG" style="width: 100%; height: auto;">
+```js
+uint256 endingUserHealthFactor = _healthFactor(user);
+if(endingUserHealthFactor <= startingUserHealthFactor){
+    revert DSCEngine__HealthFactorNotImproved();
+}
+```
 
-After such modifications, we should thoroughly validate protocol operation.
+Be sure to declare the custom error where appropriate.
 
-## Running tests and fine-tuning
+```js
+///////////////////
+//     Errors    //
+///////////////////
 
-Proper unit testing is crucial for creating a solid DeFi protocol. It ensures the code correctly handles various scenarios and edge cases. With modifications in place, we must fix any syntax errors and ensure our code compiles successfully. Regression testing can then assure us that the changes haven't caused any unforeseeable issues that cause existing features to break.
+...
 
-It is also crucial to keep a clear and coherent code structure with neat comments and clear variable names. This practice not only helps in debugging, but also aids security auditors and other developers in understanding the code smoothly.
+error DSCEngine__HealthFactorNotImproved();
+```
 
-<img src="/foundry-defi/15-defi-liquidation-refactor/defi-liquidation-refactor4.PNG" style="width: 100%; height: auto;">
+The last thing we'll want to do is also ensure that our `liquidator`'s `Health Factor` hasn't been broken. Our final `liquidate` function should look like this:
 
-Takeaways:
+```js
+function liquidate(address collateral, address user, uint256 debtToCover) external moreThanZero(debtToCover) nonReentrant {
+    uint256 startingUserHealthFactor = _healthFactor(user);
+    if(startingUserHealthFactor > MIN_HEALTH_FACTOR){
+        revert DSCEngine__HealthFactorOk();
+    }
+    uint256 tokenAmountFromDebtCovered = getTokenAmountFromUsd(collateral, debtToCover);
 
-- Good readable code along with comprehensive unit tests builds a strong DeFi protocol.
-- Regular refactoring helps us improve protocol functionality, decrease chances of bugs and increases code maintainability.
-- Adherence to CHECKS-EFFECTS-INTERACTIONS pattern ensures contract's state doesn't change unexpectedly during a transaction.
+    uint256 bonusCollateral = (tokeAmountFromDebtCovered * LIQUIDATION_BONUS) / LIQUIDATION_PRECISION;
 
-In the next few sections, we'll dive deep into testing methodologies and bug management. But for now, take that much-deserved break. So stretch those legs, fuel up, and meet us back here soon. Happy Coding!
+    uint256 totalCollateralRedeemed = tokenAmountFromDebtCovered + bonusCollateral;
+
+    _redeemCollateral(user, msg.sender, collateral, totalCollateralToRedeem);
+
+    _burnDsc(debtToCover, user, msg.sender);
+
+    uint256 endingUserHealthFactor = _healthFactor(user);
+    if(endingUserHealthFactor <= startingUserHealthFactor){
+        revert DSCEngine__HealthFactorNotImproved();
+    }
+
+    _revertIfHealthFactorIsBroken(msg.sender);
+}
+```
+
+### Wrap Up
+
+Run `forge build` at this point, make sure things are compiling, but if so...
+
+WOOOOOOOOO! We're (more or less) done with our `DSCEngine` contract. Let's recap a bit of what we've accomplished here and what our contract is capable of.
+
+Our code is starting to look very professional. We have NATSPEC documentation throughout. `DSCEngine` is able to `mintDsc`, `burnDsc`, `depositCollateral`, `redeemCollateral`, `liquidate` unhealthy positions, and assess the `Health Factor` of users.
+
+Users are able to mint as much `DSC` as their collateral and subsequently `Health Factor` will support. Currently a user must have `200%` collateralization of their `DSC` position.
+
+We've ensured that `liquidators` are incentivized to secure the value of our stablecoin by closing unhealthy positions and receiving collateral rewards in turn. It's through this mechanism that the `DecentralizedStableCoin` protocol will never be `under-collateralized`.
+
+Now's a great time to take a break. You've earned it.
+
+When you come back to the next lesson, we'll be diving deep into more advanced testing methodologies as we validate our code.
+
+See you there!

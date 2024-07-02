@@ -4,46 +4,23 @@ title: Notes on Invariants and other Types of Tests
 
 _Follow along with the video:_
 
-
-
 ---
 
-# Welcome to the World of Invariants and Fuzzing Tools
+### Notes on Invariants
 
-Hi all! We've been on quite a journey together, haven't we? We've had our brains whipped into a frenzy learning how to effectively use fuzzing tools and, yes, there were certainly times when we delved into confusing territories. However, we also learned how these powerful tools can help us discover and break invariants, quickly identifying issues in protocols. In this post, we'll build upon these foundational skills, diving deeper into an exploration of ERC20s, core invariants, and much more!
+We've already done a tonne and I know at times these concepts can be confusing, but we've seen first hand how powerful a fuzzing tool can be in breaking protocol invariants
 
-## Unraveling the Mysteries of ERC20s
+I briefly mentioned at the end of the last lesson the concept of baking invariants into protocols known as FREI-PI. I think it's important to see what can happen when these considerations aren't made and there's a great [**case study on Euler**](https://www.youtube.com/watch?v=vleHZqDc48M) available by `Tincho` that you should take a moment to watch now. It'll teach you a great deal about the importance of invariants.
 
-The world of ERC20s can often seem daunting and puzzling, but do not fret, we're here to unravel its mysteries. We have only just scratched the surface of understanding these tokens in our sessions, but expect to see more of them popping up as we progress through our course.
+### Additional Tools and Tests
 
-## Defining Core Invariants and Breaking Them Down
+We exclusively used Foundry in our fuzzing so far, but there are other fuzzing tools available that we didn't go over which are worth checking out.
 
-Equally important to our exploration are, of course, core invariants. These are rules that remain unaffected regardless of the system state. Now, if you're still scratching your head over the term "freepy" (or CEI, as others might call it), think of it as a practice of implementing pre and post-checks to uphold certain invariants.
+- [**Echidna**](https://github.com/crytic/echidna) - Echidna is a Haskell program designed for fuzzing/property-based testing of Ethereum smart contracts. It uses sophisticated grammar-based fuzzing campaigns based on a contract ABI to falsify user-defined predicates or Solidity assertions.
+- [**Consensys**](https://diligence.us.auth0.com/login?state=hKFo2SBWT0JUTlRLR1FUUFM1VHFQNVR0Yi1ISWdNMmJCUGFhLaFupWxvZ2luo3RpZNkgUERzWTI1Wkg1bEM0VkMydFFYeG5vcy1fU0dGNjRiN0-jY2lk2SAxdzMzMGc3U1RUUmZFTk9ROHRBSXBPSzhLTTl3ZmdaZg&client=1w330g7STTRfENOQ8tAIpOK8KM9wfgZf&protocol=oauth2&scope=openid%20profile%20email%20read%3Acurrent_user%20enroll%20read%3Aauthenticators%20remove%3Aauthenticators%20offline_access&audience=https%3A%2F%2Ffaas.diligence.tools%2F&redirect_uri=https%3A%2F%2Ffuzzing.diligence.tools&screen_hint=signup&response_type=code&response_mode=query&nonce=fm15RXE2UzNSdlZPS0kyRW5UMkhJalVhM0dUUm5VLVNBUm4xWXhhd2pIZg%3D%3D&code_challenge=06fBFH8ZcFjUxLtj3KtOjpiD_AwxeoWmocBoQFhuEhQ&code_challenge_method=S256&auth0Client=eyJuYW1lIjoiYXV0aDAtcmVhY3QiLCJ2ZXJzaW9uIjoiMS4xMi4xIn0%3D) - Fuzzing as a service, so to speak. This is paid access only, so we won't be covering it here.
+- **Mutation Testing** - not something we'll cover in this course, but there's a link to more information and things you can try [**here**](https://github.com/Cyfrin/5-t-swap-audit/blob/audit-data/test/mutation/notes.md). Essentially this employs changings parts of the code to see if it breaks tests.
+- **Differential Testing** - comparitive testing vs different iterations of the same code. We'll cover this in more detail in future.
 
-To illustrate this, let's look at two protocols - Uniswap and Euler. The former has an intact core invariant embedded within its codebase; the Euler protocol, unfortunately, does not. This lack of an invariant was a significant contributor to the much-talked-about Euler hack that happened recently.
+Another thing you might want to try is using [**Solodit**](https://solodit.xyz/) to research Weird ERC20s and how they've been identified in previous audits.
 
-## Exploring Different Testing Tools and Approaches
-
-While our journey has already spanned areas of forge fuzzing, stateful fuzzing, and invariants, there are still a few facets we're yet to traverse. Say, for example, `Echidna`. In case you're unfamiliar with it – it's a powerful fuzzing tool that pairs excellently with Foundry Fuzzing Consensus's paid tool.
-
-Mutation and differential testing, on the other hand, didn't make the cut for our workshop, so we will discuss them briefly here.
-
-> Mutation testing involves modifying parts of the code to evaluate if these changes break any existing tests.
-
-Let's turn to the git repo attached to this tutorial for reference. Under `audit_data`, you'll find a 'test' folder with a note about differential testing. Also, there is a differential folder where you can perform fuzz testing against the output of `uniswap`.
-
-For mutation testing, imagine altering `Tswappool.sol` in various ways, such as deleting a line, swapping out math, or changing a greater-than operator to a less-than. The objective here is to ensure your tests catch these errors.
-
-Through this practice, you can evaluate the effectiveness of your testing framework. While we didn't perform any mutation testing in our session, it's a valuable tool you should consider implementing.
-
-## Driving the ‘Solodit' Train
-
-We're gearing up to dive into `Solodit` in the upcoming sessions. With `Solodit`, we can learn from historical findings, uncovering a wealth of insights from the peculiarities of ERC-20s to the importance of preserving invariants.
-
-Parsing through the archives of `Solodit`, you'll discover numerous examples of how weird ERC-20s have caused problems. Try a simple search for 'invariants' on Solodit, and you'll unearth a treasure trove of invariant findings, spelling out a wealth of knowledge and learning opportunities.
-
-## Wrapping It Up!
-
-To sum up, we've done a ton of work together; we've navigated unchartered territories, explored protocols, learned about testing and more. On this journey, we've embraced the weirdness of ERC20s, the intriguing world of invariants, and a handful of robust testing tools.
-
-Stay tuned for more exciting stuff coming your way! Remember, we're learning together, we're growing together, and, most importantly - we're making the future of protocols safer, together. Until next time, happy learning!
+Let's get on to some manual review now!

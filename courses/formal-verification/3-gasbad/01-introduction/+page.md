@@ -1,47 +1,87 @@
 ---
-title: introduction
+title: Introduction
 ---
 
+_Follow along with this video:_
+
 ---
 
-## Introduction to the Final Frontier of EVM Opcodes Mastery
+### Introduction
 
-Welcome back to the engaging final stretch of the assembly EVM opcodes and formal verification course! This journey has been all about empowering you with the arcane knowledge of assembly and the robust methodologies of formal verification. As we gear ourselves for the endgame, I want to introduce an exciting avenue where your newly acquired skills can shine: Codex, a competitive platform for enthusiasts like you.
+Ok, welcome back to the final section of this Assembly, EVM, Op code and formal verification course.
 
-### The Leap to Codex: A Playground for Verification Maestros
+Before we dive into what we can expect to cover in this section, I'm going to draw your attention to [**CodeHawks**](https://www.codehawks.com/) again. Once you complete this section you'll be well prepared for competitive formal verification audits, So keep an eye out!
 
-After delving into the nitty-gritty of this course's final module, you'll be all set to dive into the world of CodeHawks, where you stand a chance to compete in formal verification contests. Imagine writing formal verification specs and getting paid for it. Keep your eyes peeled for such opportunities on Codehawks – they are the perfect testing ground for your skills.
+### Gas Bad NFT Marketplace
 
-### Your GitHub Companion Throughout the Course
+For this section we'll be focusing on [**this code base**](https://github.com/Cyfrin/3-gas-bad-nft-marketplace-audit), and we'll be approaching things a little bit differently and primarily writing the certora formal verification tests for this protocol.
 
-Follow along as we turn towards the GitHub repository associated with this course. Whether you're tuning in from updraft or YouTube, you'll find the resources you need. Let's navigate to the section marked as 'gas bad NFT marketplace'. Here lies the codebase, our holy grail for this final assignment. We're about to embark on a slightly unconventional journey; our mission is to pen the Satora, craft formal verification specs, and unravel some truly badass content.
+At first glance, this seems like a fairly standard foundry code base. The Gas Bad NFT Marketplace is based off the [**Seaport code base**](https://github.com/ProjectOpenSea/seaport) (with a personal touch 😉). Seaport is an open source NFT marketplace which powers OpenSea!
 
-### Peering Into the Gas Bad NFT Marketplace Codebase
+Seaport had two distinct versions of their code base written, one in Solidity and one almost entirely in Assembly, they did this in an effort to hyper optimize the gas costs of transactions on the protocol
 
-At a glance, this codebase resembles a well-structured foundry setup. But look closer, and you'll notice it brims with intriguing components like strategic opcodes and inline assembly. You'll appreciate finding a slither config, a makefile, and notably, tests. Yes! Unit tests and mocks are heartening to see, signifying a well-oiled code machine.
+So, what the Gas Bad NFT Marketplace is doing, is similar to Seaport in that they've created `NFTMarketplace.sol` a minimalistic marketplace smart contract with basic expected functions such as `listItem`, `cancelListing`, `buyItem`, `updateListing` and `withdrawProceeds`. Something worth noting is that the NFTMarketplace actually takes ownership of a listed asset when `listItem` is executed.
 
-The Gas Bad NFT marketplace is a minimalist hub for trading those coveted digital collectibles known as NFTs. With functions to list items, cancel listings, buy items, update listings, and the vital process of withdrawing proceeds, the marketplace streamlines the exchange of NFTs like a charm.
+In addition to the `NFTMarketplace.sol` contract they've also written `GasBadNFTMarketplace.sol` which is essentially the exact same code base, but much of the logic has been converted to assembly to save gas. Here's a comparison between the `listItem` functions of each:
 
-### The Solidity and Assembly Tango
+**NFTMarkplace.sol**
 
-Here's the twist: the original NFT marketplace code, written by yours truly, underwent a transformation, evolving into the Gas Bad NFT Marketplace with a generous infusion of assembly code. The philosophy? Using assembly can cut significant gas usage, bypass compiler inefficiencies, and yield a low-level mastery that's both efficient and sophisticated.
+```js
+function listItem(address nftAddress, uint256 tokenId, uint256 price) external {
+    // Checks
+    if (price <= 0) {
+        revert NftMarketplace__PriceMustBeAboveZero();
+    }
 
-The Gas Bad variant mirrors its predecessor but with assembly taking the reins in certain operations. Whether it's emitting logs or handling ERC-721 tokens, assembly is the star. Our objective is to showcase how formal verification can establish equivalence between the solidity-based and assembly-driven instances of the codebase, proving that upgrading to assembly doesn't have to compromise integrity.
+    // Effects (Internal)
+    s_listings[nftAddress][tokenId] = Listing(price, msg.sender);
+    emit ItemListed(msg.sender, nftAddress, tokenId, price);
 
-### Stepping into Formal Verification with Certora
+    // Interactions (External)
+    IERC721(nftAddress).safeTransferFrom(msg.sender, address(this), tokenId);
+}
+```
 
-Now, the heart of our codebase features a directory dedicated to Certora - the home of all things formal verification for our project. Here, we'll pen our specs from scratch, focusing on proving the equivalence between our Solidity and assembly versions. This deep dive is not just about the how-to; it's about opening a world of opportunities where your verification skills can truly make an impact.
+**GasBadNFTMarketplace.sol**
 
-### The Warm-Up: NFT Mock Spec
+```js
+function listItem(address nftAddress, uint256 tokenId, uint256 price) external {
+    // Checks
+    if (price <= 0) {
+        revert NftMarketplace__PriceMustBeAboveZero();
+    }
 
-Before we tackle the Gas Bad NFT marketplace specs, we'll stretch our formal verification muscles with the NFT Mock Spec. This exercise primes us for working with Certora and sets the stage for the main event.
+    // Effects (Internal)
+    s_listings[nftAddress][tokenId] = Listing(price, msg.sender);
 
-### Equivalence Verification: The Gas Bad NFT Spec
+    // emit ItemListed(msg.sender, nftAddress, tokenId, price);
+    assembly {
+        // This is the data
+        mstore(0x00, price)
+        log4(
+            0x00,
+            0x20,
+            // keccak256("ItemListed(address,address,uint256,uint256)")
+            0xd547e933094f12a9159076970143ebe73234e64480317844b0dcb36117116de4,
+            caller(),
+            nftAddress,
+            tokenId
+        )
+    }
 
-Our showstopper is the Gas Bad NFT spec, where we'll put our knowledge to the test and ensure that our assembly rewrite stands on par with the original Solidity codebase. This rigorous exercise underscores the future of creating highly efficient smart contracts: draft in Solidity, test thoroughly, then translate to assembly with a keen eye on equivalence.
+    // Interactions (External)
+    IERC721(nftAddress).safeTransferFrom(msg.sender, address(this), tokenId);
+}
+```
 
-### Ready to Test Your Mettle?
+A major challenge of ours in this section will be assuring that these two code bases are _actually_ doing the same thing, and we're going to use formal verification to mathematically prove this to be true (or not!).
 
-Once we've tackled the formal verifications, you'll be positioned perfectly to jump into CodeHawks's contests, offer your services for developing formal verification for clients through Sartora, and essentially unlock countless doors with your newfound expertise.
+I see this methodology as being a great way for protocols to be gas optimized in the future. A contract is written in solidity, and then written again in a more gas efficient way. The two contracts can be compared to assure they are behaving identifically and that the cheaper execution is valid.
 
-Now, are you prepared to turn the theoretical into the exceptional? Let's embark on this rigorous yet rewarding venture and sculpt your proficiency in assembly and formal verification. Together, we'll write the future of efficient, secure smart contracts. Are you ready? Let's do this.
+The Gas Bad NFT Marketplace code base contains certora configuration and spec files already, but this is what we're going to be trying to replicate together. You can use these files as an answer key to check your work, or if you get stuck.
+
+### Wrap Up
+
+Ok, let's get warmed up and learn some new certora tricks with the NFTMock.spec. Once we're done there we'll move into GasBadNFT.spec and put our formal verification skills to the test by verifying these two code bases work the same.
+
+We'll get things set up, in the next lesson. See you there!

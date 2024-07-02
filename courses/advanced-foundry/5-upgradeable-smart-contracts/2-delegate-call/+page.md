@@ -1,22 +1,28 @@
 ---
-title: Delegate Call
+title: delegateCall
 ---
 
-_**Follow along with this video.**_
-
-
+_Follow along the course with this video._
 
 ---
 
-In this lesson, we're going to go deep on Upgradeable Smart Contracts specially on the `Delegate Call`, how to construct proxies and upgradable smart contracts. This forms a fundamental part of the blockchain space, especially when building efficient and investor-friendly decentralized applications.
+### Delegate Call
 
-## Delegate Call vs Call Function
+In this section we're going to be learning how to build our own proxies and in order to do this we first need an understanding of the delegateCall function.
 
-Similar to a call function, 'delegate call' is a fundamental feature of Ethereum. However, they work a bit differently. Think of delegate call as a call option that allows one contract to borrow a function from another contract.
+At it's core delegateCall is going to be similar to the call function we learnt about earlier. If you need a refresher, I encourage you to go back to the [**NFT lesson**](https://updraft.cyfrin.io/courses/advanced-foundry/how-to-create-an-NFT-collection/evm-opcodes-advanced?lesson_format=video) of this course for valuable context.
 
-To illustrate this, let's look at an example using Solidity - an object-oriented programming language for writing smart contracts.
+Many of the things I'll be going over here will be available through [**Solidity By Example**](https://solidity-by-example.org/delegatecall/) if you want more practice or insight.
 
-```javascript
+Let's consider the two simple contracts provided as examples:
+
+Contract B is very simple, it contains 3 storage variables which are set by the setVars function.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+// NOTE: Deploy this contract first
 contract B {
     // NOTE: storage layout must be the same as contract A
     uint256 public num;
@@ -29,14 +35,15 @@ contract B {
         value = msg.value;
     }
 }
-
 ```
 
-Our Contract B has three storage variables (`num`, `sender` and `value`), and one function `setVars` that updates our `num` value. In Ethereum, contract storage variables are stored in a specific storage data structure that's indexed starting from zero. This means that `num` is at index zero, `sender` at index one and `value` at index two.
+If we recall, storage acts _kind of_ like an array and each storage variable is sequentially assigned a slot in storage, in the order in which the variable is declared in a contract.
 
-Now, let's deploy another contract - Contract A. This one also has a `setVars` function. However, it makes a delegate call to our Contract B.
+<img src="/foundry-upgrades/2-delegatecall/delegatecall1.png" width="100%" height="auto">
 
-```javascript
+Now consider Contract A:
+
+```js
 contract A {
     uint256 public num;
     address public sender;
@@ -44,29 +51,50 @@ contract A {
 
     function setVars(address _contract, uint256 _num) public payable {
         // A's storage is set, B is not modified.
-        // (bool success, bytes memory data) = _contract.delegatecall(
-        (bool success, ) = _contract.delegatecall(
+        (bool success, bytes memory data) = _contract.delegatecall(
             abi.encodeWithSignature("setVars(uint256)", _num)
         );
-        if (!success) {
-            revert("delegatecall failed");
-        }
     }
 }
 ```
 
-Normally, if `contract A` called `setVars` on `contract B`, it would only update `contract B's` `num` storage. However, by using delegate call, it says "call `setVars` function and then pass `_num` as an input parameter but call it in _our_ contract (A). In essence, it 'borrows' the `setVars` function and uses it in its own context.
+In contract A we're doing much the same thing, the biggest different of course being that we're using `delegateCall`.
 
-## Understanding Storage in Delegate Call
+This works fundamentally similar to `call`. In the case of `call` we would be calling the `setVars` function on Contract B and this would update the storage on Contract B, as you would expect.
 
-It's interesting to see how delegate call works with storage on a deeper level. The borrowed function (`setVars` of Contract B) doesn't actually look at the names of the storage variables of the calling contract (Contract A) but instead, at their storage slots.
+With delegateCall however, we're borrowing the logic from Contract B and referencing the storage of Contract A. This is entirely independent of what the variables are actually named.
 
-If we used the `setVars` function from Contract B using delegate call, first storage slot (which is `firstValue` in Contract A) will be updated instead of `num` and so on.
+<img src="/foundry-upgrades/2-delegatecall/delegatecall2.png" width="100%" height="auto">
 
-One other important aspect to remember is, the data type of the storage slots in Contract A does not have to match that of Contract B. Even if they are different, delegate call works by just updating the storage slot of the contract making the call.
+### Remix
 
-## Wrap Up
+Let's give this a shot ourselves, in Remix. If you'd like to try this yourself and follow along, you can copy the contract code from [**Solidity by Example**](https://solidity-by-example.org/delegatecall/).
 
-In conclusion, delegate call is a very handy function in Solidity that allows one contract to 'borrow' a function from another. However, care should be taken when using it as the storage slots in the calling contract get updated directly, without looking at the variable names or data types. It might lead to unpredictable behavior if overlook this aspect.
+Once the code has been pasted into Remix, we should be able to compile and begin with deploying Contract B. We can see that all of our storage variables begin empty.
 
-Feel free to experiment with different contracts and function calls to witness delegate call in action. But remember, "With great power, comes great responsibility!"
+<img src="/foundry-upgrades/2-delegatecall/delegatecall3.png" width="100%" height="auto">
+
+By calling setVars and passing an argument, we can see how the storage variables within Contract B are updated as we've come to expect.
+
+<img src="/foundry-upgrades/2-delegatecall/delegatecall4.png" width="100%" height="auto">
+
+Now we can deploy Contract A. This contract should default to empty storage variables as well. When we call `setVars` on Contract A however, it's going to borrow the setVars logic from Contract B and we'll see it update it's own storage, rather than Contract B's.
+
+> [!NOTE]
+> We'll need to pass Contract B as an input parameter to Contract A's setVars function so it knows where to delegate to!
+
+<img src="/foundry-upgrades/2-delegatecall/delegatecall5.png" width="100%" height="auto">
+
+Importantly, this behaviour, due to referencing storage slots directly, is independent of any naming conventions used for the variables themselves.
+
+<img src="/foundry-upgrades/2-delegatecall/delegatecall6.png" width="100%" height="auto">
+
+In fact, if Contract A didn't have any of it's own declared variables at all, the appropriate storage slots would _still_ be updated!
+
+Now, this is where things get really interesting. What if we changed the variable type of `number` in Contract A to a `bool`? If we then call delegateCall on Contract B, we'll see it's set our storage slot to `true`. The bool type detects our input as `true`, with `0` being the only acceptable input for `false`.
+
+<img src="/foundry-upgrades/2-delegatecall/delegatecall7.png" width="100%" height="auto">
+
+### Wrap Up
+
+Low-level functions like `call` and `delegateCall` are powerful, but risky. They allow us to send/receive arbitrary function calls, or to route function calls to specific implementation addresses, but as we've seen, a special attention must be paid to how storage is handled or various clashes and unexpected behaviour may arise.

@@ -2,67 +2,86 @@
 title: Using the Compiler as Static Analysis Tool
 ---
 
-
-
 ---
 
-# Diving into Liquidity Addition and Removal Functions
+### Using the Compiler as Static Analysis Tool
 
-Today, we're delving into the crux of adding and removing liquidity in cryptocurrency pool systems. We'll take a look at the deposit function code from a fictional cryptographic liquidity pool project.
+Continuing with our review down `TSwapPool.sol` we reach the `ADD AND REMOVE LIQUIDITY` section, with the `deposit` function up first.
 
-For those following along, let's do a simple `toggle word wrap` in your favorite code editor so you can view the code more efficiently. If you need the code, you can find it in the associated GitHub repository within the `audit data` folder.
+We should take the time to read and understand the provided NATSPEC for this function.
 
-## The Deposit Function
-
-![](https://cdn.videotap.com/86AjU9W56rzzt6USwvmh-25.png)In the relevant code we've got, we run into aspects related to liquidity providers. The deposit function revolves around the liquidity providers' actions in the pool system.
-
-Looking at the function, you'll notice it calls for a certain amount of `wes` (Wrapped Ether). Following the liquidity pool model, when a user deposits funds, they're given liquidity tokens in return. These tokens represent the user's share in the pool.
-
-### Delving Into the Parameters
-
-There are's an array of parameters involved in the function. Let's break down a few significant ones:
-
-- The `minimum liquidity tokens to mint`: This parameter signifies the quantity of liquidity tokens created, derived from the amount of `wes` the user deposits. However, there's a minimum limit to ensure the user is aware of what they will receive.
-- `Maximum pool tokens to deposit`: Mirroring the earlier parameter, this signifies the maximum number of pool tokens the user is prepared to deposit. This value again is derived from the deposited `wes`, allowing users to gauge how much USDC they should contribute to the liquidity pool.
-- `Deadline`: VC Code gives us a heads up here with the `Unused function parameter`, warning. Surprise! The deadline parameter isn't implemented in this function. Herein lies a potential bug we'll delve into shortly.
-
-## Analyzing the Bug
-
-The unused `deadline parameter` seems small at first, but it becomes a severe issue upon closer inspection. The deadline parameter is meant to determine when a transaction needs to be completed. If it's unimplemented, the deadline set by a depositor could pass without stopping the transaction, causing unexpected actions on the part of the user.
-
-This high impact, high likelihood bug results in deposits proceeding when they're expected to fail – a clear and severe disruption to functionality.
-
-```markdown
-# Audit Finding: High
-
-# Impact: High, Severe disruption of functionality
-
-# Likelihood: High, Deadline is ignored, leading to transacions being processed beyond the stipulated deadline.
+```js
+/// @notice Adds liquidity to the pool
+/// @dev The invariant of this function is that the ratio of WETH, PoolTokens, and LiquidityTokens is the same
+/// before and after the transaction
+/// @param wethToDeposit Amount of WETH the user is going to deposit
+/// @param minimumLiquidityTokensToMint We derive the amount of liquidity tokens to mint from the amount of WETH the
+/// user is going to deposit, but set a minimum so they know approx what they will accept
+/// @param maximumPoolTokensToDeposit The maximum amount of pool tokens the user is willing to deposit, again it's
+/// derived from the amount of WETH the user is going to deposit
+/// @param deadline The deadline for the transaction to be completed by
 ```
 
-### Unveiling More Bugs
+An assessment of the function's paramaters in our IDE points to an issue our compiler identified earlier...
 
-Closer analysis of compiler warnings revealed two other interesting bugs.
+<img src="/security-section-5/33-using-the-compiler-as-static-analysis-tool/using-the-compiler-as-static-analysis-tool1.png" width="100%" height="auto">
 
-This bug crops up in our deposit function where `pool token reserves` is ignored. The ignored reserves could have been used to do some internal calculations. It seems the developers started some math, then decided to use a function instead, resulting in ignored variables and wasted gas.
+We can see this, and other issues pointed out by our compiler again by running `forge build`.
 
-```markdown
-# Audit Finding:
+Often an unused variable, or dead code, can be pretty innocuous. This situation is a little sneaky, however. Let's look at `Impact` and `Likelihood`.
 
-    InfoIssue: line of code declaring `pool token reserves` is not used, leading to gas wastage.
+- Impact - High - A deposit expected to fail will go through, severe disruption of functionality.
+- Likelihood - High - always happens, the deadline logic isn't implemented anywhere
+
+For the above reasons, our unused parameter may actually be a **_HIGH_**!
+
+```js
+function deposit(
+        uint256 wethToDeposit,
+        uint256 minimumLiquidityTokensToMint,
+        uint256 maximumPoolTokensToDeposit,
+        //@Audit-High - unused parameter may lead to unsupported trust in protocol functionality. Deposits expected to fail may succeed.
+        uint64 deadline
+    )
+        external
+        revertIfZero(wethToDeposit)
+        returns (uint256 liquidityTokensToMint)
+    {...}
 ```
 
-- `Unused Function Parameter: Swap Exact Input`
+Wow, we identified a potential high just through a compiler output! We should definitely check some of the other warnings.
 
-In this function, an unused `output` parameter shows up, which isn't a major red flag. The impact here seems low since this function seems to only be used externally and this output might not be used elsewhere in the project. The only issue is the return of 0 where it could be another value that might be more meaningful. However, this impact could be more if it's being used elsewhere.
+<img src="/security-section-5/33-using-the-compiler-as-static-analysis-tool/using-the-compiler-as-static-analysis-tool2.png" width="100%" height="auto">
 
-```markdown
-# Audit Finding:
+`poolTokenReserves`, as pointed out by the compiler, is on line 107. It looks like this variable may have been held over from when the function was calculating things locally, but this logic has since been replaced with a function which is handling all the math.
 
-    LowIssue: The `output` parameter returns zero and is never used, which might not accurate reflect the output value.
-    Likelihood: High, always the case. But overall impact is low.
+<img src="/security-section-5/33-using-the-compiler-as-static-analysis-tool/using-the-compiler-as-static-analysis-tool3.png" width="100%" height="auto">
+
+Ultimately `poolTokenReserves` is a waste of gas and we can make a note of it as well.
+
+```js
+//@Audit-Informational - Line unused, can be removed to save gas
+uint256 poolTokenReserves = i_poolToken.balanceOf(address(this));
 ```
 
-In conclusion, running a simple compiler check helped us discover several notable bugs. A key takeaway for developers here is the value of regularly checking for and resolving compiler warnings. Time to go ahead and patch up these issues before they turn into severe problems!
+Finally, our compiler is warning us about `uint256 output` an unused function parameter set to return from `swapExactInput`. This may not be a big deal but I suspect this will be at least a low.
 
-Stay tuned for more explorations into cryptocurrency programming and keep those bugs at bay!
+This is a fair example of how some subjectivity can play a part in the severity of a finding. The protocol isn't using this function's return value anywhere so the impact is very low. The potential exists for this return value to be relied upon externally however, and if the protocol is returning the wrong value...
+
+Considerations to be had, but let's mark this as a low.
+
+```js
+function swapExactInput(
+        IERC20 inputToken,
+        uint256 inputAmount,
+        IERC20 outputToken,
+        uint256 minOutputAmount,
+        uint64 deadline
+    )
+        public
+        revertIfZero(inputAmount)
+        revertIfDeadlinePassed(deadline)
+        //@Audit-Low - Return value not updated/used
+        returns (uint256 output)
+    {...}
+```

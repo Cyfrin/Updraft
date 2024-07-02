@@ -2,50 +2,228 @@
 title: Stateful Fuzzing Where Method 1 (open) Fails
 ---
 
-
-
 ---
 
-Welcome back fellow learners! We are on this exciting journey together to lay the foundation of Smart Contract Security Testing. What have we learned thus far?
+Let's ramp things up to a much more robust contract `HandlerStatefulFuzzCatches.sol`. This contract will be much closer to what we can expect to see in TSwap and represents a vault for ERC20 tokens.
 
-## Stateless Fuzzing vs Stateful Fuzzing
-
-We discovered that stateless fuzzing was not effective in detecting bugs in functions which require more complexity, such as `changeValue` - a function which updates a contract's state.
+<details>
+<summary>HandlerStatefulFuzzCatches.sol</summary>
 
 ```js
-function changeValue(uint256 _value, uint256 _multiplier) public {
-    value = _value * _multiplier;
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
+
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+
+/*
+ * This contract represents a vault for ERC20 tokens.
+ *
+ * INVARIANT: Users must always be able to withdraw the exact balance amout out.
+ */
+contract HandlerStatefulFuzzCatches {
+    error HandlerStatefulFuzzCatches__UnsupportedToken();
+
+    using SafeERC20 for IERC20;
+
+    mapping(IERC20 => bool) public tokenIsSupported;
+    mapping(address user => mapping(IERC20 token => uint256 balance)) public tokenBalances;
+
+    modifier requireSupportedToken(IERC20 token) {
+        if (!tokenIsSupported[token]) revert HandlerStatefulFuzzCatches__UnsupportedToken();
+        _;
+    }
+
+    constructor(IERC20[] memory _supportedTokens) {
+        for (uint256 i; i < _supportedTokens.length; i++) {
+            tokenIsSupported[_supportedTokens[i]] = true;
+        }
+    }
+
+    function depositToken(IERC20 token, uint256 amount) external requireSupportedToken(token) {
+        tokenBalances[msg.sender][token] += amount;
+        token.safeTransferFrom(msg.sender, address(this), amount);
+    }
+
+    function withdrawToken(IERC20 token) external requireSupportedToken(token) {
+        uint256 currentBalance = tokenBalances[msg.sender][token];
+        tokenBalances[msg.sender][token] = 0;
+        token.safeTransfer(msg.sender, currentBalance);
+    }
 }
 ```
 
-In this case, we employed a mechanism known as stateful fuzzing. With this method, we can catch much more subtle and nuanced bugs by accounting for contract state changes during fuzzing.
+</details>
 
-However, we encountered a hiccup when we were dealing with an integer overflow issue. We had to set the `failOnRevert` to `false` for our fuzzing test to work! That's because `myValue` could be a huge number, larger than a `uint256` can hold, causing an overflow.
+The invariant the protocol has provided is:
 
-Despite these hurdles, we soldiered on and made it this far. Now, it's time to graduate to an even more complex scenario - fuzzing a vault contract!
+```js
+/*
+ * INVARIANT: Users must always be able to withdraw the exact balance amount out.
+ */
+```
 
-## Breaking The Invariant With Stateful Fuzzing
+A little context gathering of this contract is going to tell us that these are the two main functions of the protocol:
 
-So, let's start by attempting to break this invariant using stateful fuzzing.
+```js
+function depositToken(IERC20 token, uint256 amount) external requireSupportedToken(token) {
+    tokenBalances[msg.sender][token] += amount;
+    token.safeTransferFrom(msg.sender, address(this), amount);
+}
 
-Firstly, we'll set up the test contract and import our dependencies, including the token mocks that will be used.
+function withdrawToken(IERC20 token) external requireSupportedToken(token) {
+    uint256 currentBalance = tokenBalances[msg.sender][token];
+    tokenBalances[msg.sender][token] = 0;
+    token.safeTransfer(msg.sender, currentBalance);
+}
+```
 
-Next, we'll create a token array and launch the tokens to be supported by our token vault. We will then set up the user who'll be interacting with the vault and provide them with a starting amount of tokens.
+This contract ultimately allows users to deposit tokens, the amount per user is tracked internally via mappings, and the user is then able to withdraw their allotted tokens.
 
-Finally, we compose the fuzzing test itself. We begin by pranking the user, effectively manipulating their available tokens. We then perform the withdrawal operation of both types of tokens from the vault. Eventually, we assert that the user's token balance has not changed after the deposit and withdrawal operations.
+### Attempting Open Stateful Fuzzing
 
-The critical learning here is that we should always be able to withdraw the same amount we've deposited - this assertion must not fail!
+Let's first try the methodology we learnt in the last lesson and see if it's able to spot any vulnerabilities.
 
-## All That Glitters Is Not Gold
+Create a new folder in our `test/invariant-break` folder named `handler`. Within this new folder create a file named `AttemptedBreakTest.t.sol`.
 
-Alas, it appears that we celebrate too soon. On running this test, it's clear that we've run into an issue - our deposit function fails!
+There's going to be a lot to this, so let's break down this test set up one step at a time. First, we're going to need to import `HandlerStatefulFuzzCatches.sol` as well as `Test` and `StdInvariant` just as before. This contract takes an array of `supportedTokens` in it's constructor, so we'll need to import some tokens - the repo has provided mocks in `test/mocks` for use! Finally, be sure to import the IERC20 interface.
 
-When this happens, a good practice is to turn on the verbose logs ( -vvv flag) to see what's happening beneath the hood. We quickly detect the root cause - our fuzzer was making deposit attempts with unsupported tokens.
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
 
-Too much randomness in fuzzing can be just as detrimental as not enough randomness. We also notice that we never made the approve call for the ERC20 tokens, which was necessary for a deposit operation. Our fuzz test was essentially doomed from the start!
+import {HandlerStatefulFuzzCatches} from "src/invariant-break/HandlerStatefulFuzzCatches.sol";
+import {Test} from "forge-std/Test.sol";
+import {StdInvariant} from "forge-std/StdInvariant.sol";
+import {MockUSDC} from "test/mocks/MockUSDC.sol";
+import {YeildERC20} from "test/mocks/YeildERC20.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+```
 
-## TL;DR
+We'll next need to instantiate these things in our test contract and make a user - this user will be the entity interacting with the protocol and whose balance we'll be checking.
 
-In this blog post, we discussed the progression from stateless to stateful fuzzing for smart contract testing. While stateless fuzzing is fantastic for catching some easy bugs, it falls short in detecting bugs in the case of more complex functions.
+```js
+contract AttemptedBreakTest is StdInvariant, Test {
+    HandlerStatefulFuzzCatches
+    handlerstatefulFuzzCatches;
+    MockUSDC mockUSDC;
+    YeildERC20 yeildERC20;
+    IERC20[] supportedTokens;
 
-Stateful fuzzing overcomes these limitations, but it comes with its own set of challenges, like dealing with integer overflows. The takeaway here is the importance of finding the goldilocks zone of randomness while fuzzing - too little or too much can skew our test results!
+    address user = makeAddr("user");
+```
+
+And now, our `setUp` function. A few things to consider here:
+
+1. Mocks need to be deployed
+2. Mocks need to be added to our `supportedTokens` array
+3. Our `user` needs to have a balance of YeildERC20 and/or MockUSDC
+4. Our `HandlerStatefulFuzzCatches.sol` contract needs to be deployed with our `supportedTokens` argument
+5. `HandlerStatefulFuzzCatches.sol` needs to be set as our fuzzer's `targetContract`
+
+What's this `setUp` function look like?
+
+```js
+function setUp() public {
+        vm.startPrank(user);
+        mockUSDC = new MockUSDC();
+        yeildERC20 = new YeildERC20();
+        mockUSDC.mint(user, yeildERC20.INITIAL_SUPPLY());
+        vm.stopPrank();
+
+        supportedTokens.push(IERC20(address(yeildERC20)));
+        supportedTokens.push(IERC20(address(mockUSDC)));
+        handlerstatefulFuzzCatches = new HandlerStatefulFuzzCatches(supportedTokens);
+        targetContract(address(handlerstatefulFuzzCatches));
+    }
+```
+
+In the above we're pranking our `user` and then deploying and minting the tokens the `user` needs. `supportedTokens` then has both `mockUSDC` and `yeildERC20` pushed to it and our `HandlerStatefulFuzzCatches.sol` contract is deployed and set as our `targetContract`. Nailed it!
+
+Let's now consider what our invariant might look like. We know _Users must always be able to withdraw the exact balance amount out_.
+
+Sounds like we might need to compare some balance changes of our `user`. Let's create a `startingAmount` variable and set it to the value of each token the `user` begins with (these should be the same for both tokens).
+
+```js
+contract AttemptedBreakTest is StdInvariant, Test {
+    ...
+    uint256 startingAmount;
+    ...
+    function setUp() public {
+        vm.startPrank(user);
+        mockUSDC = new MockUSDC();
+        yeildERC20 = new YeildERC20();
+        startingAmount = yeildERC20.INITIAL_SUPPLY();
+        mockUSDC.mint(user, startingAmount);
+        vm.stopPrank();
+        ...
+    }
+```
+
+With a little refactoring we can now reference the `startingAmount` of our `user` in our test. We can even write a little test to assure the `startingAmount` is being set properly.
+
+```js
+function testStartingAmount() public view {
+    assert(startingAmount == mockUSDC.balanceOf(user));
+    assert(startingAmount == yeildERC20.balanceOf(user));
+}
+```
+
+<img src="/security-section-5/14-fuzzing-where-method-1-fails/fuzzing-where-method-1-fails1.png" width="100%" height="auto">
+
+Perfect!
+
+Now, if the `user` deposits and then withdraws everything, their startingAmount and what they end with, should be the same. This is going to be the invariant we're testing.
+
+```js
+function statefulFuzz_TestInvariantBreaks() public {
+    vm.startPrank(user);
+    handlerstatefulFuzzCatches.withdrawToken(IERC20(address(mockUSDC)));
+    handlerstatefulFuzzCatches.withdrawToken(IERC20(address(yeildERC20)));
+    vm.stopPrank();
+
+    assert(handlerstatefulFuzzCatches.tokenBalances(user, IERC20(address(mockUSDC))) == 0);
+    assert(handlerstatefulFuzzCatches.tokenBalances(user, IERC20(address(yeildERC20))) == 0);
+    assert(mockUSDC.balanceOf(user) == startingAmount);
+    assert(yeildERC20.balanceOf(user) == startingAmount);
+}
+```
+
+In this function, we're assuring the the fuzz tests will end with our `user` withdrawing both types of tokens from the protocol. We're then asserting a number of things
+
+1. `user`'s deposit balance of MockUSDC is reset to 0
+2. `user`'s deposit balance of YeildERC20 is reset to 0
+3. `user`'s balance of MockUSDC returns to the startingAmount
+4. `user`'s balance of YeildERC20 returns to the startingAmount
+
+Let's run it with `forge test --mt statefulFuzz_TestInvariantBreaks`
+
+<img src="/security-section-5/14-fuzzing-where-method-1-fails/fuzzing-where-method-1-fails2.png" width="100%" height="auto">
+
+It passes! Boom, safe and secure, right? Wrong.
+
+Look closely and we see `2048` calls were made by our test, but `2048` of them reverted. Something's going on here.
+
+If we navigate back to our `foundry.toml` and set `fail_on_revert` to `true`, we can run our test again as `forge test --mt statefulFuzz_TestInvariantBreaks -vvvv` to gain some insight.
+
+<img src="/security-section-5/14-fuzzing-where-method-1-fails/fuzzing-where-method-1-fails3.png" width="100%" height="auto">
+
+Ah! It's reverting with the error `HandlerStatefulFuzzCatches__UnsupportedToken()`. Of course! Our fuzz test is calling `depositToken` with random addresses, but we only have 2 supported tokens!
+
+Our test isn't being precise enough, and this is a perfect example of why it's important not to default to `fail_on_revert = false`.
+
+This is one of the cons we saw with `open stateful fuzzing` in our [**invariant-break README**](https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/invariant-break/README.md#2-stateful-fuzzing---open)
+
+Namely, you can run into "path explosion" where there are too many possible paths, and the fuzzer finds nothing.
+
+We need to find a way to confine or restrict our fuzz paths. The opposite risk that we need to watch out for is being _too_ restrictive and missing bugs as a result.
+
+### Wrap Up
+
+We've learnt so much so far! We've covered `stateless` and `open stateful fuzzing` and learnt how they are valuable in passing random data to our test suites.
+
+We learnt about the limitations of stateless fuzzing and how many vulnerabilities only arise through an evolving contract state and we're currently investigating a means to focus our tests and avoid unnecessary reverts making our fuzz suit more reliable and robust.
+
+There are a few problems with our test so far. For example - we're only testing a single user's ability to deposit and withdraw. We should probably be fuzzing users in our tests. Additionally, we neglected to _approve_ any of our tokens before attempting to deposit, so even if the tokens were supported we likely would have reverted again.
+
+In the next lesson, let's clean things up and look at a methodolody which allows us to narrow down the focus of our fuzz testing leveraging a handler. See you there!

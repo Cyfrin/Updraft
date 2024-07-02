@@ -4,34 +4,24 @@ title: What is a DEX?
 
 _Follow along with this video:_
 
-
-
 ---
 
-# The Ultimate Guide To T-SWAP &amp; Decentralized Exchanges
+### What is a Dex?
 
-## Getting Started
+At it's highest level of abstraction what TSwap aims to do is: Allow users a permissionless way to swap assets between eachother at a fair price.
 
-Are you familiar with the concept of decentralized exchanges or DEXes? Well, T-SWAP is a promising project and an upcoming player in this space. T-SWAP is meant to be a permissionless way for users to swap assets between each other at a fair price. What else does T-SWAP aim to do, you ask? Well, let's unravel its offerings.
+<img src="/security-section-5/4-what-is-a-dex/what-is-a-dex1.png" width="100%" height="auto">
 
-## The T-SWAP in a Nutshell
+TSwap (based off Uniswap) is an example of a Decentralized Exchange, or a `DEX`.
 
-Imagine you're a user with ten USDC (a stablecoin pegged to the US dollar) and you want to buy WETH (Wrapped Ether, an ERC20 equivalent of Ethereum). T-SWAP essentially allows for this transaction to occur. In simple terms, a user starts with ten USDC and zero WETH, use T-SWAP to make a swap, and they will end with zero USDC and some WETH.
+Check out the [**DEXes section of DeFiLlama**](https://defillama.com/protocols/Dexes) for a list of examples!
 
-You can think of T-SWAP as a decentralized asset token exchange similar to popular platforms such as Coinbase or Robinhood. But it's not just another cryptocurrency exchange, it is powered by the concept of decentralization, offering a cutting-edge alternative to traditional exchanges.
+### What is an Automated Market Maker (AMM)?
 
-![](https://cdn.videotap.com/iTNZThQG62yyusiLZJVT-35.77.png)
+TSwap is also en example of an Automated Market Maker (AMM).
 
-## Diving into Decentralized Exchanges (DEXes)
+Automated Market Makers are different from a typical "order book" style exchange. Instead of an order book which attempts to match buy and sell orders of users, an AMM leverages `Pools` of an asset. Uniswap is a geat example of this. Check out the [**Uniswap Explained video by WhiteboadCrypto**](https://www.youtube.com/watch?v=DLu35sIqVTM) to learn more in depth.
 
-A quick visit to DeFi llama, a popular site that tracks decentralized finance protocols, will give you an idea about the variety of DEXes in the market. From Uniswap, Curve, Balancer to SushiSwap, each of these platforms have unique code bases and different pros and cons.
+In our next lesson, we're going take a closer look at AMMs and how they differ from order book exchanges.
 
-> "DEXes are a revolutionary approach to asset exchange, veering from the centralised norm and offering an autonomous, often peer-to-peer, trading experience."
-
-T-SWAP, much like many of these exchanges, is also classified as an Automated Market Maker (AMM). If you are confused or intrigued at this point, don't sweat it. Here is an article on Chainlink Labs that provides a detailed walk-through of the AMM concept.
-
-## Introducing Automated Market Makers (AMM)
-
-Decentralized exchanges such as T-SWAP operate differently from traditional order book exchanges. This is where the concept of AMMs comes in. It makes use of asset pools rather than an order book for asset exchange.
-
-Remember, diving into the world of DEXes and AMMs can initially be challenging, but also immensely rewarding. So take the plunge, and happy learning!
+Additionally, check out [**this article by Chainlink**](https://chain.link/education-hub/what-is-an-automated-market-maker-amm) for more information on AMMs.

@@ -1,49 +1,261 @@
 ---
-title: Handler.t.sol - Deposit Function
+title: Handler.t.sol - Swapping
 ---
 
-
-
 ---
 
-# Testing Uniswap's Token Swap Function
+### Swapping
 
-In this post, we're going to thoroughly explore the function which swaps a pool token for `WETH` along with the underlying math involved. In Uniswap, `WETH` is short for Wrapped Ethereum, a token that represents Ether 1:1, enabling it to adhere to the ERC-20 standard.
+Alright! Let's remind ourselves of our core invariant in TSwap again.
 
-## The Swap Function and Its Logic
+```
+∆x = (β/(1-β)) * x
+```
 
-Firstly, we bind `outputWETH` between 0 and `UNI_64_MAX` to provide a more realistic transaction range. We don't want all the money in the pool to be swapped out. This would be logically unfeasible and destructive for liquidity, hence we return if `outputWETH` exceeds the pool balance.
+Recall that our term `β` was set equal to `∆y/y` and we've already worked out `∆y`, this was our `wethAmount`, the output of our swap.
 
-## Delving into the Math Underlying the Function
+Now, we need to determine `∆x`. We could work the math out ourselves, but we'll cheat a little bit again and I'll mention that TSwapPool.sol has another useful function for us - `getInputAmountBaseOnOutput`. This function will ultmately return the poolToken amount that our user needs to input for the swap. This is our `∆y`! Let's take a look at `getInputAmountBaseOnOutput` and walk through how the math is derived for practice and a deeper understanding of the protocol.
 
-In order to ascertain the pool token amount that must be minted or burnt based on `outputWETH`, we employ the following mathematical derivation.
+### getInputAmountBaseOnOutput: The Math
 
-In the `TSWAP` pool, there is a function called `getInputAmountBasedOnOutput`, which yields the `delta_x`. Without going into the specifics of this formula, let's understand why it works with a bit of simple algebra.
+```js
+function getInputAmountBasedOnOutput(
+    uint256 outputAmount,
+    uint256 inputReserves,
+    uint256 outputReserves
+)
+    public
+    pure
+    revertIfZero(outputAmount)
+    revertIfZero(outputReserves)
+    returns (uint256 inputAmount)
+{
+    return ((inputReserves * outputAmount) * 10000) / ((outputReserves - outputAmount) * 997);
+}
+```
 
-> _"It's in understanding how to manually solve these equations that you understand the importance and workings of the smart contract functions we work with."_
+First, let's begin with the formula our invariant was derived from `x * y = (x + ∆x) * (y - ∆y)`, we can substitute `∆y` for outputAmount since this will reflect by how much our poolToken is changing:
 
-We utilize this function on the `TSWAP` pool to get the `poolTokenAmount` which is our `delta_x`.
+<img src="/security-section-5/23-handler-swap-function/handler-swap-function1.png" width="100%" height="auto">
 
-## Updating Starting Deltas
+From the equation `x*outputAmount  = ∆x(y - outputAmount)` we just need to substitute a few known variables.
 
-The reason for the `-1 * _outputWETH` is because the pool is losing `WETH`, hence making the `deltaY` negatively inclined. We comfortably say that it is the `expectedDeltaY`.
+- `x` is going to be `inputReserves`, reflecting total poolTokens.
+- `∆x` is going to be the `inputAmount` as discussed earlier, the input of poolTokens to get the desired output in `weth`.
+- `y` will be our `outputReserves`, just as x was a reflection of total poolTokens, this will be a reflection of total `weth` tokens.
 
-## Minting Pool Tokens for Swapping User
+<img src="/security-section-5/23-handler-swap-function/handler-swap-function2.png" width="100%" height="auto">
 
-Here, we commence by creating a new person `address swapper`. This is the person performing the swap with the pool. If the swapper doesn't have enough pool tokens for this swap, we mint the difference along with one additional token just to be explicit.
+Our resulting formula is remarkably similar to what's returned by the `getInputAmountBasedOnOutput`function (10000 and 997 are related to fees, we can ignore them for now):
 
-## Actual Token Swap
+```
+Our formula:
 
-This is where the actual token swap occurs. We begin a new transaction under the swapper's address. This transaction includes approval for the pool to manage their pool tokens, with no limit set (`UNI_256_MAX`), with the `swapExactOutput` function called to perform the swap.
+inputAmount = (inputReserves * outputAmount) / (outputReserves - outputAmount)
 
-## Finalizing Swap and Updating Ending Deltas
+getInputAmountBasedOnOutput:
 
-After completing the swap, we simply update our ending deltas and calculate the actual deltas. The actual deltas are simply the initial balances subtracted from the final balances.
+return ((inputReserves * outputAmount) * 10000) / ((outputReserves - outputAmount) * 997);
+```
 
-## Conclusion
+And with that we managed to use math to calculate our expected input (poolTokens) based on a desired output (`weth`).
 
-The entire handler function, `swapPoolTokenForWETH`, crafts a transaction, conducts a swap on the pool and calculates expected and actual balance changes to ensure the protocol behaves as expected.
+With this contextual understanding, let's head back to `Handler.t.sol` and get started on our function to test swaps that will be leveraging `getInputAmountBasedOnOutput`.
 
-The process can feel challenging when dealing with mathematical equations, but abstraction makes it easier. We've constructed our handler focussing on the process more than the math. This handler allows easier stateful fuzzing tests, ensuring the safety and security of anyone interacting with the pool.
+### Swapping In Our Handler
 
-This testing framework aids in understanding how these token swapping protocols are designed and behave, giving us more confidence in the robustness of Uniswap's smart contracts.
+Ok, we'll begin by setting up a function to test swapping which intakes a desired outputWeth. We'll be binding this input to a reasonable amount and assuring that the outputWeth doesn't drain the entire pool. The setup should look something like this:
+
+```js
+function swapPoolTokenForWethBasedOnOutputWeth(uint256 outputWeth) public {
+    outputWeth = bound(outputWeth, 0, type(uint64).max);
+    if (outputWeth >= weth.balanceOf(address(pool))) {
+        return;
+    }
+}
+```
+
+We'll next use our `outputWeth` parameter to calculate our input amount using `getInputAmountBasedOnOutput`. `getInputAmountBasedOnOutput` takes 3 parameters, the `outputWeth` amount and the reserves of `weth` and `poolToken`.
+
+```js
+function swapPoolTokenForWethBasedOnOutputWeth(uint256 outputWeth) public {
+    outputWeth = bound(outputWeth, 0, type(uint64).max);
+    if (outputWeth >= weth.balanceOf(address(pool))) {
+        return;
+    }
+    uint256 poolTokenAmount = pool.getInputAmountBasedOnOutput(outputWeth, poolToken.balanceOf(address(pool)), weth.balanceOf(address(pool)));
+
+    if (poolTokenAmount >= type(uint64).max){
+        return;
+    }
+}
+```
+
+We of course return if the poolTokenAmount is too high.
+
+Now that we have `poolTokenAmount` which represents our `∆x` we can update our `startingX` and `startingY` values as well as our expected change based on the tests provided `outputWeth` param. Note that `expectedDeltaY` is multiplied by `-1` since the amount should represent _losing_ `weth`.
+
+```js
+function swapPoolTokenForWethBasedOnOutputWeth(uint256 outputWeth) public {
+    outputWeth = bound(outputWeth, 0, type(uint64).max);
+    if (outputWeth >= weth.balanceOf(address(pool))) {
+        return;
+    }
+    uint256 poolTokenAmount = pool.getInputAmountBasedOnOutput(outputWeth, poolToken.balanceOf(address(pool)), weth.balanceOf(address(pool)));
+
+    if (poolTokenAmount >= type(uint64).max){
+        return;
+    }
+
+    startingY = int256(weth.balanceOf(address(this)));
+    startingX = int256(poolToken.balanceOf(address(this)));
+    expectedDeltaX = int256(-1) * int256(outputWeth);
+    expectedDeltaY = int256(pool.getPoolTokensToDepositBasedOnWeth(poolTokenAmount));
+}
+```
+
+We're almost read to swap! This is really exciting. We'll need to create a new address to do our swapping and mint them the appropriate number of tokens for their test swap. Our test is going to make sure the swapper has the requires number of poolTokens by minting them any time the swapper is short.
+
+```js
+if (poolToken.balanceOf(swapper) < poolTokenAmount) {
+  poolToken.mint(swapper, poolTokenAmount - poolToken.balanceOf(swapper) + 1);
+}
+```
+
+And finally the swap!
+
+```js
+vm.startPrank(swapper);
+poolToken.approve(address(pool), type(uint256).max);
+pool.swapExactOutput(poolToken, weth, outputWeth, uint64(block.timestamp));
+vm.stopPrank();
+```
+
+Now that the swap of tokens has presumably been performed, here's where we need to calculate our ending amounts and the `actualDeltaX` and `actualDeltaY`. We can grab this right from our deposit function.
+
+```js
+uint256 endingY = poolToken.balanceOf(address(this));
+uint256 endingY = weth.balanceOf(address(this));
+
+actualDeltaY = int256(endingY) - int256(startingY);
+actualDeltaX = int256(endingX) - int256(startingX);
+```
+
+### Wrap Up
+
+Alright! Here's our completed `Handler` for reference:
+
+<details>
+<summary>Handler.t.sol</summary>
+
+```js
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.20;
+
+import { Test, console2 } from "forge-std/Test.sol";
+import { TSwapPool } from "../../src/TSwapPool.sol";
+import { ERC20Mock } from "../mocks/ERC20Mock.sol";
+
+contract Handler is Test {
+    TSwapPool pool;
+    ERC20Mock weth;
+    ERC20Mock poolToken;
+
+    address liquidityProvider = makeAddr("lp");
+    address swapper = makeAddr("swapper");
+
+    // Ghost Variables - variables that only exist in our Handler
+    int256 public actualDeltaY;
+    int256 public expectedDeltaY;
+
+    int256 public actualDeltaX;
+    int256 public expectedDeltaX;
+
+    int256 public startingX;
+    int256 public startingY;
+
+    constructor(TSwapPool _pool) {
+        pool = _pool;
+        weth = ERC20Mock(_pool.getWeth());
+        poolToken = ERC20Mock(_pool.getPoolToken());
+    }
+
+    function deposit(uint256 wethAmount) public {
+        wethAmount = bound(wethAmount, 0, weth.balanceOf(address(pool)));
+
+        startingY = int256(poolToken.balanceOf(address(pool)));
+        startingX = int256(weth.balanceOf(address(pool)));
+
+        expectedDeltaX = int256(wethAmount);
+        expectedDeltaY = int256(pool.getPoolTokensToDepositBasedOnWeth(wethAmount));
+
+        vm.startPrank(liquidityProvider);
+        weth.mint(liquidityProvider, wethAmount);
+        poolToken.mint(liquidityProvider, uint256(expectedDeltaX));
+        weth.approve(address(pool), type(uint256).max);
+        poolToken.approve(address(pool), type(uint256).max);
+
+        // Deposit
+        pool.deposit(wethAmount, 0, uint256(expectedDeltaX), uint64(block.timestamp));
+        vm.stopPrank();
+
+        uint256 endingX = poolToken.balanceOf(address(pool));
+        uint256 endingY = weth.balanceOf(address(pool));
+
+        // sell tokens == x == poolTokens
+        actualDeltaY = int256(endingX) - int256(startingY);
+        actualDeltaX = int256(endingY) - int256(startingX);
+    }
+
+    function swapPoolTokenForWethBasedOnOutputWeth(uint256 outputWeth) public {
+        if (weth.balanceOf(address(pool)) <= pool.getMinimumWethDepositAmount()) {
+            return;
+        }
+        outputWeth = bound(outputWeth, pool.getMinimumWethDepositAmount(), type(uint64).max);
+        if (outputWeth >= weth.balanceOf(address(pool))) {
+            return;
+        }
+        uint256 poolTokenAmount = pool.getInputAmountBasedOnOutput(
+            outputWeth, poolToken.balanceOf(address(pool)), type(uint64).max);
+
+        startingY = int256(poolToken.balanceOf(address(pool)));
+        startingX = int256(weth.balanceOf(address(pool)));
+
+        expectedDeltaX = int256(-1) * int256(outputWeth);
+        expectedDeltaY = int256(poolTokenAmount);
+
+        if (poolToken.balanceOf(swapper) < poolTokenAmount) {
+            poolToken.mint(swapper, poolTokenAmount - poolToken.balanceOf(swapper) + 1);
+        }
+        vm.startPrank(swapper);
+        poolToken.approve(address(pool), type(uint256).max);
+        pool.swapExactOutput(poolToken, weth, outputWeth, uint64(block.timestamp));
+        vm.stopPrank();
+
+        uint256 endingY = poolToken.balanceOf(address(pool));
+        uint256 endingX = weth.balanceOf(address(pool));
+
+        actualDeltaY = int256(endingY) - int256(startingY);
+        actualDeltaX = int256(endingX) - int256(startingX);
+    }
+}
+
+
+
+```
+
+</details>
+
+The math and working out these invariants **_can_** be quite difficult, but it's important to keep in mind what we're trying to do.
+
+This function must hold:
+`∆x = (β/(1-β)) * x`
+
+We used one of the functions in `TSwapPool` to determine our expected `∆x`, but we performed our due diligence and verified mathematically that `getInputAmountBasedOnOutput` returned what we wanted.
+
+Our `Handler` has been written such that it will calculate both our expected and actual changes, or deltas of our token pool balances.
+
+Our next step will be comparing our expected and actual values in an assertion. First we've got a few small tweaks to make in the next lesson before running our test.
+
+Let's go!

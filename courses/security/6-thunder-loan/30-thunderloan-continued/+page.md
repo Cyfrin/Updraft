@@ -1,54 +1,103 @@
 ---
-title: Thunderloan.sol (Continued)
+title: ThunderLoan.sol (Continued)
 ---
 
-# Understanding Asset Tokens and Exchange Rates in Thunder Loan
+### ThunderLoan.sol (Continued)
 
-Hello coders! In this blog post, we're delving into the world of contracts and tokens. If you're here, you know that asset tokens represent the shares of the pool. But honestly, how many times have we gone over that?
+Ok! Now that we've gleaned a critical understanding of how token approvals are handled, let's continue our review of the `deposit` function.
 
-Still, it's crucial to understand that the asset token represents just how much of the contract the whale or depositor actually owns.
+<details>
+<summary>Deposit Function</summary>
 
-## Getting the Asset Token
-
-![](https://cdn.videotap.com/2I1K8YkcCB7hMk6vhMGv-37.2.png)
-To get the asset token, you simply use `AssetToken get exchange rate`. Here we're getting the exchange rate between USDC (the USD Coin) and the flash loan tokens. The key question here is: what ratio exists between these flash loan tokens and the underlying tokens?
-
-## Minting the Amount
-
-Your mint amount is calculated from the amount deposited, maybe around 100 USDC, times the exchange rate precision times the asset rate. The exchange rate precision usually defaults to `1E 18`.
-
-For all you math enthusiasts, here's the calculation flow:
-
-```bash
-Exchange rate precision = 1E 18100 (deposit amount) x 1E 18 (exchange rate precision) / Exchange rate = Mint amount
+```js
+function deposit(IERC20 token, uint256 amount) external revertIfZero(amount) revertIfNotAllowedToken(token) {
+    AssetToken assetToken = s_tokenToAssetToken[token];
+    uint256 exchangeRate = assetToken.getExchangeRate();
+    uint256 mintAmount = (amount * assetToken.EXCHANGE_RATE_PRECISION()) / exchangeRate;
+    emit Deposit(msg.sender, token, amount);
+    assetToken.mint(msg.sender, mintAmount);
+    uint256 calculatedFee = getCalculatedFee(token, amount);
+    assetToken.updateExchangeRate(calculatedFee);
+    token.safeTransferFrom(msg.sender, address(assetToken), amount);
+}
 ```
 
-If the exchange rate is 2, then you would have half the flash loan tokens in exchange for the 100 USDC, which stands to reason logically.
+</details>
 
-> An important point to note here is that we cannot divide by zero in this context. The exchange rate cannot be zero and should preferably always be increasing, never decreasing. If you start at one, it should never decrease to zero due to the way asset tokens are conditioned.
+---
 
-## Emitting the Event
+The first thing the `deposit` function does is leverage the `s_tokenToAssetToken` mapping to acquire the `AssetToken` paired with the passed token parameter. Remember, these `asset tokens` ultimately represent how much of the pool the depositer owns as a result of their deposits.
 
-The role of the event emitter comes into play high up in this process when we call `AssetToken mint`. This is only callable by the Flash Loan investors and passes fine, giving the depositor the mint amount.
+The function then needs to know how many asset tokens to mint as a result of the amount of tokens being deposited. To accomplish this we're using the `getExchangeRate` function, which we know from earlier is returning the ratio between the asset tokens and their underlying. We then use the exchangeRate to do a bit of math.
 
-Interestingly, when a liquidity provider deposits, the money sits in the asset token contract, not in Thunder Loan. Hence, the money goes directly to the asset token contract.
-
-## Calculating the Fee and Updating Exchange Rate
-
-In our final stage of the process, the calculated fee is determined using `getCalculatedFee`; this updates the exchange rate and the asset token amount is transferred from message sender to the address of the asset token.
-
-Here's where it could get a little confusing. Why are we calculating the fee of the flash loans at the deposit? And why are we updating the exchange rate?
-
-Let's examine the first issue; our flash loan calculation process goes like this:
-
-```bash
-Value of borrowed token = Amount x getPrice / Fee precisionFee = Value of borrowed token x Flash loan fee / Fee precision
+```js
+uint256 mintAmount = (amount * assetToken.EXCHANGE_RATE_PRECISION()) / exchangeRate;
 ```
 
-However, it's perplexing as to why the fee of the flash loans would be calculated at this juncture in the depositing process.
+> **Remember:** `EXCHANGE_RATE_PRECISION` and `STARTING_EXCHANGE_RATE` are both `1e18`!
 
-Secondly, the matter of updating the exchange rate also raises questions. If tokens are deposited, the exchange rate varies. If more is deposited, then what would the exchange rate be? This part seems a little disorienting, definitely warrants a follow-up audit as there may be something off here.
+Pretty simple, but let's look at an example. We know the `exchangeRate` should never be lower than `1e18` - as per the invariant we identified in `AssetToken`, but how would a 2:1 exchange rate look?
 
-Once these two issues are addressed, the process should work correctly. The user gets minted some asset tokens and the tokens are then transferred to the underlying.
+```js
+// exchangeRate = 2e18
+// call deposit(IUSDC, 100)
+// uint256 mintAmount = (100 * 1e18) / 2e18;
+// uint256 mintAmount = 50e18;
+```
 
-There are a few perplexing areas as noted which we look forward to addressing in future posts. Happy coding!
+This makes intuitive sense, doesn't it? If we have an exchange rate of 2 deposited tokens for 1 asset token, we would receive half as many asset tokens as we deposit.
+
+Next thing we deposit function is doing is emitting an event then minting the calculated number of `asset tokens`. Double check the parameters!
+
+```js
+emit Deposit(msg.sender, token, amount);
+assetToken.mint(msg.sender, mintAmount);
+```
+
+Now, the last section of this function is interesting.
+
+```js
+uint256 calculatedFee = getCalculatedFee(token, amount);
+assetToken.updateExchangeRate(calculatedFee);
+token.safeTransferFrom(msg.sender, address(assetToken), amount);
+```
+
+This chunk of code is calculating the loan fee based on the amount deposited of the underlying token, then the exchange rate is updated based on this fee calculation. Finally, the underlying tokens are transferred from `msg.sender` to the `AssetToken` contract. This is worth noting. The funds deposited aren't actually sent to the `ThunderLoan` contract, they're being held by the newly created `AssetToken` contract.
+
+Let's take a closer look at getCalculatedFee...
+
+```js
+function getCalculatedFee(IERC20 token, uint256 amount) public view returns (uint256 fee) {
+    //slither-disable-next-line divide-before-multiply
+    uint256 valueOfBorrowedToken = (amount * getPriceInWeth(address(token))) / s_feePrecision;
+    //slither-disable-next-line divide-before-multiply
+    fee = (valueOfBorrowedToken * s_flashLoanFee) / s_feePrecision;
+}
+```
+
+...
+
+```js
+// @Audit-Informational: Function missing NATSPEC!
+```
+
+Without any explicit comments we're left to speculate, but something here seems wrong. If this function is caculating the flash loan fee, I'm left with a bunch of questions..
+
+**_Why are we calculating this fee during deposit?_**
+
+**_Why is the exchangeRate being updated?_**
+
+We absolutely need to mark this as follow up and get more of an idea as to what's going on here and why.
+
+```js
+// @Audit: Follow-up
+uint256 calculatedFee = getCalculatedFee(token, amount);
+```
+
+### Wrap Up
+
+Most of our deposit function looks pretty good, but we're running into some unanswered questions near the end. This is just our recon phase still, so we'll leave a note to ourselves to come back and further investigate.
+
+Something seems fishy.
+
+Let's keep going!

@@ -4,87 +4,372 @@ title: Governor Contract
 
 _Follow along with this video._
 
-
-
 ---
 
-Hello there! Today I want to share a really interesting piece of tech I've recently used, the [Open Zeppelin Wizard](https://docs.openzeppelin.com/contracts/4.x/wizard). This tool is incredibly helpful in generating smart contracts for creating a DAO, which stands for a Decentralized Autonomous Organization. Why are DAO's exciting? Well, they allow for democratized decision making, meaning the members of the DAO can vote about its future actions.
+### Governor Contract
 
-In this post, I want to walk you through a solution that makes use of the Zeppelin Wizard to create a DAO.
+Alright, we've got one major piece missing from our DAO protocol and that's the governor contract. This is the heart of the DAO which manages the proposal and voting functionality died to the protocol's governance.
 
-## Zeppelin Wizard Overview
+Fortunately, [**OpenZeppelin's Contract Wizard**](https://wizard.openzeppelin.com/#governor) can help us here too!
 
-The Zeppelin Wizard helps us with multiple facets of setting up a DAO. One of its features is the Governor, which we can configure to suit our needs. For instance, we can adjust the voting delay, voting period, and proposal threshold in line with the governance model we're aiming for. Do we want our voting to start immediately after proposing? Or after 100 blocks? All these details are customizable.
+By selecting the `Governor` configuration, we're presenting with a number of options to customize.
 
-Here's the interesting part - we can copy the output code from the wizard and integrate it into our contracts with minimal changes. To illustrate this, I'll walk you through a sample setup of a Governor contract along with a crucial TimeLock mechanism.
+<img src="/foundry-daos/5-governor-contract/governor-contract1.png" width="100%" height="auto">
 
-<img src="/daos/5-governor/governor1.png" alt="Dao Image" style="width: 100%; height: auto;">
+Voting Delay - Time between proposal creation and the start of voting
 
-## Creating the Governor contract
+Voting Period - How long votes may be submitted for
 
-First, we need to update our Governor contract and import the necessary interfaces (`IVotes`, `GovernorVotes` &amp; `TimeLockController`). We'll be using _named imports_ since they make our code cleaner.
+Proposal Threshold - Minimum number of votes an account must have to create a proposal
 
-Here's an overview of what the Governor contract entails.
+Quorum %/# - The number of participants in a vote required for a vote to validly pass
+
+Updatable Settings - allows the above configurations to be updated in future
+
+Votes - This denotes how voting power is derived be it through ERC20s or possessing NFTs etc
+
+Timelock - Configuration related to delays and timelines for various parts of the DAO protocol
+
+Upgradeability - Our bells from last lesson should be going off! This includes proxy functionality within our DAO
+
+We'll keep everything default for this excercise, let's just copy the provided Governor contract into our own file `src/MyGovernor.sol`.
 
 ```js
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+// Compatible with OpenZeppelin Contracts ^5.0.0
+pragma solidity ^0.8.20;
 
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
-import {ERC20Votes} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
+import {Governor, IGovernor} from "@openzeppelin/contracts/governance/Governor.sol";
+import {GovernorSettings} from "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol";
+import {GovernorCountingSimple} from "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
+import {GovernorVotes, IVotes} from "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
+import {GovernorVotesQuorumFraction} from "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
+import {GovernorTimelockControl, TimelockController} from "@openzeppelin/contracts/governance/extensions/GovernorTimelockControl.sol";
 
-contract GovToken is ERC20, ERC20Permit, ERC20Votes {
-    constructor() ERC20("MyToken", "MTK") ERC20Permit("MyToken") {}
+contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction, GovernorTimelockControl {
+    constructor(IVotes _token, TimelockController _timelock)
+        Governor("MyGovernor")
+        GovernorSettings(7200 /* 1 day */, 50400 /* 1 week */, 0)
+        GovernorVotes(_token)
+        GovernorVotesQuorumFraction(4)
+        GovernorTimelockControl(_timelock)
+    {}
 
     // The following functions are overrides required by Solidity.
 
-    function mint(address to, uint256 amount) public {
-        _mint(to, amount);
+    function votingDelay()
+        public
+        view
+        override(Governor, GovernorSettings)
+        returns (uint256)
+    {
+        return super.votingDelay();
     }
 
-    function _afterTokenTransfer(address from, address to, uint256 amount) internal override(ERC20, ERC20Votes) {
-        super._afterTokenTransfer(from, to, amount);
+    function votingPeriod()
+        public
+        view
+        override(Governor, GovernorSettings)
+        returns (uint256)
+    {
+        return super.votingPeriod();
     }
 
-    function _mint(address to, uint256 amount) internal override(ERC20, ERC20Votes) {
-        super._mint(to, amount);
+    function quorum(uint256 blockNumber)
+        public
+        view
+        override(Governor, GovernorVotesQuorumFraction)
+        returns (uint256)
+    {
+        return super.quorum(blockNumber);
     }
 
-    function _burn(address account, uint256 amount) internal override(ERC20, ERC20Votes) {
-        super._burn(account, amount);
+    function state(uint256 proposalId)
+        public
+        view
+        override(Governor, GovernorTimelockControl)
+        returns (ProposalState)
+    {
+        return super.state(proposalId);
+    }
+
+    function proposalNeedsQueuing(uint256 proposalId)
+        public
+        view
+        override(Governor, GovernorTimelockControl)
+        returns (bool)
+    {
+        return super.proposalNeedsQueuing(proposalId);
+    }
+
+    function proposalThreshold()
+        public
+        view
+        override(Governor, GovernorSettings)
+        returns (uint256)
+    {
+        return super.proposalThreshold();
+    }
+
+    function _queueOperations(uint256 proposalId, address[] memory targets, uint256[] memory values, bytes[] memory calldatas, bytes32 descriptionHash)
+        internal
+        override(Governor, GovernorTimelockControl)
+        returns (uint48)
+    {
+        return super._queueOperations(proposalId, targets, values, calldatas, descriptionHash);
+    }
+
+    function _executeOperations(uint256 proposalId, address[] memory targets, uint256[] memory values, bytes[] memory calldatas, bytes32 descriptionHash)
+        internal
+        override(Governor, GovernorTimelockControl)
+    {
+        super._executeOperations(proposalId, targets, values, calldatas, descriptionHash);
+    }
+
+    function _cancel(address[] memory targets, uint256[] memory values, bytes[] memory calldatas, bytes32 descriptionHash)
+        internal
+        override(Governor, GovernorTimelockControl)
+        returns (uint256)
+    {
+        return super._cancel(targets, values, calldatas, descriptionHash);
+    }
+
+    function _executor()
+        internal
+        view
+        override(Governor, GovernorTimelockControl)
+        returns (address)
+    {
+        return super._executor();
     }
 }
 ```
 
-This may seem a bit abstract, but let me break it down a bit.
+Alright, there's quite a bit happening here, so let's go through some of it.
 
-When somebody makes a proposal, it gets registered in the system. We essentially have a record of when a vote started and ended, whether it was executed or canceled. This information helps us identify the status of a proposal and whether it has passed.
+Our Governor contract is inheriting `Governor`, `GovernorSettings`, `GovernorCountingSimple`, `GovernorVotes`, `GovernorVotesQuorumFraction`, `GovernorTimelockControl`...all these. Let's glean a high-level understanding of the most important of these.
 
-Next, we have the `execute` function. Once a proposal gets approved by the DAO members, we call this function to implement the operation involved in the proposal.
+**Governor.sol:**
 
-The final key function is `cast vote`. This allows members of the DAO to cast votes on various proposals. Depending on the overall voting system, the weight of each member's vote could be dependent on the number of tokens they hold.
+This is the core of the governance system. The governor tracks proposals via the `_proposals` mapping
 
-## Building the TimeLock Controller Contract
+Proposals exist as fairly simple structs:
 
-The final step in our set up is creating the TimeLock Controller contract, which, fortunately, we can do with minimum effort thanks to Open Zeppelin's repository.
+```js
+struct ProposalCore {
+    // --- start retyped from Timers.BlockNumber at offset 0x00 ---
+    uint64 voteStart;
+    address proposer;
+    bytes4 __gap_unused0;
+    // --- start retyped from Timers.BlockNumber at offset 0x20 ---
+    uint64 voteEnd;
+    bytes24 __gap_unused1;
+    // --- Remaining fields starting at offset 0x40 ---------------
+    bool executed;
+    bool canceled;
+}
+```
+
+Each proposal's state is tracked through the `state` function. This references the aforementioned proposal mapping and displays various properties including if it was executed, if quorum was reached etc. This is the function that many front ends will call to display proposal details.
+
+```js
+function state(uint256 proposalId) public view virtual override returns (ProposalState) {
+    ProposalCore storage proposal = _proposals[proposalId];
+
+    if (proposal.executed) {
+        return ProposalState.Executed;
+    }
+
+    if (proposal.canceled) {
+        return ProposalState.Canceled;
+    }
+
+    uint256 snapshot = proposalSnapshot(proposalId);
+
+    if (snapshot == 0) {
+        revert("Governor: unknown proposal id");
+    }
+
+    uint256 currentTimepoint = clock();
+
+    if (snapshot >= currentTimepoint) {
+        return ProposalState.Pending;
+    }
+
+    uint256 deadline = proposalDeadline(proposalId);
+
+    if (deadline >= currentTimepoint) {
+        return ProposalState.Active;
+    }
+
+    if (_quorumReached(proposalId) && _voteSucceeded(proposalId)) {
+        return ProposalState.Succeeded;
+    } else {
+        return ProposalState.Defeated;
+    }
+}
+```
+
+One of the most important functions in Governor.sol is going to be `propose`, this is the function DAO members will call to submit a proposal for voting, the parameters passed here are very specific.
+
+```js
+function propose(
+    address[] memory targets,
+    uint256[] memory values,
+    bytes[] memory calldatas,
+    string memory description
+) public virtual override returns (uint256) {}
+```
+
+**targets** - a list of addresses on which proposed functions will be called
+
+**values** - a list of values to send with each target transaction
+
+**calldatas** - the bytes data representing each transaction and the arguments to pass proposed function calls
+
+**description** - a description of what the proposal does/accomplishes
+
+The proposal function takes these inputs and will hash them, generating a unique proposalId.
+
+Another integral function within this contract is `execute` which we see takes largely the same parameters as `propose`. Within execute, these passed parameters are hashed to determine the valid proposalId to execute. Some checks are performed before the internal \_execute is called and we can see the same low-level functionality we used to call arbitrary functions, in previous lessons.
+
+```js
+/**
+ * @dev Internal execution mechanism. Can be overridden to implement different execution mechanism
+ */
+function _execute(
+    uint256 /* proposalId */,
+    address[] memory targets,
+    uint256[] memory values,
+    bytes[] memory calldatas,
+    bytes32 /*descriptionHash*/
+) internal virtual {
+    string memory errorMessage = "Governor: call reverted without message";
+    for (uint256 i = 0; i < targets.length; ++i) {
+        (bool success, bytes memory returndata) = targets[i].call{value: values[i]}(calldatas[i]);
+        Address.verifyCallResult(success, returndata, errorMessage);
+    }
+}
+```
+
+The last major function I'll detail is \_castVote. There are a number of derivated such as castVoteWithReason, castVoteBySig etc, but ultimately they boil down to this \_castVote logic.
+
+```js
+ /**
+ * @dev Internal vote casting mechanism: Check that the vote is pending, that it has not been cast yet, retrieve
+ * voting weight using {IGovernor-getVotes} and call the {_countVote} internal function.
+ *
+ * Emits a {IGovernor-VoteCast} event.
+ */
+function _castVote(
+    uint256 proposalId,
+    address account,
+    uint8 support,
+    string memory reason,
+    bytes memory params
+) internal virtual returns (uint256) {
+    ProposalCore storage proposal = _proposals[proposalId];
+    require(state(proposalId) == ProposalState.Active, "Governor: vote not currently active");
+
+    uint256 weight = _getVotes(account, proposal.voteStart, params);
+    _countVote(proposalId, account, support, weight, params);
+
+    if (params.length == 0) {
+        emit VoteCast(account, proposalId, support, weight, reason);
+    } else {
+        emit VoteCastWithParams(account, proposalId, support, weight, reason, params);
+    }
+
+    return weight;
+}
+```
+
+This function is fairly simple, it references the proposal via the passed proposalId, determines a voting weight with \_getVotes, then adds the votes to an internal count of votes for that proposal, finally emitting an event.
+
+Many of the functions within Governor.sol, we'll notice, are unimplemented. This is because Governor.sol is `abstract` and we're expected to fill some of these in with our own specific logic.
+
+**GovernorVotes.sol:**
+
+This contract extracts voting weight from the ERC20 tokens used for a protocols governance.
+
+**GovernorSettings.sol:**
+
+An extension contract that allows configuration of things like voting delay, voting period and proposalThreshhold to the protocol.
+
+**GovernorCountingSimple.sol:**
+
+This extention implements a simplied vote counting mechanism by which each proposal is assigned a ProposalVote struct in which forVotes, againstVotes and abstainVotes are tallied.
+
+```js
+struct ProposalVotes {
+    uint256 againstVotes;
+    uint256 forVotes;
+    uint256 abstainVotes;
+    mapping(address => bool) hasVoted;
+}
+```
+
+**GovernorVotesQuorumFraction:**
+
+An extention which assists in token voting weight extraction.
+
+**GovernorTimelockControl.sol:**
+
+_This_ is actually quite an important implementation and every DAO should employ a Timelock Controller. Effectively the Timelock controller is going to serve as a regulator for the Governor. Each time the Governor control attempts to take an action, it will need to be checked versus the Timelock controller to account to cooldown periods, or voting delays.
+
+This functionality is important for a number of reasons, two major ones that come to mind are:
+
+- Security - delays between successful votes and proposal execution afford the protocol/community time to assure there was no malicious code
+- Fairness - this affords anyone who disagrees with a successful proposal time to exit their position on the protocol
+
+### MyGovernor.sol Constructor
+
+So, with a better understanding of all the functionality our DAO has under-the-hood, the constructor we copied over from the Contract Wizard should make a lot of sense to us.
+
+```js
+constructor(IVotes _token, TimelockController _timelock)
+    Governor("MyGovernor")
+    GovernorSettings(7200, /* 1 day */ 50400, /* 1 week */ 0)
+    GovernorVotes(_token)
+    GovernorVotesQuorumFraction(4)
+    GovernorTimelockControl(_timelock)
+{}
+```
+
+On deployment our DAO will take a governance token and a TimelockController as well as configure a bunch of the settings we left as default 😅
+
+The TimelockController is going to be the last contract we need to write, actually!
+
+### Timelock.sol
+
+We don't get a Contract Wizard shortcut this time, but it won't be too difficult to build this one out ourselves, we _can_ still leverage the OpenZeppelin governance library.
 
 ```js
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+
+pragma solidity ^0.8.18;
 
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
 
-contract TimeLock is TimelockController {
-    // minDelay is how long you have to wait before executing
-    // proposers is the list of addresses that can propose
-    // executors is the list of addresses that can execute
+contract Timelock {
+    /**
+     * @notice Create a new Timelock controller
+     * @param minDelay Minimum delay for timelock executions
+     * @param proposers List of addresses that can propose new transactions
+     * @param executors List of addresses that can execute transactions
+     */
     constructor(uint256 minDelay, address[] memory proposers, address[] memory executors)
         TimelockController(minDelay, proposers, executors, msg.sender)
     {}
 }
 ```
 
-And this is it for this sub-section. We now have a TimeLock contract that we can use to lock our Governor contract. Keep learning and stay tuned for the next post!
+In the above, we're passing `msg.sender` to the `TimelockController`'s `admin` parameter. We have to set an initial admin for the controller, but this can and should be changed after deployment
 
-Happy coding!
+### Wrap Up
+
+That's it! I know we're moving through things kinda quickly, but if anything is confusing, this is your chance to jump into the community for clarification.
+
+These systems and methodologies seem complex when all put together like this, but nothing we've gone over here is fundamentally any different than things we've seen before.
+
+In the next lesson, we're going to dive into tests. We'll skip the deploy script this time around, but we'll have an opportunity to see how this DAO functions end to end.

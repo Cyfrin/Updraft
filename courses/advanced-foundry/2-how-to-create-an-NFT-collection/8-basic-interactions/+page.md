@@ -4,97 +4,68 @@ title: Basic NFT Interactions
 
 _Follow along the course with this video._
 
-
-
 ---
 
-## Introduction
+### Basic NFT Interactions
 
-Everyone who is interested in the fascinating world of NFTs (Non-fungible tokens), most likely knows the basic line - how to mint a token. However, have you ever thought about creating a dedicated tool to mint your token programmatically, instead of using a traditional casting procedure? Well, you're in luck! We'll be discussing exactly how to achieve this with Solidity in this post. Buckle up!
-
-## The Code
-
-Typically, we'd define a Solidity contract with all the necessary imports. For this instance, we're going to name ours `MintBasicNft`. This is going to be on `Interactions.s.sol`, let's get started:
+Alright, with our tests passing we're going to want a way to interact with our contract programmatically. We could use `cast` commands, but let's write an interactions script instead. Create the file `script/Interactions.s.sol`. You know the drill for our boilerplate by now.
 
 ```js
-//SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-contract MintBasicNft is Script {}
-```
+// SPDX-License-Identifier: MIT
 
-Right out of the gate, it's safe to say you already know the drill—defining a simple contract! We'll increase the complexity over the course of this tutorial.
+pragme solidity ^0.8.18;
 
-### Importing Necessary Libraries
+import {Script} from "forge-std/Script.sol";
 
-Next, we've got to bring in our scripts from Forge’s Script.sol. This is quite straightforward:
-
-```js
-import {Script, console} from "forge-std/Script.sol";
-```
-
-Now, we'll start to shape up our contract. Next, we need to create an external function `run()` which is going to mint our NFT.
-
-```js
-function run() external {}
-```
-
-To ensure that we're always working with the most recently deployed NFT, we'll need a fantastic tool from `foundry-devops-package`. It's time to install this package. Copy the URL and run it in your terminal:
-
-```shell
-forge install ChainAccelOrg/foundry-devops --no-commit
-```
-
-Close the terminal and write a code line to get the recently deployed address:
-
-```js
-
-
-address mostRecentlyDeployed = 
-        DevOpsTools.get_most_recent_deployment("BasicNFT", block.chainid);
-```
-
-Here, we have a function called `get_most_recent_deployment` from `DevOpsTools` that fetches the most recent deployment.
-
-For this to work, remember to bring your DevOps tools into the contract:
-
-```js
-import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
-
-```
-
-### The Mint Function
-
-Here comes the grand part, writing the function that mints your NFT on the contract. For this, pass in the `mostRecentlyDeployed`:
-
-```js
-mintNFTOnContract(mostRecentlyDeployed);
-```
-
-And the function `mintNFTOnContract` takes an address, starts broadcasting, mints an NFT, and stops broadcasting:
-
-```js
-function mintNftOnContract(address contractAdress) public {
-    vm.startBroadcast();
-    BasicNft(basicNftAddress).mintNft(PUG);
-    vm.stopBroadcast();
+contract MintBasicNft is Script{
+    function run() external {}
 }
 ```
 
-At the end of the function, you can pass your pug string (it’s unique, I promise). Don’t forget to import your basic NFT:
+We know we'll always want to be interacting with the latest deployment, so let's install the `foundry-devops` library to help with this.
 
-```js
-import {BasicNft} from "../src/BasicNft.sol";
+```bash
+forge install Cyfrin/foundry-devops --no-commit
 ```
 
-## Conclusion
+Now, we can import `DevOpsTools` and use this to acquire our most recent deployment. We'll use this address as a parameter for the `mint` function we'll call.
 
-Congratulations! You now have an effective way to programmatically deploy and mint your NFTs!
+> [!NOTE]
+> I've copied over my `PUG tokenUri` for use in our `mint` function, remember to copy your own over too!
 
-<img src="/foundry-nfts/8-interaction/interaction1.png" style="width: 100%; height: auto;">
+```js
+// SPDX-License-Identifier: MIT
 
-With this custom-made tool, you are no more confined to the traditional casting process. This tool gives you the flexibility to programmatically mint your NFTs with ease, anytime you want.
+pragme solidity ^0.8.18;
 
-With this added skill in your NFT arsenal, you're a step closer to mastering the fascinating world of non-fungible tokens.
+import {Script} from "forge-std/Script.sol";
+import {BasicNft} from "../src/BasicNft.sol";
+import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
 
-**Happy Coding!**
+contract MintBasicNft is Script{
 
+    string public constant TOKENURI =
+        "ipfs://bafybeig37ioir76s7mg5oobetncojcm3c3hxasyd4rvid4jqhy4gkaheg4/?filename=0-PUG.json";
+
+    function run() external {
+        address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment("BasicNft", block.chainid);
+
+        mintNftOnContract(mostRecentlyDeployed);
+    }
+
+    function mintNftOnContract(address contractAddress) public {
+        vm.startBroadcast();
+        BasicNft(contractAddress).mintNft(TOKENURI)
+        vm.stopBroadcast();
+    }
+}
+```
+
+> [!TIP]
+> Remember, if you don't recall which parameters are required for a function like `get_most_recent_deployment` you can `ctrl + left-click` (`cmd + click`) to be brought to the function definition.
+
+### Wrap Up
+
+That's all there is to our interactions script, albeit we're only interacting with a single function, great work nonetheless!
+
+In the next lesson we'll look at deploying our contract to a testnet and using our script to test interacting with it on-chain.

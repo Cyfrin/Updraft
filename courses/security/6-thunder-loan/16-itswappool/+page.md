@@ -1,51 +1,47 @@
 ---
-title: ITSwapPool sol
+title: Manual Review - ITSwapPool.sol
 ---
 
-
-
 ---
 
-# Deep Dive into Tswappool.sol Interface
+### ITSwapPool.sol
 
-One mystery that never loses its charm in the world of programming is the magic and intrigue of code reviews. It's an opportunity to navigate a labyrinth of ideas coded into existence, where the treasure isn't a particular conclusion, but a drive towards understanding and well, continuous improvement. In our expedition today, we're exploring the exciting realm of "Tswappool.sol".
+ITSwapPool.sol is up next in our climb towards more complex code bases to review in Thunder Loan.
 
-## The Intriguing Interface of TSwapPool
+```js
+// SPDX-License-Identifier: AGPL-3.0-only
+pragma solidity 0.8.20;
 
-As we pulled up the "Tswappool.sol" file, it quickly became clear that the script was another interface in the ever-expansive Ethereum world, and the initial overview was rather promising.
+interface ITSwapPool {
+    function getPriceOfOnePoolTokenInWeth() external view returns (uint256);
+}
 
-Here's a quick view into the key aspects of this interface:
+```
 
-- `SPDX license Identifier`: Check. Good on this front.
-- `Pragma solidity`: All clear here.
-- `Interface TswapPool`: The main piece we're interested in.
+This looks like another simple interface with a TSwap contract. We can assure it's being executed correctly by comparing things like parameters required and return values types with the underlying function.
 
-The structure and organization of the script were clean, effective, and up to standards at first glance, which adds a tick on the checklist.
+Have a peek at this function within TSwapPool quickly.
 
-### The Key Function: Get Price of One Pool Token in WETH
+```js
+function getPriceOfOnePoolTokenInWeth() external view returns (uint256) {
+        return getOutputAmountBasedOnInput(
+            1e18, i_poolToken.balanceOf(address(this)), i_wethToken.balanceOf(address(this))
+        );
+    }
+```
 
-The heart of any interface lies within the crucial functions it employs. In TswapPool, we uncover a singular but significant function - `getPriceOfOneTokenInWETH`.
+We can see this takes no parameters and returns a uint256 as described by our interface. Things look great here.
 
-![](https://cdn.videotap.com/AVRQTYRhhg4lDMb4rQM4-43.2.png)
+One question we may have for the Thunder Loan team:
 
-Using this function, the interface ends up working with TSWAP quite seamlessly. So kudos on the smart use of simplicity guided by functionality!
+```js
+// @Audit-Question: Why are we only using the price of a pool token in weth?
+```
 
-#### But Why Only One Function?
+The limited nature of tokens being used may raise questions pertaining to the protocol's intent, we should always ask when unsure!
 
-While everything else falls perfectly into place, a peculiar aspect emerges. The existence of only one function in the interface raises the question, "Why is the price of pool token in WETH the solitary functionality being implemented here?"
+### Wrap Up
 
-> "Why is the `getPriceOfOneTokenInWETH` function the only one in this interface?"
+Wow, another quick one down, we're flying through these quick wins. Thanks Tincho Method!
 
-This question remains open-ended for now and forms an essential part of understanding and further exploring the purpose and design of this interface.
-
-## It's a Check!
-
-Minus the above question, scrutinizing the 'Tswappool.sol' interface looks predominantly positive. Both the syntax and architecture of the coded script meet the expected standards.
-
-Living up to the 'Tincho method' philosophy, which advocates for the clarity and optimization of code, the TswapPool interface easily garners a big shiny check ✓!
-
-Indeed, code reviews especially with the Tincho method in our toolkit, feel deeply satisfying when met with such well-structured and cleanly scripted interfaces.
-
-As we come to the end of our review, remember that understanding scripts isn't just about putting checks on a list, but about appreciating the complexity coded into simplicity and the team spirit built into community standards.
-
-Reviewing the `Tswappool.sol` interface was a pleasure. Here's to many more engaging dives into the intriguing world of Ethereum and blockchain development!
+<img src="/security-section-6/16-itswappool/itswappool1.png" width="100%" height="auto">

@@ -1,14 +1,34 @@
 ---
-title: Centralization Case Study Oasis
+title: Centralization Case Study - Oasis
 ---
 
 _Follow along with this video:_
 
-
-
 ---
 
-# The Oasis Protocol Hack Recovery: A Tale of Centralization Risks and Court-Mandated Exploits
+### Case Study: Oasis
+
+In the last lesson, we briefly discussed centralization as a protocol vulnerability and the impacts it may have. Now, we're going to look at a very recent case study featuring the Oasis protocol.
+
+There's an incredible article detailing the situation [**here**](https://medium.com/@observer1/uk-court-ordered-oasis-to-exploit-own-security-flaw-to-recover-120k-weth-stolen-in-wormhole-hack-fcadc439ca9d) that I encourage you to read through for context and a better understanding of the circumstances involved.
+
+So, what happened?
+
+Oasis.app is a system that allows users to lend and borrow assets on the Maker protocol. They touted themselves as decentralized and permissionless - but this wasn't really the case.
+
+In February 2022 the Wormhole bridge experienced a hack resulting in the loss of ~120,000 ETH. As is often the case, these funds are transferred betweens systems and protocols often in an attempt at obscuring their connection to the hacker. At one point the hacker deposited these funds into Oasis.app and left themselves open to counter-exploit.
+
+Oasis, importantly functions on a 4 of 12 multisig upgradeable proxy and with 4 signatures, could change the protocol in any way they wanted. In 2023 a UK High Court ordered Oasis to exploit this upgradeability to close the hacker's vaults and reclaim the stolen funds.
+
+In a decentralized, permissionless ecosystem, this shouldn't be possible! Oasis was ordered to exploit itself in order to retrieve stolen crypto!
+
+### Wrap Up
+
+The above circumstance certainly seems bitter sweet. On the plus side - hacked funds were recovered, this is obviously a good thing. Negatively, however, the lack of decentralization is terrifying. The whole system was still built on trust and Web3 should strive to be trustless!
+
+What would have happened if the Oasis team had been malicious? We don't even need to wonder, because it happens all the time. We've got to stop it.
+
+Let's continue our review of Thunder Loan in the next lesson.
 
 You have heard before about cyber thefts. But have you heard of one where hackers end up having the tables turned on them? This exactly happened earlier this year in the world of digital asset lending and borrowing. It's a rollercoaster of a story that involves smart contracts, the UK courts, and a protocol called Oasis. The protocol, incidentally, had projected itself as decentralized and permissionless, but ended up playing an ironic role. Let's dig in.
 

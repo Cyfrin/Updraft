@@ -1,35 +1,69 @@
 ---
-title: sellPoolTokens write up
+title: sellPoolTokens Write-up
 ---
 
+---
 
+### sellPoolTokens Write-up
+
+Ok, it looks like we're going to be on a streak of `high severity` findings, because the next was a vulnerability we identified within `sellPoolTokens`.
+
+```js
+function sellPoolTokens(uint256 poolTokenAmount) external returns (uint256 wethAmount) {
+    // @Audit - Incorrect parameter being passed for swapExactOutput function - poolTokenAmount!
+    return swapExactOutput(i_poolToken, i_wethToken, poolTokenAmount, uint64(block.timestamp));
+}
+```
+
+The parameters of `swapExactOutput` for reference:
+
+```js
+function swapExactOutput(
+    IERC20 inputToken,
+    IERC20 outputToken,
+    uint256 outputAmount,
+    uint64 deadline
+)
+```
+
+The third argument being passed to `swapExactOutput` in our `sellPoolTokens` function should be an `outputAmount`, not at amount correlated to our `inputToken`.
+
+Compare your finding write-up to mine below! Again, I'm leaving the PoC in your hands. Reach out to the community through [**GitHub**](https://github.com/Cyfrin/security-and-auditing-full-course-s23/discussions) and [**Discord**](https://discord.gg/cyfrin) if you're struggling!
+
+<details>
+<summary>[H-3] `TSwapPool::sellPoolTokens` mismatches input and output tokens causing users to receive the incorrect amount of tokens</summary>
+
+### [H-4] `TSwapPool::sellPoolTokens` mismatches input and output tokens causing users to receive the incorrect amount of tokens
+
+**Description:** The `sellPoolTokens` function is intended to allow users to easily sell pool tokens and receive WETH in exchange. Users indicate how many pool tokens they're willing to sell in the `poolTokenAmount` parameter. However, the function currently miscalculaes the swapped amount.
+
+This is due to the fact that the `swapExactOutput` function is called, whereas the `swapExactInput` function is the one that should be called. Because users specify the exact amount of input tokens, not output.
+
+**Impact:** Users will swap the wrong amount of tokens, which is a severe disruption of protcol functionality.
+
+**Proof of Concept:**
+<write PoC here>
+
+**Recommended Mitigation:**
+
+Consider changing the implementation to use `swapExactInput` instead of `swapExactOutput`. Note that this would also require changing the `sellPoolTokens` function to accept a new parameter (ie `minWethToReceive` to be passed to `swapExactInput`)
+
+```diff
+    function sellPoolTokens(
+        uint256 poolTokenAmount,
++       uint256 minWethToReceive,
+        ) external returns (uint256 wethAmount) {
+-        return swapExactOutput(i_poolToken, i_wethToken, poolTokenAmount, uint64(block.timestamp));
++        return swapExactInput(i_poolToken, poolTokenAmount, i_wethToken, minWethToReceive, uint64(block.timestamp));
+    }
+```
+
+Additionally, it might be wise to add a deadline to the function, as there is currently no deadline. (MEV later)
+
+</details>
 
 ---
 
-# Unraveling Smart Contract Bugs: 'Sell Pool Tokens' Woes
+### Wrap Up
 
-In the chaotic and fast-paced world of blockchain programming, errors aren't just inconvenient; they can cost money. A lot of money. One notorious mistake often found in the wild is related to token swapping - that is, exchanging tokens within a liquidity pool. Today, we're diving into one high severity bug associated with a `sellPoolTokens` function.
-
-The nature of this bug means the token swapping feature doesn't operate as expected, causing users to receive an incorrect number of tokens during transactions. Let's delve into this troublesome gaffe further.
-
-## What's Going on with 'Sell Pool Tokens'?
-
-The `sellPoolTokens` function is designed to enable users to efficiently sell pool tokens and receive Wrapped Ether (WETH) in return. Users specify how many pool tokens they're prepared to sell via the `poolTokenAmount` parameter.
-
-However, this function has a miscalculation issue with the swapped amount, directly linked to the incorrect function call. The current `sellPoolTokens` function calls the `swapExactOutput` function, but it should call `swapExactInput` instead. Why is this a problem? Because users specify the precise input tokens volume, not the output.
-
-> "Users will swap the wrong amount of tokens, which is a severe disruption of protocol functionality."
-
-## Breaking Down the Proof of Concept
-
-The proof of concept for this takes form in pseudo code, illustrating the botched token swap during a `sellPoolTokens` call. We'd typically piece together a proof-of-code here to further demonstrate this issue practically.
-
-## Addressing the Bug: Recommendations for Mitigation
-
-To tackle this damaging bug, the proposed mitigation strategy is restructuring the implementation to deploy `swapExactInput` instead of `swapExactOutput`. This, however, demands a modification to the `sellPoolTokens` function to accommodate a new parameter dubbed `minWETHtoReceive`.
-
-But wait, there's more! Area for improvement exists beyond this immediate bug fix. It would be prudent to introduce a deadline to the function as no deadline currently exists. This is a crucial topic for later exploration in the blog series, particularly when we delve into Miner Extractable Value (MEV). For the time being, though, we'll set this to one side.
-
-The `sellPoolTokens` bug is, rather deceptively, a compelling example of how small errors can disrupt the functionality of decentralized protocols dramatically. By presenting the concept and outlining potential solutions, we hope to contribute to more robust, secure, and user-friendly DeFi platforms.
-
-Let's keep debugging!
+The next finding we'll write up is exciting. It's the vulnerability we uncovered through writing our stateful fuzz test suite! Let's get to it, see you there!

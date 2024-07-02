@@ -2,54 +2,402 @@
 title: Improving Test Coverage To Find A High
 ---
 
-# Unraveling the Mystery: Decoding Flash Loan Fees and Exchange Rate Updates
+_Follow along with the video lesson:_
 
-As we delve deeper into the complexities of DeFi protocols, we find ourselves constantly asking - Why? Why are we calculating the fees of a flash loan in the deposit? And why are we updating the exchange rate? Isn't it a bit strange to perform these updates here?
+---
 
-To unravel this puzzle, we embarked on an audit trail that led to some unexpected discoveries and revelations.
+### Improving Test Coverage To Find A High
 
-## Deciphering the Problem: Understanding Exchange Rates and Flash Loans
+We have a couple more outstanding questions to consider in our notes from throughout our review.
 
-The first oddity we noticed was the update of the exchange rate in the deposit function when adding fees. This process typically only commences when there's a significant increase in the total amount of money in the asset token. It seemed illogical that the deposit function, which accrued no fees, was responsible for this update.
+```js
+// @Audit-Question: Why are we calculating the fees of flash loans in the deposit function?
+uint256 calculatedFee = getCalculatedFee(token, amount);
+// @Audit-Question: Why are we updating the exchange rate in the deposit function?
+assetToken.updateExchangeRate(calculatedFee);
+```
 
-If the update exchange rate was malfunctioning, it would have repercussions on the 'redeem' function - our protocol's withdrawal mechanism. To confirm our suspicions, we needed to test this function first.
+Our review has taught us that `updateExchangeRate` is effectively keeping track of the ratio of `underlying` and `asset tokens`. If the `deposit` function isn't acruing any fees, it doesn't really make sense to be updating this value here...
 
-## Running the Test: Examining the 'Redeem' Function
+We need to write some tests.
 
-To validate the functionality of the redeem function, we had to initiate a test. We decided to write a test for the redeem function and simulate a scenario of borrowing from the test flash loan and then attempt to redeem.
+If we review the existing test suite provided by the protocol, it's clear it leaves much to be desired. There isn't a single test in `ThunderLoanTest.t.sol` which tests the `redeem` function!
 
-We commenced with the test by first setting up a mock Flash Loan receiver with a specified fee, which would be used for the Flash Loan.
+<details>
+<summary>ThunderLoanTest.t.sol</summary>
 
-The test would first change the exchange rate by depositing some funds, then modify it again by initializing the Flash Loan. ideally, at this stage, the depositor should be able to withdraw all their money.
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
 
-![](https://cdn.videotap.com/NHVntHvDBDp2yLjdahS4-377.57.png)
+import { Test, console } from "forge-std/Test.sol";
+import { BaseTest, ThunderLoan } from "./BaseTest.t.sol";
+import { AssetToken } from "../../src/protocol/AssetToken.sol";
+import { MockFlashLoanReceiver } from "../mocks/MockFlashLoanReceiver.sol";
 
-## The Unexpected Revelation: Insufficient Balance
+contract ThunderLoanTest is BaseTest {
+    uint256 constant AMOUNT = 10e18;
+    uint256 constant DEPOSIT_AMOUNT = AMOUNT * 100;
+    address liquidityProvider = address(123);
+    address user = address(456);
+    MockFlashLoanReceiver mockFlashLoanReceiver;
 
-The test, unfortunately, produced an unexpected outcome - Insufficient balance.
+    function setUp() public override {
+        super.setUp();
+        vm.prank(user);
+        mockFlashLoanReceiver = new MockFlashLoanReceiver(address(thunderLoan));
+    }
 
-After analyzing the logs of the transactions performed during the test, we noticed that the 'transferUnderlyingTo' function was returning an error stating insufficient funds. The amount to be transferred back (1003 tokens) was higher than the initial deposit (1000E 18).
+    function testInitializationOwner() public {
+        assertEq(thunderLoan.owner(), address(this));
+    }
 
-This discrepancy threw us off balance. We had triggered a Flash loan, and expected to incur a fee, but the increase in the withdrawal amount surpassed the fee incurred. Upon scrutinizing the deposit function once again, we discovered an uncanny occurrence - the exchange rate was updating the fee.
+    function testSetAllowedTokens() public {
+        vm.prank(thunderLoan.owner());
+        thunderLoan.setAllowedToken(tokenA, true);
+        assertEq(thunderLoan.isAllowedToken(tokenA), true);
+    }
 
-The exchange rate, which was originally responsible for tracking the total amount of money in the protocol at all times, had now charged a fee without any transaction taking place.
+    function testOnlyOwnerCanSetTokens() public {
+        vm.prank(liquidityProvider);
+        vm.expectRevert();
+        thunderLoan.setAllowedToken(tokenA, true);
+    }
 
-This detrimental coding error was affecting liquidity providers' ability to redeem their tokens, setting off alarm bells for us.
+    function testSettingTokenCreatesAsset() public {
+        vm.prank(thunderLoan.owner());
+        AssetToken assetToken = thunderLoan.setAllowedToken(tokenA, true);
+        assertEq(address(thunderLoan.getAssetFromToken(tokenA)), address(assetToken));
+    }
 
-## Assessing the Damage: Decoding the High
+    function testCantDepositUnapprovedTokens() public {
+        tokenA.mint(liquidityProvider, AMOUNT);
+        tokenA.approve(address(thunderLoan), AMOUNT);
+        vm.expectRevert(abi.encodeWithSelector(ThunderLoan.ThunderLoan__NotAllowedToken.selector, address(tokenA)));
+        thunderLoan.deposit(tokenA, AMOUNT);
+    }
 
-To ascertain the gravity of the impact of this error, we performed a follow-up test with the problematic lines of code in the Thunder loan commented out. As expected, the test passed, solidifying our suspicion. The initial mock test we developed served as a proof of code that affirmed our findings.
+    modifier setAllowedToken() {
+        vm.prank(thunderLoan.owner());
+        thunderLoan.setAllowedToken(tokenA, true);
+        _;
+    }
 
-![](https://cdn.videotap.com/liERWQdBJtLyf0Oj21Oc-556.43.png)
+    function testDepositMintsAssetAndUpdatesBalance() public setAllowedToken {
+        tokenA.mint(liquidityProvider, AMOUNT);
 
-The paramount error was evident - the erroneous exchange rate update in the deposit function. This update was blocking redemptions and incorrectly setting the exchange rate, leading to severe disruptions in the contract functionality.
+        vm.startPrank(liquidityProvider);
+        tokenA.approve(address(thunderLoan), AMOUNT);
+        thunderLoan.deposit(tokenA, AMOUNT);
+        vm.stopPrank();
 
-The likelihood of this recurring was high due to its occurrence every time someone deposited. The impact, too, was high as users' funds would be locked. Moreover, rewards were incorrectly calculated due to reward manipulation leading to users potentially getting way more or less than deserved.
+        AssetToken asset = thunderLoan.getAssetFromToken(tokenA);
+        assertEq(tokenA.balanceOf(address(asset)), AMOUNT);
+        assertEq(asset.balanceOf(liquidityProvider), AMOUNT);
+    }
 
-## Mitigating the Threat: Towards a Safer Protocol
+    modifier hasDeposits() {
+        vm.startPrank(liquidityProvider);
+        tokenA.mint(liquidityProvider, DEPOSIT_AMOUNT);
+        tokenA.approve(address(thunderLoan), DEPOSIT_AMOUNT);
+        thunderLoan.deposit(tokenA, DEPOSIT_AMOUNT);
+        vm.stopPrank();
+        _;
+    }
 
-Having extensive experience in blockchain security, we carefully devised a countermeasure to neutralize this imminent threat.
+    function testFlashLoan() public setAllowedToken hasDeposits {
+        uint256 amountToBorrow = AMOUNT * 10;
+        uint256 calculatedFee = thunderLoan.getCalculatedFee(tokenA, amountToBorrow);
+        vm.startPrank(user);
+        tokenA.mint(address(mockFlashLoanReceiver), AMOUNT);
+        thunderLoan.flashloan(address(mockFlashLoanReceiver), tokenA, amountToBorrow, "");
+        vm.stopPrank();
 
-Through our persistent efforts probing into the code, we have managed to reveal a glaring irregularity that could have potentially endangered the whole protocol. The mandatory removal of this erroneous exchange rate update from the deposit function could significantly impact the protocol, making it safer and more secure, offering a fortifying solution to this daunting mishap.
+        assertEq(mockFlashLoanReceiver.getBalanceDuring(), amountToBorrow + AMOUNT);
+        assertEq(mockFlashLoanReceiver.getBalanceAfter(), AMOUNT - calculatedFee);
+    }
+}
+```
 
-And, as we continue ahead in our journey, probing for more security vulnerabilities and solving them, we learn that most bugs tend to surface towards the end of the audit. As our understanding of the protocol deepens, we get better at detecting potential threats, eventually leading to a more secure eco-system for all.
+</details>
+
+---
+
+This seems like a good place to start as it will weed out any issues that may arise from the issue we identified in `deposit` outlined above.
+
+We can borrow heavily from the existing test suite to speed the process of writing this test along. There are two convenient modifiers we can use which cover the setting of allowed tokens and the depositing of liquidity for us.
+
+```js
+modifier hasDeposits() {
+    vm.startPrank(liquidityProvider);
+    tokenA.mint(liquidityProvider, DEPOSIT_AMOUNT);
+    tokenA.approve(address(thunderLoan), DEPOSIT_AMOUNT);
+    thunderLoan.deposit(tokenA, DEPOSIT_AMOUNT);
+    vm.stopPrank();
+    _;
+}
+
+modifier setAllowedToken() {
+    vm.prank(thunderLoan.owner());
+    thunderLoan.setAllowedToken(tokenA, true);
+    _;
+}
+```
+
+Before we can redeem anything we'll have to execute a flash loan in our test. We can scavenge most of the `testFlashLoan` function for this purpose. Our test will look something like this so far:
+
+```js
+function testRedeemAfterLoan() public setAllowedToken hasDeposits {
+    uint256 amountToBorrow = AMOUNT * 10;
+    uint256 calculatedFee = thunderLoan.getCalculatedFee(tokenA, amountToBorrow);
+    // User is minting the fee needed to repay the flash loan.
+    // Note that the original testFlashLoan function is minting MORE than necessary
+    tokenA.mint(address(mockFlashLoanReceiver), calculatedFee);
+
+    vm.startPrank(user);
+    thunderLoan.flashloan(address(mockFlashLoanReceiver), tokenA, amountToBorrow, "");
+    vm.stopPrank();
+}
+```
+
+Our test, when calling `flashloan` is going to pass `mockFlashLoanReceiver` as its target address. We know from a previous lesson that this contract simply receives the loan, and then repays it by calling the repay function of `ThunderLoan`.
+
+<details>
+<summary>MockFlashLoanReceiver.sol</summary>
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
+
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { IFlashLoanReceiver } from "../../src/interfaces/IFlashLoanReceiver.sol";
+import { IThunderLoan } from "../../src/interfaces/IThunderLoan.sol";
+
+contract MockFlashLoanReceiver {
+    error MockFlashLoanReceiver__onlyOwner();
+    error MockFlashLoanReceiver__onlyThunderLoan();
+
+    using SafeERC20 for IERC20;
+
+    address s_owner;
+    address s_thunderLoan;
+
+    uint256 s_balanceDuringFlashLoan;
+    uint256 s_balanceAfterFlashLoan;
+
+    constructor(address thunderLoan) {
+        s_owner = msg.sender;
+        s_thunderLoan = thunderLoan;
+        s_balanceDuringFlashLoan = 0;
+    }
+
+    function executeOperation(
+        address token,
+        uint256 amount,
+        uint256 fee,
+        address initiator,
+        bytes calldata /*  params */
+    )
+        external
+        returns (bool)
+    {
+        s_balanceDuringFlashLoan = IERC20(token).balanceOf(address(this));
+        if (initiator != s_owner) {
+            revert MockFlashLoanReceiver__onlyOwner();
+        }
+        if (msg.sender != s_thunderLoan) {
+            revert MockFlashLoanReceiver__onlyThunderLoan();
+        }
+        IERC20(token).approve(s_thunderLoan, amount + fee);
+        IThunderLoan(s_thunderLoan).repay(token, amount + fee);
+        s_balanceAfterFlashLoan = IERC20(token).balanceOf(address(this));
+        return true;
+    }
+
+    function getBalanceDuring() external view returns (uint256) {
+        return s_balanceDuringFlashLoan;
+    }
+
+    function getBalanceAfter() external view returns (uint256) {
+        return s_balanceAfterFlashLoan;
+    }
+}
+```
+
+</details>
+
+---
+
+Ok, now we know that the exchange rate is being updated when `deposit` is called (in this case in our modifier), as well as when `flashloan` is called. Let's add a call to redeem into our test, at this point we'd expect a liquidity provider to be able to redeem their asset tokens in exchange for underlying.
+
+```js
+function testRedeemAfterLoan() public setAllowedToken hasDeposits {
+    uint256 amountToBorrow = AMOUNT * 10;
+    uint256 calculatedFee = thunderLoan.getCalculatedFee(tokenA, amountToBorrow);
+    // User is minting the fee needed to repay the flash loan.
+    // Note that the original testFlashLoan function is minting MORE than necessary
+    tokenA.mint(address(mockFlashLoanReceiver), calculatedFee);
+
+    vm.startPrank(user);
+    thunderLoan.flashloan(address(mockFlashLoanReceiver), tokenA, amountToBorrow, "");
+    vm.stopPrank();
+
+    uint256 amountToRedeem = type(uint256).max; // as per ThunderLoan::redeem, this will transfer a liquidity provider's whole balance.
+    vm.startPrank(liquidityProvider);
+    thunderLoan.redeem(tokenA, amountToRedeem);
+}
+```
+
+Already, we should be able to run this test to determine if there's an issue here...
+
+```bash
+forge test --mt testRedeemAfterLoan -vvvv
+```
+
+<img src="/security-section-6/37-improving-test-coverage-to-find-a-high/improving-test-coverage-to-find-a-high1.png" width="100%" height="auto">
+
+Oh snap. Let's take a closer look at the trace output to determine where the test is failing.
+
+<img src="/security-section-6/37-improving-test-coverage-to-find-a-high/improving-test-coverage-to-find-a-high2.png" width="100%" height="auto">
+
+We can clearly see from the trace that `transferUnderlyingTo` is failing because `AssetToken` has an insufficient balance... I wonder if commenting out the weird `updateExchangeRate` in our `deposit` function would resolve this. Let's give it a try...
+
+```js
+function deposit(IERC20 token, uint256 amount) external revertIfZero(amount) revertIfNotAllowedToken(token) {
+    AssetToken assetToken = s_tokenToAssetToken[token];
+    uint256 exchangeRate = assetToken.getExchangeRate();
+    uint256 mintAmount = (amount * assetToken.EXCHANGE_RATE_PRECISION()) / exchangeRate;
+    emit Deposit(msg.sender, token, amount);
+    assetToken.mint(msg.sender, mintAmount);
+
+    // uint256 calculatedFee = getCalculatedFee(token, amount);
+    // assetToken.updateExchangeRate(calculatedFee);
+
+    token.safeTransferFrom(msg.sender, address(assetToken), amount);
+}
+```
+
+Now run the test once more.
+
+```bash
+forge test --mt testRedeemAfterLoan -vvvv
+```
+
+<img src="/security-section-6/37-improving-test-coverage-to-find-a-high/improving-test-coverage-to-find-a-high3.png" width="100%" height="auto">
+
+WOOOOO! We found something! The `updateExchangeRate` function effectively keeps track of how much money is in the protocol at all times. By calling this function within `deposit` (when the protocol isn't expecting to gain value through fees) the expected amount to withdraw is breaking when a `liquidity provider` calls `redeem`.
+
+This is a `high severity` finding _for sure_. This would brick the protocol.
+
+```js
+// @Audit-High - We should not be updating the exchange rate in the deposit function, this breaks the internal accounting of AssetToken making it impossible to redeem
+```
+
+Finding a high is something to really get excited about! We came a long way to find this massive bug.
+
+> **Remember:** Security Reviews are _not_ linear!
+
+### Write Ups
+
+For the rest of section 6, we're going to write up our reports for vulnerabilities _as_ we find them. A lot of times you'll do this at the end, but the next couple findings involve some really common attack vectors that are important to dial in and I want you to get really good at spotting them.
+
+### Reporting: Reward Manipulation
+
+Let's do the write up for this! We can set things up just like our previous reviews.
+
+Create a folder in the workspace titled `audit-data` and within it create our `finding_layout.md` file. This should be a familiar process by now! Paste our report template into this file ([**template**](https://github.com/Cyfrin/6-thunder-loan-audit/blob/audit-data/audit-data/finding_layout.md)).
+
+Finally, create a new file in `audit-data`, titled `findings.md`, and let's begin some of our write-ups!
+
+### [H-1]
+
+```
+### [H-1] Erroneous `ThunderLoan::updateExchange` in the `deposit` function causes protocol to think it has more fees than it really does, which blocks redemption and incorrectly sets the exchange rate
+```
+
+Something of note, for this title is that we've identified two separate impacts resulting from the same root cause.
+
+A general rule of thumb for findings is that any impact derived from a single root cause is included in a single findings/write-up.
+
+<details>
+<summary>[H-1] Erroneous `ThunderLoan::updateExchange` in the `deposit` function causes protocol to think it has more fees than it really does, which blocks redemption and incorrectly sets the exchange rate</summary>
+
+### [H-1] Erroneous `ThunderLoan::updateExchange` in the `deposit` function causes protocol to think it has more fees than it really does, which blocks redemption and incorrectly sets the exchange rate
+
+**Description:** In the ThunderLoan system, the `exchangeRate` is responsible for calculating the exchange rate between asset tokens and underlying tokens. In a way it's responsible for keeping track of how many fees to give liquidity providers.
+
+However, the `deposit` function updates this rate without collecting any fees!
+
+```js
+function deposit(IERC20 token, uint256 amount) external revertIfZero(amount) revertIfNotAllowedToken(token) {
+    AssetToken assetToken = s_tokenToAssetToken[token];
+    uint256 exchangeRate = assetToken.getExchangeRate();
+    uint256 mintAmount = (amount * assetToken.EXCHANGE_RATE_PRECISION()) / exchangeRate;
+    emit Deposit(msg.sender, token, amount);
+    assetToken.mint(msg.sender, mintAmount);
+
+    // @Audit-High
+@>  // uint256 calculatedFee = getCalculatedFee(token, amount);
+@>  // assetToken.updateExchangeRate(calculatedFee);
+
+    token.safeTransferFrom(msg.sender, address(assetToken), amount);
+}
+```
+
+**Impact:** There are several impacts to this bug.
+
+1. The `redeem` function is blocked, because the protocol thinks the amount to be redeemed is more than it's balance.
+2. Rewards are incorrectly calculated, leading to liquidity providers potentially getting way more or less than they deserve.
+
+**Proof of Concept:**
+
+1. LP deposits
+2. User takes out a flash loan
+3. It is now impossible for LP to redeem
+
+<details>
+<summary>Proof of Code</summary>
+
+Place the following into ThunderLoanTest.t.sol:
+
+```js
+function testRedeemAfterLoan() public setAllowedToken hasDeposits {
+    uint256 amountToBorrow = AMOUNT * 10;
+    uint256 calculatedFee = thunderLoan.getCalculatedFee(tokenA, amountToBorrow);
+    tokenA.mint(address(mockFlashLoanReceiver), calculatedFee);
+
+    vm.startPrank(user);
+    thunderLoan.flashloan(address(mockFlashLoanReceiver), tokenA, amountToBorrow, "");
+    vm.stopPrank();
+
+    uint256 amountToRedeem = type(uint256).max;
+    vm.startPrank(liquidityProvider);
+    thunderLoan.redeem(tokenA, amountToRedeem);
+}
+```
+
+</details>
+
+**Recommended Mitigation:** Remove the incorrect updateExchangeRate lines from `deposit`
+
+```diff
+function deposit(IERC20 token, uint256 amount) external revertIfZero(amount) revertIfNotAllowedToken(token) {
+    AssetToken assetToken = s_tokenToAssetToken[token];
+    uint256 exchangeRate = assetToken.getExchangeRate();
+    uint256 mintAmount = (amount * assetToken.EXCHANGE_RATE_PRECISION()) / exchangeRate;
+    emit Deposit(msg.sender, token, amount);
+    assetToken.mint(msg.sender, mintAmount);
+
+-   uint256 calculatedFee = getCalculatedFee(token, amount);
+-   assetToken.updateExchangeRate(calculatedFee);
+
+    token.safeTransferFrom(msg.sender, address(assetToken), amount);
+}
+```
+
+</details>
+
+### Wrap Up
+
+We've recorded our first high! This report is looking sick. We should absolutely celebrate this win and keep going - we've many more questions to answer now.

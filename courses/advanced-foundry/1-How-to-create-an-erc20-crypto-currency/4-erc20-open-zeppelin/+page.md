@@ -4,85 +4,74 @@ title: ERC20 Open Zeppelin
 
 _Follow along the course with this video._
 
-
-
 ---
 
-# Using Pre-Deployed, Audited, and Ready-to-Go Smart Contracts with OpenZeppelin
+### ERC20 OpenZeppelin
 
-Welcome back! Creating your own smart contracts can be a complex task. As your experience grows, you might find yourself creating similar contracts repeatedly. In such cases, wouldn't it be more convenient to use pre-deployed, audited, and ready-to-go contracts? In this section, I'll guide you on using the OpenZeppelin framework to achieve this.
+Welcome back! As mentioned in the closing of our last lesson, we could absolutely continue with manually building out a smart contract comprised of all the required functions to be compatible with the ERC20 standard, but wouldn't it be more convenient to use pre-deployed, audited, and ready-to-go contracts?
 
-<img src="/foundry-erc20s/3-erc20-open-zeppelin/erc20-open-zeppelin2.PNG" style="width: 100%; height: auto;">
+In this section, I'll guide you on using the OpenZeppelin Library to achieve this.
 
-## OpenZeppelin Framework
+> [!NOTE]
+> OpenZeppelin is renowned for its Smart Contract framework, offering a vast repository of audited contracts readily integratable into your codebase.
 
-Access [OpenZeppelin's documentation](https://docs.openzeppelin.com/contracts/4.x/) via their official website. By navigating to [Products &gt; Contracts](https://www.openzeppelin.com/contracts), you can discover a vast array of ready-to-use contracts.
+Access [OpenZeppelin's documentation](https://docs.openzeppelin.com/contracts/4.x/) via their official website. By navigating to [Products -> Contracts](https://www.openzeppelin.com/contracts), you can discover a vast array of ready-to-use contracts.
 
 Additionally, OpenZeppelin offers a contract wizard, streamlining the contract creation process — perfect for tokens, governances, or custom contracts.
 
-## Creating a New Token
+<img src="/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin1.png" width="100%" height="auto">
 
-Rather than manual implementations, let's craft a new token named 'OurToken'. Here's an outline of our token's structure:
+Let's leverage OpenZeppelin to create a new ERC20 Token. Create a new file within `src` named `OurToken.sol`. Once that's done, let's install the OpenZeppelin library into our contract.
 
-```javascript
-// OurToken.sol
-SPDX-License-Identifier: MIT
+```bash
+forge install OpenZeppelin/openzeppelin-contracts --no-commit
+```
+
+Once installed you'll see the ERC20 contract from OpenZeppelin within `lib/openzeppelin-contracts/token/ERC20/ERC20.sol`. Let's add a remapping in our foundry.toml to make importing a little easier on us.Within foundry.toml add the line:
+
+```js
+remappings = ["@openzeppelin=lib/openzeppelin-contracts"];
+```
+
+We can now import and inherit this contract into `OurToken.sol`!
+
+```js
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-contract OurToken {
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
+contract OurToken is ERC20 {
+    //constructor goes here
 }
 ```
 
-## Installing OpenZeppelin Contracts
+By importing the OpenZeppelin implementation of ERC20 this way, we inherit all the functionality of the ERC20 standard with much less work and a level of confidence that the code has been testing and verified.
 
-Next, we will install the OpenZeppelin contracts to our project. Navigate to their [official GitHub repository](https://github.com/OpenZeppelin/openzeppelin-contracts) and copy the repository path.
+> [!TIP]
+> If you're looking for an alternative library full of trusted contracts, I recommend looking at the [**Solmate Repo**](https://github.com/transmissions11/solmate) by Transmissions11.
 
-In your terminal, run the following command to install the OpenZeppelin contracts:
+Now, we should recall that when inheriting from a contract with a constructor, our contract must fulfill the requirements of that constructor. We'll need to define details like a name and symbol for OurToken.
 
-```bash
-forge install openzeppelin/openzeppelin-contracts --no-commit
-```
-
-Upon successful installation, you'll find the OpenZeppelin contracts in your project's lib folder. Your contract library will now contain audited contracts you can readily use like the ERC20 contract.
-
-## Inheriting and Implementing Contracts
-
-After accessing the OpenZeppelin contracts, you can now import and inherit from them. To do this, we first need to remap the OpenZeppelin contracts in our foundry.toml file:
-
-```javascript
-[remappings] = "@openzeppelin-contracts=lib/openzeppelin-contracts";
-```
-
-Then, simply import and inherit from ERC20.sol in our 'OurToken.sol' file like this:
-
-```javascript
-SPDX-License-Identifier: MIT
+```js
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import "@openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract OurToken is ERC20 {
     constructor(uint256 initialSupply) ERC20("OurToken", "OT"){
         _mint(msg.sender, initialSupply);
-        }
+    }
 }
 ```
 
-Notice that the constructor of OurToken uses the ERC20 constructor and needs a name and a symbol. I also used the \_mint function, provided by ERC20, to create the initial supply of tokens to the sender.
+For the purposes of simple examples like this, I like to mint the initialSupply to the deployer/msg.sender, which I've demonstrated above.
 
-## Testing That Your Contracts Compile
+As always we can perform a sanity check to assure things are working as expected by running `forge build`.
 
-Now, it's time to make sure things compile. To do this, run the command:
+<img src="/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin2.png" width="100%" height="auto">
 
-```bash
-forge build
-```
+Nailed it.
 
-If everything went smoothly, the output should indicate that your contract has been successfully compiled, something like this:
-
-<img src="/foundry-erc20s/3-erc20-open-zeppelin/erc20-open-zeppelin1.PNG" style="width: 100%; height: auto;">
-
----
-
-In summary, using pre-deployed and audited contracts like OpenZeppelin can streamline your development process when working with Smart Contracts. This approach lets you leverage proven code which reduces the risk of errors and increases your project's reliability. Don't hesitate to explore and utilize these contract libraries in your future blockchain development ventures!
+See you in the next lesson where we'll look into how to deploy this bad Larry.

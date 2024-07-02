@@ -4,154 +4,211 @@ title: Tests
 
 _Follow along the course with this video._
 
+---
 
+### Tests
 
-# Developing Unit Tests for Smart Contracts using Deploy Scripts
+Welcome back! We've added a tonne of functions to our `DSCEngine.sol`, so we're at the point where we want to perform a sanity check and assure everything is working as intended so far.
 
-Hello, developers! In the process of writing our smart contracts, it's incredibly crucial that we have a comprehensive testing suite. Recently, I came across a method that could potentially streamline your testing process. By incorporating the use of deploy scripts into the creation of our unit tests, we can test as we write our code, thereby making the entire development process much smoother. Intrigued yet? Let's dive right in!
+In the last lesson, we set up a deploy script as well as a `HelperConfig` to assist us in our tests. Let's get started!
 
-## Starting with Preliminaries: DSCEngine Test
+Create `test/unit/DSCEngine.t.sol` and begin with the boilerplate we're used to. We know we'll have to import our deploy script as well as `Test`, `DecentralizedStableCoin.sol`, and `DSCEngine.sol`.
 
-Before we can begin testing, let's first establish why we are doing this in the first place. If you recall, our DSCEngine has a series of functions that we must validate. Functions such as `getUsdValue`, `getAccountCollateralValue` are crucial to check. Moreover, we also need to ensure that Minting, the constructor, and depositing work effectively.
+```js
+// SPDX-License-Identifier: MIT
 
-As we embark on testing these functions, we will concurrently write tests and deploy scripts to ensure that glaring mistakes are spotted immediately—ideally reducing the need to refactor or rewrite code. The biggest advantage here is that an improved confidence in the correctness of your code can directly speed up your coding process.
+pragma solidity ^0.8.18;
 
-We'll start by setting up the `DSCEngineTest.t.sol` contract.
+import { DeployDSC } from "../../script/DeployDSC.s.sol";
+import { DSCEngine } from "../../src/DSCEngine.sol";
+import { DecentralizedStableCoin } from "../../src/DecentralizedStableCoin.sol";
+import { Test, console } from "forge-std/Test.sol";
 
-```javascript
-//SPDX-License-Identifier: MIT
-pragma solidity 0.8.18;
-import {Test} from "forge-std/Test.sol";
-
-
-Contract DSCEngineTest is Test {
+contract DSCEngineTest is Test {
 
 }
 ```
 
-In the function `setUp`, we'll need to deploy our contract. We do this by importing `DeployDSC` from the `DeployDSC.s.sol` file and then creating a new instance of `DeployDSC` called `deployer`. On top of that, we'll also need to import the `DecentralizedStableCoin` and `DSCEngine` contracts from their respective solidity files.
+Declare our contract/script variables, then in our `setUp` function, we're going to need to deploy our contracts using our `DeployDSC` script.
 
-```javascript
-//SPDX-License-Identifier: MIT
-pragma solidity 0.8.18;
-import {Test} from "forge-std/Test.sol";
-import {DeployDSC} from "../../script/DeployDSC.s.sol";
-import {DSCEngine} from "../../src/DSCEngine.sol";
-import {DecentralizedStableCoin} from "../../src/DecentralizedStableCoin.sol";
-import {HelperConfig} from "../../script/HelperConfig.s.sol";
-
-
-Contract DSCEngineTest is Test {
+```js
+contract DSCEngineTest is Test {
     DeployDSC deployer;
     DecentralizedStableCoin dsc;
     DSCEngine dsce;
-    HelperConfig config;
 
-    function setUp() public {
+    function setUp public {
         deployer = new DeployDSC();
-        (dsc, dsce, config) = deployer.run();
+        (dsc, dsce) = deployer.run();
     }
 }
 ```
 
-Please note: It is pretty handy to use GitHub copilot or any AI that you prefer to assist in these scenarios.
+I think a good place to start will be checking some of our math in `DSCEngine`. We should verify that we're pulling data from our price feeds properly and that our USD calculations are correct.
 
-## Establishing the First Test: Price Feeds
+```js
+/////////////////
+// Price Tests //
+/////////////////
 
-With our contract now set up, let's move on to creating the first actual test. Here, we want to validate our `getUsdValue` function.
+function testGetUsdValue() public {}
+```
 
-```javascript
-function testGetUsdValue() public {
-    //Test goes here//
+The `getUsdValue` function takes a token address and an amount as a parameter. We could import our mocks for reference here, but instead, let's adjust our `DeployDSC` script to also return our `HelperConfig`. We can acquire these token addresses from this in our test.
+
+```js
+contract DeployDSC is Script {
+    ...
+
+    function run() external returns (DecentralizedStableCoin, DSCEngine, HelperConfig) {
+        HelperConfig config = new HelperConfig();
+
+        (address wethUsdPriceFeed, address wbtcUsdPriceFeed, address weth, address wbtc, uint256 deployerKey) = config.activeNetworkConfig();
+
+        tokenAddresses = [weth, wbtc];
+        priceFeedAddresses = [wethUsdPriceFeed, wbtcUsdPriceFeed];
+
+        vm.startBroadcast();
+        DecentralizedStableCoin dsc = new DecentralizedStableCoin();
+        DSCEngine engine = new DSCEngine(tokenAddresses, priceFeedAddresses, address(dsc));
+        dsc.transferOwnership(address(engine));
+        vm.stopBroadcast();
+        return (dsc, engine, config);
+    }
 }
 ```
 
-For this particular test, we need to pass a token address and an amount. We can easily fetch these tokens from our `helperConfig`. Also, let's handle the `ethUsdPriceFeed` and `weth` at this stage.
+Now, back to our test. We'll need to do a few things in `DSCEngineTest.t.sol`.
 
-```javascript
-Contract DSCEngineTest is Test {
+- Import our `HelperConfig`
+- Declare state variables for `HelperConfig`, weth and `ethUsdPriceFeed`
+- Acquire the imported config from our `deployer.run` call
+- Acquire `ethUsdPriceFeed` and weth from our `config`'s `activeNetworkConfig`
+
+```js
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.18;
+
+import { DeployDSC } from "../../script/DeployDSC.s.sol";
+import { DSCEngine } from "../../src/DSCEngine.sol";
+import { DecentralizedStableCoin } from "../../src/DecentralizedStableCoin.sol";
+import { HelperConfig } from "../../script/HelperConfig.s.sol";
+import { Test, console } from "forge-std/Test.sol";
+
+contract DSCEngineTest is Test {
     DeployDSC deployer;
     DecentralizedStableCoin dsc;
     DSCEngine dsce;
     HelperConfig config;
-    address ethUsdPriceFeed;
     address weth;
+    address ethUsdPriceFeed;
+
+    function setUp public {
+        deployer = new DeployDSC();
+        (dsc, dsce, config) = deployer.run();
+        (ethUsdPriceFeed, , weth, , ) = config.activeNetworkConfig();
+    }
+}
+```
+
+We're now ready to use some of these values in our test function. For our unit test, we'll be requesting the value of `15ETH`, or `15e18`. Our HelperConfig has the ETH/USD price configured at `$2000`. Thus we should expect `30000e18` as a return value from our getUsdValue function. Let's see if that's true.
+
+```js
+/////////////////
+// Price Tests //
+/////////////////
+
+function testGetUsdValue() public {
+    // 15e18 * 2,000/ETH = 30,000e18
+    uint256 ethAmount = 15e18;
+    uint256 expectedUsd = 30000e18;
+    uint256 actualUsd = dsce.getUsdValue(weth, ethAmount);
+    assertEq(expectedUsd, actualUsd);
+}
+```
+
+When you're ready, let see how we've done!
+
+```bash
+forge test --mt testGetUsdValue
+```
+
+<img src="/foundry-defi/11-defi-tests/defi-tests1.png" width="100%" height="auto">
+
+It works! We're clearly still on track. This is great. It's good practice to test things as you go to avoid getting too far down the rabbit-hole of compounding errors. Sanity checks along the way like this can save you time in having to refactor and change a bunch of code later.
+
+Before moving on, we should write a test for our `depositCollateral` function as well. We'll need to import our `ERC20Mock` in order to test deposits, so let's do that now. We'll also need to declare a `USER` to call these functions with and amount for them to deposit.
+
+```js
+import {ERC20Mock} from "@openzeppelin/contracts/mocks/ERC20Mock.sol";
+
+...
+
+contract DSCEngineTest is Test {
 
     ...
 
+    address public USER = makeAddr("user");
+    uint256 public constant AMOUNT_COLLATERAL = 10 ether;
+
+    ...
+
+    /////////////////////////////
+    // depositCollateral Tests //
+    /////////////////////////////
+
+    function testRevertsIfCollateralZero() public {}
 }
-
 ```
 
-In the `setUp` function, we'll get the `weth` and `ethUsdPriceFeed` addresses from the HelperConfig, like so:
+Let's make sure our `USER` has some tokens minted to them in our `setUp`, they'll need them for several tests in our future.
 
-```javascript
-    (ethUsdPriceFeed,, weth,,) = config.activeNetworkConfig();
+```js
+address public USER = makeAddr("user");
+uint256 public constant AMOUNT_COLLATERAL = 10 ether;
+uint256 public constant STARTING_ERC20_BALANCE = 10 ether;
+
+function setUp public {
+    deployer = new DeployDSC();
+    (dsc, dsce, config) = deployer.run();
+    (ethUsdPriceFeed, , weth, , ) = config.activeNetworkConfig();
+
+    ERC20Mock(weth).mint(USER, STARTING_ERC20_BALANCE);
+}
 ```
 
-Next, let's calculate the expected USD value assuming that there are 15 ETH, each priced at $2,000. The calculation would be simple: `15ETH * $2000 per ETH = $30,000`. Afterward, we call the `getusdvalue` function on the DSC engine and compare the expected and actual USD amounts. The test function should look something like this:
+Our user is going to need to approve the `DSCEngine` contract to call `depositCollateral`. Despite this, we're going to deposit `0`. This _should_ cause our function call to revert with our custom error `DSCEngine__NeedsMoreThanZero`, which we'll account for with `vm.expectRevert`.
 
-```javascript
-    function testGetUsdValue() public {
-        uint256 ethAmount = 15e18;
-        // 15e18 ETH * $2000/ETH = $30,000e18
-        uint256 expectedUsd = 30000e18;
-        uint256 usdValue = dsce.getUsdValue(weth, ethAmount);
-        assertEq(usdValue, expectedUsd);
-    }
+```js
+ /////////////////////////////
+// depositCollateral Tests //
+/////////////////////////////
+
+function testRevertsIfCollateralZero() public {
+    vm.startPrank(USER);
+    ERC20Mock(weth).approve(address(dsce), AMOUNT_COLLATERAL);
+
+    vm.expectRevert(DSCEngine__NeedsMoreThanZero.selector);
+    dsce.depositCollateral(weth, 0);
+    vm.stopPrank();
+}
 ```
 
-We can run this test by using the following command in our terminal:
+Let's run it!
 
 ```bash
-forge test -mt testGetUsdValue
+forge test --mt testRevertsIfCollateralZero
 ```
 
-...and if everything went smoothly, it should pass! Great work!
+<img src="/foundry-defi/11-defi-tests/defi-tests2.png" width="100%" height="auto">
 
-The previous section might appear as lots of steps for a single test, but I have found this approach of integrating my deploy scripts into my test suite from the beginning quite helpful. However, depending on your project needs, you may choose to use them as integration tests.
+### Wrap Up
 
-## Dealing with Depositing Collateral
+I need to mention, there's no _correct_ way to write a contract. I personally am always writing test as I'm writing code. You don't have to write a deploy script for your tests right away either, I like to do this to set up my integration tests as early as possible.
 
-With our first test written and running fine, let's shift our focus to the next critical function, `depositCollateral`. For this test, we'll imitate a user and deposit collateral. Here, we are taking advantage of the prank functionality to temporarily modify the global state.
+It's important to find a process that works for you and stick to it.
 
-```javascript
-    function testRevertsIfCollateralZero() public {
-        vm.startPrank(user);
-        ERC20Mock(weth).approve(address(dsce), amountCollateral);
+These are some great basic tests to begin with, I'm content with these for now. In the next lesson we'll jump back into writing some more functions for our `DSCEngine.sol`.
 
-        vm.expectRevert(DSCEngine.DSCEngine__NeedsMoreThanZero.selector);
-        dsce.depositCollateral(weth, 0);
-        vm.stopPrank();
-    }
-```
-
-Thinking about it, we may want to mint the user some weth. As this could be used in more than one test, it would be efficient to do this right in the setup. Doing this in the setup ensures that it won't have to be performed for every single test. Don't forget to import `ERC20Mock` from OpenZeppelin for this.
-
-Import
-
-```javascript
-import { ERC20Mock } from "@openzeppelin/contracts/mocks/ERC20Mock.sol";
-```
-
-setUp
-
-```javascript
-    uint256 amountCollateral = 10 ether;
-    uint256 public constant STARTING_USER_BALANCE = 10 ether;
-
-    function setUp() external {
-        DeployDSC deployer = new DeployDSC();
-        (dsc, dsce, helperConfig) = deployer.run();
-        (ethUsdPriceFeed, btcUsdPriceFeed, weth, wbtc, deployerKey) = helperConfig.activeNetworkConfig();
-
-        ERC20Mock(weth).mint(user, STARTING_USER_BALANCE);
-        ERC20Mock(wbtc).mint(user, STARTING_USER_BALANCE);
-    }
-```
-
-For now, I am content with these tests. However, eventually, we will likely need a test for collateral being deposited into these data structures. Then again, testing is a continuous process. As you write your code, keep writing tests and _don't stop_. Remember, there isn't an absolute, singular process that works for all, but experimenting and finding what works for you is the key.
-
-I hope you enjoyed this in-depth tutorial on writing unit tests for your smart contracts using deploy scripts. Incorporating these practices can significantly aid you in constructing robust, error-free smart contracts. Experience the difference today! Happy coding!
-
-<img src="/foundry-defi/11-defi-tests/defi-tests1.PNG" style="width: 100%; height: auto;">
+See you soon!

@@ -4,38 +4,110 @@ title: Stateless Fuzzing
 
 _Follow along with the video:_
 
-
-
 ---
 
-Today, we'll be navigating through the SC exploits minimize codebase, focussing specifically on the `Invariant Break`. We aim to understand, practice, and discuss the power of stateless fuzzing, an essential tool in the world of software testing. Rest assured, we will also provide a minimized example to clarify how it works.
+### Stateless Fuzzing
 
-## What is Stateless Fuzzing?
+Stateless Fuzzing - Stateless fuzzing (often known as just "fuzzing") is when you provide random data to a function to get some invariant or property to break.
 
-Stateless fuzzing, often referred to simply as fuzzing, is a technique where random data is supplied to a function to break some invariant or property. Remembering our discussion from the video of continuously attempting to pop a balloon serves as an apt analogy. It's all about continuously providing different inputs to a function until it breaks. If you have a function with an invariant that it should never return zero, then fuzz testing might just be the answer.
+It is "stateless" because after every fuzz run, it resets the state, or it starts over.
 
-## Breaking the Invariant: Writing the Test Case
+Check out the [**invariant-break README**](https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/invariant-break/README.md#1-stateless-fuzzing---open) for information and examples.
 
-With our codebase ready, and ourselves aware of the functionality we are testing. We need to write the test case to break it. Let's create a new folder named `Invariant Break` to prepare for our first stateless fuzz test. Naming the test `statelessfuzzcatchestest.sol`, we focus on catching the bug automatically using fuzz testing.
+Let's start with opening `invariant-break/StatelessFuzzCatches.sol`
 
-This test is more than just a unit test which checks the invariant once. With fuzzing, we apply various random numbers to the function and see if it breaks the invariant or not. The beauty of this strategy is that we can detect issues that can be missed out on during manual checks or basic unit tests.
+We see a very simple contract with a clearly defined invariant, similar to what we've seen before.
 
-![](https://cdn.videotap.com/3SkpmLCCBFnsZH2yqkEW-412.31.png)
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
 
-## Setting the Fuzz Options
+// INVARIANT: doMath should never return 0
+contract StatelessFuzzCatches {
+    /*
+     * @dev Should never return 0
+     */
+    function doMath(uint128 myNumber) public pure returns (uint256) {
+        if (myNumber == 2) {
+            return 0;
+        }
+        return 1;
+    }
+}
+```
 
-Let's take a moment to understand the fuzz options. The number of runs determines the number of different balloons (inputs) we use in a stateless fuzz option. So we need to carefully adjust this value to ensure we're checking for as many edge cases as possible. Another crucial property is the seed, which, when kept the same, will offer the same inputs instead of random ones. This can be extremely helpful in debugging.
+**Remember, in a sufficiently complex code base the flaw won't be so clear, but the concepts you learn here will still apply**
 
-![](https://cdn.videotap.com/BjOp2RCvRkPDt2VcD5fL-453.54.png)
+### Writing the Test
 
-With the fuzz options set, our test is ready to run. After a few runs, the test should fail, meaning our fuzz test has successfully caught the bug—great job on creating your first fuzz test. But what if it doesn't fail? Well, you may need to increase the number of runs or change the seed. With randomness at play, there's never a 100% guarantee that you'll catch the bug in a particular run. This makes the fuzzing process a bit of hit or miss, but the advantages outweigh this con, as it helps to ensure the robustness of your functions.
+Now we can start to recreate the folder we deleted, one step at a time.
 
-Seeding different values and number of fuzzing runs directly impact how thoroughly the test cases are checked. Adjust these values according to your specific needs, cover as many alleyways as possible - fuzz it till you dust it off! But remember, it's crucial to analyze the balance between the number of runs, seed selection and performance of your testing.
+Create the `test/invariant-break` folder and within create a file titled `StatelessFuzzCatchesTest.t.sol` and we can start writing the test that will catch our bug for us.
 
-## Wrapping Up Stateless Fuzzing
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
 
-In conclusion, stateless fuzzing is a powerful tool for catching bugs where you expect a specific invariant. However, it's important to remember its limitations, such as being stateless and so not being able to pick up on issues caused by interactions between different functions. It's also a tool reliant on randomness, which means you can never be sure you've explored every possible scenario. Yet it remains a swift and highly efficient method for bug hunting.
+import {StatelessFuzzCatches} from "src/invariant-break/StatelessFuzzCatches.sol";
+import {Test} from "forge-std/Test.sol";
 
-In the upcoming sections, we'll move forward from stateless fuzzing to touch upon more complex and exciting testing methodologies. Until next time, happy fuzzing!
+contract StateLessFuzzCatchesTest is Test {
+    StatelessFuzzCatches sfc;
 
-> “It’s not at all important to get it right the first time. It’s vitally important to get it right the last time.” - Andrew Hunt and David Thomas
+    function setUp() public {
+        sfc = new StatelessFuzzCatches();
+    }
+
+    function testFuzzCatchesStateless(uint128 randomNumber) public view {
+        assert(sfc.doMath(randomNumber) != 0);
+    }
+}
+```
+
+Fairly simple!
+
+We begin by importing our `StatelessFuzzCatches.sol` contract and `Test.sol`, remembering to inherit `Test`.
+
+Next, in our `setUp` function we create a new instance of our contract to test.
+
+Finally, our test. We pass `uint128 randomNumber` to our test which uses this for our `doMath` function in `StatelessFuzzCatches`. We're asserting that this function call never returns 0 in accordance with our given invariant.
+
+```js
+/*
+* @dev Should never return 0
+*/
+function doMath(uint128 myNumber) public pure returns (uint256) {...}
+```
+
+Before we run the test, remember that Fuzz tests can be configured in our `foundry.toml` with a whole breadth of available options (check them out [**here**](https://book.getfoundry.sh/reference/config/testing?highlight=%5Bfuzz%5D#fuzz)).
+
+For this test, assure our [Fuzz] in `foundry.toml` is configured for `256 runs` and a seed of `0x2`. Knowing how to configure runs is important to assure a thorough test.
+
+```toml
+[fuzz]
+runs = 256
+seed = '0x2'
+```
+
+**Runs** - How many times the function will be called with random data
+
+**Seed** - An input used to initialize/influence a pseudorandom number generator
+
+If things have been set up well we should be able to run the following command to run our test:
+
+```bash
+forge test --mt testFuzzCatchesStateless -vvvv
+```
+
+<img src="/security-section-5/12-stateless-fuzzing/stateless-fuzzing1.png" width="100%" height="auto">
+
+We can see it doesn't take much for Foundry's Fuzzer to catch our edge case! When the argument `2` is passed, our function returns `0` _breaking our invariant_.
+
+### Pros and Cons
+
+Fuzzing is obviously incredibly powerful, it can catch breaks in protocol invariants that we could never hope to catch manually (despite our example being a little simple). They aren't without drawbacks however.
+
+- Stateless Fuzzing is unable to catch broken invariants that result from multiple function calls
+- You can never be 100% sure of security as the input is random. Even using 1,000,000 random numbers, the 1,000,001 could break everything.
+
+In the next lesson we'll look more closely at circumstances which cause the stateless fuzzing approach to fail. On to Level 2!

@@ -1,61 +1,396 @@
 ---
-title: Thunderloan.sol - Starting At The Top
+title: ThunderLoan.sol - Starting At The Top
 ---
 
-## Initial Exploration: Imports
+### ThunderLoan.sol - Starting At The Top
 
-Before we get our hands dirty with the functions, we start our journey with imports. There's plethora of imports in there, some of which include `Safe ERC 20`, `Asset token`, `IERC 20`, `Metadata`, `Ownable upgradable`, `Initializable`, `UUPs upgradable`, `Oracle Upgradable`, just to name a few.
+Ok, we're ready to dive into ThunderLoan.sol! There are many ways we can approach a code base, but let's just go top to bottom like we've been doing.
 
-In order to facilitate the learning process, I will provide a preamble of our focus in each section, "priming your brain" to absorb the upcoming content. Educational studies support this method, indicating that offering a high-level overview before delving into deeper detailing enhances the learning experience.
+<details>
+<summary>ThunderLoan.sol</summary>
 
-**Quick tip:** In order to better understand protocols, remember to go through their read-me's for a bird's eye view before examining the individual codes.
+```js
+//      .edee...      .....       .eeec.   ..eee..
+//    .d*"  """"*e..d*"""""**e..e*""  "*c.d""  ""*e.
+//   z"           "$          $""       *F         **e.
+//  z"             "c        d"          *.           "$.
+// .F                        "            "            'F
+// d                                                   J%
+// 3         .                                        e"
+// 4r       e"              .                        d"
+//  $     .d"     .        .F             z ..zeeeeed"
+//  "*beeeP"      P        d      e.      $**""    "
+//      "*b.     Jbc.     z*%e.. .$**eeeeP"
+//         "*beee* "$$eeed"  ^$$$""    "
+//                  '$$.     .$$$c
+//                   "$$.   e$$*$$c
+//                    "$$..$$P" '$$r
+//                     "$$$$"    "$$.           .d
+//         z.          .$$$"      "$$.        .dP"
+//         ^*e        e$$"         "$$.     .e$"
+//           *b.    .$$P"           "$$.   z$"
+//            "$c  e$$"              "$$.z$*"
+//             ^*e$$P"                "$$$"
+//               *$$                   "$$r
+//               '$$F                 .$$P
+//                $$$                z$$"
+//                4$$               d$$b.
+//                .$$%            .$$*"*$$e.
+//             e$$$*"            z$$"    "*$$e.
+//            4$$"              d$P"        "*$$e.
+//            $P              .d$$$c           "*$$e..
+//           d$"             z$$" *$b.            "*$L
+//          4$"             e$P"   "*$c            ^$$
+//          $"            .d$"       "$$.           ^$r
+//         dP            z$$"         ^*$e.          "b
+//        4$            e$P             "$$           "
+//                     J$F               $$
+//                     $$               .$F
+//                    4$"               $P"
+//                    $"               dP    Gilo94'
+// https://www.asciiart.eu/nature/lightning
+//  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄         ▄  ▄▄        ▄  ▄▄▄▄▄▄▄▄▄▄   ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄
+// ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░░▌      ▐░▌▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+//  ▀▀▀▀█░█▀▀▀▀ ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌░▌     ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌
+//      ▐░▌     ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌▐░▌    ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌       ▐░▌
+//      ▐░▌     ▐░█▄▄▄▄▄▄▄█░▌▐░▌       ▐░▌▐░▌ ▐░▌   ▐░▌▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌
+//      ▐░▌     ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░▌  ▐░▌  ▐░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+//      ▐░▌     ▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌▐░▌   ▐░▌ ▐░▌▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀█░█▀▀
+//      ▐░▌     ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌    ▐░▌▐░▌▐░▌       ▐░▌▐░▌          ▐░▌     ▐░▌
+//      ▐░▌     ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌     ▐░▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌      ▐░▌
+//      ▐░▌     ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌      ▐░░▌▐░░░░░░░░░░▌ ▐░░░░░░░░░░░▌▐░▌       ▐░▌
+//       ▀       ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀        ▀▀  ▀▀▀▀▀▀▀▀▀▀   ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀
+//
+//  ▄            ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄        ▄
+// ▐░▌          ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░▌      ▐░▌
+// ▐░▌          ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌░▌     ▐░▌
+// ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌▐░▌    ▐░▌
+// ▐░▌          ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌ ▐░▌   ▐░▌
+// ▐░▌          ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌  ▐░▌
+// ▐░▌          ▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌   ▐░▌ ▐░▌
+// ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌    ▐░▌▐░▌
+// ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌▐░▌       ▐░▌▐░▌     ▐░▐░▌
+// ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░▌      ▐░░▌
+//  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀        ▀▀
+// SPDX-License-Identifier: AGPL-3.0-only
+pragma solidity 0.8.20;
 
-Following this advice, let's start piecing together the puzzle. `Ownable upgradable` might be a newer import to some, so it might be beneficial to quickly explore it in Open Zeppelin. This is the only-owner contract but with an upgradable version. Taking a close look, we see that it uses `ownable init` and needs to set an initial owner and transfer ownership.
+import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { AssetToken } from "./AssetToken.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { IERC20Metadata } from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import { UUPSUpgradeable } from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import { OracleUpgradeable } from "./OracleUpgradeable.sol";
+import { Address } from "@openzeppelin/contracts/utils/Address.sol";
+import { IFlashLoanReceiver } from "../interfaces/IFlashLoanReceiver.sol";
 
-![](https://cdn.videotap.com/kyjLSLgBPsyDSSFpZ9P1-124.85.png)
+contract ThunderLoan is Initializable, OwnableUpgradeable, UUPSUpgradeable, OracleUpgradeable {
+    error ThunderLoan__NotAllowedToken(IERC20 token);
+    error ThunderLoan__CantBeZero();
+    error ThunderLoan__NotPaidBack(uint256 expectedEndingBalance, uint256 endingBalance);
+    error ThunderLoan__NotEnoughTokenBalance(uint256 startingBalance, uint256 amount);
+    error ThunderLoan__CallerIsNotContract();
+    error ThunderLoan__AlreadyAllowed();
+    error ThunderLoan__ExhangeRateCanOnlyIncrease();
+    error ThunderLoan__NotCurrentlyFlashLoaning();
+    error ThunderLoan__BadNewFee();
 
-We also find a reference to `UUPs upgradable`, which implements the UUPs proxy pattern, a common pattern for smart contracts. If you’re unfamiliar with the UUPs proxy, I strongly recommend that you brush up on it or you could revisit the Foundry course and specifically look at the `Foundry upgrades F 23` for a better understanding.
+    using SafeERC20 for IERC20;
+    using Address for address;
 
-Finally, in the list of our imports, we come across `iFLASH loan receiver`, which is a library offering easier to use functions like `send value`.
+    /*//////////////////////////////////////////////////////////////
+                            STATE VARIABLES
+    //////////////////////////////////////////////////////////////*/
+    mapping(IERC20 => AssetToken) public s_tokenToAssetToken;
 
-## Diving Deep into the Smart Contract
+    // The fee in WEI, it should have 18 decimals. Each flash loan takes a flat fee of the token price.
+    uint256 private s_feePrecision;
+    uint256 private s_flashLoanFee; // 0.3% ETH fee
 
-Next up, we ask, "While going top to bottom, have we asked enough questions?" Since there aren’t major issues with the imports, we move on.
+    mapping(IERC20 token => bool currentlyFlashLoaning) private s_currentlyFlashLoaning;
 
-Looking at the contract `Thunderloan`, it is clearly recognizable that it extends `Initializable`, `Ownable upgradable`, `UUPs upgradable`, and `Oracle Upgradable`. Checking whether it should extend anything else, we find no, it's all good here.
+    /*//////////////////////////////////////////////////////////////
+                                 EVENTS
+    //////////////////////////////////////////////////////////////*/
+    event Deposit(address indexed account, IERC20 indexed token, uint256 amount);
+    event AllowedTokenSet(IERC20 indexed token, AssetToken indexed asset, bool allowed);
+    event Redeemed(
+        address indexed account, IERC20 indexed token, uint256 amountOfAssetToken, uint256 amountOfUnderlying
+    );
+    event FlashLoan(address indexed receiverAddress, IERC20 indexed token, uint256 amount, uint256 fee, bytes params);
 
-![](https://cdn.videotap.com/8ErUx4D6tAmn03SvJNAC-218.48.png)
+    /*//////////////////////////////////////////////////////////////
+                               MODIFIERS
+    //////////////////////////////////////////////////////////////*/
+    modifier revertIfZero(uint256 amount) {
+        if (amount == 0) {
+            revert ThunderLoan__CantBeZero();
+        }
+        _;
+    }
 
-In the next section, we encounter a bunch of constants and state variables, first of which is `token to asset token`. To gain a better understanding of its role, we do a quick search and find that it’s used in various operations like deposit, redeem, Flash loan, etc.
+    modifier revertIfNotAllowedToken(IERC20 token) {
+        if (!isAllowedToken(token)) {
+            revert ThunderLoan__NotAllowedToken(token);
+        }
+        _;
+    }
 
-```code
-// State variableS token to asset token
+    /*//////////////////////////////////////////////////////////////
+                               FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor() {
+        _disableInitializers();
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                           EXTERNAL FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
+    function initialize(address tswapAddress) external initializer {
+        __Ownable_init(msg.sender);
+        __UUPSUpgradeable_init();
+        __Oracle_init(tswapAddress);
+        s_feePrecision = 1e18;
+        s_flashLoanFee = 3e15; // 0.3% ETH fee
+    }
+
+    function deposit(IERC20 token, uint256 amount) external revertIfZero(amount) revertIfNotAllowedToken(token) {
+        AssetToken assetToken = s_tokenToAssetToken[token];
+        uint256 exchangeRate = assetToken.getExchangeRate();
+        uint256 mintAmount = (amount * assetToken.EXCHANGE_RATE_PRECISION()) / exchangeRate;
+        emit Deposit(msg.sender, token, amount);
+        assetToken.mint(msg.sender, mintAmount);
+        uint256 calculatedFee = getCalculatedFee(token, amount);
+        assetToken.updateExchangeRate(calculatedFee);
+        token.safeTransferFrom(msg.sender, address(assetToken), amount);
+    }
+
+    /// @notice Withdraws the underlying token from the asset token
+    /// @param token The token they want to withdraw from
+    /// @param amountOfAssetToken The amount of the underlying they want to withdraw
+    function redeem(
+        IERC20 token,
+        uint256 amountOfAssetToken
+    )
+        external
+        revertIfZero(amountOfAssetToken)
+        revertIfNotAllowedToken(token)
+    {
+        AssetToken assetToken = s_tokenToAssetToken[token];
+        uint256 exchangeRate = assetToken.getExchangeRate();
+        if (amountOfAssetToken == type(uint256).max) {
+            amountOfAssetToken = assetToken.balanceOf(msg.sender);
+        }
+        uint256 amountUnderlying = (amountOfAssetToken * exchangeRate) / assetToken.EXCHANGE_RATE_PRECISION();
+        emit Redeemed(msg.sender, token, amountOfAssetToken, amountUnderlying);
+        assetToken.burn(msg.sender, amountOfAssetToken);
+        assetToken.transferUnderlyingTo(msg.sender, amountUnderlying);
+    }
+
+    function flashloan(
+        address receiverAddress,
+        IERC20 token,
+        uint256 amount,
+        bytes calldata params
+    )
+        external
+        revertIfZero(amount)
+        revertIfNotAllowedToken(token)
+    {
+        AssetToken assetToken = s_tokenToAssetToken[token];
+        uint256 startingBalance = IERC20(token).balanceOf(address(assetToken));
+
+        if (amount > startingBalance) {
+            revert ThunderLoan__NotEnoughTokenBalance(startingBalance, amount);
+        }
+
+        if (receiverAddress.code.length == 0) {
+            revert ThunderLoan__CallerIsNotContract();
+        }
+
+        uint256 fee = getCalculatedFee(token, amount);
+        // slither-disable-next-line reentrancy-vulnerabilities-2 reentrancy-vulnerabilities-3
+        assetToken.updateExchangeRate(fee);
+
+        emit FlashLoan(receiverAddress, token, amount, fee, params);
+
+        s_currentlyFlashLoaning[token] = true;
+        assetToken.transferUnderlyingTo(receiverAddress, amount);
+        // slither-disable-next-line unused-return reentrancy-vulnerabilities-2
+        receiverAddress.functionCall(
+            abi.encodeCall(
+                IFlashLoanReceiver.executeOperation,
+                (
+                    address(token),
+                    amount,
+                    fee,
+                    msg.sender, // initiator
+                    params
+                )
+            )
+        );
+
+        uint256 endingBalance = token.balanceOf(address(assetToken));
+        if (endingBalance < startingBalance + fee) {
+            revert ThunderLoan__NotPaidBack(startingBalance + fee, endingBalance);
+        }
+        s_currentlyFlashLoaning[token] = false;
+    }
+
+    function repay(IERC20 token, uint256 amount) public {
+        if (!s_currentlyFlashLoaning[token]) {
+            revert ThunderLoan__NotCurrentlyFlashLoaning();
+        }
+        AssetToken assetToken = s_tokenToAssetToken[token];
+        token.safeTransferFrom(msg.sender, address(assetToken), amount);
+    }
+
+    function setAllowedToken(IERC20 token, bool allowed) external onlyOwner returns (AssetToken) {
+        if (allowed) {
+            if (address(s_tokenToAssetToken[token]) != address(0)) {
+                revert ThunderLoan__AlreadyAllowed();
+            }
+            string memory name = string.concat("ThunderLoan ", IERC20Metadata(address(token)).name());
+            string memory symbol = string.concat("tl", IERC20Metadata(address(token)).symbol());
+            AssetToken assetToken = new AssetToken(address(this), token, name, symbol);
+            s_tokenToAssetToken[token] = assetToken;
+            emit AllowedTokenSet(token, assetToken, allowed);
+            return assetToken;
+        } else {
+            AssetToken assetToken = s_tokenToAssetToken[token];
+            delete s_tokenToAssetToken[token];
+            emit AllowedTokenSet(token, assetToken, allowed);
+            return assetToken;
+        }
+    }
+
+    function getCalculatedFee(IERC20 token, uint256 amount) public view returns (uint256 fee) {
+        //slither-disable-next-line divide-before-multiply
+        uint256 valueOfBorrowedToken = (amount * getPriceInWeth(address(token))) / s_feePrecision;
+        //slither-disable-next-line divide-before-multiply
+        fee = (valueOfBorrowedToken * s_flashLoanFee) / s_feePrecision;
+    }
+
+    function updateFlashLoanFee(uint256 newFee) external onlyOwner {
+        if (newFee > s_feePrecision) {
+            revert ThunderLoan__BadNewFee();
+        }
+        s_flashLoanFee = newFee;
+    }
+
+    function isAllowedToken(IERC20 token) public view returns (bool) {
+        return address(s_tokenToAssetToken[token]) != address(0);
+    }
+
+    function getAssetFromToken(IERC20 token) public view returns (AssetToken) {
+        return s_tokenToAssetToken[token];
+    }
+
+    function isCurrentlyFlashLoaning(IERC20 token) public view returns (bool) {
+        return s_currentlyFlashLoaning[token];
+    }
+
+    function getFee() external view returns (uint256) {
+        return s_flashLoanFee;
+    }
+
+    function getFeePrecision() external view returns (uint256) {
+        return s_feePrecision;
+    }
+
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner { }
+}
 ```
 
-After some explanation and assumptions, we infer that this maps the underlying token to its asset token. For example, if a liquidity provider deposits USDC, it will generate a USDC asset token, representing the amount of USDC you've deposited.
+</details>
 
-Following this, we stumble upon `fee in way`, which we verify by checking its initialization in the initializer function.
+---
 
-Also, we encounter an auditing issue that `fee precision` should be either constant or immutable.
+> **Remember:** The intent here is a first pass, we're not going to try to go too deep right away. Often it's important to prime your brain with content before getting deep into review.
 
-Next is `token to currently flash loan`, so this is assumedly a mapping that notifies us if a token is mid flash loan.
+### Imports
 
-## Delving into the Modifiers of our Smart Contract
-
-Well, we’ve had our fair share of state variables. Now, it's time to unravel the modifiers.
-
-```code
-revert if zero
+```js
+import { AssetToken } from "./AssetToken.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { IERC20Metadata } from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import { OwnableUpgradeable } from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import { UUPSUpgradeable } from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import { OracleUpgradeable } from "./OracleUpgradeable.sol";
+import { Address } from "@openzeppelin/contracts/utils/Address.sol";
+import { IFlashLoanReceiver } from "../interfaces/IFlashLoanReceiver.sol";
 ```
 
-This modifier reverts operation if amount equals zero. The other modifier `revert if not allowed token`, ensures operation would only proceed with allowed token only.
+These look pretty standard though a few imports may stand out or be unfamiliar so far such as [**OwnableUpgradeable**](https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/master/contracts/access/OwnableUpgradeable.sol) which serves as an upgradeable variation of the famous ownable library. We may also want to gain more familiarity with:
 
-Turns out, there's a precheck for tokens, which as a result reduces the risk of passing bad tokens to the contract.
+- [**UUPSUpgradeable**](https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/master/contracts/proxy/utils/UUPSUpgradeable.sol) - UUPS proxy patter covered in the [**Foundry Full Course**](https://updraft.cyfrin.io/courses/advanced-foundry). A very common smart contract proxy pattern.
+- [**Address**](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Address.sol) - Library to simplfy the handling of Address functionality.
 
-```code
-modifier not allowed token
+I recommend taking the time to read up on these in more detail.
+
+No issues with imports so far, let's keep going with the contract.
+
+### State Variables
+
+State variables are always a great place to focus briefly in a review. Understanding the data a contract deems important enough to store can add a great deal of context. We may want to add notes further defining what these things mean/do.
+
+```js
+// @Audit-Explainer: Seems to map AssetToken to it's underlying token eg. USDC -> USDCAssetToken
+mapping(IERC20 => AssetToken) public s_tokenToAssetToken;
+
+// The fee in WEI, it should have 18 decimals. Each flash loan takes a flat fee of the token price.
+// @Audit-Informational: s_feePrecision never changes, should be constant or immutable.
+uint256 private s_feePrecision;
+// @Audit-Informational: s_flashLoanFee never changes, should be constant or immutable.
+uint256 private s_flashLoanFee; // 0.3% ETH fee
+// @Audit-Explainer: Seems to be a mapping to identify when a token is in the middle of a flash loan.
+mapping(IERC20 token => bool currentlyFlashLoaning) private s_currentlyFlashLoaning;
 ```
 
-We find a function named `is allowed token`, and upon exploration, it returns `s token to asset token of the token does not equal zero`. Therefore, it seems it's only allowing a token if it has been set before.
+By taking the time to look through where and how these variables are being used in the contract, we're able to identify situations like the `informationals` above which would help save a protocol gas!
 
-Lastly, we observe that most of this looks benign so far, but remember we're just getting started. In this initial inspection, we haven't really delved into the functions yet. But rest assured, there's more to find in this intriguing world of the Thunderloan Sol smart contract!
+> The events we don't have a lot of context for yet, so we're kind of going to skip them and return as we see them crop up in the code.
+
+### Modifiers
+
+```js
+modifier revertIfZero(uint256 amount) {
+    if (amount == 0) {
+        revert ThunderLoan__CantBeZero();
+    }
+    _;
+}
+
+modifier revertIfNotAllowedToken(IERC20 token) {
+    if (!isAllowedToken(token)) {
+        revert ThunderLoan__NotAllowedToken(token);
+    }
+    _;
+}
+```
+
+Pretty standard, the syntax looks good, no obvious flaws but the call to the `isAllowedToken` function is interesting and nice to see.
+
+```js
+function isAllowedToken(IERC20 token) public view returns (bool) {
+    return address(s_tokenToAssetToken[token]) != address(0);
+}
+```
+
+This function concisely checks that a token has an `AssetToken` mapping and that it is not mapped to `address(0)`, returning `true` for an allowed token and `false` otherwise. A question the comes to mind might be:
+
+```js
+// @Audit-Question: Is there a way to unset or change allowed tokens?
+```
+
+Following this line of thought would lead us to discovering the `setAllowedToken` function, but we'll come back to this later...
+
+### Wrap Up
+
+We're making good progress in `ThunderLoan.sol`, but there's lots to go yet. Things seem pretty benign so far, but we haven't deal with any real function logic yet! Let's keep our momentum and hit the remaining functions in the next lesson!
+
+> **Note:** As we jump through the contract, you might notice it becomes difficult to track what you've covered, or how far you've reviewed. Don't hesitate to leave a note somewhere directly in the code base to come back to!

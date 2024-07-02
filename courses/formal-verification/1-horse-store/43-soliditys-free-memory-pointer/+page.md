@@ -15,7 +15,8 @@ I'll update this reference as we go through each section of bytecode:
 <details>
 <Summary> Op Codes </summary>
 
-    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033 
+    bytecode - 0x6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c8063cdfead2e146034578063e026c017146045575b5f80fd5b6043603f3660046059565b5f55565b005b5f5460405190815260200160405180910390f35b5f602082840312156068575f80fd5b503591905056fea2646970667358fe1220fe01fe6c40d0ed98f16c7769ffde7109d5fe9f9dfefe31769a77032ceb92497a64736f6c63430008140033
+
 ```js
     PUSH1 0x80    //<---- We're starting here!
     PUSH1 0x40
@@ -142,6 +143,7 @@ I'll update this reference as we go through each section of bytecode:
     BALANCE
     PUSH23 0x9a77032ceb92497a64736f6c63430008140033
 ```
+
 </details>
 
 ---
@@ -151,7 +153,6 @@ Let's remind ourselves of the 3 sections found in a smart contract's bytecode an
 1. Contract Creation
 2. Runtime
 3. Metadata
-
 
 ### Contract Creation Code
 
@@ -171,6 +172,7 @@ PUSH1 0x80
 PUSH1 0x40
 MSTORE
 ```
+
 These op codes represent Solidity's `Free Memory Pointer`. Their execution, in order will:
 
 1. Push 0x80 to the stack
@@ -179,9 +181,9 @@ These op codes represent Solidity's `Free Memory Pointer`. Their execution, in o
 
 Previously I'd described memory as an array with slots demarked with indexes. This isn't entirely accurate. Memory is more accurately a string of bytes with sections denoted by 32 byte offsets which represent areas in which we would store 32 byte sized pieces of data.
 
-A part of memory management is keeping track of where in this memory "array" we have free memory available (to avoid overwriting previously stored data!).  This is where the `free memory pointer` comes in.
+A part of memory management is keeping track of where in this memory "array" we have free memory available (to avoid overwriting previously stored data!). This is where the `free memory pointer` comes in.
 
-What these op codes are doing, is making a note of where our free memory is locat at 0x40.  The idea being that every time we want to write to memory, we'll do 3 things:
+What these op codes are doing, is making a note of where our free memory is located, at 0x40. The idea being that every time we want to write to memory, we'll do 3 things:
 
 1. Check the value stored at 0x40 to determine where free memory is available
 2. write our data to the free memory location

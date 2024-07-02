@@ -1,40 +1,56 @@
 ---
-title: Smart Contract Post Deployment
+title: Smart Contract Post Deployments
 ---
 
+**Follow along with this video:**
+
 ---
 
-### Understanding the Post-Deployment Landscape
+### Introduction
 
-In this high-level overview, we tackle the subject from two angles: one for protocol developers and another for security researchers – those intrepid bug hunters who sift through live code to identify potential vulnerabilities. Both groups, while operating on opposite ends of the spectrum, share a common goal: the security and integrity of smart contracts in the wild.
+Welcome to the post-deployment section of the security course. This part will provide a high-level overview of the essential steps you should take before, during, and after deploying your project on the blockchain. Additionally, we will discuss the best practices for preparing for worst-case scenarios.
 
-For developers, post-deployment security is about setting up defensive measures and procedures. It's about preparing and anticipating the various scenarios that can unfold after your protocol is operational. For security researchers, it's about establishing a constructive and responsible rapport with these protocols to ensure vulnerabilities are addressed effectively and ethically.
+If you're following along with the GitHub repository associated with this lesson, this content corresponds to Section 2. In this section, we will explore how to secure a project post-deployment from the perspectives of both protocol developers and security researchers.
 
-#### Key Learnings for Protocol Developers:
+### Objectives
 
-The following are essential elements that you as a protocol developer need to understand and implement before and after deployment:
+From a protocol developer's perspective, we'll cover:
 
-- **Security Contacts**: Have a clear avenue through which security researchers can reach you. This should be one of your most visible pieces of information. It acts as your direct line in case someone detects a loophole or issue.
-- **Bug Bounties and Safe Harbors**: Implement a bug bounty program or a safe harbor agreement. These not only incentivize the white hat community to scrutinize your code but also provide a legal framework that can protect both sides in the event of a vulnerability being exposed.
-- **Monitoring**: One cannot stress enough the importance of monitoring. It's a skill set that's not utilized to its full potential in the smart contract ecosystem, yet it's a first responder in recognizing breaches. Without solid monitoring, you might not even know an attack has occurred until it's too late.
-- **Disaster Recovery Drills**: Are you prepared for high-pressure, worst-case scenarios? Before deploying, run through disaster recovery simulations. When – not if – an attack happens, your ability to respond calmly and effectively will largely depend on your level of preparedness.
+- Post-deployment security practices to ensure your project remains safe.
+- Establishing security contacts, bug bounties, and safe harbor policies to facilitate responsible disclosure.
+- The importance of monitoring and its role in mitigating hacks.
+- Running disaster recovery drills to prepare for high-pressure scenarios.
 
-#### Insights for Security Researchers:
+From a security researcher's perspective, we'll discuss:
 
-If you're on the front line looking for smart contract vulnerabilities, here's what you need to know to play your role:
+- The importance of responsible disclosure and avoiding the exploitation of smart contracts.
+- Familiarization with various tools, bug bounties, and blockchain analysis techniques.
 
-- **Never Go Rogue**: Identifying a smart contract vulnerability doesn’t give you the green light to exploit it. Always communicate with the project's developers or their designated security contacts. Legal entanglements and ethical issues aside, you could potentially exacerbate the situation.
-- **Follow Responsible Disclosure**: Disclose vulnerabilities ethically. If a protocol doesn’t respond, have a plan for your next steps. Look into safe harbor agreements to understand your rights and protections.
-- **Utilize Tools and Platforms**: Familiarize yourself with the plethora of tools at your disposal. From blockchain sleuthing to taking advantage of bug bounty platforms, learn how to efficiently detect issues and, importantly, how to get rewarded for your valuable work responsibly.
+### Summary and Resources
 
-### Deep Dive into DeFi Security
+A summary of this section can be found [here](https://github.com/Cyfrin/evm-wallet-and-post-deployment-course?tab=readme-ov-file#summary-of-this-whole-section). This link provides an overview of the topics covered in this course.
 
-To fully grasp the criticality of what we’re discussing, let's turn our attention to the DeFi Security Summit of 2023. A recording is available for all interested, showcasing a walk-through by Peter, who spearheads the Block Threat Intelligence newsletter. His presentation provides an in-depth examination of DeFi's security state and elucidates why measures like post-deployment monitoring, among others, are indispensable.
+### Key Takeaways for Protocol Developers
 
-### The Blog Takeaway
+1. **Establish a Security Contact:** Ensure there is a clear way for security researchers to reach out if they discover an issue.
+2. **Implement Bug Bounties and Safe Harbor:** These incentives encourage responsible disclosure of vulnerabilities.
+3. **Prioritize Monitoring:** Regular monitoring is crucial to detect hacks promptly and mitigate their impact.
+4. **Run Disaster Recovery Drills:** Practice responding to potential disasters to prepare for high-pressure scenarios.
 
-In this increasingly decentralized world where smart contracts govern a significant portion of transactions and applications, overlooking post-deployment security is akin to leaving your fortress with the drawbridge down. For both protocol developers and security researchers, understanding and implementing the above practices is not just beneficial; it’s imperative for the sustained health of the ecosystem.
+### Key Takeaways for Security Researchers
 
-As we dive deeper into these topics in forthcoming sections, remember your role, whether as a guardian of your creation as a developer or as a valuable ally in the form of a security researcher. Security is a shared responsibility, and in the dynamic landscape of DeFi, it's an ongoing process that never ceases to evolve.
+1. **Responsible Disclosure:** Always reach out to the protocol's team first if you discover a vulnerability.
+2. **Familiarize with Tools:** Learn to use various blockchain analysis tools and participate in bug bounty programs.
+3. **Stay Informed:** Keep up with the latest developments in DeFi security.
 
-Stay tuned and stay secure.
+### Recommended Viewing
+
+To kick off this section, watch the DeFi Summit 2023 video: [DeFi Summit 2023](https://www.youtube.com/watch?feature=shared&v=jSpvDhuaCgc). This event took place approximately eight months ago and features a comprehensive overview by Peter, who runs the Block Threat Intelligence newsletter. Peter's talk covers the current state of security in DeFi and highlights the importance of the topics we will discuss, including post-deployment practices and monitoring.
+
+### Conclusion
+
+By the end of this section, you will have a solid understanding of post-deployment security practices for smart contracts. This knowledge will help you ensure your project remains secure and resilient against potential threats.
+
+---
+
+Please proceed to watch the recommended video and continue with the next lessons in this course.

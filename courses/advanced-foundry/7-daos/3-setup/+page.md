@@ -4,106 +4,95 @@ title: Setup
 
 _Follow along with this video._
 
-
-
 ---
 
-Today, I'm going to take you deeper into the captivating world of DAOs, Decentralized Autonomous Organizations. More specifically, I'll be throwing light on plutocracy DAOs, which are based on ERC 20 tokens, and show you how to create one from scratch using FOUNDATION.
+### Setup
 
-Be warned though, gaining a solid conceptual understanding of these inside-out is of paramount importance before jumping to establish your DAO. Let's keep our journey enlightening and error-free, shall we?
+Alright, welcome back! Now that we have all this context and understanding of DAOs, it's time to try building one ourselves. The project we'll be building will be a DAO which employs an ERC20 governance token to allocate voting power and determine membership.
 
-## The Caveat About Plutocracy DAOs
+While this is a very common/simple way to deploy a governance protocol, I want to challenge you not to default to this. It seems simple to deploy and manage at first, but issues inevitably arise when trading of governance tokens comes into play and speculation on price throws governance to the wind. This makes me sad so, I challenge you to find better solutions in your own projects.
 
-A word of caution before we take the leap: launching a DAO is no casual affair. Many newbies hurry into launching their governance tokens and find themselves neck-deep in problems down the line.
+> [!IMPORTANT]
+> Don't make Patrick sad.
 
-<img src="/daos/3-setup/setup1.png" alt="Dao Image" style="width: 100%; height: auto;">
+You can of course find all the code we'll be writing in this lesson's [**GitHub Repo**](https://github.com/Cyfrin/foundry-dao-f23).
 
-Therefore, it's essential to have a foolproof white paper justifying your need for a governance token. In short, do not make DAO creation decisions in haste, lest they come back to haunt your project.
+Let's begin!
 
-## Let's Get Our Hands Dirty with Code
-
-To jump-start this process, we will look at the most popular DAO model currently in use across major platforms like Compound, Uniswap, and Aave.
-
-Please bear in mind, just because it's "popular", doesn't mean it's the best fit for every situation or the only available model. Always strive for improving and optimizing the web3 ecosystem.
-
-### Stage 1: Creating a Contract Controlled by DAO
-
-First things first, we'll make a contract fully controlled by our DAO.
-
-```shell
+```bash
 mkdir foundry-dao-f23
-cd foundry-dao-f23
-
+code foundry-dao-f23
 ```
 
-Open your code editor (VS Code in this case).
+In the new window, you know the drill, we should be pros by now.
 
 ```bash
 forge init
 ```
 
-Then, set up a README for outlining what you'll be doing.
+Be sure to delete the example contracts, `src/Counter.sol`, `script/Counter.s.sol` and `test/Counter.t.sol`.
 
-### Here are our main objectives:
+With that, let's detail what we're going to accomplish.
 
-1. Establish a contract completely controlled by our DAO.
-2. Every transaction the DAO wants to send will need to be voted on.
-3. For voting, we'll utilize ERC 20 tokens.
+1. We are going to have a contract controlled by a DAO
+2. Every transaction that the DAO wants to send has to be voted on
+3. We will use ERC20 tokens for voting (bad model, please research better methodologies as you grow!)
 
-<img src="/daos/3-setup/setup2.png" alt="Dao Image" style="width: 100%; height: auto;">
-
-Let's get down to business.
-
-### Stage 2: Creating a Minimal Contract
-
-Let's create a minimal contract that we can vote on. Our contract will look somewhat similar to the contracts we've worked on before.
+Great! Let's start with creating a minimal contract that allows voting. Start with a new file, `src/Box.sol`. The boiler plate here will be really similar to what we've done before, we'll have a few special imports for the functionality we want to include. We know we'll need OpenZeppelin's library, so we can absolutely start by installing this.
 
 ```bash
-touch src/Box.sol
+forge install openzeppelin/openzeppelin-contracts --no-commit
 ```
 
-This is how `Box.sol` should look like:
+And naturally we can add our remapping...
 
 ```js
-// contracts/Box.sol
+remappings = ["@openzeppelin/contracts=lib/openzeppelin-contracts/contracts"];
+```
+
+The start of our contract should look very familiar.
+
+```js
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+
+pragma solidity ^0.8.18;
+
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+
+contract Box is Ownable {}
+```
+
+This contract is only going to serve as the contract which is managed by our DAO. In practice this contract could be quite complex, or multiple contracts could be managed by a single DAO, but for our purposes we'll keep things concise. The goal is to understanding how the voting mechanism allows the DAO to autonmously execute function calls.
+
+Let's add the ability to store and retrieve a value from our contract. The ability to change this number will be modifier with `onlyOwner` such that only our DAO may call it.
+
+```js
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.18;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Box is Ownable {
-    uint256 private value;
+    uint256 private s_number;
 
-    // Emitted when the stored value changes
-    event ValueChanged(uint256 newValue);
+    event NumberChanged(uint256 number);
 
-    // Stores a new value in the contract
-    function store(uint256 newValue) public onlyOwner {
-        value = newValue;
-        emit ValueChanged(newValue);
+    function store(uint256 newNumber) public onlyOwner {
+        s_number = newNumber;
+        emit NumberChanged(newNumber);
     }
 
-    // Reads the last stored value
-    function retrieve() public view returns (uint256) {
-        return value;
+    function getNumber() external view returns (uint256) {
+        return s_number;
     }
 }
 ```
 
-In the code block above, the `value` variable can only be modified by the DAO itself. The moment a new value is stored, an event of number change gets emitted notifying the updated number.
+### Wrap Up
 
-And there we have our minimal contract. This contract somewhat echoes a project I have previously worked on, known as `Box.sol`, a simple storage contract.
+Easy. Nothing we've covered here should be new, it's all stuff we've seen before. This simple contract will be controlled by our DAO once deployed!
 
-Remember to test your code to make sure everything compiles as expected:
+In the next lesson we'll construct our ERC20 governance token. There isn't going to be anything extraordinary about this token, so building it out should be largely review.
 
-```bash
-forge compile
-```
-
-### Stage 3: Creating a Voting Token
-
-Now we get to the exciting part. Using ERC 20 tokens for voting means we'll have to create our very own voting token.
-
-Stay tuned for my next blog post where we'll dive into creating your unique voting token.
-
-Happy experimenting until then!
+See you there!

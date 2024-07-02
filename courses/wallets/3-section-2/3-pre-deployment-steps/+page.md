@@ -1,69 +1,59 @@
 ---
-title: Pre-deployment Steps
+title: Pre-Deployment Steps
 ---
 
+**Follow along with this video:**
+
 ---
 
-### Creating a Lifeline: Security Contact Email in Your Code
+Now that we understand the current state of security in the industry and the topics we will cover in this section, let's start with the protocol's perspective on pre-deployment steps. For those deploying smart contracts, these steps are crucial.
 
-Where do you turn when you smell trouble brewing? If you're a member of a DAO, electing a security officer could be your knight in shining armor. Got a protocol you swear by? Give it a voice with a go-to contact for unforeseen security hiccups.
+### Pre-Deployment Best Practices
 
-### High Alert: Monitors for the Unexpected
+Before deploying your project, ensure robust security measures are in place:
 
-To avoid nasty surprises, you'll want to have your trusty monitoring system at the ready. This is your sentry, scanning for any anomalies or issues that may compromise your precious contracts.
+1. **Pass the Rekt Test**: Perform the Rekt Test, provided by Trail of Bits, to identify potential vulnerabilities. [Read more about the Rekt Test](https://blog.trailofbits.com/2023/08/14/can-you-pass-the-rekt-test/).
 
-### Bounty Hunting: Reward the White Hats
+2. **Set Up a Security Contact**: Include a security contact email in your code. For DAOs, consider electing a security officer or provide clear instructions for reporting security issues.
 
-Embrace the guardian angels of the coding world by setting up a bug bounty program. This initiative not only incentivizes eagle-eyed security whizzes to help you out but ensures they've got a security contact to relay their findings – a win-win for everyone!
+3. **Implement Monitoring Systems**: Establish monitoring for invariants and potential issues. Effective monitoring is crucial for early detection of hacks.
 
-![](https://cdn.videotap.com/618/screenshots/Y9hpaPkmMDs3wHvLCdXU-174.87.png)
+4. **Establish a Bug Bounty Program**: Set up a bug bounty or safe harbor program to encourage responsible disclosure and help identify vulnerabilities before they can be exploited.
 
-## A Spotlight on OpenZeppelin: Security Contact Best Practices in Action
+### Example: OpenZeppelin
 
-When it comes to implementing watertight security practices, it's smart to learn from the best. Enter OpenZeppelin – the rock stars of the contract world. Their GitHub is a treasure trove of security-conscious wisdom, complete with a clear-cut security tab that delineates exactly who to hit up in case things go sideways.
+OpenZeppelin is an excellent example of setting up a security contact and policy. On their [GitHub security tab](https://github.com/OpenZeppelin/openzeppelin-contracts/security), they outline their security policy, including contact details and their use of the Immunefi bug bounty platform.
 
-### The Direct Line: OpenZeppelin's Security@openzeppelin.com
+- **Security Policy**: Vulnerabilities should be disclosed via Immunefi or by emailing `security@openzeppelin.com`.
+- **Bug Bounty**: OpenZeppelin has a bug bounty program for reporting issues and getting compensated.
+- **Advisories**: They provide detailed advisories on past bugs, affected versions, and patches.
 
-Having a security policy at the forefront of your repository is a no-brainer. OpenZeppelin nails it, allowing vulnerability disclosures through their trusty email, security@openzeppelin.com, or through the bug bounty platform, Immunify. Take a leaf from their book and make sure your project sings the same tune.
+### Legal Considerations
 
-### Making the Bounty: Platforms for Submissions and Rewards
+OpenZeppelin includes a legal section on their GitHub, outlining the legal bindings of their protocol. This information is crucial for users and security researchers to understand their legal obligations and rights.
 
-Speaking of bug bounties, these platforms aren't just a detective's playground; they're the hub where code sleuths can report bugs and – you guessed it – get paid for their valiant efforts.
+### Safe Harbor Agreements
 
-### High-Stakes Advisories: Keeping Your Contracts in Check
+The Security Alliance introduced safe harbor agreements to protect white hat hackers from legal repercussions if they disclose vulnerabilities responsibly. [Learn more about Safe Harbor](https://github.com/security-alliance/safe-harbor).
 
-OpenZeppelin goes the extra mile with security advisories. These notifications are akin to alarm bells, singling out affected versions of contracts or code, diving deep into the issues, and delivering the path to redemption with patch details and post-mortems.
+As a security researcher, always check if a protocol has a safe harbor agreement and understand it thoroughly before proceeding with any actions.
 
-This not only reminds us of the importance of vigilance but also educates on how to pivot swiftly and securely when vulnerabilities strike.
+### Encouraging Best Practices
 
-### The Write-Up: Security Advisory as an Auditing Narrative
+Protocols should:
 
-Crafting a security advisory takes cues from writing up an audit report. It's more than just pointing fingers at a bug; it's about unearthing its roots, the vulnerability, how it could wreak havoc, and textbook mitigation strategies.
+- Provide contact information for security issues.
+- Set up bug bounty programs with appropriate rewards (e.g., 10% of TVL, capped at $5 million).
+- Detail security patches, disclosures, and advisories on their GitHub page.
+- Optionally include a safe harbor agreement.
 
-### Legalese: A Necessary Evil
+Security researchers should:
 
-By now, you're warming up to the idea of sharing your security patches like an open book. But don't forget the legalese that often wraps up these advisories. For your protocol, this is your public disclaimer – the "use at your own risk" badge that can save you headaches down the line.
+- Encourage protocols to implement these security measures.
+- Avoid exploiting vulnerabilities and instead report them responsibly.
 
-## When Legality Meets Morality: The Safe Harbor Provision
+By following these pre-deployment steps, protocols can ensure their projects are secure and resilient against potential threats, maintaining the integrity and trustworthiness of blockchain projects.
 
-Ever heard of Safe Harbor? Thanks to the likes of the Security Alliance – think heavy hitters like Sam, CZ, and other cybersecurity mavens – we now have a robust legal framework that protects the virtuous white hats during active exploits.
+---
 
-### The Lifesaver: Safe Harbor in Detail
-
-Safe Harbor is no casual affair; it's a meticulously constructed legal document that shields these cyber-justice warriors in very specific situations. When the alarm blares and an active exploit is in motion, a Safe Harbor agreement could spell the difference between chaos and salvation.
-
-### The Rulebook: Understanding Safe Harbor Agreements
-
-Now, before you mix up legal pastures with hacker playgrounds, remember to read the Safe Harbor docs cover to cover. This isn't a free pass to air your hacking laundry; it's a structured protocol to safely steer funds out of a hacker's reach and into a secure hold, according to the agreement's fine print.
-
-### Optional, But Recommended: Setting Up Your Safe Harbor Agreement
-
-It's part of your protocol's defensive arsenal – an optional, yet highly advisable layer to affirm that you value the white-hat community and the safety net they provide against bad actors.
-
-## Stitching It All Together: Summary for Protocols and White Hats Alike
-
-To all the protocols out there, make these your commandments: establish solid contact info, set the stage for bug bounty glory, be proactive with security patches and advisories, and consider the legal sanctuary that Safe Harbor offers. By doing so, you empower the good guys and shield your project from the dark corners of the internet.
-
-And for the diligent white hats peeking under every virtual stone for bugs, urge the protocols you love to embrace these best practices – it's in everyone's best interest.
-
-Until we meet again in the digital realm, keep your code clean and your practices robust. Here's to a safer blockchain ecosystem, courtesy of your cybersecurity savviness and dedication.
+For more detailed steps and examples, refer to the resources linked above. Stay proactive in securing your protocols and contributing to a safer blockchain ecosystem.

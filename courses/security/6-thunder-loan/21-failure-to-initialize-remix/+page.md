@@ -2,28 +2,55 @@
 title: Exploit - Failure to Initialize - Remix Example
 ---
 
-## Let's Play: Exploring the Issue in Remix
+### Exploit - Failure to Initialize - Remix Example
 
-[Remix](https://remix.ethereum.org/) et's compile and deploy a sample SC simulating the 'failure to initialize' flaw.
+Failure to initialize can clear be incredibly impactful. Let's see how the exploit works. The [**sc-exploits-minimized repo**](https://github.com/Cyfrin/sc-exploits-minimized) has a link to a failure to initialize [**example in Remix**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/failure-to-initialize/FailureToInitialize.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js).
 
-![](https://cdn.videotap.com/HhYH7vlvKZcgQ2YeBn5v-29.77.png)
+<details>
+<summary>FailureToInitialize.sol</summary>
 
-Following successful deployment, you will find several functions. Initiating the `initialize` function will initially return `false` since, with nothing preset, the value is logically zero.
+> **Note:** I've added the initializer modifier to our initialize function here. This is omitted in the video version of this lesson. Feel free to copy this contract into your Remix instance.
 
-However, if we forget to officially initialize our variable and start incrementing the not-yet-existent element (say 4-5 times), it would start registering those values. We can then observe that my value has progressively increased with each increment, despite having no explicit initial value.
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
 
-Here's the kicker - if you now stumble upon the error and initialize the element (say, with 123), an anomaly occurs. Instead of adding to the increments, the value is completely overwritten with the initialized value. In our case, my value resets to 123, disregarding all prior increments.
+import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
-> **Note**: Remember that a correctly built `initialize` function should have protection against subsequent initializations, to prevent overwriting of any pre-existing data.
+contract FailureToInitialize is Initializable {
+    uint256 public myValue;
+    bool public initialized;
 
-## Proactive Measures and Further Exploration
+    function initialize(uint256 _startingValue) public initializer{
+        myValue = _startingValue;
+        initialized = true;
+    }
 
-The aforementioned problem can be prevented by ensuring initialization prior to interaction with a contract. This might seem insignificant, but in the world of coding, minor details can influence the major outcomes.
+    // We should have a check here to make sure the contract was initialized!
+    function increment() public {
+        myValue++;
+    }
+}
+```
 
-Let's conclude with a suggestion - why not challenge yourself with the capture-the-flags exercise available on the repository? It might provide an interactive environment for understanding the problem better.
+</details>
 
-To explore further on this issue, head back to the associated Github repository.
+---
 
-And that's it folks, the overlooked yet crucial issue of 'Failure to Initialize' in the realm of SC exploits. I hope this post offers you meaningful insights and may your journey in the world of programming be devoid of such pitfalls!
+The example here is very simple, but it should illustrate the potential impact of failing to initialize. Go ahead and compile and deploy `FailureToInitialize.sol`
 
-Happy Coding!
+<img src="/security-section-6/21-failure-to-initialize-remix/failure-to-initialize-remix1.png" width="100%" height="auto">
+
+You should see it begin unitialized with `myValue` set to zero. If the protocol then proceeds to be used (by calling `increment`), the `initialize` function can be called at any time to overwrite the expected `myValue`.
+
+<img src="/security-section-6/21-failure-to-initialize-remix/failure-to-initialize-remix2.png" width="100%" height="auto">
+
+If our `myValue` is changed on us via initialize, we're not even able to re-initialize to fix `myValue` now, effectively breaking our protocol!
+
+<img src="/security-section-6/21-failure-to-initialize-remix/failure-to-initialize-remix3.png" width="100%" height="auto">
+
+You could imagine a situation like this impacting the management of something very important - like billions of dollars. Failure to initialize can be a very severe attack path depending on the architecture of the protocol and what's being initialized.
+
+In the next lesson we'll take a look at a case study where in this exact type of negligence resulted in some pretty severe consequences.
+
+Let's go!

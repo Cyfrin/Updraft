@@ -1,39 +1,76 @@
 ---
-title: mid lesson recap
+title: Mid Lesson Recap
 ---
 
-### Hooks and Their Role in Smart Contracts
+_Follow along with this video:_
 
-Another fascinating piece of the smart contract puzzle is understanding **hooks**. In the vast dominion of the Ethereum Virtual Machine (EVM), opcodes whirl and twirl, executing the dance of decentralized logic. With hooks, you can chime in on this ballet – specifying that whenever a certain opcode occurs, a distinct action must follow.
+---
 
-Consider this: whenever the `log` or `sstore` opcode is invoked, we decree that this prompts an increment of our count – an action elegantly orchestrated by our hooks. These intelligent traps lay in wait, eyeing each opcode execution and ensuring our ghost variables reflect the current state of the contract's storied chronicles.
+### Mid Lesson Recap
 
-### The Beauty of Invariants
+We've learnt tonnes already, let's do a quick summary of what we've gone over so far.
 
-Amidst this intricate web of functionality, we've also constructed **invariants**. Like a masterful equation reflecting the harmony of the universe, our invariants maintain the delicate balance between actions and reactions. To illustrate, let's savor the simplicity of this statement: _"Whenever you dare to alter the listing's storage variable, let the echo of a log firmly follow."_ There should never be a moment in time when the whispers of listing updates supersede the cries of logs. This, my friends, is the soul of an invariant – a rule so pristine, so immutable, it transcends the boundaries of smart contract logic.
+### Ghost Variables
 
-### The Esoteric Wisdom of Rule Sanity
+We investigated ghost variables and how they're configured within a .spec file. We learnt that these variables are treated as temporary parts of the contract which are used by the pover alone.
 
-In our explorations, we've also teased apart the enigmas of **rule sanity**. We've nodded to its presence in passing conversations, but now we take a moment to truly delve into how it shapes the architecture of our rules. Rule sanity is akin to a compass in the stormy sea of smart contract execution – it offers guidance, assuring us that our rules do, in fact, steer us towards the lighthouse of correctness and away from the treacherous shoals of error.
+Ghost variables are initialized using an `init_state axiom`.
 
-### Prover Arguments and the Havoc of the Unknown
+In many instances a situation arived at by the prover may result in ghost variables being HAVOC'd (randomized). To prevent this, we can use the `persistent` key word when declaring our ghost variables.
 
-As we venture deeper into the labyrinth of contract verification, we stumble upon **prover arguments** and the **optimistic fallback**. Whenever our contract conjures a `call` into the unknown, the mystical prover raises its head, wary of what sorcery this could unleash. It reasons that anything could arise from this void – and so it sows seeds of havoc, eager to test our defenses and our invariants.
+```js
+persistent ghost mathint listingUpdatesCount{
+    init_state axiom listingUpdatesCount == 0;
+}
+```
 
-The symbolic execution of Certora, ever so vigilant, uses this to seek out any potential fault lines. It has an uncanny knack for morphing variables into wildcards, shining a light on areas where our code or verification specifications might fray. And when it does find a weakness, you have a puzzle to solve – is this a mere mirage created by the spell of verification, or does a genuine flaw lurk beneath your contract's code?
+### Hooks
 
-### Culminating Our Quest with a Final Rule
+We learnt about Hooks! Hooks are used to configure logic which is executed based on particular op codes being executed at run time.
 
-Having voyaged through the intricate realms of ghost variables, hooks, and invariants, it's time to unite all our acquired knowledge. With every ounce of wisdom distilled from our experiences, we shall craft a final rule – our pièce de résistance. This rule will harness everything we've imbibed, culminating in a triumph of logic and foresight that will fortify our smart contracts against the most unpredictable of oracles.
+```js
+hook Sstore s_listings[KEY address nftAddress][KEY uint256 tokenId].price uint256 price {
+    listingUpdatesCount = listingUpdatesCount + 1;
+}
+```
 
-So, revel in the thrill of discovery, for our final rule promises to be a grand unveiling of the power and elegance of smart contract verification.
+We define an op code and the storage variable we want to watch for interaction with. When the prover detects this relationship being manipulated, the defined logic in the hook will be executed. In the above example, we increment our listingUpdatesCount variable.
 
-_In the words of our blockchain bard:_ "The arcane art of smart contract verification is a journey – one filled with spectral variables, enchanted hooks, and unwavering invariants. Let us wield these tools with grace and wisdom, for in them lies the key to a realm of impregnable contracts."
+It's through the combined used of Hooks and Ghost Variables that we were able to define the invariant we wanted to verify:
 
-> "Embedding the essence of logic and deftly anticipating the unexpected, we emerge as the architects of a new era of blockchain reliability."
+```js
+invariant anytime_mapping_updated_emit_event()
+    listingUpdatesCount <= log4Count;
+```
 
-Join us next time, when we breathe life into our final rule and watch as it unfurls, a testament to the acumen and artistry of smart contract development.
+### Prover Args and Sanity Checks
 
-Remember, the blockchain is a tapestry woven from the strands of code, strategy, and relentless curiosity. May your smart contracts echo with the strength and precision of the finest lore.
+Another thing we touched on were some of the configuration options of our .conf file and how we can leverage `rule_sanity` and `prover_args` to dial in the soundness and validity of our verifications.
 
-Until the next block is mined, keep verifying and keep thriving, fellow crypto-crafters!
+We saw that `rule_sanity` set to `basic` can point out when our verifications are vacuous, or not actually checking anything, and we learnt how optimistic_fallback can be used to avoid HAVOC situations in our external calls.
+
+```js
+{
+    "files": [
+        "src/GasBadNftMarketplace.sol:GasBadNftMarketplace",
+        "src/NftMarketplace.sol:NftMarketplace",
+        "test/mocks/NftMock.sol:NftMock"
+    ],
+    "verify": "GasBadNftMarketplace:certora/spec/GasBadNft.spec",
+    "wait_for_results": "all",
+    "rule_sanity": "basic",
+    "optimistic_loop": true,
+    "msg": "Verification of NftMarketplace"
+
+}
+```
+
+### Wrap Up
+
+The root of what I'm trying to instill is this idea that - the prover is going to try to constantly find these situations where undefined actions or executions can occur and it's going to HAVOC, it's going to do random things until it breaks when it finds those situations.
+
+It's ultimately our job to vet these outputs and determine - is this the fault of my code, or is the prover unclear about what my goals are?
+
+In the next lesson we'll drill this concept in with a final rule that should be a blast to connfigure.
+
+See you there!
