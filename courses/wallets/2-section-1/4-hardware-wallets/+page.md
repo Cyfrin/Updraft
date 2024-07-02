@@ -2,50 +2,46 @@
 title: Hardware Wallets
 ---
 
+_Follow along with this video:_
+
 ---
 
-### Hardware Wallets: Your Passport to Peace of Mind
+### Hardware Wallets
 
-Hardware wallets, akin to an armored vault in the crypto cosmos, are a substantial upgrade from their browser-based kin. Relying on a browser wallet is akin to yoga for your crypto assets; it's flexible and accessible. But when you're looking to bulk up that security, hardware wallets act as the heavyweight champions—for myriad reasons.
+Moving up in security, as mentioned in the last lesson, we hit Hardware Wallets. These enjoy all the same benefits as a browser style wallet, while having additional security layers. Let's go into more detail.
 
-#### Who's the Target Audience?
+Hardware Wallets come with some pros and cons:
 
-They're not for everyone, though; hardware wallets are cast in the fires of intermediate-level crypto practice. They cater to those who've graduated from the cradle of basic knowledge and are hungry for a bit more meat on their security bones.
+Pros:
 
-#### What's "Medium Money," Anyway?
+- more secure that hot wallets
+- self custodial
+- "airgapped", unplugged someone would need access to the wallet to access the funds
+- Good for small/medium amounts of money
 
-We're talking about securing medium sums of money, which—let's face it—could mean different things to different people. But let's not get caught up in semantics. Hardware wallets are the Les Strouds (Survivorman, anybody?) of crypto storage; they thrive in isolation, being "air gapped" from potential online threats. Just unplug them, and voila, your digital treasure is vaulted away from digital pirates.
+Cons:
 
-As custodians of larger funds or for the long-term HODLers among us, hardware wallets are a no-brainer. On the flipside, their interaction with apps for daily transactions feels like navigating through a swamp—cumbersome and riddled with annoyance.
+- cost money and can sometimes be expensive
+- aren't fool proof
+- it's more difficult to interact with dapps
+- vulnerable to "wrench attacks" or physical attack for access to your funds
+- vulnerable to supply chain attacks, swapped wallets, maliciously updated software etc
 
-### The Teachings of Hardware Wallets: A Physical Key to Your Virtual Wealth
+Hardware wallets are more ideal for longer term storage of value.
 
-Hardware wallets, in essence, are the physical manifestation of the cryptic (pun intended) private keys, estranged from the omnipresent Internet. Here's where it gets juicy:
+Many claim that hardware wallets are _good enough_, and to that I disagree, doubly so for protocol developers.
 
-> "Hardware wallets combine the flexibility of browser wallets with a fortified layer of security, providing a formidable barrier against would-be digital intruders."
+There's a phenomenal [**video**](https://www.youtube.com/watch?v=dT9y-KQbqi4) from Joe Grand detailing how he hacked into a hardware wallet to recover $2 million. I highly recommend you check it out, great watch.
 
-#### The Balancing Act of Pros and Cons
+Some suggestions to consider for a hardware wallet include:
 
-The allure of a hardware wallet lies in its incremental security benefits, plus everything nice you'd associate with browser wallets. Yet, let's get this straight—while suitable for securing small to medium cookie jars of crypto, they aren't the be-all and end-all of asset protection.
+[**Trezor**](https://trezor.io/)
+[**GridPlus**](https://gridplus.io/)
 
-In fact, I'm emphatic about this—hardware wallets might just not cut it for the heavyweights in crypto, especially the savvy minds spinning up new protocols and breakthroughs. Remember, even the Mightiest of Mjolnirs have their limitations.
+### Wrap Up
 
-#### When the Physical Realm Meets Digital Dangers
+Hardware wallets are a great investment, and a great way to increase your personal security, but be cautious.
 
-Sure, your next-gen hardware wallet isn't getting ransacked via the cyber highway, but the real world poses its own unique brand of threats—wrench attacks. Not the plumbing escapades, but the terrifying scenario when someone goes all 'Grand Theft Crypto' on your physical device.
+Be sure to use trusted hardware wallet providers avoid things like tracking software, or companies with a history of randomly updating software. Some companies sell wallets the private keys of which are held _on their servers_. This is gross, do your research!
 
-Imagine the horror—your hardware wallet, pilfered and cracked open, and your cherished digital gold spirited away. It's critical, then, to have your backup phrases etched into metal, mind, or whichever medium you deem fortress-like.
-
-And if you're keen on scaling the cliffside of technical finesse, I implore you to witness Joe Grand's electronic heist turned heroic, where $2 million in crypto was masterfully reclaimed.
-
-### Selecting Your Trusty Hardware Companion
-
-![](https://cdn.videotap.com/618/screenshots/dMEro0PSOoBDnSHqbPmY-150.7.png)
-
-When shopping for your digital safeguard, names like Trezor or Gridlattis plus might pique your interest—favorites among the security-conscious virtuosos. A word to the wise: avoid the allure of fashion-forward hardware wallets prancing around your neck, boasting the latest in chic vulnerability.
-
-#### Digital Faux Pas to Sidestep
-
-Steer clear of those hardware wallet peddlers who hoard your private keys in their cloudy backrooms. Like magpies to shiny objects, these practices are far from golden. Consider it a rule of thumb—if a hardware wallet company is breezily keen on updates altering the sanctity of your private key's abode, streetwise says "walk away."
-
-In closing, revere the hardware wallet for what it is—an ironclad step in safeguarding your digital treasure trove. But don't let it be your lone star; navigate the crypto seas with a fleet of security measures, and your journey shall be less "Titanic" and more "smooth sailing."
+And finally, it's a wallet, it's not jewelry. be skeptical of companies encouraging you to wear them about. This shows a clear misunderstanding of security best practices.

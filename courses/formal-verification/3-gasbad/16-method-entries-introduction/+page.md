@@ -1,43 +1,75 @@
 ---
-title: method entries introduction
+title: Method Entries Introduction
 ---
 
-## Getting to Grips with Function Summarization
-
-Let’s kick things off with the crème de la crème topic of function summarization. As we journey through the realm of smart contracts, it's crucial to grasp that the ways to encompass the essence of functions are as diverse as the stars in the sky. So let’s don our space suits and take a dive!
-
-### Diving into the Basics: Invoking Functions
-
-Commonly, we assume that to verify contracts, a direct invocation of the functions encapsulated within them is a must. However, curveballs are a part of the game, and Certora plays it well by offering alternative means to engage with any function across your software cosmos.
-
-Imagine a world where the act of calling functions is as easy as saying "Hello". That's where basic methods and syntax come into play. But let’s not sell ourselves short—there’s more beneath the surface than the minimalistic methods blocks we're accustomed to.
-
-### Understanding Exact and Wildcard Entries
-
-What exactly are exact entries? When we summon a function like `total_supply`, we're essentially tailoring our call to the current contract's `total_supply`. Think of these as neat, labeled boxes where everything fits snugly inside.
-
-Now, sprinkle in some magic dust, and voilà—wildcard entries! By simply adorning our function call with an underscore, we transform an exact entry into a wildcard. This means any contract waving the `total_supply` flag will heed the call.
-
-### Summary Declarations: The "Always Returns One" Mantra
-
-But wait, there's more! We can attach a summary declaration to our function that dictates an immutable truth—like a function that should always return the number one.
-
-## No Contract Left Behind: The Art of Catchall Entries
-
-Up next, catchall entries. A wilder cousin of wildcard and exact entries, catchalls make a sweeping statement. With a stroke of a pen, we could declare that regardless of our contract's nature, every function should return the number one. Bizarre? Perhaps. Doable? Absolutely.
-
-### Sidebar: Exploring Visibility Modifiers
-
-Visibility modifiers are your gatekeepers in the world of functions. They determine who gets to knock on the door of a function—whether it's anyone in the digital landscape or a select few with VIP access.
-
-### Ian Free and The Optional Function
-
-In the script of our code, some functions are stars, and others are optional extras—nodding to our ability to denote a function as non-essential to the plot. Imagine Ian Free, a function that can merrily skip its appearance without the storyline crumbling.
-
-### The Unseen Wonders: Beyond Minimalist Entries
-
-With our penchant for minimalism, we've merely scratched the surface. There lies an arsenal of methods waiting to be deployed within our creative blocks. The possibilities are vast, and the only limit is the boundary of imagination.
+_Follow along with this video:_
 
 ---
 
-Happy coding, and may the functions be always in your favor!
+### Method Entries Introduction
+
+Our methods block til now has been fairly minimalistic, but this section has a lot of variety in what we can do with it. In NftMock.spec we were using one of the simpler methodologies, [**`exact entries`**](https://docs.certora.com/en/latest/docs/cvl/methods.html#exact-entries).
+
+### Exact Entries
+
+Exact entries are telling the prover 'here's a particular function, on a particular contract, test it'. This can be a little restrictive, but offers a lot of granular control when necessary.
+
+<img src="/formal-verification-3/16-method-entries-introduction/method-entries-introduction1.png" width="100%" height="auto">
+
+So, in our simple NftMock.spec example, we were effectively doing this:
+
+```js
+methods {
+    function currentContract.mint() external;
+    function currentContract.totalSupply() external returns(uint256);
+    function currentContract.balanceOf(address) external returns(uint);
+}
+```
+
+### Wildcard Entries
+
+In addition to `exact entries` however, we have other options available to us, such as [**`wildcard entries`**](https://docs.certora.com/en/latest/docs/cvl/methods.html#wildcard-entries).
+
+<img src="/formal-verification-3/16-method-entries-introduction/method-entries-introduction2.png" width="100%" height="auto">
+
+What `wildcard entries` allow us to do is abstract out which contract a given function is being called on.
+
+```js
+methods {
+    function _.totalSupply() external returns(uint256);
+}
+```
+
+A syntax like the above tells the `Certora` prover to call `totalSupply` on any contract which contains this function! We can take this a step further in our degree of control of these methods by applying a `summary declaration`, asserting that the calling of this function, from any contract, should return a configured value, or behave a configured way.
+
+```js
+methods {
+    function _.totalSupply() external returns(uint256) => ALWAYS(1);
+}
+```
+
+This tells `Certora` that any `totalSupply` function, found within any scoped file/contract, should return the value of `1`.
+
+### Catch-all Entries
+
+Additionally, additionally - there are `catch-all entries`. These function almost opposite to wildcard entries. Catch-all entries allow us to specify that all function of a given contract are to behave the same way.
+
+<img src="/formal-verification-3/16-method-entries-introduction/method-entries-introduction3.png" width="100%" height="auto">
+
+Applied to our previous example, the syntax would look something like this:
+
+```js
+methods {
+    function currentContract._() external returns(uint256) => ALWAYS(1);
+}
+```
+
+The above is telling the `Certora` prover that any function withing the currentContract being verified should always return 1. Pehaps a strange thing to configure in our case, but you could imagine similar methodologies being applied to libraries which are in scope, but inconsequential to what is being verified at the time.
+
+### Wrap Up
+
+Now that we have a better understanding of the potential power of our methods block implementation, we're ready to look more closely at summary declarations specifically and how they can be applied to our GasBadNftMarketplace protocol.
+
+If you're interesting in reading more about the variety of entrie methods and annotations which can be used in the methods block, I encourage you to dive deeper into the [**Certora Docs**](https://docs.certora.com/en/latest/docs/cvl/methods.html) for more.
+
+See you in the next lesson for some more examples of summary declaration!

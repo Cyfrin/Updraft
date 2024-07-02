@@ -4,66 +4,102 @@ title: SVG NFT Debugging
 
 _Follow along the course with this video._
 
-
-
 ---
 
-Welcome to a new highly detailed blog post on debugging, testing, and creating automated scripts for smart contracts. We will walk you through the process of running and debugging tests using the Forge test tool. We'll also give you some examples of integrating unit testing and integration testing. Buckle up as this is going to be an interesting journey through the jungle of smart contract testing.
+### SVG NFT Debugging
 
-<img src="/foundry-nfts/16-debug/debug1.png" style="width: 100%; height: auto;">
-
-## Solving the URI Mystery
-
-At this point, we decided to take a more detailed look at the `sadSvgUri`. We considered that the `tokenUri` and the `sadSvgUri` were not supposed to be the same because one is an image `Uri` while the other isn't. After a bit of back-and-forth, we figured out the `tokenUri` was supposed to equal our `Sad SVG Uri`.
-
-<img src="/foundry-nfts/16-debug/debug2.png" style="width: 100%; height: auto;">
-
-So in order to achieve that we need to assert the actual token URI correspond to the sad SVG URI. We added the following code to our test script:
-
-```javascript
-function testFlipTokenToSad() public {
-        vm.prank(USER);
-        moodNft.mintNft();
-
-        vm.prank(USER);
-        moodNft.flipMood(0);
-
-        assert(
-            keccak256(abi.encodePacked(moodNft.tokenURI(0))) ==
-                keccak256(abi.encodePacked(SAD_MOOD_URI))
-        );
-    }
-```
-
-With the mystery solved, we performed another run and successfully passed all tests.
-
-## Unit Test Versus Integration Test
-
-In a nutshell, the process of testing we've just gone through is a good demonstration of the differences between a unit test and an integration test.
-
-- **Unit Test**: In our case, it was testing the specific function on our Deploy Mood NFT and Mood NFT.
-- **Integration Test**: This type of test combined the deployer with the Mood NFT and Basic NFT, ultimately showing what an integration test should look like.
-
-## Script Writing to Automate Deployment and Testing
-
-Don't want to manually type all of those Forge script commands? Let's walk through the process of automating those actions for deployment and testing.
-
-In our case, we created a script that, once run, deploys both of our NFTs and even flips the mood of our NFT. You can add this script in your make file. Be sure to create scripts for minting the Mood NFT and flipping the Mood NFT too. Even though they are skipped in this post, they are also crucial for a complete automation setup.
-
-## Working on Code Coverage
-
-Lastly, we highly recommend improving your code coverage. Our current coverage looks good for Basic NFT and Mood NFT, but scripts' coverage can certainly be improved. Writing comprehensive tests boosts your confidence that the code will function as expected.
-
-To check code coverage, run:
+In the last lesson we left off with a gross error that hit us when running our new integration test `testFlipMoodIntegration`. Let's run the test again with the verbose flag and see if we can debug what's going on.
 
 ```bash
-forge coverage
+forge test --mt testFlipMoodIntegration -vvv
 ```
 
-This will give you a detailed report of the coverage for each code section.
+<img src="/foundry-nfts/16-svg-debug/svg-debug1.png" width="100%" height="auto">
 
-## Wrapping Things Up
+Hmm, this gives us a little more information, detailing that our assertion failed as well as providing us an output of one of the SVG URIs, but I think we can do better.
 
-We believe that this practice exercise will help you appreciate the importance of testing, debugging and automating scripts when working with smart contracts. It's a lot more fun to run a single command that deploys, tests and completes your NFT than to manually type each command individually.
+This is where I like to employ `assertEq` instead of `assert` as this will print both the left and right sides of the assertion to our console.
 
-Remember to constantly evaluate your test coverage and keep it high. If you do, you will significantly increase your confidence that your code performs exactly as expected. Happy testing!
+```js
+assertEq(
+  keccak256(abi.encodePacked(moodNft.tokenURI(0))),
+  keccak256(abi.encodePacked(SAD_SVG_URI))
+);
+```
+
+Let's run it again.
+
+```bash
+forge test --mt testFlipMoodIntegration -vvv
+```
+
+<img src="/foundry-nfts/16-svg-debug/svg-debug2.png" width="100%" height="auto">
+
+Well, our hashes are definitely different. We can import console and log out some variables to see what's going wrong.
+
+```js
+import {console, Test} from "forge-std/Test.sol";
+...
+
+contract MoodNFTTest is Test {
+    ...
+    function testFlipMoodIntegration() public {
+        vm.prank(USER);
+        moodNFT.mintNft();
+        vm.prank(USER);
+        moodNFT.flipMood(0);
+        console.log(moodNFT.tokenURI(0))
+        assertEq(keccak256(abi.encodePacked(moodNFT.tokenURI(0))), keccak256(abi.encodePacked(SAD_SVG_URI)));
+    }
+}
+```
+
+Running this now, should output our tokenURI, which we can verify in our browser, we expect the Sad SVG, so what do we get?
+
+```bash
+├─ [0] console::log("data:application/json;base64,eyJuYW1lIjogIkJpUG9sYXIiLCAiZGVzY3JpcHRpb24iOiAiQW4gTkZUIHRoYXQgcmVmbGVjdHMgeW91ciBtb29kISIsICJhdHRyaWJ1dGVzIjogW3sidHJhaXRfdHlwZSI6ICJNb29kIiwgInZhbHVlIjogMTAwfV0sICJpbWFnZSI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIzYVdSMGFEMGlNVEF5TkhCNElpQm9aV2xuYUhROUlqRXdNalJ3ZUNJZ2RtbGxkMEp2ZUQwaU1DQXdJREV3TWpRZ01UQXlOQ0lnZUcxc2JuTTlJbWgwZEhBNkx5OTNkM2N1ZHpNdWIzSm5Mekl3TURBdmMzWm5JajRLSUNBOGNHRjBhQ0JtYVd4c1BTSWpNek16SWlCa1BTSk5OVEV5SURZMFF6STJOQzQySURZMElEWTBJREkyTkM0MklEWTBJRFV4TW5NeU1EQXVOaUEwTkRnZ05EUTRJRFEwT0NBME5EZ3RNakF3TGpZZ05EUTRMVFEwT0ZNM05Ua3VOQ0EyTkNBMU1USWdOalI2YlRBZ09ESXdZeTB5TURVdU5DQXdMVE0zTWkweE5qWXVOaTB6TnpJdE16Y3ljekUyTmk0MkxUTTNNaUF6TnpJdE16Y3lJRE0zTWlBeE5qWXVOaUF6TnpJZ016Y3lMVEUyTmk0MklETTNNaTB6TnpJZ016Y3llaUl2UGdvZ0lEeHdZWFJvSUdacGJHdzlJaU5GTmtVMlJUWWlJR1E5SWswMU1USWdNVFF3WXkweU1EVXVOQ0F3TFRNM01pQXhOall1Tmkwek56SWdNemN5Y3pFMk5pNDJJRE0zTWlBek56SWdNemN5SURNM01pMHhOall1TmlBek56SXRNemN5TFRFMk5pNDJMVE0zTWkwek56SXRNemN5ZWsweU9EZ2dOREl4WVRRNExqQXhJRFE0TGpBeElEQWdNQ0F4SURrMklEQWdORGd1TURFZ05EZ3VNREVnTUNBd0lERXRPVFlnTUhwdE16YzJJREkzTW1ndE5EZ3VNV010TkM0eUlEQXROeTQ0TFRNdU1pMDRMakV0Tnk0MFF6WXdOQ0EyTXpZdU1TQTFOakl1TlNBMU9UY2dOVEV5SURVNU4zTXRPVEl1TVNBek9TNHhMVGsxTGpnZ09EZ3VObU10TGpNZ05DNHlMVE11T1NBM0xqUXRPQzR4SURjdU5FZ3pOakJoT0NBNElEQWdNQ0F4TFRndE9DNDBZelF1TkMwNE5DNHpJRGMwTGpVdE1UVXhMallnTVRZd0xURTFNUzQyY3pFMU5TNDJJRFkzTGpNZ01UWXdJREUxTVM0MllUZ2dPQ0F3SURBZ01TMDRJRGd1TkhwdE1qUXRNakkwWVRRNExqQXhJRFE0TGpBeElEQWdNQ0F4SURBdE9UWWdORGd1TURFZ05EZ3VNREVnTUNBd0lERWdNQ0E1Tm5vaUx6NEtJQ0E4Y0dGMGFDQm1hV3hzUFNJak16TXpJaUJrUFNKTk1qZzRJRFF5TVdFME9DQTBPQ0F3SURFZ01DQTVOaUF3SURRNElEUTRJREFnTVNBd0xUazJJREI2YlRJeU5DQXhNVEpqTFRnMUxqVWdNQzB4TlRVdU5pQTJOeTR6TFRFMk1DQXhOVEV1Tm1FNElEZ2dNQ0F3SURBZ09DQTRMalJvTkRndU1XTTBMaklnTUNBM0xqZ3RNeTR5SURndU1TMDNMalFnTXk0M0xUUTVMalVnTkRVdU15MDRPQzQySURrMUxqZ3RPRGd1Tm5NNU1pQXpPUzR4SURrMUxqZ2dPRGd1Tm1NdU15QTBMaklnTXk0NUlEY3VOQ0E0TGpFZ055NDBTRFkyTkdFNElEZ2dNQ0F3SURBZ09DMDRMalJETmpZM0xqWWdOakF3TGpNZ05UazNMalVnTlRNeklEVXhNaUExTXpONmJURXlPQzB4TVRKaE5EZ2dORGdnTUNBeElEQWdPVFlnTUNBME9DQTBPQ0F3SURFZ01DMDVOaUF3ZWlJdlBnbzhMM04yWno0PSJ9") [staticcall]
+```
+
+Pasting this into our browser and checking the imageUri we should be able to verify that this _is_ the Sad tokenUri.. so what's going on?
+
+<img src="/foundry-nfts/16-svg-debug/svg-debug3.png" width="100%" height="auto">
+
+Let's check the other side of the assertion. We have the SAD_SVG_URI as a constant variable, let's toss it into our browser.
+
+<img src="/foundry-nfts/16-svg-debug/svg-debug4.png" width="100%" height="auto">
+
+Wait a minute! One of these is returning our **_tokenURI_** and the other is our **_imageURI_**! This is why it's important to be explicit in our naming conventions! Let's adjust these constants, and our test, right away. We can define a variable with what we expect the **_tokenURI_** to be and assert versus that.
+
+```js
+string public constant SAD_SVG_IMAGE_URI = ...;
+string public constant HAPPY_SVG_IMAGE_URI = ...;
+string public constant SAD_SVG_URI = "data:application/json;base64,eyJuYW1lIjogIkJpUG9sYXIiLCAiZGVzY3JpcHRpb24iOiAiQW4gTkZUIHRoYXQgcmVmbGVjdHMgeW91ciBtb29kISIsICJhdHRyaWJ1dGVzIjogW3sidHJhaXRfdHlwZSI6ICJNb29kIiwgInZhbHVlIjogMTAwfV0sICJpbWFnZSI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIzYVdSMGFEMGlNVEF5TkhCNElpQm9aV2xuYUhROUlqRXdNalJ3ZUNJZ2RtbGxkMEp2ZUQwaU1DQXdJREV3TWpRZ01UQXlOQ0lnZUcxc2JuTTlJbWgwZEhBNkx5OTNkM2N1ZHpNdWIzSm5Mekl3TURBdmMzWm5JajRLSUNBOGNHRjBhQ0JtYVd4c1BTSWpNek16SWlCa1BTSk5OVEV5SURZMFF6STJOQzQySURZMElEWTBJREkyTkM0MklEWTBJRFV4TW5NeU1EQXVOaUEwTkRnZ05EUTRJRFEwT0NBME5EZ3RNakF3TGpZZ05EUTRMVFEwT0ZNM05Ua3VOQ0EyTkNBMU1USWdOalI2YlRBZ09ESXdZeTB5TURVdU5DQXdMVE0zTWkweE5qWXVOaTB6TnpJdE16Y3ljekUyTmk0MkxUTTNNaUF6TnpJdE16Y3lJRE0zTWlBeE5qWXVOaUF6TnpJZ016Y3lMVEUyTmk0MklETTNNaTB6TnpJZ016Y3llaUl2UGdvZ0lEeHdZWFJvSUdacGJHdzlJaU5GTmtVMlJUWWlJR1E5SWswMU1USWdNVFF3WXkweU1EVXVOQ0F3TFRNM01pQXhOall1Tmkwek56SWdNemN5Y3pFMk5pNDJJRE0zTWlBek56SWdNemN5SURNM01pMHhOall1TmlBek56SXRNemN5TFRFMk5pNDJMVE0zTWkwek56SXRNemN5ZWsweU9EZ2dOREl4WVRRNExqQXhJRFE0TGpBeElEQWdNQ0F4SURrMklEQWdORGd1TURFZ05EZ3VNREVnTUNBd0lERXRPVFlnTUhwdE16YzJJREkzTW1ndE5EZ3VNV010TkM0eUlEQXROeTQ0TFRNdU1pMDRMakV0Tnk0MFF6WXdOQ0EyTXpZdU1TQTFOakl1TlNBMU9UY2dOVEV5SURVNU4zTXRPVEl1TVNBek9TNHhMVGsxTGpnZ09EZ3VObU10TGpNZ05DNHlMVE11T1NBM0xqUXRPQzR4SURjdU5FZ3pOakJoT0NBNElEQWdNQ0F4TFRndE9DNDBZelF1TkMwNE5DNHpJRGMwTGpVdE1UVXhMallnTVRZd0xURTFNUzQyY3pFMU5TNDJJRFkzTGpNZ01UWXdJREUxTVM0MllUZ2dPQ0F3SURBZ01TMDRJRGd1TkhwdE1qUXRNakkwWVRRNExqQXhJRFE0TGpBeElEQWdNQ0F4SURBdE9UWWdORGd1TURFZ05EZ3VNREVnTUNBd0lERWdNQ0E1Tm5vaUx6NEtJQ0E4Y0dGMGFDQm1hV3hzUFNJak16TXpJaUJrUFNKTk1qZzRJRFF5TVdFME9DQTBPQ0F3SURFZ01DQTVOaUF3SURRNElEUTRJREFnTVNBd0xUazJJREI2YlRJeU5DQXhNVEpqTFRnMUxqVWdNQzB4TlRVdU5pQTJOeTR6TFRFMk1DQXhOVEV1Tm1FNElEZ2dNQ0F3SURBZ09DQTRMalJvTkRndU1XTTBMaklnTUNBM0xqZ3RNeTR5SURndU1TMDNMalFnTXk0M0xUUTVMalVnTkRVdU15MDRPQzQySURrMUxqZ3RPRGd1Tm5NNU1pQXpPUzR4SURrMUxqZ2dPRGd1Tm1NdU15QTBMaklnTXk0NUlEY3VOQ0E0TGpFZ055NDBTRFkyTkdFNElEZ2dNQ0F3SURBZ09DMDRMalJETmpZM0xqWWdOakF3TGpNZ05UazNMalVnTlRNeklEVXhNaUExTXpONmJURXlPQzB4TVRKaE5EZ2dORGdnTUNBeElEQWdPVFlnTUNBME9DQTBPQ0F3SURFZ01DMDVOaUF3ZWlJdlBnbzhMM04yWno0PSJ9"
+
+...
+
+function testFlipMoodIntegration() public {
+    vm.prank(USER);
+    moodNFT.mintNft();
+    vm.prank(USER);
+    moodNFT.flipMood(0);
+    assertEq(keccak256(abi.encodePacked(moodNFT.tokenURI(0))), keccak256(abi.encodePacked(SAD_SVG_URI)));
+}
+```
+
+With these adjustments, we can run our test again...
+
+<img src="/foundry-nfts/16-svg-debug/svg-debug5.png" width="100%" height="auto">
+
+Beautiful!
+
+### Wrap Up
+
+Ok, we've done a lot. We've structured our test suite such that we now leverage integration tests that are using our DeployMoodNft.s.sol script.
+
+We're testing minting, SVG encoding, deploying and more. One thing we didn't do together was an interations script for our MoodNft contract. In practice this should be very similar to what we've written for our BasicNFT in `Interactions.s.sol` so far.
+
+I highly encourage you to try to write this script for MoodNFT. It should be able to mint the NFT and flip the mood!
+
+Your second call to action is going to be increasing the coverage of our contracts. Write some tests and try to get MoodNFT and our scripts closer to 100%!
+
+<img src="/foundry-nfts/16-svg-debug/svg-debug6.png" width="100%" height="auto">

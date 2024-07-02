@@ -2,68 +2,217 @@
 title: Debugging the Fuzzer
 ---
 
-
-
 ---
 
-# Debugging Your Code the Way a Pro Would Do It
+### Debugging the Fuzzer
 
-In today's lesson, we'll dive into a realistic process of debugging, using live examples and explaining how to overcome certain coding hurdles.
+You might notice this lesson isn't called "Successful Test, Hurray We're Done".
 
-Typically, I spend a large chunk of my work hours debugging unexpected failures in code scripts, and I thought it would be valuable to share my experience with you.
+The first time we run our fuzz test, it's going to fail. Test suites rarely will work the way you expect, the first time you run them, so in this lesson we're going to walk through how to handle and debug some of the errors that I've planted in our process.
 
-Often, you'll need to rerun your code, alter variables, and cross your fingers, hoping you'd not receive the same error. Debugging is intriguing and requires a keen eye for detail.
+> **Note:** Add `seed = "0x1"` under [Fuzz] in our foundry.toml to assure some consistency in the runs we're debugging.
 
-## Debugging a Program
+Begin by running our test, passing the verbose flag to acquire a trace in our output.
 
-Here is a practical example of how I discovered, investigated, and resolved errors in a program, step by step.
+```bash
+forge test --mt statefulFuzz_constantProductFormulaStaysTheSameY --vvvv
+```
 
-![](https://cdn.videotap.com/YQdEYI0P1ab2zx1GvZnZ-68.11.png)
+<img src="/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer1.png" width="100%" height="auto">
 
-### Step 1: Testing the Code
+Fail, as expected. This output tells us the exception occuring during a call of the `deposit` function, but we can scroll up in the trace output to gain more infomation.
 
-As expected, the program failed. The error notably pointed out that the `TSWAP pool must be more than zero`. From my experience, such failures are usually attached to some misconfigured variables or misplaced logics.
+<img src="/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer2.png" width="100%" height="auto">
 
-In this case, when checking back on the `handler`, there was a deposit function configured with zero - a value that must certainly be greater than zero.
+Ok, this gives us more detail to assess. It's clear that we're receiving a custom error when calling deposit, this is due to passing `0` as an argument:
 
-I then had to ask myself, what seemed to be the `minimum deposit`?
+```
+TSwapPool___MustBeMoreThanZero()
+```
 
-### Step 2: Debugging Interlude
+Let's look at how we're handling this function in `Handler.t.sol`.
 
-I discovered something crucial here - the `minimum WETH liquidity`. This was the `minimum deposit amount` I should've assigned instead of zero.
+```js
+function deposit(uint256 wethAmount) public {
+    wethAmount = bound(wethAmount, 0, type(uint64).max);
+    ...
+}
 
-Using this newly found information, I decided to replace the zero value in the `bound` function with this minimum deposit amount and then reran my test.
+function swapPoolTokenForWethBasedOnOutputWeth(uint256 outputWeth) public {
+    outputWeth = bound(outputWeth, 0, type(uint64).max);
+    ...
+}
+```
 
-It appeared that the function `get input amount based off output` had been assigned the zero value, as was previously the case. Here we had to replace the zero with `pool. Get minimum WETH deposit amount` to avoid similar complications.
+Well of course this is going to throw `TSwapPool___MustBeMoreThanZero()`, our binding includes 0 in both of these `Handler` functions! Fortunately TSwapPool has a function to help us.
 
-### Step 3: Learning and Debugging
+```js
+function getMinimumWethDepositAmount() external pure returns (uint256) {
+    return MINIMUM_WETH_LIQUIDITY;
+}
+```
 
-I intentionally ran into these issues because it's an inevitable part of the coding process and learning experience. Debugging requires a skill to easily navigate through logs - It's a practice I find effective in learning code structure.
+Let's substitute this function call for the lower bounds of our value to avoid this custom error from TSwap.
 
-At this point, the `assertion` seemed to hit a snag. The immediate response was an `actual Delta X` being zero while on the right hand side, it was a large number. The inconsistency in values raises the question - where did I go wrong?
+```js
+function deposit(uint256 wethAmount) public {
+    wethAmount = bound(wethAmount, 0, type(uint64).max);
+    ...
+}
 
-Turns out, there was a small but significant mistake in the addressee in my code. It had mistakenly been set to `address this`, when it should have been `address pool`.
+function swapPoolTokenForWethBasedOnOutputWeth(uint256 outputWeth) public {
+    outputWeth = bound(outputWeth, pool.getMinimumWethDepositAmount(), type(uint64).max);
+    ...
+}
+```
 
-### Step 4: The Resolution
+Now we can try our test again.
 
-Once that was rectified, it seemed like we were getting somewhere. The code was now giving a different error, an indication that we were making progress. However, I noticed there was a significant variance between the left and right side values - almost a clear doubling.
+<img src="/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer3.png" width="100%" height="auto">
 
-The key question now was whether my code was the problem or there was an `invariant` that was actually broken. Debugging requires such critical thinking to diagnose the root cause of errors.
+Ok, a new error! New errors mean progress. If we scroll up on this one, we can see that our assertion is actually acting strangely!
 
-_SECTION OF CODE TO INSERT HERE_
+For some reason our actual changes for weth and poolToken (∆y and ∆x respectively) are returning 0. Let's look at the test function to determine why.
 
-It turned out I had made an incorrect assignment in the `handler`. The `Delta X` was supposed to be the `pool token amount` calculated earlier. This led to an unexpected elevation in the `outbound WETH` size, causing the script to keep reverting.
+```js
+function swapPoolTokenForWethBasedOnOutputWeth(uint256 outputWeth) public {
+    outputWeth = bound(outputWeth, pool.getMinimumWethDepositAmount(), type(uint64).max);
+    if (outputWeth >= weth.balanceOf(address(pool))) {
+        return;
+    }
+    ...
 
-To solve this, I had the `bound` function call on the `WETH balance of the address pool`, as opposed to it being manually large.
+        uint256 endingY = poolToken.balanceOf(address(this));
+        uint256 endingY = weth.balanceOf(address(this));
 
-#### Handling Debugging Challenges
+        actualDeltaY = int256(endingY) - int256(startingY);
+        actualDeltaX = int256(endingX) - int256(startingX);
+}
+```
 
-> "In debugging, there's a lot of trial and error, and it's okay. You're going to encounter a few challenges on your first try but with perseverance and keen attention to detail, you'll find a way to resolve these errors".
+This above is how we're caculating our `actualDeltaY` and `actualDeltaX` in our Handler's swap function. If we look more closely at `endingY`, `endingX`, `startingY` and `startingX`, we'll notice that we erroneously have these variables tracking the changes of balance in `address(this)`. We'll that's wrong! We need to track the balances of each token in our pool.
 
-After making the necessary alterations and rerunning the tests, the program finally passed. This means the code was safe and no bugs were found.
+Adjust the assignments in our `Handler.t.sol` like so:
 
-## Conclusion
+```js
+startingY = int256(weth.balanceOf(address(pool)));
+startingX = int256(poolToken.balanceOf(address(pool)));
 
-Even after successfully debugging, remember that your code is always subject to possible future errors. But now armed with the skills and patience to debug, you are better prepared to face any challenge that comes your way.
+uint256 endingY = poolToken.balanceOf(address(pool));
+uint256 endingY = weth.balanceOf(address(pool));
+```
 
-Stay creative and keep debugging!
+Then run it again!
+
+> **Note:** debugging our fuzz sequences is a truly iteritive process. The errors you receive, and how many of them, may actually be different if you have different errors in your code. Use the steps and skills shown here to debug any error you receive the same way.
+
+<img src="/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer4.png" width="100%" height="auto">
+
+Boom.
+
+Don't be discouraged if you run into more errors, or different errors. This can be one of the hardest parts of this process.
+
+Here's my fully tweaked `Handler` for reference:
+
+<details>
+<summary>Handler.t.sol</summary>
+
+```js
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.20;
+
+import { Test, console2 } from "forge-std/Test.sol";
+import { TSwapPool } from "../../src/TSwapPool.sol";
+import { ERC20Mock } from "../mocks/ERC20Mock.sol";
+
+contract Handler is Test {
+    TSwapPool pool;
+    ERC20Mock weth;
+    ERC20Mock poolToken;
+
+    address liquidityProvider = makeAddr("lp");
+    address swapper = makeAddr("swapper");
+
+    // Ghost Variables - variables that only exist in our Handler
+    int256 public actualDeltaY;
+    int256 public expectedDeltaY;
+
+    int256 public actualDeltaX;
+    int256 public expectedDeltaX;
+
+    int256 public startingX;
+    int256 public startingY;
+
+    constructor(TSwapPool _pool) {
+        pool = _pool;
+        weth = ERC20Mock(_pool.getWeth());
+        poolToken = ERC20Mock(_pool.getPoolToken());
+    }
+
+    function deposit(uint256 wethAmount) public {
+        wethAmount = bound(wethAmount, pool.getMinimumWethDepositAmount(), weth.balanceOf(address(pool)));
+
+        startingY = int256(poolToken.balanceOf(address(pool)));
+        startingX = int256(weth.balanceOf(address(pool)));
+
+        expectedDeltaX = int256(wethAmount);
+        expectedDeltaY = int256(pool.getPoolTokensToDepositBasedOnWeth(wethAmount));
+
+        vm.startPrank(liquidityProvider);
+        weth.mint(liquidityProvider, wethAmount);
+        poolToken.mint(liquidityProvider, uint256(expectedDeltaX));
+        weth.approve(address(pool), type(uint256).max);
+        poolToken.approve(address(pool), type(uint256).max);
+
+        // Deposit
+        pool.deposit(wethAmount, 0, uint256(expectedDeltaX), uint64(block.timestamp));
+        vm.stopPrank();
+
+        uint256 endingX = poolToken.balanceOf(address(pool));
+        uint256 endingY = weth.balanceOf(address(pool));
+
+        // sell tokens == x == poolTokens
+        actualDeltaY = int256(endingX) - int256(startingY);
+        actualDeltaX = int256(endingY) - int256(startingX);
+    }
+
+    function swapPoolTokenForWethBasedOnOutputWeth(uint256 outputWeth) public {
+        if (weth.balanceOf(address(pool)) <= pool.getMinimumWethDepositAmount()) {
+            return;
+        }
+        outputWeth = bound(outputWeth, pool.getMinimumWethDepositAmount(), weth.balanceOf(address(pool)));
+        if (outputWeth >= weth.balanceOf(address(pool))) {
+            return;
+        }
+        uint256 poolTokenAmount = pool.getInputAmountBasedOnOutput(
+            outputWeth, poolToken.balanceOf(address(pool)), weth.balanceOf(address(pool))
+        );
+
+        startingY = int256(poolToken.balanceOf(address(pool)));
+        startingX = int256(weth.balanceOf(address(pool)));
+
+        expectedDeltaX = int256(-1) * int256(outputWeth);
+        expectedDeltaY = int256(poolTokenAmount);
+
+        if (poolToken.balanceOf(swapper) < poolTokenAmount) {
+            poolToken.mint(swapper, poolTokenAmount - poolToken.balanceOf(swapper) + 1);
+        }
+        vm.startPrank(swapper);
+        poolToken.approve(address(pool), type(uint256).max);
+        pool.swapExactOutput(poolToken, weth, outputWeth, uint64(block.timestamp));
+        vm.stopPrank();
+
+        uint256 endingY = poolToken.balanceOf(address(pool));
+        uint256 endingX = weth.balanceOf(address(pool));
+
+        actualDeltaY = int256(endingY) - int256(startingY);
+        actualDeltaX = int256(endingX) - int256(startingX);
+    }
+}
+
+```
+
+<details>
+
+We didn't find any bugs with this test ... let's keep looking.

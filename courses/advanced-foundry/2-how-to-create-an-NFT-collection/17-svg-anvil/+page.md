@@ -4,65 +4,72 @@ title: SVG NFT Anvil Demo
 
 _Follow along the course with this video._
 
-
-
 ---
 
-## Deploying and Flipping a 100% On-Chain NFT on Anvil
+### SVG NFT Anvil Demo
 
-Welcome to this exciting tutorial where we will deploy and flip an on-chain NFT minted on our own local network, Anvil. Experience firsthand the speed and efficiency of Anvil, with all the steps demonstrated live in our MetaMask!
+Alright, let's do this for real. I wanna see our token in our Metamask wallet!
 
-## Setting up MetaMask with Anvil
+> [!NOTE]
+> I recommend following along on `anvil` instead of sepolia, testnets can be slow and problematic, everything we're doing should work locally.
 
-For live interactions with our NFT, we'll utilize MetaMask. Follow these steps to set up MetaMask with your Anvil chain:
+We can start by kicking off our anvil chain. This has already been configured in our `Makefile`, so we should just have to run `make anvil`
 
-1. Within MetaMask, choose `Add Network`.
-2. Edit the settings to coincide with your Anvil chain.
-3. Reset your Anvil chain to reflect these new settings.
-4. Verify your address is listed in the account. If not, import one from one of the private keys.
-5. Clear your activity tab- Go to your Account Settings -&gt; Advanced -&gt; Clear activity tab.
+Once the chain is running, open a new terminal (while leaving this one open). We'll have to add some commands to our `Makefile` before proceeding.
 
-With these steps, your MetaMask is primed and ready for the Mood NFT.
-
-<img src="/foundry-nfts/17-anvil/anvil1.png" style="width: 100%; height: auto;">
-
-## Deploying the Mood NFT on Anvil
-
-With our local chain in place and MetaMask set up, we're ready to deploy the Mood NFT on Anvil. Run the `Make Deploy Mood` command and if successful, you'll get a contract address for your Mood NFT.
-
-```makefile
+```js
 deployMood:
 	@forge script script/DeployMoodNft.s.sol:DeployMoodNft $(NETWORK_ARGS)
 ```
 
-## Interacting with the Mood NFT
+Looks great! Remember, you can add anvil as at network to Metamask by navigating to your network selector and choosing `+ Add network`.
 
-Ready to mint an NFT and interact with it? We'll utilize `cast` to accomplish this:
+<img src="/foundry-nfts/17-svg-anvil/svg-anvil2.png" width="100%" height="auto">
 
-1. Send a `mint NFT` call to your contract address.
-2. Ensure to pass in the private key from your account that has some money in it.
-3. Use the Anvil RPC URL from your `make` file.
-4. Execute the mint command with the right private key and, Voila- You've minted an NFT!
+Choose to add a network manually and enter the details as shown below:
 
-```makefile
-mintMoodNft:
-	@forge script script/Interactions.s.sol:MintMoodNft $(NETWORK_ARGS)
+<img src="/foundry-nfts/17-svg-anvil/svg-anvil3.png" width="100%" height="auto">
+
+If you need to import an anvil account, this is simple as well. When an anvil chain is spun up, it provides you with public and private keys for a number of default accounts. In your Metamask account selector, choose `+ add account or hardware wallet`
+
+<img src="/foundry-nfts/17-svg-anvil/svg-anvil4.png" width="100%" height="auto">
+
+Select `import account` and enter one of the default private keys offered by the anvil chain.
+
+<img src="/foundry-nfts/17-svg-anvil/svg-anvil5.png" width="100%" height="auto">
+
+Once everything is set up, we should be able to run `make deployMood`...
+
+<img src="/foundry-nfts/17-svg-anvil/svg-anvil1.png" width="100%" height="auto">
+
+With the contract address, we should be able to use a cast command to interact with it.
+
+```bash
+cast send 0x5FbDB2315678afecb367f032d93F642f64180aa3 "mintNft()" --private-key ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --rpc-url http://localhost:8545
 ```
 
-You can then import the NFT into MetaMask using the contract address. Add the Token ID and behold- your Mood NFT is live and ready for action!
+When that transaction completes, what we can _finally_ do, is take that contract address, go back into `Metamask > NFTs > Import NFT`. This is going to ask for our contract address, which we have from our deployment, and our tokenId, which is 0.
 
-## Flipping the Mood NFT
+Once imported ...
 
-Perhaps one of the most exciting features of our Mood NFT is the ability to flip its mood. In our command window, we call the `Flip Mood` function on our Token Zero, reflecting the change in MetaMask.
+<img src="/foundry-nfts/17-svg-anvil/svg-anvil6.png" width="100%" height="auto">
 
-Remove the NFT and re-add it using the contract address. Your Mood NFT strikes a different mood!
+LETS GOOOO! Now we need to flip it. We should be able to use largely the same `cast` command, let's just adjust the function to `flipMood`
 
-<img src="/foundry-nfts/17-anvil/anvil2.png" style="width: 100%; height: auto;">
+```bash
+cast send 0x5FbDB2315678afecb367f032d93F642f64180aa3 "flipMood(uint256)" 0 --private-key ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --
+rpc-url http://localhost:8545
+```
 
-## Wrapping up
+> [!NOTE]
+> For Metamask to reflect the change, we'll regrettably have to remove and readd the NFT collection.
 
-We've created, deployed, and minted an NFT on our own network with Anvil, and interacted with it through MetaMask! You could replicate these steps to deploy on a testnet, or even a main net.
+Once we reimport our NFT however...
 
-As a best practice, always aim to keep your NFTs decentralized. Use IPFS to store metadata regarding NFTs to ensure they're 100% on-chain, as opposed to being centrally controlled via websites or similar platforms.
+<img src="/foundry-nfts/17-svg-anvil/svg-anvil7.png" width="100%" height="auto">
 
-Congratulations and here's to your adventures in creating and flipping mood with NFTs!
+### Wrap Up
+
+We did it! We've just shown that we can write and deploy our own NFT contract with SVG art 100% on-chain. We could deploy this to a testnet if we wanted to. We could deploy this to a _mainnet_ if we wanted to. First hand we've experienced the power and advantages of keeping our data on-chain and as decentralized as possible.
+
+We've just done amazing work.

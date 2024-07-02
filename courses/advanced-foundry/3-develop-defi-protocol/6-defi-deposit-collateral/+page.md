@@ -1,164 +1,512 @@
 ---
-title: Deposit Collateral
+title: depositCollateral
 ---
 
 _Follow along the course with this video._
 
+---
 
+### depositCollateral
 
-# The Easiest Way to Learn Blockchain: Start with Depositing
+I think the easiest place to start with filling out the contract is going to be depositCollateral. This makes sense to me since it'll surely be one of the first places a user interacts with our protocol.
 
-In this section, I'm going to dive into the one place it's easiest to start when creating a blockchain protocol: Depositing collateral. After all, that's likely the first thing users will do with this protocol.
+To deposit collateral, users are going to need the address for the type of collateral they're depositing (wETH or wBTC), and the amount they want to deposit. Easy enough.
 
-## Depositing Collateral
-
-To start, we'll need code that allows users to deposit their collateral. Something like:
-
-```js
-function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external {...}
-```
-
-From here, we have a good starting point for explaining what's likely to happen in this function.
-
-Let's add a Natspec (Natural Specification) comment to help clarify what’s happening in the code.
+> [!NOTE]
+> Don't forget the NATSPEC!
 
 ```js
+///////////////////
+//   Functions   //
+///////////////////
+
+///////////////////////////
+//   External Functions  //
+///////////////////////////
+
 /*
- * @param tokenCollateralAddress: The address of the token to be deposited as collateral.
- * @param amountCollateral: The amount of collateral to deposit.
+ * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
+ * @param amountCollateral: The amount of collateral you're depositing
  */
-```
+function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external {
 
-## Code Sanitization
-
-We'll want a way to ensure amountCollateral is more than zero, in order to prevent potential issues down the line with zero-valued transactions.
-
-To do this, we can create a **modifier** called `moreThanZero`. Remember to reference our contract layout if you forget where things should go:
-
-```js
-// Layout of Contract:
-// Version
-// Imports
-// Errors
-// Interfaces, Libraries, Contracts
-// Type Declarations
-// State Variables
-// Events
-// Modifiers
-// Functions
-```
-
-Our modifier should look something like this:
-
-```js
-modifier moreThanZero(uint256 amount) {
-    if (amount == 0) {
-        revert DSCEngine__NeedsMoreThanZero();
-    }
-    _;
 }
 ```
 
-_Modifiers_ are used to change the behavior of functions in a declarative way. In this case, using a modifier for `moreThanZero` will allow its reuse throughout the functions.
+Now, the first thing I consider when I see a function passing values like this is sanitization. There are always going to be considerations for the parameters being passed to public functions that we should account for. For example, it's often inappropriate for address(0) to be passed, or negative numbers etc.
+
+It's likely that many functions in a protocol will require this kind of sanitation and rather than rewriting conditionals a dozen times, we should leverage modifiers.
+
+Our function layout reference says modifiers should come before our functions, so let's adhere to that. We'll need a new error is well.
 
 ```js
-function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) {...}
-```
 
-If the amount deposited is zero, the function will revert and cancel the transaction, saving potential errors or wasted transactions.
-
-## Allow and Deny Tokens
-
-Another thing we'll need is a restriction on what tokens can be used as collateral. So let's create a new modifier called `isAllowedToken`.
-
-```js
-modifier isAllowedToken(address token) {
-    if (tokenNotallowed){...};
-}
-```
-
-Currently we have no 'token allow list', so we're going to handle this with a state mapping of addresses to addresses, which we provide in our contract's constructor. We know as well that our 'DSCEngine is going to need the `burn` and `mint` functions of our DSC contract, so we'll provide that address here as well:
-
-```js
 contract DSCEngine {
-    error DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch();
-    ...
-    DecentralizedStableCoin private i_dsc;
-    mapping(address collateralToken => address priceFeed) private s_priceFeeds;
-    ...
-    constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
-        if (tokenAddresses.length != priceFeedAddresses.length) {
-            revert DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch();
+
+    ///////////////////
+    //     Errors    //
+    ///////////////////
+
+    error DSCEngine__NeedsMoreThanZero();
+
+    ///////////////////
+    //   Modifiers   //
+    ///////////////////
+
+    modifier moreThanZero(uint256 amount){
+        if(amount <=0){
+            revert DSCEngine__NeedsMoreThanZero();
         }
-        // These feeds will be the USD pairs
-        // For example ETH / USD or MKR / USD
-        for (uint256 i = 0; i < tokenAddresses.length; i++) {
-            s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
-            s_collateralTokens.push(tokenAddresses[i]);
-        }
-        i_dsc = DecentralizedStableCoin(dscAddress);
     }
+
+...
+
 }
 ```
 
-Finally, after all this prep, we can return to our modifier to complete it:
+This looks great! This should assure that the amount of collateral passed to our depositCollateral function is greater than zero. The other parameter of this function is the tokenCollateralAddress. Since we're only meaning to support wETH and wBTC, we should make a second modifier to assure only these allowed tokens are deposited as collateral.
 
 ```js
 modifier isAllowedToken(address token){
-    if (s_priceFeeds[token] == address(0)){
-        revert DSCEngine__NotAllowedToken();
-    }
-    _;
+
 }
 ```
 
-Here, function calls with this modifier will only be valid if the inputted token address is on an allowed list.
+Currently, we don't have any reference to use in our conditional for this modifier. We'll need to create a mapping as a state variable to track the tokens which are compatible with our protocol.
 
-## Saving User Collateral Deposits
-
-Finally, we get to the heart of the deposit collateral function.
-
-We need a way to save the user's deposited collateral. This is where we come to ‘_state variables_’:
+We know we're going to be using chainlink pricefeeds, so what we can do is have this mapping be a token address, to it's associated pricefeed. In our modifier, if a pricefeed isn't found for the passed token address, it'll revert!
 
 ```js
-mapping(address user => mapping(address collateralToken => uint256 amount)) private s_collateralDeposited;;
+/////////////////////////
+//   State Variables   //
+/////////////////////////
+
+mapping(address token => address priceFeed) private s_priceFeeds;
 ```
 
-This is a mapping within a mapping. It connects the user's balance to a mapping of tokens, which maps to the amount of each token they have.
-
-With this, we have developed a good foundation for our deposit collateral function.
-
-## Safety Precautions
-
-Even though we've added quite a bit already, there's still more that can be done to ensure this function is as safe as possible. One way is by adding the `nonReentrant` modifier, which guards against the most common attacks in all of Web3.
+We'll probably want to initialize this mapping in our contract's constructor. To do this, we'll have our constructor take a list of token addresses and a list of priceFeed addresses, each index of one list will be mapped to the respective index of the other on deployment. We also know that the DSCEngine is going to need to know about the DecentralizeStablecoin contract. With all this in mind, let's set up our constructor.
 
 ```js
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+///////////////////
+//   Functions   //
+///////////////////
+constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){}
+```
+
+Here's where we should definitely perform a sanity check, since a contract is only constructed once. If the indexes of our lists are meant to be mapped to eachother, we should assure the lengths of the lists match, and if they don't we can revert with another custom error.
+
+```js
+///////////////////
+//     Errors    //
+///////////////////
+
+error DSCEngine__NeedsMoreThanZero();
+error DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
+
 ...
-    function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant {
+
+///////////////////
+//   Functions   //
+///////////////////
+constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
+    if(tokenAddresses.length != priceFeedAddresses.length){
+        revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
+    }
+}
+```
+
+Now we can add our for loop which will map our two lists of addresses to eachother.
+
+```js
+///////////////////
+//   Functions   //
+///////////////////
+constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
+    if(tokenAddresses.length != priceFeedAddresses.length){
+        revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
+    }
+
+    for(uint256 i=0; i < tokenAddresses.length; i++){
+        s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
+    }
+}
+```
+
+We're going to be doing lots with our `dscEngine`. We should declare this as an immutable variable and then assign it in our constructor.
+
+> [!NOTE]
+> Don't forget to import `DecentralizedStableCoin.sol`!
+
+```js
+import {DecentralizedStableCoin} from "DecentralizedStableCoin.sol";
+
+...
+
+/////////////////////////
+//   State Variables   //
+/////////////////////////
+
+mapping(address token => address priceFeed) private s_priceFeeds;
+DecentralizedStableCoin private immutable i_dsc;
+
+...
+
+///////////////////
+//   Functions   //
+///////////////////
+constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
+    if(tokenAddresses.length != priceFeedAddresses.length){
+        revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
+    }
+
+    for(uint256 i=0; i < tokenAddresses.length; i++){
+        s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
+    }
+    i_dsc = DecentralizedStableCoin(dscAddress);
+}
+```
+
+Remember, we were doing all this because we need a new modifier that checks our token addresses! Now that things are established in our constructor, we can write this modifier.
+
+```js
+
+contract DSCEngine {
+
+    ///////////////////
+    //     Errors    //
+    ///////////////////
+
+    error DSCEngine__NeedsMoreThanZero();
+    error DSCEngine__TokenNotAllowed(address token);
+
+    ///////////////////
+    //   Modifiers   //
+    ///////////////////
+
+    modifier moreThanZero(uint256 amount){
+        if(amount <=0){
+            revert DSCEngine__NeedsMoreThanZero();
+        }
+        _;
+    }
+
+    modifier isAllowedToken(address token) {
+        if (s_priceFeeds[token] == address(0)) {
+            revert DSCEngine__TokenNotAllowed(token);
+        }
+        _;
+    }
+
+...
+
+}
+```
+
+Great! Now, coming all the way back to our functions (told you we'd be moving fast!), we can add these newly created modifiers to `depositCollateral`.
+
+```js
+///////////////////////////
+//   External Functions  //
+///////////////////////////
+
+/*
+ * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
+ * @param amountCollateral: The amount of collateral you're depositing
+ */
+function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{}
+```
+
+I've additionally included the nonReentrant modifier, which we'll need to import from OpenZeppelin. When interacting with external contracts it's often good to consider the implications of reentrancy. Reentrancy is one of the most common and damaging attacks in all of Web3, and sometimes I'll throw this modifier on as a **_better safe than sorry_** methodology. It may not explicitly be required, but we'll find out when this code goes to audit! The trade off to include it is an expense of gas required to perform these extra checks.
+
+Let's add the import to our contract.
+
+```js
+pragma solidity ^0.8.18;
+
+import {DecentralizedStableCoin} from "DecentralizedStableCoin.sol";
+import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+...
+
+contract DSCEngine is ReentrancyGuard {
+    ...
+}
+```
+
+Whew, all this and we haven't even started the function body yet! Let's start working with the deposited collateral. We'll need a way to keep track of the collateral deposited by each user. This sounds like a mapping to me.
+
+```js
+/////////////////////////
+//   State Variables   //
+/////////////////////////
+
+mapping(address token => address priceFeed) private s_priceFeeds;
+DecentralizedStableCoin private immutable i_dsc;
+mapping(address user => mapping(address token => uint256 amount)) private s_collateralDeposited;
+```
+
+Now we can finally add the deposited collateral to our user's balance within our depositCollateral function.
+
+```js
+///////////////////////////
+//   External Functions  //
+///////////////////////////
+
+/*
+ * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
+ * @param amountCollateral: The amount of collateral you're depositing
+ */
+function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{
+    s_collateralDeposited[msg.sender][tokenCollateralAddress] =+ amountCollateral;
+}
+```
+
+When we're changing the balance of our user's deposited collateral, what are we doing? We're updating our contract state! Any time state is changed, we should absolutely emit an event. Our contract layout tells us that events should be declared beneath our state variables. So, let's go ahead and declare this event and emit it in our depositCollateral function.
+
+```js
+////////////////
+//   Events   //
+////////////////
+
+event CollateralDeposited(address indexed user, address indexed token, uint256 indexed amount);
+
+...
+
+///////////////////////////
+//   External Functions  //
+///////////////////////////
+
+/*
+ * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
+ * @param amountCollateral: The amount of collateral you're depositing
+ */
+function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{
+    s_collateralDeposited[msg.sender][tokenCollateralAddress] =+ amountCollateral;
+    emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
+}
+```
+
+Our function so far is doing a great job adhering to CEI (Checks, Effects, Interactions). The checks we're performing are being executed by our modifiers, our effects are any changes to do with internal accounting or state changes, and effects will be our external interacts (transferring the tokens). Following this design pattern is the best way to protect yourself from reentrancy.
+
+Let's add our interactions to the function now, we'll need to call transferFrom on wBTC or wETH. These are ERC20s remember, so let's import an interface to use.
+
+```js
+pragma solidity ^0.8.18;
+
+import {DecentralizedStableCoin} from "DecentralizedStableCoin.sol";
+import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import {IERC20} from "@openzeppelin/contracts/tokens/ERC20/IERC20.sol";
+
+...
+
+///////////////////////////
+//   External Functions  //
+///////////////////////////
+
+/*
+ * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
+ * @param amountCollateral: The amount of collateral you're depositing
+ */
+function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{
+    s_collateralDeposited[msg.sender][tokenCollateralAddress] =+ amountCollateral;
+    emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
+
+    IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);
+}
+```
+
+One last thing to note in this function - our transferFrom call actually returns a boolean. We want to assure this transfer is successful, otherwise revert this function call. One last conditional to add...
+
+```js
+bool success = IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);
+
+if(!success){
+    revert DSCEngine__TransferFailed();
+}
+```
+
+...and one last custom error:
+
+```js
+
+contract DSCEngine {
+
+    ///////////////////
+    //     Errors    //
+    ///////////////////
+
+    error DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch();
+    error DSCEngine__NeedsMoreThanZero();
+    error DSCEngine__TokenNotAllowed(address token);
+    error DSCEngine__TransferFailed();
+
+    ...
+
+}
+```
+
+### Wrap Up
+
+This function is looking pretty dang great! We've finished writing depositCollateral which allows users to .. deposit collateral .. but it does so much more! We've written modifier to sanitize our function inputs as well as employed best practice design patterns like CEI and events to keep things secure.
+
+This may be a good place to start writing some tests to make sure everything written so far is performing as expected, but let's write a few more functions before getting into that.
+
+I've left our DSCEngine.sol (up to this point in the lesson) below for reference. Over the next few lessons, I'll continue to include this contract in it's entirety for reference.
+
+See you in the next lesson!
+
+<details>
+<summary>DSCEngine.sol</summary>
+
+```js
+// Layout of Contract:
+// version
+// imports
+// errors
+// interfaces, libraries, contracts
+// Type declarations
+// State variables
+// Events
+// Modifiers
+// Functions
+
+// Layout of Functions:
+// constructor
+// receive function (if exists)
+// fallback function (if exists)
+// external
+// public
+// internal
+// private
+// internal & private view & pure functions
+// external & public view & pure functions
+
+// SPDX-License-Identifier: MIT
+
+pragma solidity 0.8.18;
+
+import { ReentrancyGuard } from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { DecentralizedStableCoin } from "./DecentralizedStableCoin.sol";
+
+/*
+ * @title DSCEngine
+ * @author Patrick Collins
+ *
+ * The system is designed to be as minimal as possible, and have the tokens maintain a 1 token == $1 peg at all times.
+ * This is a stablecoin with the properties:
+ * - Exogenously Collateralized
+ * - Dollar Pegged
+ * - Algorithmically Stable
+ *
+ * It is similar to DAI if DAI had no governance, no fees, and was backed by only WETH and WBTC.
+ *
+ * Our DSC system should always be "overcollateralized". At no point, should the value of
+ * all collateral < the $ backed value of all the DSC.
+ *
+ * @notice This contract is the core of the Decentralized Stablecoin system. It handles all the logic
+ * for minting and redeeming DSC, as well as depositing and withdrawing collateral.
+ * @notice This contract is based on the MakerDAO DSS system
+ */
+contract DSCEngine is ReentrancyGuard {
+
+    ///////////////////
+    //     Errors    //
+    ///////////////////
+
+    error DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch();
+    error DSCEngine__NeedsMoreThanZero();
+    error DSCEngine__TokenNotAllowed(address token);
+    error DSCEngine__TransferFailed();
+
+    /////////////////////////
+    //   State Variables   //
+    /////////////////////////
+
+    mapping(address token => address priceFeed) private s_priceFeeds;
+    DecentralizedStableCoin private immutable i_dsc;
+    mapping(address user => mapping(address token => uint256 amount)) private s_collateralDeposited;
+
+    ////////////////
+    //   Events   //
+    ////////////////
+
+    event CollateralDeposited(address indexed user, address indexed token, uint256 indexed amount);
+
+    ///////////////////
+    //   Modifiers   //
+    ///////////////////
+
+    modifier moreThanZero(uint256 amount){
+        if(amount <=0){
+            revert DSCEngine__NeedsMoreThanZero();
+        }
+        _;
+    }
+
+    modifier isAllowedToken(address token) {
+        if (s_priceFeeds[token] == address(0)) {
+            revert DSCEngine__TokenNotAllowed(token);
+        }
+        _;
+    }
+
+    ///////////////////
+    //   Functions   //
+    ///////////////////
+    constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
+        if(tokenAddresses.length != priceFeedAddresses.length){
+            revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
+        }
+
+        for(uint256 i=0; i < tokenAddresses.length; i++){
+            s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
+        }
+        i_dsc = DecentralizedStableCoin(dscAddress);
+    }
+
+
+    ///////////////////////////
+    //   External Functions  //
+    ///////////////////////////
+
+    /*
+     * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
+     * @param amountCollateral: The amount of collateral you're depositing
+     */
+    function depositCollateral(
+        address tokenCollateralAddress,
+        uint256 amountCollateral
+    )
+        external
+        moreThanZero(amountCollateral)
+        nonReentrant
+        isAllowedToken(tokenCollateralAddress)
+    {
         s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
         emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
         bool success = IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);
         if (!success) {
             revert DSCEngine__TransferFailed();
         }
+    }
+
+    function depositCollaterAndMintDsc() external {}
+
+    function redeemCollateralForDsc() external {}
+
+    function redeemCollateral() external {}
+
+    function mintDsc() external {}
+
+    function burnDsc() external {}
+
+    function liquidate() external {}
+
+    function getHealthFactor() external view {}
 }
 ```
 
-## Wrapping It Up
+</details>
 
-In conclusion, through this section, we have built an efficient deposit collateral function.
-
-All the checks, such as ensuring the deposit is more than zero and the token is allowed, are done effectively. The state updates with the deposited collateral. Any interactions externally are safe from reentrancy attacks, ensuring a secure environment for our deposit function.
-
-As seen above, to end the function, the function will emit a `CollateralDeposited` event.
-
-```js
-emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
-```
-
-This will give us more information about when and where the deposit function is called, which aids in debugging and development of the blockchain.
-
-Remember, learning about the functioning of blockchain can be a bit intimidating. But by breaking down the different steps and understanding each process, you'll begin to see it's not as complicated as it may first seem. Happy coding!
-
-<img src="/foundry-defi/6-defi-deposit-collateral/defi-deposit-collateral1.PNG" style="width: 100%; height: auto;">
+---

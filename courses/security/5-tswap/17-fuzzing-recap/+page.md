@@ -2,11 +2,57 @@
 title: Fuzzing Recap
 ---
 
-
-
 ---
 
-# Mastering the Art of Fuzzing: Stateless, Stateful, and Weird ERC 20 Exploits
+### Fuzzing Recap
+
+So, what all did we just cover? There's been a lot.
+
+We learnt about `stateless fuzzing` and how powerful it can be at expanding the coverage of our tests beyond single case unit tests by bombarding our functions with random data!
+
+This lesson also touched on `foundry.toml` configurations for our fuzz testing with key attributes like `runs`, `depth` and `seed` allowing us to configure how thoroughly our fuzzing is performed.
+
+- Runs - How many times your test suite will run with random data
+- Depth - How many functions your test suite will call each run
+- Seed - An input value for a pseudorandom number generator can be recalled/reused for 'reliable randomness'
+
+`stateless fuzzing` has a weakness however! We learnt how vulnerabilities that arise as a product of contract state changes cannot be caught be `stateless fuzzing` and thus introduced `open stateful fuzzing`
+
+`Open stateful fuzzing` allowed us to retain our contract state from one run to the next. Tracking these state changes between runs allows our fuzzing test suite to catch even deeper vulnerabilities.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
+
+// INVARIANT: doMoreMathAgain should never return 0
+contract StatefulFuzzCatches {
+    uint256 public myValue = 1;
+    uint256 public storedValue = 100;
+
+    /*
+     * @dev Should never return 0
+     */
+    function doMoreMathAgain(uint128 myNumber) public returns (uint256) {
+        uint256 response = (uint256(myNumber) / 1) + myValue;
+        storedValue = response;
+        return response;
+    }
+
+    function changeValue(uint256 newValue) public {
+        myValue = newValue;
+    }
+}
+```
+
+It was here that we noticed that our fuzz tests were reverting a lot and not behaving very efficiently. We introduced `Handlers` and `handler-based stateful fuzz testing` which allowed us to constrain the data being tested with as well as focus our function calls such they they were being called in a meaningful way and a sensible order.
+
+Our `Handler` essentially serves as a proxy or a wrapper to the contract we're testing and focuses our test suite.
+
+These adjustments ultimately allow our fuzz testing suite to run in the most efficient and effective way possible.
+
+The last thing we teased was the `Weird ERC20` exploit, which we'll dive into next. You've just been buried in new information though. Now's a great time to take a break.
+
+See you in the next lesson!
 
 In this blog post, we're going to dive into the exciting world of `fuzzing`. Hang in there and get ready to uncover the intricacies of stateless fuzzing, explore the intriguing concept of stateful fuzzing, programmatically exploit the Weird ERC 20, and navigate the maze of manual bug finding in your codebase.
 

@@ -1,50 +1,31 @@
 ---
-title: Exploit - Weird ERC20s (These are a menace to Web3)
+title: Exploit - Weird ERC20s
 ---
 
-
-
 ---
 
-# Exploring the Weird World of ERC-20 Smart Contracts: Security, Oddities and Auditing
+### Weird ERC20s
 
-In this blog post we'll delve into one of the most interesting parts of the decentralized area - ERC-20 Smart Contracts and their intricate aspects. We’re going to go back to the `cipher` security and auditing full course on GitHub and explore more about a special section named **TSWAP**, specifically _section five_.
+I've alluded to it a coupled times, but in this lesson we're going to take a closer look at one of the top vulnerabilities in DeFi - `Weird ERC20s`.
 
-## Tackling the ERC-20 Quirks
+There's a great [**GitHub Repo**](https://github.com/d-xo/weird-erc20) that's been compiling examples of these types of tokens. I highly encourage you to check it out and familiarize yourself with common token designs.
 
-> _Remember, it's the stuff we don't know that keeps us up at night._
+The token we just dealt with in our `stateful fuzz testing` is an example of one of these `Weird ERC20s` - a `Fee on Transfer` token.
 
-One weird instance that we are going to discuss today is about `ERC-20 fee on transfer token`, which was part of the `SC_exploits`. When testing this token, it was found that for every ten transactions, a fee was being charged. This might seem innocuous, but this little oddity has the potential to destabilize numerous protocols.
+`YeildERC20` contained a mechanism which sent a fee to the owner every 10 transactions. This type of behaviour in fee on transfer tokens can actually break many protocols - so it's very important to keep an eye out for these incompatibilities.
 
-![](https://cdn.videotap.com/AepJ0CJaMiwbHLC1x4GC-49.5.png)
+Other examples of Weird ERC20s may:
 
-## The Anomalies of ERC-20 Tokens
+- **Allow Re-entrancy** - some tokens allow reentrant calls
+- **Missing Return Values** - some tokens do not return a bool on ERC20 methods - making transaction confirmations difficult
+- **Upgradeable ERC20s** - these could be changed in the future to behave unexpectedly. USDC is a high profile example of this.
+- **Rebasing Tokens** - situations where token balances are changes outside of usual transfer calls
+- **Block Lists** - some tokens do not allow certain addresses to transact
 
-ERC-20 Tokens come in all shapes and sizes. Here's a glimpse into some of the variants and potential problems that lurk in the shadows:
+The list goes on...
 
-1. **Reentrant tokens**: These ERC-777s seem harmless, but even a simple transfer of these tokens can lure you into a pit of reentrancy attacks.
-2. **Missing return values**: Some tokens don’t return a boolean on ERC-20 methods. For transactions requiring a status check, this can be a potent problem.
-3. **Fee on transfer**: Some tokens sneak in a fee on every transfer while others can start doing so in the future.
-4. **Upgradable tokens**: These tokens, like USDC, could morph into anything over time.
-5. **Rebasing tokens**: These tokens magic away your balance by meddling with different contracts.
-6. **Tokens with blocklists**: Some tokens put restrictions on certain transacting parties.
-7. **Low/high decimals**: Token numbers can go from unusually low to abnormally high, causing calculation mishaps.
-8. **Multiple token addresses**: These tokens exist in more than one places at once.
+There are so many potential exploits that come from unexpected behaviour of `Weird ERC20s`. The best way to protect against these problems is to know that tokens you expect to interact with. At the end of the day ERC20s are external contracts and we need to defend against them.
 
-## Dealing with ERC-20 Tokens Anomalies
+Again I'll encourage you to familiarize yourself with some of the cases outlined in the [**GitHub Repo**](https://github.com/d-xo/weird-erc20) linked here. Additionally, I want to mention there's a great [**Token Integration Checklist by Trail of Bits**](https://secure-contracts.com/development-guidelines/token_integration.html) that can serve has a great guideline for builders looking to avoid these types of exploits. In fact, [**secure-contracts.com**](https://secure-contracts.com/index.html) as a whole is a really invaluable resource you should check out.
 
-![](https://cdn.videotap.com/4oHWptmu7liSgxFnB37w-170.5.png)
-
-ERC-20 Tokens are an external smart contract that one must treat with a level of wariness. While integrating with them, you must be fully aware of the token’s characteristics.
-
-Blockquote:
-
-> _Playing in the world of ERC-20s without complete information is like dancing on a live minefield._
-
-A cagey approach to interacting with ERC-20s can be the difference between a successful dApp and a failed project.
-
-![](https://cdn.videotap.com/fnsDlRcZfomWTHFt6MFT-214.5.png)
-
-In conclusion, if you are aspiring to be a top-flight builder of powerful smart contracts. This website is an excellent guide to understanding and gaining expertise in the world of smart contracts. It serves as both a practical tool and an in-depth manual to secure smart contracts.
-
-And remember, "The first step to great security is being aware about all the unknowns!".
+Alright! Let's see how all of this applies to TSwap!

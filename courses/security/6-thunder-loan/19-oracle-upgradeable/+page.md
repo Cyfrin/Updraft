@@ -2,46 +2,127 @@
 title: OracleUpgradeable.sol
 ---
 
+---
 
+### OracleUpgradeable.sol
+
+The first _real_ contract we're going to scope out is `OracleUpgradeable.sol` and it has a couple interesting properties to consider.
+
+<details>
+<summary>OracleUpgradeable.sol</summary>
+
+```js
+// SPDX-License-Identifier: AGPL-3.0-only
+pragma solidity 0.8.20;
+
+import { ITSwapPool } from "../interfaces/ITSwapPool.sol";
+import { IPoolFactory } from "../interfaces/IPoolFactory.sol";
+import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
+contract OracleUpgradeable is Initializable {
+    address private s_poolFactory;
+
+    function __Oracle_init(address poolFactoryAddress) internal onlyInitializing {
+        __Oracle_init_unchained(poolFactoryAddress);
+    }
+
+    function __Oracle_init_unchained(address poolFactoryAddress) internal onlyInitializing {
+        s_poolFactory = poolFactoryAddress;
+    }
+
+    function getPriceInWeth(address token) public view returns (uint256) {
+        address swapPoolOfToken = IPoolFactory(s_poolFactory).getPool(token);
+        return ITSwapPool(swapPoolOfToken).getPriceOfOnePoolTokenInWeth();
+    }
+
+    function getPrice(address token) external view returns (uint256) {
+        return getPriceInWeth(token);
+    }
+
+    function getPoolFactoryAddress() external view returns (address) {
+        return s_poolFactory;
+    }
+}
+
+```
+
+</details>
 
 ---
 
-# Understanding the Tincho Method: A Deep Dive into Solana Smart Contract
+Starting from the top, we can verify that our 3 imports `ITSwapPool`, `IPoolFactory` and `Initializable` are being utilized, and they are.
 
-In our previous discussion, we were introduced to the Tincho method. Thanks to its creator, Tincho, it gave us more confidence in creating our first Solana smart contract. Now, let's dive deeper into this journey and breakdown the necessities of preparing a Solana smart contract with a hand on codebase.
+```js
+// SPDX-License-Identifier: AGPL-3.0-only
+pragma solidity 0.8.20;
 
-## A Look at the Codebase
+import { ITSwapPool } from "../interfaces/ITSwapPool.sol";
+import { IPoolFactory } from "../interfaces/IPoolFactory.sol";
+import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-First, navigate to the Solana `.sol` file. It's our initial contract. It may seem small, but it's our first step into the universe of smart contracts. So let's explore what its components are. If you are not familiar with Solana or `.sol` files, you may find it easier to use 'Word Wrap' function to easily view the code.
+contract OracleUpgradeable is Initializable {...}
+```
 
-With the 'Word Wrap' enabled, we can see some keywords like `pragma` and `solidity`. There are also several imports, such as `it swap pool`, `Ipool factory`, and `initializable` which are being used within the same contract.
+`Initializable` stands out to me however. This import pertains to the upgradeability of this protocol and how proxies are handled. It will be important to gain a deeper familiarity with `Initializable` before moving on.
 
-## The Role of Initializable
+### Initializable
 
-Now, let's take a more in-depth look at the `initializable` package. It originates from OpenZeppelin, more specifically `OpenZeppelin contracts Upgradable`. As the name suggests, it aids in writing upgradable contracts and will be crucial to our understanding due to its role in proxy elements.
+`ctrl + left-click` (`cmd + left-click` on mac) on the `Initializable` import should bring you to this contract to consider.
 
-> OpenZeppelin's `initializable` package plays a significant role in Solana smart contract creation. It makes it possible to construct complex contracts that are easily managed and upgradable. It is imperative to understand its functionality and how it interacts with other elements in the smart contract.
+There are a lot of comments and text in this contract. I encourage you to pause and read through much of it before continuing for additional context.
 
-## Understanding Proxy in Solidity
+[**Initializable.sol**](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/proxy/utils/Initializable.sol)
 
-Now, let's navigate our way to Thunderloan.sol contract. Here, we will come across `Oracle Upgradable`, which is inherited into the main Thunderloan contract.
+What makes this contract so important regarding upgradeable protocols? Well, **upgradeable contracts can't have constructors**.
 
-The `Oracle Upgradable` contract is a part of the main `Thunderloan` contract. It's a base contract facilitating upgradable contracts or contracts deployed behind a proxy. To get more comfortable with this concept, it's important to understand proxies and their use in Solidity.
+This is the case due to how storage is handled in a proxy pattern.
 
-If you take a look at the Nat spec (Natural Specification), you'll learn that upgradable contracts can't have constructors. The reason is, in an upgradable contract the storage is delegated to the proxy, but the logic resides in the implementation.
+Storage -> Proxy
 
-Here is an important takeaway:
+Logic -> Implementation
 
-> A contract's storage variables live in the proxy contract, while the contract logic lives in the implementation contract. Therefore, making use of constructors to initialize storage variables isn't applicable.
+So if our constructor does something with storage, such as initializing a variable, it's not going to matter!
+`Initializable.sol` assists in initializing proxies with storage.
 
-In order to circumvent this issue, the `initializable` contract comes into play. Instead of constructors, you have initializer functions that help initialize proxies with storage. For instance, in OpenZeppelin contracts, you will find initializer functions signified as `__Init` and `__Initunchained`.
+It does these through `initializer` functions which can often be identified by the naming convensions `__init` and `__init_unchained`. We can see these function implemented within `OracleUpgradeable.sol`
 
-## Decoding Oracle Init
+```js
+function __Oracle_init(address poolFactoryAddress) internal onlyInitializing {
+    __Oracle_init_unchained(poolFactoryAddress);
+}
 
-Next, we have `Oracle Init` which is our initializer. It calls `Oracle Init Unchained` that takes a `pool factory address`, a `TSWAP address`, and another `pool factory address`.
+function __Oracle_init_unchained(address poolFactoryAddress) internal onlyInitializing {
+    s_poolFactory = poolFactoryAddress;
+}
+```
 
-Our initializer function, `Oracle Init`, calls another function, `Oracle Init Unchained`. This function has a parameter `only initializing` which restricts the function to be called only one time.
+> **Protip:** For more information on the differences between **init and **init_unchained, check out this [**forum post**](https://forum.openzeppelin.com/t/difference-between-init-and-init-unchained/25255) on OpenZeppelin.
 
-(Here's a piece of convention information: I suggest changing the name `TSWAP address` to `pool factory address` for better consistency. Just something to note if you are auditing the contract.)
+What are these functions in `OracleUpgradeable` doing? Let's dive into them a bit.
 
-In simple terms, the entire setup here is to initialize the contract's state because we are using a proxy model where a constructor is not applicable. Now that we've successfully dived into the codebase and demystified key concepts, our Solana smart contract is ready for deployment!
+Experience tells me that this `OracleUpgradeable` contract is likely being inherited by `ThunderLoan.sol`. There should an initializer function which sets this up for the protocol. We can see their absolutely is and that's passing `tswapAddress` as a parameter.
+
+```js
+function initialize(address tswapAddress) external initializer {
+    __Ownable_init(msg.sender);
+    __UUPSUpgradeable_init();
+    __Oracle_init(tswapAddress);
+    s_feePrecision = 1e18;
+    s_flashLoanFee = 3e15; // 0.3% ETH fee
+}
+```
+
+I would likely call out this parameter name as an informational. Best practice would have it match the expected parameter name of the function being called `poolFactoryAddress`. This will assist in coherence and readability.
+
+```js
+// @Audit-Informational: Change parameter name to `poolFactoryAddress` for consistency with OracleUpgradeable.sol::__Oracle_init
+function initialize(address tswapAddress) external initializer {...}
+```
+
+> **Note:** Both `__Oracle_init` and `__Oracle_init_unchained` implement the `onlyInitializing` modifier. This modifier assures that something can only be initialized a single time!
+
+### Wrap Up
+
+To summarize, our `__init` and `__init_unchained` functions serve as initializers to our upgradeable smart contract. These two functions together effectively replace the use of a constructor given the limitation of storage being managed by the proxy contract.
+
+The use of initializers allows us to still set starting values for items in storage without impacting how storage on the implementation contract is maintained!

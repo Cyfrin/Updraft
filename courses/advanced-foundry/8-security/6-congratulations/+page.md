@@ -4,36 +4,39 @@ title: Congratulations
 
 _Follow along with this video._
 
-
-
 ---
 
-# Becoming a Smart Contract Security Wizard: What’s Next After Your First Big Course
+### Congratulations
 
-Welcome back, this is the end of our journey together, at least for this course. We hope you've enjoyed it and learned a lot. We've covered a lot of ground, and you should be proud of yourself for making it this far. Now, let's take a look at some nice tools and resources that will help you continue your journey.
+Welcome back, you've made it to the end of this course! We've covered an enormous amount of content and you should be incredibly proud.
 
-## Resources That Cannot Be Missed
+To those looking to become smart contract security professions, I have some resources that I recommend you check out next.
 
-Continuing your journey through security education and fine-tuning those skills you just acquired is also essential:
+- [**Solidity Security: Comprehensive list of known attack vectors and common anti-patterns**](https://blog.sigmaprime.io/solidity-security.html)
+  - This site details a huge number of security vulnerabilities in this space that you should absolutely know about
+- [**Damn Vulnerable Defi**](https://www.damnvulnerabledefi.xyz/)
+  - Tincho himself offers this gamified avenue to practice smart contract security and to experience attack vectors first hand
+- [**Ethernaut**](https://ethernaut.openzeppelin.com/)
+  - OpenZeppelin offers another great gamified platform to learn smart contract vulnerabilities
+- [**Solodit**](https://solodit.xyz/)
+  - An amazing platform that aggregates audit reports from the top auditors and firms in the industry. This is **_the_** place to see how it's done in the real world.
+- [**Cyfrin**](https://www.cyfrin.io/)
+  - Anyone building their own protocol who needs an audit can of course always check out our auditing platform, Cyfrin.
+- [**Updraft Security & Auditing Course**](https://updraft.cyfrin.io/courses/security)
+  - Since the creation of the Foundry course Updraft has launched a dedicated Security & Auditing curriculum, anyone serious about security in the space needs to check it out.
 
-- [Damn Vulnerable DeFi](https://www.damnvulnerabledefi.xyz/), crafted by a developer named Tincho, is a fascinating game that draws you right into the heart of offensive security in Ethereum’s smart contracts.
+Whew, a sincere congratulations for making it through this course. Myself and the entire Web3 community are glad to have you along, empowered to contribute and build the things you want to make a reality.
 
-- A kinetically engaging way of learning, [Ethernaut](https://ethernaut.openzeppelin.com/) offers an immersive game-like environment perfect for understanding Solidity and smart contract vulnerabilities.
+People always ask **_Where do I go now? What do I do with all this new found knowledge?_**
 
-<img src="/auditing-intro/6-end/end1.png" alt="Auditing Image" style="width: 100%; height: auto;">
+Well, I've left some links with further resources above, but the best thing you can do for yourself is to take what you've learnt and **apply it**. Build something cool, contribute to GitHub Repos, participate in hackathons, apply for jobs. Make mistakes and learn as you go. A constant stream of tutorials will not reinforce the confidence in yourself and in your abilities necessary to succeed.
 
-## For The Aesthetes: Insights into Smart Contract Auditing
+🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊
 
-One vital aspect of this space is auditing. If you're looking to be an auditor, [Solidit](https://solodit.xyz/) is an excellent tool for accessing audit reports from the most accomplished smart contract security professionals in the industry. Here at [Cyfrin](https://www.cyfrin.io/), we do smart contract security and auditing too, so don't hesitate to reach out.
+[**Sepolia NFT Challenge**](https://sepolia.etherscan.io/address/0x766a74f8924C7B07df088fDB0F7D7DbaDd330Fb3#code)
 
-## Sharpen Your Saw: Further Learning and Opportunities
+[**Arbitrum NFT Challenge**](https://arbiscan.io/address/0xa0c7ADA2c7c29729d12e2649BC6a0a293Ac46725#code)
 
-Although we have dipped quite deep into the iceberg that is security in this course, you must understand that there's still so much more to explore, and we're working on providing further security-based education, so stay tuned. However, to kick things off in your advanced security journey.
+🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊
 
-This marks the end of the security lesson, but not of your journey. Now that you're armed with deep insights into the Web Three developer space, it might seem daunting to contemplate your next move. No worries though; here's the answer: apply your new knowledge. Whether you're joining a hackathon, delving into GitHub repos, or applying for jobs and grants, it's critical to utilize and develop your skills.
-
----
-
-Thanks to all who took the course and contributed to its creation. It's been a thrill to share this journey, and the excitement continues as we watch you dive in, continue your learning, and march forward, building on the cutting-edge technology our field offers. We look forward to seeing you in the Web Three and blockchain community and can’t wait to admire the wonderful things you build. Until then, happy coding!
-
-Bye!
+Thank you for everything! See you in Web3!

@@ -2,86 +2,122 @@
 title: Case Study - Polygon Precompile
 ---
 
-
-
 ---
 
-# Hunting for smart contract bugs: How a developer identified a $7 billion exploit
+### Case Study - Polygon Precompile
 
-If you fancy yourself a tech-savvy problem solver or a capable and competent coder, the world of smart contract bug bounties could be your next lucrative adventure. Not only are these exploits well-paying when correctly identified, but they also aid in securing the ecosystem against hackers.
+In this lesson we'll be covering a case study in which a security researcher (just like you!) claimed a $2.2 Million bug bounty, saving the Polygon ecosystem of being drained a potential $7 Billion. With a B.
 
-I recently had the occasion to interview a developer who discovered a $7 billion bug and was rewarded with $2.2 million for his conscientious reporting of this vulnerability. By exploring his successful case, we can learn the key strategies and tools you'll need to find your million-dollar bounty.
+### Polygon
 
-Let's delve into this intriguing world of hunting for smart contract bugs.
+On May 31, 2020 the Matic blockchain was launched, this was later rebranded to the Polygon Chain. Polygon is well known for:
 
-## Matic blockchain, Polygon, and the MRC20 contract
+- EVM Compatibility
+- Cheap Gas Fees
+- Short Block Time
+- ZK Rollup Tech
 
-On May 31, 2020, the Matic blockchain, which later rebranded as the Polygon chain, was launched. An [EVM](https://ethereum.org/en/developers/docs/evm/) compatible blockchain, it's known for its low gas fees, rapid block times, and recent ventures into [ZK technology](https://polygon.technology/polygon-zkevm).
+In the Gensis Block of the Polygon Chain (block 0), there are 10 transactions, one of which is the creation of a contract - MRC20. You can view this block yourself on [**PolygonScan**](https://polygonscan.com/txs?block=0). On creation, this contract was deployed with nearly 10 billion MATIC (the Polygon native currency).
 
-If we return to the beginning, block zero to be precise, we find ten transactions in this Genesis block. One of these transactions created the MRC20 contract. This contract allowed users to sign a transaction without sending it, meaning they could offset gas costs. For example, somebody else could be responsible for these costs. This technique is referred to as a metatransaction, which is better explained in [EIP 712](https://eips.ethereum.org/EIPS/eip-712). Initiated with almost 10 billion MATIC, this contract facilitated these gasless transactions. However, it concealed a critical exploit, an oversight that could potentially empty the contract of its entire content.
+A defining feature of this contract is that it contains a function which allows someone to sign a transaction without sending it. These are known as metatransactions and you can read more about them in [**EIP-2771**](https://eips.ethereum.org/EIPS/eip-2771).
 
-## The discovery of the dormant exploit
+An exploit was lurking in MRC20 though, waiting to drain the contract of all these funds.
 
-On December 3, 2021, Leon Spacewalker (a pseudonym of our developer hero) submitted a report about this potential vulnerability to Immunify. Less than two days later, another astute individual discovered this exploit. Unfortunately, this other individual was a malicious hacker and successfully pilfered 800,000 MATIC tokens from the contract.
+On December 3, 2021, nearly a year and a half after creation. A bug bounty report was submitted on Immunify by `LeonSpacewalker` laying out exactly how someone could exploit the MRC20 contract. Over the next 2 days, reports flooded in, detailing this exploit until, a malicious actor found the vulnerability and stole 800,000 MATIC tokens.
 
-Polygon was forked two days after the initial report, and the contract was swiftly mended. From December 5, 2021, the MRC20 contract was no longer vulnerable to this exploit.
+On Dec 5th, just two days after the initial report, the Polygon Chain was forked with the exploit patched.
 
-But what exactly was this bug, and how did it remain unidentified for so long? Let's turn our attention to the function that enabled these gasless transactions.
+### The Exploit
 
-## Anatomy of the bug - A detailed look
+So, what was the vulnerability in MRC20 that caused all this? It's found in this function:
 
-This function appears benign at first glance. It requires a user's signature, data, and an amount to send, an expiration date, and a recipient for the money. Running certain checks, it retrieves the data hash required for the metatransaction and ensures this data hash hasn't been previously used. Following these steps, it then launches an EC recovery function.
+```js
+function transferWithSig(
+    bytes calldata sig,
+    uint256 amount,
+    bytes32 data,
+    uint256 expiration,
+    address to
+) external returns (address from) {
+    require(amount > 0);
+    require(
+        expiration == 0 || block.number <= expiration,
+        "Signature is expired"
+    );
 
-This recovery function, ecrecover, verifies the origin of a signed transaction. However, should it encounter an error, it simply returns the zero address without viability checks. Even though there is a condition to ensure that this return is not zero, the ececovery function still returns zero upon encountering an error. Herein lies the vulnerability.
+    bytes32 dataHash = getTokenTransferOrderHash(
+        msg.sender,
+        amount,
+        data,
+        expiration
+    )
+    require(disabledHashes[dataHash] == false, "Sig deactivated");
+    disabledHashes[dataHash] = true;
+    from = ecrecovery(dataHash, sig);
+    _transferFrom(from, address(uint160(to)), amount);
+}
+```
 
-If the function were to check the overall validity of this function and not just the zero address, the problem would've been handled. But alas, that check was overlooked. The transfer function, acting as the last line of defense, should at least verify the 'from' address. But it simply transfers money out of the MRC20 contract without making any such checks.
+At first glance this doesn't seem like a big deal. This function is taking a `signature`, an `amount`, the message `data`, an `expiration` and an destination address (`to`).
 
-The exploit was then straightforward: Just passing a faulty signature, setting any quantity, and denoting a receiver. This method would essentially drain the entire MATIC balance.
+Many of these passed arguments are hashed into the transaction data and then the signer (`from`) is derived from this hash and the signature using `ecrecovery`, a wrapper for the `ecrecover` precompile.
 
-### Prevalence of dormant bugs in the tech world
+Something to note about ecrecover - it returns `address(0)` on an error!
 
-It's both peculiar and surprising that this bug remained latent for about 1.5 years, only to be discovered by multiple individuals within a short span. After discussing with the Immunified team, they provided a remarkable insight: these sleeping exploit beasts' simultaneous awakenings are a fairly common phenomenon. As soon as media outlets popularize new bugs, bug hunters flock to identify them in other plausible places.
+<img src="/security-section-7/15-polygon/polygon1.png" width="100%" height="auto">
 
-Despite this seemingly random event, we can extract several valuable lessons from this saga.
+The EVM actually _does_ have a check to assure `address(0)` isn't returned, but this was never copied into the ecrecovery wrapper, which means ecrecovery - still returns `address(0)`.
 
-## Strategies to identify bugs
+```js
+from = ecrecovery(dataHash, sig);
+_transferFrom(from, address(uint160(to)), amount);
+```
 
-My conversation with Leon yielded some precious tips and tricks he employed to discover this and numerous other security loopholes. Note that a basic understanding of Solidity and appropriate smart contract fundamentals are desirable assets in watching your million-dollar bounty surface.
+We can see there's no check in the MRC20 contract to verify the address being returned isn't zero, surely `_transfer` checks this?
 
-### 1. Distinct advantage - Find your edge
+```js
+function _transfer(address sender, address recipient, uint256 amount)
+    internal
+{
+    require(recipient != address(this), "can't send to MRC20");
+    address(uint160(recipient)).transfer(amount);
+    emit Transfer(sender, recipient, amount);
+}
 
-Every bug bounty hunter must have a unique advantage. Leon's advice to anyone entering this space, hone that specific skill, that edge over other smart contract developers, bug hunters, and protocols.
+```
 
-### 2. Know the subject - Understand the protocol
+It doesn't. The \_transfer function doesn't even check to assure the `from` address has enough tokens, it just transfers the tokens from the MRC20 contract.
 
-Knowing the specifics of the protocol in-depth is one of the most common strategies to find bugs. Reading the documentation, experimenting with the protocol implementation, etc., if you grasp every corner of the protocol, you're likely to identify aberrations as well.
+So, in order to exploit this vulnerability, an attacker just needed to call `transferWithSig` with bad signature data, which would result in `address(0)` being returned as the sender, and pass any amount and receiver address.
 
-### 3. Research and Grow
+The result - an empty smart contract.
 
-Research on specific bugs and uncover projects that have those loopholes. This technique, requiring a solid understanding of diverse exploits and maintaining awareness of unexplored best practices, simplifies your search as you're only seeking a specific chunk of code in a project.
+### Bug Hunting Tips
 
-### 4. Speed is key
+So, how did `LeonSpacewalker` find this bug, disclose it and get his massive payout? Leon's tips are below:
 
-Being quick in identifying new bounties and updates surely benefits in this context. Equipped with the right tools, such as Immunified discord BBP notifications, one can always stay ahead.
+1. Find your edge: Find the thing that gives you an advantage over other auditors and developers.
+2. Find a strategy that works for you: Everyone different and the best approach to finding bugs for one may be different for another. Leon outlined a few good strategies:
 
-### 5. Devising unique strategies - Be creative
+   1. Find a project and search for bugs - this includes learning everything there is to know about a protocol, reading it's documentation, building it locally, really mastering the insides and out to identify where things go wrong.
 
-Leon often visited community forums projecting a potential bug bounty. He would then start exploring their smart contracts even before approval to gain a head start.
+   2. Find a bug and search for projects - Find a bug that's rare or many people are unfamiliar with and look for projects that may be vulnerable to that bug. It can be much easier to look for a specific thing in a code base than to look for something that stands out.
 
-### 6. Arm yourself with the right tools
+   3. Be fast with new updates: Be signed up to Bug Bounty announcements through platforms like Immunify to assure you're notified as soon as a bounty is made live by a protocol.
 
-Knowledgeable bug hunters use various helpful tools. Solidity Visual Developer, Hard Hat Foundry, Brownie, Dune Analytics, and Etherscan are a few examples.
+   4. Be creative with finding your edge: Something Leon did to give him an edge was traverse community forums to scope out which protocols were considering doing a bug bounty. He would then proactively look through code based _before_ they were even submitted for approval!
 
-### 7. Audited projects are not bug-free
+   5. Know your tooling: Security researchers use a whole host of tools to their advantage when hunting for bugs including things like
 
-Leon has discovered numerous vulnerabilities in projects that top firms had audited. So, do not be disheartened by audited projects.
+      - Solidity Visual Developer
+      - Hardhat
+      - Etherscan
+      - Foundry
+      - Fuzzing Tools
+      - Test Suites
 
-### 8. Find your niche
+      ... to name a few. Knowing these tools, their features and how to implement them effectively provide huge advantages when approaching a bug hunt.
 
-Gaining industry-specific knowledge can dramatically improve your ability to uncover bugs.
+   6. **Don't be afraid of audited projects:** Just because a code base has been reviewed **_does not_** guarantee it's 100% secure. Code bases which have gone through multiple rounds of security reviews may often still be vulnerable to lesser known exploits, and frankly no audit firm is perfect.
 
-Although the example discussed here is quite specific and outlines a single bug hunt, these tips can be generalized for anyone hopeful of winning a sizeable bug bounty.
-
-Are you prepared to accept the challenge?
-
-![](https://cdn.videotap.com/MuftBpuNZSZv4cmAeOuU-506.03.png)
+   7. **Find your niche:** Find that thing you specialize in and know more about than anyone else. For example, a lot of developers may know Solidity, but not understand the financial side of DeFi. Maybe you want to get really good at borrowing and lending, maybe NFTs. Find something that positions you to be the expert at defending that particular space/industry.

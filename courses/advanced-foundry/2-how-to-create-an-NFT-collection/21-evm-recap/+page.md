@@ -1,41 +1,58 @@
 ---
-title: Advanced EVM - Encoding functions recap
+title: Advanced EVM - Encoding Recap
 ---
 
 _Follow along the course with this video._
 
-
-
 ---
 
-Hello there! Trust me when I say we've covered a lot of ground together on this fascinating journey into the world of Solidity. But fear not, we're not done unraveling its complexities and building our understanding one block at a time.
+### Advanced EVM - Encoding Recap
 
-## Quick Recap
+Before looking at how we can apply all our new encoding knowledge to call our own functions, let's recap some of the things we've gone over so far, there's been a lot.
 
-Before we dive into today's topic – the magic of call function, let's do a quick refresher on what we've explored in our previous discussions.
+### Concatenation
 
-### Combining Strings
+At a high-level we learnt that abi.encodePacked can be used to concatenate strings.
 
-You remember how we’ve talked about combining strings with the syntax like `Abi.encodePacked()` and then typecast it to a string, right? And you’ll recall how we observed that in newer versions of Solidity, the syntax looks something like `string("hi mom, miss you")`. It's important to note that this works well in the newer versions, but might throw an error in the older Solidity versions.
+```js
+string memory someString = string(abi.encodePacked("Hi Mom! ", "Miss you!"))
+```
 
-### Understanding Low-Level Concepts
+> [!TIP]
+> Remember: In newer versions of Solidity, you can use `string.concat("Hi Mom! ", "Miss you!")`
 
-We also took a deep dive into some low-level concepts, didn't we? We learnt about compiling our contracts, dealing with the mysterious ABI file and that weird binary thing (you know, that string of numbers and letters that makes our heads spin!). When we deploy a contract, this obscure code is what gets sent in the 'data' field of our contract creation transaction.
+### Binary and Opcodes
 
-For contract creations, the data is populated with binary code. When it comes to function calls, the data is used to define what functions need to be called and with what parameters. But fret not, this is precisely what we're prepping ourselves to learn next!
+We learnt that when a contract is compiled, it's actually compiled into an ABI (application binary interface) and a binary or bytecode format.
 
-### Decoding the Enigma of Binary Encoding
+<img src="/foundry-nfts/21-evm-recap/evm-recap1.png" width="100%" height="auto">
 
-Remember how we can encode just about anything we want into this 'number and letter' code to save space through a method called `encodePacked`? We also learnt we can decode stuff that's been encoded, although we can't decode stuff that was encoded with the `encodePacked` method. Interesting, isn't it? We mastered multi encoding and then multi decoding, thus adding several cool tricks to our Solidity hats!
+Any transaction we send to the blockchain is ultimately compiled down to this bytecode. For contract creation transactions, the data field of the transaction _is_ this bytecode.
 
-### Introducing the Call Function
+Any system capable of reading the operations contained within this bytecode is said to be `EVM Compatible`.
 
-Onwards, we analyze the power of the 'call' function. We realized that we can add data in the call function to make any call we want to any smart contract. Powerful, isn’t it?
+### Encoding
 
-<img src="/foundry-nfts/21-evm-recap/evm-recap1.png" style="width: 100%; height: auto;">
+We also learnt that we can use the encoding functionality of the EVM to encode basically anything. Basic encoding is accomplished with `abi.encode`, but we've a few options available to us.
 
-## Next Up: Handling the Call Function
+<img src="/foundry-nfts/21-evm-recap/evm-recap2.png" width="100%" height="auto">
 
-I bet you're raring to go now! So, let's deep dive into this exciting concept of how to use the 'call' function to make any calls we want to any smart contract.
+`abi.encode` will result in a padded return value, however the EVM offers a way to save space/gas by packing our encodings through `abi.encodePacked`.
 
-Before you head out though, now's a great time to take that much-needed break. We just went over some brain-racking concepts. And like I always say, it's absolutely fine if you don't get everything the first time around. It's a complex subject and we're here for the entire marathon, not just the sprint. So feel free to revisit these ideas at your own pace and keep exploring this fascinating world of Solidity. Until next time!
+<img src="/foundry-nfts/21-evm-recap/evm-recap3.png" width="100%" height="auto">
+
+The EVM also affords us the ability to decode and multi-encode, really giving us flexibility to work with our data.
+
+### Low-level Calls
+
+Lastly we touched on a couple of Solidity's available low-level calls such as `call`, `staticcall`.
+
+The data passed to these functions allows us to make _any_ arbitrary call to an address we want - this is what we'll cover in more detail next.
+
+### Wrap Up
+
+Alright, great work so far. Now's a great time to take a break before we make the final push to the end of this section.
+
+In the next lesson we'll see how these concepts work in practice as we dive into function selector encoding and sending encoded function calls.
+
+Let's go!

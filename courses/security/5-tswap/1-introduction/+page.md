@@ -22,7 +22,7 @@ In this section, we'll be reviewing the TSwap protocol ([**Repo**](https://githu
 
 Here we're going to challenge ourselves to find bugs without even looking at the code. Obviously this approach wouldn't be the norm, but the goal is to emphasize how powerful these tools and methods can be.
 
-In addition to the testing approaches, we'll also go deep into DeFi coverinig concepts like:
+In addition to the testing approaches, we'll also go deep into DeFi covering concepts like:
 
 - **AMMs (automated market maker)**
 - **UniSwap and DEXs**

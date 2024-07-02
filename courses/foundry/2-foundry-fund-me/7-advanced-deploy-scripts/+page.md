@@ -1,45 +1,56 @@
 ---
-title: Advanced Deploy Scripts
----
+title: Advanced deploy scripts
 
-_Follow along the course with this video._
-
-
+_Follow along with this video:_
 
 ---
 
-When crafting code for our blockchain, we encountered a significant obstacle. Our contract address was frequently hard-coded. This wouldn't ordinarily be an issue; however, our contract address merely existed on Sepolia, while we continued our testing phase on our local chain. In this lesson, we'll tackle this issue while simultaneously moving ahead in our coding project, so brace yourselves for an exciting ride. Let's dive in!
+### Writing Deploy Scripts
 
-## Writing our Deploy Scripts
+When we went straight to testing we left behind a very important element, deploy scripts. Why is this important you ask? Because we need a certain degree of flexibility that we can't obtain in any other way, let's look through the two files `FundMe.sol` and `PriceConverter.sol`, we can see that both have an address (`0x694AA1769357215DE4FAC081bf1f309aDC325306`) hardcoded for the AggregatorV3Interface. This address is valid, it matches the AggregatorV3 on Sepolia ... but what if we want to test on Anvil? What if we deploy on mainnet or Arbitrum? What then?
 
-Before we tackle our hard-code issue, let's execute an important task that we know is on our to-do list—writing our deploy scripts.
+The deploy script is the key to overcome this problem!
 
-Start by creating a new file named Deployfundme.s.sol. The standalone 'S' signifies the file is a script. Include the same SPDX license identifier, replace MIT with your own, and proceed to declare your contract deploy fund me.
+Create a new file called `DeployFundMe.s.sol` in `script` folder. Please use the `.s.sol` naming convention.
 
-```js
-    SPDX-License-Identifier: MIT
-    pragma solidity 0.8.18;
-    contract DeployFundMe {}
+We start with stating the SPDX and pragma:
+
+```
+SPDX-License-Identifier: MIT
+pragma solidity 0.8.18;
 ```
 
-We're using Foundry, which means we need to import several lines of code, including the forge std script sol, and since we're deploying FundMe, why not import it from SRCF. Next, to run the script, you'll want to use the function. Revisit lesson six if you're finding this step a bit confusing—the function applies an external function for the VM start broadcast, and a FundMe in lower case equals the new FundMe navigated by a VM stop broadcast.
+After that, we need the imports. We are working on a Foundry Script, thus the next logical step is to import `Script.sol`
+
+```
+import {Script} from "forge-std/Script.sol";
+```
+
+Another thing that we need for our deploy script to work is (drumroll) to import the contract we want to deploy.
+
+```
+import {FundMe} from "../src/FundMe.sol";
+```
+
+We are ready to define the contract. Remember how we did scripts a couple of lessons ago? Try to do it yourself.
 
 ```javascript
+// SPDX-License_identifier: MIT
+
+pragma solidity ^0.8.18;
+
+import {Script} from "forge-std/Script.sol";
+import {FundMe} from "../src/FundMe.sol";
+
+contract DeployFundMe is Script {
     function run() external{
         vm.startBroadcast();
         new FundMe();
         vm.stopBroadcast();
-    }
+    }  
+}
 ```
 
-Following the function run prompts the script to run the `DeployFundMe.s.sol`. Encountering a 'VM' keyword error means you need to use the script. Rectifying this error leads to warnings about an unused local variable. In all probability, you do not even require this line. It's alright to remove it altogether and re-run the script.
+Now let's try it with `forge script DeployFundMe`.
 
-<img src="/foundry-fund-me/6-advanced-deploy/deploy1.png" style="width: 100%; height: auto;">
-
-## Overcoming Errors and Ensuring Smooth Running
-
-Following these steps should help in successfully running the compiler, with the script showing successful execution. Ensure that you pass an RPC URL if you wish to simulate on-chain transactions.
-
-<img src="/foundry-fund-me/6-advanced-deploy/deploy2.png" style="width: 100%; height: auto;">
-
-The navigation of these steps indicates the importance of problem-solving in the blockchain coding world. In the upcoming blog posts, we will offer solutions on how to navigate hard-coding challenges in your blockchain coding challenges. Stay tuned for more insights!
+Everything was ok! Congrats!

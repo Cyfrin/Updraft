@@ -1,38 +1,31 @@
 ---
-title: MEV - Prevention
+title: MEV - Recap
 ---
 
 _Follow along with this video:_
 
-<!-- TODO -->
-
-
 ---
 
-# Understanding Mev and How to Mitigate Its Impact
+### MEV - Recap
 
-Mev refers to the potential reward that a miner, node, or bot could glean from ordering transactions. They often use the information of what's coming from the mempool to make those ording choices. 
+Mev refers to the potential attack vector whereby a miner, node, or bot uses knowledge gleaned from the mempool to their advantage.
 
-## Types of Mev Attacks
+**Types of Mev Attacks:**
+
 - Front-running
-- Backrunning
-- Sandwich 
+- JIT (Just In Time)
+- Sandwich
 - Many more...
 
-There are various ways through which Mev can be exploited to benefit the entity spotting the transaction. Some of the most common types of Mev attacks include:
+### Protecting Against Mev Attacks
 
-- *Front Running*: This occurs when an entity spots a pending transaction and then acts quickly to execute another transaction before the victim transaction hits. 
-- *Sandwich Attacks*: Similar to front running, this involves an attacker boxing in a user's transaction with their transactions on either side. 
+As mentioned earlier, as security researchers, we should always be asking:
 
-## Protecting Against Mev Attacks
+**_If someone see this transaction in the mempool, how can they abuse that knowledge?_**
 
-While the realities of Mev can be daunting, there are ways to mitigate its impact:
+There are a few reliable ways to protect against MEV exploits, such as:
 
 1. **Better Design** – Constructing the transaction in a manner that makes it harder for bots to gain useful knowledge. This might involve masking critical information or employing other strategic measures.
-2. **Use of Private RPC or Dark Pools** – These are networks that allow transactions to be processed outside of the public mempool. Services such as Flashbots Protect, Mev Blocker, and Secure RPC play an essential role in this regard.
+2. **Use of Private RPC or Dark Pools** – These are networks that allow transactions to be processed outside of the public mempool. Services such as [**Flashbots Protect**](https://docs.flashbots.net/flashbots-protect/overview), [**MevBlocker**](https://mevblocker.io/), and [**SecureRPC**](https://securerpc.com/) play an essential role in this regard.
 
-We should note that Mev is not some mythical concept – it does have real-world consequences on the Ethereum blockchain. I have witnessed firsthand the material impact of it, even losing real money in the process.
-
-> quoted text"**Mev bots are real, and they are actively scouting for any opportunity to make money. Consequently, understanding how Mev works and how to protect against it is crucial for anyone operating within the blockchain landscape**."
-
-So, having read this blog post, you should now have a solid grasp of Mev. Here's to smarter and better-secured transactions on the blockchain!
+We should note that Mev is not some mythical concept – it does have real-world consequences on the Ethereum blockchain, and we should be prepared for it.

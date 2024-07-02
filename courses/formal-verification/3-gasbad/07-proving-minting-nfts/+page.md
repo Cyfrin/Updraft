@@ -1,63 +1,128 @@
 ---
-title: proving minting nfts
+title: Proving Minting NFTs
 ---
 
-## Understanding Sanity Checks
+_Follow along with this video:_
 
-Before diving into the minting rule, let's consider the idea of a "sanity check." A sanity check is a basic validation of assumptions in programming - such as verifying that the total supply of NFTs can never go negative. Yes, it's self-evident, but in coding, the obvious also needs affirmation. It's like double checking that your door is locked: you know you locked it, but that extra check provides invaluable peace of mind.
+---
 
-## Establishing the Minting Rule
+### Proving Minting NFTs
 
-Now, let's tackle something more challenging – the minting process. Imagine this - you press a button, and voilà, one NFT is brought to life. To ensure this consistent result, we proclaim it as a rule:
-
-> "Rule: Minting mints one NFT."
-
-This rule functions as a golden decree in the smart contract realm. By establishing it, we craft a promise within our code – a straightforward if-then statement – that guides the behavior of our mint function.
-
-## Including the Mint Function
-
-Inserting the mint function into our scenario is like placing the engine in a car. Without it, our rule would be all talk and no action. Placing it within the construct of our code, we signify its external nature, an invitation for interaction from the outside world:
-
-In this moment, we also face a choice on whether to render this activity independent of the environment (env-free) or not. Although an env-free setup would be cleaner, we choose to embrace the complexities of the environments (EMVs). After all, challenges are what make us sharper.
-
-## The Arrange-Act-Assert Framework
-
-As we structure our testing approach, we follow the arrange-act-assert framework. Think of it as the three-act structure in storytelling:
-
-1. **Arrange:** Set the stage, define the characters, and prepare the scene.
-2. **Act:** The plot unfolds, action sequences kick in, and the story progresses.
-3. **Assert:** The climax where outcomes are revealed, validating the paths taken.
-
-## The Act of Minting
-
-Action time – `mint()` is invoked! When our main character, the `minter`, calls this function, we anticipate the birth of a single NFT.
+With a couple sanity checks out of the way, let's try something much harder and validate that `minting mints one NFT`. We'll set this up as a `rule` in our `NftMock.spec` file. We'll also have to add the `mint` function to our methods block, don't forget!
 
 ```js
-current_contract.mint(e);
+methods {
+    function totalSupply() external returns uint256 envfree;
+    function mint() external;
+}
+
+rule minting_mints_one_nft() {
+    // Arrange
+    // Act
+    // Assert
+}
 ```
 
-In this act, passing the environment as an argument weaves the caller's identity with the minting process – a digital signature of sorts.
-
-## Asserting the Single Mint
-
-The assertion is our moment of truth. Here's where we confirm the central pillar of our rule – only one NFT emerges. We check the balance before and after the act, expecting an increment by one:
+For this test, we're not going to configure things as `envfree`. This will afford us an opportunity to practice working with environment variables in `Certora`. We're going to set the `msg.value to 0` and assure that the address calling our mint function is always an expected `minter` address.
 
 ```js
-assert(nft.balanceOf(minter) == balance_before + 1);
+methods {
+    function totalSupply() external returns uint256 envfree;
+    function mint() external;
+}
+
+rule minting_mints_one_nft() {
+    // Arrange
+    env e;
+    address minter;
+
+    require e.msg.value == 0;
+    require e.msg.sender == minter;
+    // Act
+    // Assert
+}
 ```
 
-Moreover, to evade the pitfalls of overflows (an existential threat in the land of uint256), we convert our values to math ints. In doing so, we don't just follow best practices – we craft a bulwark against coding catastrophes.
+Now, in order to assure only 1 NFT is minted, we'll need to check the balance before and after minting. We can do this by adding balanceOf to our methods block and calling it in our test as demonstrated below.
 
-And in the spirit of helpful guidance, we allow an assertion error message to surface should our rule be defied:
+```js
+methods {
+    function totalSupply() external returns uint256 envfree;
+    function mint() external;
+    function balanceOf(address) external returns uint256 envfree;
+}
 
-## Testing, the Proof of Excellence
+rule minting_mints_one_nft() {
+    // Arrange
+    env e;
+    address minter;
 
-With our rule articulated and our code structured, it's time for the final showdown. We initiate the test, the heartbeat quickens, we await the verdict – and there it is, the green light of success. Our rule stands validated; our contract, proven. Like a word perfectly placed in a novel, our single mint is now a narrative of reliability.
+    require e.msg.value == 0;
+    require e.msg.sender == minter;
+    uint256 balanceBefore = balanceOf(minter);
+    // Act
+    // Assert
+}
+```
 
-## A Journey's End, A Blog's Conclusion
+It's time to act and finally mint the NFT, any time we want to reference the current contract that `Certora` is configured to verify, we can do so using `currentContract`. We'll then `assert` that the balance of `minter` _after_ the mint call is equal to the `balanceBefore` + 1.
 
-From the humble beginnings of a sanity check to the complexities of env interactions and the triumphant assertions, we’ve traversed the labyrinth of smart contract testing for NFT minting.
+```js
+methods {
+    function totalSupply() external returns uint256 envfree;
+    function mint() external;
+    function balanceOf(address) external returns uint256 envfree;
+}
 
-This prose isn't merely about code; it's about the philosophy of programming, where every step is purposeful, every line of code a verse in the grand poem of digital creation. It's about forming the future one block at a time, grounded in solidity, daring in ambition.
+rule minting_mints_one_nft() {
+    // Arrange
+    env e;
+    address minter;
 
-So here we conclude, not just with a rule established or a function scripted, but with a testament to the diligence and foresight that crafting smart contracts demands. And as we bid farewell, remember – in the realm of blockchain, the smallest unit of certainty can elevate the grandest of structures. Here's to minting not just tokens, but trust and confidence in the fascinating digital worlds we build.
+    require e.msg.value == 0;
+    require e.msg.sender == minter;
+    uint256 balanceBefore = balanceOf(minter);
+    // Act
+    currentContract.mint(e);
+    // Assert
+    assert(balanceOf(minter) == balanceBefore + 1, "Minting should only mint 1 NFT.");
+}
+```
+
+The above would absolutely work for our purposes, but it's worth pointing out that `uint256`, as we know, has a max value, and adding to that value is going to cause `overflow` and result in potential issues with our test. We can avoid this by instead typing `balanceBefore`, and the result of `balanceOf` in our assert statement, as `mathint`.
+
+```js
+methods {
+    function totalSupply() external returns uint256 envfree;
+    function mint() external;
+    function balanceOf(address) external returns uint256 envfree;
+}
+
+rule minting_mints_one_nft() {
+    // Arrange
+    env e;
+    address minter;
+
+    require e.msg.value == 0;
+    require e.msg.sender == minter;
+    mathint balanceBefore = balanceOf(minter);
+    // Act
+    currentContract.mint(e);
+    // Assert
+    assert(to_mathint(balanceOf(minter)) == balanceBefore + 1, "Minting should only mint 1 NFT.");
+}
+```
+
+### Running the Prover
+
+With that, we can comment out our totalSupply invariant and run our prover to see what Certora can find.
+
+```bash
+certoraRun ./certora/conf/NftMock.conf
+```
+
+And, after a brief wait for the server/process, we should see a successfully verification.
+
+<img src="/formal-verification-3/7-proving-minting-nfts/proving-minting-nfts1.png" width="100%" height="auto">
+
+Good job!

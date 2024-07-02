@@ -2,52 +2,299 @@
 title: AssetToken.sol
 ---
 
-In today's lesson, we will dissect and understand the process and chronology of AssetToken.sol while simultaneously attempting to reduce the complexity of this unwieldy 129-line monster code. We will be following the analysis methods of one of the smart contract industry's finest - Tincho.
+### AssetToken.sol
 
-![](https://cdn.videotap.com/ymeUVPEJfTmzpyvsbUJU-38.26.png)
+As we progress with tincho method the order we assess things we become less and less important. As the contracts get bigger they're going to start relying on eachother a lot and we may starting bouncing back and forth.
 
-Although the enormity of the code may make the checklist seem redundant, it is essential to understand that this seemingly lightweight tool can provide both structure and context, serving as a roadmap when trudging through unknown territories of the code.
+For example, we know the `ThunderLoanUpgraded.sol` contract is _smaller_ but it's also the _upgrade_ to `ThunderLoan.sol`, so it's a good idea to start with `ThunderLoan.sol` for context.
 
-## Tackling AssetToken.sol Line-by-Line
+But, we're getting ahead of ourselves. Let's get started looking at `AssetToken.sol`
 
-Eagle-eyeing the checklist we realize that we have revealed another checkmark, indicating we are ready to plow into AssetToken.sol. As we delve deeper, the checklist will begin to take a back seat, but remember, it remains an invaluable tool to grasp the overall context and provide a starting point for understanding the essence of these components.
+<details>
+<summary>AssetToken.sol</summary>
 
-### Thunderloan Digitization
+```js
+// SPDX-License-Identifier: AGPL-3.0-only
+pragma solidity 0.8.20;
 
-Thunderloan serves as an apt milestone in our journey. We will first scour Thunderloan, before advancing to its upgraded version. The sequence may seem counterintuitive due to the contracted length of its upgraded edition. However, a profound understanding of the current protocol is instrumental in discerning the necessities for upgrades. The supposed 327-line-dependent code may differ drastically, but only time will tell!
+import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-Now, let's proceed to dissect AssetToken.sol. It exemplifies the receipt role in our smart contract. It enables liquidity providers to deposit assets into Thunderloan, in return for asset tokens. The accumulation of interest over time is influenced by the number of people who borrow flash loans.
+contract AssetToken is ERC20 {
+    error AssetToken__onlyThunderLoan();
+    error AssetToken__ExhangeRateCanOnlyIncrease(uint256 oldExchangeRate, uint256 newExchangeRate);
+    error AssetToken__ZeroAddress();
 
-Borrowing our previous Flash loans example, consider a whale who deposits money into a Flash loan contract. In return, they receive shares or a token representative of the money they've placed in the contract. This share-token accrues interest based on the flash loan borrowers' fees.
+    using SafeERC20 for IERC20;
 
-The role of Open Zeppelin's ERC20 here needs special mention. It provides an interface and a wrapper around ERC20 operations that would typically fail if the token contract returned false. The wrapper, aptly named Safe ERC20, serves as a fail-safe for erratic ERC20s, throwing on failure to prevent compromising the entire operation.
+    /*//////////////////////////////////////////////////////////////
+                            STATE VARIABLES
+    //////////////////////////////////////////////////////////////*/
+    IERC20 private immutable i_underlying;
+    address private immutable i_thunderLoan;
 
-## Unveiling Asset Token and Shares
+    // The underlying per asset exchange rate
+    // ie: s_exchangeRate = 2
+    // means 1 asset token is worth 2 underlying tokens
+    uint256 private s_exchangeRate;
+    uint256 public constant EXCHANGE_RATE_PRECISION = 1e18;
+    uint256 private constant STARTING_EXCHANGE_RATE = 1e18;
 
-As we dig deeper, mining further insights from the wall of text, a pattern begins to emerge. The term "underlying" in the code seems to refer to USDC, whereas the "asset token" is linked to the pool's shares. Depositing USDC gives you pool shares proportionate to the exchange rate defined within the contract.
+    /*//////////////////////////////////////////////////////////////
+                                 EVENTS
+    //////////////////////////////////////////////////////////////*/
+    event ExchangeRateUpdated(uint256 newExchangeRate);
 
-> "For instance, if we have two shares and the exchange rate is two to one, we can exchange our two shares for four tokens."
+    /*//////////////////////////////////////////////////////////////
+                               MODIFIERS
+    //////////////////////////////////////////////////////////////*/
+    modifier onlyThunderLoan() {
+        if (msg.sender != i_thunderLoan) {
+            revert AssetToken__onlyThunderLoan();
+        }
+        _;
+    }
 
-How they calculate the exchange rate mirrors the workings of Compound Finance, underlining the deliberateness in the design. If we can master understanding the contract's innards, unraveling the rest of the mysteries becomes a breeze.
+    modifier revertIfZeroAddress(address someAddress) {
+        if (someAddress == address(0)) {
+            revert AssetToken__ZeroAddress();
+        }
+        _;
+    }
 
-### Side Quest into Compound's Territories
+    /*//////////////////////////////////////////////////////////////
+                               FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
+    constructor(
+        address thunderLoan,
+        IERC20 underlying,
+        string memory assetName,
+        string memory assetSymbol
+    )
+        ERC20(assetName, assetSymbol)
+        revertIfZeroAddress(thunderLoan)
+        revertIfZeroAddress(address(underlying))
+    {
+        i_thunderLoan = thunderLoan;
+        i_underlying = underlying;
+        s_exchangeRate = STARTING_EXCHANGE_RATE;
+    }
 
-At this juncture, it might be advantageous to wander into the realm of Compound, discern how it functions and sift out any potential issues. Familiarity with similar protocols can empower us in our mission to secure this contract.
+    function mint(address to, uint256 amount) external onlyThunderLoan {
+        _mint(to, amount);
+    }
 
-However, we won't be trailing down this path today. It is, nonetheless, a recommended sidequest to undertake at some stage. Try writing a concise, understandable article explaining the working protocol of Compound, or even the comparable Aave.
+    function burn(address account, uint256 amount) external onlyThunderLoan {
+        _burn(account, amount);
+    }
 
-## Tracing the Exchange Rate Pattern
+    function transferUnderlyingTo(address to, uint256 amount) external onlyThunderLoan {
+        i_underlying.safeTransfer(to, amount);
+    }
 
-Returning to our original predicament, we bump into our exchange rate again, causing us to raise an eyebrow. This instance hints at a potential bug spot in our code.
+    function updateExchangeRate(uint256 fee) external onlyThunderLoan {
+        // 1. Get the current exchange rate
+        // 2. How big the fee is should be divided by the total supply
+        // 3. So if the fee is 1e18, and the total supply is 2e18, the exchange rate be multiplied by 1.5
+        // if the fee is 0.5 ETH, and the total supply is 4, the exchange rate should be multiplied by 1.125
+        // it should always go up, never down
+        // newExchangeRate = oldExchangeRate * (totalSupply + fee) / totalSupply
+        // newExchangeRate = 1 (4 + 0.5) / 4
+        // newExchangeRate = 1.125
+        uint256 newExchangeRate = s_exchangeRate * (totalSupply() + fee) / totalSupply();
 
-The next issue arises during the creation of new asset tokens or shares. Minting new asset tokens conducts an access control check to confirm the caller is the Thunderloan contract.
+        if (newExchangeRate <= s_exchangeRate) {
+            revert AssetToken__ExhangeRateCanOnlyIncrease(s_exchangeRate, newExchangeRate);
+        }
+        s_exchangeRate = newExchangeRate;
+        emit ExchangeRateUpdated(s_exchangeRate);
+    }
 
-> "This begs the question, could an attack vector appear that allows an attacker to call mint from the Thunderloan contract when they shouldn't?"
+    function getExchangeRate() external view returns (uint256) {
+        return s_exchangeRate;
+    }
 
-In the same vein, burning existing asset tokens or shares runs a similar check. Our questioning spirits seek an answer from the code. Could non-standard, "weird" ERC20s wreck havoc in our methods - Safetransfer? And more specifically, what if USDC decided to blacklist contracts (like thunder loan or the asset token contract)? A medium to low priority question but worth a nod.
+    function getUnderlying() external view returns (IERC20) {
+        return i_underlying;
+    }
+}
 
-### Minting New Conclusions
+```
 
-Wrapping up our intricate dissection of the code, we are left with relevant questions that will guide us down the path of systematizing a secure, functional protocol. As we remain vigilant, aiming to decipher the mysteries of our smart contract, let us head over to the next complex labyrinth- Thunderloan.
+</details>
 
-In the coming blog posts, we'll continue to explore potential security vulnerabilities, unravel other intriguing aspects of this code, and hopefully unlock more mysteries of smart contract security reviews. So, stay tuned and keep reading.
+---
+
+We should recall from the README:
+
+    Liquidity providers can deposit assets into ThunderLoan and be given AssetTokens in return. These AssetTokens gain interest over time depending on how often people take out flash loans!
+
+So, it seems these `AssetTokens` serve as our kind of receipt for liquidity providers. Similar to `LP Tokens` functions in the `AMM`'s we investigated in the previous section of this course.
+
+These AssetTokens are what represent the shares a liquidity provider has in a pool, which in turn determines how they're paid back when the protocol is used (when flash loans are taken).
+
+### Imports
+
+Starting with imports, there are some good practices we should acknowledge and understand.
+
+```js
+import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+```
+
+We should be well familiar with the `ERC20` and `IERC20` libraries from OpenZeppelin, but what's `SafeERC20`?
+
+```js
+/**
+ * @title SafeERC20
+ * @dev Wrappers around ERC20 operations that throw on failure (when the token
+ * contract returns false). Tokens that return no value (and instead revert or
+ * throw on failure) are also supported, non-reverting calls are assumed to be
+ * successful.
+ * To use this library you can add a `using SafeERC20 for IERC20;` statement to your contract,
+ * which allows you to call the safe operations as `token.safeTransfer(...)`, etc.
+ */
+library SafeERC20 {...}
+```
+
+SafeERC20 is a wrapper around ERC20 interfaces which protects against many of the weird behaviours of unexpected token types, handling unusual revert/return circumstances for us.
+
+### Errors and Variables
+
+Continuing into the contract itself now, we've got custom error declarations, our state variables and events. These all look very nice actually. We even see the use of named constants instead of magic numbers - love to see it.
+
+The comments left for some of our variables may be a little confusing at first glance though, let's consider them more closely.
+
+```js
+error AssetToken__onlyThunderLoan();
+error AssetToken__ExhangeRateCanOnlyIncrease(uint256 oldExchangeRate, uint256 newExchangeRate);
+error AssetToken__ZeroAddress();
+
+using SafeERC20 for IERC20;
+
+IERC20 private immutable i_underlying;
+address private immutable i_thunderLoan;
+
+// The underlying per asset exchange rate
+// ie: s_exchangeRate = 2
+// means 1 asset token is worth 2 underlying tokens
+uint256 private s_exchangeRate;
+uint256 public constant EXCHANGE_RATE_PRECISION = 1e18;
+uint256 private constant STARTING_EXCHANGE_RATE = 1e18;
+
+event ExchangeRateUpdated(uint256 newExchangeRate);
+```
+
+When the protocol mentions `underlying` it's referring to the asset which is represented by held `AssetTokens`, the asset deposited which was exchanged for `AssetTokens`. This comment is stating that with an exchange rate of `s_exchangeRate = 2`, 2 underlying tokens (USDC for example) would need to be deposited to have 1 AssetToken returned.
+
+You can note that this exchange rate mechanism is distinct from a percentage share of a liquidity pool which we outlined earlier in TSwap. The exchange rate in this instance functions a lot like [**Compound Finance**](https://github.com/compound-finance/) (I'm secretly teaching you compound finance) and how their [**CToken**](https://github.com/compound-finance/compound-protocol/blob/master/contracts/CToken.sol) works.
+
+This may even be a point in a review where I would go on a side quest to better understand Compound and how it influenced the development of `ThunderLoan`. We aren't going to go on this tangeant here together, but I encourage you to become familiar with some of these DeFi protocols we touch on as the context and experience will go a long way in your future security reviews.
+
+### Modifiers
+
+Next we'll hit modifiers as we continue down `AssetToken.sol`.
+
+```js
+modifier onlyThunderLoan() {
+    if (msg.sender != i_thunderLoan) {
+        revert AssetToken__onlyThunderLoan();
+    }
+    _;
+}
+
+modifier revertIfZeroAddress(address someAddress) {
+    if (someAddress == address(0)) {
+        revert AssetToken__ZeroAddress();
+    }
+    _;
+}
+```
+
+Immediately - **_Where's the NATSPEC?_**
+
+The first modifier `onlyThunderLoan` seems like clear access control. This should only allow the function being called to be called by `ThunderLoan` and will revert if not. Double check that `i_thunderloan` is being assigned in our constructor!
+
+The second modifier is a classic zero address check modifier, wonderful, looks great.
+
+### Constructor
+
+Now we can assess that this contract is being set up properly in it's constructor. Let's leave some notes to remind ourselves of what each of these variables is doing.
+
+```js
+constructor(
+    address thunderLoan, // ThunderLoan.sol address
+    IERC20 underlying, // Token to deposit in exchange for AssetTokens
+    string memory assetName, // AssetToken Name
+    string memory assetSymbol // AssetToken Symbol
+)
+    // ERC20 Constructor w/ parameters
+    ERC20(assetName, assetSymbol)
+    // Zero Address checks for thunderloan and underlying parameters
+    revertIfZeroAddress(thunderLoan)
+    revertIfZeroAddress(address(underlying))
+{
+    // Assigning constructor arguments to state variables.
+    i_thunderLoan = thunderLoan;
+    i_underlying = underlying;
+    s_exchangeRate = STARTING_EXCHANGE_RATE;
+}
+```
+
+This all seems above board. Nothing stands out as vulnerable to me here and again we even see some good practices such as Zero Address checks and constant variable names.
+
+Let's jump into some of the functions now, we're still not _very_ sure what this contract is doing yet.
+
+### Functions
+
+First up, we have our `mint` and `burn` functions!
+
+```js
+function mint(address to, uint256 amount) external onlyThunderLoan {
+    _mint(to, amount);
+}
+
+function burn(address account, uint256 amount) external onlyThunderLoan {
+    _burn(account, amount);
+}
+```
+
+These functions are coming from our ERC20 inheritance. We can see the `onlyThunderLoan` modifier applied to each of them, so the intent is clear - _Only the `ThunderLoan.sol` contract passed as a constructor argument should be able to call these functions_.
+
+We should be thinking adversarially though, thinking about:
+
+```js
+// Is there a way I can call this from ThunderLoan when we shouldn't be able to?
+```
+
+What's next?
+
+```js
+function transferUnderlyingTo(address to, uint256 amount) external onlyThunderLoan {
+    i_underlying.safeTransfer(to, amount);
+}
+```
+
+Another function only callable by `ThunderLoan.sol`. This function seems to handle the transfer of underlying tokens using `safeTransfer`. Immediately, working with token transfers, we should have alarm bells going off.
+
+- How are `Weird ERC20s` handled?
+
+We can refer to the `Thunder Loan` README to confirm the tokens this protocol expects to support (and if this information isn't provided by the protocol initially, ask!).
+
+- USDC
+- DAI
+- LINK
+- WETH
+
+Of these, the only one which stands out as potentially problematic is USDC. We may ask the questions:
+
+```js
+// What happens if USDC blacklists the ThunderLoan contract?
+// What happens if USDC blacklists the AssetToken contract?
+```
+
+We can assume there will be _some_ impact in the above circumstances, but we're not sure where this assignment is being used, or what the severity of that impact will be. Time will tell as we gain a better understanding of `Thunder Loan`. Definitely requires a follow up.
+
+Let's jump into `updateExchangeRate` in the next lesson right away!

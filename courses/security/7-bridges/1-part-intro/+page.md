@@ -2,62 +2,54 @@
 title: Introduction
 ---
 
-
+_Follow along with the video lesson:_
 
 ---
 
-# Unveiling Section Seven of Security and Auditing EVM DeFi: A Comprehensive Security Review
+### Introduction
 
-Welcome back, enthusiastic coders! Brace yourselves for an exciting deep dive into Section Seven of the Security and Auditing EVM DeFi. In this intriguing space, we are going to roll up our sleeves and immerse in not less than five detailed security reviews or audits. Stay tuned for more in part two as well.
+Welcome back! We've just finished our review of the `Thunder Loan` protocol and it was a **_banger_**.
 
-## Flashback to Thunder Loan
+We're coming off the back of having learnt a huge number of advanced DeFi concepts and vulnerabilities, but there are unfortunately so many more to master. In Section 7 we'll be diving into more of these concepts and attack vectors to really bulk up our familiarity.
 
-We have recently waved goodbye to the thrilling Thunder loan security review and audit, an eye-opener in the world of Decentralized Finance (DeFi). The concept explored here, ranging from flash loans to Oracle manipulation encapsulates the primary attacks presently haunting DeFi.
+As always, this section comes with an associated [**GitHub Repository**](https://github.com/Cyfrin/7-boss-bridge-audit) we'll be reviewing and a tonne of additional resources and contextual information. Clone it, reference it often.
 
-![](https://cdn.videotap.com/j6Dr40RzmumPq9jhPJY3-36.13.png)
+The [**Course Repo's Discussions tab**](https://github.com/Cyfrin/security-and-auditing-full-course-s23/discussions) is a **_great_** place to post questions that you have or fire up conversations about the content or ecosystem. Jump into those interactions!
 
-### New Concepts Unfolded
+And, of course, the [**Cyfrin Discord Server**](https://discord.gg/cyfrin) is an amazing and supportive community that you should absolutely jump into.
 
-Our journey shed light on a multitude of aspects essential for better understanding the DeFi landscape, including price Oracle manipulation, reward manipulation, insufficient function access control, and a gamut of logic errors, function parameter validation, misconfigurations and reentrancies.
+With that said, let's touch on some of the content we'll be covering in this course as we review the `Boss Bridge` protocol.
 
-While these are considerable advancements, we are yet to uncover every crevice of the DeFi sphere. More obscure areas, such as governance attacks and stolen private keys, are yet to be traversed. Fortunately, we will unveil these mysteries and delve deeper into the riveting world of DeFi security in this seventh chapter.
+Things we'll cover in the `Boss Bridge` section include:
 
-## Sneak Peek into Section Seven
+**New Tools**
 
-Primarily, we will scrutinize the Seven Boss Bridge audit code base, currently available for the first flight on the [CodeHawks platform](https://www.codehawks.com).
+At points we'll be introduced to new tools to assist us in security reviews. Tools such as:
 
-![](https://cdn.videotap.com/LLXHIyWzga7BHJru6Wjv-90.31.png)
+- [**evmdiff**](https://www.evmdiff.com/) - a convenient browser based way to compare how different EVM chains function
+- [**Tenderly**](https://tenderly.co/) - a security focused Web3 toolkit to assist in vulnerability detection and deployment monitoring
+- [**The Hans Checklist**](https://github.com/Cyfrin/audit-checklist) - we'll dive deeper into the specifics of this checklist and how it can be applied to level up our security review methodology.
 
-### The Power of CodeHawks
+**Case Studies**
 
-Remember, reading and evaluating security reviews is an effective way to level-up your skills. If tech-upscaling piques your interest, Code Hawks curates a vast array of first flights that are worth exploring. Furthermore, signing up for CodeOx posts and participating in competitive audits can be quite advantageous.
+We'll touch briefly into exploit case studies such as a [**Precompile issue that was faced by Polygon**](https://youtu.be/QdIG7TfjUiM) as well as a [**problem that arose on zkSync**](https://medium.com/coinmonks/gemstoneido-contract-stuck-with-921-eth-an-analysis-of-why-transfer-does-not-work-on-zksync-era-d5a01807227d) due to different opcode support between blockchains.
 
-### Repo Overview and Tooling Upgrades
+**New Attack Vectors**
 
-Exploring this chapter's repo, we will first notice two conventional branches: `main` and `audit data`, where `audit data` hosts the answer keys (no peeking!).
+In this section we'll be introduced to a host of new attack vectors including `signature replay attacks`, `ERC20 Contract Approval`, `unlimited minting`. The section will have a focus on Bridge Hacks and identifying what it is about Bridges that makes them vulnerable. Huge Bridge Hacks like Ronin, Poly Network, Nomad and Wormhole will be discussed. We'll learn how `centralization` remains one of the biggest concerns and most common avenues of exploitation for bridges to this day.
 
-We will explore varying Ethereum Virtual Machine (EVM) chains such as Arbitrum, Optimism, ZKSync, and Ethereum. We will ponder whether these are analogous or have unique features that set them apart.
+**Design Patterns**
 
-Furthermore, we will explore tools, Tenderly and Solidit, which will aid us in streamlining our code review process.
+We'll be introduced to a new protocol design pattern `emergency stop` and learn the benefits of it's implementation.
 
-### The Hans Checklist: A Systematic Approach to Coding Reviews
+**Exercises and Additional Resources**
 
-Next, we delve into a novel system for conducting smart contract security reviews: the Hans Checklist.
+This section will be full of additional resources to consume and exercises to complete in order to really challenge yourself beyond the course content.
 
-Towards the end of this section, we'll break down Hans' trend-setting checklist methodology, which helped him ascend to the rank of top competitive auditor globally for the first half of 2023.
+**Audit Report**
 
-## The Classic Security Review Steps and Exciting Case Studies
+As always, we'll complete our security review of the Boss Bridge protocol with a professional PDF report to be added to our portfolio!
 
-As before, we will follow the classical method for security reviews, incorporating scoping, reconnaissance, vulnerability identification, writeups, and reporting. We will also look at the intriguing case studies based on various chains, including Polygon, ZK Sync, and how different chains actually work with different opcodes.
+### Wrap Up
 
-In this part, we will focus more on bridge hacks as these were rampant in the year 2022. Most bridge hacks we noticed unfortunately happened due to centralized controls and the loss of private keys, leading to bizarre exploitations.
-
-We will also study several exciting exercises that include researching some attacks and doing write-ups on them. Some significant aspects would be Signature Replay, merkel tree, signature issues, polygon double spend, and nomad bridge hack.
-
-## Onwards with the Contract Scoping Phase
-
-Finally, after discussing the technicalities, we will commence with the scoping phase of the contract that will be considerably quicker this time. Following the scoping, we will move on to the actual security review of the contract.
-
-Remember, there are conceivably more issues than we cover. Thus, if you stumble across some extra issues, don't hesitate to share your insights!
-
-Brace yourselves—with all that we have in store, we're sure to add significant value to your coding and auditing skills, inspiring you to dive deeper into the mesmerizing world of coding.
+I hope you're excited, I know I am. Phase 1 is Scoping - let's learn what this Boss Bridge protocol is all about.

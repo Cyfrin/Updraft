@@ -4,116 +4,246 @@ title: DecentralizedStableCoin.sol
 
 _Follow along the course with this video._
 
+---
 
+### DecentralizedStableCoin.sol
 
-# Building a Decentralized Stablecoin: Step-by-Step Guide
+We've just learnt a tonne about DeFi, and hopefully you caught that there's a lot more to learn. For now, we're going to finally jump into creating our own stablecoin from scratch.
 
-In this section, we're diving into the exciting world of decentralized finance (DeFi) and going one step ahead by creating our very own stablecoin. We'll be covering everything you need to know to follow along and delve into the world of stablecoins with us.
+All the code we discuss/write will of course be available on this section's [**GitHub Repo**](https://github.com/Cyfrin/foundry-defi-stablecoin-f23) for you to reference.
 
-## What is a Stablecoin?
+> [!NOTE]
+> We're going to be moving a little faster, in this lesson. We have a few new concepts to cover, but much of this will be practice and repetition of things you already know.
 
-A stablecoin is a form of cryptocurrency that is pegged to a reserve asset like the US Dollar. The idea behind it is to provide stability in the highly volatile world of cryptocurrencies.
+Let's start by making our project directory.
 
-## Forging Ahead with Code
+```bash
+mkdir foundry-defi-stablecoin-f23
+cd foundry-defi-stablecoin-f23
+code .
+```
 
-If you're as excited about this project as we are, you can follow along with all the code that we're creating in this tutorial. We have dedicated an entire GitHub repository to the code we'll be building - it's under the [foundry-defi-stablecoin-f23](https://github.com/Cyfrin/foundry-defi-stablecoin-f23) course section. We have big plans for this project, including getting the code audited to ensure its security and reliability.
+With the directory open in VSCode, we can initialize a new Foundry project.
 
-To follow the updates about this audit, keep an eye on this GitHub repository as we will be posting all audit reports there.
+```bash
+forge init
+```
 
-We're diving straight into the nuts and bolts of this project. A lot of the information we'll be going over is likely to be familiar to you if you've done similar projects before. However, we'll also introduce a few new concepts like stateless fuzzing.
+Finally, remove the placeholder example contracts `src/Counter.sol`, `script/Counter.s.sol`, and `test/Counter.t.sol`.
 
-## The Architecture of Our Stablecoin
+In our README.md, let's start taking some notes about our project and outlining its design.
 
-So, before we dive straight into the code, let's take a glance at what our stablecoin's architecture is going to look like. We are building a stablecoin that's one, anchored, meaning it is pegged to the US Dollar. Secondly, our stability mechanism is algorithmic, meaning the process for minting is going to be entirely decentralized - there's no governing entity that is controlling our stablecoins. Lastly, we're using exogenous crypto-assets, specifically Ethereum and Bitcoin, as collateral for our stablecoin.
+Our stablecoin is going to be:
 
-<img src="/foundry-defi/4-defi-decentralized-stablecoin/defi-decentralized-stablecoin1.png" style="width: 100%; height: auto;">
+1. Relative Stability: Achored or Pegged to the US Dollar
+   1. Chainlink Pricefeed
+   2. Function to convert ETH & BTC to USD
+2. Stability Mechanism (Minting/Burning): Algorithmicly Decentralized
+   1. Users may only mint the stablecoin with enough collateral
+3. Collateral: Exogenous (Crypto)
+   1. wETH
+   2. wBTC
 
-## Maintaining Our Stablecoin's Value
+To add some context to the above, we hope to create our stablecoin in such a way that it is pegged to the US Dollar. We'll achieve this by leveraging chainlink pricefeeds to determine the USD value of deposited collateral when calculating the value of collateral underlying minted tokens.
 
-To ensure that our stablecoin is always worth $1, we have to match it to the dollar's price constantly. We do this using a chainlink price feed. Our program will run a feed from chainlink, and we will set a function to exchange Ethereum and Bitcoin for their equivalent dollar value. This function will help us maintain the stability of our stablecoin.
+The token should be kept stable through this collateralization stability mechanism.
 
-To make the stability mechanism algorithmic, we will have a condition in our code that only mints the stablecoin if there's enough collateral.
+For collateral, the protocol will accept wrapped Bitcoin and wrapped Ether, the ERC20 equivalents of these tokens.
 
-The collateral type, i.e., Ethereum and Bitcoin, is exogenous, meaning, we're only going to accept these two types of cryptocurrencies as collateral. We're going to use the ERC20 version of Ethereum and Bitcoin, also known as wrapped Ethereum (WETH) and wrapped Bitcoin (WBTC).
+Alright, with things scoped out a bit, let's dive into writing some code. Start by creating the file `src/DecentralizedStableCoin.sol`. I'm hoping to make this as professional as possible, so I'm actually going to paste my contract and function layouts as a reference to the top of this file.
 
-<img src="/foundry-defi/4-defi-decentralized-stablecoin/defi-decentralized-stablecoin2.PNG" style="width: 100%; height: auto;">
+```js
+// SPDX-License-Identifier: MIT
 
-To use this architecture, we create a code that over collateralizes the stablecoin using WETH and Bitcoin as the collateral.
+// This is considered an Exogenous, Decentralized, Anchored (pegged), Crypto Collateralized low volitility coin
 
-## Pulling up Our Sleeves and Coding Away
+// Layout of Contract:
+// version
+// imports
+// interfaces, libraries, contracts
+// errors
+// Type declarations
+// State variables
+// Events
+// Modifiers
+// Functions
 
-With the plan in place, it's time to dive into coding.
+// Layout of Functions:
+// constructor
+// receive function (if exists)
+// fallback function (if exists)
+// external
+// public
+// internal
+// private
+// view & pure functions
+```
 
-Here is a step-by-step guide to creating your own decentralised stablecoin:
+When I wrote this codebase, I intended to get it audited, and I did! You can actually see the audit results [**here**](https://www.codehawks.com/contests/cljx3b9390009liqwuedkn0m0). For this reason, something different you may notice about this codebase is how _verbose_ we're going to be. When it comes to security and having auditors review our code, the clearer we are in explaining the code and added context to our goals, the easier their lives are going to be keeping us secure.
 
-### Step 1: Install OpenZeppelin
+With that said, our contract boilerplate is going to be set up similarly to everything we've been doing so far. Let's add some NATSPEC to outline the contracts purpose.
 
-We begin by installing OpenZeppelin as it provides basic smart contract-building blocks. To do this, we use the following command:
+```js
+pragma solidity ^0.8.18;
+
+/*
+ * @title: DecentralizedStableCoin
+ * @author: Patrick "Long Course" Collins
+ * Collateral: Exogenous (ETH & BTC)
+ * Minting: Algorithmic
+ * Relative Stability: Pegged to USD
+ *
+ * This is the contract meant to be governed by DSCEngine. This contract is just the ERC20 implementation of our stablecoin system.
+ */
+contract DecentralizedStableCoin {}
+```
+
+This contract is effectively just going to be a fairly standard ERC20 to function as the asset for our stablecoin protocol. All of the logic for the protocol will be handled by DSCEngine.sol. We'll need OpenZeppelin to get started.
 
 ```bash
 forge install openzeppelin/openzeppelin-contracts --no-commit
 ```
 
-Then open up the `foundry TOML` and add the following remappings:
+And of course, we can add our remappings to our
+`foundry.toml`.
 
-```javascript
-remappings = ["@openzeppelin/contracts=lib/openzeppelin-contracts/contracts"];
+```js
+[profile.default];
+src = "src";
+out = "out";
+libs = ["lib"];
+remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts"];
 ```
 
-### Step 2: Import Libraries and Contract Functions
+Rather than importing a standard ERC20 contract, we'll be leveraging the ERC20Burnable extention of this standard. ERC20Burnable includes `burn` functionality for our tokens which will be important when we need to take the asset out of circulation to support stability.
 
-Once OpenZeppelin is correctly installed, open up our `DecentralizedStableCoin.sol` contract file where we will import necessary libraries. We start by importing three OpenZeppelin contracts: `ERC20`, `ERC20Burnable` and `Ownable`.
+```js
+// SPDX-License-Identifier: MIT
 
-The `ERC20Burnable` contract provides us with a "burn" function, which is essential in maintaining the peg price of our stablecoin, as we'll be burning a lot of tokens. The "burn" function will be overridden by our function.
-
-In contrast, when it comes to the "mint" function, we do not need to override any functions. Instead, we are going to call the "\_mint" function directly.
-
-```javascript
-//SDPX-LICENSE-IDENTIFIER:MIT
-pragma solidity 0.8.19;
+pragma solidity ^0.8.18;
 
 import {ERC20Burnable, ERC20} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+
+/*
+ * @title: DecentralizedStableCoin
+ * @author: Patrick "Long Course" Collins
+ * Collateral: Exogenous (ETH & BTC)
+ * Minting: Algorithmic
+ * Relative Stability: Pegged to USD
+ *
+ * This is the contract meant to be governed by DSCEngine. This contract is just the ERC20 implementation of our stablecoin system.
+ */
+contract DecentralizedStableCoin is ERC20Burnable {
+    constructor() ERC20("DecentralizedStableCoin", "DSC"){}
+}
+```
+
+Because we're inheriting ERC20Burnable, and it inherits ERC20, we needs to satify the standard ERC20 constructor parameters within our contracts constructor. We've set the name `DecentralizedStableCoin` and the symbol `DSC`.
+
+All of the properties of our protocol are going to be governed ultimately by the DSCEngine.sol contract. Functionality like the stability mechanism, including minting and burning, need to be controlled by the DSCEngine to maintain the integrity of the stablecoin.
+
+In order to accomplish this, we're going to also inherit `Ownable` with DecentralizedStableCoin.sol. This will allow us to configure access control, assuring only our DSCEngine contract is authorized to call these functions.
+
+```js
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
+...
+
 contract DecentralizedStableCoin is ERC20Burnable, Ownable {
-    error DecentralizedStableCoin__AmountMustBeMoreThanZero();
+    constructor() ERC20("DecentralizedStableCoin", "DSC"){}
+}
+```
+
+The two major functions we're going to want the DSCEngine to control are of course the mint and burn functions. We can override the standard ERC20 functions with our own to assure this access control is in place.
+
+### Burn
+
+We can start by writing our burn function.
+
+```js
+function burn(uint256 _amount) external override onlyOwner{}
+```
+
+We're going to want to check for two things when this function is called.
+
+1. The amount burnt musn't be less than zero
+2. The amount burnt musn't be less than the user's balance
+
+We'll configure two custom errors for when these checks fail.
+
+```js
+contract DecentralizedStableCoin is ERC20Burnable, Ownable {
+    error DecentralizedStableCoin__MustBeMoreThanZero();
+    error DecentralizedStableCoin__BurnAmountExceedsBalance();
+
+    constructor() ERC20("DecentralizedStableCoin", "DSC"){}
+
+    function burn(uint256 _amount) external override onlyOwner{
+        uint256 balance = balanceOf(msg.sender);
+        if(_amount <= 0){
+            revert DecentralizedStableCoin__MustBeMoreThanZero();
+        }
+        if(balance < _amount){
+            revert DecentralizedStableCoin__BurnAmountExceedsBalance();
+        }
+    }
+}
+```
+
+The last thing we're going to do, assuming these checks pass, is burn the passed amount of tokens. We're going to do this by using the `super` keyword. This tells solidity to use the burn function of the parent class.
+
+```js
+function burn(uint256 _amount) external override onlyOwner{
+    uint256 balance = balanceOf(msg.sender);
+    if(_amount <= 0){
+        revert DecentralizedStableCoin__MustBeMoreThanZero();
+    }
+    if(balance < _amount){
+        revert DecentralizedStableCoin__BurnAmountExceedsBalance();
+    }
+    super.burn(_amount);
+}
+```
+
+### Mint
+
+The second function we'll need to override to configure access control on is going to be our mint function.
+
+```js
+function mint(address _to, uint256 _amount) external overrides onlyOwner returns(bool){
+}
+```
+
+So, in this function we want to configure a boolean return value which is going to represent if the mint/transfer was successful. Something we'll want to check is if the \_to argument being passed is address(0), in addition to assuring the amount minted is greater than zero.
+
+We'll of course want to revert with custom errors if these conditional checks fail.
+
+```js
+contract DecentralizedStableCoin is ERC20Burnable, Ownable {
+    error DecentralizedStableCoin__MustBeMoreThanZero();
     error DecentralizedStableCoin__BurnAmountExceedsBalance();
     error DecentralizedStableCoin__NotZeroAddress();
 
-    constructor() ERC20("DecentralizedStableCoin", "DSC") {}
+    ...
 
-    function burn(uint256 _amount) public override onlyOwner {
-        uint256 balance = balanceOf(msg.sender);
-        if (_amount <= 0) {
-            revert DecentralizedStableCoin__AmountMustBeMoreThanZero();
-        }
-        if (balance < _amount) {
-            revert DecentralizedStableCoin__BurnAmountExceedsBalance();
-        }
-        super.burn(_amount);
-    }
-
-    function mint(address _to, uint256 _amount) external onlyOwner returns (bool) {
-        if (_to == address(0)) {
+    function mint(address _to, uint256 _amount) external onlyOwner returns(bool){
+        if(_to == address(0)){
             revert DecentralizedStableCoin__NotZeroAddress();
         }
-        if (_amount <= 0) {
-            revert DecentralizedStableCoin__AmountMustBeMoreThanZero();
+        if(_amount <= 0){
+            revert DecentralizedStableCoin__MustBeMoreThanZero();
         }
-        _mint(_to, _amount);
+        _mint(_to, amount)
         return true;
     }
 }
 ```
 
-That's it! We've now sown the seeds of creating a stablecoin.
+> [!NOTE]
+> We don't need to override the mint function, we're just calling the \_mint function within DecentralizedStableCoin.sol.
 
-It's always a good practice to keep updating and checking your code as you progress. You can run `forge build` to compile the contract and check for any issues or errors. In a little bit, we'll be writing tests and a deploy script.
+### Wrap Up
 
-## Wrapping it up
+Guess what? That's literally all there is to this contract, we're not going to do anything more here until we need to write some tests.
 
-Voila! With that, we've built the basis our own stablecoin that with be pegged to the US dollar, fully decentralized, and powered by exogenous crypto-assets Ethereum and Bitcoin.
-
-Starting a DeFi project such as this raises numerous possibilities in the world of cryptocurrencies and blockchain technologies. The tools and technologies available to developers today, like Solidity and OpenZeppelin, are making it easier than ever to get started in this exciting field. So whether you are a beginner or a pro-developer, the landscape of stablecoins offers an intriguing opportunity for everyone.
-
-Happy coding!
+Let's move on to the heart of this protocol, DSCEngine.sol, in the next lesson!

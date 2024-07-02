@@ -4,39 +4,38 @@ title: MEV - Introduction
 
 _Follow along with this video:_
 
-<!-- TODO -->
-
-
 ---
 
 ## What is MEV?
 
-Mev stands for "Maximum Extractable Value" and it's the value that blockchain node operators and users can extract by ordering transactions in a block in a specific order. 
+Mev stands for "Maximum Extractable Value", or sometimes "Miner Extractable Value", and it's the value that blockchain node operators and users can extract by ordering transactions in a block in a specific order.
 
-In order to develop an in-depth understanding, I would highly recommend visiting [Flashbots.net](https://www.flashbots.net/), a research and development organization dedicated to counteracting the negative implications of MEV. Their 'New to MEV' page, in particular, is a fantastic learning resource.
+In order to develop an in-depth understanding, I would highly recommend visiting [Flashbots.net](https://www.flashbots.net/), a research and development organization dedicated to counteracting the negative implications of MEV. Their '[**New to MEV**](https://docs.flashbots.net/new-to-mev)' page of their docs, in particular, is a fantastic learning resource. I highly _highly_ recommend reading through these articles to understand what's going on with MEVs.
 
-## What is the mempool? 
+## What is the mempool?
 
 <img src="/security-section-8/3-mev-introduction/regular-transaction.png" style="width: 100%; height: auto;" alt="regular transaction">
 
-When a transaction is initiated, it is directed to a specific node which, instead of immediately integrating it into its block, places it into its 'memory pool', or 'mempool'. This constitutes the lower tier of workings that enable blockchain.
+When a transaction is initiated it uses an RPC_URL, as we know. This URL points to a specific node on the blockchain which, instead of immediately integrating it into its block, places it into its 'memory pool', or 'mempool'. This constitutes the lower tier of workings that enable blockchain.
 
 <img src="/security-section-8/3-mev-introduction/mempool.png" style="width: 100%; height: auto;" alt="mempool">
 
-As we know, Ethereum is a Proof-of-stake blockchain and the nodes essentially "take turns" building blocks for the blockchain. So if you send your transaction to a single node, the node will have to wait until it's that nodes turn to include your transaction! This could take months! So what the node does is that accepts your transaction, and will often "fan out" your transaction to other nodes. 
+As we know, nodes essentially "take turns" building blocks for the blockchain. So if you send your transaction to a single node, the node will have to wait until it's that node's turn to include your transaction! This could take months!
 
-If it's one of the other nodes turns to build the block, if you sent enough of a tip (gas) with your transaction, the node will include your transaction in the block.
+So what the node does is accept your transaction, and add it to the `mempool`, accessible to other nodes. When another node sees this transaction waiting to be sent, it will pull transactions from the `mempool` to include in the block, often based on gas paid for that transaction.
 
-So this "mempool" is like a waiting room for transactions.
+> **Remember:** Part of gas paid serves as a financial incentive for node operators!
 
-## Front-running
+So this "`mempool`" is like a waiting room for transactions.
+
+### Front-running
+
+Suppose a malicious actor has visibility into the `mempool` and wants to use this to their advantage. Visibility into the `mempool` allows someone to effectively predict future transactions.
+
+If a malicious actor were to see a transaction in this waiting room that would benefit them, they're able to send _their own_ transaction, paying more gas, skipping the line.
+
+The malicious actor's transaction would execute before the victims!
 
 <img src="/security-section-8/3-mev-introduction/mev.svg" style="width: 100%; height: auto;" alt="front-running">
 
-Suppose you're a malicious user and want to use this to your advantage. You have the ability to scan the mempool, essentially predicting future transactions. Let's say User A is malicious, and sees someone make a transaction that is going to make them $100. 
-
-...Well User A might just say "Hey! I want to make $100!"
-
-So what User A can do is something called *front-running*. They can send their *own* transaction *ahead* of your transaction to extra some value. The only reason they are able to extract this value is because they were able to see your transaction ahead of time. 
-
-Front-running is one of the most common forms of MEV.
+This is called Front-Running and is one of the most common forms of MEV. Let's look at a more minimal diagram in the next lesson before moving on.

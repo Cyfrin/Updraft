@@ -1,39 +1,56 @@
 ---
-title: What is a Transaction? But Actually
+title: What is a transaction
 ---
 
-_Follow along the course with this video._
-
-
+_Follow along with this video:_
 
 ---
 
-## Deep Dive into Blockchain Transactions
+### More about blockchain transactions
 
-Let's take a moment to really get to grips with what we're doing when we script and execute blockchain transactions. Many people find this element of blockchain to be a bit of a mystery, so let's pull the curtain back and lay out the steps and elements involved.
+In the previous lesson we kept talking about transactions, but we never explained what a transaction is. In simple terms, a transaction captures details of an activity that has taken place on a blockchain.
 
-## Exploring the Terminal
+On the left side of your screen, in the Explorer tab, you'll find a folder called `broadcast`. Foundry saves all your blockchain interactions here. The `dry-run` folder is used for interactions you made when you didn't have a blockchain running (remember that time when we deployed our contract without specifying an `--rpc-url`). Moreover, the recordings here are separated by `chainId`.
 
-In your terminal, you'll see a few different directories. One of which is `dry run` - this is where files end up when there's no active blockchain. When a blockchain is running, the directories are divided by chain ID. Within these directories, such as `dry run` or `run latest`, you'll find detailed information about each transaction that has been executed. This includes information such as the transaction's hash, type, contract, name, address, and more.
+**Note**: The `chainId` is a unique identifier assigned to a specific blockchain network. It is used to distinguish one blockchain from another and is a crucial parameter for ensuring the security and integrity of transactions and interactions on the blockchain.
 
-In this section, we can see exactly what's being sent on the chain whenever we use our scripting commands - `forge script` or `forge create`.
+Click on `run-latest.json`.
+Here we can find more details about the last deployment script we ran in our previous lesson. It will show things like `transactionType`, `contractName` and `contractAddress`. Moreover, in the `transaction` section, you can see what we actually sent over to the RPC URL:
 
-This is the transaction we send to the RPC URL and it contains the relevant API data packaged for https POSTS. In this case, our transaction type is `2`. The `from` address refers to where the transaction is initiated from, and the `gas` is the hex value representing the computational effort the transaction requires.
+```javaScript
+      "transaction": {
+        "from": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+        "to": null,
+        "gas": "0x714e1",
+        "value": "0x0",
+        "input": "0x608060...c63430008130033",
+        "nonce": "0x0",
+        "chainId": "0x7a69",
+        "accessList": null,
+        "type": null
+      }
+```
 
-<img src="/foundry/14-transactions/transtactions1.png" style="width: 100%; height: auto;">
+Let's go through each of these:
 
-Included in the transaction is a `value` field. When you're deploying a contract, this is just another transaction; we can therefore add a value to it if we want. This value can be in the form of the Ethereum blockchain's native currency - Ether. To do this, you just add a `value` field followed by the amount you wish to transact. Note though, in solidity, the `value` option can't be set if the constructor isn't payable.
+- `from` is self-explanatory, it's the address we used to sign the transaction;
+- `to` is the recipient, in our case is null or address(0), this is the standard destination for when new smart contracts are deployed;
+- `gas` is the amount of gas spent. You will see the hex value `0x714e1` (or any other value represented in hex format);
 
-## Contract Deployment and the Data Field
+**Quick tip**: Normal humans can't understand hex values like the one indicated above, but there's a quick way to convert these into usual numbers. Run the following command in your terminal: `cast --to-base 0x714e1 dec`. `cast` is a very versatile tool provided by Foundry, type `cast --help` in your terminal to find out more, or go [here](https://book.getfoundry.sh/reference/cast/cast).
 
-Let's now focus on the data part of this transaction. In reality, this is the contract deployment code. But there's a bit more to it than that! It also contains the `nonce` value - a unique identifier that's used once for each transaction, and an access list (but we're not going to cover that in this post).
+- `value` is the transaction value, or the amount of ETH we are sending over. Given that this transaction was made to deploy a contract, the value here is `0x0` or `0`, but we could have specified a value and that would have been the initial balance of the newly deployed contract;
 
-In addition to the details stored in the transaction, a couple of other values play a part that aren't stored here. These are the `r` and `s` values which are used to generate a signature that makes the transaction valid. When a transaction is sent, it is signed using your private key. This signature then forms part of the transaction data.
+- `data` in this case is the contract deployment code and the contract code. In the excerpt above this was truncated;
 
-<img src="/foundry/14-transactions/transactions2.png" style="width: 100%; height: auto;">
+- `nonce` is a unique identifier assigned to each transaction sent from a specific account. The nonce is used to ensure that each transaction is processed only once and to prevent replay attacks. `nonce` is incremented with every single transaction;
 
-In terms of the `nonce` or nonce value mentioned earlier, this is managed by your chosen blockchain wallet. Every time a transaction is sent, it is given a nonce that increments after each transaction is sent. Finally, and critically, remember that any time you change the state of the blockchain you do so through a transaction. Each transaction contains an all-important data field, which includes 'opcodes' that tell the blockchain what you'd like it to do. In some cases, this might mean the creation of a new contract. In others, the data is merely associated with a basic transaction.
+- `accessList` is a feature of Ethereum to optimize the gas cost of transactions. It contains a list of addresses and associated storage keys that the transaction is likely to access, allowing the EVM to more efficiently compute the gas cost of storage access during the transaction's execution;
 
-## Conclusion
+- `type` please ignore this for now.
 
-The world of blockchain transactions can seem complicated. By understanding these underlying processes, however, we can get a much richer understanding of how it functions. The powerful part comes when we understand the way transactions work when executing them with tools like Remix. It all comes down to that pivotal data field of a transaction!
+There are other values that play an important part that weren't presented in that list, namely the `v`, `r`, and `s`. These are components of a transaction's signature, which are used to validate the authenticity and integrity of the transaction.
+
+Whenever we send a transaction over the blockchain there's a signature happening, that's where we use our `private key`.
+
+**Important:** Every time you change the state of the blockchain you do it using a transaction. The thing that indicates the change is the `data` field of a transaction. Deployment bytecode, contract bytecode and OPCODEs will be tackled in a future lesson.

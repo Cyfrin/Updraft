@@ -4,26 +4,26 @@ title: DSCEngine.sol Setup
 
 _Follow along the course with this video._
 
+---
 
+### DSCEngine.sol Setup
 
-# Building a Decentralized Stablecoin Engine
+Alright! It's time to build out the engine to this car. `DSCEngine` will be the heart of the protocol which manages all aspects of `minting`, `burning`, `collateralizing` and `liquidating` within our protocol.
 
-Building a stablecoin engine is not for the faint-hearted. But with the right tools and a dash of code fluency, you too can do it. If you're at this stage and feel a sense of achievement, clap yourself on the back! Alternatively, pause this and try your hand at crafting your own tests and deploy scripts. But don't get too comfortable just yet; we're only getting started.
+We're going to build this a little differently than usual, as we'll likely be writing tests as we go. As a codebase becomes more and more complex, it's often important to perform sanity checks along the way to assure you're still on track.
 
-We'll approach this project a bit differently from the ones people are used to. We won't shy away from doing some tests along the way to ensure we're on the right course. Let's get right into it and create an engine for our decentralized stablecoin (DSC) system.
+Begin with creating a new file, `src/DSCEngine.sol`. I'll bring over my contract and function layout reference and we can se up our boilerplate.
 
-### Creating the DSC Engine
+```js
+// SPDX-License-Identifier: MIT
 
-Start by creating a new file `DSCEngine.sol`. This will serve as our centralized stablecoin engine. Now, launch right into building the engine.
+// This is considered an Exogenous, Decentralized, Anchored (pegged), Crypto Collateralized low volitility coin
 
-Next, copy and paste this beginning part into the engine to lay the groundwork for our contract. We have our SPDX statement, layout of contracts, pragma solidity etc:
-
-```javascript
 // Layout of Contract:
 // version
 // imports
-// errors
 // interfaces, libraries, contracts
+// errors
 // Type declarations
 // State variables
 // Events
@@ -38,21 +38,16 @@ Next, copy and paste this beginning part into the engine to lay the groundwork f
 // public
 // internal
 // private
-// internal & private view & pure functions
-// external & public view & pure functions
-
-//SPDX-License-Identifier: MIT
+// view & pure functions
 
 pragma solidity ^0.8.18;
 
-contract DSCEngine{
-    //engine body
-}
+contract DSCEngine {}
 ```
 
-Let's not forget to include a lot of Nat spec to our contract body. More detailed information in our code makes it easier for people to understand - think of it as making notations in a book that hundreds of people will read.
+Time for NATSPEC, remember, we want to be as verbose and clear in presenting what our code is meant to do.
 
-```javascript
+```js
 /*
  * @title DSCEngine
  * @author Patrick Collins
@@ -65,52 +60,79 @@ Let's not forget to include a lot of Nat spec to our contract body. More detaile
  *
  * It is similar to DAI if DAI had no governance, no fees, and was backed by only WETH and WBTC.
  *
+ * Our DSC system should always be "overcollateralized". At no point, should the value of
+ * all collateral < the $ backed value of all the DSC.
+ *
  * @notice This contract is the core of the Decentralized Stablecoin system. It handles all the logic
  * for minting and redeeming DSC, as well as depositing and withdrawing collateral.
  * @notice This contract is based on the MakerDAO DSS system
  */
+contract DSCEngine {}
 ```
 
-<img src="/foundry-defi/5-defi-dscengine-setup/defi-dscengine-setup1.PNG" style="width: 100%; height: auto;">
+> [!IMPORTANT]
+> Verbosity.
 
-The DSC system's role is to retain tokens at a one token-equals-$1 peg. It bears similar features to DAI in terms of being a stablecoin. Still, it operates without governance, fees, and runs only on wrapped ETH and wrapped Bitcoin.
+I know this may seem like a lot, but a common adage is: `Your code will be written once, and read thousands of times.` Clarity and cleanliness in code is important to provide context and understanding to those reading the codebase later.
 
-### Core Functions of the DSC Engine
+### Functions
 
-With our contract body in place, it's time to think about the core functions of our project. What actions should our system facilitate?
+At this point in writing a contract, some will actually start by creating an interface. This can serve as a clear, itemized list of methods and functionality which you expect to be included within your contract. We'll just add our function "shells" into our contract directly for now.
 
-Firstly, our system should be able to deposit collateral and mint DSC tokens. This action allows users to deposit either their DAI or Bitcoin to generate our stablecoin.
+Let's consider what functions will be required for DSC.
 
-Secondly, the system should also facilitate the redemption of collateral or DSC. Once users have finished using our stablecoin, they should be able to exchange it back for the collateral they used initially.
+We will need:
 
-Another critical function is the ability to burn DSC. This functionality matters when a user fears having too much stablecoin and very little collateral. It provides a quick way to get more collateral than DSC, thus maintaining the balance within the system. Accordingly, our DSC system should always have more collateral than DSC.
+- Deposit collateral and mint the `DSC` token
+  - This is how users acquire the stablecoin, they deposit collateral greater than the value of the `DSC` minted
+- Redeem their collateral for `DSC`
+  - Users will need to be able to return DSC to the protocol in exchange for their underlying collateral
+- Burn `DSC`
+  - If the value of a user's collateral quickly falls, users will need a way to quickly rectify the collateralization of their `DSC`.
+- The ability to `liquidate` an account
+  - Because our protocol must always be over-collateralized (more collateral must be deposited then `DSC` is minted), if a user's collateral value falls below what's required to support their minted `DSC`, they can be `liquidated`. Liquidation allows other users to close an under-collateralized position
+- View an account's `healthFactor`
+  - `healthFactor` will be defined as a certain ratio of collateralization a user has for the DSC they've minted. As the value of a user's collateral falls, as will their `healthFactor`, if no changes to `DSC` held are made. If a user's `healthFactor` falls below a defined threshold, the user will be at risk of liquidation.
+    - eg. If the threshold to `liquidate` is 150% collateralization, an account with $75 in ETH can support $50 in `DSC`. If the value of ETH falls to $74, the `healthFactor` is broken and the account can be `liquidated`
 
-We also need a liquidation function. Its importance comes into play when the price of a user's collateral falls too much. For example, if a user deposits collateral worth $100 and uses it to mint $50 worth of DSC, if the ETH price drops to $40, the collateral is less than DSC - a scenario we mustn't let happen. In such a case, the user should be liquidated and knocked off the system.
+To summarize how we expect the protocol to function a bit:
 
-The fifth core function is the `healthFactor`. This external view function, `getHealthFactor`, allows us to see how healthy a particular user's portfolio is.
+Users will deposit collateral greater in value than the `DSC` they mint. If their collateral value falls such that their position becomes `under-collateralized`, another user can liquidate the position, by paying back/burning the `DSC` in exchange for the positions collateral. This will net the liquidator the difference in the `DSC` value and the collateral value in profit as incentive for securing the protocol.
 
-Lastly, we will need functions for `depositCollateral`, `redeemCollateral`, and `mintDSC`.
+In addition to what's outlined above, we'll need some basic functions like `mint/deposit` etc to give users more granular control over their position and account `healthFactor`.
 
-```javascript
-    // Functions we'll need
-    function depositCollateralAndMintDSC() external {};
-    function depositCollateral() external {};
-    function redeemCollateralForDSC() external {};
-    function redeemCollateral() external {};
-    function mintDSC() external {};
-    function burnDSC() external {};
-    function liquidate() external {};
-    function getHealthFactor() external view {};
+```js
+contract DSCEngine {
+
+///////////////////
+//   Functions   //
+///////////////////
+
+///////////////////////////
+//   External Functions  //
+///////////////////////////
+    function depositCollaterAndMintDsc() external {}
+
+    function depositCollateral() external {}
+
+    function redeemCollateralForDsc() external {}
+
+    function redeemCollateral() external {}
+
+    function mintDsc() external {}
+
+    function burnDsc() external {}
+
+    function liquidate() external {}
+
+    function getHealthFactor() external view {}
+}
 ```
 
-### Testing as You Build
+### Wrap Up
 
-Testing as we go on ensures that we're on the right track. Consider writing tests describing what each function should do to the system.
+Wow, what a great start. Hopefully the `stability mechanism` of this protocol has been made clear and the incentives we're providing users to `liquidate` unhealthy positions make sense. If not, don't worry. We'll explain these concepts as we build out the functionality, in more detail.
 
-In conclusion, we've successfully begun constructing the engine for the Decentralized Stablecoin (DSC) system. It might feel overwhelming, but with diligence, testing, and code readability, we're off to a good start.
+In the next lesson we're going to start with the `depositCollateral` function.
 
-We'll be looking at tests and a deploy script next as well as additionial functions to improve our DSC System.
-
-<img src="/foundry-defi/5-defi-dscengine-setup/defi-dscengine-setup2.PNG" style="width: 100%; height: auto;">
-
-Happy coding!
+Let's get going!

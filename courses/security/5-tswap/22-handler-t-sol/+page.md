@@ -1,61 +1,211 @@
 ---
-title: Writing T-Swap a stateful fuzz test suite - Handler.t.sol, Deposit Function
+title: Handler.t.sol
 ---
 
-
-
 ---
 
-# Breaking Down DeFi Audits with Invariant Testing
+### Handler.t.sol
 
-In this deep dive into DeFi audits, we will be covering a wealth of material ranging from DeFi to invariant testing. Do remember that we're dealing with complex topics, so if things are not making perfect sense, take a breather, and continue at your own pace. You're doing great by simply trying to digest this sizable chunk of advanced concepts.
+This point in a good time to pause. If things aren't making perfect sense, that's ok. We're covering several advanced concepts here. Just keep going and follow along as you can. Remember that practice makes perfect.
 
-## Building a Handler
+The boilerplate of our handler is going to be very similar to what we saw in our previous examples. This will be our starting point.
 
-Let's start with the task of building our handler. A common technique that comes in handy when addressing large problems is to break the problem down into smaller segments. We're taking this approach with our handler development.
+```js
+// SPDX-License-Identifier: MIT
 
-In our contract, a constructor will create a TSWAP pool. Now, we need to test an invariant that the change in `X` (token balance) is equal to the expected change in `X`.
+pragma solidity ^0.8.20;
 
-Within our handler, we'll want to implement at least two main functions: a deposit function and a swap function. For the purposes of this tutorial, we’ll focus on `deposit` and `swapExactOutput` functions as a starting point.
+import { Test, console2 } from "forge-std/Test.sol";
+import { TSwapPool } from "../../src/TSwapPool.sol";
 
-## Decoding Function Documentation
+contract Handler is Test {
+    TSwapPool pool;
+    constructor(TSwapPool _pool) {
+        pool = _pool;
+    }
+}
+```
 
-One advantage we have while trying to understand these functions, is that the documentation is quite helpful. If there were no docs, we'd be wading through the code itself, which could be much more time-consuming.
+Let's remind ourselves of the invariant we're testing:
 
-Taking `swapExecOutput` for example, the function documentation illustrates its working as follows:
+```
+∆x = (β/(1-β)) * x
+```
 
-> swapExecOutput figures out how much you need to input, based on the output you want to receive. For instance, if you want ten output tokens of WETH and you're inputting DAI, the function will calculate the amount of DAI needed to get you the desired WETH and execute the swap.
+Having a skim through the TSwapPool.sol code there are a few functions that stand out as potentially important.
 
-Such explanations in the documentation significantly facilitate understanding of the code, thus contributing to making the auditing process relatively less time-consuming.
+- deposit
+- withdraw
+- swapExactOutput
+- swapExactInput
 
-## Keeping Notes
+You may notice that `swapExactInput` doesn't have any documentation! This makes is incredibly difficult to gain any insight into what this function is meant to do without reading the code. Fortunately `swapExactOutput` has some NATPEC, so we should start there.
 
-While working through the process, it's good practice to keep notes or record findings, especially when there are missing parameters as we've noticed in the `swapExecOutput` function. Let's do this to maintain an audit trail for future reference.
+```js
+/*
+ * @notice figures out how much you need to input based on how much
+ * output you want to receive.
+ *
+ * Example: You say "I want 10 output WETH, and my input is DAI"
+ * The function will figure out how much DAI you need to input to get 10 WETH
+ * And then execute the swap
+ * @param inputToken ERC20 token to pull from caller
+ * @param outputToken ERC20 token to send to caller
+ * @param outputAmount The exact amount of tokens to send to caller
+ */
+```
 
-Here’s a simple note example:
+Effectively this function is meant to determine what input value is necessary in order to receive a specified output amount.
 
-> Notes:Audit findings:Missing param in NatsSpec, missing deadline param in `swapExecOutput`. Also, remember to check with the protocol team for any documentation for better audit efficiency.
+The parameters for this function are pretty explicit:
 
-## Setting up Core Handler Actions
+- **inputToken** - what the user wants to put in
 
-Back in our handler, we want to focus on two primary actions, at least to start: depositing and swapping.
+- **outputToken** - what the user wants to take out
 
-To perform a deposit, we need access to the tokens. For swapping, we're likely to use `swapExactOutput`. We'll begin by implementing these, and gradually build from there. By writing a Fuzz test suite to execute these actions, we will not only be contributing to better code quality, but also making the protocol safer.
+- **outputAmount** - how much the user wants to take out
 
-Let's begin with creating our deposit function.
+- **deadline** - don't worry about this for the purposes of this course, we'll be using `block.timestamp`.
 
-## Constructing the Deposit Function
+> **Protip:** The NATSPEC here is missing the `deadline` parameter. This informational finding might be worth pointing out in a private audit!
 
-Our deposit function begins by defining our tokens, in this case, WETH and Pool tokens.
+### Back to the Handler
 
-With the availability of these tokens, we can proceed with determining the amounts for tokens to deposit, ensuring we set reasonable amounts to avoid overflow errors. The quantity of WETH to deposit will dictate the corresponding change in the Pool tokens.
+Alright, with a little more context we have some idea of what functions will need to be tested. Remember that being able to write a fuzzing test suite for a protocol is already going to provide a tonne of value for them.
 
-Once we execute the deposit, we compare our expectations (expected delta) with the actual changes in the Pool and WETH tokens.
+Let's start small with the `deposit` function.
 
-We are effectively done with our deposit function, but we didn't sign up to only handle deposits; we're here to test the swap invariant.
+```js
+// SPDX-License-Identifier: MIT
 
-## Building the Swap Function
+pragma solidity ^0.8.20;
 
-The auditing process includes verifying code and ensuring that invariants hold through operations like swaps. That's part of what we're trying to achieve here, which brings us to create our swap function.
+import { Test, console2 } from "forge-std/Test.sol";
+import { TSwapPool } from "../../src/TSwapPool.sol";
+import { ERC20Mock } from "../mocks/ERC20Mock.sol";
 
-> "Remember, the bigger the vulnerabilities you uncover, the bigger the improvements you can make, ultimately contributing to the overall safety of DeFi protocols and the blockchain ecosystem."
+contract Handler is Test {
+    TSwapPool pool;
+    ERC20Mock weth;
+    ERC20Mock poolToken;
+
+    constructor(TSwapPool _pool) {
+        pool = _pool;
+        weth = ERC20Mock(_pool.getWeth());
+        poolToken = ERC20Mock(_pool.getPoolToken());
+    }
+
+    function deposit(uint256 wethAmount) public {
+        wethAmount = bound(wethAmount, 0, type(uint64).max);
+    }
+}
+```
+
+All that we've done so far is import our `ERC20Mock` contract and initialize variables for `weth` and `poolToken`.
+
+In our constructor we're using the `getWeth` and `getPoolToken` functions of `TSwapPool` to assure we're using the correct tokens ascribed to the pool our Handler is linked to.
+
+Within the `deposit` function we're binding the amount of `weth` to deposit between `0` and `uint64.max`. This might be a little too restrictive at ~18.5 ETH, but we'll run with it.
+
+> **Protip:** You can use `chisel` and the command `type(uint64).max` to confirm the value of this number, remember 18 decimal places!
+
+Now, if we're meant to validate `∆x`, `∆x` needs to be defined. In the case of our TSwap example, wethAmount is _actually_ going to be our `∆y` based on our earlier assignments in `Invariant.t.sol`.
+
+```js
+int256 constant STARTING_X = 100e18 // starting ERC20 / poolToken
+int256 constant STARTING_Y = 50e18 // starting WETH
+```
+
+With that in mind, let's define startingX and startingY as well as _expectedDeltaX_ and _expectedDeltaY_ values for these tokens in our test.
+
+> **Note:** We're going to cheat a little bit here and I'm going to tell you there's a function in `TSwapPool.sol` which allows us calculate the amount of poolTokens required in a deposit based on weth requested - `getPoolTokensToDepositBasedOnWeth`.
+
+A closer look at this function reveals that it's effectively returning the result of the pool's token ratio.
+
+```js
+function getPoolTokensToDepositBasedOnWeth(
+        uint256 wethToDeposit
+    ) public view returns (uint256) {
+        uint256 poolTokenReserves = i_poolToken.balanceOf(address(this));
+        uint256 wethReserves = i_wethToken.balanceOf(address(this));
+        return (wethToDeposit * poolTokenReserves) / wethReserves;
+    }
+```
+
+Here's what our `Handler` looks like now.
+
+```js
+contract Handler is Test {
+    TSwapPool pool;
+    ERC20Mock weth;
+    ERC20Mock poolToken;
+
+    // Ghost Variables - variables that only exist in our Handler
+    int256 public expectedDeltaY;
+    int256 public expectedDeltaX;
+    int256 startingY;
+    int256 startingX;
+    int256 public actualDeltaX;
+    int256 public actualDeltaY;
+
+    constructor(TSwapPool _pool) {
+        pool = _pool;
+        weth = ERC20Mock(_pool.getWeth());
+        poolToken = ERC20Mock(_pool.getPoolToken());
+    }
+
+    function deposit(uint256 wethAmount) public {
+        wethAmount = bound(wethAmount, 0, type(uint64).max);
+        startingY = int256(weth.balanceOf(address(this)));
+        startingX = int256(poolToken.balanceOf(address(this)));
+        expectedDeltaX = int256(wethAmount);
+        expectedDeltaY = int256(pool.getPoolTokensToDepositBasedOnWeth(wethAmount));
+    }
+}
+```
+
+With our starting points configured we're ready to call deposit and track the change of our token values.
+
+```js
+function deposit(uint256 wethAmount) public {
+    wethAmount = bound(wethAmount, 0, type(uint64).max);
+    startingY = int256(weth.balanceOf(address(this)));
+    startingX = int256(poolToken.balanceOf(address(this)));
+    expectedDeltaX = int256(wethAmount);
+    expectedDeltaY = int256(pool.getPoolTokensToDepositBasedOnWeth(wethAmount));
+
+    // Pranking LP and minting tokens/approving the pool
+    vm.startPrank(liquidityProvider);
+    weth.mint(liquidityProvider, wethAmount);
+    poolToken.mint(liquidityProvider, uint256(expectedDeltaX));
+    weth.approve(address(pool), type(uint256).max);
+    poolToken.approve(address(pool), type(uint256).max);
+
+    // Deposit
+    pool.deposit(wethAmount, 0, uint256(expectedDeltaX), uint64(block.timestamp));
+    vm.stopPrank();
+}
+```
+
+Now that `deposit` has been called, we can check what the ending balances are of our tokens!
+
+```js
+// Deposit
+pool.deposit(wethAmount, 0, uint256(expectedDeltaX), uint64(block.timestamp));
+vm.stopPrank();
+
+// Check Actual Deltas
+uint256 endingY = poolToken.balanceOf(address(this));
+uint256 endingY = weth.balanceOf(address(this));
+
+actualDeltaY = int256(endingY) - int256(startingY);
+actualDeltaX = int256(endingX) - int256(startingX);
+```
+
+### Wrap Up
+
+Whew, this lesson has been a lot already. Again, don't worry if it's not all clicking, follow along as best you can and I promise it'll make sense by the end.
+
+Believe it or not, this has all mostly been set up. We need to deposit tokens before we're able to check TSwap's core invariant during its `swapExactInput` and `swapExactOutput` functions.
+
+We've got great momentum. Let's tackle the swap function in the next lesson!

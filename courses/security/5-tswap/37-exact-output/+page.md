@@ -1,45 +1,59 @@
 ---
-title: T-Swap Manual Review T-Swap Pool - Swap Exact Output
+title: Manual Review - TSwapPool.sol - swapExactOutput
 ---
 
-
-
 ---
 
-# Swapping Exact Output on Uniswap: A Deep Dive
+### Exploit - Slippage Protection
 
-Hello world! Welcome to another dive into the deep, deep ocean that is Uniswap. Today, we'll be examining another function, `swapExactOutput`. This is the reverse of `swapExactInput`, and you'll find, as we explore farther, that there are exciting and potentially scary quirks in how this function operates.
+`swapExactOutput` we expect to be the inverse of `swapExactInput`. Here's a reminder of the function:
 
-## Understanding `swapExactOutput`
+<details>
+<summary>swapExactOutput Function </summary>
 
-In the case of the `swapExactInput`, as the name suggests, we decided the input token amount beforehand and asked the system to provide us with the corresponding output.
+```js
+function swapExactOutput(
+    IERC20 inputToken,
+    IERC20 outputToken,
+    uint256 outputAmount,
+    uint64 deadline
+)
+    public
+    revertIfZero(outputAmount)
+    revertIfDeadlinePassed(deadline)
+    returns (uint256 inputAmount)
+{
+    uint256 inputReserves = inputToken.balanceOf(address(this));
+    uint256 outputReserves = outputToken.balanceOf(address(this));
 
-In the `swapExactOutput`, the tables turn. We're going to define the output we'd like to receive. We don't provide any 'minimum input' – this comes across as odd at first glance, as we might expect to be able to set a max input cap. Sounds interesting, right?
+    inputAmount = getInputAmountBasedOnOutput(outputAmount, inputReserves, outputReserves);
 
-Here's a simple example. Let’s say I want ten WETH (Wrapped Ether) as my output and I'm paying using DAI (a stablecoin). When the function gets executed, it figures out how much DAI you need to input to receive the pre-defined ten WETH output.
-
-We pretty much understand how it operates since we've already dissected its sibling, `swapExactInput`. We saw previously an issue relating to high fees, which seems to persist in this function.
-
-## Delving Deeper into `swapExactOutput`
-
-As we know, the devil's often in the details. One crucial conditional from the `swapExactInput` function is missing in `swapExactOutput`. We had previously a safeguard – the output amount should be more significant than the minimum output amount. Now, there's seemingly no protective clause.
-
-> Safety reminder! Always put in place protective clauses like a 'minimum output' or 'maximum input' to avoid catastrophic losses.
-
-Now, let's ponder over an example:
-
-```shell
-You want ten WETH as output, and your payment method is DAI.
+    _swap(inputToken, inputAmount, outputToken, outputAmount);
+}
 ```
 
-Consider a scenario where you request this swap. Before the transaction is confirmed, a massive trade occurs, shifting the price enormously. Suddenly, your desired output of ten WETH requires an astronomical input of (exaggeration for effect) ten bajillion DAI.
+</details>
 
-Without an upper limit on the input DAI spent, in instances of sudden, significant price movement, a user could end up experiencing an unexpected dent in their wallet.
+---
 
-## The Solution: Max Input Amount
+One thing that may stand out to us right away is that there doesn't seem to be any check on maximum input (and there's one fewer parameter as well), similar to how our `swapExactInput` function has the `minOutputAmount`, this difference definitely has our senses tingling.
 
-Along with the 'minimum output amount' in `swapExactInput`, it would be a sensible approach to add a failsafe - a 'maximum input amount. This way, users won't unpredictably run out of their funds during extreme market volatility.
+From there the function looks very similar to `swapExactInput` with one glaring omission. This omission is actually related to our missing parameter. We have nothing checking that our `inputAmount` is less than a `maxInputAmount`.
 
-Such a preventative measure safeguards users against excessive spending due to price fluctuations. Safeguards become all the more important considering possible MEV (Miner Extractable Value) attacks - a topic we plan on visiting later.
+Consider this scenario:
 
-So there we have it! A seemingly smooth-functioning condition, with an underlying potential issue. We have struck yet another goldmine; we discovered another bug in the wild ecosystem of Uniswap. We'll be diving into the world of MEV soon, so stay tuned and keep exploring!
+1. You place a transaction to trade X DAI for 10 WETH
+2. A transaction occurs before yours is confirmed dramatically changing the price of WETH for DAI
+3. You spend way more than you expected to for your 10 WETH
+
+This is absolutely a vulnerability and we should note it down.
+
+```js
+// @Audit-High - Needs slippage protection - maxInputAmount
+```
+
+This is also a vector for an MEV attack, but we'll come back to those later.
+
+---
+
+Great! We found another bug! Nice work, let's keep the momentum.

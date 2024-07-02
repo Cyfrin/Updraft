@@ -2,64 +2,86 @@
 title: Recap
 ---
 
-
-
 ---
 
-# DeFi Security Auditing – A Recap
+### Recap
 
-Hey there! If you've been with us from the start of our series on DeFi Security Auditing, congratulations on reaching this point! This is going to be a recap encompassing everything you've learned so far in the course. In case you missed out on something, don’t worry, let's walk through them again.
+It's been a journey, but let's do a quick recap of everything we've covered in this section!
 
-## Protocol Invariants – Your Secret Weapon
+1. Context & Understanding
 
-First and foremost, we realized that understanding protocol invariants is crucial in locating bugs hidden in our code bases. We don’t even need to explore the code base deeply or conduct a tedious manual review. We found how we can write an invariant or a stateful fuzzing test suite, which pointed out a bug in the swap function – a process without any manual review.
+   Without much manual review, we were able to construct fuzzing test suites (both stateful and stateless) to indentify where these invariants were broken.
 
-In essence, the tooling, particularly stateful fuzzing, is a powerful mechanism for bug detection.
+   We experienced first hand how efficient using of tooling and a proper understanding of a protocol can really assist in our reviews in this way.
 
-## Unfolding the AMM Mystery
+2. what an AMM/Dex is
 
-We touched upon the underlying fundamentals of an AMM, or Automated Market Maker, and what a DEX (Decentralised Exchange). Even though the T-Swap audit revolves around a fictitious protocol, its foundation is based on Uniswap and follows exactly the same X times Y equals K principle.
+   While gathering context for TSwap we learnt what an automated market maker is, what a decentralized exchange is and their functions within DeFi.
 
-We learned that the AMM works without an order book. It simply uses token pools, and to extract tokens from one side, tokens need to be added to the other side, maintaining the balance. Everyone is on the lookout for a platform where every swap transaction means money in their purses.
+   <img src="/security-section-5/48-recap/recap1.png" width="100%" height="auto">
 
-## Understanding the Uniswap Protocol
+   We also covered how AMMs differ from conventional orderbook exchanges and why this adjustment was needed in a blockchain world.
 
-Boiling down the core mechanisms of the Uniswap protocol, X multiplied by Y equals K is the mathematical model where K is a constant, ensuring the token ratio remains unchanged. Every time you wish to take a token, you need to provide an equivalent amount back.
+   <img src="/security-section-5/48-recap/recap2.png" width="100%" height="auto">
 
-Dealing with a protocol like an AMM where math is the crux of the system, the importance of invariants is highlighted.
+3. Liquidity Providers
 
-## Identifying Client Requirements
+   `Liquidity Providers` add funds to liquidity pools to allow an `AMM` to fascilitate trades. We learnt that fees incured while trading on an `AMM` or `Dex` are used as incentive to pay liquidity providers based on their percentage contribution to the pool!
 
-Earlier, the absence of illustrative graphs and even the lacking of documentation for some functions made working somewhat daunting. But over time, we've learned that we need to function hand-in-hand with the protocol. They always have the inside story, and understanding their needs is indispensable.
+4. Core Invariants & Constant Product Formula
 
-Our comprehensive client onboarding document illustrates this point, particularly the section about T-SWAP having onboarded. We learned that onboarding our protocols and obtaining as much information as possible is of utmost importance.
+   Core invariants are fundamental properties of a protocol that must always hold true. An example of a core invariant was the constant product formula that we saw in TSwap (and is used in Uniswap) `x * y = k`.
 
-A case in point would be their low test coverage, an issue we'd definitely want them to address. They churn out multiple ERC20s. And if you don't know by now, ERC20s are pretty wacky. Understanding this helps to architecturally protect the protocol from the peculiarities of these ERC20s.
+   > **Note:** `x * y = k` effectively says 'the ratio between these two tokens must remain the same
 
-We also learned that it's not advisable to work with any and every ERC20. Instead, a restriction list or documentation indicating potentially problematic tokens (like rebasing tokens, fiat transfer tokens, reentrancy tokens) is a good practice. Hence, an extensive onboarding document and deep client interaction can take you a long way.
+   We were also introduced to the [**Properties**](https://github.com/crytic/properties) repo by Trail of Bits, which outlines a tonne of core invariants for common tokens and more.
 
-## Keeping Invariants in Check
+5. Thoroughly Onboarding a Client
 
-Our journey took us through understanding what protocol invariants are – they represent those attributes of the system that must always remain constant. We learned to write fuzzing or stable fuzzing tests to go hand in hand with them.
+   This is something we've touched on a few times, but in this section we went through an extension onboarding template and stressed the importance of getting as much information about the protocol from the client as we can. Making note of important details like
 
-Referencing the Freepy model where protocol invariant checks are directly embedded into the system, Uniswap stands as a good example of such a system. In stark contrast was the Euler finance attack, where the absence of an invariant check led to their exploit. But people do differ on nomenclature, some prefer to call it CEI and pre and post-checks.
+   - Test Coverage
+   - Token/Chain Compatibilities
+   - nSLOC
+   - Scope
 
-## Diving into DeFi
+   When we onboard a protocol, we want to ask as many questions as possible to gain as much context as possible.
 
-The constant product formula X \* Y = K, oft-used in many DeFi protocols, particularly AMMs, is a powerful tool. For more adventurous explorations into the realm of DeFi, DeFi Llama is a great resource.
+6. Fuzzing!
 
-Having said that, we were also introduced to other beneficial tools like stateful and stateless fuzzing, Echidna consensus, and other fuzzers. Although mutation or differential testing didn't make it onto the list, they're definitely on the cards for future lessons.
+   We learnt how to write `stateful and stateless fuzzing` tests and how powerful they can be in adding value to our audit, catching things our other tools and basic unit tests couldn't hope to identify.
 
-## Deciphering Solidit
+7. FREI-PI/CEI
 
-Solidit presented itself enormously useful, allowing us to cross-check if an issue has been previously pointed out by someone else. It helps us to learn about new findings and also verify if we're on the right track.
+   We touched briefly on [**FREI-PI**](https://www.nascent.xyz/idea/youre-writing-require-statements-wrong) as a methodology and the idea of hardcoding invariant checks into smart contract protocols.
 
-## Welcome to A World Of Weirdness
+8. Tooling
 
-No, we're not stepping into a horror movie. Welcome to the world of ERC20s, where weird is the new normal, and this trend doesn't seem to be fading. But not to worry – Trail of Bits has provided a handy checklist to make sure you're making the right choices. There's also a master list naming all the weird ERC20 tokens – a post-apocalyptic catalog if you'd wish to call it so.
+   In this section we covered some exciting tools extensively. The biggest of which being stateful fuzzing through the foundry framework, of course. We also leveraged tools like [**Slither**](https://github.com/crytic/slither), [**Aderyn**](https://github.com/Cyfrin/aderyn) and [**Solodit**](https://solodit.xyz/) as well as the compiler itself in our hunt for TSwap bugs.
 
-## Concluding Thoughts
+   In addition to the above, we briefly touched on [**Echidna**](https://github.com/crytic/echidna) and Consensys as fuzz testing alternatives and even Certora - which we'll learn about with formal verification very soon.
 
-If you’ve accompanied us this far, give yourself a round of applause. It's remarkable progress considering the level of understanding you now hold. You've essentially audited the Uniswap codebase and are now fully equipped to delve into the world of security, undertake competitive audits, bug bounties, or even get hired!
+9. Weird ERC20s
 
-Nevertheless, we recommend you complete the course to further enrich your learning. Pat yourself on the back for your achievement, take a well-deserved break, and get ready to tackle some challenges ahead.
+   We learnt about the risk associated with `Weird ERC20s` and how prevalent they are in DeFi.
+
+   These tokens can behave in a wide variety of ways including, but not limited to, re-entrancy, fee-on-transfer, existing behind proxies etc. Being aware of these situations is important.
+
+   The [**Weird ERC20s GitHub repo**](https://github.com/d-xo/weird-erc20) is an invaluable resources for security researchers and common token types should be something that is studied further.
+
+   Also check out the [**Token Integration Checklist by Trail of Bits**](https://secure-contracts.com/development-guidelines/token_integration.html) for valuable information on how to protect against these sorts of tokens.
+
+10. More Manual Review!
+
+    We did another round of manual review resulting in some amazing findings in TSwap such as:
+
+    - slippage
+    - incorrect fee calculations
+    - lack of deadline checks
+    - fee on transfer
+
+### Wrap Up
+
+You deserve a congratulations. If you've made it this far in the course, you're doing incredibly well and are **_already_** very prepared to begin challenging live competitive audits.
+
+We've covered so much in this section of the course and you should be incredibly proud. Go take a break and come back for a few extra exercises to bring everything together before you continue into the next section.

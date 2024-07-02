@@ -1,55 +1,97 @@
 ---
-title: T-Swap Manual Review T-Swap Pool
+title: T-Swap Manual Review TSwapPool
 ---
 
-
-
 ---
 
-# Dissecting Uniswap v1 and TSWAP - An In-Depth Security Review
+### Events, State Variables and Constructor
 
-Welcome to this thrilling exploration of the TSWAP pool which gets us to the heart of Uniswap v1. By the end of this piece, you will have an in-depth understanding of Uniswap in its most rudimentary form. Let's delve right into the Uniswap TSWAP pool code and grasp what makes it tick.
+Time to dive into the bulk of this manual review with the `TSwapPool.sol` contract.
 
-## TSWAP in High-Level Review
+Right at the top beneath the custom errors we actually see something nice `using SafeERC20 for IERC20`. The `SafeERC20` library is wonderful, it implements the `safeTransfer` and `safeTransferFrom` functions which protect against some variations of `Weird ERC20s`
 
-Contrary to what one might expect, the TSWAP pool codebase is impressively user-friendly. Not only is it detailed and transparent, but it is also an ERC20 token, which rings a bell for most blockchain enthusiasts. Being a liquidity token, this characteristic intuitively aligns with its purpose.
+Beneath this we see our state variable declarations.
 
-## The Safe ERC20 Library
+```js
+IERC20 private immutable i_wethToken;
+IERC20 private immutable i_poolToken;
+uint256 private constant MINIMUM_WETH_LIQUIDITY = 1_000_000_000;
+uint256 private swap_count = 0;
+uint256 private constant SWAP_COUNT_MAX = 10;
+```
 
-An additional feature that gives the TSWAP an edge is the usage of the Safe ERC20 library. The primary function of this library is to safely transfer from accounts.
+We first see 2 expected immutable variables, these will of course represent the weth token and the ERC20 associated with the pool.
 
-The Safe ERC20 library comes in handy as a shield against some of the abnormal (and occasionally detrimental) ERC20 occurrences that we might encounter in the later stages of this article.
+Next is `MINIMUM_WETH_LIQUIDITY` which we may recall from our invariant testing. This is in our deposit function and represents the minimum amount of weth required in a deposit.
 
-## Immutable State Variables in TSWAP
+```js
+if (wethToDeposit < MINIMUM_WETH_LIQUIDITY) {
+    revert TSwapPool__WethDepositAmountTooLow(MINIMUM_WETH_LIQUIDITY, wethToDeposit);
+}
+```
 
-TSWAP comes packed with some immutable state variables, such as `Iweth token` and `pool token`, which make perfect sense considering the nature of smart contracts.
+The state variables section closes off with these two troublemakers:
 
-Every contract is bound to have at least two tokens, and these variables stand as unwavering constants for these tokens.
+```js
+uint256 private swap_count = 0;
+uint256 private constant SWAP_COUNT_MAX = 10;
+```
 
-## The WETH Liquidity Feature
+These were involved in the issue which broken our invariant. We can see, within the `_swap` function the use of these variable in breaking our protocol invariant.
 
-Another intriguing aspect of TSWAP is the WETH liquidity feature, a concept we gleaned from the invariant test suite. If you want to deposit WETH, you have to deposit at least a specific amount known as the WETH liquidity.
+```js
+function _swap(IERC20 inputToken, uint256 inputAmount, IERC20 outputToken, uint256 outputAmount) private {
+    ...
+    swap_count++;
+    if (swap_count >= SWAP_COUNT_MAX) {
+        swap_count = 0;
+        outputToken.safeTransfer(msg.sender, 1_000_000_000_000_000_000);
+    }
+    ...
+}
+```
 
-Of course, the question that follows is whether this hard-coded determinant is too high, or whether there's a chance something unusual could be going on here.
+We've already written some audit notes about events thanks to what Aderyn pointed out to us earlier. From there we hit some modifiers. We should double check that they're doing what they say intend to.
 
-> "With coding, it's crucial not to take anything at face value."
+```js
+modifier revertIfDeadlinePassed(uint64 deadline) {
+    if (deadline < uint64(block.timestamp)) {
+        revert TSwapPool__DeadlineHasPassed(deadline);
+    }
+    _;
+}
 
-## Swap Count and Swap Count Max
+modifier revertIfZero(uint256 amount) {
+    if (amount == 0) {
+        revert TSwapPool__MustBeMoreThanZero();
+    }
+    _;
+}
+```
 
-Next up on our review is the rather peculiar `swap count` and `swap count max`. Their existence can be attributed to an issue we discovered during our stateful fuzzing test suite. From the anomaly, we observed a quirky operation where the protocol gives out extra money after every ten swaps. This random and seemingly unnecessary function seems to break the protocol's expected behavior.
+Both look good. I'm getting hungry for bugs.
 
-## About Events and Modifiers
+Then we come to the constructor, this more or less looks good, but you may recall that Aderyn pointed out a lack of zero address check here. It may be worth making a note.
 
-TSWAP presents several events that we already have some audit notes about. It also includes modifiers such as `revert if deadline passes` and `revert if zero`. After analyzing these in detail, it is clear that these functions are named aptly.
+```js
+constructor(
+    address poolToken,
+    address wethToken,
+    string memory liquidityTokenName,
+    string memory liquidityTokenSymbol
+)
+    ERC20(liquidityTokenName, liquidityTokenSymbol)
+{
+    //@Audit - missing zero address checks
+    i_wethToken = IERC20(wethToken);
+    i_poolToken = IERC20(poolToken);
+}
+```
 
-The `revert if deadline passes` function reverts if the deadline is less than the current timestamp, which makes perfect sense.
+### Wrap Up
 
-Similarly, `revert if zero` checks if the account balance is Zero. If it is, the function reverts.
+Well, things have been pretty clean so far. We touched on some previous issues we'd identified such as the fee on transfer situation and some information findings.
 
-## The Role of the Constructor
+In the next lesson we're going to look at how we can use the solidity compiler itself as a static analysis tool to assist in our security reviews.
 
-Lastly, it's worth revisiting the constructor where it may be valuable to add some audit information.
-
-There's a check for a zero address, but this isn't a pressing issue. For naming conventions, the token names in the constructor seem pretty straightforward.
-
-This blog post is a deep dive into the codebase of TSWAP. Understanding the dynamics of this liquidity token can inform the design and understanding of other pools within the DeFi ecosystem.
+See you there!

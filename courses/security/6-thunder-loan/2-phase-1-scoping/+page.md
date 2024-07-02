@@ -1,73 +1,74 @@
 ---
-title: Phase 1: Scoping
+title: Phase 1 - Scoping
 ---
 
 _Follow along with the video lesson:_
 
-
-
 ---
 
-# Scoping out a Codebase: A Comprehensive Guide
+### Phase 1: Scoping
 
-Code auditing is a crucial part of every developer's journey. Whether you're managing an open-source project or conducting a security review, understanding a codebase in and out is indispensable. So where do we start?
+As per usual, our first step is going to be scoping out the code base to gain as much context and understanding as we can.
 
-Well, this guide promises to take you through the nitty-gritty of scoping out a codebase, using a protocol as an example.
+The protocol README is a good place to start. The protocol has broken down the audit scope details for us as well as provided a commit hash which we can use with `git checkout` to assure we're on the correct version of the code base.
 
-## Kicking Things off With the README
+> **Note:** We don't actually need to `git checkout` here. For all audits in this course, just use the `main` branch.
 
-The README documentation serves as a good starting point when familiarizing yourself with a new protocol. While initial impressions might provoke a 'blah, blah, blah, whatever' response, we can extract valuable information about the audit scope details in this document.
+````
+    # Audit Scope Details
 
-In our case, the README delineates the commit hash details, which you'd typically implement via the `git checkout` command.
+    - Commit Hash: 8803f851f6b37e99eab2e94b4690c8b70e26b3f6
+    - In Scope:
+    ```
+    #-- interfaces
+    |   #-- IFlashLoanReceiver.sol
+    |   #-- IPoolFactory.sol
+    |   #-- ITSwapPool.sol
+    |   #-- IThunderLoan.sol
+    #-- protocol
+    |   #-- AssetToken.sol
+    |   #-- OracleUpgradeable.sol
+    |   #-- ThunderLoan.sol
+    #-- upgradedProtocol
+        #-- ThunderLoanUpgraded.sol
+    ```
+    - Solc Version: 0.8.20
+    - Chain(s) to deploy contract to: Ethereum
+    - ERC20s:
+    - USDC
+    - DAI
+    - LINK
+    - WETH
+````
 
-```bash
-git checkout [paste the commit hash here]
+The protocol has also provided us a clear detailing of chains and tokens with which they expect to be compatible. This is incredible useful as a security reviewer and is always a section we should seek out for addition clarity in how a protocol should work.
+
+Knowing which tokens are used allows us to filter out considerations of Weird ERC20s etc making our jobs easier!
+
+Within the `Roles` section of the README, we see some familiar terms. Knowing which actors are capable of what actions in a protocol is another interal piece of information in this process.
+
+```
+## Roles
+
+- Owner: The owner of the protocol who has the power to upgrade the implementation.
+
+- Liquidity Provider: A user who deposits assets into the protocol to earn interest.
+
+- User: A user who takes out flash loans from the protocol.
 ```
 
-For learning purposes, however, we're going to stick with the main branch.
+Lastly, the README outlines some `Known Issues` for the first time, these are vulnerabilities of which the protocol team is already aware and we'll come back to these in a little bit.
 
-## Understanding Included Contracts
+A quick skim of the project repo also shows signs of some good testing practices (and some poor). We see an invariant suite missing, but a `Slither` config is present and `Aderyn` seems accounted for, in the `Makefile`. There'll be lots of testing we'll need to do here!
 
-Your next port of call should be examining the contracts embedded within the codebase. In our scenario, we noticed all contracts resided in the protocol source, particularly in the `interface for protocol`. Interestingly, we also saw an upgraded version of the protocol.
+Let's run solidity metrics on our `src` folder to get a send of the size and complexity of this code base.
 
-This raised a question mark—what defines this 'upgraded protocol'? The particulars will unravel as we progress.
+> **Remember:** You can right click the `src` folder in your workspace and select `Solidity: Metrics` to generate the report.
 
-## Code Version
+<img src="/security-section-6/2-phase-1-scoping/phase-1-scoping1.png" width="100%" height="auto">
 
-Pay attention to the Solidity version for the protocol—ours was v0.8.20. Be mindful that the contract should match Ethereum's latest security standards.
+With an nSLOC of 391 and a Complexity of 327, Thunder Loan represents the biggest code bases we've approached yet. We can see most of the logic and complexity exists within ThunderLoan.sol and ThunderLoanUpgraded.sol.
 
-## Contracts Handled
+The reason we check these things is to get a better idea of how long security reviews take us to do based on size and our current skill level.
 
-We next located some ERC 20 contracts—namely USDC, die, Link, West. Use your past knowledge to understand how these contracts work. From our last course, we discovered that the USDC supports an upgradable contract and encompasses a block and allow list.
-
-> "This information is vital as we need to understand how our protocol manages a token, which can transform completely."
-
-## Identifying Roles
-
-We identified different roles within the protocol including an owner, a liquidity provider, and a user. Hoodwinked by terms like "liquidity provider"? Don't fret! As you delve deeper into DeFi, you will acquire familiarity with this lexicon.
-
-In our case, we discovered that a liquidity provider is someone who deposits assets to earn interest, while a user is someone who takes flash loans from the protocol.
-
-The protocol's owner holds the power to update the implementation—interesting.
-
-### Digging Out Known Issues
-
-We also found some known issues detailed in the README, warranting a revisit after gaining more context.
-
-## Analyzing Makefile
-
-Potentially useful insights lay in the `Makefile`, where we found Slither configuration along with some other tools. We took a minute to run solidity metrics on this "bad Larry", yielding an output that adds value to our understanding.
-
-```bash
-solidity-metrics [insert codebase here]
-```
-
-In our audit, the API gave an output of 391 N slock and 327 complexity score, indicating most complexity resided in the `Thunderloan` and `Thunderloan-upgraded`.
-
-We dropped these metrics into a markdown file as notes to help gauge process duration in future audits.
-
-## The Importance of Context and Reconnaissance
-
-Ending phase one of our audit process, it's clear that understanding an unknown codebase—and by extension, performing a protocol audit—is a matter of patience and practice. Taking your time and being methodical can help you glean valuable contextual information about the codebase.
-
-In the part two of this guide, we'll conduct some rigorous reconnaissance, promising further insights into the protocol audit process. Stay tuned!
+Let's continue on to phase 2 - Recon, in the next lesson.

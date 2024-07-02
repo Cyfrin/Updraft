@@ -2,49 +2,70 @@
 title: Section 6 - Recap
 ---
 
-.
+_Follow along with the video lesson:_
 
-## Unraveling the Flash Loans on Thunder Management Protocol
+---
 
-Firstly, let's talk about flash loans, the key feature of the Thunder Management Protocol. Flash loans are innovative DeFi tools that allow users to borrow substantial amounts of assets for one single transaction. They have gained prominence due to their significant use in arbitrage opportunities, previously only utilized by prolific investors, fondly known as 'whales'. With flash loans, however, anyone can seize these golden opportunities.
+### Section 6 - Recap
 
-![](https://cdn.videotap.com/XdZhyn8C3rqPpi7yPlNe-50.31.png)
+In section 6 we performed the Thunder Loan audit, and we dove head first into the world of advance DeFi.
 
-> "Flash loans are phenomenal DeFi primitives turning anyone into a whale."
+We identified ThunderLoan as a borrowing and lending flash loan protocol and subsequently defined and gleaned a better understanding of flashloans.
 
-As security researchers, we recognize the importance of understanding top protocols like Aave and Compound. This foundational knowledge provides us with necessary context for quicker and more efficient future project comparisons. Moreover, we've realized using an AMM(Automated Market Maker) or a DEX(Decentralized Exchange) protocol as a pricing oracle is a poor choice. Instead, a decentralized price feed like Chainlink should be on your go-to list for robust and secure oracle solutions.
+We learnt that a Flash Loan is a loan which lasts for a single transaction. The catch, is that the loan must be repaid in the same transaction in which it is borrowed. If it isn't, the transaction will revert.
 
-## Shedding Light on Proxies and their Risks
+Flash loans are a powerful and important DeFi primitive because they afford any user the ability to act as a 'whale', or someone with a lot of liquidity.
 
-We discussed the significant implications of utilizing proxies in contract development, particularly UUPS(Upgradable Unambiguous Proxy Standard). Proxies can lead to dreaded risks such as centralization and storage collisions if not handled carefully. However, our discussion did not extensively cover the transparent proxy or the multi-faucet proxy—important topics available for further research.
+<img src="/security-section-6/49-section-6-recap/section-6-recap1.png" width="100%" height="auto">
 
-![](https://cdn.videotap.com/rq3TwsRcnxoecVEB3Kir-138.35.png)
+### Additional Research
 
-One intriguing topic we brushed upon is 'malicious scope'. Sometimes, while auditing a codebase, a protocol might ask you to ignore auditing a certain part. Interestingly, that often is the part housing the rug pull. As analysts, it's important to snuff out such malicious intentions. If you keep missing the red flags and all audited projects end in rug pulls, it reflects poorly on your auditing abilities. At the very least, all potential risks should be plainly stated in the audit report, serving as a potential alarm for the readers.
+We also learnt the value of pursuing knowledge of popular existing protocols. Having that knowledge, that context is going to be hugely beneficial when assessing similar code bases. We saw this clearly in the insight we gained by diving into [**Aave**](https://aave.com/) and [**Compound Finance**](https://compound.finance/).
 
-## Introduction to Useful Tooling and Strategies
+### Vulnerabilities
 
-Exploring some handy tools, we touched briefly upon Upgrade Hub, a powerful tool highlighting how often protocols have undergone silent upgrades—some rather misleading ones, though. In addition, we dug into some fascinating exploits, especially the infamous failure to initialize contracts. Important note: always ensure contracts you're analyzing or designing have a method deployed to authenticate contract initializations.
+We were exposed to a whole new batch of vulnerabilities which include:
 
-![](https://cdn.videotap.com/WZFqXvkBGJ6wgC3VdPJ0-188.65.png)
+- **Failure to Initialize** - as showcased by the Parity Wallet case study as well as our [**Remix example**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/failure-to-initialize/FailureToInitialize.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js). Failure to initialize a protocol leaves it open to these values being initialize at an unexpected time, resulting in unintented protocol behaviour.
+- **Storage Collision** - we saw first had, through PoCs and [**Remix examples**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/storage-collision/StorageCollision.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js) how altering storage slot assignments during a protocol upgrade can have dire implications.
+- **Oracle & Price Manipulation** - Using an AMM as an oracle can have unintended consequences with respect to asset price feeds. Dexs/AMMs are susceptible to having their prices manipulated via swaps on the platform. A decentralized oracle like a [**Chainlink Price Feed**](https://data.chain.link/) is a more secure route.
 
-Talking about the infamous Oasis case study, it served as a prime example demonstrating the repercussions of protocol centralization, reminding us of the potential rug pull danger lurking beneath the surface of centralized architectures. Remember to signal such major centralization risk in your audit reports.
+We also learnt about risks associated with using proxies both with regards to programmatic considerations like `storage collision` but also pertaining to concerns around `centralization`.
 
-Another important topic was Oracle and price manipulations. A considerable number of Oracle manipulation attacks pose high risks, reinforcing our advice not to use an AMM as your pricing Oracle.
+`Centralization` may be brushed off as expected, or design decisions, but it should be called out. Users should have a chance to know that a `centralized` entity can change things at their discretion.
 
-We concluded our section with design patterns, aiding in understanding the underlying operational concepts in smart contract development.
+### Malicious Scope
 
-## Concluding Remarks and How to Move Forward
+Something we didn't actually touch on, but I _do_ want to mention briefly, is the concept of `malicious scope`.
 
-Admittedly, this section is information-dense and might seem confusing at first glance. However, remember to interact with fellow developers, share insights, ask questions, and contribute to discussions on platforms such as our Cypher Updraft community. You’ll find yourself gradually familiarizing with the concepts, making them seem less daunting.
+It may be the case that a protocol approaches you for an audit and they provide you scope, but intentially leave malicious code _outside of scope_ - try your best to sniff these out.
 
-![](https://cdn.videotap.com/aXjjMtL66bz5IgquDe55-264.12.png)
+Protocols that you audit resulting in rug pulls is going to look bad on you, so defend yourself and be cautious!
 
-Onwards, we're heading to section seven, offering riveting insights about Boss Bridge and its inner workings. It's going to be an intriguing journey into Yul and Assembly's realm—an important break from our previous section.
+### Tooling
 
-A massive thank you to everyone following along on this informative journey. Your perseverance and eagerness to learn have made this adventure fun and informative, equally. Remember, it's okay to take a breather, get some coffee, maybe go for a good workout, rest, and come back ready to dive deeper into this fascinating world of blockchain and smart contracts.
+We didn't talk about it too much, but [**upgradehub**](https://upgradehub.xyz/) was touched on. It serves as a great place to track upgradeable protocols and how they've changed. Absolutely check it out the next time you're looking through an upgradeable contract.
 
-Okay then, are we ready to dive into section seven? Great! Let’s begin our exploration.
+### Case Studies
 
-![](https://cdn.videotap.com/i3PPe1YFwpZgqTiGNVBF-314.42.png)
-s
+Parity Wallet was a protocol which fell victim to a failure-to-initialize vulnerability in 2017. We discussed this case study and how it unfolded real time through a [**GitHub Issue**](https://github.com/openethereum/parity-ethereum/issues/6995).
+
+Parity is _the_ poster child for failing to initialize a protocol once deployed.
+
+Truly a wild time in which many lessons weren't learnt (or not).
+
+In addition to Parity we touched on the [**case of Oasis**](https://medium.com/@observer1/uk-court-ordered-oasis-to-exploit-own-security-flaw-to-recover-120k-weth-stolen-in-wormhole-hack-fcadc439ca9d), in which centralization was leveraged via a UK Court order to have a protocol exploit itself and recover stolen funds.
+
+A win in the eyes of some, and terrifying amounts of control in the eyes of others.
+
+### Wrap Up
+
+Wow, we've learnt a tonne in this section. I know I've said it before, but I really encourage you to jump into the community and get involved.
+
+You can participate in discussions on the [**Course GitHub Repo**](https://github.com/Cyfrin/security-and-auditing-full-course-s23/discussions), or jump into the [**Cyfrin Discord**](https://discord.gg/cyfrin). Updates and exciting things are coming through these channels and you'll be doing yourself a disservice to not be in the middle of them.
+
+We've another audit for our portfolio! 🥳
+
+Take a break, you've earned it - and they're important. When you come back, we'll be ready to dive into Boss Bridge.
+
+See you soon!

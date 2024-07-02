@@ -1,81 +1,54 @@
 ---
-title: Testing Events
----
+title: Testing events
 
-_Follow along with this lesson and watch the video below:_
-
-
+_Follow along with this video:_
 
 ---
 
-As developers, it's essential to be thorough in our testing process, especially when developing smart contracts. Recently, I (Patrick) found myself pondering, "What else do we need to test?" After testing several lines within my code, it struck me! Testing the events emitted by functions; an important but often overlooked area of smart contract testing.
+### Testing events
 
-In Immutable Foundries, this can be a bit tricky, so today, let's conquer this vital frontier of blockchain development! Let's delve deep into our code cavern to ensure that our contract is emitting the correct events at the right time.
+Picking up from where we left in the previous lesson. The only point left is:
 
-## Triggering Events: The Expect Emit Function
+```4. Our function emits the `EnteredRaffle` event.```
 
-Testing smart contract event emissions in Foundry involves this secret maneuver I call _the cheat code_; named as such because it manipulates the runtime environment to accomplish our mission. It's a neat trick provided to us by Foundry's Virtual Machine, and it's called `expectEmit`.
+Before jumping into the test writing we need to look a bit into the cheatcode that we can use in Foundry to test events: [expectEmit](https://book.getfoundry.sh/cheatcodes/expect-emit?highlight=expectEm#expectemit).
 
-This `expectEmit` function takes a few parameters:
+The first step is to declare the event inside your test contract.
 
-- A collection of Booleans that represent your indexed parameters (also known as topics in solidity event emissions).
-- Check data, usually checked Boolean values.
-- The address of the emitter (smart contract).
+So, inside `RaffleTest.t.sol` declare the following event:
 
-The function works as follows:
+`event EnteredRaffle(address indexed player);`
+
+Then we proceed to the test:
 
 ```javascript
-      function testEmitsEventOnEntrance() public {
+    function testEmitsEventOnEntrance() public {
         // Arrange
         vm.prank(PLAYER);
 
         // Act / Assert
         vm.expectEmit(true, false, false, false, address(raffle));
-        emit RaffleEnter(PLAYER);
-        raffle.enterRaffle{value: raffleEntranceFee}();
+        emit EnteredRaffle(PLAYER);
+        raffle.enterRaffle{value: entranceFee}();
     }
 ```
 
-- We declare that we expect a certain emit to match the parameters provided. This declaration flags the next instantiation of the function we’re about to run to emit an event.
-- Following the expectEmit declaration, we run the function that should cause the event emission.
-- We're saying "this next emit that I do manually; I expect that to happen in this upcoming transaction."
+- We prank the `PLAYER`;
+- We call the `expectEmit` cheatcode - `vm.expectEmit(true, false, false, false, address(raffle));`
+  I know this looks a bit weird. But let's look at what `expectEmit` expects:
+  ```javascript
+  function expectEmit(
+    bool checkTopic1,
+    bool checkTopic2,
+    bool checkTopic3,
+    bool checkData,
+    address emitter
+  ) external;
+  ```
+  The `checkTopic` 1-3 corresponds to the `indexed` parameters we are using inside our event. The `checkData` corresponds to any unindexed parameters inside the event, and, finally, the `expectEmit` expects the address that emitted the event. It looks like this `vm.expectEmit(true, false, false, false, address(raffle));` because we only have one indexed parameter inside the event.
+- We need to manually emit the event we expect to be emitted. That's why we declared it earlier;
+- We make the function call that should emit the event.
 
-<img src="/foundry-lottery/20-events/event1.png" style="width: 100%; height: auto;">
+Run the test using the following command: `forge test --mt testEmitsEventOnEntrance`
 
-This declaration should look like this:
-
-```javascript
-vm.expectEmit(true, false, false, false, address(raffle));
-```
-
-The `vm.expectEmit` contains:
-
-- One `true`, signifying one indexed parameter or topic present in the event.
-- Following three `false`', indicating there are no additional parameters.
-- The address of the smart contract is `address(raffle)`.
-
-## Emulating Events in Tests: Redefine Them
-
-As smooth as the `expectEmit` function makes the testing process, the inconvenience is the necessity to redefine events in our tests. Events in Solidity are not like enums or structures. We can't import them frugally across our application.
-
-Instead, we have to redefine these events within our individual tests.
-
-```javascript
-     modifier raffleEntered() {
-        vm.prank(PLAYER);
-        raffle.enterRaffle{value: raffleEntranceFee}();
-        vm.warp(block.timestamp + automationUpdateInterval + 1);
-        vm.roll(block.number + 1);
-        _;
-    }
-```
-
-After redifining the contract event, you emit it manually with correct parameters and proceed to call the function that you expect will emit such an event during a transaction.
-
-Finally, after setting up our test function with the VM prank, supplying transaction parameters, and redefining the event, we can proceed to run the test.
-
-```bash
-    forge test -m <function name>
-```
-
-And Voila! Now you have a thorough test for your event emissions, increasing the robustness of your smart contract. Don't skip this step in your tests. Event emission testing not only ensures correct data transaction but also achieves an effective means of logging and monitoring data flow during runtime. Happy coding!
+Everything passes, amazing!

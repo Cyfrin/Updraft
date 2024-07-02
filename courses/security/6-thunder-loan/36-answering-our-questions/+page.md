@@ -2,60 +2,108 @@
 title: Answering Our Questions
 ---
 
+_Follow along with the video lesson:_
+
 ---
 
-# A Deep Dive into T-SWAP: Unpacking Questions and Bugs
+### Answering Our Questions
 
-In our exploration of the intricate protocol called T-SWAP, we're going to be asking some hard questions and unraveling complex aspects. The key thing about crypto dApps is you need to understand their working down to the bare-bones in order to exploit or protect against potential vulnerabilities.
+In this lesson we're going to go through some of the questions and thoughts we left ourselves along the way as we performed our manual review first pass.
 
-To make the exercise simple, we will treat the hard-hitting questions as dialogue, with each question and answer followed by a quick analysis or piece of advice.
+Some of these questions may seem obvious now that we have a much deeper understanding of how Thunder Loan works, but let's rapid fire some of these questions, diving deep for more context when appropriate.
 
-Let's jump in.
+```js
+// IPoolFactory.sol:
+// @Audit-Question: Why are we using TSwap?
+```
 
-## Q1: Why are we using T-SWAP?
+We know this one!
 
-We're using T-SWAP to get the value of a token so that we can calculate fees. Sounds simple enough, right? However, this leads us to another question.
+**Answer:** TSwap is being used to get the value of a token to calculate floan loan fees!
 
-## Q2: Why are we only using the price of a pool token in WETH (Wrapped Ethereum)?
+```js
+// ITSwapPool.sol
+// @Audit-Question: Why are we using the price of a pool token in weth?
+```
 
-This is the part that may sound a bit odd. Why are we getting the price in WETH when our primary objective is the price of the token? We're using this pricing in `calculateFee` or `getCalculatedFee`. This calls the `getPriceInWETH`, but for a scenario where we have a flash loan, it's not making much sense.
+We know that this is being used in getCalculatedFee, but it's certainly unusual that this is the only instance in the protocol that there's a conversion to WETH for some reason. Let's look more closely into how this is used.
 
-![](https://cdn.videotap.com/Ko9tuGIzxt2a7EKvdpiz-189.39.png)
+Our `fee` is being used both in updateExchangeRate as well as our checks to assure the flash loan as been repaid.
 
-"If we intended to get the price in WETH then the fee should probably be in WETH," I hear you say. And you're right. This `getCalculatedFee` seems off. How can one USDC plus 0.3 USDC make sense when the fees are being calculated using `getPriceInWETH`? This could be a potential bug in the software.
+```js
+if (endingBalance < startingBalance + fee) {
+    revert ThunderLoan__NotPaidBack(startingBalance + fee, endingBalance);
+}
+```
 
-At this juncture, we must determine the impact and likelihood of this bug.
+Something's wrong here. Can you see what it is?
 
-## Potential Bugs in Fee Calculation
+Our `endingBalance` and `startingBalance` variables are token balances for our `underlying token`, these aren't converted to `WETH` at any time, it doesn't make sense to add a fee in `WETH` to these numbers! Our price is going to be all wrong!
 
-First off, let me assure you - we're not expecting you to grasp everything the first time around. Crypto security is rife with quirky implementations that some might consider "weird wonkiness."
+We found something! Let's consider the severity.
 
-Here's what we're dealing with - Whenever a fee gets calculated, it uses this potentially flawed method. If this is not the intended functionality, that's a problem! The audit likelihood might be high, leading to a 'medium to severe disruption of the protocol' and the impact could be either medium or high.
+**Impact:** Prices are wrong -> Med/High
 
-> **Quote:** "If the fee is going to be in the token, then the value should reflect that. But in current scenario it's super weird. We're getting the value of the borrowed token in units of WETH, and we're increasing the fee in units of WETH and USDC.
+**Likelihood:** Any time the function is called -> High
 
-## Q3: Weird ERC20s with USDC
+```js
+// @Audit-High: If the Fee is calculated in tokens, the value should reflect that.
+uint256 valueOfBorrowedToken = (amount * getPriceInWeth(address(token))) / s_feePrecision;
+```
 
-Now, let's move onto the next question. What if USDC blacklists the loan contract? USDC is behind a proxy and could be upgraded anytime, which could potentially 'wreck' the protocol. This could lead to a freeze on the whole protocol. This is crucial to discuss in private or competitive audit.
+I'll say here, transparently - I didn't intend to put this bug in here 😅. We won't be going over a thorough write up or PoC for this one, but I encourage you to challenge yourself to write one!
 
-But remember, the rules in competitive audits _usually_ are: 'if a user is denied service or removed, too bad. However, if a user's denial affects others, that's usually an accepted finding in a competitive audit'.
+Practice makes perfect!
 
-In case of ERC20s, in competitive audits, these are often not considered valid findings. Sure, you need to keep the clients aware in a private audit, but competitive audits call for more pressing issues. We'll rate this an audit medium, maybe an audit low.
+```js
+// AssetToken.sol
+// @Audit-Question: What does this Exchange Rate do?
+uint256 public constant EXCHANGE_RATE_PRECISION = 1e18;
+uint256 private constant STARTING_EXCHANGE_RATE = 1e18;
+```
 
-## Q4: Decimals with Token - Can the Price be Wrong?
+**Answer:** This is the rate between an underlying token and it's associated asset token
 
-Now, this is an intriguing aspect. Please note that for this blog, we're going to skip over this question. But here's a challenge to you, the reader, if you think you can answer it better: If a token is characterized by weird and different decimals, can the price be wrong?
+```js
+// AssetToken.sol
+// @Audit-Question: Where are the underlying tokens stored?
+```
 
-Here's a nugget of wisdom: Always be thinking about these types of things. Find out if you can break the protocol by using weird tokens with weird decimals.
+**Answer:** Tokens are stored in the AssetToken contract
 
-## Q5: Is `feePrecision` Misplaced?
+```js
+// AssetToken.sol
+// @Audit-Question: What happens if USDC denylists Thunder Loan?
+```
 
-This code deep dive also raises the audit question on whether the `feePrecision` value, which is currently a storage variable, could be better served as a constant immutable.
+This one warrants a little further discussion. The short answer is that the `Thunder Loan` protocol would be frozen, it's likely at least a `medium severity` bug. In a private audit, this is absolutely something you'd want to call out - but in a competitive audit, this kind of thing is often considered invalid. The knowledge of this is so commonly held that if a protocol is using a token like USDC, it's understood that they are accepting this risk.
 
-That covers some of our perplexing questions about T-SWAP, and we've unfortunately stumbled upon a few potential bugs! But hey, it's better to discover them now in an audit than later when the damage could be far more considerable.
+When in doubt, submit the finding.
 
-The key takeaway from this exploration is the importance of meticulous analysis during crypto dApp development. Every piece of code should be audited carefully to ensure it's bug-free and works as intended.
+**Answer:** The protocol would be frozen, likely medium severity - despite this, likely invalid in competitive audits.
 
-I hope this blog enriched your knowledge about potential pitfalls and the need for audacious questions during protocol designing process.
+```js
+// @Audit-Question: Why is this a storage variable?
+uint256 private s_feePrecision;
+```
 
-Remember, in the complex world of crypto, curiosity doesn't kill the cat; complacency does!
+**Answer:** It shouldn't be! This value isn't changed anywhere so can safely be declared as constant.
+
+```js
+// @Audit-Informational: Unchanged storage variables should be marked as constant or immutable
+```
+
+Great! And our final question is:
+
+```js
+// OracleUpgradeable.sol
+// @Audit-Question: What if the token has 6 decimals? Is the price wrong?
+function getPriceInWeth(address token) public view returns (uint256) {
+        address swapPoolOfToken = IPoolFactory(s_poolFactory).getPool(token);
+        return ITSwapPool(swapPoolOfToken).getPriceOfOnePoolTokenInWeth();
+    }
+```
+
+And... I'm actually not going to walk you through this. I'll tell you that _something_ weird happens with the deposit function as a product of USDC using 6 decimals, but for the purposes of this course, it won't be our focus.
+
+I challenge you to uncover what's going on here and write a PoC for your own portfolios!

@@ -4,12 +4,12 @@ title: MEV - Live AGAIN!
 
 _Follow along with this video:_
 
-<!-- TODO -->
-
-
 ---
 
-# Can we obfuscate the transaction?
+### MEV - Live AGAIN!
+
+> [!IMPORTANT]
+> The true value in this (and the prior lesson) is found in seeing this exploit in action. If you're unable to watch this currently, I encourage you to return when you can!
 
 So, a lot of people saw me do this and started to theorize.
 
@@ -17,11 +17,11 @@ So, a lot of people saw me do this and started to theorize.
 - "What if there was another contract in the way?"
 - "What if it was written in assembly?"
 
-And I'm here to tell you, it doesn't matter. The bots simulate the transaction, and pick out the parts they can use to make money. 
+And I'm here to tell you, it doesn't matter. The bots simulate the transaction, and pick out the parts they can use to make money.
 
 We look at a [modified example](https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/MEV/Bouncer.sol) where we add a "bouncer" contract to try to "block" the transactions.
 
-<img src="/security-section-8/10-bouncer/bouncer.png" style="width: 100%; height: auto;" alt="bouncer">
+<img src="/security-section-8/10-mev-live-again/bouncer.png" style="width: 100%; height: auto;" alt="bouncer">
 
 ```javascript
 // SPDX-License-Identifier: MIT
@@ -58,4 +58,4 @@ contract Bouncer {
 }
 ```
 
-So, watch the video above to see, will this contract help block the MEV bots? 
+So, watch the video above to see, will this contract help block the MEV bots?

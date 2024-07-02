@@ -2,96 +2,129 @@
 title: UUPS Tests
 ---
 
-_**Follow along with this video.**_
-
-
+_Follow along the course with this video._
 
 ---
 
-Welcome back friend we just created, deployed and upgraded our Box contract on previous lessons, today we are going to delve on good old tests to be sure everything works as expected.
+### UUPS Tests
 
-## Setting up Our Testing Environment
+In this lesson we're going to be writing our test suite which will enable us to really demonstrate how this upgradeability works in practice.
 
-We will be creating a new Sol file where we will write some initial tests called `DeployAndUpgradeTest`, to demonstrate the true power of smart contract upgrades. As we are working with Solidity 0.8.18, we’ll be importing a test from Forge's standard test.sol file. And the Standard imports as always, Code-wise, it will look something like this:
+Begin by creating the file `test/DeployAndUpgradeTest.t.sol`. We know the drill in setting this up by now!
 
 ```js
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.18;
 
-import {DeployBox} from "../script/DepolyBox.s.sol";
+import {Test} from "forge-std/Test.sol";
+import {DeployBox} from "../script/DeployBox.s.sol";
 import {UpgradeBox} from "../script/UpgradeBox.s.sol";
-import {Test, console} from "forge-std/Test.sol";
-import {StdCheats} from "forge-std/StdCheats.sol";
-import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {BoxV1} from "../src/BoxV1.sol";
 import {BoxV2} from "../src/BoxV2.sol";
 
-contract DeployAndUpgradeTest is StdCheats, Test {}
+contract DeployAndUpgradeTest is Test {
+    DeployBox public deployer;
+    UpgradeBox public upgrader;
+    address public OWNER = makeAddr("owner");
+
+    address public proxy;
+
+    function setUp(){
+        deployer = new DeployBox();
+        upgrader = new UpgradeBox();
+        proxy = deployer.run(); // currently points to BoxV1
+    }
+}
 ```
 
-<img src="/upgrades/7-tests/test1.png" style="width: 100%; height: auto;">
+This is a little more than boilerplate, but I trust your skills to be improving as we continue, so walking through each step granularly shouldn't be as necessary. In the above, we're simply importing many of the contracts we expect to be working with in our tests and then declaring and deploying them within our setUp function.
 
-
-## Setting Up the Contract and Initial Tests
-
-Next, we proceed with creating a function setup. This function will aim to prepare the environment for testing. In this setup function we will define a *deployBox*, *upgradeBox*, and an owner address.
+Now we can write our test, we'll need to deploy BoxV2.
 
 ```js
- function setUp() public {
-        deployBox = new DeployBox();
-        upgradeBox = new UpgradeBox();
-    }
+function testUpgrades() public {
+    BoxV2 box2 = new BoxV2();
+
+    upgrader.upgradeBox(proxy, address(box2));
+}
 ```
 
-Now let's dive on the most basic test, check if the Box Works:
+Recall what our upgradeBox function is going within UpgradeBox.s.sol:
 
 ```js
-function testBoxWorks() public {
-        address proxyAddress = deployBox.deployBox();
-        uint256 expectedValue = 1;
-        assertEq(expectedValue, BoxV1(proxyAddress).version());
-    }
+function upgradeBox(address proxyAddress, address newBox) public returns (address) {
+    vm.startBroadcast();
+    BoxV1 proxy = BoxV1(proxyAddress);
+    proxy.upgradeTo(address(newBox));
+    vm.stopBroadcast();
+
+    return address(proxy);
+}
 ```
 
-## Implementing the Upgrade
+This function is taking the proxy address and our new implementation address as parameters and calling the upgradeTo function.
 
-In doing this, we will first define our *boxV2* and then proceed to upgrade *boxV1* to *boxV2* using our upgrade functionality. We will use assertions for these tests and validate whether the upgraded proxy now points to *boxV2*.
+Now, in our test, we can set an expected value and compare it against what version a call to the `version` function on our proxy will return.
 
 ```js
-  function testUpgradeWorks() public {
-        address proxyAddress = deployBox.deployBox();
+function testUpgrades() public {
+    BoxV2 box2 = new BoxV2();
 
-        BoxV2 box2 = new BoxV2();
+    upgrader.upgradeBox(proxy, address(box2));
 
-        vm.prank(BoxV1(proxyAddress).owner());
-        BoxV1(proxyAddress).transferOwnership(msg.sender);
-
-        address proxy = upgradeBox.upgradeBox(proxyAddress, address(box2));
-
-        uint256 expectedValue = 2;
-        assertEq(expectedValue, BoxV2(proxy).version());
-
-        BoxV2(proxy).setValue(expectedValue);
-        assertEq(expectedValue, BoxV2(proxy).getValue());
-    }
+    uint256 expectedValue = 2;
+    assertEq(expectedValue, BoxV2(proxy).version());
+}
 ```
 
-In the code above, we first deploy our new `boxV2` contract, then upgrade our `boxV1` to `boxV2` by pointing the existing proxy to `boxV2`. We then validate this through the `assertEqual` function.
+It's best practice to split tests up as best one can, but let's check more here while we're at it. We added new function to BoxV2, let's ensure they work after our upgrade.
 
-Further, we also test whether functions that are unique to `boxV2` such as `setNumber` can be called on the updated `boxV2` through the proxy.
+```js
+function testUpgrades() public {
+    BoxV2 box2 = new BoxV2();
 
-<img src="/upgrades/7-tests/test2.png" style="width: 100%; height: auto;">
+    upgrader.upgradeBox(proxy, address(box2));
 
+    uint256 expectedValue = 2;
+    assertEq(expectedValue, BoxV2(proxy).version());
 
-Lastly, it's worth mentioning that we should add a function to ensure that proxy starts as `boxV1`. This function will be set to revert with the previous setup. As a result, when attempting to run the `setNumber` function on the proxy, it should fail.
+    BoxV2(proxy).setNumber(7);
+    assertEq(7, BoxV2(proxy).getNumber());
+}
+```
 
-Now that we have all our tests in place, let's run these one at a time using `forge test`.
+You know what, I changed my mind, let's add one more simple test to verify the implementation we begin with.
 
-<img src="/upgrades/7-tests/test3.png" style="width: 100%; height: auto;">
+```js
+function testProxyStartAsBoxV1() public {
+    vm.expectRevert();
+    BoxV2(proxy).setNumber(7);
+}
+```
 
+We would expect the above to revert because BoxV1, on deployment, doesn't contain a setNumber function! Let's test these one at a time.
 
-And voila! We can see that proxy has been successfully upgraded from `boxV1` to `boxV2`. Such upgrades are a crucial part of smart contract development, as they allow you to deploy new features, fix bugs and more, all while preserving the addresses that interact with your contract.
+```bash
+forge test --mt testProxyStartAsBoxV1
+```
 
-With the above guide, you now have a better understanding of how smart contract upgrades work. Good luck with crafting your own upgrades!
+We would expect this to pass if it reverts.
 
+<img src="/foundry-upgrades/7-uups-tests/uups-tests1.png" width="100%" height="auto">
+
+Looks great! Our BoxV1 doesn't have the setNumber function. Now we can try our other test!
+
+```bash
+forge test --mt testUpgrades
+```
+
+<img src="/foundry-upgrades/7-uups-tests/uups-tests1.png" width="100%" height="auto">
+
+### Wrap Up
+
+Boom! We've successfully upgraded our upgradeable Box Protocol.
+
+I've included additional tests for this within the [**GitHub Repo**](https://github.com/Cyfrin/foundry-upgrades-f23) for this section, so don't hesitate to try and write your own and compare what you come up with versus the repo!
+
+In this section we'll be walking through one big example test, but I encourage you to try to write more, as always.

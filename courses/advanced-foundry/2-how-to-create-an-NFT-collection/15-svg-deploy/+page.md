@@ -4,113 +4,271 @@ title: SVG NFT Deploy Script
 
 _Follow along the course with this video._
 
-
-
 ---
 
-## Deploying the Mood NFT Project
+### SVG NFT Deploy Script
 
-In this lesson, we'll automate the deployment process of the Mood NFT Project by scripting it. As you may already know, in the realm of blockchain development, scripts are super helpful to help automate repetitive processes, so let's get our hands dirty and simplify our work!
+In this lesson, we'll jump right into creating the script to deploy our MoodNFT collection. We'll look at how this can be used to upgrade our tests, making them more dynamic and we'll discuss the value of integration tesing.
 
-## Creating the Deploy Mood NFT Script
-
-Starting off, create a new file for the deploy script named `DeployMoodNft.s.sol`. In this script file, include the SPDX License followed by the contract-deployment code, just as you typically would do in a Solidity contract.
+To begin, we'll need to create the file `script/DeployMoodNft.s.sol` and fill it with our script boilerplate.
 
 ```js
-// SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+// SPDX-License-Identifier:MIT
+pragma solidity ^0.8.18;
 
 import {Script} from "forge-std/Script.sol";
 import {MoodNft} from "../src/MoodNft.sol";
 
 contract DeployMoodNft is Script {
-    function run() external {}
+    function run() external returns (MoodNft) {}
 }
 ```
 
-Remember we are deploying our Mood NFT, hence we'll need to import the MoodNFT contract. In our run function, it's time to set specifics on how the NFT will be deployed.
+Looks great! Now we should consider how we're mention to deploy MoodNft.sol. We know that the constructor arguments for this contract take a sadSvgImagUri and a happySvgImageUri, so much like we did in `MoodNftTest.t.sol`, we _could_ hardcode these values. A better approach however may be to write our deploy script to read this data itself from our workspace. Our script can even do all the encoding for us.
 
-## Preparing the Deploying Parameters
-
-The Mood NFT contract accepts two parameters upon deployment: the "sad SVG image URI" and the "happy SVG image URI". Now we could hardcode these parameters into the script, but to make our lives a little easier and our script a little smarter, we're going to create a function that automatically encodes our SVGs.
+Let's start with creating this encoding function.
 
 ```js
-function svgToImageURI(
-        string memory svg
-    ) public pure returns (string memory) {
-        // example:
-        // '<svg width="500" height="500" viewBox="0 0 285 350" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="black" d="M150,0,L75,200,L225,200,Z"></path></svg>'
-        // would return ""
-        string memory baseURL = "data:image/svg+xml;base64,";
-        string memory svgBase64Encoded = Base64.encode(
-            bytes(string(abi.encodePacked(svg)))
-        );
-        return string(abi.encodePacked(baseURL, svgBase64Encoded));
+function svgToImageURI(string memory svg) public purse returns (string memory){
+    string memory baseURL = "data:image/svg+xml;base64,";
+}
+```
+
+Set up like this, we can now use the Base64 offering from OpenZeppelin to encode the data passed to this function, and then concatenate it with our baseURI. We'll need to import Base64.
+
+```js
+// SPDX-License-Identifier:MIT
+pragma solidity ^0.8.18;
+
+import {Script} from "forge-std/Script.sol";
+import {MoodNft} from "../src/MoodNft.sol";
+import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
+
+contract DeployMoodNft is Script {
+    function run() external returns (MoodNft) {}
+
+    function svgToImageURI(string memory svg) public purse returns (string memory){
+    string memory baseURL = "data:image/svg+xml;base64,";
+    string memory svgBase64Encoded = Base64.encode(bytes(svg));
+
+    return string(abi.encodePacked(baseURL, svgBase64Encoded));
     }
+}
 ```
 
-This function will intake an SVG file as text, encode it into a base 64 formatted string, then return it. To do this, we need to import the OpenZeppelin base64 library which allows us to encode our SVGs on chain.
+The above function is taking the svg string parameter, encoding it with the OpenZeppeling Base64.encode function, and then prepends the encoded value with our baseURL. Great job!
+
+> [!TIP]
+> You can replace `abi.encodePacked` with the more up-to-date `string.concat`!
+
+Before moving on, we should write a quick test to verify this is encoding things we way we expect.
+
+### Testing Our Encoding
+
+Let's test the function we just wrote. To keep things clean, create a new file `test/DeployMoodNftTest.t.sol`. The setup for this file is going to be the same as always.
 
 ```js
-import { Base64 } from "@openzeppelin/contracts/utils/Base64.sol";
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.18;
+
+import {DeployMoodNft} from "../script/DeployMoodNft.s.sol";
+import {Test} from "forge-std/Test.sol";
+
+contract DeployMoodNftTest is Test {
+    DeployMoodNft public deployer;
+    function setUp() public {
+        deployer = new DeployMoodNft();
+    }
+}
 ```
 
-## Implementing the Encoding Function
+Easy enough, we're definitely getting good at this by now.
 
-The SVG to Image URI function first defines a base URL.
+Next we'll need a test function to verify that our SVG is being converted to a URI appropriately. We should have an example to compare the results of our test to. I've included an example URI below, feel free to encode your own SVG if you'd like!
+
+**Sample SVG:**
+
+```bash
+data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj4KPHRleHQgeD0iMjAwIiB5PSIyNTAiIGZpbGw9ImJsYWNrIj5IaSEgWW91IGRlY29kZWQgdGhpcyEgPC90ZXh0Pgo8L3N2Zz4=
+```
+
+In our test now, we can assign an expectedUri variable to this string. We'll need to also define the svg which we'll pass to the function.
 
 ```js
-string memory baseURL = "data:image/svg+xml;base64,";
+function testConvertSvgToUri() public view {
+    string memory expectedUri = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj4KPHRleHQgeD0iMjAwIiB5PSIyNTAiIGZpbGw9ImJsYWNrIj5IaSEgWW91IGRlY29kZWQgdGhpcyEgPC90ZXh0Pgo8L3N2Zz4="
+    string memory svg = '<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><text x="200" y="250" fill="black">Hi! You decoded this! </text></svg>'
+
+    string memory actualUri = deployer.svgToImageURI(svg);
+}
 ```
 
-Next, it encodes the SVG provided, concatenates that encoded string to the base URL, and voila, we have our encoded SVG string ready to be passed to the Mood NFT contract.
+Great! Now we'll need to assert that our expectedUri is equal to our actualUri. Remember, we can't compare strings directly since they're effectively bytes arrays. We need to hash these for easy comparison.
 
 ```js
-string memory svgBase64Encoded = Base64.encode(
-            bytes(string(abi.encodePacked(svg)))
-        );
+assert(
+  keccak256(abi.encodePacked(expectedUri)) ==
+    keccak256(abi.encodePacked(actualUri))
+);
 ```
 
-<img src="/foundry-nfts/15-deploy/deploy1.png" style="width: 100%; height: auto;">
+All that's left is to run our test!
 
-## Reading in SVG Files
-
-Now that we have the means to encode SVG files, it's time to read the actual files in our Foundry scripting environment. As you may know, Foundry provides an awesome utility function named `readFile` which we will employ.
-
-But before we do that, we need to set appropriate permissions within the "foundry.toml" file in our project to allow the script to read from specified directories.
-
-```makefile
-[profile.default]
-fs_permissions = [{ access = "read", path = "./images/"}]
+```bash
+forge test --mt testConvertSvgToUri
 ```
 
-At this point, it's important to note that in settings and permissions, try to make `ffi = false` whenever you can for security reasons.
+<img src="/foundry-nfts/15-svg-deploy/svg-deploy1.png" width="100%" height="auto">
 
-Now that we've taken care of the permissions business, we can use the `readFile` function to read in our SVG files.
+Nailed it! Our solidity scripted encoding is working just like our command line.
+
+`DeployMoodNft.sol` isn't currently defining what our `svg` parameters are, we hardcoded these into our test. Let's make the deploy script a little more dynamic by leverage the [**Foundry Cheatcode `readFile`**](https://book.getfoundry.sh/cheatcodes/fs?highlight=readFile#signature).
+
+Before we can allow Foundry to read our files into our deploy script, we'll need to set some permissions in `foundry.toml`. Add this to your `foundry.toml`:
 
 ```js
-string memory sadSVG = VM.readFile("images/sad.svg");string memory happySVG = VM.readFile("images/happy.svg");
+fs_permissions = [{access = "read", path = "./img/"}]
 ```
 
-## Finalizing the Deployment Script
+> [!NOTE]
+> This line provides the Foundry framework `read` permissions, specifically in the `img` directory. This is much safer than setting `FFI = true`!
 
-Finally, we can proceed to deploy our Mood NFT with the encoded SVG URIs.
+With this in place, we can now use the readFile cheatcode to access these SVG files in our deploy script.
 
 ```js
-    string memory sadSvg = vm.readFile("./images/dynamicNft/sad.svg");
-    string memory happySvg = vm.readFile("./images/dynamicNft/happy.svg");
+// SPDX-License-Identifier:MIT
+pragma solidity ^0.8.18;
+
+import {Script} from "forge-std/Script.sol";
+import {MoodNft} from "../src/MoodNft.sol";
+import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
+
+contract DeployMoodNft is Script {
+    function run() external returns (MoodNft) {
+        string memory sadSvg = vm.readFile("./img/sadSvg.svg");
+        string memory happySvg = vm.readFile("./img/happySvg.svg");
+    }
+
+    function svgToImageURI(string memory svg) public purse returns (string memory){
+    string memory baseURL = "data:image/svg+xml;base64,";
+    string memory svgBase64Encoded = Base64.encode(bytes(svg));
+
+    return string(abi.encodePacked(baseURL, svgBase64Encoded));
+    }
+}
 ```
 
-And return the created Mood NFT for our test functions to utilize.
+Now we can deploy our MoodNft.sol contract in our run function, passing it the data read in from these files.
 
 ```js
-return moodNFT;
+function run () external returns (MoodNft) {
+    string memory sadSvg = vm.readFile("./img/sadSvg.svg");
+    string memory happySvg = vm.readFile("./img/happySvg.svg");
+
+    vm.startBroadcast();
+    MoodNft moodNft = new MoodNft(svgToImageURI(sadSvg), svgToImageURI(happySvg));
+    vm.stopBroadcast();
+
+    return moodNft;
+}
 ```
 
-## Testing our Deploy Script: Integration Tests vs Unit Tests
+Because we're now using a deployment script, our testing framework is changing a little bit. The test we just wrote is more correctly classified as an integration test than a unit test. Let's keep things distinct by adjusting our test folder a bit first.
 
-Lastly, but certainly not least, we test our deploy script. It will be best to implement both integration tests and unit tests for our script.
+Create the directories `test/integration` and `test/unit`. Within `test/integration` create a copy of our `MoodNftTest.t.sol` and name it something like `MoodNftIntegrationsTest.t.sol`, and move our `BasicNft.t.sol` file here as well (it uses a deployer too!).
 
-<img src="/foundry-nfts/15-deploy/deploy2.png" style="width: 100%; height: auto;">
+<img src="/foundry-nfts/15-svg-deploy/svg-deploy2.png" width="100%" height="auto">
 
-That's it for this tutorial! Enjoy your automated Mood NFT deployment. Write in the comment section for any questions, suggestions, or just to share your experience!
+We'll adjust `MoodNftIntegrationsTest.t.sol` to use our deployer next.
+
+> [!NOTE]
+> Moving your test files about may have broken some of your imports! You can add `../` to the beginning of each import to "back it out" of a directory. Things should work again!
+
+### MoodNftIntegrationsTest.t.sol
+
+The changes to be made in this file are fairly small, but impactful. Instead of deploying with:
+
+```js
+moodNft = new MoodNft(SAD_SVG_URI, HAPPY_SVG_URI);
+```
+
+We can use our newly written deployer. It'll need to be imported.
+
+<details>
+<summary>MoodNftIntegrationsTest.t.sol</summary>
+
+```js
+//SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.18;
+
+import {console, Test} from "forge-std/Test.sol";
+import {MoodNFT} from "../../src/MoodNFT.sol";
+import {DeployMoodNFT} from "../../script/DeployMoodNFT.s.sol";
+
+contract MoodNFTTest is Test {
+    MoodNFT moodNFT;
+    address USER = makeAddr("USER");
+    DeployMoodNFT deployer;
+
+    string public constant HAPPY_SVG_URI =
+        "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgd2lkdGg9IjQwMCIgIGhlaWdodD0iNDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgZmlsbD0icHVycGxlIiByPSI3OCIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgPGcgY2xhc3M9ImV5ZXMiPgogICAgPGNpcmNsZSBjeD0iNjEiIGN5PSI4MiIgcj0iMjAiLz4KICAgIDxjaXJjbGUgY3g9IjEyNyIgY3k9IjgyIiByPSIxMiIvPgogIDwvZz4KICA8cGF0aCBkPSJtMTM2LjgxIDExNi41M2MuNjkgMjYuMTctLjExIDQyLTgxLjUyLS43MyIgc3R5bGU9ImZpbGw6bm9uZTsgc3Ryb2tlOiBibGFjazsgc3Ryb2tlLXdpZHRoOiA3OyIvPgo8L3N2Zz4=";
+
+    string public constant SAD_SVG_URI =
+        "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgd2lkdGg9IjQwMCIgIGhlaWdodD0iNDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgZmlsbD0iZ3JlZW4iIHI9Ijc4IiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjMiLz4KICA8ZyBjbGFzcz0iZXllcyI+CiAgICA8Y2lyY2xlIGN4PSI2MSIgY3k9IjgyIiByPSIxMiIvPgogICAgPGNpcmNsZSBjeD0iMTI3IiBjeT0iODIiIHI9IjIwIi8+CiAgPC9nPgogIDxwYXRoIGQ9Im0xMzYuODEgMTM1LjUzYy42OSAyNi4xNy03NSAtNTAtODEuNTItLjczIiBzdHlsZT0iZmlsbDpub25lOyBzdHJva2U6IGJsYWNrOyBzdHJva2Utd2lkdGg6IDc7Ii8+Cjwvc3ZnPg==";
+
+    function setUp() public {
+        deployer = new DeployMoodNFT();
+        moodNFT = deployer.run();
+    }
+
+    function testViewTokenURIIntegration() public {
+        vm.prank(USER);
+        moodNFT.mintNft();
+        console.log(moodNFT.tokenURI(0));
+    }
+}
+```
+
+</details>
+
+---
+
+With these adjustments, our tests should function identically to before.
+
+### Testing Flipping the URI
+
+One thing we definitely haven't tested yet, and we should do quickly, is our flipMood function. Lets assure this properly swaps between happy and sad when called.
+
+```js
+function testFlipMoodIntegration() public {
+    vm.prank(USER);
+    moodNFT.mintNft();
+    vm.prank(USER);
+    moodNFT.flipMood(0);
+    assert(keccak256(abi.encodePacked(moodNft.tokenURI(0))) == keccak256(abi.encodePacked(SAD_SVG_URI)));
+}
+```
+
+This test has our USER mint an NFT (which defaults as happy), and then flips the mood to sad with the flipMood function. We then assert that the token's URI matches what's expected.
+
+Let's run it!
+
+```bash
+forge test --mt testFlipMoodIntegration
+```
+
+<img src="/foundry-nfts/15-svg-deploy/svg-deploy3.png" width="100%" height="auto">
+
+Uh oh. That ain't right.
+
+### Wrap Up
+
+Wow, this was a big lesson. We've written a deploy script and refactored some of our tests into more secure integration style tests.
+
+For some reason `testFlipMoodIntegration` is erroring on us though...
+
+In the next lesson we'll get some practice debugging, I suppose!
+
+See you there!

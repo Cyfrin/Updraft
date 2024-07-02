@@ -1,66 +1,230 @@
 ---
-title: T-Swap Manual Review T-Swap Pool - Remove Liquidity
+title: Manual Review - TSwapPool.sol - Remove Liquidity
 ---
 
-
-
 ---
 
-# Understanding the Liquidity Withdrawal Process of the TWSAP Protocol
+### Withdraw Function
 
-Having covered the deposit process in TWSAP protocol pools, we're going to look at the other side of the equation - the **withdrawal process**. This is equal to removing the liquidity from the pool as demonstrated in the diagram below,
+In the last lesson we walked through a review of _adding_ liquidity to a TSwap Pool. Now we're going to address the logic behind _removing_ liquidity. Let's look at the `withdraw` function.
 
-![](https://cdn.videotap.com/IWZarXmiBGXntt9p7Y16-13.14.png)
-
-Fundamentally, we are going to burn LP tokens in exchange for the underlying money. In other words, the liquidity tokens used in the pool are destroyed to get the invested capital back out.
-
-## Understanding Key Concepts
-
-Let's break down some key concepts:
-
-1. **Liquidity tokens to burn:** This refers to the number of liquidity tokens that a user wants to burn. The user gives their LP tokens and in return, they receive their money.
-2. **Minimum WETH:** This is the minimum amount of WETH the user is expecting to withdraw.
-3. **Minimum pool tokens:** These are the pool tokens that a user wishes to withdraw.
-4. **Deadline:** This is the timeframe the user sets for the withdrawal.
-
-At first glance, these might seem like strange terms but their true value will become more significant when we touch on miner extractable value (MEV) later in the course.
-
-After digesting these concepts, we check for the withdrawal deadline. In the code, there is an `if` condition which reverts the transaction if deadlines are not met.
+<details>
+<summary>Withdraw Function</summary>
 
 ```js
-if (deadline < block.timestamp) {
-  revert();
+/// @notice Removes liquidity from the pool
+/// @param liquidityTokensToBurn The number of liquidity tokens the user wants to burn
+/// @param minWethToWithdraw The minimum amount of WETH the user wants to withdraw
+/// @param minPoolTokensToWithdraw The minimum amount of pool tokens the user wants to withdraw
+/// @param deadline The deadline for the transaction to be completed by
+function withdraw(
+    uint256 liquidityTokensToBurn,
+    uint256 minWethToWithdraw,
+    uint256 minPoolTokensToWithdraw,
+    uint64 deadline
+)
+    external
+    revertIfDeadlinePassed(deadline)
+    revertIfZero(liquidityTokensToBurn)
+    revertIfZero(minWethToWithdraw)
+    revertIfZero(minPoolTokensToWithdraw)
+{
+    // We do the same math as above
+    uint256 wethToWithdraw =
+        (liquidityTokensToBurn * i_wethToken.balanceOf(address(this))) / totalLiquidityTokenSupply();
+    uint256 poolTokensToWithdraw =
+        (liquidityTokensToBurn * i_poolToken.balanceOf(address(this))) / totalLiquidityTokenSupply();
+
+    if (wethToWithdraw < minWethToWithdraw) {
+        revert TSwapPool__OutputTooLow(wethToWithdraw, minWethToWithdraw);
+    }
+    if (poolTokensToWithdraw < minPoolTokensToWithdraw) {
+        revert TSwapPool__OutputTooLow(poolTokensToWithdraw, minPoolTokensToWithdraw);
+    }
+
+    _burn(msg.sender, liquidityTokensToBurn);
+    emit LiquidityRemoved(msg.sender, wethToWithdraw, poolTokensToWithdraw);
+
+    i_wethToken.safeTransfer(msg.sender, wethToWithdraw);
+    i_poolToken.safeTransfer(msg.sender, poolTokensToWithdraw);
 }
 ```
 
-## Burning the Liquidity Token
+</details>
 
-Next, we proceed to burn the liquidity token. You might be wondering if this is an external function. However, this burn function is actually part of the TSWAP pool, inherited from the ERC20 smart contract.
+---
 
-After burning the tokens, we then emit an event and proceed with the transfer of funds.
+So, we know that liquidity providers are provided LP tokens in exchange for the liquidity they add to a pool - at a rate proportional to the percentage of the pool they've contributed.
 
-## Understanding the Magic Numbers and Fees
+In order to remove liquidity from the pool then, a liquidity provider must burn some number of LP Tokens they hold.
 
-Looking further into the code, we come across certain numbers that seem a bit random. We're dealing with functions like `getOutputAmountBasedOffInput` and `getInputAmountBasedOffOutput`.
+We can see see how the `withdraw` function calculates the amounts of `weth` and `poolToken` to withdraw based on the submitted `liquidityTokensToBurn`.
 
-If we dive into the calculations of these functions, we can see that these "magic numbers" i.e., 997 and 1000, are factored into the formula. A peek into it reveals that a fee of 0.3% is deducted from the user's returns every time they swap.
+```js
+uint256 wethToWithdraw =
+    (liquidityTokensToBurn * i_wethToken.balanceOf(address(this))) / totalLiquidityTokenSupply();
+uint256 poolTokensToWithdraw =
+    (liquidityTokensToBurn * i_poolToken.balanceOf(address(this))) / totalLiquidityTokenSupply();
+```
 
-Now it's time to reveal the secret behind these magic numbers! If you see these 997 and 1000 used in your code, know that they represent the 0.3% fee!
+Immediately following these calculations we compare these values in a couple conditional statements, reverting with a custom error if either value is too low. The `minWethToWithdraw` and `minPoolTokensToWithdraw` variables may seem confusing at first, but they'll make more sense when we discuss MEV situations later in the course.
 
-## Issues and Solutions
+```js
+ if (wethToWithdraw < minWethToWithdraw) {
+    revert TSwapPool__OutputTooLow(wethToWithdraw, minWethToWithdraw);
+}
+if (poolTokensToWithdraw < minPoolTokensToWithdraw) {
+    revert TSwapPool__OutputTooLow(poolTokensToWithdraw, minPoolTokensToWithdraw);
+}
+```
 
-However, there's a slight discrepancy in the two function calculations. The `getInputAmountBasedOffOutput` function shows a different fee (0.913%) due to the denominator being 10,000. This could result in users getting charged excessively when they swap, leading to high impact and likelihood.
+Next up, we perform our burn through `_burn`. This may seem like an external call at first glance, but its actually an internal function leveraging the imported and inherited ERC20 contract of `TSwapPool.sol`. Once `_burn` is called, we of course emit a LiquidityRemoved event - checking the parameters here for ordering - they look good!
 
-This calls for more accountability in handling these magic numbers. Instead of hardcoding them into the formula, they can be defined once at the top of the code as a private constant. This ensures that constants are consistent across the protocol - reducing room for error and enhancing code security.
+```js
+_burn(msg.sender, liquidityTokensToBurn);
+emit LiquidityRemoved(msg.sender, wethToWithdraw, poolTokensToWithdraw);
+```
 
-> "The best coding practices are not just to embellish your codebase. They serve the purpose of enhancing the security and predictability of your code." - John Doe, Senior Software Engineer.
+Lastly our withdraw function is performing the necessary transfers, using safeTransfer. Overall withdraw looks good to me!
 
-## Concluding with the Swap Function
+```js
+i_wethToken.safeTransfer(msg.sender, wethToWithdraw);
+i_poolToken.safeTransfer(msg.sender, poolTokensToWithdraw);
+```
 
-Our journey doesn't end yet! Next up is the **swap function**, one of the essential functions in any DeFi protocol. Stay tuned for exploring its intricacies in the next blog post!
+Time to check some of the function handling our token amount math.
 
-## On the Importance of Natspec
+### getOutputAmountBasedOnInput
 
-Before we go, it's worth flagging that an essential element is missing from our important functions - the **Natspec**. Natural Specification (NatSpec) is an Ethereum standard introducing rich, multi-line comments in the code which greatly aids readability and understanding. For crucial functions like the swap function, you must include NatSpec to improve the code's legibility!
+We aren't going to review the specifics of the **_math_** here. If you want to dive into it further to confirm the calculations work out, I encourage you to. This is an important concept in this function that we do need to understand however.
 
-And that is all for the withdrawal process folks! Stay tuned for the next exploration into the TSWAP protocol. Make sure to check back for more DeFi insights and breakdowns!
+<details>
+<summary>getOutputAmountBasedOnInput Function</summary>
+
+```js
+function getOutputAmountBasedOnInput(
+    uint256 inputAmount,
+    uint256 inputReserves,
+    uint256 outputReserves
+)
+    public
+    pure
+    revertIfZero(inputAmount)
+    revertIfZero(outputReserves)
+    returns (uint256 outputAmount)
+{
+    // x * y = k
+    // numberOfWeth * numberOfPoolTokens = constant k
+    // k must not change during a transaction (invariant)
+    // with this math, we want to figure out how many PoolTokens to deposit
+    // since weth * poolTokens = k, we can rearrange to get:
+    // (currentWeth + wethToDeposit) * (currentPoolTokens + poolTokensToDeposit) = k
+    // **************************
+    // ****** MATH TIME!!! ******
+    // **************************
+    // FOIL it (or ChatGPT): https://en.wikipedia.org/wiki/FOIL_method
+    // (totalWethOfPool * totalPoolTokensOfPool) + (totalWethOfPool * poolTokensToDeposit) + (wethToDeposit *
+    // totalPoolTokensOfPool) + (wethToDeposit * poolTokensToDeposit) = k
+    // (totalWethOfPool * totalPoolTokensOfPool) + (wethToDeposit * totalPoolTokensOfPool) = k - (totalWethOfPool *
+    // poolTokensToDeposit) - (wethToDeposit * poolTokensToDeposit)
+    uint256 inputAmountMinusFee = inputAmount * 997;
+    uint256 numerator = inputAmountMinusFee * outputReserves;
+    uint256 denominator = (inputReserves * 1000) + inputAmountMinusFee;
+    return numerator / denominator;
+}
+```
+
+</details>
+
+---
+
+I want to draw your attention to these lines - which of course we would flag for `magic numbers`:
+
+```js
+// @Audit-Informational - Use constants instead of literals, avoid magic numbers
+uint256 inputAmountMinusFee = inputAmount * 997;
+uint256 numerator = inputAmountMinusFee * outputReserves;
+uint256 denominator = (inputReserves * 1000) + inputAmountMinusFee;
+return numerator / denominator;
+```
+
+What's happening here is we are multiplying our inputAmount by 997 in our numerator and then dividing by 1000 in our denominator. The effect is that the calculated output amount is reduced by the protocols required 0.3% fee!
+
+> Remember: Liquidity Providers are incentivized through the implementation of these fees!
+
+Like I said, we won't get deep into the math here, but I do recommend you take a moment to read through the commented derivation if you want to know more.
+
+Otherwise, the math here looks good, lets move to the next function!
+
+### getInputAmountBasedOnOutput
+
+`getInputAmountBasedOnOutput` is effectively the reserve of the function we just assessed.
+
+<details>
+<summary>getInputAmountBasedOnOutput Function</summary>
+
+```js
+function getInputAmountBasedOnOutput(
+    uint256 outputAmount,
+    uint256 inputReserves,
+    uint256 outputReserves
+)
+    public
+    pure
+    revertIfZero(outputAmount)
+    revertIfZero(outputReserves)
+    returns (uint256 inputAmount)
+{
+    return ((inputReserves * outputAmount) * 10000) / ((outputReserves - outputAmount) * 997);
+}
+```
+
+</details>
+
+---
+
+Alright, there's only only line, a return calculation, but something should stick out to you here. Rather than using 1,000 in the fee calculation, the protocol has used 10,000!
+
+```
+997/1000 = 0.997 * 100 = 99.7% tokens transferred -> 0.3% fee
+
+997/10000 = 0.0997 * 100 = 9.97% tokens transferred -> 90.03% fee
+```
+
+This bug is causing more than 90%! of tokens transferred to be charged as a fee. This is a massive finding and a great example of why using constants are preferred over literals or "magic numbers".
+
+- Impact - High - Users are charged >90% of tokens transferred in fees
+- Likelihood - High - swapExactOutput, which calls this function is a main swapping function
+
+This will definitely be a high severity finding.
+
+```js
+// @Audit-High - Erroneous fee calculation resulting in 90.03% fees
+return (
+  (inputReserves * outputAmount * 10000) /
+  ((outputReserves - outputAmount) * 997)
+);
+```
+
+### Wrap Up
+
+We found a massive bug! The next function in our manual review is going to be `swapExactInput`, a major function in the TSwap protocol - which doesn't have natspec. Good start.
+
+```js
+// @Audit-Informational - Where's the natspec?
+// @Audit-Informational functions not used internally can be marked external to save gas.
+    function swapExactInput(
+        IERC20 inputToken,
+        uint256 inputAmount,
+        IERC20 outputToken,
+        uint256 minOutputAmount,
+        uint64 deadline
+    )
+        public
+        revertIfZero(inputAmount)
+        revertIfDeadlinePassed(deadline)
+        returns (uint256 output)
+    {...}
+```
+
+See you in the next lesson to take a closer look!
