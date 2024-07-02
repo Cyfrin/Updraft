@@ -40,13 +40,13 @@ Beyond just teaching you to code, this course prepares you to maneuver DeFi, NFT
 
 Let's start by covering some of the best practices to help you get the absolute most out of this course.
 
-[**Use the GitHub repo as your Bible!**](https://github.com/Cyfrin/foundry-full-course-f23/) it will have all the resources you'll need to succeed. Contained within, you'll find a `discussions` tab. Any questions you have or hurdles you face can be posted here!
+[**Use the GitHub repo as your Bible!**](https://github.com/Cyfrin/foundry-full-course-cu/) it will have all the resources you'll need to succeed. Contained within, you'll find a `discussions` tab. Any questions you have or hurdles you face can be posted here!
 
 **Ask meaningful questions and interact with like-minded learners** – this is just as important as grasping the actual technologies.
 
 **Code along with me** - As we progress through the course, it's a good idea to code along with me. Actually _doing_ the work and performing the actions is how you'll build familiarity with these processes and how they'll really stick.
 
-**Watch for Updates** - This space moves very quickly - as things are updated, I do my best to catalogue them in [**Chronological Updates**](https://github.com/Cyfrin/foundry-full-course-f23/blob/main/chronological-updates.md) in our GitHub Repo. Reference here if it seems like something is out of date!
+**Watch for Updates** - This space moves very quickly - as things are updated, I do my best to catalogue them. In each video, at the bottom, there will be an "updates" section if there is some information that differs from the vide. 
 
 **Move at your Pace** - Adjust the pace of the course to meet your needs. The course is modular, so if you want to skip to particular areas - absolutely do that.
 
