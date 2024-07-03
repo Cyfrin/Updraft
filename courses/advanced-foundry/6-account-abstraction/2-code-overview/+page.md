@@ -20,6 +20,6 @@ These two ecosystems are vastly different. The upcoming lessons will allow us to
 
 ![Example Deployments](/2-code-overview/example-deployments.png)
 
-When you are ready, complete this lesson by watching the video lecture. Then, we will begin our journey with Ethereum minimal account abstraction.  
+When you are ready, let's begin our journey with Ethereum minimal account abstraction.  
 
 
