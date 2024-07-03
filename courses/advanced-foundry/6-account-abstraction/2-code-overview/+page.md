@@ -1,6 +1,6 @@
 # Account Abstraction Lesson 2: Code Overview
 
-Welcome to lesson 2 of the Account Abstraction course! In this lesson, we will take a look at the codebase for Ethereum and zkSync. They are minimally structured and serve as a great starting point for learning about account abstraction.
+Welcome to lesson 2 of the Account Abstraction course! In this lesson, we will take a look at the codebase for Ethereum and zkSync. They are minimal accounts and serve as a great starting point for learning about account abstraction.
 
 ## What You Will Learn
 
