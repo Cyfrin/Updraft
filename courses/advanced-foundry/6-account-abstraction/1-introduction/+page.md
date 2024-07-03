@@ -67,7 +67,7 @@ By understanding these concepts, you'll have a solid foundation in account abstr
 
 ## Questions for Review
 
-Before we move one, here are some questions to help you review what we've covered so far **(Watch Video Lesson firts!)**:
+Before we move one, here are some questions to help you review what we've covered so far:
 
 - What is account abstraction?
 - What are the two entry points in account abstraction?
