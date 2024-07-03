@@ -42,7 +42,7 @@ zkSync, on the other hand, has account abstraction natively integrated into its 
 ![Current Wallet Issues](/6-account-abstraction/1-introduction/userOp.png)
 
 ### User Operations (Off-Chain)
-In Ethereum, user operations are first sent off-chain. This means that the initial handling and validation occur outside the main blockchain network, reducing congestion and improving efficiency. In the above example, the user operation is signed with Google and is sent to the alt-mempool, which then sends it to the main blockchain network.
+In Ethereum, user operations are first sent off-chain. This means that the initial handling and validation occur outside the main blockchain network, reducing congestion and improving efficiency. In the above example, the user operation is signed with Google and is sent to the alt-mempool, which then sends it to the main blockchain network. The alt mempool is any nodes which are facilitating this operation. So the user is not sending their transaction to the Ethereum nodes.
 
 ### Transactions and Gas Payments (On-Chain)
 Once validated, the user operations are sent on-chain as transactions. These transactions are executed and gas fees are paid on behalf of the user, directly from their account. This is managed through the `EntryPoint.sol` contract. From here, the user's smart contract essentially becomes their wallet. If gas has not yet been settled, it is paid for by the user's account. Finally, the contract is deployed to the blockchain. 
