@@ -51,7 +51,7 @@ Once validated, the user operations are sent on-chain as transactions. These tra
 The `EntryPoint.sol` contract also allows for optional add-ons, such as a Signature Aggregator and a Paymaster. These add-ons can be used to further optimize gas fees and improve user experience.
 
 #### Signature Aggregator
-An optional add-on to the `EntryPoint.sol` contract is the signature aggregator. This component collects and verifies multiple signatures, ensuring that only authorized transactions are processed.
+An optional add-on to the EntryPoint.sol contract is the signature aggregator. This add-on lets you define multiple signatures to be aggregated and verified. This means that other users can sign transactions on the same wallet or multi-sign logic can be added, such as requiring multiple signatures before authorizing transactions.
 
 #### Pay Master
 Another optional component is the pay master. It handles gas payments, allowing users to pay for transactions in various ways, not limited to the native cryptocurrency.
