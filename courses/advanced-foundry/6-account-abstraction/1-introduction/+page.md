@@ -61,7 +61,7 @@ Another optional component is the pay master. It handles gas payments, allowing 
 ![zkSync Enrty Point](/6-account-abstraction/1-introduction/zksyncEntryPoint.png)
 
 ### Acts as an Alt-Mempool
-In zkSync, the account abstraction mechanism acts similarly to an alt-mempool. It efficiently manages user operations and transactions, ensuring that they are processed securely and promptly.
+In zkSync, the alt-mempool nodes are also the zkSync nodes. This means that sending the transaction to the alt-mempool can be skipped. The reason zkSync can do this is because every account (e.g., MetaMask) is by default a smart contract account as it is automatically connected to a [DefaultAccount.sol](https://github.com/matter-labs/era-contracts/blob/main/system-contracts/contracts/DefaultAccount.sol).
 
 By understanding these concepts, you'll have a solid foundation in account abstraction and its implementation in leading blockchain platforms like Ethereum and zkSync. 
 
