@@ -48,7 +48,7 @@ In Ethereum, user operations are first sent off-chain. This means that the initi
 Once validated, the user operations are sent on-chain as transactions. These transactions are executed and gas fees are paid on behalf of the user, directly from their account, by the alt-mempool nodes. This is managed through the `EntryPoint.sol` contract. From here, the user's smart contract essentially becomes their wallet. If a paymaster is not set up, the funds will be deducted from the account. Finally, the contract is deployed to the blockchain. 
 
 ### EntryPoint.sol Optional Add-ons
-The `EntryPoint.sol` contract also allows for optional add-ons, such as a Signature Aggregator and a Pay Master. These add-ons can be used to further optimize gas fees and improve user experience.
+The `EntryPoint.sol` contract also allows for optional add-ons, such as a Signature Aggregator and a Paymaster. These add-ons can be used to further optimize gas fees and improve user experience.
 
 #### Signature Aggregator
 An optional add-on to the `EntryPoint.sol` contract is the signature aggregator. This component collects and verifies multiple signatures, ensuring that only authorized transactions are processed.
