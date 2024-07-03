@@ -53,7 +53,7 @@ The `EntryPoint.sol` contract also allows for optional add-ons, such as a Signat
 #### Signature Aggregator
 An optional add-on to the EntryPoint.sol contract is the signature aggregator. This add-on lets you define multiple signatures to be aggregated and verified. This means that other users can sign transactions on the same wallet or multi-sign logic can be added, such as requiring multiple signatures before authorizing transactions.
 
-#### Pay Master
+#### Paymaster
 Another optional component is the pay master. It handles gas payments, allowing users to pay for transactions in various ways, not limited to the native cryptocurrency.
 
 ## zkSync
