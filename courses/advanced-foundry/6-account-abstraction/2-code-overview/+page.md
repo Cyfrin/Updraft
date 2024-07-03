@@ -4,7 +4,7 @@ Welcome to lesson 2 of the Account Abstraction course! In this lesson, we will t
 
 ## What You Will Learn
 
-This is just an overview of things to come. You don't need to know much at this point. However, going through the links below can help to give you a glimpse of what is to come in the course. 
+This is just an overview of things to come. You don't need to understand fully at this point. However, going through the links below can help to give you a glimpse of what is to come in the course. 
 
 We will be building two minimal account abstraction accounts. One for Ethereum and another for zkSync.
 
