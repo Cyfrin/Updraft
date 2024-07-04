@@ -2,66 +2,55 @@
 title: 5-ai-help-ii
 ---
 
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
-We've all been there. Staring blankly at a line of code and scratching our heads, trying to make sense of it. Sometimes a new concept or technique can trip us up. And it's not really surprising—the world of programming and technology is vast and constantly evolving and, sooner or later, we're bound to hit a roadblock.
+If you run into (a lot of) questions, it means that you are thinking critically and you are approaching the subject the right way. In this lesson, we'll do an AI-chat example and learn how to effectively ask questions.
+AI chat platforms like **ChatGPT** and **Bard**
+effectiveness of the answers.
 
-But fret not. Because AI is here to save the day. More specifically, AI chat platforms like **ChatGPT** and **Bard**. They can be a helpful resource to gain clarity when we're navigating the rocky terrain of programming.
+### Ask questions effectively
 
-However, remember that 'how' you ask questions can significantly impact the clarity and effectiveness of the answers.
+For example, let's say that you cannot understand the difference between `simpleStorage` and `SimpleStorage` very well:
 
-## Ask Questions the Right Way
-
-Let's say you come across a line of code and can't quite understand the difference between two instances of `SimpleStorage`. Here's how you can formulate a question for the AI:
-
-1. Open ChatGPT or any other AI chatbot platform you prefer.
-2. Start with a simple and straightforward query like:
-   
-    `"Hi, I'm having a hard time understanding the difference between these simple storages on this line."`
-3. Highlight **only the line** you're confused about and copy it.
-4. Paste this line of code within your question in a block format. In markdown, you can create a block by adding three backticks `"`````"` before and after the block of text or code.
-
-```
-    ```
-    // paste your line of code here
-    ```
+```solidity
+simpleStorage = new SimpleStorage();
 ```
 
-This signifies that it is a block of code and makes it easier for the AI to understand.
+We can ask the AI to clarify it by:
 
-5. If your code is small enough, you can paste the **entire code** as well, but remember to mark it as a code block too. Some AI may struggle to handle large amounts of code, so try to be as concise as possible.
-    
-    Here's an example of how it would look:
+1. highlighting **only the line(s)** you're confused about and copy it
+2. Paste these lines within your question in a **code block format**. You can create a code block by adding three backticks ``` before and three backticks after some text. This will explicitly indicate to the AI that you are referring to a piece of code and not just to a simple text.
 
-```
+This is the AI prompt:
+
+````
 Hi, I'm having a hard time understanding the difference between these simple storages on this line:
-```
-
-```
 ```// paste the confusing line of code here```
-```
-
-```
 Here is my full code:
-```
-
-```
 ```// paste the full code here```
-```
+````
 
+### AI answer
 
-Now, just hit "Send" and let the AI do its magic!## Interpreting AI Responses
+The AI can provide insightful and very comprehensive answers. For instance, an AI may indicate that `simpleStorage` is a variable of type `SimpleStorage`, which is a contract defined in the file `SimpleStorage.sol`.
 
-<img src="/solidity/remix/lesson-3/ai-support/ai-support.png" style="width: 100%; height: auto;">
+> 👀❗**IMPORTANT** <br>
+> AI systems are highly efficient at solving basic coding tasks. However, as the complexity of codebases and projects increases, the effectiveness of AI begins to diminish. Advanced tasks often require deep contextual understanding, innovative problem-solving, and area integrations where current AI capabilities fall short.
 
+### Other resources
 
-The AI can provide insightful answers to help unravel the mysteries of your code. For instance, with the `SimpleStorage` example, an AI may indicate that "simple storage is a variable of type simple storage, which is a contract defined in simple storage.sol". If all goes well, this should help clarify any doubts you might have. 
+Despite their overwhelming benefits, AI chat platforms are not infallible and they can get things wrong. During that time, you can engage in other platforms like [Stack Exchange](https://ethereum.stackexchange.com/), or the discussion forums related to the course on the topic you're studying. For instance, when querying about `SimpleStorage`, an AI response might refer to a 'stored data variable', which doesn't exist in the code you provided. This demonstrates how AI often operates on context-based inference and may occasionally connect to unrelated concepts.
 
-> "A lot of this beginner basic stuff AIS are really good at. As we get more and more advanced, AIs are going to start breaking apart. But at least for the beginning, AIs are going to be incredibly helpful and incredibly good at explaining a lot."From the basic to the more advanced stuff, you can lean on the AI chat as a "learning buddy".
+### Conclusion
 
-## Not Always Right
+AI systems are excellent for basic coding tasks but may struggle with complex projects, which require deep understanding and innovative solutions. For more precise help, highlight specific code lines in a code block or you can use additional resources like Stack Exchange for further clarification.
 
-Despite their overwhelming benefits, remember that AI chat platforms are not infallible. They can, and do, get things wrong or misunderstood sometimes. When that happens, don't lose hope! You can engage other platforms like [Stack Exchange](https://ethereum.stackexchange.com/), or the discussion forums related to the course or topic you're studying.For instance, when querying about `SimpleStorage`, an AI response might refer to a 'stored data variable', which doesn't exist in the code you provided. Don't panic! It's just an example of how AI's often work on context-based inference and may sometimes link to unrelated concepts.
+### 🧑‍💻 Test yourself
 
-Stay patient, stay curious, and keep learning!
+1. 📕 Review the first section of this Solidity course again. Identify three concepts that seem unclear and ask the AI to explain them to you.
+
+[Back to top](#top)

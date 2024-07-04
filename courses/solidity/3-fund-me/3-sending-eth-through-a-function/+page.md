@@ -1,70 +1,70 @@
 ---
-title: Sending ETH trough a function
+title: Sending ETH through a function
 ---
 
-*Follow along this chapter with the video bellow*
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
+In this part, we'll explore how to transfer Ethereum (ETH) to a smart contract by creating a `fund` function. This function will require a _minimum amount of ETH_ to ensure proper transaction handling.
 
-In this chapter, we'll explore how to establish a mechanism that enables users to send Ethereum (ETH) to a smart contract. Specifically, we'll create a function that requires a minimum amount of ETH.
+### value and payable
 
-## How Does the Transaction Work?
+When a transaction it's sent to the blockchain, a **value** field is always included in the _transaction data_. This field indicates the **amount** of the native cryptocurrency being transferred in that particular transaction.
+For the function `fund` to be able to receive Ethereum, it must be declared **`payable`**. In the Remix UI, this keyword will turn the function red, signifying that it can accept cryptocurrency.
 
-When a transaction on the blockchain occurs, a value field is always populated. This field represents the quantity of native blockchain cryptocurrency sent in each transaction. For instance, when the value field in a transaction between our accounts was populated through MetaMask, it indicated the amount of ETH being transferred.
-
-
-## Enabling Our Function to Accept Cryptocurrency
-
-For our function to be able to receive the native blockchain currency, we need to make the function 「payable」. In Solidity, this is accomplished using the keyword `payable`. This keyword turns the function red in the Remix UI, signifying that it can accept cryptocurrency.
+_Wallet addresses_ and _smart contracts_ are capable of **holding** and **managing** cryptocurrency funds. These entities can interact with the funds, perform transactions, and maintain balance records, just like a wallet.
 
 ```js
-function fund() public payable{...}
+function fund() public payable {
+    // allow users to send $
+    // have a minimum of $ sent
+    // How do we send ETH to this contract?
+    msg.value;
+
+    //function withdraw() public {}
+}
 ```
 
-## Holding Funds in Contract
+In Solidity, the **value** of a transaction is accessible through the [`msg.value`](https://docs.soliditylang.org/en/develop/units-and-global-variables.html#special-variables-and-functions) **property**. This property is part of the _global object_ `msg`. It represents the amount of **Wei** transferred in the current transaction, where _Wei_ is the smallest unit of Ether (ETH).
 
-Just as wallets hold funds, contracts can serve a similar role. Following deployment, a contract behaves almost identically to a wallet address. It can receive funds, interact with them, and as seen in our demo, the contract can amass a balance akin to a wallet.
+### Reverting transactions
 
-<img src="/solidity/remix/lesson-4/transact/transact1.png" style="width: 100%; height: auto;">
+We can use the`require` keyword as a checker, to enforce our function to receive a minimum `value` of one (1) whole ether:
 
-
-## Transaction Value - The Message Value
-
-The value amount of a transaction can be accessed using the `message value` global in Solidity.
-
-```javascript
-msg.value
+```js
+require(msg.value > 1e18); // 1e18 = 1 ETH = 1 * 10 ** 18
 ```
 
-This represents the number of 'wei' sent with the message. Here, 'wei' is the smallest denomination of ETH.
+This `require` condition ensures that the transaction meets the minimum ether requirements, allowing the function to execute only if this threshold is satisfied. If the specified requirement is not met, the transaction will **revert**.
 
-## Implementing Requirements for Transactions
+The require statement in Solidity can include a custom error message, which is displayed if the condition isn't met, clearly explaining the cause of the transaction failure:
 
-To enforce a minimum threshold of one ether sent via our function, we can utilize the `require` keyword.
-
-```javascript
-require(msg.value > 1 ether);
+```js
+require(msg.value > 1 ether, "Didn't send enough ETH"); //if the condition is false, revert with the error message
 ```
 
-This essentially ensures that the transaction only proceeds if at least one ether is contained within the value field. If the requirement isn’t met, the transaction reverts.
+An online tool like [Ethconverter](https://eth-converter.com/) can be useful for executing conversions between _Ether_, _Wei_, and _Gwei_.
 
-Should we wish to offer more context to the user, we can supplement the require statement with a custom error message.
+> 👀❗**IMPORTANT** <br>
+> 1 Ether = 1e9 Gwei = 1e18 Wei
 
-```javascript
-require(msg.value > 1 ether, "Didn't send enough ETH");
-```
+> 🗒️ **NOTE** <br>
+> Gas costs are usually expressed in Gwei
 
-An online tool like [Ethconverter](https://eth-converter.com/) can be useful for converting between ether, wei, and Gwei (another denomination of ether).
+If a user attempts to send less Ether than the required amount, the transaction will **fail** and a _message_ will be displayed. For example, if a user attempts to send 1000 Wei, which is significantly less than one Ether, the function will revert and does not proceed.
 
-## Reverting Transactions
+### Conclusion
 
-If a user attempts to send less than the required amount, the transaction will fail and a message will be displayed. For instance, if a user attempts to send 1000 wei, which is significantly less than one ether `(1 x 10^18 wei)`, the transaction will not proceed.
+In this lesson, we explored how to use the `value` field of a transaction to transfer Ether to a contract. We also learned how to generate an **error message** when the user sends insufficient Ether to the `FundMe` contract.
 
-To demonstrate this, see the example below where the user is attempting to send `3000000` wei:
+### 🧑‍💻 Test yourself
 
-<img src="/solidity/remix/lesson-4/transact/transact2.png" style="width: 100%; height: auto;">
+1. 📕 Describe the role of the `payable` keyword. How does it affect the functionality of a function?
+2. 📕 Explain how the `require` statement works in Solidity and what prevents.
+3. 📕 What's the difference between Wei, Gwei and Ether?
+4. 🧑‍💻 Create a `tinyTip` function that requires the user to send less than 1 Gwei.
 
-As you can see, the require statement has the power to control the behavior of the transaction. If the condition set is not satisfied, it reverts the transaction with the provided error message. This guarantees our contract gets the minimum amount of ETH required.
-
-By understanding how to enforce payment requirements, you gain more control over the behavior and security of your contracts. Continue exploring Solidity's capabilities to build amazing Smart Contract, let's continue with the next lesson.
+[Back to top](#top)

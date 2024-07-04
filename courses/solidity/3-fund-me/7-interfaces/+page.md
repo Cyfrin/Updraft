@@ -2,67 +2,62 @@
 title: Interfaces
 ---
 
-*Follow along this chapter with the video bellow*
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
+In this part, we'll learn how to **convert** Ethereum (ETH) into Dollars (USD) and how to use **Interfaces**.
 
-Making transactions with Ethereum has become quite straightforward. But converting Ethereum into dollars or other currencies is where things get a little tricky. So today, we're going to take a deep dive into converting Ethereum into USD and interacting with other contracts lodged within the Ethereum blockchain.
+### Converting Ethereum into USD
 
-## Converting Ethereum into USD
-
-When it comes to determining whether the amount of Ethereum sent via a transaction meets a minimum USD value (e.g., $5), the conversion from Ethereum into USD becomes necessary. This conversion requires us to identify the price of Ethereum (or any other native blockchain token we're working with) in terms of USD; after which, we apply a conversion rate to ascertain its USD equivalent.
-
-Now, let’s see how to implement these steps in code.
-
-```js
-    // Function to get the price of Ethereum in USD
-    function getPrice() public {}
-    // Function to convert a value based on the price
-    function getConversionRate() public {}
-```
-
-The two functions we're going to create here, `getPrice()` and `getConversionRate()`, will serve our purposes. For the time being, we're making them public so we can easily test, play with, and fine-tune them as we see fit.
-
-## Leveraging Chainlink for Ethereum Prices
-
-Our primary source for Ethereum prices will be a Chainlink data feed. Chainlink documentation provides a basic example written in Solidity that demonstrates how to interact with their price feed. Take a look at it [here](https://docs.chain.link/docs/get-the-latest-price/).
-
-This example makes use of the `latestRoundData` function of a contract at a given address, returning a multitude of data points. However, our interest is solely in the Ethereum price for the time being.
-
-## Interfacing with the Contract
-
-The process of interfacing with this contract (and subsequently getting the Ethereum price) requires us to know two essentials: the contract's address and its Application Binary Interface (ABI). The address is easy to access via the Chainlink documentation, specifically under the 'Price Feed Contracts' section.
-
-As noted in Chainlink's contract addresses for Ethereum (ETH), we only need to obtain the Ethereum to USD price feed (ETH/USD!). You can access it [here](https://docs.chain.link/data-feeds/price-feeds/addresses).
-
-Next, we tackle the ABI.
-
-The simplest way to obtain the ABI is by importing, compiling, and deploying the entire contract — a somewhat cumbersome method for our current task, especially considering that we don't need to comprehend the whole contract. We only need a key: what methods (functions) can be called on this contract, their inputs, whether they're payable or view functions, and other similar details.
-
-An alternate approach relies on the concept of `Interface`.
-
-## Solidity Interface: A Mode of Interaction
-
-In Solidity, an interface essentially is a declaration of methods without implemented logic — merely a list of possible interactions with a contract. The interface allows us to call these functions on the contract without needing the contract code. If the contract is deployed, the logic is also automatically included with it.
-
-Chainlink's GitHub repository provides a detailed rundown of different contracts, and our focus is on the Aggregator V3 Interface. You can review it [here](https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol). This interface is what we need to interact with the contract for our task. It contains the `getVersion()` function, among others, key for our usage.
-
-By copying the interface and employing Remix, Solidity's online compiler, we can test the `getVersion()` function. Testing on testnets can be time-consuming; hence, it is best to defer full deployment until the end.
+We begin by trying to convert the `msg.value`, which is now specified in ETH, into USD. This process requires fetching the **current USD market price** of Ethereum and using it to convert the `msg.value` amount into USD.
 
 ```js
-    // Copy the Aggregator V3 Interface from Chainlink's GitHub
-    AggregatorV3Interface interface = AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
-    // Create a function to call the getVersion() function in the interface
-    function getVersion() public view returns (uint256) {
-        return interface.version();
-    }
+ // Function to get the price of Ethereum in USD
+ function getPrice() public {}
+ // Function to convert a value based on the price
+ function getConversionRate() public {}
 ```
 
-These code snippets allow us to interact with the Chainlink Price Feed contract and retrieve the current version.
+### Chainlink Data Feed
 
-It's beneficial to remember that in the dynamic field of blockchain and Ethereum, learning is an ongoing cycle. Patience, persistence, and practice are your allies in harnessing the power of Ethereum and Solidity.
+Our primary source for Ethereum prices is a **Chainlink Data Feed**. [Chainlink Data Feed documentation](https://docs.chain.link/data-feeds/using-data-feeds) provides an example of how to interact with a Data Feed contract:
 
-Join us in exploring this exciting technology, and together, let's keep coding!
+1. `AggregatorV3Interface`: a contract that takes a _Data Feed address_ as input. This contract maintains the ETH/USD price updated.
+2. `latestRoundData`: a function that returns an `answer`, representing the latest Ethereum price.
 
-<img src="/solidity/remix/lesson-4/interfaceslesson/interfaces1.png" style="width: 100%; height: auto;">
+To utilize the **Price Feed Contract**, we need its address and its ABI. The address is available in the Chainlink documentation under the [Price Feed Contract Addresses](https://docs.chain.link/data-feeds/price-feeds/addresses). For our purposes, we'll use ETH/USD price feed.
+
+### Interface
+
+To obtain the ABI, you can import, compile, and deploy the PriceFeed contract itself. In the previous section, we imported the `SimpleStorage` contract into the `StorageFactory` contract, deployed it, and only then we were able to use its functions.
+
+An alternative method involves the use of an **Interface**, which defines methods signature without their implementation logic. If compiled, the Price Feed Interface, it would return the ABI of the Price Feed contract itself, which was previously deployed on the blockchain. We don't need to know anything about the function implementations, only knowing the `AggregatorV3Interface` methods will suffice. The Price Feed interface, called `Aggregator V3 Interface`, can be found in [Chainlink's GitHub repository](https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol).
+
+> 🗒️ **NOTE** <br>
+> Interfaces allow different contracts to interact seamlessly by ensuring they share a common set of functionalities.
+
+We can test the Interface usage by calling the `version()` function:
+
+```js
+ function getVersion() public view returns (uint256) {
+    return AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419).version();
+ }
+```
+
+> 🗒️ **NOTE** <br>
+> It's best to work on testnets only after your deployment is complete, as it can be time and resource consuming.
+
+### Conclusion
+
+Using interfaces is a common and effective way to interact with external contracts. First, obtain the interface of the external contract, compile it to get the ABI, and then use the deployed contract's address. This allows you to call any function available at that address seamlessly.
+
+### 🧑‍💻 Test yourself
+
+1. 📕 Explain the role of interfaces in Solidity and why are they advantageous.
+2. 📕 What are the steps required to convert a variable containing a value in ETH to its equivalent in USD?
+3. 🧑‍💻 Implement another function on the `FundMe` contract that implements the `decimals()` methods of the Data Feed address.
+
+[Back to top](#top)
