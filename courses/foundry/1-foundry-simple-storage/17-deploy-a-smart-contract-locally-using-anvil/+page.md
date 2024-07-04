@@ -16,7 +16,7 @@ Foundry eases the whole process since it is written in Solidity. This means our 
 
 In Foundry we keep our scripts in the `script` folder.
 
-Please create a new file called `DepoloySimpleStorage.s.sol`. 
+Please create a new file called `DeploySimpleStorage.s.sol`. 
 
 Using `.s.sol` as a suffix is a naming convention for Foundry scripts, in future lessons, when we'll write Foundry tests, these will bear the suffix of `.t.sol`.
 
