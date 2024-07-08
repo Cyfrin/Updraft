@@ -2,7 +2,7 @@
 title: Best practices
 ---
 
-_Follow along with this video:_
+_Follow along with the video_
 
 ---
 

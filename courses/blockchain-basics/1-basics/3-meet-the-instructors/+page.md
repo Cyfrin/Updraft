@@ -1,8 +1,8 @@
 ---
-title: <title  here>
+title: Meet the instructors
 ---
 
-_Follow along with this video:_
+_Follow along with the video_
 
 ---
 
