@@ -2,27 +2,29 @@
 title: Modifiers
 ---
 
-_Follow along this chapter with the video bellow_
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
-In an earlier lesson, we looked at Solidity and how to create smart contracts on the Ethereum blockchain. One of the most useful aspects of Solidity, especially when dealing with functions that should only be called by a certain administrator or contractor, are its modifiers. In this piece, we are going to dive deep into how modifiers can simplify our code and boost productivity.
+In this lesson, we will explore **modifiers** and how they can simplify code writing and management in Solidity. Modifiers enable developers to create reusable code snippets that can be applied to multiple functions, enhancing code readability, maintainability, and security.
 
-## The Problem with Repeated Conditions
+### Repeated Conditions
 
-Let's imagine we have a smart contract full of administrative functions; these functions should only be executed by the contract owner. The straightforward way to achieve this is by adding a condition to every function to check whether the caller (message sender) is the owner:
+If we build a contract with multiple _administrative functions_, that should only be executed by the contract owner, we might repeatedly check the caller identity:
 
 ```js
 require(msg.sender == owner, "Sender is not owner");
 ```
 
-However, having to copy and paste this line of code in every function is a surefire way to clutter our contract, making it more difficult to read, maintain, and debug. What we need is a technique or tool to bundle up this common functionality and apply it to our functions when necessary. This is where Solidity's modifiers come into play.
+However, repeating this line in every function clutters the contract, making it harder to read, maintain, and debug.
 
-## Introducing Solidity Modifiers
+### Modifiers
 
-A modifier in Solidity allows us to embed functionality easily and quickly within any function. They are like regular functions but are used to modify the behavior of the functions in our contract. Let’s create our first modifier.
+Modifiers in Solidity allow embedding **custom lines of code** within any function to modify its behaviour.
 
-Here is how we create a modifier:
+Here's how to create a modifier:
 
 ```js
 modifier onlyOwner {
@@ -31,28 +33,32 @@ modifier onlyOwner {
 }
 ```
 
-**Note**: The modifier's name is 'onlyOwner', mimicking the condition it checks. There's also this weird underscore (`_`) sitting right there in our code.
+> 🗒️ **NOTE** <br>
+> The modifier is named `onlyOwner` to reflect the condition it checks.
 
-### Understanding the `_` (Underscore) in Modifiers
+### The `_` (underscore)
 
-The underscore in the modifier signifies where the remaining code of our function will execute. So if you stick it right after the `require` statement, your function's logic will run only if the `require` condition is met.
+The underscore `_` placed in the body is a placeholder for the modified function's code. When the function with the modifier is called, the code before `_` runs first, and if it succeeds, the function's code executes next.
 
-Here's an example of how we can apply the `onlyOwner` modifier to our contract's `withdraw` function:
+For example, the `onlyOwner` modifier can be applied to the `withdraw` function like this:
 
 ```js
-function withdraw(uint amount) public onlyOwner {}
+function withdraw(uint amount) public onlyOwner {
+    // Function logic
+}
 ```
 
-Now when `withdraw` is called, the smart contract checks the `onlyOwner` modifier first. If the `require` statement in the modifier passes, the rest of the function's code is then executed. We can see how this not only streamlines our code, but also enhances visibility of function behaviours.
+When `withdraw` is called, the contract first executes the `onlyOwner` modifier. If the `require` statement passes, the rest of the `withdraw` function executes.
 
-## The Order of Underscores in Modifiers
+If the underscore `_` were placed before the `require` statement, the function's logic would execute first, followed by the `require` check, which is not the intended use case.
 
-<img src="/solidity/remix/lesson-4/modifier/modifier1.png" style="width: 100%; height: auto;">
+### Conclusion
 
-For instance, assuming that all the necessary conditions in our `onlyOwner` modifier have been met, if we had the underscore above the `require` statement, the contract executes the `withdraw` function's code first before executing the `require` statement.
+Using modifiers like `onlyOwner` simplifies contract development by centralizing common conditions, reducing code repetition, and enhancing contract readability and maintainability.
 
-## Summary
+### 🧑‍💻 Test yourself
 
-In essence, modifiers offer a smart and effective way of handling preconditions in our functions, without having to repeat lines of code. Now, the next time you find yourself having to copy, paste, and check the same line of conditions in multiple functions, consider using a modifier instead- because the best developers, they never work harder, they work smarter.
+1. 📕 Why is it beneficial to use `modifiers` for access control?
+2. 🧑‍💻 Implement a modifier named `onlyAfter(uint256 _time)` that ensures a function can only be executed after a specified time.
 
-In upcoming lessons, we'll look into advanced modifier usages and explore more ways to optimize our smart contract code. Stay tuned!
+[Back to top](#top)

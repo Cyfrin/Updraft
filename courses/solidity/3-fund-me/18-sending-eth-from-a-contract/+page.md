@@ -2,56 +2,60 @@
 title: Transfer, Send and Call
 ---
 
-_Follow along this chapter with the video bellow_
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
-One important aspect is understanding how to securely and effectively withdraw funds from a smart contract. This tutorial explores three different methods of doing this – `transfer`, `send`, and `call`. We will examine their differences, understand how each one works, and determine when to use each strategy.
+This lesson explores three different methods of sending ETH from one account to another: `transfer`, `send`, and `call`. We will understand their differences, how each one works, and when to use one instead of another.
 
-## Transfer Function In Ethereum
+### Transfer
 
-We start by discussing the `transfer` function, mostly due to its simplicity and straightforwardness. Here is a basic representation of how to use this function:
+The `transfer` function is the simplest way to send Ether to a recipient address:
 
 ```js
-payable(msg.sender).transfer(address(this).balance);
+payable(msg.sender).transfer(amount); // the current contract sends the Ether amount to the msg.sender
 ```
 
-We utilize `msg.sender` which refers to the address initiating the transaction. The `transfer` function is used to send the specified amount of Ether (or the native cryptocurrency on the current blockchain).
+It's necessary to convert the recipient address to a **payable** address to allow it to receive Ether. This can be done by wrapping `msg.sender` with the `payable` keyword.
 
-It is worth noting the necessity of converting the `msg.sender` to a payable address to facilitate the transfer. This is achieved by wrapping the `msg.sender` with the `payable` keyword.
+However, `transfer` has a significant limitation. It can only use up to 2300 gas and it reverts any transaction that exceeds this gas limit, as illustrated by [Solidity by Example](https://solidity-by-example.org/sending-ether/).
 
-However, `transfer` has a significant limitation. It can only use up to 2300 gas and it reverts any transaction that exceeds the gas limit. When your transaction requires more gas, this function fails and reverts the transaction entirely. Additionally, [Solidity by example](https://solidity-by-example.org/sending-ether/) offers an excellent reference point for this discussion.
+### Send
 
-## Send Function
-
-Our second method is the `send` function. Syntax-wise, it is similar to `transfer`, but it has a slightly different behavior. Here is how you would write it:
+The `send` function is similar to `transfer`, but it differs in its behaviour:
 
 ```js
 bool success = payable(msg.sender).send(address(this).balance);
-equire(success, "Send failed");
+require(success, "Send failed");
 ```
 
-Similar to the `transfer` function, `send` also has a gas limit of 2300. However, instead of completely reverting the transaction, it returns a Boolean value (`true` or `false`) to indicate the success or failure of the transaction. In case of failure, the contract is still intact. It is your responsibility as a developer to ensure that errors are caught, which is the purpose of `require(success, "Send failed");`. This line of code enforces that the send operation must be successful.
+Like `transfer`, `send` also has a gas limit of 2300. If the gas limit is reached, it will not revert the transaction but return a boolean value (`true` or `false`) to indicate the success or failure of the transaction. It is the developer's responsibility to handle failure correctly, and it's good practice to trigger a **revert** condition if the `send` returns `false`.
 
-## Call Function
+### Call
 
-Finally, the `call` function is the most flexible and powerful of the three. It can be used to call virtually any function in Ethereum without requiring the function's abi (application binary interface). More importantly, it does not have a capped gas limit. It forwards all available gas to the transaction.
+The `call` function is flexible and powerful. It can be used to call any function **without requiring its ABI**. It does not have a gas limit, and like `send`, it returns a boolean value instead of reverting like `transfer`.
 
 ```js
 (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
 require(success, "Call failed");
 ```
 
-To send funds using the `call` function, we modify our syntax slightly by including squiggly brackets `{'{'}...{'}'}`, where we can add details about the transaction, such as the value being transacted.
+To send funds using the `call` function, we convert the address of the receiver to `payable` and add the value inside curly brackets before the parameters passed.
 
-The `call` function also returns two variables: a Boolean for success or failure, and a byte object which stores returned data if any. The code `require(success, "Call failed");` ensures that the transaction must succeed, similar to the `send` method.
+The `call` function returns two variables: a boolean for success or failure, and a byte object which stores returned data if any.
 
-<img src="/solidity/remix/lesson-4/transfer/transfer1.png" style="width: 100%; height: auto;">
+> 👀❗**IMPORTANT** <br> > `call` is the recommended way of sending and receiving Ethereum or other blockchain native tokens.
 
-However, understanding the difference between these three functions may be challenging initially. Don't worry! Continue experimenting and learning about lower-level functions and the concept of gas. Go back to this tutorial when you have a broader understanding of these topics.
+### Conclusion
 
-Feel free to refer to [Solidity, by example](http://solidity-by-example.org), which provides a comprehensive comparison among these three functions. To summarize, `transfer` throws errors when transactions fail and is capped at 2300 gas. `send` operates similarly but returns a Boolean value instead of reverting the entire transaction. `call`, on the other hand, forwards any available gas and is therefore not capped, returning a Boolean value similar to `send`.
+In conclusion, _transfer_, _send_, and _call_ are three unique methods for transferring Ether in Solidity. They vary in their syntax, behaviour, and gas limits, each offering distinct advantages and drawbacks.
 
-Hopefully, this tutorial makes it clear how to use these three functions to send and transfer Ethereum or other blockchain native currency tokens.
+### 🧑‍💻 Test yourself
 
-Keep Learning and we will see you in the next chapter!
+1. 📕 What are the primary differences between _transfer_, _send_, and _call_ when transferring Ether?
+2. 📕 Why is it necessary to convert an address to a `payable` type before sending Ether to it?
+3. 🧑‍💻 Implement a function `callAmountTo` using `call` to send Ether from the contract to an address provided as an argument. Ensure the function handles failures appropriately.
+
+[Back to top](#top)

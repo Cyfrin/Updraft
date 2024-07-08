@@ -2,105 +2,55 @@
 title: Deploying a Contract
 ---
 
-*Follow along with the course here.*
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
+Over the past eight lessons, we crafted the `SimpleStorage` contract. It defines a custom type `Person`, includes an internal variable that can be read and updated, and contains a public array and mapping that can also be modified. In this lesson, we will deploy the contract to a **real testnet**, which fully simulates a live blockchain environment without using real Ether.
 
-# Deploying A Simple Storage Contract On A Testnet
+> 🔥 **CAUTION** <br>
+> You could be tempted to immediately deploy this contract to a testnet. As a general rule, I caution against this. Make sure to write tests, carry out audits and ensure the robustness of your contract before deploying it to production. However, for the sake of this demonstration, we're going to deploy this as a dummy contract on a testnet.
 
-If you’ve been following along through our work with simple storage contract, you will see that we have progressively added functionality to our solidity contract. With our favorite number feature, typing person, public list, favorite number retrieval, and update functions, we’ve built up a solid contract structure. Now, it’s time to steer away from abstract theorizing and practically deploy this to a real **testnet**.
+Before deploying, be always sure to make a **compilation check**. This ensures that the contract has no errors or warnings and is fit for deployment.
 
+### Deployment on a testnet
 
-## Pre-Deployment Audit
-
-<img src="/solidity/remix/lesson-2/deploying/deploying1.png" style="width: 100%; height: auto;">
-
-
-## Compilation Check
-
-This ensures that our contract has no errors or warnings and is fit for deployment. Go to your development environment and ensure that you have a green checkmark, indicating a successful compilation.
-
-## Changing The Environment
-
-The deployment process Kicks off by switching from the local virtual environment (Remix VM) to MetaMask as the Injected provider. Here's how you can make the switch:
-
-1. Navigate to the deploy tab
-2. Delete any content there
-3. Change the environment
-
-Choose the **Injected Provider MetaMask** option. This allows the web interface to interact with your MetaMask account.
-
+We can start the deployment process by going into the deployment tab and switching from the local virtual environment (Remix VM) to the Injected Provider - MetaMask. This action will allow Remix to send requests and interact with your MetaMask account.
 <img src="/solidity/remix/lesson-2/deploying/deploying2.png" style="width: 100%; height: auto;">
 
-
-## Connecting The Account
-
-Upon choosing MetaMask as your injected provider, you will be prompted to pick a specific account for use. Choose your desired account and proceed to connect it. Next, check your MetaMask display and ensure that your account is properly connected to Remix. It’s critical to double-check that you are on the correct testnet as this guide uses the Sapolia testnet.
-
+You will be then prompted to select an account from your MetaMask wallet. Once you've connected that account to Remix, you should see a confirmation that the account is properly linked and that you are using the Sepolia testnet.
 <img src="/solidity/remix/lesson-2/deploying/deploying3.png" style="width: 100%; height: auto;">
 
+Ensure you have enough Sepolia ETH in your account, which you can obtain from a [faucet](https://www.alchemy.com/faucets/ethereum-sepolia). Once your balance is sufficient, you can proceed by clicking the "Deploy" button.
 
-If have sufficient Sapolia ETH in your account provided from a [faucet](https://sepoliafaucet.com/), you can now go ahead and click the "Deploy" button.
-
-
-## Confirming The Transaction
-
-Upon hitting the deploy button, MetaMask will prompt you to confirm the transaction for contract deployment.
-
-Since we are on the Sapolia testnet and not on a mainnet, the money spent here is not real.
-
-Click "Confirm" to launch the contract deployment.
-
+After that, MetaMask will ask to sign and send the transaction on the testnet.
 <img src="/solidity/remix/lesson-2/deploying/deploying4.png" style="width: 100%; height: auto;">
 
-
-## Checking The Deployment
-
-After you confirm, you should now find the following indicators that your contract deployment is successful:
-
-- Green checkmark appears
-- Invocation status changes to ‘block confirmations’
-- Contract address appears under deployed contracts
-
-<img src="/solidity/remix/lesson-2/deploying/deploying5.png" style="width: 100%; height: auto;">
-
-
-
-If you wait and refresh your etherscan page, you’ll see a "Success" status, along with the complete details of your transaction. For deployment transactions, the input data field will be larger than normal transaction data; it contains contract creation data, along with the gas fee details because any action that alters the blockchain requires gas for implementation.
-
+Once the transaction is executed, the contract address will be listed under deployed contracts, along with the transaction details. This is how the deployment transaction is displayed on Etherscan.
 <img src="/solidity/remix/lesson-2/deploying/deploying6.png" style="width: 100%; height: auto;">
 
+### Contract interaction
 
-# Interacting With The Deployed Contract
-
-Now that your contract has been successfully deployed, we can recreate the same Flexibility as we had on the virtual environment on this testnet.
-
-We can call the Retrieve function, and Name to favorite function which returns zero and nothing respectively as we haven't updated anything. Adding zero in for the list of people also returns nothing as expected.
-
-# Updating The Blockchain
-
-To update the blockchain, press store and input a number (e.g., 7878). MetaMask will prompt you to confirm the update transaction. This will update the favorite number on the contract.
-
-Similar confirmation checks will be run, with transaction details available on etherscan.
-
+Since the contract has been deployed, we can now interact with it and **update the blockchain**. For example, if you want to store a number, you can do so by clicking the button 'store': MetaMask will ask for another transaction confirmation, that will update the favorite number. We can check the details on etherscan at the deployed address:
 <img src="/solidity/remix/lesson-2/deploying/deploying7.png" style="width: 100%; height: auto;">
 
-## Celebrate Small Wins
+> 👀❗**IMPORTANT** <br>
+> View and pure functions will not send transactions
 
-If you’ve successfully followed all these steps, you’ve just navigated your first practical deployment of a smart contract to a testnet! Don't underestimate the importance of celebrating small developmental milestones. They are key psychological boosts that will keep you motivated and engage with any new skill you’re learning.
+> 💡 **TIP** <br>
+> _Celebrate small victories and milestones. These psychological boosts will keep you engaged in the learning process._
 
+It's possible to deploy a contract to different testnets or a real mainnet, just by switching the Metamask network. Be sure to have enough net-compatible ETHs to deploy your contract.
 
-## Deploying to Another Testnet
+### Conclusion
 
-If you wanted to deploy to another testnet, just switch to the testnet, ensure sufficient ETH and repeat the deployment process.
+Deploying a Solidity contract to a testnet is a crucial step in the development process, allowing you to test its functionality in a live blockchain environment without the risk of using real Ether. Always remember to perform necessary audits and tests to confirm the contract's safety and correctness before deployment.
 
-## Deploying to Mainnet
+### 🧑‍💻 Test yourself
 
-For the mainnet, the same process is applicable with the main difference being that you would require Ethereum, or in other words real money, to deploy.
+1. 📕 What steps should you take before deploying a contract to a testnet?
+2. 🧑‍💻 Deploy one simple Solidity contract to the Sepolia testnet. Which important information can you see on [etherscan](https://sepolia.etherscan.io/)?
 
-Moreover, if you want to deploy to other EVM compatible networks, we'll cover that in future guides.
-
-## Coining Yourself As A Solidity Developer
-
-By deploying and interacting with your smart contract, you can confidently call yourself a solidity developer. Remember, every developer's journey comes with constant learning curves, so don’t stop here. Keep exploring and experimenting with Solidity and of course keep learning with the next lessons.
+[Back to top](#top)

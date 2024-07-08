@@ -2,61 +2,53 @@
 title: Recap & Congratulations
 ---
 
-*Follow along with the course here.*
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
+In this section, we'll quickly summarize the lessons from 1 to 9 and learn about EVM and EVM-compatible blockchains.
 
-<!-- <img src="/solidity/remix/lesson-2/deploying/deploying1.png" style="width: 100%; height: auto;"> -->
+### EVM
 
-## Working with Ethereum Virtual Machine (EVM)
+EVM stands for _Ethereum Virtual Machine_. It's a decentralized computational engine that executes smart contracts.
+Any contract that it's written in Solidity, can be deployed to any EVM-compatible blockchain. Examples of such blockchains and Layer 2 solutions include **Ethereum**, **Polygon**, **Arbitram**, **Optimism**, and **Zksync**.
 
-One term that frequently comes up when talking about deploying code onto a blockchain network is "EVM," which stands for `Ethereum Virtual Machine`. Now, the EVM might seem like a complex term, but essentially it's a standard for how to compile and deploy smart contracts to a blockchain.
+> 🚧 **WARNING** <br>
+> Although a blockchain like Zksync may be EVM-compatible, it is essential to verify that all Solidity keywords are supported
 
-For anyone interacting with the blockchain space, particularly those deploying smart contracts, understanding the basic functioning and application of the Ethereum virtual machine is invaluable.
+### Contract Setup
 
+Before writing any smart contract, always specify the Solidity version you intend to work with. Additionally, include the SPDX license identifier at the top of your file.
 
-
-## EVM Compatible Blockchains
-
-Any smart contract or solidity code you write can be deployed to any blockchain that is compatible with the EVM. Prime examples of such blockchains and Layer 2 solutions include **Ethereum**, **Polygon**, **Arbitram**, **Optimism**, and **Zksync**. Even though a blockchain, such as Zksync, might be EVM-compatible, it's critical to ensure that all keywords are compatible as some do not work with every EVM-compatible blockchain.
-
-<img src="/solidity/remix/lesson-2/evm/evm1.png" style="width: 100%; height: auto;">
-
-
-Now that we've understood the basics of EVM and its deployment, let's dive into the nitty-gritty of writing your solidity code for smart contracts.
-
-## Writing Your First Smart Contract
-
-At the start of any smart contract or Solidity code you write, always mention the version you want to work with. Right above the version, insert the SPDX license Identifier. If you're unsure about the version to use, you can default to the *MIT license* for the time being.
-
-Here's an example:
-
-```js
+```solidity
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.7.0 <0.9.0;[...]
+pragma solidity >=0.7.0 <0.9.0;
 ```
 
-Next, you need to create what is known as a contract object. This contract object constitutes the basic structure of your smart contract. A `contract` in Solidity is somewhat similar to a class in other programming languages, where anything inside the curly brackets `{'{'}...{'}'}` forms part of that contract.
+Next, create a contract object. In Solidity, a `contract` is similar to a class in other programming languages. Everything within the curly brackets `{}` is part of the contract's scope.
 
-## Types and Structures
+### Types and Structures
 
-Solidity supports multiple types like `uint256`, `string`, `boolean`, `int`, and others. Further, Solidity also allows for the creation of custom types using a feature known as a `struct`.
+Solidity supports various primitive types such as `uint256` and `bool`, allows the creation of custom types with `struct`, and supports arrays and mappings.
 
-Though this language might seem foreign, take solace in the fact that Solidity, like other programming languages, supports the creation of arrays (or lists), and mappings (akin to dictionaries or hash tables). As a quick reference, if you provide a key to your mapping, you'll receive the variable associated with that key.
+### Functions and Behavior
 
-## Functions and Behavior
+Functions in Solidity can modify the state of the blockchain and execute transactions. Functions that do not modify the blockchain’s state are declared with `view` or `pure` keywords.
 
-The real magic happens when we start creating functions in Solidity that can modify the state of the blockchain. In addition, we can create functions that are "read-only", meaning they don’t modify the blockchain’s state - these are known as `view` and `pure` functions.
+### Data Locations and Memory
 
-## Data Locations and Memory
+Solidity lets you specify different data locations for strings, structs, and array variables. The terms `calldata` and `memory` denote temporary variables that exist only for the duration of a function call. Conversely, `storage` variables are permanent and remain in the contract indefinitely. Function parameters cannot be `storage` variables, as they exist only for the duration of the function call.
 
-We can specify different data locations in our parameters. Notice that this only applies to particular types like strings, structs, and arrays. The terms `calldata` and `memory` are used to denote temporary variables that exist only for the duration of a function call. On the other hand, `storage` variables are permanent and remain in the contract forever.
+When you compile your smart contract, the Solidity code is converted into EVM-compatible bytecode, which is machine-readable code.
 
-An important caveat is that function parameters can't be `storage` variables, as they will only exist for the duration of the function call.
+### Conclusion
 
-## Conclusion
+Mastering the fundamentals of Solidity, including contract setup, data management, and function behaviors, provides a robust foundation for developing powerful decentralized applications. This foundational knowledge is essential for navigating the complexities of blockchain technology and leveraging its full potential. Well done!
 
-When we compile our smart contract, it essentially compiles our Solidity code down to EVM-compatible bytecode (machine-readable code). We will delve into these specifications in later posts.
+### 🧑‍💻 Test yourself
 
-But for now, congratulations on making your first step toward creating a contract on the blockchain! Go reward yourself with some ice-cream, an extra cup of coffee, or anything else you fancy. Happy coding!
+🏆 Attempt to answer all questions from lesson 1 and then go back again to complete all the coding tasks.
+
+[Back to top](#top)
