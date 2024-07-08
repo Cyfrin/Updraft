@@ -1,5 +1,5 @@
 ---
-title: Introduction to Blockchain Layers and Rollups
+title: Introduction to Layers and Rollups
 ---
 
 _Follow along with the video_
