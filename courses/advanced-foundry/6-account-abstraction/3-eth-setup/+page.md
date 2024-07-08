@@ -1,6 +1,11 @@
 ## Account Abstraction Lesson 3: Ethereum Setup
 
-Welcome to the third lesson in our Account Abstraction course! In this lesson, we will be setting up our environment to work with Ethereum. 
+Welcome to the third lesson in our Account Abstraction course! In this lesson, we will be:
+
+1. creating our foundry project.
+2. setting up our environment to work with Ethereum. 
+3. looking at the EIP for ERC-4337.
+4. diving into the essential code setup of our contract.    
 
 To get started, make sure you have foundry installed and up-to-date. To do this, run the following command in your terminal.
 ```js
