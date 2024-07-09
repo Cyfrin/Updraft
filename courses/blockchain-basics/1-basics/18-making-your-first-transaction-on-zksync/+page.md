@@ -1,5 +1,6 @@
 ---
-title: First Transaction on zkSync
+title: First transaction to zkSync
+---
 
 _Follow along with the video_
 
@@ -9,22 +10,19 @@ _Follow along with the video_
 
 ### Introduction
 
-In this lesson, we will execute a transaction on the zkSync testnet, also known as zkSync Sepolia or zkSync Era testnet. We will start by adding zkSync Sepolia to MetaMask, followed by bridging funds to this network, and finally verifying the transaction details.
+In this lesson, we will execute a transaction on the **zkSync testnet**, also known as _zkSync Sepolia_ or _zkSync Era_ testnet. We will start by adding zkSync Sepolia to MetaMask, followed by bridging funds to this network, and finally verifying the transaction details.
 
 ### Adding zkSync Sepolia to MetaMask
 
-1. **Add the Network**: Search for `zkSync Sepolia Testnet` on [Chainlist](https://chainlist.org/), connect it to your wallet, and add the network by following the confirmation dialogs. Ensure testnets are included in your search.
-2. **Check Balance**: View your Sepolia balance on MetaMask.
-3. **Block Explorer**: Use the [zkSync Era Block Explorer](https://explorer.zksync.io/), similar to Etherscan for zkSync.
-4. **Switch Networks**: Switch between zkSync Era Mainnet and zkSync Era Sepolia Testnet to access the [zkSync Era Sepolia Block Explorer](https://sepolia.explorer.zksync.io/).
-5. **Account Summary**: Copy your MetaMask address and paste it into the Block Explorer to view your account summary.
+1. **Add the Network**: search for "zkSync Sepolia Testnet" on [Chainlist](https://chainlist.org/), connect it to your wallet, and add the network by following the confirmation dialogs. Ensure testnets are included in your search.
+2. **Check Balance**: you can view your Sepolia balance on MetaMask or on [zkSync Era Sepolia Block Explorer](https://sepolia.explorer.zksync.io/). To view your account summary you can copy your MetaMask address and paste it into the Block Explorer.
 
 ### Bridging Funds
 
 Our first transaction involves receiving funds. There are two ways to receive funds on zkSync:
 
-1. **Using a Faucet**: This method requires APIs or GitHub sign-in.
-2. **Bridging**: Transfer funds from one chain (Sepolia) to another (zkSync Sepolia). There are two types of bridging mechanisms:
+1. **Using a Faucet**: This method requires the use of APIs or GitHub sign-in.
+2. **Bridging**: Our reommended method, that involves transfering funds from one chain (Sepolia) to another (zkSync Sepolia). There are two types of bridging mechanisms:
 
    - **Locking and Unlocking**: Tokens are locked on the source chain and unlocked on the destination chain.
   
@@ -48,7 +46,7 @@ Our first transaction involves receiving funds. There are two ways to receive fu
 4. **Use the zkSync Bridge**: Visit the [zkSync bridge](https://portal.zksync.io/bridge) and ensure you are on the testnet. Connect MetaMask to the bridge and confirm a transaction (e.g., 0.025 Sepolia ETH).
 5. **Verify the Transaction**: Check the transaction on the zkSync Sepolia block explorer by pasting your wallet address into the search bar to see the transaction details and status.
    - **Transaction Status**: Once processed, you can view the transaction information, including its _status_.
-   - **Finality**: As per the [zkSync documentation on finality](https://docs.zksync.io/zk-stack/concepts/finality), this term refers to the time from sending the transaction to when it is considered settled. On Ethereum, this takes about 13 minutes, but on zkSync, finality is tied to Ethereum finality and can take approximately 24 hours.
+   - **Finality**: As per the [zkSync documentation on finality](https://docs.zksync.io/zk-stack/concepts/finality), this term refers to the time from sending the transaction to when it is considered settled. On Ethereum, this takes about 13 minutes, but on zkSync it can take approximately 24 hours.
      During this period, transactions are displayed **instantly** in the UI and can be further transferred, but full finality should be awaited to ensure they are fully received and validated using ZK proofs.
 
 ### Conclusion

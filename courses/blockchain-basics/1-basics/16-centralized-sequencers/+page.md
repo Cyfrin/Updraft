@@ -10,7 +10,7 @@ _Follow along with the video_
 
 ### Introduction
 
-In blockchain and cryptocurrency networks, the role of a **sequencer** is crucial for ordering and bundling transactions. Sequencers are operators that are responsible for organizing how transactions are processed. In many roll-up solutions, sequencers are centralized, controlled by a single entity. This centralization poses several risks and challenges, including censorship, transaction manipulation, and operational downtime.
+In blockchain and cryptocurrency networks, the role of a **sequencer** is crucial for ordering and bundling transactions. Sequencers are operators that are responsible for organizing how transactions are processed. In many roll-up solutions, sequencers are centralized, controlled by a single entity.
 
 ### Centralization risks
 
@@ -18,11 +18,11 @@ In blockchain and cryptocurrency networks, the role of a **sequencer** is crucia
 
 **Operational Downtime**. If a centralized sequencer experiences downtime, all transaction processing can halt. This means no transactions, including withdrawals, can be processed until the sequencer is back online.
 
-To mitigate the issues associated with centralized sequencers, projects like **ZK Sync** are working towards _decentralizing_ their sequencer operations, distributing control among multiple entities or nodes.
+To mitigate the issues associated with centralized sequencers, projects like **zkSync** are working towards _decentralizing_ their sequencer operations, distributing control among multiple entities or nodes.
 
 ### Conclusion
 
-The centralization of sequencers in blockchain networks poses significant risks, including censorship, transaction manipulation, and operational downtime. Efforts to decentralize sequencers, such as those by ZK Sync, are crucial for enhancing the security, fairness, and reliability of these networks.
+The centralization of sequencers in blockchain networks poses significant risks, including censorship, transaction manipulation, and operational downtime. Efforts to decentralize sequencers, such as those by zkSync, are crucial for enhancing the security, fairness, and reliability of these networks.
 
 ### 🧑‍💻 Test yourself
 
