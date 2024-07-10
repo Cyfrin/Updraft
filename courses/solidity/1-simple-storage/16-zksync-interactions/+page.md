@@ -1,5 +1,5 @@
 ---
-title: zkSync Interactions
+title: zkSync Contract Interactions
 ---
 
 _Follow along with the video_
