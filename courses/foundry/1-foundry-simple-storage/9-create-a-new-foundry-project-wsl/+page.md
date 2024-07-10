@@ -4,6 +4,7 @@ title: WSL setup
 _Follow along with the video_
 
 ---
+<a name="top"></a>
 ### Introduction
 Hallo, I'm Vasely and I'll be your instructor for all Windows development. You'll see me frequently as I guide you through installing, running, and configuring various Windows tools.
 
@@ -23,4 +24,4 @@ After installing WSL, we need to install a code editor. We will use Visual Studi
 
 Choose the method that best suits your needs. For this course, I will use the official Visual Studio Code from Microsoft.
 
-
+[Back to top](#top)
