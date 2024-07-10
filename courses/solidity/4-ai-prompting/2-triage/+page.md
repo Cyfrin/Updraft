@@ -1,5 +1,5 @@
 ---
-title: deploying FundMe to zkSync
+title: Triage
 ---
 
 _Follow along with the video_
@@ -29,3 +29,5 @@ When you're stuck on an issue you can't solve, visit forum platforms like Stack 
 If you can't get help elsewhere, you can open an issue in the [GitHub's issue tracker](https://github.com/Cyfrin/remix-fund-me-cu/issues). This Github section allows you to interact with the developer community, report bugs, and suggest enhancements. Remembert to always search within existing issues before posting to avoid duplicates.
 
 GitHub is essential for sharing, writing, and interacting with fellow developers, as well as accessing and contributing to code. We will use it as a **portfolio** for our projects thorughout the courses. This portfolio will become very valuable when applying for jobs, because it easily showcase your coding skills and contributions to open-source projects.
+
+[Back to top](#top)
