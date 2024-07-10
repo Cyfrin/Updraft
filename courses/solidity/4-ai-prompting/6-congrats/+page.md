@@ -12,6 +12,6 @@ Congratulations on completing the Solidity Fundamentals course! You now understa
 
 Next, we'll move on to the **Foundry** course. Foundry is a smart contract framework that will enhance our smar contract development skills, allowing us to create safer tests, deploy contracts programmatically, and more.
 
-Take a well deserved break: get some ice cream, go for a walk, or hit the gym 🏋️. Looking forward to seeing you in the Foundry course 🐸!
+Take a well deserved break: get some ice cream, go for a walk, or hit the gym. Looking forward to seeing you in the Foundry course 🐸!
 
 [Back to top](#top)
