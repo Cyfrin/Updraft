@@ -8,15 +8,15 @@ _Follow along with the video_
 <a name="top"></a>
 ### Introduction
 
-In this lesson, we will guide you step-by-step to acquire zkSync ETH on the testnet using the bridging method. All the links referred to in this lesson can be found in the [GitHub repository](https://github.com/Cyfrin/foundry-full-course-cu?tab=readme-ov-file#recommended-tools) associated with this course.
+In this lesson, we will guide you step-by-step to acquire zkSync ETH on the testnet using the _bridging method_. All the links referred to in this lesson can be found in the [GitHub repository](https://github.com/Cyfrin/foundry-full-course-cu?tab=readme-ov-file#recommended-tools) associated with this course.
 
 ### Wallet Connection
 
-Begin by navigating to the [ZKSync Bridge](https://portal.zksync.io/bridge) website and clicking on the "Connect Wallet" button. Select MetaMask, and when prompted, enter your password. After connecting, ensure you are on the **Sepolia Test Network**. If you lack Sepolia ETH, use the [GCP faucet](https://cloud.google.com/application/web3/faucet/ethereum/sepolia) or any other [recommended testnet faucets](https://github.com/Cyfrin/foundry-full-course-cu?tab=readme-ov-file#testnet-faucets).
+You can begin by navigating to the [zkSync Bridge](https://portal.zksync.io/bridge) app and clicking on the "Connect Wallet" button. Select MetaMask, and when prompted, enter your password. After connecting, ensure you are on the **Sepolia Test Network**. If you lack Sepolia ETH, use the [GCP faucet](https://cloud.google.com/application/web3/faucet/ethereum/sepolia) or any other [recommended testnet faucets](https://github.com/Cyfrin/foundry-full-course-cu?tab=readme-ov-file#testnet-faucets).
 
 ### Bridging Sepolia
 
-To bridge Sepolia ETH to zkSync, select the "ZKSync" button at the top right of the zkSync bridge page and switch to the ["ZKSync Sepolia Testnet"](https://portal.zksync.io/bridge/?network=sepolia). The interface will display the option to bridge from the Ethereum Sepolia Testnet.
+To bridge Sepolia ETH to zkSync, select the "zkSync" button at the top right of the zkSync bridge page and switch to the ["zkSync Sepolia Testnet"](https://portal.zksync.io/bridge/?network=sepolia). The interface will display the option to bridge from the Ethereum Sepolia Testnet.
 
 ### Transferring Funds
 
@@ -25,12 +25,12 @@ Next, return to MetaMask and make a small transfer of Sepolia ETH to zkSync Sepo
 > 👀❗ **IMPORTANT**  
 > Be sure to use a testnet wallet, where no real money is present.
 
-Select "Continue," and proceed to bridge your funds. Confirm the transaction on MetaMask, and your funds will be transferred within around 15 minutes.
+Select "Continue," and proceed to bridge your funds. Confirm the transaction on MetaMask, and your funds will be transferred within 15 minutes.
 
-While waiting, add the ZKSync Sepolia Testnet to MetaMask. Go to [Chainlist](https://chainlist.org/), search for "zkSync Sepolia" while including testnets, and connect your wallet. Approve the network addition and switch to the zkSync Sepolia Testnet.
+While waiting, you can add the zkSync Sepolia Testnet to MetaMask. Go to [Chainlist](https://chainlist.org/), search for "zkSync Sepolia" while including testnets, and connect your wallet. Approve the network addition and switch to the zkSync Sepolia Testnet.
 
 
-Once the transaction completes, you will see the funds appear in your MetaMask wallet under the zkSync Sepolia Testnet. With funds now in the testnet, you can proceed to deploy contracts in Remix on the zkSync Testnet.
+Once the transaction completes, you will see the funds appear in your MetaMask wallet under the zkSync Sepolia Testnet. With the correct funds in your wallet, you can now proceed to deploy contracts in Remix.
 
 
 [Back to top](#top)

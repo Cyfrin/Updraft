@@ -12,7 +12,7 @@ In this lesson, we'll walk through the steps to deploy the `FundMe` contract to 
 
 ### Adjustments for zkSync
 
-First, we'll need the specific price feed address for the Sepolia chain, which you can find in the [Chainlink documentation](https://docs.chain.link/data-feeds/price-feeds/addresses?network=zksync&page=1). Each chain has its own unique addresses, and the ETH/USD address for the zkSync Sepolia testnet will differ from that on Sepolia.
+First, we'll need the specific the correct **price feed address** for the skSync Sepolia chain, which you can find in the [Chainlink documentation](https://docs.chain.link/data-feeds/price-feeds/addresses?network=zksync&page=1). Each chain has its own unique addresses, and the ETH/USD address for the zkSync Sepolia testnet will differ from the one on Sepolia.
 
 Then copy the zkSync Sepolia testnet ETH/USD address and replace the existing address in the `FundMe::getVersion` and `PriceConverter::getPrice` functions:
 
@@ -20,7 +20,7 @@ Then copy the zkSync Sepolia testnet ETH/USD address and replace the existing ad
 AggregatorV3Interface priceFeed = AggregatorV3Interface(0xfEefF7c3fB57d18C5C6Cdd71e45D2D0b4F9377bF); // Add ETH/USD zkSync Sepolia address here
 ```
 
-Since zkSync module may not handle libraries well yet, you can copy the library code directly into your contract instead of importing it.
+Since the zkSync plugin may not handle libraries well yet, you can copy the library code directly into your contract instead of importing it.
 
 It's recommended using the correct version of the Solidity compiler by updating it to version `0.8.24` for zkSync compatibility.
 

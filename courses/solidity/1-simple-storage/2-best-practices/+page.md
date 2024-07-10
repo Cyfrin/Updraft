@@ -10,7 +10,7 @@ _Follow along with the video_
 
 ### Introduction
 
-Welcome to the Cyphrin Updraft. This platform offers a comprehensive learning experience by combining video lessons, written content, and interactive discussions.
+Welcome to the Cyfrin Updraft. This platform offers a comprehensive learning experience by combining video lessons, written content, and interactive discussions.
 
 ### Resources
 
@@ -32,7 +32,7 @@ If you're watching on YouTube, links to these resources are available in the vid
 
 5. 🔄 **_Follow a Modular Approach_**: The course is designed to be flexible. You can jump between topics based on your interests and needs. Revisit lessons to reinforce your knowledge and ensure thorough understanding.
 
-6. 🎯 **_Utilize Quizzes and Coding Challenges_**: Cyphrin Updraft offers both _quizzes_ and _coding challenges_. You'll find quizzes at the end of each section and coding challenges at the end of each GitHub repository section. These will let you earn NFTs as badges of honor for your achievements.
+6. 🎯 **_Utilize Quizzes and Coding Challenges_**: Cyfrin Updraft offers both _quizzes_ and _coding challenges_. You'll find quizzes at the end of each section and coding challenges at the end of each GitHub repository section. These will let you earn NFTs as badges of honor for your achievements.
 
 7. ❓ **_Learn to Ask Well-Formatted Questions_**: Asking questions is a skill too. Remember this when you are asking clear, concise questions in forums and discussions to get the best help from others.
 
