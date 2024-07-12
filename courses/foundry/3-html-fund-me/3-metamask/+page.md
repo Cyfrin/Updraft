@@ -95,10 +95,10 @@ When the `getBalance` buttons is clicked, this is the function we're calling on 
 ```js
 async function getBalance() {
   if (typeof window.ethereum !== "undefined") {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.BrowserProvider(window.ethereum);
     try {
       const balance = await provider.getBalance(contractAddress);
-      console.log(ethers.utils.formatEther(balance));
+      console.log(ethers.formatEther(balance));
     } catch (error) {
       console.log(error);
     }
@@ -114,7 +114,7 @@ As before, we're checking for the existence of `window.ethereum` and then .. def
 
 `ethers` is a javascript package that simplifies the use and interacation of browser wallets with our code.
 
-What `ethers.providers.Web3Provider(window.ethereum)` is doing, is deriving the providers Metamask is injecting into our `window.ethereum` object. The providers are the RPC URLs associated with the networks in our Metamask account.
+What `ethers.BrowserProvider(window.ethereum)` is doing, is deriving the providers Metamask is injecting into our `window.ethereum` object. The providers are the RPC URLs associated with the networks in our Metamask account.
 
 <img src="/html-fundme/2-metamask/metamask5.png" style="width: 75%; height: auto;">
 
@@ -161,12 +161,12 @@ async function fund() {
   const ethAmount = document.getElementById("ethAmount").value;
   console.log(`Funding with ${ethAmount}...`);
   if (typeof window.ethereum !== "undefined") {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(contractAddress, abi, signer);
     try {
       const transactionResponse = await contract.fund({
-        value: ethers.utils.parseEther(ethAmount),
+        value: ethers.parseEther(ethAmount),
       });
       await listenForTransactionMine(transactionResponse, provider);
     } catch (error) {
