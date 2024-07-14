@@ -1,5 +1,6 @@
 ---
 title: Introduction
+---
 
 _Follow along with the video_
 
@@ -8,6 +9,6 @@ _Follow along with the video_
 <a name="top"></a>
 To get started, visit the GitHub repository and navigate to the [lesson 8](https://github.com/Cyfrin/html-fund-me-cu) codebase.
 
-In this section, we will explore how your MetaMask or wallet interacts with websites and that the transactions sent by the wallet are exactly as intended. While we won't cover building a full-stack application, we are planning to launch a full-stack course soon. For now, we will focus on the _HTML FundMe f23 project_, a basic raw javascript full website application. This knowledge is essential for every website you engage with that communicates with the blockchain.
+In this section, we will delve into how MetaMask or your wallet interacts with websites and ensure that the transactions sent by the wallet are executed as intended. Although we won't be building a full-stack application here, we have plans to launch a comprehensive full-stack course soon. For now, our focus will be on the _HTML FundMe f23 project_, a basic, fully functional website built with raw JavaScript.
 
 [Back to top](#top)

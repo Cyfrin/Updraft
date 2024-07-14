@@ -1,5 +1,6 @@
 ---
 title:  zkSync DevOps
+---
 
 _Follow along with the video_
 
@@ -44,14 +45,14 @@ The file [`test/unit/ZkSyncDevOps.t.sol`](https://github.com/Cyfrin/foundry-fund
 
 4. Update your `.gitignore` file by adding `.DS_store` and `zkout/`.
 
-### Running Tests
+### VM environments modifiers
 
-You can switch environments between `fundryup` and `fundryup-zksync` to observe different behaviors of the `ZkSyncDevOps.t.sol` tests. For instance, the following command:
+You can switch environments between `fundryup` and `fundryup-zksync` to observe different behaviors of the `ZkSyncDevOps.t.sol` tests. For instance, the following command
 
 ```bash
 forge test --mt testZkSyncChainFails -vvv
 ```
-### VM environments modifiers
+
 will pass in both Foundry environments. However, if you remove the `skipZkSync` modifier, the test will fail on zkSync because the content of the function is not suported on this chain.
 
 For more details on these modifiers, refer to the [foundry-devops repo](https://github.com/Cyfrin/foundry-devops?tab=readme-ov-file#usage---zksync-checker). The `skipzksync` modifier skips tests on the zkSync chain, while `onlyzksync` runs tests only on a zkSync-based chain.
