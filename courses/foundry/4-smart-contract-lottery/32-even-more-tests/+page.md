@@ -17,7 +17,7 @@ In this lesson we are going to build a couple more tests. If we check our code c
 
 ### `checkUpkeep` tests
 
-To improve our coverage, we need to write additional tests. For example we can address the `checkUpkeep` function, to ensure it really executes as we intend under various circumstances.
+To improve our coverage, we need to write additional tests. For example we can address the `checkUpkeep` function, to ensure it really executes as intended under various circumstances.
 
 1. Let’s start by ensuring that `checkUpkeep` returns `false` when there is no balance. We’ll do this by setting up our test environment similarly to previous tests but without entering the raffle. Here’s the code:
 
@@ -55,5 +55,5 @@ To improve our coverage, we need to write additional tests. For example we can a
 
 ### Conclusion
 
-By writing these additional tests, we enhance our test coverage rate, improve the reliability of our `Raffle.sol` contract, being confident that `checkUpkeep` behaves correctly under various conditions.
+By writing these additional tests, we enhance our test coverage rate, improve the reliability of our `Raffle.sol` contract, and check that `checkUpkeep` behaves correctly under various conditions.
 [Back to top](#top)
