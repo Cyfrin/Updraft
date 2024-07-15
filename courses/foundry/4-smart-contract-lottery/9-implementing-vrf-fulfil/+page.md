@@ -1,0 +1,16 @@
+---
+title: Introduction
+---
+
+_Follow along with the video_
+
+---
+<a name="top"></a>
+
+Using a basic `revert()` statement may not provide evidence on why a transaction failed. A better approach is to name custom errors by combining the **contract name** with a **description**, such as `Raffle__UpkeepNotNeeded()`. Additionally, including **parameters** can offer more detailed information about the cause of the transaction failure.
+
+```
+Raffle__UpkeepNotNeeded(address balance, uint256 length, uint256 raffleState);
+```
+
+[Back to top](#top)
