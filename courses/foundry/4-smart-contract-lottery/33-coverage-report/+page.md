@@ -21,7 +21,7 @@ We should improve our test suite by writing additional tests. Here are some spec
 
 - [testCheckUpkeepReturnsFalseIfEnoughTimeHasntPassed](https://github.com/Cyfrin/foundry-smart-contract-lottery-cu/blob/083ebe5843573edfaa52fb002613b87d36d0d466/test/unit/RaffleTest.t.sol#L140) 
 - [testCheckUpkeepReturnsTrueWhenParametersGood](https://github.com/Cyfrin/foundry-smart-contract-lottery-cu/blob/083ebe5843573edfaa52fb002613b87d36d0d466/test/unit/RaffleTest.t.sol#L153C14-L153C58)
-- 
+
 > 🗒️ **NOTE** <br>
 > You don't need to submit a pull request or make any course-related updates. This exercise is for your benefit to increase your testing skills.
 
