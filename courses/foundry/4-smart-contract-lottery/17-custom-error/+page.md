@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: Custom Errors
 ---
 
 _Follow along with the video_

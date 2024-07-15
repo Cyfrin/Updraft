@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: Implementing VRF fulfillRandomWords
 ---
 
 _Follow along with the video_
