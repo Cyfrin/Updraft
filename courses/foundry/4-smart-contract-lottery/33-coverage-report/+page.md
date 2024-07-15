@@ -1,5 +1,5 @@
 ---
-title: Introduction
+title: Coverage Report
 ---
 
 _Follow along with the video_

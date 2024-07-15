@@ -34,11 +34,11 @@ contract DeployRaffle is Script {
 }
 ```
 
-To deploy our contract, we need various parameters required by the `Raffle` contract, such as `entranceFee`, `interval`, `vrfCoordinator`, `gasLane`, `subscriptionId`, and `callbackGasLimit`. The values for these parameters will vary depending on the blockchain network we deploy to. Therefore, we should create a `HelperConfig` file to specify these values based on the target deployment network.
+To deploy our contract, we need various parameters required by the `Raffle` contract, such as `entranceFee`, `interval`, `vrfCoordinator`, `gasLane`, `subscriptionId`, and `callbackGasLimit`. The values for these parameters will vary _depending on the blockchain network we deploy to_. Therefore, we should create a `HelperConfig` file to specify these values based on the target deployment network.
 
 ### The `HelperConfig.s.sol` Contract
 
-To get the coorrect networ configurationo, we can create a new file in the same directory called `HelperConfig.s.sol` and define a **Network Configuration Structure**:
+To retrieve the correct networ configuration, we can create a new file in the same directory called `HelperConfig.s.sol` and define a **Network Configuration Structure**:
 
 ```js
 contract HelperConfig is Script {
@@ -79,7 +79,7 @@ function getLocalConfig() public pure returns (NetworkConfig memory) {
 }
 ```
 
-We will then create an abstract contract `CodeConstants` where we define all the needed network IDs and make our `HelperConfig` contract inherit from it:
+We will then create an abstract contract `CodeConstants` where we define some network IDs. The `HelperConfig` contract will be able to use them later through ineritance.
 
 ```js
 abstract contract CodeConstants {
@@ -88,7 +88,10 @@ abstract contract CodeConstants {
 }
 ```
 
-These values can be used inside the constructor, choosing the use of **constants** over magic numbers.
+These values can be used inside the `HelperConfig` constructor:
+
+> 👀❗**IMPORTANT** <br>
+> We are choosing the use of **constants** over magic numbers
 
 ```js
 constructor() {
@@ -96,7 +99,7 @@ constructor() {
 }
 ```
 
-We also need a function to fetch the appropriate configuration based on the actual chain ID. This can be done first by verifying that a VRF coordinator exists. In case it does not and we are not on a local chain, we'll revert.
+We also have to build a function to fetch the appropriate configuration based on the actual chain ID. This can be done first by verifying that a VRF coordinator exists. In case it does not and we are not on a local chain, we'll revert.
 
 ```js
 function getConfigByChainId(uint256 chainId) public view returns (NetworkConfig memory) {
@@ -120,6 +123,6 @@ function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
 }
 ```
 
-This approach ensures that we have a robust configuration mechanism that adapts based on the deployment environment, ensuring the `Raffle` contract is deployed with the appropriate settings for each network.
+This approach ensures that we have a robust configuration mechanism that adapts to the actual deployment environment.
 
 [Back to top](#top)
