@@ -1,5 +1,5 @@
 ---
-title:
+title: Merkle Proofs
 ---
 
 _Follow along with the video_

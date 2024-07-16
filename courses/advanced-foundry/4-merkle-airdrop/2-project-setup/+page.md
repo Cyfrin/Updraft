@@ -1,5 +1,5 @@
 ---
-title:
+title: Project Setup
 ---
 
 _Follow along with the video_
