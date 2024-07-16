@@ -1,5 +1,5 @@
 ---
-title:
+title: Merkle Tree and Proofs Scripts
 ---
 
 _Follow along with the video_
