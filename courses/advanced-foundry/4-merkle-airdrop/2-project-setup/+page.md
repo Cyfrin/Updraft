@@ -1,11 +1,84 @@
 ---
-title: 
+title:
 ---
 
 _Follow along with the video_
 
 ---
+
 <a name="top"></a>
+
+### Introduction
+
+In this project we are going to airdrop tokens to a specified array of addresses.
+
+### Set up
+
+We can begin by creating a repository for our project with the command `mkdir merkle-airdrop` and navigate into it. Ensure you're on the regular version of Foundry by typing `foundryup` in your terminal. You can then run `forge init` to initialize an empty foundry project.
+
+### BagelToken
+
+The token that we are going to airdrop will be a ERC20 token. In the same directory we can make a `BagelToken.sol` contract, where we will use the OpenZeppelin libraries `ERC20` and `Ownable` to create it. For that we first need to install the dependency with the command `forge install openzeppelin/openzeppelin-contract --no-commit`.
+
+In the `foundry.toml` file we the spcify a remapping:
+
+```
+remappings = [ '@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/']
+```
+
+And then we are ready to create the contract, which will contain a `constructor` and a `mint` function:
+
+```js
+import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+
+contract BagelToken is ERC20, Ownable {
+    constructor() ERC20("Bagel Token", "BT") Ownable(msg.sender) { //the deployer is the owner of the contract
+    }
+
+    function mint(address account, uint256 amount) external onlyOwner {
+        _mint(account, amount);
+    }
+}
+```
+
+### MerkleAirdrop
+
+We can then create a new file named `MarkleAirdrop.sol`, where we will have a list of addresses and someone from that list who can claim ERC20 tokens.
+
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+contract MerkleAirdrop is EIP712 {
+    // list of addresses that can receive tokens
+    // allow someone in the list to claim some tokens
+}
+```
+
+The contracts will be connected by passing the `BagelToken`, or any ERC20 token to the `MerkleAirdrop` constructor.
+
+Then we can think that our claimer address can form an array of addresseses:
+
+```js
+address [] claimers;
+```
+
+Then we would need a function that checks that the claimer is in the whitelist of claimers and allow him to receive tokens.
+
+```js
+function claim(address account) external {
+    for (uint256 i=0; i<claimers.length; i++){
+        //check if the account is in the claimers array
+    }
+}
+```
+
+However, looping through an array that can grow indefinetely can lead to performance issues and calling this function if there are for example, hundresds of claimers, will become cost prohibitive and cause a Denial Of Service (DOS). Merkle trees will help solving this issue.
+
+### Merkle Trees and Proofs
+
+Merkle Trees is the data structure that allows us to manage and verify large sets of data efficiently, while Merkle Proofs can help to prove that some piece of data is contained within a group of data.
 
 
 [Back to top](#top)
