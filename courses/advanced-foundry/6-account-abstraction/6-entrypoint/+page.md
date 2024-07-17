@@ -1,4 +1,4 @@
-## Account Abstraction Lesson 5: `EntryPoint` Contract
+## Account Abstraction Lesson 6: `EntryPoint` Contract
 
 In this lesson, our main objective is to make sure that our contract can only be called by the `EntryPoint`. Along the way, we will:
 
