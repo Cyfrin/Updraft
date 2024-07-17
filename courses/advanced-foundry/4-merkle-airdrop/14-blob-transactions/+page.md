@@ -1,5 +1,9 @@
 ---
+title: Blob Transactions
+---
+
 _Follow along with the video_
+
 ---
 
 <a name="top"></a>
