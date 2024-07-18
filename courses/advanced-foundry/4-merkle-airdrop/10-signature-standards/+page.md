@@ -8,51 +8,38 @@ _Follow along with the video_
 
 <a name="top"></a>
 
-## Lesson Overview: Ethereum Signature Standards
-
-### Follow Along with the Video
-
----
-
 ### Introduction
 
-In this lesson, we will delve into Ethereum signature standards, focusing on how to sign and verify signatures, and exploring EIP 191 and EIP 712 standards. These Ethereum Improvement Proposals enhance transaction readability and security against replay attacks.
-
-### EIP 191 and EIP 712
-
-Before these standards, signing transactions in Metamask resulted in unreadable messages, making it hard to verify transaction data. EIP 191 and EIP 712 improve data readability and prevent replay attacks, where a transaction or signature is reused maliciously.
+In this lesson, we will delve into Ethereum signature standards, specifically EIP 191 and EIP 712. We'll learn how to sign and verify signatures, and understand how these standards enhance data readability and security. Prior to these standards, signing transactions in Metamask resulted in unreadable messages, making it difficult to verify transaction data. EIP 191 and EIP 712 improve data readability and prevent replay attacks, which involve reusing a transaction or signature maliciously.
 
 ### Simple Signature Verification
 
-Let's examine a basic signature verification contract with the following methods:
+Let's start with a basic signature verification contract. It retrieves the **signer address** using the `ecrecover` function and then verifies signatures by comparing the signer with the expected one.
 
-1. **`getSimpleSigner`**: Retrieves the signer using the `ecrecover` function with _v_, _r_, and _s_ values.
+```js
+function getSignerSimple(uint256 message, uint8 _v, bytes32 _r, bytes32 _s) public pure returns (address) {
+    bytes32 hashedMessage = bytes32(message); // If string, use keccak256(abi.encodePacked(string))
+    address signer = ecrecover(hashedMessage, _v, _r, _s);
+    return signer;
+}
+```
 
-   ```js
-   function getSignerSimple(uint256 message, uint8 _v, bytes32 _r, bytes32 _s) public pure returns (address) {
-       bytes32 hashedMessage = bytes32(message); // If string, use keccak256(abi.encodePacked(string))
-       address signer = ecrecover(hashedMessage, _v, _r, _s);
-       return signer;
-   }
-   ```
+> 🗒️ **NOTE** <br>
+> `ecrecover` is a function built into the Ethereum protocol.
 
-   > 🗒️ **NOTE** <br> > `ecrecover` is a function built into the Ethereum protocol.
-
-2. **`verifySignerSimple`**: Verifies signatures by comparing the retrieved signer with the expected one, reverting if they don't match.
-
-   ```js
-   function verifySignerSimple(
-       uint256 message,
-       uint8 _v,
-       bytes32 _r,
-       bytes32 _s,
-       address signer
-   ) public pure returns (bool) {
-       address actualSigner = getSignerSimple(message, _v, _r, _s);
-       require(signer == actualSigner);
-       return true;
-   }
-   ```
+```js
+function verifySignerSimple(
+    uint256 message,
+    uint8 _v,
+    bytes32 _r,
+    bytes32 _s,
+    address signer
+) public pure returns (bool) {
+    address actualSigner = getSignerSimple(message, _v, _r, _s);
+    require(signer == actualSigner);
+    return true;
+}
+```
 
 ### EIP 191
 
@@ -60,7 +47,7 @@ EIP 191 facilitates pre-made signatures or _sponsored transactions_. For instanc
 
 <img src="/foundry-merkle-airdrop/10-signature-standards/signed-tx.png" width="100%" height="auto">
 
-EIP 191 standardizes the signed data format:
+This EIP standardizes the signed data format:
 
 ```bash
 0x19 <1 byte version> <version specific data> <data to sign>
@@ -74,9 +61,7 @@ EIP 191 standardizes the signed data format:
 - **Version Specific Data:** For version `0x01`, this is the validator address.
 - **Data to Sign:** The message we want to sign.
 
-### EIP 191 Implementation
-
-Here's how to set up an EIP 191 signature for a message:
+Here is how to set up EIP 191, by encoding and then hashing the message before retrieving the signer:
 
 ```js
 function getSigner191(uint256 message, uint8 _v, bytes32 _r, bytes32 _s) public view returns (address) {
@@ -96,87 +81,71 @@ function getSigner191(uint256 message, uint8 _v, bytes32 _r, bytes32 _s) public 
 
 ### EIP 712
 
-EIP 712 structures the data to sign, making signatures more readable. The format is:
+EIP-712 is a standard for structuring and signing typed data in Ethereum, enhancing readability and ensuring specificity to certain contracts. The format for signing data using EIP-712 is:
 
 ```bash
 0x19 0x01 <domainSeparator> <hashStruct(message)>
 ```
 
-- **Domain Separator:** Version-specific data.
-- **hashStruct(message)**: `hashStruct(eip712Domain)`, including name, version, chain ID, and verifying contract.
+1. **Domain Separator:** Version-specific data.
+2. **hashStruct(message):** The hash of the structured message you want to sign.
 
-  ```js
-  struct eip712Domain = {
-      string name;
-      string version;
-      uint256 chainId;
-      address verifyingContract;
-      bytes32 salt;
-  }
-  ```
+### EIP 712: Domain Separator
 
-  This ensures the signature is specific to the smart contract.
-
-```bash
-0x19 0x01 <hashStruct(eip712Domain)> <hashStruct(message)>
-```
-
-### eip712Domain Hash Struct
-
-The type hash is the hash of the struct definition:
+To define the domain separator, we first declare a domain separator struct and its type hash:
 
 ```js
+struct EIP712Domain {
+    string name;
+    string version;
+    uint256 chainId;
+    address verifyingContract;
+};
+
 bytes32 constant EIP712DOMAIN_TYPEHASH = keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
 ```
 
-Define the domain struct:
+The domain separator is obtained by encoding and hashing the `EIP712Domain` struct:
 
 ```js
-eip_712_domain_separator_struct = EIP712Domain({
-  name: "SignatureVerifier",
-  version: "1",
-  chainId: 1,
-  verifyingContract: address(this),
-});
-```
-
-Hash and encode the domain struct:
-
-```js
-i_domain_separator = keccak256(
+bytes32 domainSeparator = keccak256(
   abi.encode(
     EIP712DOMAIN_TYPEHASH,
-    keccak256(bytes(eip_712_domain_separator_struct.name)),
-    keccak256(bytes(eip_712_domain_separator_struct.version)),
-    eip_712_domain_separator_struct.chainId,
-    eip_712_domain_separator_struct.verifyingContract
+    keccak256(bytes(eip712Domain.name)),
+    keccak256(bytes(eip712Domain.version)),
+    eip712Domain.chainId,
+    eip712Domain.verifyingContract
   )
 );
 ```
 
-### Message Hash Struct
+### EIP 712: Message Hash Struct
 
-Define the message struct:
+First, define the message struct and its type hash:
 
 ```js
 struct Message {
     uint256 number;
-}
-```
+};
 
-Create the message type hash:
-
-```js
 bytes32 public constant MESSAGE_TYPEHASH = keccak256("Message(uint256 number)");
 ```
 
-Hash the message struct:
+Then encode and hash them together:
 
 ```js
 bytes32 hashedMessage = keccak256(abi.encode(MESSAGE_TYPEHASH, Message({ number: message })));
 ```
 
-### EIP 712 Implementation
+### EIP 712: Implementation
+
+Steps for EIP 712 implementation:
+
+1. Define a domain separator struct with essential data.
+2. Hash the struct and its type hash to create the domain separator.
+3. Create a message type hash and combine it with the message data to generate a hashed message.
+4. Combine all elements with a prefix and version byte to form a final digest.
+5. Use `ecrecover` with the digest and signature to retrieve the signer's address and verify authenticity.
 
 ```js
 contract SignatureVerifier {
@@ -185,7 +154,7 @@ contract SignatureVerifier {
         // Prepare data for hashing
         bytes1 prefix = bytes1(0x19);
         bytes1 eip712Version = bytes1(0x01); // EIP-712 is version 1 of EIP-191
-        bytes32 hashStructOfDomainSeparator = i_domain_separator;
+        bytes32 hashStructOfDomainSeparator = domainSeparator;
 
         // Hash the message struct
         bytes32 hashedMessage = keccak256(abi.encode(MESSAGE_TYPEHASH, Message({ number: message })));
@@ -197,15 +166,7 @@ contract SignatureVerifier {
 }
 ```
 
-Steps for EIP 712 implementation:
-
-1. Define a domain separator struct with essential data.
-2. Hash the struct and its type hash to create the domain separator.
-3. Create a message type hash and combine it with the message data to generate a hashed message.
-4. Combine all elements with a prefix and version byte to form a final digest.
-5. Use `ecrecover` with the digest and signature to retrieve the signer's address and verify authenticity.
-
-Verify the signer:
+We can then verify the signer as in the first example, but using `verifySignerEIP712`:
 
 ```js
 function verifySignerEIP712(
@@ -214,28 +175,22 @@ function verifySignerEIP712(
     bytes32 _r,
     bytes32 _s,
     address signer
-)
-    public
-    view
-    returns (bool)
-{
+) public view returns (bool) {
     address actualSigner = getSignerEIP712(message, _v, _r, _s);
     require(signer == actualSigner);
     return true;
 }
 ```
 
-### OpenZeppelin for EIP 712
+### EIP 712: OpenZeppelin
 
-OpenZeppelin simplifies the process:
+It's recommended to use OpenZeppelin libraries to simplify the process, by using `EIP712::_hashTypedDataV4` function:
 
 - Create the message type hash and hash it with the message data:
 
   ```js
-  bytes32 public constant MESSAGE_TYPEHASH = keccak256(
-      "Message(uint256 message)"
-  );
-  // Returns the hash of the fully encoded EIP712 message
+  bytes32 public constant MESSAGE_TYPEHASH = keccak256("Message(uint256 message)");
+
   function getMessageHash(uint256 _message) public view returns (bytes32) {
       return _hashTypedDataV4(
           keccak256(
@@ -248,9 +203,14 @@ OpenZeppelin simplifies the process:
   }
   ```
 
-- Use `getMessageHash` for hashing and `getSigner` to retrieve the signer with `ecdsa.tryRecover`.
+- Retrieve the signer with `ECDSA.tryRecover` and compare it to the actual signer:
 
-Verify the signer:
+```js
+function getSignerOZ(uint256 digest, uint8 _v, bytes32 _r, bytes32 _s) public pure returns (address) {
+    (address signer, /* ECDSA.RecoverError recoverError */, /* bytes32 signatureLength */ ) = ECDSA.tryRecover(digest, _v, _r, _s);
+    return signer;
+}
+```
 
 ```js
 function verifySignerOZ(
@@ -259,30 +219,15 @@ function verifySignerOZ(
     bytes32 _r,
     bytes32 _s,
     address signer
-)
-    public
-    pure
-    returns (bool)
-{
+) public pure returns (bool) {
     address actualSigner = getSignerOZ(getMessageHash(message), _v, _r, _s);
     require(actualSigner == signer);
     return true;
 }
 ```
 
-Retrieve the signer:
-
-```js
-function getSignerOZ(uint256 digest, uint8 _v, bytes32 _r, bytes32 _s) public pure returns (address) {
-    bytes32 hashedMessage = bytes32(message);
-    (address signer, /* ECDSA.RecoverError recoverError */, /* bytes32 signatureLength */ ) =
-        ECDSA.tryRecover(hashedMessage, _v, _r, _s);
-
-    return signer;
-}
-```
-
-> 👀❗**IMPORTANT** <br> > EIP 712 prevents replay attacks by ensuring structured data includes information that uniquely identifies the transaction and its context.
+> 👀❗**IMPORTANT** <br>
+> EIP 712 prevents replay attacks by uniquely identifying the transaction.
 
 ### Conclusion
 
