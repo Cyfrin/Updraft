@@ -11,7 +11,7 @@ _Follow along with the video_
 
 ### Introduction
 
-In this lesson, we will explore the four primary transaction types shared by both Ethereum and ZK Sync. After that, we'll take a look at the transaction types specific to the ZK Sync chain.
+In this lesson, we will explore the **four** primary transaction types shared by both Ethereum and ZK Sync. After that, we'll take a look at the transaction types specific to the ZK Sync chain.
 
 ### Type 0 (Legacy Transactions)
 
@@ -25,7 +25,7 @@ This type was introduced to address contract breakage risks associated with EIP2
 
 ### Type 2 (0x02)
 
-Introduced by EIP1559 during Ethereum's London fork, this transaction type aimed to mitigate Ethereum's high network fees.
+Introduced by EIP1559 during Ethereum's London fork, this transaction type aims to mitigate Ethereum's high network fees.
 
 - Replaces the gas price parameter with a **base fee**, adjusted for each block.
 - Adds the **Max Priority Fee per Gas**, the maximum fee the sender is willing to pay for prioritization.

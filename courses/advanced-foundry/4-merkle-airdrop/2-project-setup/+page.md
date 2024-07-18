@@ -8,12 +8,7 @@ _Follow along with the video_
 
 <a name="top"></a>
 
-### Introduction
-
-In this project we are going to airdrop tokens to a specified array of addresses.
-
-### Set up
-
+### Setup
 We can begin by creating a repository for our project with the command `mkdir merkle-airdrop` and navigate into it. Ensure you're on the regular version of Foundry by typing `foundryup` in your terminal. You can then run `forge init` to initialize an empty foundry project.
 
 ### BagelToken
@@ -56,15 +51,13 @@ contract MerkleAirdrop is EIP712 {
 }
 ```
 
-The contracts will be connected by passing the `BagelToken`, or any ERC20 token to the `MerkleAirdrop` constructor.
-
-Then we can think that our claimer address can form an array of addresseses:
+The contracts will be connected by passing the `BagelToken`, or any ERC20 token to the `MerkleAirdrop` constructor. Then we can add our claimer address into an array of addresses:
 
 ```js
 address [] claimers;
 ```
 
-Then we would need a function that checks that the claimer is in the whitelist of claimers and allow him to receive tokens.
+Then we would need a function that checks that the claimer is in this whitelist and allow him to receive tokens.
 
 ```js
 function claim(address account) external {
@@ -74,11 +67,11 @@ function claim(address account) external {
 }
 ```
 
-However, looping through an array that can grow indefinetely can lead to performance issues and calling this function if there are for example, hundresds of claimers, will become cost prohibitive and cause a Denial Of Service (DOS). Merkle trees will help solving this issue.
+However, looping through an array that can grow indefinetely can lead to **performance issues** and calling this function. If there are for example, hundresds of claimers, will become cost prohibitive and will cause a Denial Of Service (DOS). Merkle trees will help solving this issue.
 
 ### Merkle Trees and Proofs
 
-Merkle Trees is the data structure that allows us to manage and verify large sets of data efficiently, while Merkle Proofs can help to prove that some piece of data is contained within a group of data.
+Merkle Trees is the data structure that allows us to manage and verify large sets of data efficiently, while Merkle Proofs can help to prove that some piece of data is contained within a group.
 
 
 [Back to top](#top)

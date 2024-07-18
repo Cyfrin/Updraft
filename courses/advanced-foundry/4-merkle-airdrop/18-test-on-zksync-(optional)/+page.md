@@ -20,7 +20,7 @@ forge build --ZK Sync
 ```
 
 > 🗒️ **NOTE** <br>
-> If you encounter any warnings, they may be related to the use of `ecrecover`. These warnings can be safely ingnored since indicate that the accounts should use an ECDSA private key and should be EOAs. This warning because the ZK Sync era supports native account abstraction.
+> If you encounter any warnings, they may be related to the use of `ecrecover`. These warnings can be safely ingnored since indicate that the accounts should use an ECDSA private key and should be EOAs. This warning are shown because the ZK Sync era supports native account abstraction.
 
 Finally, we can run our tests on zkSync with the following command:
 

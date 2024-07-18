@@ -12,7 +12,7 @@ In this lesson, we will explore the process of allowing a third party to claim t
 
 - A straightforward approach might involve **removing the account** from the equation entirely and relying solely on the caller of the function, the `msg.sender`. This would mean that each account would need to initiate the call themselves, covering their own gas fees. However, this method is limited and rigid, as restricts the ability of others to execute transactions on behalf of the account holder.
 
-- A more flexible solution involves allowing individuals to execute and pay for these transactions on behalf of the account holder, given that permission has been granted beforehead. This method can be achieved using digital signatures.
+- A more flexible solution involves allowing individuals to execute and pay for these transactions **on behalf of the account holder**, given that permission has been granted beforehead. This method can be achieved using digital signatures.
 
 ### Signatures
 

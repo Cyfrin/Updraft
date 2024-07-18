@@ -9,7 +9,7 @@ _Follow along with the video_
 <a name="top"></a>
 
 ### Introduction
-In this lesson, we'll create a signature for a default Anvil address, allowing a third-party account to claim tokens on its behalf. 
+In this lesson, we'll create a signature for a default **Anvil** address, allowing a third-party account to claim tokens on its behalf. 
 
 Ensure you have a local Anvil node running, by executing the `anvil` command in your terminal and use the `foundryup` command to get the vanilla version of Foundry.
 

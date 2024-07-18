@@ -8,11 +8,12 @@ _Follow along with the video_
 
 <a name="top"></a>
 
+### Introduction
 In this lesson, we are going to build a comprehensive test for the `MerkleAirdrop::claim` function. This test will ensure that users can correctly claim their tokens from the `MerkleAirdrop` contract.
 
 ### Setup
 
-We begin by deploying both the `BagelToken` and the `MerkleAirdrop` contracts in our `setup()` function. To properly set up the `MerkleAirdrop` contract, we need the hash ROOT variable, which can be retrieved from the output file that we generated in the previous lesson.
+We begin by deploying both the `BagelToken` and the `MerkleAirdrop` contracts in our `setup()` function. To properly set up the `MerkleAirdrop` contract, we need the hash `ROOT` variable, which can be retrieved from the output file that we generated in the previous lesson.
 
 ```js
 bytes32 ROOT = 0xaa5d581231e596618465a56aa0f5870ba6e20785fe436d5bfb82b08662ccc7c4;

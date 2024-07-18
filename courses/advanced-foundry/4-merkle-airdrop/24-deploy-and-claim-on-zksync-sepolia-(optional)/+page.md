@@ -8,8 +8,11 @@ _Follow along with the video_
 
 <a name="top"></a>
 
-### Introduction    
-In this lesson, we will be manually deploying on zkSync. Although scripts are highly recommended to avoid mistakes and save funds, we will proceed with typing command directly in the terminal since scripts do not work well on zkSync at the moment of recording. As usual, we will deploy the contracts `BagelToken` and `MerkleAirdrop`, generate the message hash, sign it, and split our long signature into its _v, r, s_ components. We'll then minting and trasferring tokens to the `MerkleAirdrop` contract, claiming the tokens from a third party address and finally verify this claim.
+### Introduction
+
+In this lesson, we will be **manually deploying on zkSync Sepolia**. Although scripts are highly recommended in order  to avoid mistakes and save funds, we will proceed with typing command directly in the terminal since scripts do not work well on zkSync at the moment of recording. 
+
+As usual, we will deploy the contracts `BagelToken` and `MerkleAirdrop`, generate the message hash, sign it, and split our long signature into its _v, r, s_ components. We'll then mint and trasfer tokens to the `MerkleAirdrop` contract, claim the tokens from a third party address and finally verify this claim.
 
 > 🗒️ **NOTE** <br>
 > In MetaMask, you can create a wallet, for example, "updraft," using keystores where accounts are pre-saved, preventing the need to use the private key directly. For this demonstration, _updraft_ will deploy the contracts while _updraft 2_ will handle token claims.

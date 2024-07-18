@@ -8,7 +8,7 @@ _Follow along with the video_
 
 <a name="top"></a>
 
-In this lesson we are going to split the signature into its _v,r,s_, starting by saving this byte signature as a variable:
+In this lesson we are going to split the signature into its _v,r,s_, component starting by saving this byte signature as a variable:
 
 ```js
 bytes private SIGNATURE = hex"fbda..c11c";

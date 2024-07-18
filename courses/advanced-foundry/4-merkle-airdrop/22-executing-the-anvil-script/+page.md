@@ -14,9 +14,9 @@ Now that the file `Interact.s.sol` is complete, we can execute it using the foll
 forge script script/Interact.s.sol:ClaimAirdrop --rpc-url http://localhost:8545 --private-key 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d --broadcast
 ```
 
-In this command we are utilizing the **second Anvil key** to claim tokens and covering gas fees as a third-party address. The airdropped tokens will be then sent to the first Anvil address CLAIMING_ADDRESS we hardcoded in our script.
+Here we are utilizing the **second Anvil key** to claim tokens and covering gas fees as a third-party address. The airdropped tokens will be then sent to the first Anvil address CLAIMING_ADDRESS we hardcoded in our script.
 
-After executing it, we can verify if the first address has in fact received the airdrop:
+After that, we can verify if the first address has in fact received the airdrop:
 
 ```bash
 cast call 0x5FbDB2315678afecb367f032d93F642f64180aa3 "balanceOf(address)"

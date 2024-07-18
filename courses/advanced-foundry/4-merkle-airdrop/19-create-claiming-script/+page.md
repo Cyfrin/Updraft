@@ -10,7 +10,7 @@ _Follow along with the video_
 
 ### Introduction
 
-In this lesson we are going to build a script to handle the signing and claiming process. We will sign a message using an account that is included in the Merkle tree. This signature will allow another person to claim the airdrop on behalf of the original account.
+In this lesson we are going to build a script to handle the **signing** and **claiming** process. We will sign a message using an account that is _included in the Merkle tree_. This **signature** will allow another person to claim the airdrop on behalf of the original account.
 
 ### Setup
 
@@ -28,7 +28,7 @@ contract ClaimAirdrop is Script {
 }
 ```
 
-Within the `run` function, retrieve the most recently deployed Merkle airdrop contract address and we will pass this contract address to a function `claimAirdrop`:
+Within the `run` function, we'll retrieve the most recently deployed `MerkleAirdrop` contract address and pass this contract address to a function `claimAirdrop`:
 
 ```js
 function run() external {

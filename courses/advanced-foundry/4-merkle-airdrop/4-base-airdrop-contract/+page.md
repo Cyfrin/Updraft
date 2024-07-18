@@ -9,7 +9,7 @@ _Follow along with the video_
 <a name="top"></a>
 
 ### Introduction
-In this lesson, we are going to implement Merkle proofs and Merkle trees in our MerkleTree.sol contract by setting up the `MerkleTree.sol`  _constructor_ and creating a _claim_ function.
+In this lesson, we are going to implement Merkle proofs and Merkle trees in our `MerkleTree.sol` contract by setting up the  _constructor_ and creating a _claim_ function.
 
 ### Constructor
 

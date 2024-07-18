@@ -10,7 +10,7 @@ _Follow along with the video_
 
 ### Introduction
 
-In this lesson, we will implement signature verification in our [`MerkleAirdrop::claim`](https://github.com/Cyfrin/foundry-merkle-airdrop-cu/blob/main/src/MerkleAirdrop.sol) function. We'll begin by adding a check at the start of the function to ensure the signature's validity. Next, we'll implement the `_isValidSignature` function, which requires a hashed message as input. This message contains the account and the amount to be claimed.
+In this lesson, we will implement signature verification in our [`MerkleAirdrop::claim`](https://github.com/Cyfrin/foundry-merkle-airdrop-cu/blob/main/src/MerkleAirdrop.sol) function. We'll begin by adding a check at the start of the function to ensure the signature's validity. Next, we'll implement the `_isValidSignature` function, which requires a hashed message as input. This message contains the _account_ and the _amount_ to be claimed.
 
 ### Setup
 

@@ -95,6 +95,6 @@ forge script script/MakeMerkle.s.sol:MakeMerkle
 This script first reads from the input file, defines arrays for _leaves_ and _inputs_, and uses helper functions to format data into JSON. It calculates proofs and roots and generates the output file.
 
 ### Conclusion
-In the `GenerateInput.s.sol` file, we generated an `input.json` file containing addresses and claim amounts for the Merkle tree. The `MakeMerkle.s.sol` file instead reads this input, calculates the Merkle proofs and root, and outputs these details into an `output.json` file. These scripts will enable us to correctly implement tests for our `MerkleAirdrop` smart contract.
+In the `GenerateInput.s.sol` file, we generated an `input.json` file containing addresses and claim amounts for the Merkle tree. The `MakeMerkle.s.sol` file instead reads from this input, calculates the Merkle proofs and root, and outputs these details into an `output.json` file. These scripts will enable us to correctly implement tests for our `MerkleAirdrop` smart contract.
 
 [Back to top](#top)

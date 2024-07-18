@@ -35,7 +35,6 @@ Validating these blobs involves using the [`BLOBHASH`](https://www.evm.codes/#49
 ### Resources
 
 - [What is EIP-4844?](https://www.cyfrin.io/blog/what-is-eip-4844-proto-danksharding-and-blob-transactions)
-- [send_blob](https://github.com/PatrickAlphaC/send_blob) GitHub repository  
-  This project provides a guide on setting up and sending type 3 transactions.
+- [send_blob](https://github.com/PatrickAlphaC/send_blob) GitHub repository
 
 [Back to top](#top)
