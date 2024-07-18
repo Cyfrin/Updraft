@@ -1,5 +1,5 @@
 ---
-title: Deploy and  claim on zkSync Local Node
+title: Deploy and Claim on zkSync Local Node
 ---
 
 _Follow along with the video_
