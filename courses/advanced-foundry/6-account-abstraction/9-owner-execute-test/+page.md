@@ -291,7 +291,7 @@ forge test --mt testOwnerCanExecuteCommands -vvv
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
-   The test should revert and fail if a non-owner (a random user) attempts to execute commands using the execute function.        
+   The test should revert if a non-owner (a random user) attempts to execute commands using the execute function.        
       
 </details>
 
