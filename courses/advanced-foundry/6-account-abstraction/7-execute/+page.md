@@ -82,9 +82,9 @@ Congratulations! We are now ready to write scripts, tests, and deploy our minima
 ---
 <details> 
 
-**<summary>Click for Answers</summary>**
+**<summary><span style="color:red">Click for Answers</span></summary>**
 
-     1. It allows the minimal account contract to interact with other dapps by sending transactions.        
+   It allows the minimal account contract to interact with other dapps by sending transactions.        
       
 </details>
 
@@ -94,9 +94,9 @@ Congratulations! We are now ready to write scripts, tests, and deploy our minima
 ---
 <details> 
 
-**<summary>Click for Answers</summary>**
+**<summary><span style="color:red">Click for Answers</span></summary>**
         
-     2. It ensures that only the EntryPoint contract or the owner of the minimal account contract can execute certain functions.       
+   It ensures that only the EntryPoint contract or the owner of the minimal account contract can execute certain functions.       
       
 </details>
 
@@ -106,9 +106,9 @@ Congratulations! We are now ready to write scripts, tests, and deploy our minima
 ---
 <details> 
 
-**<summary>Click for Answers</summary>**     
+**<summary><span style="color:red">Click for Answers</span></summary>**     
    
-     3. This is a special function in Solidity that allows the contract to accept plain Ether transfers.     
+   This is a special function in Solidity that allows the contract to accept plain Ether transfers.     
       
 </details>
 

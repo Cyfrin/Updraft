@@ -5,7 +5,7 @@ This is an exciting time in our learning journey. We have finished our **minimal
 ---
 Let's start by naming our first script in the `script` folder. Name it `DeployMinimal.s.sol`. Let's also go ahead and another script - `HelperConfig.s.sol`. We will need a HelperConfig because the EntryPoint contract will vary on different chains. And we will also need a `SendPackedUserOp.s.sol` This will be a vital piece for us and we will be doing a lot of work in this script. Let's get started in `DeployMinimal.s.sol`.
 
-**DeployMinimal.s.sol**
+**<span style="color:red">DeployMinimal.s.sol</span>**
 ```js
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
@@ -21,7 +21,7 @@ contract DeployMinimal is Script {
 ```
 If you remember(or go back) to our MinimalAccount, the constructor passes `address entrypoint`.
 
-**MinimalAccount.sol**
+**<span style="color:red">MinimalAccount.sol</span>**
 ```js
 constructor(address entrypoint)
 ```
@@ -30,7 +30,7 @@ Let's set this up in our `HelperConfig.s.sol`.
 
 >[!NOTE] This is a large block of code below. Please be sure to follow along with the video. 
 
-**HelperConfig.s.sol**
+**<span style="color:red">HelperConfig.s.sol</span>**
 ```js
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
@@ -96,7 +96,7 @@ contract HelperConfig is Script {
 
 Now that we have our `HelperConfig`, let's import it in `DeployMinimal.s.sol`.
 
-**DeployMinimal.s.sol**
+**<span style="color:red">DeployMinimal.s.sol</span>**
 ```js
 import {HelperConfig} from "script/HelperConfig.s.sol";
 ```
