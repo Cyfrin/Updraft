@@ -12,7 +12,11 @@ Account abstraction is a fundamental concept of blockchain technology. It offers
 
 ## Problems Solved
 
-![Current Wallet Issues](/6-account-abstraction/1-introduction/currentWalletIssues.png)
+<img
+    src="/foundry-account-abstraction/1-introduction/current-wallet-issues.png"
+    width="100%"
+    height="auto"
+  />
 
 ### Use of Private Keys for Signing Transactions
 Traditionally, users need to manage and use private keys to sign transactions. This can be annoying, confusing, and risky. Losing a private key means losing access to the account. Even worse, a stolen private key means that you've just lost all the value in that account. Account abstraction solves this problem by allowing users to sign transactions without using private keys. Instead, users can use a different type of key that is more user-friendly and secure. This simplifies the process of signing transactions and reduces the risk of losing access to an account, enhancing both security and user experience.
@@ -24,7 +28,11 @@ Another challenge is that traditional transactions are validated by the sender's
 
 ## Two Entry Points
 
-![Traditional Transactions](/6-account-abstraction/1-introduction/tradEthTrans.png)
+<img
+    src="/foundry-account-abstraction/1-introduction/trade-eth-trans.png"
+    width="100%"
+    height="auto"
+  />
 
 The traditional Ethereum transactions consists of first the signing of the transaction by the sender's private key, and then sending it to an Ethereum node. The node verifies that the signature is valid and if so, adds it to its mempool for later inclusion in a block. Account Absctraction, as we have already mentioned add improvemnts to this process. There are two entry points that we need to understand - Ethereum's `EntryPoint.sol` and zkSync's native integration.
 
@@ -39,7 +47,11 @@ zkSync, on the other hand, has account abstraction natively integrated into its 
 
 ## Account Abstraction Uses Alt-Mempools
 
-![Current Wallet Issues](/6-account-abstraction/1-introduction/userOp.png)
+<img
+    src="/foundry-account-abstraction/1-introduction/user-op.png"
+    width="100%"
+    height="auto"
+  />
 
 ### User Operations (Off-Chain)
 In Ethereum, user operations are first sent off-chain. This means that the initial handling and validation occur outside the main blockchain network, reducing congestion and improving efficiency. In the above example, the user operation is signed with Google and is sent to the alt-mempool, which then sends it to the main blockchain network. The alt mempool is any nodes which are facilitating this operation. So the user is not sending their transaction to the Ethereum nodes.
@@ -58,7 +70,11 @@ Another optional component is the pay master. It handles gas payments, allowing 
 
 ## zkSync
 
-![zkSync Enrty Point](/6-account-abstraction/1-introduction/zksyncEntryPoint.png)
+<img
+    src="/foundry-account-abstraction/1-introduction/zksync-entry-point.png"
+    width="100%"
+    height="auto"
+  />
 
 ### Acts as an Alt-Mempool
 In zkSync, the alt-mempool nodes are also the zkSync nodes. This means that sending the transaction to the alt-mempool can be skipped. The reason zkSync can do this is because every account (e.g., MetaMask) is by default a smart contract account as it is automatically connected to a [DefaultAccount.sol](https://github.com/matter-labs/era-contracts/blob/main/system-contracts/contracts/DefaultAccount.sol).
