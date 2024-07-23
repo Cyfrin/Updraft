@@ -24,8 +24,7 @@ function testValidationOfUserOps() public {
     bytes memory executeCallData =
         abi.encodeWithSelector(MinimalAccount.execute.selector, dest, value, functionData);
     PackedUserOperation memory packedUserOp = sendPackedUserOp.generateSignedUserOperation(
-        executeCallData, helperConfig.getConfig(), address(minimalAccount)
-    );
+        executeCallData, helperConfig.getConfig());
     bytes32 userOperationHash = IEntryPoint(helperConfig.getConfig().entryPoint).getUserOpHash(packedUserOp);
 }
 ```
@@ -57,8 +56,7 @@ function testValidationOfUserOps() public {
     bytes memory executeCallData =
         abi.encodeWithSelector(MinimalAccount.execute.selector, dest, value, functionData);
     PackedUserOperation memory packedUserOp = sendPackedUserOp.generateSignedUserOperation(
-        executeCallData, helperConfig.getConfig(), address(minimalAccount)
-    );
+        executeCallData, helperConfig.getConfig());
     bytes32 userOperationHash = IEntryPoint(helperConfig.getConfig().entryPoint).getUserOpHash(packedUserOp);
     uint256 missingAccountFunds = 1e18;
 
