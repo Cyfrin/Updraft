@@ -264,8 +264,7 @@ From here, go back to the `testRecoverSignedOp` function place the following bel
 
 ```js
 PackedUserOperation memory packedUserOp = sendPackedUserOp.generateSignedUserOperation(
-    executeCallData, helperConfig.getConfig(), address(minimalAccount)
-);
+    executeCallData, helperConfig.getConfig());
 ```
 
 And, last but not least, we need to hash the `PackedUserOperation`. 
@@ -285,8 +284,7 @@ bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, addr
 bytes memory executeCallData =
     abi.encodeWithSelector(MinimalAccount.execute.selector, dest, value, functionData);
 PackedUserOperation memory packedUserOp = sendPackedUserOp.generateSignedUserOperation(
-    executeCallData, helperConfig.getConfig(), address(minimalAccount)
-);
+    executeCallData, helperConfig.getConfig());
 bytes32 userOperationHash = IEntryPoint(helperConfig.getConfig().entryPoint).getUserOpHash(packedUserOp);
 ```
 
@@ -342,8 +340,7 @@ function testRecoverSignedOp() public {
     bytes memory executeCallData =
         abi.encodeWithSelector(MinimalAccount.execute.selector, dest, value, functionData);
     PackedUserOperation memory packedUserOp = sendPackedUserOp.generateSignedUserOperation(
-        executeCallData, helperConfig.getConfig(), address(minimalAccount)
-    );
+        executeCallData, helperConfig.getConfig());
     bytes32 userOperationHash = IEntryPoint(helperConfig.getConfig().entryPoint).getUserOpHash(packedUserOp);
 
     // Act
