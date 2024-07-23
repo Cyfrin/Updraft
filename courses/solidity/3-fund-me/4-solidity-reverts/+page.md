@@ -2,66 +2,77 @@
 title: Solidity Reverts and Gas
 ---
 
-*Follow along this chapter with the video bellow*
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
-<!-- <img src="/solidity/remix/lesson-4/transact/transact2.png" style="width: 100%; height: auto;"> -->
+In this lesson, we will delve into how do _transaction reverts_ work, what is _gas_ where is used.
 
+### Revert
 
-# Understanding Reverts and Gas in Ethereum Blockchain
+Let's start by adding some logic to the `fund` function:
 
-In this lesson will emphasize **reverts** and how **gas** works in transactions.
-
-## What is a Revert?
-
-Reverts can at times be confusing and appear tricky. A revert, in essence, undoes previous actions, sending back the remaining gas associated with that transaction. But what does this mean in context?
-
-Let's illustrate this with an example using our `FundMe` contract. Here's some code to start with:
-
-```javascript
-    uint256 public myValue;
-    myValue = 1;
-    function fund() public {
-        myValue = myValue + 2;
-    }
+```js
+ uint256 public myValue = 1;
+ function fund() public {
+    myValue = myValue + 2;
+ }
 ```
 
-In our `fund` function, we increase `myValue` by two each time it executes successfully. However, if we encounter a revert statement, the previous action (where we added two to `myValue`) is undone and `myValue` is reset to its original state.
+A _revert_ action **undoes** all prior operations and returns the remaining gas to the transaction's sender. In this `fund` function, `myValue` increases by two (2) units with each successful execution. However, if a revert statement is encountered right after, all actions performed from the start of the function are undone. `myValue` will then reset to its initial state value, or one.
 
-<img src="/solidity/remix/lesson-4/reverts/revert1.png" style="width: 100%; height: auto;">
+```js
+ uint256 public myValue = 1;
+ function fund() public {
+    myValue = myValue + 2;
+    require(msg.value > 1e18, "didn't send enough ETH");
+    // a function revert will undo any actions that have been done.
+    // It will send the remaining gas back
+ }
+```
 
+### Gas Usage
 
-This means that if the transaction reverts, `myValue` returns to its previous value (in this case, one). Although technically, the line `myValue = myValue + 2;` was executed, the reverting line following it ensures this change never gets confirmed.
+> 🔥 **CAUTION** <br>
+> The gas used in the transaction will not be refunded if the transaction fails due to a revert statement. The gas has already been **consumed** because the code was executed by the computers, even though the transaction was ultimately reverted.
 
-## Checking the Gas Usage
+Users can specify how much gas they're willing to allocate for a transaction. In the case where the `fund` function will contain a lot of lines of code after the `require` and we did indeed set a limit, the gas which was previously allocated but not used will not be charged to the user
 
-Now arises an important question – will the gas used in the transaction be refunded if my transaction didn't go through because it reverted? Unfortunately, no. If a transaction fails, you still consume the gas because computers executed the code before the transaction reverting.
+> 🗒️ **NOTE** <br>
+> If a transaction reverts, is defined as failed
 
+### Transaction Fields
 
-Users, however, can specify how much gas they're willing to allocate to a transaction. For instance, if a function contained lines of computation after the `require` line, a significant quantity of gas would be needed to operate and run this function. However, if a revert is encountered midway, the unused gas is refunded to whoever initiated the transaction.
+During a **value** transfer, a transaction will contain the following fields:
 
-Here's a simple rule of thumb:
+- **Nonce**: transaction counter for the account
+- **Gas price (wei)**: maximum price that the sender is willing to pay _per unit of gas_
+- **Gas Limit**: maximum amount of gas the sender is willing to use for the transaction. A common value could be around 21000.
+- **To**: _recipient's address_
+- **Value (Wei)**: amount of cryptocurrency to be transferred to the recipient
+- **Data**: 🫙 _empty_
+- **v,r,s**: components of the transaction signature. They prove that the transaction is authorised by the sender.
 
-<img src="/solidity/remix/lesson-4/reverts/revert2.png" style="width: 100%; height: auto;">
+During a **_contract interaction transaction_**, it will instead be populated with:
 
-## A Look at Transaction Fields
+- **Nonce**: transaction counter for the account
+- **Gas price (wei)**: maximum price that the sender is willing to pay _per unit of gas_
+- **Gas Limit**: maximum amount of gas the sender is willing to use for the transaction. A common value could be around 21000.
+- **To**: _address the transaction is sent to (e.g. smart contract)_
+- **Value (Wei)**: amount of cryptocurrency to be transferred to the recipient
+- **Data**: 📦 _the content to send to the **To** address_, e.g. a function and its parameters.
+- **v,r,s**: components of the transaction signature. They prove that the transaction is authorised by the sender.
 
-<img src="/solidity/remix/lesson-4/reverts/revert3.png" style="width: 100%; height: auto;">
+### Conclusion
 
+**Reverts** and **gas usage** help maintain the integrity of the blockchain state. _Reverts_ will undo transactions when failures occur, while _gas_ enables transactions execution and runs the EVM. When a transaction fails, the gas consumed is not recoverable. To manage this, Ethereum allows users to set the maximum amount of gas they're willing to pay for each transaction.
 
-Every transaction includes specific fields, such as nonce (transaction count for the account), gas price, gas limit (seen on Etherscan), the recipient's address, the transaction value, and data. The data field holds the function call or contract deployment information. These transactions also include cryptographic elements in the V, R, and S fields.
+### 🧑‍💻 Test yourself
 
-If sending value, the gas limit is typically set to 21,000, the data field remains empty, and the recipient's address is filled in.
+1. 📕 Describe the two types of transactions listed in this lesson.
+2. 📕 Why are reverts used?
+3. 🧑‍💻 Bob sets his gas price to 20 Gwei and his gas limit to 50,000 units. The transaction consumes 30,000 units of gas before a revert occurs. How much ETH will be effectively charged?
 
-
-<img src="/solidity/remix/lesson-4/reverts/revert4.png" style="width: 100%; height: auto;">
-
-
-In the Remix Ethereum IDE, values can be set in Wei, Gwei or Ether units. Each Ether is worth `1,000,000,000,000,000,000` Wei or `1,000,000,000` Gwei.
-
-## Conclusion
-
-While reverts and gas may seem tricky and can at times be confusing, they help uphold the integrity of the blockchain and its state.In sum, reverts validate integrity by reversing transactions when failures occur. Gas powers transactions, running the EVM, and even when transactions fail, the gas used is not recoverable. To manage this, Ethereum allows users to set the maximum amount of gas they're willing to use for transactions.
-
-Let's keep learning with the next lesson!
+[Back to top](#top)
