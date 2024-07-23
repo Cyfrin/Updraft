@@ -2,84 +2,93 @@
 title: Memory, Storage, and Calldata
 ---
 
+_You can follow along with the video course from here._
 
-*Follow along with the course here.*
+<a name="top"></a>
 
+### Introduction
 
+In this section, we will explore how Solidity manages data storage, focusing on the differences between storage, memory, and calldata, and why these concepts are crucial for writing optimized and secure smart contracts.
 
+### Data Locations
 
-One aspect that crashes the compilers and gets heads scratching is the `memory` keyword, which we can gloss over, as it's heavily entwined with the data locations in Solidity. You might be puzzled when you delete the keyword sometimes and you receive a compilation error. Let's dive into this conundrum.
+Solidity can store data in **six** different locations. In this lesson, we will focus on the first three:
 
-## Data Locations in Solidity
-
-Solidity allows data to be stored in 6 locations:
-
-1. Stack
+1. Calldata
 2. Memory
 3. Storage
-4. Calldata
+4. Stack
 5. Code
 6. Logs
 
-For the purposes of this post, we will focus on three principal ones: Call Data, Memory, and Storage. Adding a word of caution – this can get quite intricate. If you don’t comprehend everything on the first go, remember perseverance is the key.
+### Calldata and Memory
 
-## Call Data and Memory: Temporary Variables
+In Solidity, `calldata` and `memory` pertain to variables that are _temporary_ and only exist during the execution of the function. These variables cannot be retrieved in future function calls but can be modified.
 
-<img src="/solidity/remix/lesson-2/memory/memory1.jpg" style="width: 100%; height: auto;">
+> 🚧 **WARNING** <br>
+> Most variable types default to `memory` automatically. However, for **strings**, you must specify either `memory` or `calldata` due to the way arrays are handled in memory.
 
-
-In Solidity, `calldata` and `memory` relate to temporary variables that only exist during the execution of a function. If you run a function with a variable name for once, you can access it only for that particular function execution. If you try to retrieve the variable in the next function execution, you will fail because it was stored temporarily.
-
-Example:
-
-```bash
-string memory name = "Patrick";
-uint256 favoriteNumber = 7;
+```solidity
+string memory variableName = "someValue";
 ```
 
-Strings need special attention. In Solidity, you must specify either memory or call data due to the way arrays work in memory. Most variables automatically default to memory variables, while strings require explicit specification.
+#### Calldata
 
-<img src="/solidity/remix/lesson-2/memory/memory3.png" style="width: 100%; height: auto;">
+Calldata variables are read-only and cheaper than memory. They are mostly used for input parameters.
 
+In the following example, if we try to replace the keyword `memory` with `calldata`, we receive an error because `calldata` variables can't be manipulated.
 
-So far, so right, but why do we have two variants of temporary variables? Let's explore more with an example.
+```solidity
+function addPerson(string calldata _name, uitn256 _favoriteNumber) public {
+    _name = "cat";
+    listOfPeople.push(Person(_favoriteNumber, _name));
+}
+```
 
 <img src="/solidity/remix/lesson-2/memory/calldata.png" style="width: 100%; height: auto;">
 
+### Storage
 
-Now, If we replace `memory` with `calldata` and try to compile it, we receive an error message. This occurred because, unlike `memory` variables, `calldata` variables can't be manipulated – they are read-only.
+Variables stored in `storage` are persistent on the blockchain, retaining their values between function calls and transactions.
 
-## Storage: Permanent Variables
+In our contract, the variable `myFavoriteNumber` is a storage variable. Variables which are declared outside any function are implicitly converted to storage variables.
 
-While `calldata` and `memory` are designated for temporary variables, `storage` is for permanent variables that can be altered.
-
-<img src="/solidity/remix/lesson-2/memory/memory2.jpg" style="width: 100%; height: auto;">
-
-
-Variables declared outside any function, directly under the contract scope, are implicitly converted to storage variables.
-
-```bash
+```solidity
 contract MyContract {
-    uint256 favoriteNumber = 123
-    };
+    uint256 favoriteNumber; //this is a storage variable
+};
 ```
 
-You can always retrieve these permanent variables later, even outside function calls.
+### Strings and primitive types
 
-## The Essence of Memory Keyword
+If you try to specify the `memory` keyword for an `uint256` variable, you'll encounter this error:
 
-Now, you might be thinking, why do we explicitly use the `memory` keyword on the String and not on the `uint256`, also you'll get an error stating `Data location can only be specified for array, struct, or mapping type`.
+```markdown
+> Data location can only be specified for array, struct, or mapping type
+```
 
 <img src="/solidity/remix/lesson-2/memory/memory-err.png" style="width: 100%; height: auto;">
 
+In Solidity, a `string` is recognized as an **array of bytes**. On the other hand, primitive types, like `uint256` have built-in mechanisms that dictate how and where they are stored, accessed and manipulated.
 
-Solidity recognizes `string` as an array of bytes (a special type) and due to memory management workings, we need to use `memory` with it. Primitive types such as the `uint256` are smart enough and know where to be located under the hood.
+> 🚧 **WARNING** <br>
+> You can't use the `storage` keyword for variables inside a function. Only `memory` and `calldata` are allowed here, as the variable only exists temporarily.
 
-Remember, you can't use the `storage` keyword for temporary variables inside a function. Only `memory` and `calldata` are allowed here because the variable only lives for a short duration.
+```solidity
+function addPerson(string memory _name, uitn256 _favoriteNumber) public {  //cannot use storage as input parameters
+    uint256 test = 0; // variable here can be stored in memory or stack
+    listOfPeople.push(Person(_favoriteNumber, _name));
+}
+```
 
-## Key Takeaway
+### Conclusion
 
-- When passed as function parameters, structs, mappings, and arrays in Solidity need to use the explicit `memory` keyword.
-- Strings, considered an array of bytes, require explicit `memory` or `calldata` keyword.
+Well done! You've learned the differences between the keywords storage, memory, and calldata in Solidity, enhancing your skills to develop robust Ethereum-based applications.
 
-Congratulations for reaching this point, now let's delve into Solidity mappings.
+### 🧑‍💻 Test yourself
+
+1. 📕 How does the Solidity compiler handle primitive types and strings in terms of memory management?
+2. 📕 Why can't the storage keyword be used for variables inside a function?
+3. 🧑‍💻 Write a smart contract that uses storage, memory and calldata keywords for its variables.
+
+[Back to top](#top)

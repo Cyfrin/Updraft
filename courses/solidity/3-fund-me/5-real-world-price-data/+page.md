@@ -1,69 +1,71 @@
 ---
-title: Real World Price Data
+title: Real-World Price Data
 ---
 
-*Follow along this chapter with the video bellow*
+<a name="top"></a>
 
+### Introduction
 
+With the rapid advancement of blockchain technology and the growing adoption of decentralized finance platforms (DeFi), the necessity to support **multiple digital currencies** has significantly increased. Enabling users to utilize their preferred digital currencies extends market reach and improves the usability of an application.
 
+This lesson will walk you through adding a **currency conversion feature** to the `fundMe` contract and setting **price thresholds** with Chainlink Oracle, a decentralized network for external data.
 
-With the advancement of blockchain technology and the increasing integration of decentralized finance (DeFi) platforms, the need to accommodate a range of digital currencies has exploded. Allowing users to transact in their preferred digital coinage not only enhances the user experience, but also broadens the market reach of your platform. This lesson will walk you through the steps to adding currency conversion features and setting price thresholds in your smart contracts with Chainlink Oracle, a decentralized network for external data.
+### USD values
 
-<img src="/solidity/remix/lesson-4/datafeeds/datafeed1.png" style="width: 100%; height: auto;">
+Currently, our contract will require the transaction value to be greater than _one Ethereum (ETH)_. If we want to give the users the flexibility to spend instead 5 USD, we would need to update our contract. We can begin by specifying the new value with a state variable `uint256 public minimumUSD = 5` at the top of the contract.
 
+The next step would be changing the condition inside the `fund` function, to check if the `value` sent is equal to or greater than our `minimumUSD`. However, we are facing a roadblock here: the `minimumUSD` value is in USD while the transaction message value is specified in ETH.
 
-## Updating Our Minimal Contract
+### Decentralized Oracles
 
-Currently, our contract is too simplified. It requires the message value to exceed one full Ethereum (ETH). If we want our users to spend a minimum of $5 instead of one ETH, we will need to update our contract. To specify this new value, add the line `uint256 minimumUSD = 5` at the top of your contract. To make this value public, replace `internal` with `public`. You can optimize this `minimumUSD` later on for a more gas-efficient contract.
+The USD price of assets like Ethereum cannot be derived from blockchain technology alone but it is determined by the financial markets. To obtain a correct _price information_, a connection between off-chain and on-chain data is necessary. This is facilitated by a _decentralized Oracle network_.
 
-For the `fund` function within the contract, change the condition to check if the message value meets or exceeds `minimumUSD`. However, we face a roadblock here. The `minimumUSD` value is in USD while the message value is in terms of ETH. This is the part where we introduce *Oracles*, particularly *Chainlink*, into our code.
+This blockchain limitation exists because of its **deterministic nature**, ensuring that all nodes univocally reach a consensus. Attempting to introduce external data into the blockchain, will disrupt this consensus, resulting in what is referred to as a _smart contract connectivity issue_ or _the Oracle problem_.
 
-## Understanding Decentralized Oracles and Chainlink
+For smart contracts to effectively replace traditional agreements, they must have the capability to interact with **real-world data**.
 
-In the financial markets, the USD price of assets like Ethereum is externally assigned and does not originate from the blockchain technology itself. Abstracting this price information requires a bridge between the off-chain and on-chain data, which is achieved by using a *decentralized Oracle network* or an Oracle.
+Relying on a centralized Oracle for data transmission is inadequate as it reintroduces potential failure points. Centralizing data sources can undermine the trust assumptions essential for the blockchain functionality. Therefore, centralized nodes are not enough for external data or computation needs. _Chainlink_ addresses these centralization challenges by offering a decentralized Oracle Network.
+
+### How Chainlink Works
+
+Chainlink is a _modular and decentralized Oracle Network_ that enables the integration of data and external computation into a smart contract. When a smart contract combines on-chain and off-chain data, can be defined as **hybrid** and it can create highly feature-rich applications.
+
+Chainlink offers ready-made features that can be added to a smart contract. And we'll address some of them:
+
+- **Data Feeds**
+- **Verifiable Random Number**
+- **Keepers**
+- **Functions**
+
+### Chainlink Data Feeds
+
+_Chainlink Data Feeds_ are responsible for powering over $50 billion in the DeFi world. This network of Chainlink nodes aggregates data from various **exchanges** and **data providers**, with each node independently verifying the asset price.
 
 <img src="/solidity/remix/lesson-4/datafeeds/datafeed2.png" style="width: 100%; height: auto;">
 
+They aggregate this data and deliver it to a reference contract, the **price feed contract**, in a single transaction. Each contract will store the pricing details of a specific cryptocurrency
+<img src="/solidity/remix/lesson-4/datafeeds/datafeed1.png" style="width: 100%; height: auto;">
 
-Blockchain exists in a vacuum, ignorant of real-world data and occurrences. It doesn't inherently know the value of ETH or other external data like the weather or a random number. This limitation is due to its deterministic nature that allows all nodes to reach a consensus without diverging or causing conflicts. Attempting to introduce external and variable data or results of API calls will disrupt this consensus, resulting in what is referred to as a *smart contract connectivity issue* or *the Oracle problem*.
+### Chainlink CRF
 
-## Chainlink and Blockchain Oracles
-
-In order for our smart contracts to replace traditional understandings of agreement, they must be able to interact with real-world data. This is achievable with Chainlink and blockchain Oracles. A blockchain Oracle serves as a device that broadcasts off-chain data or computations to the smart contracts.
-
-It's not enough to cascade data through a centralized Oracle because that reintroduces failure point. Centralizing our data source contradicts our goal of decentralization and potentially jeopardizes the trust assumptions that are vital to the operations of blockchains. Consequently, centralized nodes make poor sources for external data or computation capacity. Chainlink provides a solution to these centralized problems.
-
-## How Chainlink Works
-
-Chainlink is a modular, decentralized Oracle network that enables the integration of data and external computation into our smart contracts. As mentioned earlier, hybrid smart contracts are highly feature-rich and powerful applications that combine on-chain and off-chain data.
-
-With Chainlink, we discard the idea of making HTTP calls on blockchain nodes to an API endpoint. These nodes cannot make HTTP calls without breaking consensus. Instead, we assign a network of decentralized Chainlink Oracles the job of delivering data to our smart contracts.
-
-Chainlink networks offer flexibility in that they can be configured to deliver any data or execute any external computation at will. Although it requires some work to achieve this level of customization, Chainlink offers ready-made features that can be added to your smart contract applications. Let's go over these features.
-
-## Chainlink Data Feeds
-
-Responsible for powering over $50 billion in the DeFi world, Chainlink data feeds are arguably the most utilized feature. This network of Chainlink nodes sources data from various exchanges and data providers, with each node independently evaluating the asset price.
-
-They aggregate this data and deliver it to a reference contract, price feed contract, or data contract in a single transaction. These contracts contain the pricing information that powers DeFi applications.
-
-
-
-## Chainlink Verifiable Randomness Function (VRF)
-
-Next up is the Chainlink VRF, a solution for generating provably random numbers. This feature ensures fairness in applications, randomizing NFTs, lotteries, gaming, and more within the blockchain environment. These numbers can't be manipulated as they are determined outside of the blockchain.
+The Chainlink VRF (Verifiable Random Function) provides a solution for generating **provably random numbers**, ensuring true fairness in applications such as NFT randomization, lotteries, and gaming. These numbers are determined off-chain, and they are immune to manipulation.
 
 <img src="/solidity/remix/lesson-4/datafeeds/datafeed3.png" style="width: 100%; height: auto;">
 
+### Chainlink Keepers
 
-## Chainlink Keepers
+Another great feature is Chainlink's system of _Keepers_. These **nodes** listen for specific events and, upon being triggered, automatically execute the intended actions within the calling contract.
 
-Another great feature is Chainlink's system of keepers—nodes that listen to a registration contract for specific events. Upon detection of triggers that have been programmed into the contract, these nodes perform the intended actions.
+### Chainlink Function
 
-Finally, *Chainlink Functions* offer an extreme level of customization—it allows making API calls in a decentralized context. It can be used to create novel applications and is recommended for advanced users who have a deep understanding of Chainlink.
+Finally, _Chainlink Functions_ allow **API calls** to be made within a decentralized environment. This feature is ideal for creating innovative applications and is recommended for advanced users with a thorough understanding of Chainlink ecosystem.
 
-## Conclusion
+### Conclusion
 
-Integrating currency conversion and setting a price threshold in your smart contract is made easy with Chainlink. This decentralized Oracle network not only addresses the 'Oracle problem', but provides a suite of additional features for enhancing your dApp capabilities. With Chainlink, you can create a more user-friendly experience for your blockchain platform users.
+_Chainlink Data Feeds_ will help integrate currency conversion inside of our `FundMe` contract. Chainlink's decentralized Oracle network not only addresses the 'Oracle problem', but provides a suite of additional features for enhancing every dApp capabilities.
 
-We look forward to seeing you unleash the true potential of your smart contracts and how to implement Chainlink in your dApps.
+### 🧑‍💻 Test yourself
+
+1. 📕 Describe 4 Chainlink products and what problem each one solves.
+
+[Back to top](#top)

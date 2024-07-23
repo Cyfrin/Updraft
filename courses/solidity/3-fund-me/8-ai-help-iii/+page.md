@@ -2,63 +2,65 @@
 title: AI Help III
 ---
 
-*Follow along this chapter with the video bellow*
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
-In our quest for mastering the field of programming, questions and confusions are inevitable stepping stones. From deciphering the unintended consequences of a code block to understanding the intricate mechanisms behind built-in functions, every step in this journey is an opportunity to learn something new. Today, we'll discuss a common confusion that many developers stumble upon: *How does a Solidity function return a value when no logic is defined within it?*
+When you encounter a part that's not very clear, an AI or forum can help provide a comprehensive understanding of the topic at hand. In this lesson, we will learn how to craft effective questions and prompts.
 
-We'll simplify this problem by providing a context of the Aggregator v3 Interface and explore the interaction between the function, contract, and the address associated with it. This lesson signifies an interactive approach where we speculate, ask questions, and validate our understanding of the topic with the help of AI model Chat GPT. So, let's dive in!
+### getVersion function
 
-## The Conundrum of the 'Get Version' Function
+For example, consider the mechanism behind the **Interface** construct:
 
-The journey begins with an intriguing question related to the Solidity function from the Aggregator v3 Interface.
+````markdown
+How does this solidity function return the value `4` when I didn't define any logic in AggregatorV3Interface?
 
-Here's the question that sets the ball rolling:
+```
+ function getVersion() public view returns (uint256) {
+    return AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419).version();
+ }
+```
+````
 
+Here is the answer ChatGPT 3.5 provides:
 
-<img src="/solidity/remix/lesson-4/aihelp/ai1.png" style="width: 100%; height: auto;">
+```markdown
+In the code you provided, the `getVersion()` function is calling the `version()` function of an instance of the `AggregatorV3Interface` contract. It appears that the contract address `0x694AA1769357215DE4FACO81bf1E309aDC325306` is being used to create an instance of the `AggregatorV3Interface`.
 
+The `AggregatorV3Interface` is an interface contract that defines a set of functions that must be implemented by another contract. It serves as a way to interact with the contract at the given address by providing a common interface.
 
-To form a clearer picture, let's look at the code snippet in question:
+The `version()` function is called in your code is likely defined in the actual contract that implements the `AggregatorV3Interface`. This implementation contract is deployed at the specified address and is expected to have a `version()` function that returns a `uint256` value.
 
-```js
-function getVersion() external view returns (string memory);
+So, the code you provided is creating an instance of the `AggregatorV3Interface` contract at the given address and then calling its `version()` function to retrieve a `uint256` value. If the implementation contract at that address has a `version()` function that returns `4`, then the `getVersion()` function will return `4` as well.
 ```
 
-One of the common challenges new developers face is understanding the underlying mechanism of this 'get version' function. How is it able to return a value when there isn't any code defined in the Aggregator v3 Interface? Moreover, what makes it work when we insert an address?
+By _type casting_ the address to the interface, we are indicating to the Solidity compiler that there is a `version` function available at that address.
 
-This is where the incredible AI model Chat GBT comes into play to help unravel the mystery.
+### Asking more questions
 
-## Insights from AI
+Since AIs excel at maintaining context, we can easily **follow up** on this answer.
 
-In response to the confusion at hand, our AI companion provided an enlightening explanation. According to Chat GBT v3.5,
+```markdown
+What would happen if that contract address didn't have that function?
+```
 
-<img src="/solidity/remix/lesson-4/aihelp/ai2.png" style="width: 100%; height: auto;">
+As explained by the AI:
 
+```markdown
+If the implementation contract at the given address does not have a `version()` function or if it has a different function signature, calling `version()` on that contract will result in a compilation error or a runtime error.
+```
 
-This confirms our suspicion.
+> 🚧 **WARNING** <br>
+> Always verify AI-provided information by consulting a discussion forum
 
-<img src="/solidity/remix/lesson-4/aihelp/ai4.png" style="width: 100%; height: auto;">
+### Conclusion
 
+By leveraging AI and discussion forums, you can gain a deeper understanding of complex topics and ensure your questions are thoroughly addressed.
 
-The `version` function exists within the contract that incorporates this interface. By wrappering the address with Aggregator v3 Interface, we're instructing our Solidity compiler that at this address lies the 'version' function or all the functions encompassed within the Aggregator v3 Interface. If this address lacks the 'version' function, the code would break.
+### 🧑‍💻 Test yourself
 
-## Further Clarification: What Happens If The Function Doesn't Exist?
+1. 📕 Dive deeper into the `getVersion` function by asking AI three more questions about it
 
-Given the proactive nature of our AI companion, it is responsible and recommended to ensure accurate responses. So, it raises the question: *What would happen if that contract address didn't have that function?*
-
-As explained by our AI:
-
-<img src="/solidity/remix/lesson-4/aihelp/ai3.png" style="width: 100%; height: auto;">
-
-What this entails is that despite not leading to a compilation error, the transaction would consequently revert if the contract address lacks a 'version' function.
-
-## Cross-Verifying with Discussions Forum
-
-Accurate understanding is of paramount importance, and therefore, double-checking is a good practice. In such a scenario, the next step would be to validate this understanding on a discussions forum.
-
-In conclusion, this lesson elucidates the inner workings of the 'get version' function and the Aggregator v3 Interface, unravelling the hidden interactions and dependencies with the help of AI. By constantly questioning and confirming our understanding of each step, we can ensure we are on the path to mastering blockchain programming.
-
-Keep learning and we'll see you on the next lesson. Happy coding!
-
+[Back to top](#top)
