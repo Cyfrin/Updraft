@@ -1,0 +1,3 @@
+---
+        title: Spot Price Math
+        ---
