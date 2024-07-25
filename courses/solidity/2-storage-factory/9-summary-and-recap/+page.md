@@ -2,61 +2,60 @@
 title: Summary and Recap
 ---
 
+_You can follow along with the video course from here._
 
+<a name="top"></a>
 
+### Introduction
 
-## Deploying contracts using new keyword
+This section covered how to deploy contracts, how to import and interact with them, and using inheritance to customize their functionalities.
 
-One of the initial things we explored is how to deploy contracts from other contracts using the `new` keyword. Solidity enables us to clone existing contracts and produce new ones on the fly. This feature allows developers to deploy multiple instances of a contract without manually copy-pasting code – a handy tool, particularly for applications with multiple contract instances.
+### Deploying and importing
 
-## Importing other contracts
+We delved into the use of the **`new`** keyword to deploy multiple instances of a contract, allowing for the creation of numerous contract instances as needed.
 
-Beyond deploying contracts from within contracts, Solidity also equips us with the capability to import other contracts. Essentially, importing contracts is equivalent to copying and pasting the code into a file. This feature enhances reusability and modularity of code. A sample of importing contracts can be represented as:
+Contracts can also be **imported**, which is equivalent to copying the code into the file but with the advantage of enhanced code reusability and modularity. It's good practice to use _named imports_, selecting only the contracts we intend to use from the file.
 
-```js
-import './myOtherContract.sol';
-```
-
-## Named Imports
-
-In the journey of mastering Solidity, we also encountered the nifty concept of 'Named Imports'. Named imports can help make your code more organized and easier to read. They're going to elevate your coding game and make you shine among other Solidity devs out there.
-
-```js
+```solidity
 import { Contract as MyContract } from './myOtherContract.sol';
 ```
 
-## Interacting with contracts
+### Contracts interaction
 
-Solidity enables interaction with other contracts, given that we have the contract's address and its Application Binary Interface (ABI). In our tutorial, we realized that the `simple storage` type conveniently provides both the address and the ABI, simplifying our interaction with it.
+Solidity lets you interact with other contracts. To do so we need the contract's address and its ABI (Application Binary Interface):
 
-```js
-SimpleStorage storage = SimpleStorage(address);
-uint256 storedData = storage.retrieve();
+```solidity
+contract AddFiveStorage is SimpleStorage {}
 ```
 
-As of now, we haven't delved too much regarding ABIs. However, in subsequent sections, we will explore more about ABIs
+### Inheritance and overriding
 
-## Contract Inheritance
+A contract can also derive functions from other contracts through **inheritance**. This can be obtained through the `is` keyword.
+To explicitly override a function from the parent contract, the `override` keyword is used in the child method. The parent's function must be marked as `virtual` to allow this interaction.
 
-Solidity also offers a powerful feature in the form of contract inheritance. If you want to create a child contract and inherit the features of another contract, import the parent contract and use the `is` keyword.
-
-To override a function of the base class, the `override` keyword is used. But the base (parent) class must tag the function we want to override with the `virtual` keyword. The syntax can be represented as below:
-
-```js
-import './BaseContract.sol';
-contract ChildContract is BaseContract {
-    function foo() public override { Override functionality here}
-    }
+```solidity
+//child contract
+import './ParentContract.sol';
+contract ChildContract is ParentContract {
+    function store(uint256 _num) public override {}
+}
 ```
 
+```solidity
+//parent contract
+function store(uint256 _num) public virtual {
+    // function body
+}
+```
 
+### Conclusion
 
-### Celebrating Progress
+In this section, we explored deploying multiple contract instances using the `new` keyword and enhancing code reusability through contract _imports_. We also covered interacting with other contracts using their address and ABI. Additionally, we learned about inheritance and function overriding, allowing derived contracts to customize inherited functionalities.
+💡 **TIP** <br>
+When you finish a section, take a moment to acknowledge your progress, celebrate it and share your achievements with your community.
 
-And that's it! You've made it to the end of this section. By now, you've acquired some potent capabilities in Solidity. So take a moment to give yourself a resounding pat on the back! Embrace a well-deserved break because taking mental pauses is good for your cognitive health. Go for a walk, indulge in a cup of coffee or some ice cream, or better yet, share your achievements with your friends be it in person or across the world via social media.
+### 🧑‍💻 Test yourself
 
-Remember, each stride you make in mastering Solidity is a significant one. So be sure to celebrate these crucial little wins that keep you excited and fuel your curiosity.
+🏆 Attempt to answer all the theoretical questions from lesson 1 through 7, and then go back again to complete all the coding tasks.
 
-Keep learning, keep coding, and above all, keep pushing the boundaries.
-
-*Congratulations! You have successfully completed Lesson 3 of the Solidity Course.*
+[Back to top](#top)
