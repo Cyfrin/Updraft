@@ -43,7 +43,7 @@ On the other hand, in zkSync EOAs are smart contracts. Thus, all smart contract 
 
 ---
 <img
-    src="static/foundry-account-abstraction/18-zksync-setup/zk-era-explorer.png"
+    src="/foundry-account-abstraction/18-zksync-setup/zk-era-explorer.png"
     width="100%"
     height="auto"
 />
