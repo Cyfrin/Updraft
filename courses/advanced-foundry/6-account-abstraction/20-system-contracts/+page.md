@@ -26,9 +26,9 @@ There are essentially two phases to send an account abstraction transaction.
   3. If a paymaster was used, the `postTransaction` is called.
 
 ---
-### `NonceHolder` System Contract
+### `ContractDeployer` System Contract
 
-The `NonceHolder.sol` contract contains smart contracts that are deployed on zkSync by default. Let's take a look at one of the most important ones - `ContractDeployer`.
+A system contract contains smart contracts that are deployed on zkSync by default. Let's take a look at one of the most important ones - `ContractDeployer`.
 
 - Go back to [zkSync Era Block Explorer](https://sepolia.explorer.zksync.io/)
 
