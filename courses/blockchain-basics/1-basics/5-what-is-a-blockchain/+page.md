@@ -78,7 +78,7 @@ Web3 is a term used to describe the new paradigm of the internet powered by bloc
 
 **Web3:** The permissionless web with dynamic content.
 
-- Decentralized censorship reesistant networks run your agreemeent and code.
+- Decentralized censorship resistant networks run your agreements and code.
 - User owned ecosystems where one owns a portion of the protocol they interact with - instead of solely being the product
 
 ### Wrap Up
