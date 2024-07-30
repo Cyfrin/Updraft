@@ -1,4 +1,4 @@
-## Account Abstraction Lesson 33: Validate Testnet zkSync Demo
+## Account Abstraction Lesson 33: Testnet zkSync Demo
 
 The final step is to deploy and send a transaction. As of the creation of this lesson, foundry scripts don't work that well with zkSync. We are going to use Hardhat. Since Hardhat isn't a part of this course, we won't do any explanation of the code. However, you will get to see how it is deployed and sent. 
 
