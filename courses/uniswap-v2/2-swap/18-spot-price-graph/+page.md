@@ -19,9 +19,9 @@ graph LR
     A[Initial Point: (X,Y)] --> B[New Point: (X + dX, Y + dY)]
 ```
 ### Initial Point: (X,Y)
-![Initial Point: (X,Y)](https://github.com/user-attachments/assets/0307491d-b809-4c04-9037-9755551bed88)
+![Initial Point: (X,Y)](../../../../static/uniswap-v2/2-swap/10-spot-price-graph/1-initial-point-graph.png)
 
 ### New Point: (X + dX, Y + dY)
-![New Point: (X + dX, Y + dY)](https://github.com/user-attachments/assets/ccda31e8-30c1-4d1b-a4fd-9a239c205344)
+![New Point: (X + dX, Y + dY)](../../../../static/uniswap-v2/2-swap/10-spot-price-graph/2-new-point-graph.png)
 
 This diagram represents the swap we described above. The initial point is (X,Y), and the new point is (X + dX, Y + dY). 
