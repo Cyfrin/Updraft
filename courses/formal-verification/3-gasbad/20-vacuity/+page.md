@@ -6,7 +6,7 @@ _Follow along with this video:_
 
 ---
 
-> [!NOTE]
+> ❗ **NOTE**
 > Previous versions of the prover would result in vacuity errors when the ALWAYS(1) summary declaration was made on \_.safeTransferFrom in our methods block. This may now HAVOC for you. We've switched previous references to ALWAYS(1) to DISPATCH(true), as such your verification at this point may pass.
 
 ### Vacuity
@@ -27,7 +27,7 @@ methods {
 
 In previous versions of the prover, when we assigned the summary declaration of `ALWAYS(1)` to our `safeTransferFrom` method, Certora wouldn't recognize this as valid since the function _actually_ returns a `bytes4`.
 
-> [!NOTE] > `onERC721Received` is called as a result of `safeTransferFrom` in the `listItem` function of `BadGasNftMarketplace`.
+> ❗ **NOTE** > `onERC721Received` is called as a result of `safeTransferFrom` in the `listItem` function of `BadGasNftMarketplace`.
 
 ```js
 function onERC721Received(address, /*operator*/ address, /*from*/ uint256, /*tokenId*/ bytes calldata /*data*/ )

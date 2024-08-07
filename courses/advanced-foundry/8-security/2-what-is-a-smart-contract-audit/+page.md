@@ -18,7 +18,7 @@ Well, the statistics I mentioned in the introduction speak for themselves. With 
 
 The immutability of the blockchain renders patching and updating frequently impossible, impractical or expensive. So having confidence in the security of your code is key.
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > The blockchain is a permissionless, adversarial environment, being prepared for malicious users is _integral_ to success.
 
 An audit can actually accomplish much more than just checking for bugs. An audit can:
@@ -65,7 +65,7 @@ So, what does a typical audit look like? Let's break it down into some steps.
 
    Once an auditor receives a commit hash, a start date and price can be finalized.
 
-   > [!NOTE]
+   > ❗ **NOTE**
    > A commit hash is the unique ID of the codebase being audited at a particular version in time.
 
    Some auditors will ask for a down payment in order to schedule the audit.

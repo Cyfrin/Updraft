@@ -4,7 +4,7 @@ title: Memory, Storage, and Calldata
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -22,7 +22,6 @@ Solidity can store data in **six** different locations. In this lesson, we will 
 6. Logs
 
 ### Calldata and Memory
-
 
 In Solidity, `calldata` and `memory` are temporary storage locations for variables during function execution. `calldata` is read-only, used for function inputs that can't be modified. In contrast, `memory` allows for read-write access, letting variables be changed within the function. To modify `calldata` variables, they must first be loaded into `memory`.
 
@@ -91,5 +90,3 @@ Well done! You've learned the differences between the keywords storage, memory, 
 1. 📕 How does the Solidity compiler handle primitive types and strings in terms of memory management?
 2. 📕 Why can't the storage keyword be used for variables inside a function?
 3. 🧑‍💻 Write a smart contract that uses storage, memory and calldata keywords for its variables.
-
-[Back to top](#top)

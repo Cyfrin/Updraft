@@ -70,7 +70,7 @@ function listItem(address nftAddress, uint256 tokenId, uint256 price) external {
 }
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > Similar calls to this function in `IERC721` can be seen in the `buyItem` and `cancelListing` functions as well.
 
 This means that the function declaration we're using won't actually be in the contract we're verifying. Fortunately, we've learnt a way we can resolve this.
@@ -178,7 +178,7 @@ function onERC721Received(address, /*operator*/ address, /*from*/ uint256, /*tok
 function _.onERC721Received(address, address, uint256, bytes) external => CONSTANT(0x150b7a02);
 ```
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > While we expect this to solve our HAVOC issue with the prover, it's always important to consider the restrictions we're putting on the validity of our verification. If these functions _don't_ always perform this way, this may be a bad idea!
 
 Let's try running the prover again, now that we've added this additional method block function.

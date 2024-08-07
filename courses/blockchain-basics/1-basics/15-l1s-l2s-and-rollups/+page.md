@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -61,5 +61,3 @@ Rollups enhance Ethereum's scalability by processing transactions off-chain, bun
 1. 📕 What is the primary function of a Layer 2 blockchain?
 2. 📕 How do optimistic rollups ensure the validity of transactions?
 3. 📕 What is commonly referred as the _witness_?
-
-[Back to top](#top)

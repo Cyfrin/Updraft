@@ -4,7 +4,7 @@ title: Transfer, Send and Call
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -57,5 +57,3 @@ In conclusion, _transfer_, _send_, and _call_ are three unique methods for trans
 1. 📕 What are the primary differences between _transfer_, _send_, and _call_ when transferring Ether?
 2. 📕 Why is it necessary to convert an address to a `payable` type before sending Ether to it?
 3. 🧑‍💻 Implement a function `callAmountTo` using `call` to send Ether from the contract to an address provided as an argument. Ensure the function handles failures appropriately.
-
-[Back to top](#top)

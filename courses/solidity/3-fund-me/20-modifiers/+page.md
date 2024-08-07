@@ -4,7 +4,7 @@ title: Modifiers
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -60,5 +60,3 @@ Using modifiers like `onlyOwner` simplifies contract development by centralizing
 
 1. 📕 Why is it beneficial to use `modifiers` for access control?
 2. 🧑‍💻 Implement a modifier named `onlyAfter(uint256 _time)` that ensures a function can only be executed after a specified time.
-
-[Back to top](#top)

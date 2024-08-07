@@ -4,7 +4,7 @@ title: Project Set up
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -56,5 +56,3 @@ In this lesson, we created a new `FundMe` contract and broadly defined the logic
 ### 🧑‍💻 Test yourself
 
 1. 📕 Why should a developer always outline his coding goals before starting to code?
-
-[Back to top](#top)

@@ -8,7 +8,7 @@ _Follow along the course with this video._
 
 ### DeFi Introduction
 
-> [!NOTE]
+> ❗ **NOTE**
 > This is the hardest and most badass project in the entire course. This section is for those who want to go deep into DeFi. If DeFi isn't your thing, feel free to skip and come back to this section.
 
 All the content covered in this section is available through the course [**GitHub Repo**](https://github.com/Cyfrin/foundry-full-course-f23) as well as the section's [**project repo**](https://github.com/Cyfrin/foundry-defi-stablecoin-f23).
@@ -62,7 +62,7 @@ Unfortunately, not all of these DeFi protocols work on testnets, but I do have a
 - [**Become a DeFi QUANT**](https://www.youtube.com/watch?v=x0YDcZly_PU)
 - [**Aave Flash Loan Tutorial**](https://www.youtube.com/watch?v=Aw7yvGFtOvI)
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > If you do decide to experiment with these protocols, I highly recommend doing so on testnets when possible and Layer 2s (like Polygon, Optimism, or Arbitrum) as the fees on Ethereum Mainnet can be _very_ high.
 
 ### MEV

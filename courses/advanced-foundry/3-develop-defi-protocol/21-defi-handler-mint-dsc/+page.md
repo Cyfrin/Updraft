@@ -39,7 +39,7 @@ forge test --mt invariant_ProtocolTotalSupplyLessThanCollateralValue
 
 <img src="/foundry-defi/22-defi-handler-mint-dsc/defi-handler-mint-dsc1.png" width="100%" height="auto">
 
-> [!NOTE]
+> ❗ **NOTE**
 > The `totalSupply = 0` here because of a mistake we made, we'll fix it soon!
 
 Ok, so things work when we have `fail_on_revert` set to `false`. We want our tests to be quite focused, so moving forward we'll leave `fail_on_revert` to `true`. What happens when we run it now?

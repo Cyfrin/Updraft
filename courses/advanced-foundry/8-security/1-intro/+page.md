@@ -22,7 +22,7 @@ There's a popular website, [**rekt.news**](https://rekt.news/) which tracks cryp
 
 This is unacceptable! Security needs to be an active part of any developers deployment plan and this includes a thorough review of their code.
 
-> [!TIP]
+> ❗ **PROTIP**
 > Spending $2M on Security > $200M Hack
 
 ### Wrap Up

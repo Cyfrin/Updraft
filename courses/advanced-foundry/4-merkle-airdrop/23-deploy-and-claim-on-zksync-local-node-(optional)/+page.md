@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -39,5 +39,3 @@ chmod +x interactZk.sh && ./interactZk.sh
 ```
 
 This will output the balance of the first Anvil account, which should be `25000000000000000000` or 25 Bagel tokens.
-
-[Back to top](#top)

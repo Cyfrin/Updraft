@@ -6,9 +6,10 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
+
 In this lesson, we are going to build a comprehensive test for the `MerkleAirdrop::claim` function. This test will ensure that users can correctly claim their tokens from the `MerkleAirdrop` contract.
 
 ### Setup
@@ -68,5 +69,3 @@ forge test --mt testUsersCanClaim -vvv
 ```
 
 which will confirm that the user successfully received the tokens through our airdrop.
-
-[Back to top](#top)

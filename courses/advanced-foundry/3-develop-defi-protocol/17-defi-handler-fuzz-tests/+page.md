@@ -116,7 +116,7 @@ function getHealthFactor(address user) external view returns (uint256) {
 
 If you managed to improve your coverage, even if not to this extent, you should be proud of getting this far. This code base is hard to write tests for and a lot of it comes with experience, practice and familiarity.
 
-> [!TIP]
+> ❗ **PROTIP**
 > Repetition is the mother of skill.
 
 ### Fuzzing

@@ -4,7 +4,7 @@ title: 5-ai-help-ii
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -52,5 +52,3 @@ AI systems are excellent for basic coding tasks but may struggle with complex pr
 ### 🧑‍💻 Test yourself
 
 1. 📕 Review the first section of this Solidity course again. Identify three concepts that seem unclear and ask the AI to explain them to you.
-
-[Back to top](#top)

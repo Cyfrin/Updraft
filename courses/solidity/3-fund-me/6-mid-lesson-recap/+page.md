@@ -4,7 +4,7 @@ title: Mid Lesson Recap
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -68,5 +68,3 @@ Understanding and utilizing payable, require, and msg.value is crucial for handl
 ### 🧑‍💻 Test yourself
 
 1. 📕 What are the three primary topics covered from lessons 1 to 5?
-
-[Back to top](#top)

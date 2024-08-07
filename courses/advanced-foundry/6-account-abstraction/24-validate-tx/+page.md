@@ -1,4 +1,4 @@
-## Account Abstraction Lesson 24: Validate Transaction zkSync 
+## Account Abstraction Lesson 24: Validate Transaction zkSync
 
 Now that we have verified and updated the nonce, we will need to:
 
@@ -8,17 +8,17 @@ Now that we have verified and updated the nonce, we will need to:
 
 Let's get started!
 
-
 ---
+
 ### Check for Fee to Pay
 
-Let's set up some comments to act as a roadmap in our function first. 
+Let's set up some comments to act as a roadmap in our function first.
 
 ```js
 function validateTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction memory _transaction)
     external
     payable
-    returns (bytes4 magic) 
+    returns (bytes4 magic)
 {
     SystemContractsCaller.systemCallWithPropagatedRevert(
         uint32(gasleft()),
@@ -30,25 +30,29 @@ function validateTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Tran
     // Check for fee to pay
     // Check signature
     // Return the "magic" number
-}    
+}
 ```
+
 ---
 
 We already have a tool that will calculate fees for us called `MemoryTransactionHelper`. Let's add this to our `Transaction` import and set it up in our contract.
 
 ```js
 import {
-    Transaction, 
-    MemoryTransactionHelper
+  Transaction,
+  MemoryTransactionHelper,
 } from "lib/foundry-era-contracts/src/system-contracts/contracts/libraries/MemoryTransactionHelper.sol";
 ```
 
 Place the following inside our contract above the external functions
+
 ```js
 using MemoryTransactionHelper for Transaction;
 ```
+
 ---
-From this library, we will use a function called `totalRequiredBalance`. Set the following in our `validateTransaction` function. 
+
+From this library, we will use a function called `totalRequiredBalance`. Set the following in our `validateTransaction` function.
 
 ```js
 // Check for fee to pay
@@ -60,18 +64,21 @@ if (totalRequiredBalance > address(this).balance) {
 // Check the signature
 // Return the "magic" number
 ```
-Since we have a revert, let's go ahead and set our custom error under `using MemoryTransactionHelper for Transaction;`. 
+
+Since we have a revert, let's go ahead and set our custom error under `using MemoryTransactionHelper for Transaction;`.
 
 ```js
 error ZkMinimalAccount__NotEnoughBalance();
 ```
 
 ---
+
 ### Check for Signature
 
-Now we can check for the signature. We will need the `encodeHash` function from `MemoryTransactionHelper`. Essentially, this function determines the type of transaction and then calls the appropriate encoding function to generate the hash. Click below to see the function. 
+Now we can check for the signature. We will need the `encodeHash` function from `MemoryTransactionHelper`. Essentially, this function determines the type of transaction and then calls the appropriate encoding function to generate the hash. Click below to see the function.
 
 ---
+
 <details>
 
 **<summary><span style="color:red">Encode Hash Function</span></summary>**
@@ -100,28 +107,30 @@ function encodeHash(Transaction memory _transaction) internal view returns (byte
 
 ---
 
-Then we will need to validate the signature on the `Transaction` struct (similar to `PackedUserOperation` from our Ethereum contract.). We will need a few imports. 
+Then we will need to validate the signature on the `Transaction` struct (similar to `PackedUserOperation` from our Ethereum contract.). We will need a few imports.
 
 ```js
-import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
-import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
+import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import {
-    IAccount,
-    ACCOUNT_VALIDATION_SUCCESS_MAGIC
+  IAccount,
+  ACCOUNT_VALIDATION_SUCCESS_MAGIC,
 } from "lib/foundry-era-contracts/src/system-contracts/contracts/interfaces/IAccount.sol";
 ```
 
->[!NOTE] For 'ACCOUNT_VALIDATION_SUCCESS_MAGIC', just place it in the IAccount import that is already in our code. 
+> ❗ **NOTE** For 'ACCOUNT_VALIDATION_SUCCESS_MAGIC', just place it in the IAccount import that is already in our code.
 
-And with this we will also need to set contract to inherit `Ownable` and create our constructor. 
+And with this we will also need to set contract to inherit `Ownable` and create our constructor.
 
 - `contract ZkMinimalAccount is IAccount, Ownable`
 
 ```js
 constructor() Ownable(msg.sender) {}
 ```
+
 ---
+
 Back in our function, we can now set the following variables to check the signature. We will need:
 
 - a transaction hash
@@ -130,7 +139,7 @@ Back in our function, we can now set the following variables to check the signat
 - to check if the signer is valid
 - to return magic if valid
 
->[!IMPORTANT] This section varies slightly from the video as there was an error that will be corrected later on. 
+> ❗ **IMPORTANT** This section varies slightly from the video as there was an error that will be corrected later on.
 
 ```js
  // Check the signature
@@ -144,15 +153,16 @@ bool isValidSigner = signer == owner();
     }
     return magic;
 ```
+
 ---
 
-Let's take a look at what our function looks like now. You will note that _txHash and _suggestedSignedHash are commented out. No need to worry about these at the moment. 
+Let's take a look at what our function looks like now. You will note that \_txHash and \_suggestedSignedHash are commented out. No need to worry about these at the moment.
 
 ```js
 function validateTransaction(bytes32 /*_txHash*/, bytes32 /*_suggestedSignedHash*/, Transaction memory _transaction)
     external
     payable
-    returns (bytes4 magic) 
+    returns (bytes4 magic)
 {
     SystemContractsCaller.systemCallWithPropagatedRevert(
         uint32(gasleft()),
@@ -176,15 +186,17 @@ function validateTransaction(bytes32 /*_txHash*/, bytes32 /*_suggestedSignedHash
         } else {
             magic = bytes4(0);
         }
-       
+
     // Return the "magic" number
      return magic;
-}    
+}
 ```
+
 ---
+
 ### Only the Bootloader Can Call
 
-Our function is almost complete. However, we need to make sure that only the bootloader can call it. To do this, we will need to create a modifier and place it into our function. Place it below our errors in the contract. 
+Our function is almost complete. However, we need to make sure that only the bootloader can call it. To do this, we will need to create a modifier and place it into our function. Place it below our errors in the contract.
 
 ```js
 /*//////////////////////////////////////////////////////////////
@@ -198,80 +210,83 @@ modifier requireFromBootLoader() {
 }
 ```
 
-Basically, this modifier is saying that if the sender is not from the `BOOTLOADER_FORMAL_ADDRESS`, revert the transaction. From this code we can see that we need to do a couple more things. 
+Basically, this modifier is saying that if the sender is not from the `BOOTLOADER_FORMAL_ADDRESS`, revert the transaction. From this code we can see that we need to do a couple more things.
 
 1. import BOOTLOADER_FORMAL_ADDRESS
 2. set custom error for the revert
 
-Simply paste this in the `NONCE_HOLDER_SYSTEM_CONTRACT` import that we have already added. 
+Simply paste this in the `NONCE_HOLDER_SYSTEM_CONTRACT` import that we have already added.
+
 ```js
-BOOTLOADER_FORMAL_ADDRESS
+BOOTLOADER_FORMAL_ADDRESS;
 ```
 
 Place this custom error with our other one at towards the top of the contract
+
 ```js
 error ZkMinimalAccount__NotFromBootLoader();
 ```
 
-Now add `requireFromBootloader` in our function between `payable` and `returns (bytes4 magic)`. It will look like this. 
+Now add `requireFromBootloader` in our function between `payable` and `returns (bytes4 magic)`. It will look like this.
 
 ```js
 function validateTransaction(bytes32 /*_txHash*/, bytes32 /*_suggestedSignedHash*/, Transaction memory _transaction)
     external
     payable
     requireFromBootLoader
-    returns (bytes4 magic) 
+    returns (bytes4 magic)
 ```
 
 ---
 
-And just like that, we have a function that can get the nonce, validate and increment it, check the fee to pay, and sign the transaction if the `bootloader` is `msg.sender`. 
+And just like that, we have a function that can get the nonce, validate and increment it, check the fee to pay, and sign the transaction if the `bootloader` is `msg.sender`.
 
 As always, let's do a bit of review. Move on to the next lesson when you are ready.
 
 ---
+
 ### Questions for Review
 
 ---
-<summary>1. Which function from MemoryTransactionHelper is used to calculate the total required balance?</summary> 
+
+<summary>1. Which function from MemoryTransactionHelper is used to calculate the total required balance?</summary>
 
 ---
-<details> 
+
+<details>
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
-  totalRequiredBalance()
- 
+totalRequiredBalance()
+
 </details>
 
 ---
 
-<summary>2.  What is the purpose of the requireFromBootLoader modifier? </summary> 
+<summary>2.  What is the purpose of the requireFromBootLoader modifier? </summary>
 
 ---
-<details> 
+
+<details>
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
     To ensure that if the sender is not from the BOOTLOADER_FORMAL_ADDRESS, the transaction is reverted.
- 
+
 </details>
 
 ---
 
-<summary>3. What is the purpose of the encodeHash function from MemoryTransactionHelper?</summary> 
+<summary>3. What is the purpose of the encodeHash function from MemoryTransactionHelper?</summary>
 
 ---
-<details> 
+
+<details>
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
     It determines the type of transaction and then calls the appropriate encoding function to generate the hash.
- 
+
 </details>
 
 ---
-  
-
-
-

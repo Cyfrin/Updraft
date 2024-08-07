@@ -14,11 +14,13 @@ But before we can do any of this, we will need to write another script. This les
   - `_generateUnsignedUserOperation`
 
 ---
+
 ### Writing Our SendPackedUserOp Script
 
-First, we are going to write a script that will help us generate the data for the `PackedUserOperation` and sign it. We can do this directly in our `MinimalAccountTest.t.sol`. However, it would be more beneficial to create in our `SendPackedUserOp` script. Let's set up the essential code and also comment some steps for further building. 
+First, we are going to write a script that will help us generate the data for the `PackedUserOperation` and sign it. We can do this directly in our `MinimalAccountTest.t.sol`. However, it would be more beneficial to create in our `SendPackedUserOp` script. Let's set up the essential code and also comment some steps for further building.
 
 **<span style="color:red">SendPackedUserOp.s.sol</span>**
+
 ```js
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
@@ -29,7 +31,7 @@ import {PackedUserOperation} from "lib/account-abstraction/contracts/interfaces/
 contract SendPackedUserOp is Script {
     function run() public {}
 
-    function generateSignedUserOperation(bytes memory callData) 
+    function generateSignedUserOperation(bytes memory callData)
     public view returns (PackedUserOperation memory) {
         // Step 1. Generate the unsigned data
         // Step 2. Sign and return it
@@ -62,12 +64,12 @@ function _generateUnsignedUserOperation(bytes memory callData)
 }
 ```
 
->[!NOTE] Gas fees and limits don't have to make sense at this point. 
+> ❗ **NOTE** Gas fees and limits don't have to make sense at this point.
 
 Now we can use our `_generateUnsignedUserOperation` function for step 1 of our `generateSignedUserOperation` function.
 
 ```js
-function generateSignedUserOperation(bytes memory callData, address sender) 
+function generateSignedUserOperation(bytes memory callData, address sender)
     public view returns (PackedUserOperation memory) {
         // Step 1. Generate the unsigned data
         uint256 nonce = vm.getNonce(sender);

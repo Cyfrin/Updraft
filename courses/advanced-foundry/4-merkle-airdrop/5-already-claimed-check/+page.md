@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Tracking
 
@@ -42,5 +42,3 @@ if (s_hasClaimed[account]) {
     revert MerkleAirdrop__AlreadyClaimed();
 }
 ```
-
-[Back to top](#top)

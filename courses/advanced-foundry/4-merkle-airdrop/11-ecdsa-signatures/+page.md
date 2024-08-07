@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### ECDSA
 
@@ -19,7 +19,6 @@ Elliptic curves possess several key mathematical properties that make them suita
 - They are symmetric about the x-axis.
 - Every point (x, y) on the curve has an inverse point (x, −y) also on the curve.
 - Adding two distinct points (x1, y1) and (x2, y2) on the curve involves drawing a line through them, which intersects the curve at a third point.
-
 
 In the context of blockchain technology, ECDSA is used for
 
@@ -64,5 +63,3 @@ Verifying ECDSA signatures involves using the signed message, the signature, and
 
 > 👮‍♂️ **BEST PRACTICE** <br>
 > Using `ecrecover` directly can lead to security issues such as signature malleability. This can be mitigated by restricting the value of `s` to one half of the curve. The use of **OpenZeppelin's ECDSA library** is recommended, which provides protection against signature malleability and prevents invalid signatures from returning a zero address.
-
-[Back to top](#top)

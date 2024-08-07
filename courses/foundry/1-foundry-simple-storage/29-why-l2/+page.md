@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -30,5 +30,3 @@ Deploying to ZK Sync Sepolia is similar to deploying to a ZK Sync local node. Yo
 
 > 🗒️ **NOTE** <br>
 > To understand the cost benefits of Layer 2 solutions, visit [L2Fees.info](https://l2fees.info) and compare the significant cost differences between sending a transaction on Ethereum and ZK Sync Era.
-
-[Back to top](#top)

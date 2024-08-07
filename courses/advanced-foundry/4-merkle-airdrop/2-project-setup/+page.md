@@ -6,9 +6,10 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Setup
+
 We can begin by creating a repository for our project with the command `mkdir merkle-airdrop` and navigate into it. Ensure you're on the regular version of Foundry by typing `foundryup` in your terminal. You can then run `forge init` to initialize an empty foundry project.
 
 ### BagelToken
@@ -72,6 +73,3 @@ However, looping through an array that can grow indefinetely can lead to **perfo
 ### Merkle Trees and Proofs
 
 Merkle Trees is the data structure that allows us to manage and verify large sets of data efficiently, while Merkle Proofs can help to prove that some piece of data is contained within a group.
-
-
-[Back to top](#top)

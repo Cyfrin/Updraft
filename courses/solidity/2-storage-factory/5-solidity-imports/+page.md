@@ -4,7 +4,7 @@ title: Solidity Imports
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -53,5 +53,3 @@ The import keyword allows a contract to use code from other files without includ
 
 1. 📕 What's a named import and what are the advantages of using it?
 2. 📕 In which way the `pragma` keyword can cause issues while using the `import` statement? Make 2 examples.
-
-[Back to top](#top)

@@ -2,7 +2,7 @@
 title: Getting Prices from Chainlink
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -72,5 +72,3 @@ This complete `getLatestPrice` function retrieves the latest price, adjusts the 
 1. 📕 Why we need to multiply the latest ETH price by 1e10?
 2. 📕 What's the result of the typecasting `uint256(-2)`?
 3. 🧑‍💻 Create a contract with a `getLatestBTCPriceInETH()` function that retrieves the latest BTC price in ETH.
-
-[Back to top](#top)

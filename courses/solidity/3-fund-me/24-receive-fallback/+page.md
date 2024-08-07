@@ -4,7 +4,7 @@ title: Receive & Fallback
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -72,5 +72,3 @@ By implementing `receive` and `fallback` functions, contracts can handle direct 
 
 1. 📕 How does the `fallback` function differ from the `receive` function?
 2. 📕 What does it happen when Ether is sent with _data_ but in the contract only a `receive` function exist?
-
-[Back to top](#top)

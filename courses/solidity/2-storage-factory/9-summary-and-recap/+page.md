@@ -4,7 +4,7 @@ title: Summary and Recap
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -57,5 +57,3 @@ When you finish a section, take a moment to acknowledge your progress, celebrate
 ### 🧑‍💻 Test yourself
 
 🏆 Attempt to answer all the theoretical questions from lesson 1 through 7, and then go back again to complete all the coding tasks.
-
-[Back to top](#top)

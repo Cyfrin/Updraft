@@ -1,12 +1,12 @@
 ---
-title:  zkSync DevOps
+title: zkSync DevOps
 ---
 
 _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -15,6 +15,7 @@ There are notable differences between the EVM and zkSync Era VM, as detailed in 
 ### `foundry-devops` Tools
 
 In the `FundMeTest.t.sol` file, certain tests that run on Vanilla Foundry may not work on zkSync Foundry, and vice versa. To address these differences, we will explore two packages from the [foundry-devops](https://github.com/Cyfrin/foundry-devops) repository: `ZkSyncChainChecker` and `FoundryZkSyncChecker`. This lesson will cover how to use these packages effectively.
+
 ```js
 import { ZkSyncChainChecker } from "lib/foundry-devops/src/ZkSyncChainChecker.sol";
 import { FoundryZkSyncChecker } from "lib/foundry-devops/src/FoundryZkSyncChecker.sol";
@@ -58,8 +59,8 @@ will pass in both Foundry environments. However, if you remove the `skipZkSync` 
 For more details on these modifiers, refer to the [foundry-devops repo](https://github.com/Cyfrin/foundry-devops?tab=readme-ov-file#usage---zksync-checker). The `skipzksync` modifier skips tests on the zkSync chain, while `onlyzksync` runs tests only on a zkSync-based chain.
 
 ### Foundry version modifiers
-Some tests may fail depending on the Foundry version. The `FoundryZkSyncChecker` package assists in executing functions based on the Foundry version. The `onlyFoundryZkSync` modifier allows tests to run only if `foundryup--zksync` is active, while `onlyVanillaFoundry` works only if `foundryup` is active.
-  > 🗒️ **Note** <br>
-  > Ensure `ffi = true` is enabled in the `foundry.toml` file.
 
-[Back to top](#top)
+Some tests may fail depending on the Foundry version. The `FoundryZkSyncChecker` package assists in executing functions based on the Foundry version. The `onlyFoundryZkSync` modifier allows tests to run only if `foundryup--zksync` is active, while `onlyVanillaFoundry` works only if `foundryup` is active.
+
+> 🗒️ **Note** <br>
+> Ensure `ffi = true` is enabled in the `foundry.toml` file.

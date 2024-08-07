@@ -1,14 +1,12 @@
 ---
-
 title: Deployment Script
-
 ---
 
 _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 To deploy the `BagelToken` and `MerkleAirdrop` contracts, we can follow a structured approach by creating a **deployment script**.
 
@@ -69,5 +67,3 @@ function setUp() public {
 ```
 
 The `zkSyncChainChecker` determines if we are currently on a zkSync chain. If we are not, we deploy the contracts using our script and proceed with testing. Otherwise, we directly deploy new instances of the `BagelToken` and `MerkleAirdrop` contracts, mint the necessary tokens to the contract owner, and transfer the required amount of tokens to the `MerkleAirdrop` contract.
-
-[Back to top](#top)

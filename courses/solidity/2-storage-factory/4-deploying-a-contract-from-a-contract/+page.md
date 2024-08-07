@@ -4,7 +4,7 @@ title: Deploying a Contract from a Contract (Factory)
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -27,8 +27,7 @@ contract StorageFactory {
 }
 ```
 
-> 👀❗**IMPORTANT** <br>
-> `SimpleStorage` on the left and `simpleStorage` on the right are treated as entirely distinct entities due to their differing capitalization. `Simple Storage` refers to the contract type while `simpleStorage` refers to the variable name.
+> 👀❗**IMPORTANT** <br> > `SimpleStorage` on the left and `simpleStorage` on the right are treated as entirely distinct entities due to their differing capitalization. `Simple Storage` refers to the contract type while `simpleStorage` refers to the variable name.
 
 When the `new` keyword is used, the compiler recognizes the intention to deploy a new contract instance. After compiling, we can proceed to deploy it.
 

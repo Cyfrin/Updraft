@@ -69,12 +69,12 @@ Ok, so our hook looks kinda gross, let me break it down.
 
 <img src="/formal-verification-3/11-ghosts-and-hooks/ghosts-and-hooks3.png" width="100%" height="auto">
 
-> [!NOTE]
+> ❗ **NOTE**
 > The STORAGE keyword was made unnecessarily in later updates to Certora
 
 Now that we have this hook, what do we want to do whenever this value is updated in our contract's storage? We want to increment our listingsUpdateCount!
 
-> [!TIP]
+> ❗ **PROTIP**
 > We're just hooking SSTORE in our example here, but hooks are compatible with a wide range of EVM opcodes. Check out the full list [**here**](https://docs.certora.com/en/latest/docs/cvl/hooks.html#evm-opcode-hooks).
 
 ```js
@@ -91,7 +91,7 @@ hook Sstore s_listings[KEY address nftAddress][KEY uint256 tokenId].price uint25
 
 We're now tracking each time our `s_listings` storage variable is updated in our contract, we _could_ improve this even further by having `listingUpdatesCount` be an array, and we could track that the `price` variable is actually being emitted etc. For the purposes of our lesson this is sufficient.
 
-> [!TIP]
+> ❗ **PROTIP**
 > This set up is so simple, there's really no reason something this couldn't be verified on every protocol. Go out there and write formal verification tests!
 
 Alright, we're only half done. We're counting the number of times our s_listing variable is updated, but we should also track how many events are called. Let's do that now. Remember to reference the hook patterns details on the [**Certora docs**](https://docs.certora.com/en/latest/docs/cvl/hooks.html#evm-opcode-hooks) if you're confused about where the syntax is coming from.

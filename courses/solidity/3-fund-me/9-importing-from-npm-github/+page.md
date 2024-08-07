@@ -4,7 +4,7 @@ title: Importing from NPM & GitHub
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -59,5 +59,3 @@ Efficiently managing external smart contracts is crucial in smart contract devel
 ### 🧑‍💻 Test yourself
 
 1. 📕 What is this statement `@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol` translated into when interpreted by the solidity compiler?
-
-[Back to top](#top)

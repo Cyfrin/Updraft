@@ -7,9 +7,10 @@ In this lesson, we are going to test our `_validateTransaction` function. Along 
 - make adjustments for `is-system = true`.
 
 ---
+
 ### Validate Transaction
 
-One of the key components to our `_validateTransaction` function is that it returns a 'magic' value if successful. This happens if there is a valid signer. 
+One of the key components to our `_validateTransaction` function is that it returns a 'magic' value if successful. This happens if there is a valid signer.
 
 ```js
 address signer = ECDSA.recover(txHash, _transaction.signature);
@@ -21,9 +22,10 @@ if (isValidSigner) {
 }
 return magic;
 ```
+
 ---
 
-Let's make a test for this and call it `testZkValidateTransaction`. 
+Let's make a test for this and call it `testZkValidateTransaction`.
 
 ```js
 function testZkValidateTransaction() public {
@@ -35,7 +37,7 @@ function testZkValidateTransaction() public {
 }
 ```
 
-For **Arrange** we can copy a lot of what we have from `testZkOwnerCanExecuteCommands`. 
+For **Arrange** we can copy a lot of what we have from `testZkOwnerCanExecuteCommands`.
 
 ```js
 // Arrange
@@ -48,6 +50,7 @@ Transaction memory transaction =
 ```
 
 ---
+
 ### Create Signed Transaction
 
 The big difference is that now we need to create a signed transaction. We can do this with another helper function. We will need to do something similar to what we did in the `generateSignedUserOperation` from [SendPackedUserOp.s.sol](https://github.com/Cyfrin/minimal-account-abstraction/blob/main/script/SendPackedUserOp.s.sol). We will use:
@@ -60,8 +63,8 @@ Additionally, we will need to encode hash the transaction, similar to what we di
 
 ```js
 import {
-    Transaction,
-    MemoryTransactionHelper
+  Transaction,
+  MemoryTransactionHelper,
 } from "lib/foundry-era-contracts/src/system-contracts/contracts/libraries/MemoryTransactionHelper.sol";
 ```
 
@@ -70,6 +73,7 @@ Since we will be using a default anvil key, let's go ahead and place an account 
 ```js
 address constant ANVIL_DEFAULT_ACCOUNT = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
 ```
+
 ---
 
 Let's fill out our helper function now. Essentially, we will need to:
@@ -81,7 +85,7 @@ Let's fill out our helper function now. Essentially, we will need to:
 
 ```js
 function _signTransaction(Transaction memory transaction) internal view returns (Transaction memory) {
-    bytes32 unsignedTransactionHash = MemoryTransactionHelper.encodeHash(transaction);    
+    bytes32 unsignedTransactionHash = MemoryTransactionHelper.encodeHash(transaction);
     uint8 v;
     bytes32 r;
     bytes32 s;
@@ -92,6 +96,7 @@ function _signTransaction(Transaction memory transaction) internal view returns 
     return signedTransaction;
 }
 ```
+
 ---
 
 When we deploy our minimal account, we'll need to initialize a new instance of our default anvil account. This will allow us to sign the transaction with the anvil default key. Let's do this with the other instances in our `setUp` function.
@@ -123,13 +128,15 @@ function testZkValidateTransaction() public {
     // Assert
 }
 ```
+
 ---
+
 ### Prank the Bootloader
 
 We know that the caller of our validateTransaction must be the bootloader. So, we can create a vm.prank in our **Act** for this. We will of course need to import `BOOTLOADER_FORMAL_ADDRESS`.
 
 ```js
-import {BOOTLOADER_FORMAL_ADDRESS} from "lib/foundry-era-contracts/src/system-contracts/contracts/Constants.sol";
+import { BOOTLOADER_FORMAL_ADDRESS } from "lib/foundry-era-contracts/src/system-contracts/contracts/Constants.sol";
 ```
 
 We will also need to call `validateTransaction` and pass the same arguments as we did in the **Act** for `testZkOwnerCanExecuteCommands`. The difference is that we will be setting it to `bytes4 magic`, as this is what the function returns.
@@ -141,13 +148,13 @@ bytes4 magic = minimalAccount.validateTransaction(EMPTY_BYTES32, EMPTY_BYTES32, 
 ```
 
 ---
+
 ### Assert
 
 We know from our `_validateTransaction` function that `magic = ACCOUNT_VALIDATION_SUCCESS_MAGIC`. Let's go ahead and import this from `IAccount`.
 
 ```js
-import {ACCOUNT_VALIDATION_SUCCESS_MAGIC} from
-    "lib/foundry-era-contracts/src/system-contracts/contracts/interfaces/IAccount.sol";
+import { ACCOUNT_VALIDATION_SUCCESS_MAGIC } from "lib/foundry-era-contracts/src/system-contracts/contracts/interfaces/IAccount.sol";
 ```
 
 Now we can simply place this in our **Assert**.
@@ -166,13 +173,12 @@ We need to do a couple of things before we run our test. First, let's add a vm.d
 vm.deal(address(minimalAccount), AMOUNT);
 ```
 
->[!IMPORTANT] We can no longer rely on `is-system = true` in our `foundry.toml`. We will have to pass `--system-mode=true` in the command line when we run forge test. Please be aware that this is likely to change again in the future.
+> ❗ **IMPORTANT** We can no longer rely on `is-system = true` in our `foundry.toml`. We will have to pass `--system-mode=true` in the command line when we run forge test. Please be aware that this is likely to change again in the future.
 
 ```js
 forge test --mt testZkValidateTransaction --zksync --system-mode=true
 ```
 
-Our test should pass and now we know that we can validate and execute transactions. 
+Our test should pass and now we know that we can validate and execute transactions.
 
-We've done a lot with this test. We now have an account abstraction contract on zkSync. Take a moment to review and reflect. Move on to the next lesson when you are ready. 
-
+We've done a lot with this test. We now have an account abstraction contract on zkSync. Take a moment to review and reflect. Move on to the next lesson when you are ready.

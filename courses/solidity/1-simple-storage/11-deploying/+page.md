@@ -4,7 +4,7 @@ title: Deploying a Contract
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -39,8 +39,7 @@ Since the contract has been deployed, we can now interact with it and **update t
 > 👀❗**IMPORTANT** <br>
 > View and pure functions will not send transactions
 
-> 💡 **TIP** <br>
-> _Celebrate small victories and milestones. These psychological boosts will keep you engaged in the learning process._
+> 💡 **TIP** <br> > _Celebrate small victories and milestones. These psychological boosts will keep you engaged in the learning process._
 
 It's possible to deploy a contract to different testnets or a real mainnet, just by switching the Metamask network. Be sure to have enough net-compatible ETHs to deploy your contract.
 
@@ -52,5 +51,3 @@ Deploying a Solidity contract to a testnet is a crucial step in the development 
 
 1. 📕 What steps should you take before deploying a contract to a testnet?
 2. 🧑‍💻 Deploy one simple Solidity contract to the Sepolia testnet. Which important information can you see on [etherscan](https://sepolia.etherscan.io/)?
-
-[Back to top](#top)

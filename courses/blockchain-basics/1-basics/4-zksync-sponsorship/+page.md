@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Layer 2 Solutions
 
@@ -20,5 +20,3 @@ We extend our gratitude to Matter Labs and the ZK Sync team for being the lead s
 ### Deploying to production
 
 As of recording, deploying professional smart contracts to ZK Sync may present some challenges. We recommend consulting our [guide](https://github.com/Cyfrin/foundry-full-course-cu/blob/main/read-before-deploying-serious-projects-to-zksync.md) in the GitHub repository before deploying a production smart contract on ZK Sync.
-
-[Back to top](#top)

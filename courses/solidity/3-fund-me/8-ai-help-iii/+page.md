@@ -4,7 +4,7 @@ title: AI Help III
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -62,5 +62,3 @@ By leveraging AI and discussion forums, you can gain a deeper understanding of c
 ### 🧑‍💻 Test yourself
 
 1. 📕 Dive deeper into the `getVersion` function by asking AI three more questions about it
-
-[Back to top](#top)

@@ -38,7 +38,7 @@ Cons:
 
 Using a custodial wallet can be seen as a first step towards entering the Web3 space, but it's important to remember that the crypto stored in these wallets is not truly owned by the user. Exchanges like `Binance`, `Kraken`, `Coinbase`, and `PayPal` have control over the private keys and can deny access to the funds. While using custodial wallets is not advisable for those who are well-versed in web3 technology, it may be a suitable approach for individuals who are new to the technology and lack understanding.
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > I highly encourage people to advance past the beginner stage and educate themselves enough to be comfortable with self-custodial situations.
 
 ### Wrap Up

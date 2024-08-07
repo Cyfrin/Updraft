@@ -30,7 +30,7 @@ The real meat of this protocol can be found in `DSCEngine.sol`. `DecentralizeSta
 
 In addition to all the source contracts, this protocol comes with a full test suite including `unit`, `fuzz` and `invariant` tests, all which we're doing to build together.
 
-> [!TIP]
+> ❗ **PROTIP**
 > Invariant tests are, in my mind, what set apart mediocre developers from truly skilled and advanced ones.
 
 We'll also be recreating all the scripts that you can see in the scripts folder, primarily a deploy script, spiced up to include `Chainlink Pricefeeds`, used to determine the prices of collateral.

@@ -100,7 +100,7 @@ function withdraw(address recentWinner) public {
 
 **staticcall:** How we call view or pure functions
 
-> [!TIP] > `send` and `delegatecall` also exist as options for low-level calling to the blockchain, but we'll go over these in greater detail later!
+> ❗ **PROTIP** > `send` and `delegatecall` also exist as options for low-level calling to the blockchain, but we'll go over these in greater detail later!
 
 When we write `recentWinner.call{value: address(this).balance}("");` we're directly updating the value property of the transaction we're sending. The parenthesis at the end of this call are where we provide our transaction data.
 

@@ -6,11 +6,11 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
-In this lesson, we will be **manually deploying on zkSync Sepolia**. Although scripts are highly recommended in order  to avoid mistakes and save funds, we will proceed with typing command directly in the terminal since scripts do not work well on zkSync at the moment of recording. 
+In this lesson, we will be **manually deploying on zkSync Sepolia**. Although scripts are highly recommended in order to avoid mistakes and save funds, we will proceed with typing command directly in the terminal since scripts do not work well on zkSync at the moment of recording.
 
 As usual, we will deploy the contracts `BagelToken` and `MerkleAirdrop`, generate the message hash, sign it, and split our long signature into its _v, r, s_ components. We'll then mint and trasfer tokens to the `MerkleAirdrop` contract, claim the tokens from a third party address and finally verify this claim.
 
@@ -74,5 +74,3 @@ To verify the claim, check the balance of the second account. If the balance ref
 cast call ${TOKEN_ADDRESS} "balanceOf(address)" 0x2ea3970Ed82D5b30be821FAAD4a731D35964F7dd --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL}
 cast --to-dec 0x0000000000000000000000000015af1d78b58c40000
 ```
-
-[Back to top](#top)

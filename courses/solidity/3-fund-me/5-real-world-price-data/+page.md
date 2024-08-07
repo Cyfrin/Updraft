@@ -2,7 +2,7 @@
 title: Real-World Price Data
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -67,5 +67,3 @@ _Chainlink Data Feeds_ will help integrate currency conversion inside of our `Fu
 ### 🧑‍💻 Test yourself
 
 1. 📕 Describe 4 Chainlink products and what problem each one solves.
-
-[Back to top](#top)

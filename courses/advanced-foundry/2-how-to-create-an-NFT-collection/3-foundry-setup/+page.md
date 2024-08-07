@@ -140,7 +140,7 @@ It's this metadata that defines what the properties of the NFT are, including wh
 
 What this means to us is - any time someone mints a Doggie NFT, we need to assign a TokenURI to the minted TokenID which contains all the important information about the Doggie. Let's consider what this function would look like.
 
-> [!NOTE]
+> ❗ **NOTE**
 > The OpenZeppelin implementation of ERC721, which we've imported, has it's own virtual tokenURI function which we'll be overriding.
 
 By navigating to any NFT on OpenSea, you can find a link to the collection's contract on Etherscan. Click on `Read Contract` and find the tokenURI function (here's a link to [**Pudgy Penguins**](https://etherscan.io/address/0xbd3531da5cf5857e7cfaa92426877b022e612cf8#readContract) if you need it).

@@ -31,5 +31,3 @@ In the next section, we will move from Remix to a code editor to experiment with
 ### 🧑‍💻 Test yourself
 
 1. 🏆 Attempt to answer all the theoretical questions from lessons 13 through 25, and then go back again to complete all the coding tasks.
-
-[Back to top](#top)

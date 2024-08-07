@@ -4,7 +4,7 @@ title: Message Sender (msg.sender)
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -48,5 +48,3 @@ We have successfully implemented a system to track users who fund the `fundMe` c
 
 1. 📕 Explain why we need to use the mapping `addressToAmountFunded` inside the `fundMe` contract
 2. 🧑‍💻 Implement a function `contributionCount` to monitor how many times a user calls the `fund` function to send money to the contract.
-
-[Back to top](#top)

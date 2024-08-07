@@ -6,7 +6,7 @@ _Follow along with this video:_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -42,5 +42,3 @@ Blockchain technology has revolutionized digital transactions and agreements. Bi
 
 1. 📕 Describe briefly what are Bitcoin, Ethereum and Chainlink
 2. 📕 What are the key advantages of smart contracts over traditional financial systems?
-
-[Back to top](#top)

@@ -6,8 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
+> </a>
 
 ### Introduction
 
@@ -26,5 +25,3 @@ At Cyfrin, we're committed to providing the best tools and platforms to excel as
 ### Conclusion
 
 These four key reasons—security, EVM compatibility, wallet support, and low cost—make ZK Sync Era a superior choice for deploying and interacting with smart contracts.
-
-[Back to top](#top)

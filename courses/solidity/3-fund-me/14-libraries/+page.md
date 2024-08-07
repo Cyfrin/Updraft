@@ -4,7 +4,7 @@ title: Libraries
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -81,5 +81,3 @@ In this lesson, we explored the benefits of using _libraries_ to reuse code and 
 1. 📕 What are the differences between Solidity _libraries_ and _contracts_?
 2. 📕 What are the consequences if a library function is not marked as `internal`?
 3. 🧑‍💻 Create a simple library called `MathLibrary` that contains a function `sum` to add two `uint256` numbers. Then create a function `calculateSum` inside the `fundMe` contract that uses the `MathLibrary` function.
-
-[Back to top](#top)

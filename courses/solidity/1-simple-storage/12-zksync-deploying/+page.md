@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -22,5 +22,3 @@ To deploy contracts on zkSync, you'll need testnet funds. There are two methods 
 ### Deploying
 
 To deploy a contract to ZK-Sync, there are a few key steps to follow. First, it's crucial to configure zkSync in your Metamask wallet. Next, you'll need to acquire testnet ETH, which is necessary for deploying and testing your contract.
-
-[Back to top](#top)

@@ -32,7 +32,7 @@ You're highly encouraged to read through these articles for more context and a d
 
 `Sandwich Attacks` represent a very specific style of attack vector. We'll go through a couple different example pulled from [**Solodit**](https://solodit.xyz/) to outline how they work.
 
-> [!TIP]
+> ❗ **PROTIP**
 > Solodit is the industry leading aggregator of validated smart contract vulnerabilities and should absolutely be in every security researcher's toolbelt!
 
 `Sandwich Attacks` are similar in nature to `Just In Time (JIT)` liquidity exploits in that they both involve a `front run` and `back run` phase of the attack.

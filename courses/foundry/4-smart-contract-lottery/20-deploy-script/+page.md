@@ -5,7 +5,8 @@ title: Deploy Raffle Script
 _Follow along with the video_
 
 ---
-<a name="top"></a>
+
+> </a>
 
 Let's begin by creating a new file in the `/script` directory called `DeployRaffle.sol` and importing the `Raffle` contract.
 
@@ -124,5 +125,3 @@ function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
 ```
 
 This approach ensures that we have a robust configuration mechanism that adapts to the actual deployment environment.
-
-[Back to top](#top)

@@ -46,7 +46,7 @@ The Beanstalk Protocol contains token based governance linked to its STALK token
 
 Proposals to the protocol are made via BIPs (Beanstalk Improvement Proposals)
 
-> [!TIP]
+> ❗ **PROTIP**
 > Beanstalk had been audited several times before they were exploited! This goes to show you can never be _too_ secure!
 
 ### How Are BIPs Executed?

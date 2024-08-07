@@ -12,7 +12,7 @@ You can find all the code we'll be working with in this section in this [**Suble
 
 Until now, we've been using abi.encode and abi.encodePacked effectively as a means to concatenate strings (which has actually been deprecated in favour of string.concat). In this lesson we'll head back into [**Remix**](https://remix.ethereum.org) to further explore what's actually happening when we invoke these functions.
 
-> [!NOTE]
+> ❗ **NOTE**
 > This section is definitely going to be a little advanced. We're going to go deep into the Ethereum Virtual Machine, op codes and the binary that makes everything work behind the scene.
 >
 > If you don't understand things right away that's 100% ok. I encourage you to challenge yourself to absorb as much of this as possible before moving on. There's no shame in going through the content a couple times.
@@ -53,7 +53,7 @@ bytes: 0x4869204d6f6d21204d69737320796f7521
 
 You'll see lots of things throughout this list that you're already familiar with. Things like `msg.sender`, `msg.value`, `block.chainid` and more. I encourage you to look through the list!
 
-> [!NOTE]
+> ❗ **NOTE**
 > Since Solidity v0.8.12, you no longer need to use abi.encodePacked to contenate strings. The preferred method is via `string.concat(stringA, stringB)`.
 
 Before we dive deeper into what's happening when we call `encodePacked`, let's first investigate some of the finer details of sending a transaction.
@@ -118,7 +118,7 @@ function encodeNumber() public pure returns(bytes memory){
 }
 ```
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > ABI stands for application binary interface. What we've largely seen is the human readable version of an ABI.
 
 Go ahead and compile/deploy Encoding.sol with this new function and call it. We should have the encoded version of the number `1` output.

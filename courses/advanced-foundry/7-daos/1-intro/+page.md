@@ -28,7 +28,7 @@ DAO stands for Decentralized Autonomous Organization, this is defined as:
 
 **_Any group that is governed by a transparent set of rules found on a blockchain or smart contract._**
 
-> [!TIP]
+> ❗ **PROTIP**
 > Don't confuse DAO with **The DAO**. The DAO was.. a DAO, one of the earliest, which was hacked back in 2016! Read more about [**The DAO Hack**](https://www.gemini.com/cryptopedia/the-dao-hack-makerdao).
 
 It's not entirely accurate, but an easy way to think about a DAO is like a big company where all the actions of the company are decided upon by Immutable, Transparent, Decentralized voting mechanisms.
@@ -85,7 +85,7 @@ If voting succeeds, a proposal will be queued for execution. This queue period a
 
 Following this timelock period, the proposal is executed!
 
-> [!NOTE]
+> ❗ **NOTE**
 > Often just submitting a proposal isn't enough to garner the votes needed for it to be executed. Often some type of discussion forum or community space is needed to allow users to attack and defend a proposal.
 
 ### DAO Architecture

@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 Throughout this course, you will learn from guest lecturers and leading industry professionals, ensuring you receive top-quality content and the latest information in smart contract development.
 

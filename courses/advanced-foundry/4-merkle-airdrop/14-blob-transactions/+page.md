@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -36,5 +36,3 @@ Validating these blobs involves using the [`BLOBHASH`](https://www.evm.codes/#49
 
 - [What is EIP-4844?](https://www.cyfrin.io/blog/what-is-eip-4844-proto-danksharding-and-blob-transactions)
 - [send_blob](https://github.com/PatrickAlphaC/send_blob) GitHub repository
-
-[Back to top](#top)

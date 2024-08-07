@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### MEV - Live AGAIN!
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > The true value in this (and the prior lesson) is found in seeing this exploit in action. If you're unable to watch this currently, I encourage you to return when you can!
 
 So, a lot of people saw me do this and started to theorize.

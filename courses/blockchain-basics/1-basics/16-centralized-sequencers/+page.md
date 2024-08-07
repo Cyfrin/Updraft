@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -27,5 +27,3 @@ The centralization of sequencers in blockchain networks poses significant risks,
 ### 🧑‍💻 Test yourself
 
 1. 📕 Explain what are the primary risks associated with centralized sequencers.
-
-[Back to top](#top)

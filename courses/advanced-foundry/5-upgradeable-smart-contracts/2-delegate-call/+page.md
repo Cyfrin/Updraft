@@ -80,7 +80,7 @@ By calling setVars and passing an argument, we can see how the storage variables
 
 Now we can deploy Contract A. This contract should default to empty storage variables as well. When we call `setVars` on Contract A however, it's going to borrow the setVars logic from Contract B and we'll see it update it's own storage, rather than Contract B's.
 
-> [!NOTE]
+> ❗ **NOTE**
 > We'll need to pass Contract B as an input parameter to Contract A's setVars function so it knows where to delegate to!
 
 <img src="/foundry-upgrades/2-delegatecall/delegatecall5.png" width="100%" height="auto">

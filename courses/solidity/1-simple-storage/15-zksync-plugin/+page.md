@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -43,5 +43,3 @@ To check our deployment, you can copy the contract address and paste it into the
 ### Conclusion
 
 Well done! You've successfully deployed a smart contract to the zkSync testnet, marking a notable achievement and a significant step forward in your development journey.
-
-[Back to top](#top)

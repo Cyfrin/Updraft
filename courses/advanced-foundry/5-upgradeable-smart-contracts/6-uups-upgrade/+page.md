@@ -75,7 +75,7 @@ function upgradeBox(address proxyAddress, address newBox) public returns (addres
 }
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > We're unable to call a function on an address provided as a parameter here, but by wrapping the address in BoxV1 (which needs to be imported), we provide our function the ABI necessary to reference the upgradeTo function within the proxy address.
 
 Now, we can add upgradeBox to our scripts run function.

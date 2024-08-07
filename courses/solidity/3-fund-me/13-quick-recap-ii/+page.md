@@ -4,7 +4,7 @@ title: Quick Recap II
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -38,5 +38,3 @@ By understanding these concepts, you can effectively interact with external cont
 ### 🧑‍💻 Test yourself
 
 1. 🏆 Attempt to answer all the theoretical questions from lessons 1 through 12, and then go back again to complete all the coding tasks.
-
-[Back to top](#top)

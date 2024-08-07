@@ -6,10 +6,11 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
-In this lesson, we are going to implement Merkle proofs and Merkle trees in our `MerkleTree.sol` contract by setting up the  _constructor_ and creating a _claim_ function.
+
+In this lesson, we are going to implement Merkle proofs and Merkle trees in our `MerkleTree.sol` contract by setting up the _constructor_ and creating a _claim_ function.
 
 ### Constructor
 
@@ -84,6 +85,3 @@ i_airdropToken.safeTransfer(account, amount);
 ### Conclusion
 
 This code effectively initializes the airdrop contract with the required ERC-20 token and Merkle root, verifies claims through Merkle proofs and securely transfers tokens to the claimer address.
-
-
-[Back to top](#top)

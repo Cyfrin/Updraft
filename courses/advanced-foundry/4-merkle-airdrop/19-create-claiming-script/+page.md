@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -62,5 +62,3 @@ function claimAirdrop(address airdrop) public {
     vm.stopBroadcast();
 }
 ```
-
-[Back to top](#top)

@@ -165,7 +165,7 @@ assert(wethValue + wbtcValue > totalSupply);
 
 With this in place our open invariant test is ready! Try to run it.
 
-> [!TIP]
+> ❗ **PROTIP**
 > Import `console` and add `console.log("Weth Value: ", wethValue)`, `console.log("Wbtc Value: ", wbtcValue)`, `console.log("Total Supply: ", totalSupply)` for more clear readouts from your test.
 
 ```bash

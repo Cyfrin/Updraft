@@ -51,7 +51,7 @@ library OracleLib {
 
 Now, we just need to calculate the time since the last update, and if it's over a threshold, we'll revert and return our variables. `Chainlink` sets a `heartbeat` of `3600 seconds for the ETH/USD` price feed, we'll give it even more time and set a `TIMEOUT` of `3 hours`. We can add a custom error to handle timeouts at this step as well.
 
-> [!TIP] > `hours` is a keyword in solidity that is effectively `*60*60 seconds` .
+> ❗ **PROTIP** > `hours` is a keyword in solidity that is effectively `*60*60 seconds` .
 >
 > `3 hours` == `3 * 60 * 60` == `10800 seconds`.
 

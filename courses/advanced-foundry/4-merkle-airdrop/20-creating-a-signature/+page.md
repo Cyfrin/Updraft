@@ -6,10 +6,11 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
-In this lesson, we'll create a signature for a default **Anvil** address, allowing a third-party account to claim tokens on its behalf. 
+
+In this lesson, we'll create a signature for a default **Anvil** address, allowing a third-party account to claim tokens on its behalf.
 
 Ensure you have a local Anvil node running, by executing the `anvil` command in your terminal and use the `foundryup` command to get the vanilla version of Foundry.
 
@@ -37,5 +38,3 @@ cast wallet sign --no-hash 0x184e30c4b19f5e304a893524210d50346dad61c461e79155b91
 ```
 
 Well done! We just obtained a **single signature**, which we will break down into the v, r, and s components in the next lesson.
-
-[Back to top](#top)

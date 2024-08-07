@@ -257,7 +257,7 @@ So far we've afforded our users a way to put money _into_ the protocol, they'll 
 function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral) public moreThanZero(amountCollateral) nonReentrant{}
 ```
 
-> [!TIP]
+> ❗ **PROTIP**
 > DRY: Don't Repeat Yourself. We'll be employing this concept from computer science later when we return to this function to refactor things.
 
 We append the `moreThanZero` and `nonReentrant` modifiers to our function to prevent zero value transactions and as a safeguard for reentrancy.
@@ -271,7 +271,7 @@ function redeemCollateral(address tokenCollateralAddress, uint256 amountCollater
 }
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > We're relying on the Solidity compiler to revert if a user attempts to redeem an amount greater than their balance. More recent versions of the Solidity compiler protect against unsafe math.
 
 Don't forget to add your event to the top of your contract as well.
@@ -333,7 +333,7 @@ function burnDsc(uint256 amount) public moreThanZero(amount){
 }
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > We've added `_revertIfHealthFactorIsBroken`, but realistically, it should never hit, the user is burning "debt" and this should only improve the `Health Factor` of the account. A gas audit may remove this line.
 
 ### redeemCollateralForDsc

@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -24,8 +24,7 @@ function getSignerSimple(uint256 message, uint8 _v, bytes32 _r, bytes32 _s) publ
 }
 ```
 
-> 🗒️ **NOTE** <br>
-> `ecrecover` is a function built into the Ethereum protocol.
+> 🗒️ **NOTE** <br> > `ecrecover` is a function built into the Ethereum protocol.
 
 ```js
 function verifySignerSimple(
@@ -232,5 +231,3 @@ function verifySignerOZ(
 ### Conclusion
 
 EIP 191 standardizes the format of signed data, while EIP 712 extends data standardization to structured data and introduces domain separators to prevent cross-domain replay attacks.
-
-[Back to top](#top)

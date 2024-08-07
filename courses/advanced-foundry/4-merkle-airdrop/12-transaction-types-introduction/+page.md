@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 To gain a clearer understanding of transaction types, let's return to Remix and deploy again a simple smart contract, such as `SimpleStorage.sol`.
 
@@ -15,5 +15,3 @@ We'll utilize the ZK Sync Remix plugin for deployment, ensuring our environment 
 This MetaMask **signature request** displays details about the message, including transaction type, sender, recipient, and gas limit. This message shows an EIP712 message, with a transaction type `113`. Upon signing, the Remix terminal will then show the signed message's details like type, recipient, sender, gasLimit, gasPerPubdataByteLimit.
 
 <img src="/foundry-merkle-airdrop/12-transaction-types-introduction/signature-request.png" width="100%" height="auto">
-
-[Back to top](#top)

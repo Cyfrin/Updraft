@@ -12,7 +12,7 @@ Welcome back! As mentioned in the closing of our last lesson, we could absolutel
 
 In this section, I'll guide you on using the OpenZeppelin Library to achieve this.
 
-> [!NOTE]
+> ❗ **NOTE**
 > OpenZeppelin is renowned for its Smart Contract framework, offering a vast repository of audited contracts readily integratable into your codebase.
 
 Access [OpenZeppelin's documentation](https://docs.openzeppelin.com/contracts/4.x/) via their official website. By navigating to [Products -> Contracts](https://www.openzeppelin.com/contracts), you can discover a vast array of ready-to-use contracts.
@@ -48,7 +48,7 @@ contract OurToken is ERC20 {
 
 By importing the OpenZeppelin implementation of ERC20 this way, we inherit all the functionality of the ERC20 standard with much less work and a level of confidence that the code has been testing and verified.
 
-> [!TIP]
+> ❗ **PROTIP**
 > If you're looking for an alternative library full of trusted contracts, I recommend looking at the [**Solmate Repo**](https://github.com/transmissions11/solmate) by Transmissions11.
 
 Now, we should recall that when inheriting from a contract with a constructor, our contract must fulfill the requirements of that constructor. We'll need to define details like a name and symbol for OurToken.

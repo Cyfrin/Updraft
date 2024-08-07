@@ -6,9 +6,10 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introductioon
+
 Merkle Trees, Merkle Proofs, and Root Hashes are very important concepts in the realm of IT and blockchain technology. Invented by Ralph Merkle in 1979, a Merkle tree is a hierarchical structure where its base consists of **leaf nodes** representing data that has been hashed. The top of the tree is the **root hash**, created by hashing together pairs of adjacent nodes. This process continues up the tree, resulting in a single **root hash** that will represents all the data in the tree.
 
 <img src="/foundry-merkle-airdrop/03-merkle-proof/merkle-tree.png" width="100%" height="auto">
@@ -22,7 +23,7 @@ For example, to prove that `Hash B` is part of the Merkle Tree, you would provid
 This allows the Merkle Tree **verifier** to reconstruct a root hash and compare it to the expected root hash. If they match, the original data is confirmed to be part of the Merkle tree.
 
 > 👀❗**IMPORTANT** <br>
->  Secure hashing functions, such as `keccak256`, are designed to prevent hash collisions
+> Secure hashing functions, such as `keccak256`, are designed to prevent hash collisions
 
 ### Applications
 
@@ -37,6 +38,7 @@ function verify(bytes32[] memory proof, bytes32 root, bytes32 leaf) internal pur
     return processProof(proof, leaf) == root;
 }
 ```
+
 > 🗒️ **NOTE** <br>
 > The **root** is typically stored _on-chain_, while the **proof** is generated _off-chain_.
 
@@ -51,7 +53,7 @@ function processProof(bytes32[] memory proof, bytes32 leaf) internal pure return
     return computedHash;
 }
 ```
-### Conclusion
-Merkle proofs will help verifying that a specific piece of data is part of the Merkle tree. By providing hashes of sibling nodes at each level of the tree, a verifier can reconstruct the root hash and confirm data integrity.
 
-[Back to top](#top)
+### Conclusion
+
+Merkle proofs will help verifying that a specific piece of data is part of the Merkle tree. By providing hashes of sibling nodes at each level of the tree, a verifier can reconstruct the root hash and confirm data integrity.

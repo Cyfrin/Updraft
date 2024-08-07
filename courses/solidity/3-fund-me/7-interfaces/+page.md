@@ -4,7 +4,7 @@ title: Interfaces
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -59,5 +59,3 @@ Using interfaces is a common and effective way to interact with external contrac
 1. 📕 Explain the role of interfaces in Solidity and why are they advantageous.
 2. 📕 What are the steps required to convert a variable containing a value in ETH to its equivalent in USD?
 3. 🧑‍💻 Implement another function on the `FundMe` contract that implements the `decimals()` methods of the Data Feed address.
-
-[Back to top](#top)

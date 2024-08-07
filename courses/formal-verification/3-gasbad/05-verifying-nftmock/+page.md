@@ -52,7 +52,7 @@ Then we can run:
 certoraRun ./certora/conf/NftMock.conf
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > You don't need to run the Certora prover as often as I do, sometimes these runs can take a long time, so if you want to follow along that's fine. I do recommend you run it a few times to get a feel for it and build your familiarity however.
 
 Running the above on our current spec is going to of course pass. The proof is a tautology and our spec isn't testing anything meaningful.

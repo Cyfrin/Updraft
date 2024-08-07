@@ -107,7 +107,7 @@ You can see what I mean by spectrum by comparing how some of these tokens functi
 
 <img src="/foundry-defi/3-defi-stablecoins-but-actually/defi-stablecoins-but-actually3.png" width="100%" height="auto">
 
-> [!NOTE]
+> ❗ **NOTE**
 > Dirt Roads uses `Dumb` as the opposite of algorithmic, instead of governed.
 
 You'll notice that most Fiat-Collateralized assets are more governed, as you'll often need a centralized entity to onramp the fiat into the blockchain ecosystem.
@@ -180,7 +180,7 @@ DAI is one of the most influential DeFi projects ever created.
 
 Effectively how DAI works is, a user deposits some form of crypto collateral, such as ETH, and based on the currect value of that collateral in US Dollars, some value of DAI is minted the user. It's only possible to mint _less_ DAI than the value of collateral a user has deposited. In this way the stablecoin is said to be over-collateralized.
 
-> [!NOTE]
+> ❗ **NOTE**
 > DAI also has an annual stability fee on deposited collateral ~2%
 
 When a user wants to redeem their collateral, DAI must be deposited back into the protocol, which then burns the deposited DAI and released the appropriate amount of collateral.

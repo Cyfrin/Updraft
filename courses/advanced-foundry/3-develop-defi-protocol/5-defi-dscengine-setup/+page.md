@@ -70,7 +70,7 @@ Time for NATSPEC, remember, we want to be as verbose and clear in presenting wha
 contract DSCEngine {}
 ```
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > Verbosity.
 
 I know this may seem like a lot, but a common adage is: `Your code will be written once, and read thousands of times.` Clarity and cleanliness in code is important to provide context and understanding to those reading the codebase later.

@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -103,5 +103,3 @@ function _isValidSignature(
 ```
 
 This function uses `ECDSA::tryRecover` to recover the signer's address from the signature and compare it to the provided account. It also protects against signature malleability and reverts on zero addresses according to OpenZeppelin's ECDSA implementation.
-
-[Back to top](#top)

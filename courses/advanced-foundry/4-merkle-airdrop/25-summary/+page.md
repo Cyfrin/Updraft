@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 In this section, we covered a comprehensive range of topics including _airdrops_, _signatures_, and _scripting_.
 
@@ -19,5 +19,3 @@ Following this, we developed few scripts for deploying and interacting with our 
 Lastly, we examined various transaction types and the principles of the elliptic curve digital signature algorithm (eCDSA).
 
 Well done! 🪩 🕺🏼
-
-[Back to top](#top)

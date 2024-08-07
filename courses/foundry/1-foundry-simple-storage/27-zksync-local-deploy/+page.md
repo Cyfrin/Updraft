@@ -5,7 +5,8 @@ title: zkSync Local Deployment
 _Follow along with the video_
 
 ---
-<a name="top"></a>
+
+> </a>
 
 In this lesson, we are going to deploy the contract `SimpleStorage.sol` on a **zkSync local chain**.
 
@@ -29,6 +30,3 @@ This command instructs Foundry to locate the `SimpleStorage` contract in the `sr
 Using the `--legacy` flag is recommended for deploying simple contracts, while more complex codebases may require different approaches. Attempting to deploy without the `--legacy` flag might result in errors like `failed to serialize transaction, address to address is null`, which will be covered in future lessons.
 
 Once you are finished, you can close Docker Desktop and revert to the Vanilla Foundry environment using the `foundryup` command.
-
-
-[Back to top](#top)

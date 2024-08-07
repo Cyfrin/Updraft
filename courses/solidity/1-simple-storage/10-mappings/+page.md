@@ -4,7 +4,7 @@ title: Solidity Mappings
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -57,5 +57,3 @@ Mapping can be a versatile tool to increase efficiency when attempting to find e
 
 1. 📕 In which cases is better to use an array instead of a mapping?
 2. 🧑‍💻 Create a Solidity contract with a mapping named `addressToBalance`. Implement functions to add and retrieve data from this mapping.
-
-[Back to top](#top)

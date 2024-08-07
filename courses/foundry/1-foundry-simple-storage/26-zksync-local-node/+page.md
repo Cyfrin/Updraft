@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -30,11 +30,10 @@ To start your local zkSync node, run `npx zksync-cli dev start`. This command sp
 > 🗒️ **NOTE** <br>
 > If Docker isn’t running, the `npx zksync-cli dev start` command will fail. Ensure Docker is running before attempting to start the zkSync node again.
 
-
 ### Deployment
+
 The zkSync deployment process is similar to previous deployments. We will use the same commands, but this time, we will append the `--zkSync` and `--legacy` flags. Note that the `forge script` command is not well supported in zkSync, so we will use `forge create` instead.
 
 ### Conclusion
-Setting up a local zkSync node involves a few additional tools, including Docker, Node.js, npm, and zksync-cli: they will help creating a robust zkSync development environment and allowing test and deployment of smart contracts on a zkSync local chain.
 
-[Back to top](#top)
+Setting up a local zkSync node involves a few additional tools, including Docker, Node.js, npm, and zksync-cli: they will help creating a robust zkSync development environment and allowing test and deployment of smart contracts on a zkSync local chain.

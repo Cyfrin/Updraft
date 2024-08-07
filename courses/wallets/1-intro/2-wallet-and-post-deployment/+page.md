@@ -14,7 +14,7 @@ To get started, we will walk through various wallet configurations that you may 
 
 I am going to teach this course a little differently than some of my other courses. This is the type of course where you just have to follow along, listen attentively, take notes, and we will have a quiz at the end. There won't be a lot of coding involved; instead, simply follow along and quiz yourself at the end.
 
-> [!TIP]
+> ❗ **PROTIP**
 > Never deploy a protocol with a single externally owned account (EOA).
 
 If you are watching this now, you should already know how to work with wallets like [**MetaMask**](https://metamask.io/), [**Rabbi**](https://rabby.io/), or [**Frame**](https://frame.sh/) because they are easy to use, provide good visualization, and are great for learning.

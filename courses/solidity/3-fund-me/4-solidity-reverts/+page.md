@@ -4,7 +4,7 @@ title: Solidity Reverts and Gas
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -74,5 +74,3 @@ During a **_contract interaction transaction_**, it will instead be populated wi
 1. 📕 Describe the two types of transactions listed in this lesson.
 2. 📕 Why are reverts used?
 3. 🧑‍💻 Bob sets his gas price to 20 Gwei and his gas limit to 50,000 units. The transaction consumes 30,000 units of gas before a revert occurs. How much ETH will be effectively charged?
-
-[Back to top](#top)

@@ -26,7 +26,7 @@ Foundry includes a cast command which can conveniently decode bytecode like this
 --calldata-decode: Decode ABI-encoded input data [aliases: cdd]
 ```
 
-> [!TIP]
+> ❗ **PROTIP**
 > You can run `cast --help` for an exhaustive list of available cast commands!
 
 Now, if we just run `cast calldata-decode` it's going to tell us we need a function signature (SIG) and our calldata (CALLDATA). We know how we can verify the function signature of our contract easily enough. In the image above, it looks like we're intending to call `"MintNFT(string)"`. What happens when we run:

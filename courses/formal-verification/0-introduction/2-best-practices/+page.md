@@ -16,7 +16,7 @@ Let's kick things off with some resources and best practices to succeed in this 
 
 [**Cyfrin Discord**](https://discord.gg/cyfrin) - Join an active and growing community to meet fellow students, converse with auditors and receive support along the way.
 
-> [!NOTE]
+> ❗ **NOTE**
 > Each section's respective repo will have its own `discussions` tab. Please use this to raise questions, doubts or concerns! Please leverage `discussions` for technical questions as often as you can so others may learn from your question!
 
 <img src="/formal-verification-0/best-practices/best-practices1.png" width="100%" height="auto">
@@ -36,12 +36,12 @@ This space moves quickly and things are always changing, because of this some re
 
 <img src="/formal-verification-0/best-practices/best-practices3.png" width="100%" height="auto">
 
-> [!NOTE]
+> ❗ **NOTE**
 > If you would like to contribute subtitles for your native language, please reach out via [**GitHub Issues**](https://github.com/Cyfrin/assembly-evm-opcodes-and-formal-verification-course/issues), or [**Cyfrin Discord**](https://discord.gg/cyfrin) server.
 
 - **Bounce Around:** This course is intended to be modular! You needn't complete the content sequentially, feel free to bounce around as you need more or less context for each topic.
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > Repetition is the mother of skill.
 
 - **Collaborate:** This space is incredibly collaborative. Be sure to join likeminded communities, jump into discussions, and leverage forums and AI to your advantage each step of the way. Communities like [Peerahna](https://peeranha.io/) and [Stack Exchange](https://ethereum.stackexchange.com/) are great to get involved in.

@@ -49,7 +49,7 @@ Let's look at how we can create our own simple SVG, right in our IDE. Create the
 </svg>
 ```
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > You will likely need to download a SVG preview extention to view the SVG in your IDE. I recommend trying [**SVG Preview**](https://marketplace.visualstudio.com/items?itemName=SimonSiefke.svg-preview).
 
 <img src="/foundry-nfts/11-what-is-svg/what-is-svg2.png" width="100%" height="auto">
@@ -118,7 +118,7 @@ This same process can be applied to our SVG images for our NFTs. You can navigat
 </svg>
 ```
 
-> [!TIP]
+> ❗ **PROTIP**
 > If you don't have happy.svg and sad.svg images within your img folder, now would be a great time to create them! Copy the SVG code from the [**GitHub Repo**](https://github.com/Cyfrin/foundry-nft-f23/tree/main/images/dynamicNft)!
 
 Once we have both of these images in our workspace, we can run our base64 commands to encode them (those without base64, feel free to grab the encodings below):

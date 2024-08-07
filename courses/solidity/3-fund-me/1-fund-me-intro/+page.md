@@ -4,7 +4,7 @@ title: Introduction
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -28,5 +28,3 @@ The contract owner can then `withdraw` the funds. In this case, since we own the
 ### Conclusion
 
 These 25 lessons will guide you step-by-step through the implementation of a crowdfunding contract, that supports cryptocurrency contributions and owner withdrawals.
-
-[Back to top](#top)

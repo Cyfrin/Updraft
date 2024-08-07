@@ -6,7 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
+> </a>
 
 ### Introduction
 
@@ -56,4 +56,3 @@ To improve our coverage, we need to write additional tests. For example we can a
 ### Conclusion
 
 By writing these additional tests, we enhance our test coverage rate, improve the reliability of our `Raffle.sol` contract, and check that `checkUpkeep` behaves correctly under various conditions.
-[Back to top](#top)

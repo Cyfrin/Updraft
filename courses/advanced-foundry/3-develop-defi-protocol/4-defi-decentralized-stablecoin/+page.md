@@ -12,7 +12,7 @@ We've just learnt a tonne about DeFi, and hopefully you caught that there's a lo
 
 All the code we discuss/write will of course be available on this section's [**GitHub Repo**](https://github.com/Cyfrin/foundry-defi-stablecoin-f23) for you to reference.
 
-> [!NOTE]
+> ❗ **NOTE**
 > We're going to be moving a little faster, in this lesson. We have a few new concepts to cover, but much of this will be practice and repetition of things you already know.
 
 Let's start by making our project directory.
@@ -239,7 +239,7 @@ contract DecentralizedStableCoin is ERC20Burnable, Ownable {
 }
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > We don't need to override the mint function, we're just calling the \_mint function within DecentralizedStableCoin.sol.
 
 ### Wrap Up

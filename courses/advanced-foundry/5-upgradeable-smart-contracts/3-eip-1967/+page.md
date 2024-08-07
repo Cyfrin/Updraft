@@ -10,7 +10,7 @@ _Follow along the course with this video._
 
 In this lesson we'll apply what we've learnt and get our hands dirty with a small proxy example. The code for this exercise can be found [**here**](https://github.com/Cyfrin/foundry-upgrades-f23/tree/main/src/sublesson). You can copy and paste this code into Remix if you'd like to follow along!
 
-> [!NOTE]
+> ❗ **NOTE**
 > This is one of the more advanced section of this course, don't feel bad if things are confusing. You're welcome to skip this sublesson if you're less worried about how things work behind the scenes.
 
 <details>
@@ -182,7 +182,7 @@ With these functions in place, we should be able to deploy our contracts in Remi
 
 By passing an argument to `getDataToTransact` we're provided the encoded call data necessary to set our `valueAtStorageSlotZero` to `777`. Remember, sending a transaction to our proxy with this call data should update the storage _in the proxy_.
 
-> [!NOTE]
+> ❗ **NOTE**
 > Because SmallProxy.sol doesn't have a function of it's own which matches the call data's function selector, the fallback function will be engaged. This in turn routes the call data to our delegate function, delegating the call to ImplementationA.
 
 To see this in action, we just need to paste our `getDataToTransact` return value into the CALLDATA field and his `Transact`.
