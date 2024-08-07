@@ -4,8 +4,6 @@ title: Quick Recap II
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In this recap, we'll review how to interact with an external contract and utilize its functions, understand Chainlink Price Feeds, perform Solidity math, and explore global properties.

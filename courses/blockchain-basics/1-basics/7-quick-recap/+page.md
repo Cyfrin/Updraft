@@ -6,8 +6,6 @@ _Follow along with this video:_
 
 ---
 
-> </a>
-
 ### Introduction
 
 Blockchain technology has transformed digital transactions and agreements. Bitcoin was the first protocol to popularize blockchain, facilitating transactions without intermediaries. Building on this foundation, Ethereum and other smart contract platforms have advanced the technology by enabling the creation of smart contracts and decentralized applications. These platforms interact with the real world through decentralized networks like Chainlink, extending blockchain's capabilities. This aspect challenges traditional finance, offering a new way to manage and transfer wealth.

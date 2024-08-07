@@ -6,8 +6,6 @@ _Follow along with this video:_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In the previous lesson, we added a storage variable `favoriteNumber` within our first smart contract and explored different solidity types. In this lesson, you'll discover how to update and retrieve a storage variable, while also learning about functions, visibility, deployment, transactions, gas usage and variable scope.

@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 With the rising costs of deploying to the Ethereum mainnet, scaling solutions like roll-ups and Layer 2 networks are increasingly in demand. The following lessons will guide you through deploying a smart contract to L2 zkSync. If you've followed the zkSync lessons on the **Blockchain Basics** section, you should have already added ZK-Sync to your Metamask. If not, we'll walk through that process in the next lesson.

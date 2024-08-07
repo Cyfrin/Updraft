@@ -4,8 +4,6 @@ title: Interacting with Contracts ABI
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In this lesson, the `StorageFactory` contract will be upgraded to _keep track_ of all deployed `SimpleStorage` contracts. This will allow us also to _interact_ with each deployed contract individually.

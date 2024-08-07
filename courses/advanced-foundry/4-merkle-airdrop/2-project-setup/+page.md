@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Setup
 
 We can begin by creating a repository for our project with the command `mkdir merkle-airdrop` and navigate into it. Ensure you're on the regular version of Foundry by typing `foundryup` in your terminal. You can then run `forge init` to initialize an empty foundry project.

@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 Welcome to the Cyfrin Updraft. This platform offers a comprehensive learning experience by combining video lessons, written content, and interactive discussions.

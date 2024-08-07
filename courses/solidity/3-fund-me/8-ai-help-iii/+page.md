@@ -4,8 +4,6 @@ title: AI Help III
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 When you encounter a part that's not very clear, an AI or forum can help provide a comprehensive understanding of the topic at hand. In this lesson, we will learn how to craft effective questions and prompts.

@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In this lesson, we are going to build a comprehensive test for the `MerkleAirdrop::claim` function. This test will ensure that users can correctly claim their tokens from the `MerkleAirdrop` contract.

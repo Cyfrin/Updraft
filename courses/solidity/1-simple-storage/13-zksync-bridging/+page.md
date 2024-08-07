@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In this lesson, we will guide you step-by-step to acquire zkSync ETH on the testnet using the _bridging method_. All the links referred to in this lesson can be found in the [GitHub repository](https://github.com/Cyfrin/foundry-full-course-cu?tab=readme-ov-file#recommended-tools) associated with this course.

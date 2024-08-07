@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### `MerkleAirdropTest` setup
 
 To access our private variables in the `MerkleAirdrop` contract, we need to add some getter functions like `getMerkleRoot` and `getAirdropToken`.

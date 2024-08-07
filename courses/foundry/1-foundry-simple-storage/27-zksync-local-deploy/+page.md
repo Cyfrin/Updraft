@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 In this lesson, we are going to deploy the contract `SimpleStorage.sol` on a **zkSync local chain**.
 
 We start by verifying that the Forge version we are using is correct. By running the `forge --version` command it confirms that we are on version 0.2: this indicates we are using the right Foundry zkSync edition.

@@ -4,8 +4,6 @@ title: Errors and Warnings
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In the previous lesson, we learned how to combine _arrays_ and _structs_ to store information and how to manipulate this information with the function `addPerson`. This time we'll explore **errors** and **warnings** and how to leverage forums, search engines and AI resources.

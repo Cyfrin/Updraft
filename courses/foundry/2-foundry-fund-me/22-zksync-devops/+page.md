@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 There are notable differences between the EVM and zkSync Era VM, as detailed in the [zkSync documentation](https://docs.zksync.io/build/developer-reference/ethereum-differences/evm-instructions). In this lesson, we will explore some DevOps tools designed to help run tests and functions on both VMs.

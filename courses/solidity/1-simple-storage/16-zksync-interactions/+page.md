@@ -6,7 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
 > In the zkSync module section `transactions`, you'll find buttons for calling `SimpleStorage` functions like `addPerson`, `listOfPeople`, `nameToFavoriteNumber`, `retrieve`, and `store`. Clicking the blue buttons will display the output in the terminal, while the orange buttons are used for storing values.
 
 <image src="/solidity/1-simple-storage/16-zksync-interactions/interactions" width="100%" height="auto">

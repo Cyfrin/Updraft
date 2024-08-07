@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 Welcome to Section 9 of this course! You can code along by following the [GitHub repo](https://github.com/Cyfrin/foundry-smart-contract-lottery-cu) associated with this section. This project will be a valuable addition to your portfolio, as we'll develop a **Verifiably Random Lottery Smart Contract** that contains a lot of best coding practices.
 
 > 🗒️ **NOTE** <br>

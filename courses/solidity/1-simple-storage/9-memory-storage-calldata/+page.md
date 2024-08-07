@@ -4,8 +4,6 @@ title: Memory, Storage, and Calldata
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In this section, we will explore how Solidity manages data storage, focusing on the differences between storage, memory, and calldata, and why these concepts are crucial for writing optimized and secure smart contracts.

@@ -4,8 +4,6 @@ title: Sending ETH through a function
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In this part, we'll explore how to transfer Ethereum (ETH) to a smart contract by creating a `fund` function. This function will require a _minimum amount of ETH_ to ensure proper transaction handling.

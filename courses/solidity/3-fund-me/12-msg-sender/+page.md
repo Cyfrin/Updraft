@@ -4,8 +4,6 @@ title: Message Sender (msg.sender)
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In this lesson, we will learn how to track addresses that are funding the contract and the amounts they will send to it.

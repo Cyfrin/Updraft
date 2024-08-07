@@ -4,8 +4,6 @@ title: Solidity Arrays & Structs
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 Up to this point, the `SimpleStorage` contract allows for storing, updating, and viewing a single favorite number. In this lesson, we'll enhance the code to store multiple numbers, enabling more than one person to store their values. We'll learn how to create a list of favorite numbers using **arrays**, and we'll explore the **`structs`** keyword for creating new types in Solidity.

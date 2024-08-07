@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Tracking
 
 To prevent users from claiming their tokens multiple times and draining the contract's funds, we need a mechanism to track who has already claimed their tokens and stop them from doing so again.

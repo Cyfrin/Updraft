@@ -4,8 +4,6 @@ title: Deploying a Contract
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 Over the past eight lessons, we crafted the `SimpleStorage` contract. It defines a custom type `Person`, includes an internal variable that can be read and updated, and contains a public array and mapping that can also be modified. In this lesson, we will deploy the contract to a **real testnet**, which fully simulates a live blockchain environment without using real Ether.

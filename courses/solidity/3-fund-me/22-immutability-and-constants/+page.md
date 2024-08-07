@@ -4,8 +4,6 @@ title: Immutability and Constants
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In this lesson, we'll explore tools to optimize **gas usage** for variables that are set only _once_.

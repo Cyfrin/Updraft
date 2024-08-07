@@ -4,8 +4,6 @@ title: Introduction
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In this section, we'll create a _decentralized crowdfunding_ contract. The complete codebase is available in the [Github repository](https://github.com/Cyfrin/remix-fund-me-f23).

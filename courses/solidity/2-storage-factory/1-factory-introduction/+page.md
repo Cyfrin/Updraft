@@ -4,8 +4,6 @@ title: Introduction
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 You can find the code for this section in the [Remix Storage Factory Github repository](https://github.com/cyfrin/remix-storage-factory-f23). In these nine lessons we'll work with three new contracts:

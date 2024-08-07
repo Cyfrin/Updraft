@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 In this section, we covered a comprehensive range of topics including _airdrops_, _signatures_, and _scripting_.
 
 We began by exploring more efficient methods for data verification using **Merkle Trees**. These structures allow us to prove that specific data is part of a larger dataset without manually iterating over arrays.

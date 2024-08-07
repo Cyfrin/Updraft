@@ -4,8 +4,6 @@ title: Interfaces
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In this part, we'll learn how to **convert** Ethereum (ETH) into Dollars (USD) and how to use **Interfaces**.

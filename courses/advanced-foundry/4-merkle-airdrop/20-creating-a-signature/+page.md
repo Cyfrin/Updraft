@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In this lesson, we'll create a signature for a default **Anvil** address, allowing a third-party account to claim tokens on its behalf.

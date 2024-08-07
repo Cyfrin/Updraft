@@ -4,8 +4,6 @@ title: Libraries
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In the previous lesson, we used the `getPrice()` function and `getConversionRate`. These methods can be reused multiple times for anyone working with Price Feeds. When a functionality can be _commonly used_, we can create a **library** to efficiently manage repeated parts of codes.

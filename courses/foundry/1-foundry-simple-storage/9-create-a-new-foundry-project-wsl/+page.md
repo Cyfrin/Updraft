@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 Hallo 👋🏻, I'm Vasily and I'll be your instructor for all Windows development. You'll see me frequently as I guide you through installing, running, and configuring various Windows tools.

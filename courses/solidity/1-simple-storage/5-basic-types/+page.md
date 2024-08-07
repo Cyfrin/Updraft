@@ -6,8 +6,6 @@ _Follow along with this video:_
 
 ---
 
-> </a>
-
 ## Solidity Types
 
 Solidity supports various _elementary_ types that can be combined to create more _complex_ ones. You can read more about them in the [Solidity documentation](https://docs.soliditylang.org/en/v0.8.20/types.html#types).

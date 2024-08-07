@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 Now that the file `Interact.s.sol` is complete, we can execute it using the following command:
 
 ```bash

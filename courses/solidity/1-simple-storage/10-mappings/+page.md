@@ -4,8 +4,6 @@ title: Solidity Mappings
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 We have just created a contract that stores multiple `Person`'s' names and favorite numbers in a list. In this session, you will learn about mappings, their functionality, and when it is more advantageous to use them.

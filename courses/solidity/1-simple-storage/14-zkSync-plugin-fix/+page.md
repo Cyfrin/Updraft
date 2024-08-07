@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### zkSync Remix plugin minor bug
 
 Ensure that your `SimpleStorage.sol` smart contract is on Remix. Then, you can enter the zkSync plugin and compile the file. However, even after a successful compilation, the deploy tab will still display the message _`no smart contracts ready for deployment`_.

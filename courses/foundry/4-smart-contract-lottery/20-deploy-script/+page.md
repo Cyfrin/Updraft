@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 Let's begin by creating a new file in the `/script` directory called `DeployRaffle.sol` and importing the `Raffle` contract.
 
 ```js

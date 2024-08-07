@@ -4,8 +4,6 @@ title: Resetting an Array
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In this section, we'll focus on one of the final steps to complete the `withdraw` function: effectively resetting the `funders` array.

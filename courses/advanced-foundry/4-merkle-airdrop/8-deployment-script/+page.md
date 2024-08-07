@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 To deploy the `BagelToken` and `MerkleAirdrop` contracts, we can follow a structured approach by creating a **deployment script**.
 
 ### `deployMerkleAirdrop` Function

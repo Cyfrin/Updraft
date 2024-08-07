@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In this lesson, we will explore the **four** primary transaction types shared by both Ethereum and ZK Sync. After that, we'll take a look at the transaction types specific to the ZK Sync chain.

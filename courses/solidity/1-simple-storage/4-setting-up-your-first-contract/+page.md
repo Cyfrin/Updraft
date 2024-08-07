@@ -6,8 +6,6 @@ _Follow along with this video:_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In this lesson, you'll discover the basics of Remix and how to create and compile your first contract.

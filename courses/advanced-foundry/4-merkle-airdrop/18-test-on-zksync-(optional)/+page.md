@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 > 🗒️ **NOTE** <br>
 > This lesson is optional
 

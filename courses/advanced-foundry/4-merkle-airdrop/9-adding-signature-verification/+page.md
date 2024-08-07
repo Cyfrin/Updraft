@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In this lesson, we will explore the process of allowing a third party to claim tokens on behalf of another account. Our goal is to maintain security by ensuring that the account owner consents to any transactions initiated by the third party.

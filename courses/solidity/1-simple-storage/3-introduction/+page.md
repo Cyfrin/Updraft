@@ -6,8 +6,6 @@ _Follow along with this video:_
 
 ---
 
-> </a>
-
 ### Introduction
 
 To get started, navigate to the official _Cyfrin Updraft_ [GitHub repository](https://github.com/Cyfrin/foundry-full-course-f23)

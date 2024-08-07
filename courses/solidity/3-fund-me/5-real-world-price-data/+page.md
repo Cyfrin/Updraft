@@ -2,8 +2,6 @@
 title: Real-World Price Data
 ---
 
-> </a>
-
 ### Introduction
 
 With the rapid advancement of blockchain technology and the growing adoption of decentralized finance platforms (DeFi), the necessity to support **multiple digital currencies** has significantly increased. Enabling users to utilize their preferred digital currencies extends market reach and improves the usability of an application.

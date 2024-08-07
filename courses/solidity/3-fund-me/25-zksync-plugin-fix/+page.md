@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### zkSync Remix plugin minor bug
 
 As we saw in the _Simple Storage_ section, there is a small bug in the Remix zkSync module. After a successful compilation, the deploy tab will still display the message _`no smart contracts ready for deployment`_.

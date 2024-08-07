@@ -4,8 +4,6 @@ title: More Solidity Math
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In this lesson, we will guide you through converting the value of ETH to USD. We'll use the previously defined `getPrice` function within the new `getConversionRate` function.

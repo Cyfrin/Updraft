@@ -4,8 +4,6 @@ title: Custom Errors
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In the previous lesson, we learned how to make our contracts more gas efficient. In this lesson, we will further enhance their efficiency.

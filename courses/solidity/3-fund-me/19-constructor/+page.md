@@ -4,8 +4,6 @@ title: Constructor
 
 _You can follow along with the video course from here._
 
-> </a>
-
 #### Introduction
 
 In this lesson, we will address a security gap present in the current `fundMe` contract.

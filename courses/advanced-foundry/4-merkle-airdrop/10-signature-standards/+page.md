@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In this lesson, we will delve into Ethereum signature standards, specifically EIP 191 and EIP 712. We'll learn how to sign and verify signatures, and understand how these standards enhance data readability and security. Prior to these standards, signing transactions in Metamask resulted in unreadable messages, making it difficult to verify transaction data. EIP 191 and EIP 712 improve data readability and prevent replay attacks, which involve reusing a transaction or signature maliciously.

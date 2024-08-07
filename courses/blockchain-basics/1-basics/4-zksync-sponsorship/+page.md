@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Layer 2 Solutions
 
 In the context of blockchain technology, Layer 2 (L2) solutions like ZK Sync offer significant benefits, including increased transaction speed and reduced costs. As ZK Sync continues to mature, the differences between deploying contracts on Ethereum and ZK Sync are expected to diminish. Future lessons by Ciara will delve deeper into how L2 solutions work and why they integrate into the blockchain ecosystem.

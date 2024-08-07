@@ -4,8 +4,6 @@ title: Solidity Reverts and Gas
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In this lesson, we will delve into how do _transaction reverts_ work, what is _gas_ where is used.

@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In this lesson we are going to build a couple more tests. If we check our code coverage with `forge coverage`, the terminal will show that we are only at around 53% coverage for the `Raffle.sol` contract. Code coverage refers to the percentage of lines of code that have been tested.

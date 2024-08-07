@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In this lesson, we'll walk through the steps to deploy the `FundMe` contract to the zkSync testnet.

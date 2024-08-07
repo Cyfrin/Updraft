@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In this lesson, we will explore the different transaction types within the ZK Sync VM and EVM ecosystems.

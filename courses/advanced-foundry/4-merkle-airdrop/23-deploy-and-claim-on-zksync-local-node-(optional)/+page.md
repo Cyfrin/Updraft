@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In this lesson, we are going to deploy and claim our tokens on a **local zkSync node**. First, we need to terminate the Anvil node and then run `foundryup --zksync` to switch to the zkSync foundry environment.

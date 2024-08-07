@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 **Account abstraction** is a concept that allows users' assets to be stored in **smart contracts** rather than externally owned accounts (EOAs).This feature is buil directly in the ZK Sync, and it's said that this chain has _native_ account abstraction.
 
 On Ethereum, there are two types of accounts:

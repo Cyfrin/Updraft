@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 To better identify which lines of code are covered, we can generate a detailed coverage report.
 
 The following command will create a file called `coverage.txt`, containing the specific lines of code that have not been covered yet.

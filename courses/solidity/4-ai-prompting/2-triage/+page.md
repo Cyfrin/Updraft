@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 To get the most out of this course's tools and techniques, we've got some tips and tricks for you. In this lesson, we'll go over some recommended best practices:

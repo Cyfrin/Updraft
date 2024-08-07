@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In this lesson, we will be **manually deploying on zkSync Sepolia**. Although scripts are highly recommended in order to avoid mistakes and save funds, we will proceed with typing command directly in the terminal since scripts do not work well on zkSync at the moment of recording.

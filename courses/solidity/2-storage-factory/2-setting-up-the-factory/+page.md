@@ -4,8 +4,6 @@ title: Setting up
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In this `StorageFactory` setup, we'll explore what _composability_ means, showing its ability to deploy and interact with external `SimpleStorage` contracts.

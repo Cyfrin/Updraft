@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 Using a basic `revert()` statement may not provide evidence on why a transaction failed. A better approach is to define custom errors by combining the **contract name** with a **description**, such as `Raffle__UpkeepNotNeeded()`. Additionally, including **parameters** can offer more detailed information about the cause of the transaction failure.
 
 ```

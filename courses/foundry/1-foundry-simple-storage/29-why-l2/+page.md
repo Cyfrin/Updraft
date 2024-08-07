@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 In previous lessons, we deployed to the Sepolia testnet and started working with the Layer 2 solution ZK Sync. Deploying to Sepolia simulates deployment to the Ethereum mainnet, offering a comprehensive understanding of Layer 1 deployments. However, it's important to note that most projects today prefer deploying to Layer 2 solutions rather than directly to Ethereum due to the high costs associated with deployments.

@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### ECDSA
 
 ECDSA stands for the [Elliptic Curve Digital Signature Algorithm](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm), an algorithm based on [elliptic curve](https://en.wikipedia.org/wiki/Elliptic_curve) cryptography. This form of cryptography leverages the unique properties of elliptic curves to perform secure cryptographic functions.

@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-> </a>
-
 ### Introduction
 
 At Cyfrin, we're committed to providing the best tools and platforms to excel as smart contract developer. This course is proudly sponsored by ZK Sync, a leading solution we believe in and use ourselves. Here's why we're choosing ZK Sync Era, a layer 2 ZK roll-up, for our smart contract deployment throughout this course.

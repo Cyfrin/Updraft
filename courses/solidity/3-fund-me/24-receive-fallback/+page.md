@@ -4,8 +4,6 @@ title: Receive & Fallback
 
 _You can follow along with the video course from here._
 
-> </a>
-
 ### Introduction
 
 In Solidity, if Ether is sent to a contract without a `receive` or `fallback` function, the transaction will be **rejected**, and the Ether will not be transferred. In this lesson, we'll explore how to handle this scenario effectively.
