@@ -18,7 +18,7 @@ At a high-level we learnt that abi.encodePacked can be used to concatenate strin
 string memory someString = string(abi.encodePacked("Hi Mom! ", "Miss you!"))
 ```
 
-> [!TIP]
+> ❗ **PROTIP**
 > Remember: In newer versions of Solidity, you can use `string.concat("Hi Mom! ", "Miss you!")`
 
 ### Binary and Opcodes

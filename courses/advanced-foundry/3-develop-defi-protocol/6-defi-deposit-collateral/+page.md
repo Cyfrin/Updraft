@@ -12,7 +12,7 @@ I think the easiest place to start with filling out the contract is going to be 
 
 To deposit collateral, users are going to need the address for the type of collateral they're depositing (wETH or wBTC), and the amount they want to deposit. Easy enough.
 
-> [!NOTE]
+> ❗ **NOTE**
 > Don't forget the NATSPEC!
 
 ```js
@@ -134,7 +134,7 @@ constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses
 
 We're going to be doing lots with our `dscEngine`. We should declare this as an immutable variable and then assign it in our constructor.
 
-> [!NOTE]
+> ❗ **NOTE**
 > Don't forget to import `DecentralizedStableCoin.sol`!
 
 ```js

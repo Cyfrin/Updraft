@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 ### Introduction
 
 In this lesson, you're about to learn the same type of layer 2 or rollup deployment that professional developers are using. On Remix, we can start by activating the **zkSync plugin** in our environment. In the _plugin manager_, search for "zkSync" and activate the zkSync module. You'll notice that a new zkSync tab on the left side will appear.
@@ -43,5 +41,3 @@ To check our deployment, you can copy the contract address and paste it into the
 ### Conclusion
 
 Well done! You've successfully deployed a smart contract to the zkSync testnet, marking a notable achievement and a significant step forward in your development journey.
-
-[Back to top](#top)

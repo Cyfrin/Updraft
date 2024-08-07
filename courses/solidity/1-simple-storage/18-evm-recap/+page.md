@@ -4,8 +4,6 @@ title: Recap & Congratulations
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In this section, we'll quickly summarize the lessons from 1 to 9 and learn about EVM and EVM-compatible blockchains.
@@ -50,5 +48,3 @@ Mastering the fundamentals of Solidity, including contract setup, data managemen
 ### 🧑‍💻 Test yourself
 
 🏆 Attempt to answer all questions from lesson 1 and then go back again to complete all the coding tasks.
-
-[Back to top](#top)

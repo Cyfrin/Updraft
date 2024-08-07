@@ -4,8 +4,6 @@ title: Custom Errors
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In the previous lesson, we learned how to make our contracts more gas efficient. In this lesson, we will further enhance their efficiency.
@@ -42,5 +40,3 @@ In this lesson, we have learned how to further optimize gas efficiency in Solidi
 
 1. 📕 What are the benefits of declaring custom errors instead of using the `require` keyword?
 2. 🧑‍💻 Create a custom error that is triggered when msg.sender is address(0) and then convert it into an equivalent if statement with a `revert` function.
-
-[Back to top](#top)

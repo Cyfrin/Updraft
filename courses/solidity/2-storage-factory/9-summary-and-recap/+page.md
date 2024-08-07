@@ -4,8 +4,6 @@ title: Summary and Recap
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 This section covered how to deploy contracts, how to import and interact with them, and using inheritance to customize their functionalities.
@@ -57,5 +55,3 @@ When you finish a section, take a moment to acknowledge your progress, celebrate
 ### 🧑‍💻 Test yourself
 
 🏆 Attempt to answer all the theoretical questions from lesson 1 through 7, and then go back again to complete all the coding tasks.
-
-[Back to top](#top)

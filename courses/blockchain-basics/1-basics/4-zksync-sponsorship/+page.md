@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 ### Layer 2 Solutions
 
 In the context of blockchain technology, Layer 2 (L2) solutions like ZK Sync offer significant benefits, including increased transaction speed and reduced costs. As ZK Sync continues to mature, the differences between deploying contracts on Ethereum and ZK Sync are expected to diminish. Future lessons by Ciara will delve deeper into how L2 solutions work and why they integrate into the blockchain ecosystem.
@@ -20,5 +18,3 @@ We extend our gratitude to Matter Labs and the ZK Sync team for being the lead s
 ### Deploying to production
 
 As of recording, deploying professional smart contracts to ZK Sync may present some challenges. We recommend consulting our [guide](https://github.com/Cyfrin/foundry-full-course-cu/blob/main/read-before-deploying-serious-projects-to-zksync.md) in the GitHub repository before deploying a production smart contract on ZK Sync.
-
-[Back to top](#top)

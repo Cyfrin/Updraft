@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 ### Introduction
 
 In this lesson, we will delve into Ethereum signature standards, specifically EIP 191 and EIP 712. We'll learn how to sign and verify signatures, and understand how these standards enhance data readability and security. Prior to these standards, signing transactions in Metamask resulted in unreadable messages, making it difficult to verify transaction data. EIP 191 and EIP 712 improve data readability and prevent replay attacks, which involve reusing a transaction or signature maliciously.
@@ -24,8 +22,7 @@ function getSignerSimple(uint256 message, uint8 _v, bytes32 _r, bytes32 _s) publ
 }
 ```
 
-> 🗒️ **NOTE** <br>
-> `ecrecover` is a function built into the Ethereum protocol.
+> 🗒️ **NOTE** <br> > `ecrecover` is a function built into the Ethereum protocol.
 
 ```js
 function verifySignerSimple(
@@ -232,5 +229,3 @@ function verifySignerOZ(
 ### Conclusion
 
 EIP 191 standardizes the format of signed data, while EIP 712 extends data standardization to structured data and introduces domain separators to prevent cross-domain replay attacks.
-
-[Back to top](#top)

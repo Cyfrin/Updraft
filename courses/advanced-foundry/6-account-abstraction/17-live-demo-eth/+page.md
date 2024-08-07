@@ -3,13 +3,15 @@
 The time has come for us to deploy our code base. Let's run our deploy script - `DeployMinimal`.
 
 ---
->[!IMPORTANT] This demo is run on a real network, which requires real money. It's recommended just to follow along with the video, and focus more on the code and learning how to deploy to the mainnet. 
 
->[!NOTE] The hardcoded values are from the instructor. Your actual values may vary. As always, you can see up-to-date code in the repo. 
+> ❗ **IMPORTANT** This demo is run on a real network, which requires real money. It's recommended just to follow along with the video, and focus more on the code and learning how to deploy to the mainnet.
+
+> ❗ **NOTE** The hardcoded values are from the instructor. Your actual values may vary. As always, you can see up-to-date code in the repo.
 
 🔥🔥🔥[Cyfrin Minimal Account Abstraction Repo](https://github.com/Cyfrin/minimal-account-abstraction)🔥🔥🔥
 
 ---
+
 Run the following in your terminal.
 
 ```js
@@ -19,6 +21,7 @@ forge script script/DeployMinimal.s.sol --rpc-url $ARBITRUM_RPC_URL --account sm
 We forgot to complete the `run` function in our `SendPackedUserOp` script. Let's do that now.
 
 ---
+
 **<span style="color:red">SendPackedUserOp.s.sol</span>**
 
 ```js
@@ -31,7 +34,7 @@ function run() public {
         // Setup
         HelperConfig helperConfig = new HelperConfig();
         address dest = 0xaf88d065e77c8cC2239327C5EDb3A432268e5831; // Arbitrum mainnet USDC address
-        uint256 value = 0;       
+        uint256 value = 0;
 
         bytes memory functionData = abi.encodeWithSelector(
             IERC20.approve.selector,
@@ -65,9 +68,11 @@ function run() public {
 ```
 
 ---
->[!NOTE] HelperConfig for arbitrum has already been set up off screen.
+
+> ❗ **NOTE** HelperConfig for arbitrum has already been set up off screen.
 
 ---
+
 Now that we've got it set up, let's deploy our `SendPackedUserOp.s.sol` to Arbitrum.
 
 Run the following in your terminal.
@@ -78,4 +83,4 @@ forge script script/SendPackedUserOp.s.sol --rpc-url $ARBITRUM_RPC_URL --account
 
 Congratulations! We've successfully made our first **account abstraction user operation call!**
 
-When you are ready, move on to the next lesson. 
+When you are ready, move on to the next lesson.

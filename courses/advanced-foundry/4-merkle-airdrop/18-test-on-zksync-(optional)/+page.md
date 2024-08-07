@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 > 🗒️ **NOTE** <br>
 > This lesson is optional
 
@@ -27,5 +25,3 @@ Finally, we can run our tests on zkSync with the following command:
 ```js
 forge test --zksync -vvv
 ```
-
-[Back to top](#top)

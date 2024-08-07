@@ -182,7 +182,7 @@ import { DecentralizedStableCoin } from "./DecentralizedStableCoin.sol";
 import { AggregatorV3Interface } from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > The import path of `AggregatorV3Interface` has changed since the Video's filming, the above should be updated as of `06/10/2024`. If you run into issues, double check the version you're installing.
 
 If you haven't installed the `Chainlink` contract kit yet, let's do that now.

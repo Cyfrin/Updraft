@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 ### Lesson Overview
 
 In this lesson, we'll explore how to empower a third party address, the `gasPayer`, to make claims on a user's behalf. The user will then sign a message to authorize this address to execute the `MerkleAirdrop::claim` function on his behalf.
@@ -49,5 +47,3 @@ airdrop.claim(user, amountToCollect, proof, v, r, s);
 ```
 
 Afterward, we can verify that the test passes: the user's balance increases as expected, indicating that the `gasPayer` successfully claimed the tokens on the `user`'s behalf.
-
-[Back to top](#top)

@@ -4,8 +4,6 @@ title: 5-ai-help-ii
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 If you run into (a lot of) questions, it means that you are thinking critically and you are approaching the subject the right way. In this lesson, we'll do an AI-chat example and learn how to effectively ask questions.
@@ -52,5 +50,3 @@ AI systems are excellent for basic coding tasks but may struggle with complex pr
 ### 🧑‍💻 Test yourself
 
 1. 📕 Review the first section of this Solidity course again. Identify three concepts that seem unclear and ask the AI to explain them to you.
-
-[Back to top](#top)

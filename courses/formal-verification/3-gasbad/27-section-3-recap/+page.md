@@ -17,7 +17,7 @@ By writing 2 more .conf files, we gained a bunch more experience in configuratin
 - `rule_sanity` - We experimented with `basic` and `none` and saw how this affected Certora's assessment of the `sanity` or soundness of our tests
 - `prover_args` - options we can pass our CLI to fine tune the assumptions of the prover.
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > Remember, that while we can tweak our assumptions, it's important to be cautious when doing so. Setting `optimistic_fallback` to avoid HAVOCing external calls is a bad idea if you have reason to believe those external calls can be malicious. These assumptions configure the prover to rate situations as valid, but they may be **_unsound_**.
 
 ```js
@@ -142,7 +142,7 @@ With that, we've come to the end of the Assembly, Formal Verification and EVM Op
 
 This course was pretty quick compared to some others we've hosted, but it wasn't easy. You tackled a lot of advanced concepts and masters some really low level implementations. You should be very proud.
 
-> [!TIP]
+> ❗ **PROTIP**
 > Make sure you push your projects to your GitHub account. Your GitHub profile should serve as your billboard to advertise your accomplishments and it's one of the first places companies will look when hiring.
 
 Now that you've gone through this whole thing, there are a number of things you _can_ and _should_ do.

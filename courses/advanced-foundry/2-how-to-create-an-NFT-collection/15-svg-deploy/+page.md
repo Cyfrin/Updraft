@@ -58,7 +58,7 @@ contract DeployMoodNft is Script {
 
 The above function is taking the svg string parameter, encoding it with the OpenZeppeling Base64.encode function, and then prepends the encoded value with our baseURL. Great job!
 
-> [!TIP]
+> ❗ **PROTIP**
 > You can replace `abi.encodePacked` with the more up-to-date `string.concat`!
 
 Before moving on, we should write a quick test to verify this is encoding things we way we expect.
@@ -131,7 +131,7 @@ Before we can allow Foundry to read our files into our deploy script, we'll need
 fs_permissions = [{access = "read", path = "./img/"}]
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > This line provides the Foundry framework `read` permissions, specifically in the `img` directory. This is much safer than setting `FFI = true`!
 
 With this in place, we can now use the readFile cheatcode to access these SVG files in our deploy script.
@@ -182,7 +182,7 @@ Create the directories `test/integration` and `test/unit`. Within `test/integrat
 
 We'll adjust `MoodNftIntegrationsTest.t.sol` to use our deployer next.
 
-> [!NOTE]
+> ❗ **NOTE**
 > Moving your test files about may have broken some of your imports! You can add `../` to the beginning of each import to "back it out" of a directory. Things should work again!
 
 ### MoodNftIntegrationsTest.t.sol

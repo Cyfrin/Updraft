@@ -5,7 +5,6 @@ title: Introduction
 _Follow along with the video_
 
 ---
-<a name="top"></a>
 
 Welcome to Section 9 of this course! You can code along by following the [GitHub repo](https://github.com/Cyfrin/foundry-smart-contract-lottery-cu) associated with this section. This project will be a valuable addition to your portfolio, as we'll develop a **Verifiably Random Lottery Smart Contract** that contains a lot of best coding practices.
 
@@ -31,5 +30,3 @@ We'll use **Chainlink VRF** version 2.5 for randomness. The `fulfillRandomWords`
 We'll also write advanced **scripts** that you can find inside the `makefile`. These include various commands to interact with the smart contract, such as creating subscriptions and adding a consumer.
 
 Let's dive in and start building this exciting project!
-
-[Back to top](#top)

@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 ### Introduction
 
 In this lesson we are going to build a script to handle the **signing** and **claiming** process. We will sign a message using an account that is _included in the Merkle tree_. This **signature** will allow another person to claim the airdrop on behalf of the original account.
@@ -62,5 +60,3 @@ function claimAirdrop(address airdrop) public {
     vm.stopBroadcast();
 }
 ```
-
-[Back to top](#top)

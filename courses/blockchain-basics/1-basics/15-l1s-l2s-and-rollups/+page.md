@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 ### Introduction
 
 In this course, we've briefly mentioned several key terms: Layer 1 (L1), Layer 2 (L2), and Rollups. Throughout this course, we will deploy and interact with smart contracts on **Sepolia**, a Layer 1 test net, and **zkSync Sepolia**, a Layer 2 Rollup.
@@ -61,5 +59,3 @@ Rollups enhance Ethereum's scalability by processing transactions off-chain, bun
 1. 📕 What is the primary function of a Layer 2 blockchain?
 2. 📕 How do optimistic rollups ensure the validity of transactions?
 3. 📕 What is commonly referred as the _witness_?
-
-[Back to top](#top)

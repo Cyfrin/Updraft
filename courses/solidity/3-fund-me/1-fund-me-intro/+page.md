@@ -4,8 +4,6 @@ title: Introduction
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In this section, we'll create a _decentralized crowdfunding_ contract. The complete codebase is available in the [Github repository](https://github.com/Cyfrin/remix-fund-me-f23).
@@ -28,5 +26,3 @@ The contract owner can then `withdraw` the funds. In this case, since we own the
 ### Conclusion
 
 These 25 lessons will guide you step-by-step through the implementation of a crowdfunding contract, that supports cryptocurrency contributions and owner withdrawals.
-
-[Back to top](#top)

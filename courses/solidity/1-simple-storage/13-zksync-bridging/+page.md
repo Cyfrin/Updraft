@@ -5,7 +5,7 @@ title: Remix zkSync Bridging
 _Follow along with the video_
 
 ---
-<a name="top"></a>
+
 ### Introduction
 
 In this lesson, we will guide you step-by-step to acquire zkSync ETH on the testnet using the _bridging method_. All the links referred to in this lesson can be found in the [GitHub repository](https://github.com/Cyfrin/foundry-full-course-cu?tab=readme-ov-file#recommended-tools) associated with this course.
@@ -29,8 +29,4 @@ Select "Continue," and proceed to bridge your funds. Confirm the transaction on 
 
 While waiting, you can add the zkSync Sepolia Testnet to MetaMask. Go to [Chainlist](https://chainlist.org/), search for "zkSync Sepolia" while including testnets, and connect your wallet. Approve the network addition and switch to the zkSync Sepolia Testnet.
 
-
 Once the transaction completes, you will see the funds appear in your MetaMask wallet under the zkSync Sepolia Testnet. With the correct funds in your wallet, you can now proceed to deploy contracts in Remix.
-
-
-[Back to top](#top)

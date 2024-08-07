@@ -16,7 +16,7 @@ It all starts with the data we want hosted. This can be more or less anything, c
 
 Each IPFS Node is once part of a much larger network and each of them constantly communicates to distribute data throughout the network. Any given node can choose to pin particular pieces of data to host/persist on the network.
 
-> [!NOTE]
+> ❗ **NOTE**
 > IPFS isn't able to execute logic or perform computation, it only serves as a means of decentralized storage
 
 What we would do then is upload our data to IPFS and then pin it in our node, assuring that the IPFS Hash of the data is available to anyone calling the network.
@@ -35,7 +35,7 @@ Let's go ahead and [**install the IPFS Desktop application**](https://docs.ipfs.
 
 Pay no mind to all my pictures of cats. If you have no data to view, navigate to import in the top right and select any small file you don't mind being public.
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > Any data uploaded to this service will be **_public_** by nature.
 
 <img src="/foundry-nfts/4-ipfs/IPFS3.png" width="100%" height="auto">
@@ -50,7 +50,7 @@ What makes this _really_ cool, is we can then copy the data's CID (content ID), 
 ipfs://<CID>
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > If you're on firefox, this may not display properly as the address bar converts URLs to lowercase by default, ruining our CID. Test on Brave or Chrome.
 
 Alternatively, if you're having trouble viewing your data directly from the IPFS network you can use the IPFS Gateway. When using a gateway, you're not directly requesting the data from the IPFS Network, you're requesting through another server which makes the request on your behalf, so it brings to question centrality and things again, but I digress. You can view the data via the Gateway with this syntax:

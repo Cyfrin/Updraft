@@ -4,8 +4,6 @@ title: More Solidity Math
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In this lesson, we will guide you through converting the value of ETH to USD. We'll use the previously defined `getPrice` function within the new `getConversionRate` function.
@@ -21,14 +19,14 @@ In Solidity, only integer values are used, as the language does not support floa
 
 ```solidity
 function getConversionRate(uint256 ethAmount) internal view returns (uint256) {
-    uint256 ethPrice = getPrice(); 
+    uint256 ethPrice = getPrice();
     uint256 ethAmountInUsd = (ethPrice * ethAmount) / 1e18;
     return ethAmountInUsd;
 }
 ```
 
 > 🗒️ **NOTE** <br>
-> The line `uint256 ethAmountInUsd = (ethPrice * ethAmount)` results in a value with a precision of 1e18 * 1e18 = 1e36. To bring the precision of `ethAmountInUsd` back to 1e18, we need to divide the result by 1e18.
+> The line `uint256 ethAmountInUsd = (ethPrice * ethAmount)` results in a value with a precision of 1e18 \* 1e18 = 1e36. To bring the precision of `ethAmountInUsd` back to 1e18, we need to divide the result by 1e18.
 
 > 🔥 **CAUTION** <br>
 > Always multiply before dividing to maintain precision and avoid truncation errors. For instance, in floating-point arithmetic, `(5/3) * 2` equals approximately 3.33. In Solidity, `(5/3)` equals 1, which when multiplied by 2 yields 2. If you multiply first `(5*2)` and then divide by 3, you achieve better precision.
@@ -67,5 +65,3 @@ In this lesson, we've demonstrated how to convert ETH to USD using the `getConve
 1. 📕 Why is it important to multiply before dividing in Solidity calculations, and how does this practice help maintain precision?
 2. 📕 What is the purpose of the getConversionRate function, and how does it utilize the getPrice function to convert ETH to USD?
 3. 🧑‍💻 Create a function `convertUsdToEth(uint256 usdAmount, uint256 ethPrice) public returns(uint256)`, that converts a given amount of USD to its equivalent value in ETH.
-
-[Back to top](#top)

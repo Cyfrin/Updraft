@@ -83,7 +83,7 @@ flipMoodNft:
 
 Assuming our `.env` is ready to go, we should be able to run the following...
 
-> [!TIP]
+> ❗ **PROTIP**
 > Remember to add the required environment variables if necessary. You should need a `sepolia RPC-URL`, an `account private key` and an `etherscan api key`.
 
 ```bash
@@ -98,7 +98,7 @@ All deployed!
 
 With a contract deployed, this transaction data, including the contract address is added to our `broadcast` folder within run-latest.json. This is how our `DevOpsTool` acquires the most recent contract deployment. We should now be able to use our `Interactions.s.sol` script to mint ourselves an NFT.
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > Add `fs_permissions = [{ access = "read", path = "./broadcast" }]` to your `foundry.toml` or DevOpsTools won't have the permissions necessary to function correctly! This is more safe than `FFI=true`.
 
 ```bash

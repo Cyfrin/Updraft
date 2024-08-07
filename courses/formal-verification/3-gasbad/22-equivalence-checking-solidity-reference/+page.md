@@ -14,7 +14,7 @@ Let's dive right into our final rule:
 rule calling_any_function_should_result_in_each_contract_having_the_same_state(){}
 ```
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > Verbosity.
 
 Our whole reason for using `Certora`, and formally verifying this repo is - we've got a reference contract, written in Solidity, we want to be 100% certain that our Assembly conversion is still behaving exactly the same way.
@@ -27,7 +27,7 @@ This is going to be an example of a `Parametric Rule`, which we learnt about pre
 rule calling_any_function_should_result_in_each_contract_having_the_same_state(method f){}
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > Adding the rule parameters within the declaration brackets, or within the rule body will function the same way. The only exception is when applying `filters`, which we'll cover later.
 
 We need to consider what our goals are for this verification. Out methodology will be something like:

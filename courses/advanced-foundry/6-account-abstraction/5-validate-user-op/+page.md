@@ -10,7 +10,7 @@ Welcome to our next lesson on **account abstraction**! We are going to get into 
 
 ### Validating Our Signature with a Custom Function
 
-You may recall that we copied this function from `IAccount.sol` in lesson three. 
+You may recall that we copied this function from `IAccount.sol` in lesson three.
 
 ```js
     function validateUserOp(
@@ -20,13 +20,14 @@ You may recall that we copied this function from `IAccount.sol` in lesson three.
     ) external returns (uint256 validationData) {}
 ```
 
-The first thing we want to do is validate the signature. To do so, we need to create custom function inside `validateUserOp`. We will pass `userOp` and `userOpHash` as arguments. The `userOp` is the data from the `PackedUserOperation` , and the `userOpHash` is the hash of it. 
+The first thing we want to do is validate the signature. To do so, we need to create custom function inside `validateUserOp`. We will pass `userOp` and `userOpHash` as arguments. The `userOp` is the data from the `PackedUserOperation` , and the `userOpHash` is the hash of it.
 
 ```js
 {
-    _validateSignature(userOp, userOpHash);
+  _validateSignature(userOp, userOpHash);
 }
 ```
+
 The goal here is to validate the signature against the data from the `PackedUserOperation  `. If you remember, you can view this by clicking on it in the imports at the top of the code. I'll place it here for your convenience.
 
 ```js
@@ -42,16 +43,18 @@ struct PackedUserOperation {
     bytes signature;
 }
 ```
+
 ### Using `Ownable` to Sign Our Contract
 
-We know that account abstraction allows us to be really creative in how we want our signature to be validated, but for the purposes of this tutorial we will stick to the owner of the contract. 
+We know that account abstraction allows us to be really creative in how we want our signature to be validated, but for the purposes of this tutorial we will stick to the owner of the contract.
 
->[!NOTE] You can place the following comment above your `validateUserOp` function. 
+> ❗ **NOTE** You can place the following comment above your `validateUserOp` function.
 
 ```js
 //A signature is valid if it's the MinimalAccount owner.
 ```
-To help us do this, we need to install and import `Ownable` from OpenZeppelin. 
+
+To help us do this, we need to install and import `Ownable` from OpenZeppelin.
 
 ```js
 forge install openzeppelin/openzeppelin-contracts@v5.0.2 --no-commit
@@ -60,15 +63,16 @@ forge install openzeppelin/openzeppelin-contracts@v5.0.2 --no-commit
 Before we import `Ownable`, we need to add it our remappings. Go to `foundry.toml` and add the following.
 
 ```js
-remappings = ['@openzeppelin/contracts=lib/openzeppelin-contracts/contracts']
+remappings = ["@openzeppelin/contracts=lib/openzeppelin-contracts/contracts"];
 ```
+
 Now we can head back to our `MinimalAccount` contract and import it.
 
 ```js
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 ```
 
-Now that we have `Ownable`, we can inherit it into our contract and create our `constructor`. Let's place it above our functions. 
+Now that we have `Ownable`, we can inherit it into our contract and create our `constructor`. Let's place it above our functions.
 
 ```js
 contract MinimalAccount is IAccount, Ownable {
@@ -78,7 +82,7 @@ contract MinimalAccount is IAccount, Ownable {
 
 ### Creating Our `_validateSignature` Function
 
-Now that this is done, we have an owner to sign the transaction, then it will be validated in our `_validateSignature` function. However, you may have noticed that we have called this function, but haven't created it yet. Let's do that now. 
+Now that this is done, we have an owner to sign the transaction, then it will be validated in our `_validateSignature` function. However, you may have noticed that we have called this function, but haven't created it yet. Let's do that now.
 
 ```js
 function _validateSignature(PackedUserOperation calldata userOp, bytes32 userOpHash)
@@ -94,15 +98,16 @@ function _validateSignature(PackedUserOperation calldata userOp, bytes32 userOpH
         return SIG_VALIDATION_SUCCESS;
     }
 ```
+
 ### Using OpenZeppelin to Reformat `userOpHash`
 
 Next, we need to convert the `userOpHash` back into a normal hash. No worries though, we can do this with a tool called `MessageHashUtils` from OpenZeppelin. Let's import it now.
 
 ```js
-import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
+import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 ```
 
-Click on it so we can have a look at a key function called `toEthSignedMessageHash` Give it a read to become more familiar with what it does. 
+Click on it so we can have a look at a key function called `toEthSignedMessageHash` Give it a read to become more familiar with what it does.
 
 ```js
     /**
@@ -129,10 +134,10 @@ Click on it so we can have a look at a key function called `toEthSignedMessageHa
     }
 ```
 
-Essentially, this function reformats our hash and allows us to do an `ECDSA` recover. Then, the `ECDSA` recover will tell us who actually signed the hash. To do this, we need to add some code to our `_validateSignature` function. But first, let's import the `ECDSA` from OpenZeppelin. 
+Essentially, this function reformats our hash and allows us to do an `ECDSA` recover. Then, the `ECDSA` recover will tell us who actually signed the hash. To do this, we need to add some code to our `_validateSignature` function. But first, let's import the `ECDSA` from OpenZeppelin.
 
 ```js
-import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 ```
 
 Now we are ready to implement it into our `_validateSignature` function, along with `ethSignedMessageHash`.
@@ -147,10 +152,14 @@ Now we are ready to implement it into our `_validateSignature` function, along w
         return SIG_VALIDATION_SUCCESS;
 }
 ```
-If the signer is not the owner, our function will return `SIG_VALIDATION_FAILED`. Otherwise, return `SIG_VALIDATION_SUCCESS`. These two concepts are defined in a helper contract. Let's import them now. 
+
+If the signer is not the owner, our function will return `SIG_VALIDATION_FAILED`. Otherwise, return `SIG_VALIDATION_SUCCESS`. These two concepts are defined in a helper contract. Let's import them now.
 
 ```js
-import {SIG_VALIDATION_FAILED, SIG_VALIDATION_SUCCESS} from "lib/account-abstraction/contracts/core/Helpers.sol";
+import {
+  SIG_VALIDATION_FAILED,
+  SIG_VALIDATION_SUCCESS,
+} from "lib/account-abstraction/contracts/core/Helpers.sol";
 ```
 
 Here's what the whole function looks like.
@@ -179,30 +188,31 @@ Now that we have a proper `_validateSignature` function, Let's head back to the 
 
 ```js
 {
-    validationData = _validateSignature(userOp, userOpHash);
+  validationData = _validateSignature(userOp, userOpHash);
 }
 ```
-In the IAccount.sol we can see what `validationData` does. 
+
+In the IAccount.sol we can see what `validationData` does.
 
 ```js
-/** 
- * @return validationData       
+/**
+ * @return validationData
  * - Packaged ValidationData structure. use `_packValidationData` and
- * 
-     * `_unpackValidationData` to encode and decode.
-     * <20-byte> sigAuthorizer - 0 for valid signature, 1 to mark signature failure,
-     *          otherwise, an address of an "authorizer" contract.
-     * <6-byte> validUntil - Last timestamp this operation is valid. 0 for "indefinite"
-     * <6-byte> validAfter - First timestamp this operation is valid
-     * If an account doesn't use time-range, it is enough to
-     * return SIG_VALIDATION_FAILED value (1) for signature failure.
-     * Note that the validation code cannot use block.timestamp (or block.number) directly.
-*/
+ *
+ * `_unpackValidationData` to encode and decode.
+ * <20-byte> sigAuthorizer - 0 for valid signature, 1 to mark signature failure,
+ *          otherwise, an address of an "authorizer" contract.
+ * <6-byte> validUntil - Last timestamp this operation is valid. 0 for "indefinite"
+ * <6-byte> validAfter - First timestamp this operation is valid
+ * If an account doesn't use time-range, it is enough to
+ * return SIG_VALIDATION_FAILED value (1) for signature failure.
+ * Note that the validation code cannot use block.timestamp (or block.number) directly.
+ */
 ```
 
 ### Paying What We Owe
 
-We've covered a lot of ground, but we aren't quite there yet. Here are some things we need to consider. 
+We've covered a lot of ground, but we aren't quite there yet. Here are some things we need to consider.
 
 ```js
     function validateUserOp
@@ -210,7 +220,7 @@ We've covered a lot of ground, but we aren't quite there yet. Here are some thin
         PackedUserOperation calldata userOp,
         bytes32 userOpHash,
         uint256 missingAccountFunds
-    ) external returns (uint256 validationData) 
+    ) external returns (uint256 validationData)
     {
         validationData = _validateSignature(userOp, userOpHash);
         // _validateNonce()
@@ -218,7 +228,7 @@ We've covered a lot of ground, but we aren't quite there yet. Here are some thin
     }
 ```
 
-As you can see, we have commented out _validateNonce for now as it will be handled by the `EntryPoint`. Next, we will set up a way to pay the EntryPoint what is owed. We have mentioned a Paymaster briefly, but we are going to create our own function for this, `__payPrefund` and implement it into our `validateUserOp`. It takes in `missingAccountFunds` as an argument. Let's go ahead and create this function. 
+As you can see, we have commented out \_validateNonce for now as it will be handled by the `EntryPoint`. Next, we will set up a way to pay the EntryPoint what is owed. We have mentioned a Paymaster briefly, but we are going to create our own function for this, `__payPrefund` and implement it into our `validateUserOp`. It takes in `missingAccountFunds` as an argument. Let's go ahead and create this function.
 
 ```js
  function _payPrefund(uint256 missingAccountFunds) internal {
@@ -229,7 +239,7 @@ As you can see, we have commented out _validateNonce for now as it will be handl
     }
 ```
 
-We've got a lot here as far as what we need to have an account abstraction based account. However, it's not very secure. At the moment, anyone can validate user operations and pay themselves. Neither of these are good, so we will be spending some time in the upcoming lessons making our account more secure. 
+We've got a lot here as far as what we need to have an account abstraction based account. However, it's not very secure. At the moment, anyone can validate user operations and pay themselves. Neither of these are good, so we will be spending some time in the upcoming lessons making our account more secure.
 
 ### Let's Review
 
@@ -239,21 +249,17 @@ We've got a lot here as far as what we need to have an account abstraction based
 <summary>4. What is the role of the _payPrefund function within the validateUserOp function?</summary>
 
 ---
-<details> 
+
+<details>
 
 **<summary>Click for Answers</summary>**
 
      1. The purpose of this function is to validate user operations by ensuring that the signature is valid. It also handles missing account funds.
-   
+
      2. It verifies the signer's address by first converting the `userOpHash` into a signed message hash. It then recovers the signer's address using ECDSA.recover with the signed message hash and the signature from userOp. Finally, it compares the recovered address to the owner's address to determine if the signature is valid.
-   
-     3. We need OpenZeppelin's Ownable contract to manage ownership of the contract, ensuring that only the owner can validate signatures. 
-   
-     4. This function handles the payment of missing account funds owed to the EntryPoint. It checks if there are any missing funds and, if so, pays what is owed.     
+
+     3. We need OpenZeppelin's Ownable contract to manage ownership of the contract, ensuring that only the owner can validate signatures.
+
+     4. This function handles the payment of missing account funds owed to the EntryPoint. It checks if there are any missing funds and, if so, pays what is owed.
+
 </details>
-
-
-
-
-
-

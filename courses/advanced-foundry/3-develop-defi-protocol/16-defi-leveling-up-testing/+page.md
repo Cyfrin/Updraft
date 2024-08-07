@@ -12,7 +12,7 @@ In this lesson we're going on a bit of a sidequest to gain a better understandin
 
 There are several layers of testing methodologies which in some ways represent degrees of thoroughness of the testing of a protocol.
 
-> [!NOTE]
+> ❗ **NOTE**
 > The information here is brought to us via an interview from the gigabrains Josselin and Troy from Trail of Bits
 
 ### Layer 1: Unit Tests
@@ -147,7 +147,7 @@ In the first path, a is anything less than uint256.max. In the second path, it's
 
 Both of these situations can't simultaneously be true, so the formal verification solver would take the SMT-LIB code and determine which paths it's able to "satisfy". If path 2 can be satisfied, this represents a breaking of the protocol invariant/property.
 
-> [!NOTE]
+> ❗ **NOTE**
 > Formal verification tools use a special language to process the mathematical models of code called SMT_LIB.
 
 Some formal verification tools available include things like Manitcore, Halmos and Certora, but even the Solidity Compiler can do many of these steps behind the scenes:
@@ -170,7 +170,7 @@ It's important to employ a robust and diverse set of testing tools to assure the
 
 The Trail of Bits team offers an amazing resource on building secure contracts on secure-contracts.com that is worth a read for everyone getting serious about smart contract security.
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > Even all this isn't a guarantee that your code is bug free.
 
 Hopefully this has shed some light on the layers of smart contract testing and the importance of a thorough test suite and using the tools available to us. See you in the next lesson where we apply some of this to create a fuzzing test suite for DecentralizedStableCoin!

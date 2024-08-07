@@ -4,8 +4,6 @@ title: Resetting an Array
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In this section, we'll focus on one of the final steps to complete the `withdraw` function: effectively resetting the `funders` array.
@@ -29,5 +27,3 @@ In this lesson, we learned how to reset the `funders` array by either iterating 
 
 1. 📕 Why is it important to reset the `funders` array when implementing the `withdraw` function?
 2. 🧑‍💻 Create a method `expensiveReset` that resets an array using the iteration method.
-
-[Back to top](#top)

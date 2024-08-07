@@ -6,8 +6,8 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
 ### Introduction
+
 In this lesson, we'll walk through the steps to deploy the `FundMe` contract to the zkSync testnet.
 
 ### Adjustments for zkSync
@@ -29,6 +29,5 @@ It's recommended using the correct version of the Solidity compiler by updating 
 In the Environment tab, you can connect your MetaMask wallet and then **deploy and verify** the `FundMe` contract. After deployment, you can interact with the contract by checking functions like `FundMe::MINIMUM_USD`,`FundMe::getVersion` to ensure they return the expected values.
 
 ### Conclusion
-Deploying the `FundMe` contract to the zkSync testnet involves a few key steps. First, adjust the price feed addresses and handle the library code correctly and make sure you're using the correct version of the Solidity compiler. Then you are ready to connect the MetaMask wallet to remix zkSync module and deploy the contract. Finally, you can verify that everything is working as expected by calling the contract functions in the [zkSync block explorer](https://sepolia.explorer.zksync.io/).
 
-[Back to top](#top)
+Deploying the `FundMe` contract to the zkSync testnet involves a few key steps. First, adjust the price feed addresses and handle the library code correctly and make sure you're using the correct version of the Solidity compiler. Then you are ready to connect the MetaMask wallet to remix zkSync module and deploy the contract. Finally, you can verify that everything is working as expected by calling the contract functions in the [zkSync block explorer](https://sepolia.explorer.zksync.io/).

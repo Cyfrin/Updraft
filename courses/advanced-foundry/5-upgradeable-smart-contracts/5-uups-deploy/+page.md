@@ -21,7 +21,7 @@ We'll begin by creating two scripts, `script/DeployBox.s.sol` and `script/Upgrad
 
 Our deployment script should be very familiar to us by now!
 
-> [!TIP]
+> ❗ **PROTIP**
 > Repetition is the mother of skill.
 
 ```js

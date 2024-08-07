@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 ### Introduction
 
 To get the most out of this course's tools and techniques, we've got some tips and tricks for you. In this lesson, we'll go over some recommended best practices:
@@ -29,5 +27,3 @@ When you're stuck on an issue you can't solve, you can visit forum platforms lik
 If you can't get help elsewhere, you can open an Github Issue in the [GitHub's Issue Tracker](https://github.com/Cyfrin/remix-fund-me-cu/issues). This section allows you to interact with the developer community, report bugs, and suggest enhancements. Remembert to always search within existing issues before posting to avoid duplicates.
 
 GitHub is essential for sharing, writing, and interacting with fellow developers, as well as accessing and contributing to code. We will use it as a **portfolio** for our projects thorughout the courses. This portfolio will become very valuable when applying for jobs, because it easily showcase your coding skills and contributions to open-source projects.
-
-[Back to top](#top)

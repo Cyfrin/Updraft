@@ -45,7 +45,7 @@ methods {
 }
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > Because the getListing function returns a struct, we're using INftMarketplace, which is inherited by both `NftMarketplace` and `GasBadNftMarketplace`, as a base class to reference this return type.
 
 With these added to our methods block, we can then write the require statements assuring these calls match between implementations, in our rule. We'll also need to declare variables to pass to our methods.
@@ -250,5 +250,5 @@ Because we're using `require` statements, instead of a `filter block`, `Certora`
 
 Despite the `sanity` errors, we can clearly see that any time the function selectors being called match, our rule is verifying the call. This test is indeed proving to us that the contracts are functioning identically under indentical circumnstances.
 
-> [!TIP]
+> ❗ **PROTIP**
 > We _could_ set `"rule_sanity": "none"`, in our `GasBad.conf`, in order for these sanity checks to reflect `passed`, but we should always be cautious when removing these checks.

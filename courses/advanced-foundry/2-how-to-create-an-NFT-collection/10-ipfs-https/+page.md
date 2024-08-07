@@ -40,7 +40,7 @@ Once uploaded, `Pinata` will provide a `CID`, just like `IPFS` itself will.
 
 <img src="/foundry-nfts/10-ipfs-https/ipfs-https3.png" width="100%" height="auto">
 
-> [!TIP]
+> ❗ **PROTIP**
 > Whenever I work on a project, I will upload my images/data both to my local `IPFS` node as well as `Pinata` to assure the data is always pinned _somewhere_.
 
 ### Wrap Up

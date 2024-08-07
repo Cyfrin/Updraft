@@ -69,7 +69,7 @@ contract ManualToken {
 }
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > Despite being an optional method, we're including `decimals` here as a point of clarification since we're declaring our total supply as 100 ether. 100 ether = 100 + 18 decimals places.
 
 The next functions required by the ERC20 standard are balanceOf and transfer, so let's apply those now.
@@ -114,7 +114,7 @@ function balanceOf(address _owner) public pure returns (uint256) {
 
 An interesting thing that comes to light from this function is - someone's balance of a token is really just some mapping on a smart contract that says `this number is associated with this address` That's it. All swaps, transfers and trades are represented as an updating to the balance of this mapping.
 
-> [!TIP]
+> ❗ **PROTIP**
 > Our name function could also be represented by a public declaration such as `string public name = "ManualToken";`. This is because Solidity creates public getter functions when compiled for any publicly accessible storage variables!
 
 Our next required function is transfer:

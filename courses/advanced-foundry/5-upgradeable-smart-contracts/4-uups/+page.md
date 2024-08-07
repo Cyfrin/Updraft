@@ -121,12 +121,12 @@ contract BoxV1 {
 
 Let's open up UUPSUpgradeable to take a look at some of it's important/applicable functionality.
 
-> [!TIP]
+> ❗ **PROTIP**
 > You can ctrl + left-click, or cmd + left-click the file name in our import to open it up.
 
 Within UUPSUpgradeable we can see the main function we'll need to leverage upgradeToAndCall. This will allow us to upgrade the implementation address of our protocol. We'll need to inherit UUPSUpgradeable with BoxV1.
 
-> [NOTE]
+> ❗ **NOTE**
 > Later versions of the UUPSUpgradeable library have removed upgradeTo in favour of just using upgradeToAndCall.
 
 Once inherited, we'll see a compiler warning advising that BoxV1 should be marked as abstract.
@@ -268,7 +268,7 @@ contract BoxV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 }
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > Recent updates to the OwnableUpgradeable library now require an argument to be passed to the \_\_Ownable_init function.
 
 Common convention is to prepend initializer functions with a double-underscore `__`.

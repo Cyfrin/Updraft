@@ -4,8 +4,6 @@ title: Constructor
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 #### Introduction
 
 In this lesson, we will address a security gap present in the current `fundMe` contract.
@@ -62,5 +60,3 @@ By incorporating a constructor to assign ownership and updating the withdraw fun
 1. 📕 What is the purpose of a `constructor` function and how does it differ from regular functions?
 2. 📕 Why is it necessary to restrict access to the withdraw function?
 3. 🧑‍💻 Write a function called `withdrawOnlyFirstAccountRemix` that allows only the first Remix account to withdraw all funds from the contract.
-
-[Back to top](#top)

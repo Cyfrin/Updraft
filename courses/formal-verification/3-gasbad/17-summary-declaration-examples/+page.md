@@ -18,7 +18,7 @@ So far we've seen an example of a `view summary` in our demonstrations of the `A
 
 We also have `HAVOC summaries` available to us, which allow us to control, with greater specificity, how the prover responds to particular function calls.
 
-> [!NOTE] > `HAVOC'd` verifications may result in undesirable levels of restriction with regards to the soundness and validity of your proof. Use things like `HAVOC_ALL` with restraint and purpose.
+> ❗ **NOTE** > `HAVOC'd` verifications may result in undesirable levels of restriction with regards to the soundness and validity of your proof. Use things like `HAVOC_ALL` with restraint and purpose.
 
 <img src="/formal-verification-3/17-summary-declaration-examples/summary-declaration-examples2.png" width="100%" height="auto">
 

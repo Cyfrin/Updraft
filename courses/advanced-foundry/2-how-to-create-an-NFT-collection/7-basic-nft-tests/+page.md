@@ -77,7 +77,7 @@ We'll leverage abi.encodePacked to convert this to bytes, then finally we can us
 
 <img src="/foundry-nfts/7-basic-nft-tests/basic-nft-tests3.png" width="100%" height="auto">
 
-> [!NOTE]
+> ❗ **NOTE**
 > I know we haven't covered encoding or abi.encodePacked in great detail yet, but don't worry - we will.
 
 If we apply this encoding and hashing methodology to our BasicNft test, we should come out with something that looks like this:

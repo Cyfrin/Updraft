@@ -4,8 +4,6 @@ title: Sending ETH through a function
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In this part, we'll explore how to transfer Ethereum (ETH) to a smart contract by creating a `fund` function. This function will require a _minimum amount of ETH_ to ensure proper transaction handling.
@@ -66,5 +64,3 @@ In this lesson, we explored how to use the `value` field of a transaction to tra
 2. 📕 Explain how the `require` statement works in Solidity and what prevents.
 3. 📕 What's the difference between Wei, Gwei and Ether?
 4. 🧑‍💻 Create a `tinyTip` function that requires the user to send less than 1 Gwei.
-
-[Back to top](#top)

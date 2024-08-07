@@ -4,8 +4,6 @@ title: Errors and Warnings
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In the previous lesson, we learned how to combine _arrays_ and _structs_ to store information and how to manipulate this information with the function `addPerson`. This time we'll explore **errors** and **warnings** and how to leverage forums, search engines and AI resources.
@@ -64,5 +62,3 @@ You’ve just learned how to effectively identifying and managing errors and war
 
 1. 📕 What's the difference between a warning and an error? Make an example of each.
 2. 🧑‍💻 Make a written list (or a bookmark in your browser) with at least 3 useful online resources will help you solve future bugs.
-
-[Back to top](#top)

@@ -6,15 +6,13 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 ### Introduction
 
 Welcome to the Cyfrin Updraft. This platform offers a comprehensive learning experience by combining video lessons, written content, and interactive discussions.
 
 ### Resources
 
-In the top right corner of the lesson view, you'll find a link to the [**GitHub resources**](https://github.com/Cyfrin/foundry-full-course-cu) 📂 page. This guide contains all the code, information, and materials necessary for the course. On GitHub, the [**discussions tab**](https://github.com/Cyfrin/foundry-full-course-cu/discussions)  💬 allows you to interact with fellow learners and the community, where you can ask questions, share insights, and solve problems collaboratively.
+In the top right corner of the lesson view, you'll find a link to the [**GitHub resources**](https://github.com/Cyfrin/foundry-full-course-cu) 📂 page. This guide contains all the code, information, and materials necessary for the course. On GitHub, the [**discussions tab**](https://github.com/Cyfrin/foundry-full-course-cu/discussions) 💬 allows you to interact with fellow learners and the community, where you can ask questions, share insights, and solve problems collaboratively.
 
 Next to the video lesson, there is a **written lesson** tab 📝. This tab provides the course content in text format, which is useful for reading along, copy-pasting code snippets or reviewing updates.
 
@@ -43,5 +41,3 @@ If you're watching on YouTube, links to these resources are available in the vid
 ### Conclusion
 
 By following these guidelines, you'll be well-equipped to make the most out of this course. Engaging with the community, pacing your learning, and utilizing Cyfrin Updraft resources will significantly enhance your learning experience.
-
-[Back to top](#top)

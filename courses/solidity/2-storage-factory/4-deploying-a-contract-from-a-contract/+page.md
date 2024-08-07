@@ -4,8 +4,6 @@ title: Deploying a Contract from a Contract (Factory)
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 This lesson covers the process of **programmatically deploying** a `SimpleStorage` contract and saving it to a _storage or state variable_. By the end of this lesson, you will have a comprehensive understanding of how one contract can seamlessly deploy and manage another one.
@@ -27,8 +25,7 @@ contract StorageFactory {
 }
 ```
 
-> 👀❗**IMPORTANT** <br>
-> `SimpleStorage` on the left and `simpleStorage` on the right are treated as entirely distinct entities due to their differing capitalization. `Simple Storage` refers to the contract type while `simpleStorage` refers to the variable name.
+> 👀❗**IMPORTANT** <br> > `SimpleStorage` on the left and `simpleStorage` on the right are treated as entirely distinct entities due to their differing capitalization. `Simple Storage` refers to the contract type while `simpleStorage` refers to the variable name.
 
 When the `new` keyword is used, the compiler recognizes the intention to deploy a new contract instance. After compiling, we can proceed to deploy it.
 

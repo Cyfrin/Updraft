@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 ### Introduction
 
 In this lesson, we will explore the different transaction types within the ZK Sync VM and EVM ecosystems.
@@ -36,5 +34,3 @@ Additionally, ZK Sync introduces its [unique transaction type](https://docs.zksy
 ### Conclusion
 
 The ZK Sync VM and EVM ecosystems support various transaction types to meet different EIP requirements. By examining deployment folders and understanding the use of flags like `--legacy`, we can effectively distinguish between these transaction types.
-
-[Back to top](#top)

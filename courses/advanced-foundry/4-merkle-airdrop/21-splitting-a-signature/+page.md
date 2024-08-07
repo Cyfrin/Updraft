@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 In this lesson we are going to split the signature into its _v,r,s_, component starting by saving this byte signature as a variable:
 
 ```js
@@ -37,5 +35,3 @@ To isolate each component, we'll create a function called `splitSignature` . Thi
 
 > 🗒️ **NOTE** <br>
 > When working with functions from libraries like OpenZeppelin or other APIs, the signature format typically follows the order _v,r,s_ instead of the _r,s,v_ we used in this lesson.
-
-[Back to top](#top)

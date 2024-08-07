@@ -4,8 +4,6 @@ title: SafeMath
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In this lesson, we will explore `SafeMath`, a widely used library before Solidity version 0.8, and understand why its usage has now decreased.
@@ -75,5 +73,3 @@ The evolution of Solidity and `SafeMath.sol` highlights the continuous advanceme
 3. 📕 What happened after solidity version 0.8?
 4. 📕 What is the unchecked construct?
 5. 🧑‍💻 Modify the `SafeMathTester` contract by using the SafeMath library to prevent integer overflow.
-
-[Back to top](#top)

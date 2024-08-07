@@ -40,7 +40,7 @@ Getting through the first part of this majorly intense curriculum deserves a mas
 
 In completing this course, and the last 5 section specifically, you've built up a portfolio to show case what you've learnt and what you're capable of as a security researcher. I've said it since the beginning, the way to get better is by continuing to practice this skill:
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > "Repetition is the mother of skill."
 
 So, what's next?
@@ -79,13 +79,12 @@ Your final mission is the most challenging - finding vulnerabilities. Use your c
 
 The Vault Guardians code base offers greater complexity than any previous codebases. Embrace this new level of difficulty, and challenge yourself. It's how you improve.
 
-> [!TIP]
+> ❗ **PROTIP**
 > Vault Guardians can be daunting, consider teaming up with a fellow student to tackle this challenge! Find someone on the [**Cyfrin Discord**](https://discord.gg/cyfrin).
 
 ### A Valuable Detour
 
-> [!IMPORTANT]
-> **DO NOT GO TO PART 2**
+> ❗ **IMPORTANT** > **DO NOT GO TO PART 2**
 
 Now, it's time. You have 2 options.
 

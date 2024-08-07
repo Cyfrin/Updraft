@@ -4,8 +4,6 @@ title: Immutability and Constants
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In this lesson, we'll explore tools to optimize **gas usage** for variables that are set only _once_.
@@ -49,5 +47,3 @@ In this lesson, we have explored the use of `constant` and `immutable` keywords 
 
 1. 📕 Why a developer can choose to use `immutable` instead of `constant` for specific variables?
 2. 🧑‍💻 Invent one `constant` variable and one `immutable` variable that can be integrated into the current version of the `fundMe` contract.
-
-[Back to top](#top)

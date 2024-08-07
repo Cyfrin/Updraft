@@ -2,8 +2,6 @@
 title: Real-World Price Data
 ---
 
-<a name="top"></a>
-
 ### Introduction
 
 With the rapid advancement of blockchain technology and the growing adoption of decentralized finance platforms (DeFi), the necessity to support **multiple digital currencies** has significantly increased. Enabling users to utilize their preferred digital currencies extends market reach and improves the usability of an application.
@@ -67,5 +65,3 @@ _Chainlink Data Feeds_ will help integrate currency conversion inside of our `Fu
 ### 🧑‍💻 Test yourself
 
 1. 📕 Describe 4 Chainlink products and what problem each one solves.
-
-[Back to top](#top)

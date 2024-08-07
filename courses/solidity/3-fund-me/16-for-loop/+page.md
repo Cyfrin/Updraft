@@ -4,8 +4,6 @@ title: For Loop
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In this tutorial, we'll set up the `withdraw` function to enable the retrieval of accumulated funds. We'll then reset all the mappings to zero using a method known as a **for loop**.
@@ -79,5 +77,3 @@ In this lesson, we learned how to implement the `withdraw` function to manage ac
 1. 📕 What are the shortcuts we addressed in this lesson?
 2. 📕 How does a `for loop` work in Solidity?
 3. 🧑‍💻 Implement a function named `pushNumbers` to populate a `numbers` array with values from 1 to 10.
-
-[Back to top](#top)

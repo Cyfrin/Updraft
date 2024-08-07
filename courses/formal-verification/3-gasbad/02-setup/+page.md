@@ -23,7 +23,7 @@ solc-select install 0.8.20
 solc-select use 0.8.20
 ```
 
-> [!TIP]
+> ❗ **PROTIP**
 > If you don't have solc-select installed, you can do so by following the steps outlined [**here**](https://github.com/crytic/solc-select).
 
 Your first step, once the repo is cloned locally, is to delete the `certora` folder. This is what we'll be walking through recreating together!
@@ -34,7 +34,7 @@ Let's crack open the README to verify the setup steps recommended by the protoco
 
 The protocol wants us to use the `make` command! This should largely set our workspace up for us by removing old modules, installing our dependences and building the project.
 
-> [!WARNING]
+> ❗ **WARNING**
 > Before running `make` we should always check our foundry.toml to assure `FFI=False`, running arbitrary code while our framework has these permissions is dangerous! **Be safe!**
 
 Lastly, before diving into the code base itself, we should see how the protocol's existing test suite looks. It seems they currently have BaseTest.t.sol which they are leveraging to compare their code bases and gas currently. Let's run it!

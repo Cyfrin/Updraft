@@ -8,10 +8,13 @@ Alright! We've got our scripts written and are now ready to move on to the next 
 - testing that non-owner cannot execute commands
 
 ---
->[!TIP] Buckle up! This is a big one! Good learning inbound!
+
+> ❗ **PROTIP** Buckle up! This is a big one! Good learning inbound!
 
 ---
+
 ### Setting Up Test
+
 Now that we've got some scripts written, we need to do some testing. Let's create our first one in the test folder. Name it `MinimalAccountTest.t.sol`. Then we can go ahead and set up some essentials:
 
 - license and pragma
@@ -19,11 +22,12 @@ Now that we've got some scripts written, we need to do some testing. Let's creat
 - contract `MinimalAccountTest`
 - state variables for `HelperConfig` and `MinimalAccount`
 - `setUp` function that will:
-  -  create a new instance of `DeployMinimal` contract
-  -  call deployMinimalAccount that returns state variables mentioned above
-  -  assigns values to the returned variables
+  - create a new instance of `DeployMinimal` contract
+  - call deployMinimalAccount that returns state variables mentioned above
+  - assigns values to the returned variables
 
 **<span style="color:red">MinimalAccountTest.t.sol</span>**
+
 ```js
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
@@ -43,7 +47,9 @@ contract MinimalAccountTest is Test {
     }
 }
 ```
+
 ---
+
 ### What to Test
 
 Now that we've got the essentials of our test ready, let's decide what we exactly want to test.
@@ -64,6 +70,7 @@ In our test, we should include:
 In a nutshell, we are going to simulate being the alt-mempool. To get started, we are going to set up a function to test our the basic functionality or our contract. But first, let's take a look at our `execute` function from `MinimalAccount.sol`.
 
 **<span style="color:red">MinimalAccount.sol</span>**
+
 ```js
 function execute(address dest, uint256 value, bytes calldata functionData) external requireFromEntryPointOrOwner {
     (bool success, bytes memory result) = dest.call{value: value}(functionData);
@@ -73,7 +80,7 @@ function execute(address dest, uint256 value, bytes calldata functionData) exter
 }
 ```
 
-The owner should be able to call this function and send a transaction. 
+The owner should be able to call this function and send a transaction.
 
 ---
 
@@ -102,7 +109,7 @@ function testOwnerCanExecuteCommands() public {
 The first thing we will need now is a mock ERC20. Let's import this from **OpenZeppelin**.
 
 ```js
-import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
+import { ERC20Mock } from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
 ```
 
 Next, create another state variable `ERC20Mock usdc` , and assign `new ERC20Mock()` to usdc in the `setUp` function.
@@ -121,9 +128,10 @@ contract MinimalAccountTest is Test {
 }
 ```
 
-With that, we can move back to our test and do a **USDC Mint**. If you go into ERC20Mock, you will see a mint function. 
+With that, we can move back to our test and do a **USDC Mint**. If you go into ERC20Mock, you will see a mint function.
 
 **<span style="color:red">ERC20Mock.sol</span>**
+
 ```js
 function mint(address account, uint256 amount) external {
     _mint(account, amount);
@@ -131,12 +139,13 @@ function mint(address account, uint256 amount) external {
 ```
 
 Let's add what we need from our `execute` function and `ERC20Mock mint` to **Assert** in our `testOwnerCanExecuteCommands` test. Remember that execute takes `address dest`, `uint256 value`, and `bytes calldata functionData`
- 
- - `dest` will be USDC contract
- - `value` will be 0
- - `functionData` will be `mint`
+
+- `dest` will be USDC contract
+- `value` will be 0
+- `functionData` will be `mint`
 
 **<span style="color:red">MinimalAccountTest.t.sol</span>**
+
 ```js
 //Assert
 assertEq(usdc.balanceOf(address(minimalAccount)), 0);
@@ -150,14 +159,14 @@ Next, in **Act**, we will prank the owner.
 ```js
 // Act
 vm.prank(minimalAccount.owner());
-    minimalAccount.execute(dest, value, functionData);
+minimalAccount.execute(dest, value, functionData);
 ```
 
 So far, our test function should mint some mock ERC20 to our `minimalAccount`. Before we go any further, be sure to set a constant state variable for AMOUNT - `uint256 constant AMOUNT = 1e18;`.
 
 ```js
 // Assert
-assertEq(usdc.balanceOf(address(minimalAccount)), AMOUNT); 
+assertEq(usdc.balanceOf(address(minimalAccount)), AMOUNT);
 ```
 
 Let's go back and pass the following in abi.encodeWithSelector(ERC20Mock.mint.selector) of the **Assert** section - `address(minimalAccount), AMOUNT `. Our completed function should now look like this:
@@ -183,10 +192,13 @@ function testOwnerCanExecuteCommands() public skipZkSync {
 ```js
 forge test --mt testOwnerCanExecuteCommands -vvv
 ```
+
 ---
+
 **Ooops!** Our test failed. It looks we forgot to set up our **mock entry point contract** over in our `HelperConfig`. Go to the `getOrCreateAnvilEthConfig` function.
 
 **<span style="color:red">HelperConfig.sol</span>**
+
 ```js
 function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
     if (localNetworkConfig.account != address(0)) {
@@ -196,16 +208,19 @@ function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
     // deploy mocks
 }
 ```
-First, add a new constant variable, `FOUNDRY_DEFAULT_WALLET`, to the state variables. 
+
+First, add a new constant variable, `FOUNDRY_DEFAULT_WALLET`, to the state variables.
 
 ```js
 address constant FOUNDRY_DEFAULT_WALLET = 0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38;
 ```
->[!IMPORTANT] Be sure that your MinimalAccount.sol contract uses the right modifier in the execute function. It should look like this:
+
+> ❗ **IMPORTANT** Be sure that your MinimalAccount.sol contract uses the right modifier in the execute function. It should look like this:
 
 `requireFromEntryPointOrOwner`
 
 **<span style="color:red">MinimalAccount.sol**
+
 ```js
 function execute(address dest, uint256 value, bytes calldata functionData) external requireFromEntryPointOrOwner {
     (bool success, bytes memory result) = dest.call{value: value}(functionData);
@@ -218,12 +233,17 @@ function execute(address dest, uint256 value, bytes calldata functionData) exter
 Back over in the `HelperConfig`, insert the following code into our function.
 
 **<span style="color:red">HelperConfig.sol</span>**
+
 ```js
 // deploy mocks
 
-return NetworkConfig({entryPoint: address(0), account: FOUNDRY_DEFAULT_WALLET});
+return NetworkConfig({
+  entryPoint: address(0),
+  account: FOUNDRY_DEFAULT_WALLET,
+});
 ```
-Let's see where we are now. 
+
+Let's see where we are now.
 
 ```js
 forge test --mt testOwnerCanExecuteCommands -vvv
@@ -232,15 +252,17 @@ forge test --mt testOwnerCanExecuteCommands -vvv
 **Boom!** Our test is now passing. We do have a few warnings, but that's just because we haven't finished setting up our `getOrCreateAnvilEthConfig` function yet.
 
 ---
+
 ### Test if Non-Owner Cannot Execute Commands
 
-The good news is that we know our `execute` function can do the basic, traditional transaction. However, we want to do more and to be Account Abstraction. 
+The good news is that we know our `execute` function can do the basic, traditional transaction. However, we want to do more and to be Account Abstraction.
 
-Before we do that, let's make sure that if you are not the owner you can not execute commands. 
+Before we do that, let's make sure that if you are not the owner you can not execute commands.
 
 Let's create a makeAddr() first. Add the following to your state variables in the `MinimalAccountTest` contract.
 
 <span style="color:red">**MinimalAccountTest.t.sol**</span>
+
 ```js
 address randomuser = makeAddr("randomUser");
 ```
@@ -261,7 +283,7 @@ function testNonOwnerCannotExecuteCommands() public {
 }
 ```
 
-Run forge test again and it should pass. 
+Run forge test again and it should pass.
 
 ```js
 forge test --mt testOwnerCanExecuteCommands -vvv
@@ -270,29 +292,33 @@ forge test --mt testOwnerCanExecuteCommands -vvv
 **Congratulations!** You've put in some amazing work to get to this point. Before moving on, taking a moment to do these review questions. See you in the next lesson whenever you are ready.
 
 ---
+
 ### Questions for Review
 
-<summary>1. In `testOwnerCanExecuteCommands`, what does the execute function require to pass? What parameters does it take?</summary> 
+<summary>1. In `testOwnerCanExecuteCommands`, what does the execute function require to pass? What parameters does it take?</summary>
 
 ---
-<details> 
+
+<details>
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
-   It requires the msg.sender to be either the owner or the entry point, and it takes parameters for address dest, uint256 value, and bytes calldata functionData.       
-      
+It requires the msg.sender to be either the owner or the entry point, and it takes parameters for address dest, uint256 value, and bytes calldata functionData.
+
 </details>
 
 ---
-<summary>2. What is the expected behavior of the testNonOwnerCannotExecuteCommands test?</summary> 
+
+<summary>2. What is the expected behavior of the testNonOwnerCannotExecuteCommands test?</summary>
 
 ---
-<details> 
+
+<details>
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
-   The test should revert if a non-owner (a random user) attempts to execute commands using the execute function.        
-      
+The test should revert if a non-owner (a random user) attempts to execute commands using the execute function.
+
 </details>
 
 ---

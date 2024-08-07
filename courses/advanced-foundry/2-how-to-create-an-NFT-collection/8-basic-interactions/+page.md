@@ -30,7 +30,7 @@ forge install Cyfrin/foundry-devops --no-commit
 
 Now, we can import `DevOpsTools` and use this to acquire our most recent deployment. We'll use this address as a parameter for the `mint` function we'll call.
 
-> [!NOTE]
+> ❗ **NOTE**
 > I've copied over my `PUG tokenUri` for use in our `mint` function, remember to copy your own over too!
 
 ```js
@@ -61,7 +61,7 @@ contract MintBasicNft is Script{
 }
 ```
 
-> [!TIP]
+> ❗ **PROTIP**
 > Remember, if you don't recall which parameters are required for a function like `get_most_recent_deployment` you can `ctrl + left-click` (`cmd + click`) to be brought to the function definition.
 
 ### Wrap Up

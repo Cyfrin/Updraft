@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 ### Introduction
 
 In this lesson, we will execute a transaction on the **zkSync testnet**, also known as _zkSync Sepolia_ or _zkSync Era_ testnet. We will start by adding zkSync Sepolia to MetaMask, followed by bridging funds to this network, and finally verifying the transaction details.
@@ -25,12 +23,13 @@ Our first transaction involves receiving funds. There are two ways to receive fu
 2. **Bridging**: Our reommended method, that involves transfering funds from one chain (Sepolia) to another (zkSync Sepolia). There are two types of bridging mechanisms:
 
    - **Locking and Unlocking**: Tokens are locked on the source chain and unlocked on the destination chain.
-  
+
      <img
        src="/blockchain-basics/18-making-your-first-transaction-on-zksync/lock-unlock.png"
        width="100%"
        height="auto"
      />
+
    - **Minting and Burning**: Tokens are burned on the source chain and minted on the destination chain. The bridge protocol must control the token supply to manage this process. An example is [CCTV](https://www.circle.com/en/cross-chain-transfer-protocol) by the Circle team, where USDC is burned and minted to facilitate bridging.
 
      <img
@@ -50,6 +49,5 @@ Our first transaction involves receiving funds. There are two ways to receive fu
      During this period, transactions are displayed **instantly** in the UI and can be further transferred, but full finality should be awaited to ensure they are fully received and validated using ZK proofs.
 
 ### Conclusion
-In this lesson, we explored how to make a transaction to transfer funds on the zkSync testnet. We began by adding zkSync Sepolia to MetaMask, we bridged funds to zkSync Sepolia and we discussed two methods for receiving funds: using a faucet and bridging. For bridging, we covered the mechanisms of locking and unlocking, as well as minting and burning tokens. We obtained Sepolia ETH from a recommended faucet and used the official zkSync bridge to transfer the funds.
 
-[Back to top](#top)
+In this lesson, we explored how to make a transaction to transfer funds on the zkSync testnet. We began by adding zkSync Sepolia to MetaMask, we bridged funds to zkSync Sepolia and we discussed two methods for receiving funds: using a faucet and bridging. For bridging, we covered the mechanisms of locking and unlocking, as well as minting and burning tokens. We obtained Sepolia ETH from a recommended faucet and used the official zkSync bridge to transfer the funds.

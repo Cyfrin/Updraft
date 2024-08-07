@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 Now that the file `Interact.s.sol` is complete, we can execute it using the following command:
 
 ```bash
@@ -29,5 +27,3 @@ cast --to-dec 0x000000000000000000000000000000000000000000000015af1d78b58c40000
 ```
 
 This conversion will reveal the actual amount airdropped to the first Anvil account, which is equivalent to 25 Bagel tokens
-
-[Back to top](#top)

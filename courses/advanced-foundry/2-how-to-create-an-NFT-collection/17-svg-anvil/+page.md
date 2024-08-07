@@ -10,7 +10,7 @@ _Follow along the course with this video._
 
 Alright, let's do this for real. I wanna see our token in our Metamask wallet!
 
-> [!NOTE]
+> ❗ **NOTE**
 > I recommend following along on `anvil` instead of sepolia, testnets can be slow and problematic, everything we're doing should work locally.
 
 We can start by kicking off our anvil chain. This has already been configured in our `Makefile`, so we should just have to run `make anvil`
@@ -61,7 +61,7 @@ cast send 0x5FbDB2315678afecb367f032d93F642f64180aa3 "flipMood(uint256)" 0 --pri
 rpc-url http://localhost:8545
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > For Metamask to reflect the change, we'll regrettably have to remove and readd the NFT collection.
 
 Once we reimport our NFT however...

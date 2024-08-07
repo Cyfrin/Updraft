@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 To work with the Chainlink VRF (Verifiable Random Function) in Solidity, we need to inherit functions from an **abstract contract** called [`VRFConsumerBaseV2Plus`](https://github.com/smartcontractkit/chainlink-brownie-contracts/blob/12393bd475bd60c222ff12e75c0f68effe1bbaaf/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol). Abstract contracts can contain both defined and undefined functions, such as:
 
 ```js
@@ -24,10 +22,7 @@ function fulfillRandomWords(uint256 requestId, uint256[] calldata randomWords) i
 Here’s how you override the `fulfillRandomWords` function:
 
 ```js
-function fulfillRandomWords(uint256, /* requestId */ uint256[] calldata randomWords) internal override { 
-    //pick a winner here, send him the reward and reset the raffle 
+function fulfillRandomWords(uint256, /* requestId */ uint256[] calldata randomWords) internal override {
+    //pick a winner here, send him the reward and reset the raffle
 }
 ```
-
-
-[Back to top](#top)

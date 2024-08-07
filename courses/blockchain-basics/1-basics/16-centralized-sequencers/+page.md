@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 ### Introduction
 
 In blockchain and cryptocurrency networks, the role of a **sequencer** is crucial for ordering and bundling transactions. Sequencers are operators that are responsible for organizing how transactions are processed. In many roll-up solutions, sequencers are centralized, controlled by a single entity.
@@ -27,5 +25,3 @@ The centralization of sequencers in blockchain networks poses significant risks,
 ### 🧑‍💻 Test yourself
 
 1. 📕 Explain what are the primary risks associated with centralized sequencers.
-
-[Back to top](#top)

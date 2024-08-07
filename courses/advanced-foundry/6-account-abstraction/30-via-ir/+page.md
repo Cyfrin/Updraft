@@ -1,6 +1,6 @@
 ## Account Abstraction Lesson 30: Via Ir
 
-Ok, let's see if your test is working. Place the following command in your terminal. 
+Ok, let's see if your test is working. Place the following command in your terminal.
 
 ```js
 forge test --mt testZkOwnerCanExecuteCommands --zksync
@@ -12,15 +12,16 @@ And.... we get an error. If you read the error message you will see that we need
 via-ir = true
 ```
 
->[!NOTE] This may cause our code to compile a bit slower, but it will work. 
+> ❗ **NOTE** This may cause our code to compile a bit slower, but it will work.
 
 Let's run our test again.
 
 ```js
 forge test --mt testZkOwnerCanExecuteCommands --zksync
 ```
+
 ---
 
-We can see that our test now passes. 
+We can see that our test now passes.
 
-Move on to the next lesson when you are ready. 
+Move on to the next lesson when you are ready.

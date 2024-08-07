@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 ### Introduction
 
 In a default transaction, data is stored and visible on-chain permanently. Blob transactions (binary large objects), classified as transaction type 3, allow data to be stored temporarily on-chain and then deleted after a short period, ranging from 20 to 90 days.
@@ -36,5 +34,3 @@ Validating these blobs involves using the [`BLOBHASH`](https://www.evm.codes/#49
 
 - [What is EIP-4844?](https://www.cyfrin.io/blog/what-is-eip-4844-proto-danksharding-and-blob-transactions)
 - [send_blob](https://github.com/PatrickAlphaC/send_blob) GitHub repository
-
-[Back to top](#top)

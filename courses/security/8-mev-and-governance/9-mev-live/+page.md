@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### MEV - LIVE
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > The true value in this (and the following lesson) is found in seeing this exploit in action. If you're unable to watch this currently, I encourage you to return when you can!
 
 Here is [the code we are going to use to see it](https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/MEV/Frontran.sol)

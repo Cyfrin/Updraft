@@ -1,25 +1,28 @@
-## Account Abstraction Lesson 19: IAccount 
+## Account Abstraction Lesson 19: IAccount
 
-Now that we've got our functions, let's take a look at them to understand what they do. 
+Now that we've got our functions, let's take a look at them to understand what they do.
 
->[!NOTE] From this point, we will be updating `Transaction calldata _transaction` to `Transaction memory _transaction` when it is passed into our function as a parameter.
+> ❗ **NOTE** From this point, we will be updating `Transaction calldata _transaction` to `Transaction memory _transaction` when it is passed into our function as a parameter.
 
 ### Validate Transaction
 
 ---
+
 ```js
 function validateTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction memory _transaction)
     external
     payable
-    returns (bytes4 magic) 
+    returns (bytes4 magic)
 {}
 ```
----
-
-You may have noticed that it is similar to the validateUserOp function in our MinimalAccount.sol that we built for Ethereum. On Ethereum, there are user operations, but zkSync just has transactions. Just like we had a `PackedUserOp` struct before, now we have a `Transaction` struct. This can be found in `MemoryTransactionHelper.sol` For your convenience, I've added it below. Click to open it and read through it. 
 
 ---
-<details> 
+
+You may have noticed that it is similar to the validateUserOp function in our MinimalAccount.sol that we built for Ethereum. On Ethereum, there are user operations, but zkSync just has transactions. Just like we had a `PackedUserOp` struct before, now we have a `Transaction` struct. This can be found in `MemoryTransactionHelper.sol` For your convenience, I've added it below. Click to open it and read through it.
+
+---
+
+<details>
 
 **<summary><span style="color:red">MemoryTransactionHelper.sol</span></summary>**
 
@@ -72,13 +75,13 @@ struct Transaction {
     // But it is still here, just in case we want to enable some additional functionality.
     bytes reservedDynamic;
 }
-```      
-      
+```
+
 </details>
 
 ---
 
-When we send an Account Abstraction transaction through zkSync, the `Transaction` struct will essentially be populated. This will be our focus for now. The following parameters we won't worry about, for now. But here is the gist of what they do. 
+When we send an Account Abstraction transaction through zkSync, the `Transaction` struct will essentially be populated. This will be our focus for now. The following parameters we won't worry about, for now. But here is the gist of what they do.
 
 - `_txHash` = The hash of the transaction to be used in the explorer
 - `_suggestedSignedHash` = The hash of the transaction is signed by EOAs
@@ -86,12 +89,14 @@ When we send an Account Abstraction transaction through zkSync, the `Transaction
 For now, let's consider `returns (bytes4 magic)` as a bool. For example, if we wanted it to return true we could just add the following into our function.
 
 ---
+
 ```js
 returns (bytes4 magic)
 {
     return IAccount.validateTransaction.selector;
 }
 ```
+
 ---
 
 ### Execute Transaction
@@ -99,32 +104,37 @@ returns (bytes4 magic)
 ```js
 function executeTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction memory _transaction)
     external
-    payable 
+    payable
 {}
 ```
+
 ---
 
 I know what you're thinking. "This is similar to the `execute` function from `MinimalAccount`." And it is. Quite similar except no `EntryPoint`.
 
 ---
+
 ```js
 function executeTransactionFromOutside(Transaction memory _transaction) external payable
 {}
 ```
----
-
-Essentially, this would be called if someone else wanted to execute a transaction. It will need to be validated. 
-
-  1. You sign a transaction.
-  2. You send the signed transaction to a friend.
-  3. Friend can send it by calling `executeTransactionFromOutside`.
 
 ---
+
+Essentially, this would be called if someone else wanted to execute a transaction. It will need to be validated.
+
+1. You sign a transaction.
+2. You send the signed transaction to a friend.
+3. Friend can send it by calling `executeTransactionFromOutside`.
+
+---
+
 ### Pay For Transaction and Prepare For Paymaster
 
-The `payForTransaction` is similar to `_payPreFund`. This is where we state who will be paying for the transactions. 
+The `payForTransaction` is similar to `_payPreFund`. This is where we state who will be paying for the transactions.
 
 ---
+
 ```js
 function payForTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction memory _transaction)
         external
@@ -132,57 +142,54 @@ function payForTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transa
 {}
 ```
 
-`prepareForPaymaster` will be called before `payForTransaction` if you have a paymaster, another person or entity who will be paying for the transactions. 
+`prepareForPaymaster` will be called before `payForTransaction` if you have a paymaster, another person or entity who will be paying for the transactions.
 
-This lesson gave us a gist of what our IAccount interface will do. Take a moment to review and reflect. Move on to the next lesson when you are ready. 
+This lesson gave us a gist of what our IAccount interface will do. Take a moment to review and reflect. Move on to the next lesson when you are ready.
 
 ---
+
 ### Questions for Review
 
 ---
-<summary>1. How is the validateTransaction function in zkSync similar to the validateUserOp function in Ethereum?</summary> 
+
+<summary>1. How is the validateTransaction function in zkSync similar to the validateUserOp function in Ethereum?</summary>
 
 ---
-<details> 
+
+<details>
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
     Both functions are used to validate transactions or user operations. In zkSync, the Transaction struct is used instead of the PackedUserOp struct in Ethereum.
- 
+
 </details>
 
 ---
 
-<summary>2.  What is the role of the executeTransactionFromOutside function?</summary> 
+<summary>2.  What is the role of the executeTransactionFromOutside function?</summary>
 
 ---
-<details> 
+
+<details>
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
-    This function allows someone else to execute a transaction that has been signed by the original sender. 
- 
+    This function allows someone else to execute a transaction that has been signed by the original sender.
+
 </details>
 
 ---
 
-<summary>3. When is the prepareForPaymaster function called?</summary> 
+<summary>3. When is the prepareForPaymaster function called?</summary>
 
 ---
-<details> 
+
+<details>
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
     It is called before the payForTransaction function if there is a paymaster involved. A paymaster is another person or entity who will be paying for the transactions.
- 
+
 </details>
 
 ---
-  
-
-
-
-
-
-
-

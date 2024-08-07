@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 To effortlessly create elegant **function** or **section headers** in your contract, you can use the [headers tool](https://github.com/transmissions11/headers) from transmission11. This tool generates code such as:
 
 ```js
@@ -15,5 +13,3 @@ To effortlessly create elegant **function** or **section headers** in your contr
                            ENTER RAFFLE
 //////////////////////////////////////////////////////////////*/
 ```
-
-[Back to top](#top)

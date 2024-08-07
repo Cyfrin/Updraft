@@ -38,7 +38,7 @@ Let's apply this argument to our `GasBad.conf`.
 
 Any of the options we add to this `prover_args` list will act as though we passed that option to our CLI command when running the prover!
 
-> [!NOTE]
+> ❗ **NOTE**
 > As of May 25, 2024 the above conf configuration may not work. You can pass this option _with_ your CLI command if necessary: `certoraRun ./certora/conf/GasBadNft.conf --optimistic_fallback`
 
 ### Wrap Up

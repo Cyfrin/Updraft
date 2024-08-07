@@ -5,9 +5,9 @@ title: Adding Signature Verification
 _Follow along with the video_
 
 ---
-<a name="top"></a>
 
 ### Introduction
+
 In this lesson, we will explore the process of allowing a third party to claim tokens on behalf of another account. Our goal is to maintain security by ensuring that the account owner consents to any transactions initiated by the third party.
 
 - A straightforward approach might involve **removing the account** from the equation entirely and relying solely on the caller of the function, the `msg.sender`. This would mean that each account would need to initiate the call themselves, covering their own gas fees. However, this method is limited and rigid, as restricts the ability of others to execute transactions on behalf of the account holder.
@@ -27,5 +27,3 @@ At a high level, here is how signatures in our contract `MerkleAirdrop` would wo
 ### Conclusion
 
 The use of digital signatures allows for a more flexible and secure method of executing airdrops. It enables account holders to authorize others to act on their behalf while ensuring that they only receive transactions they have explicitly approved.
-
-[Back to top](#top)

@@ -251,7 +251,7 @@ function depositCollateralAndMintDsc(address tokenCollateralAddress, uint256 amo
 
 All we really need to do, in this function, is call our depositCollateral and mintDsc functions in sequence.
 
-> [!NOTE]
+> ❗ **NOTE**
 > Both `depositCollateral` and `mintDsc` are current `external` functions. Set them to `public` before proceeding!
 
 Because this is one of our main functions, we're absolutely going to add some NATSPEC.

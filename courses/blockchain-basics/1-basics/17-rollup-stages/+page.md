@@ -5,7 +5,6 @@ title: Rollup stages
 _Follow along with the video_
 
 ---
-<a name="top"></a>
 
 ### Introduction
 
@@ -34,9 +33,10 @@ Currently, [Zksync Era](https://l2beat.com/scaling/projects/zksync-era) is opera
 - **Data Availability**: refers to the ability to reconstruct the L2 state from L1 data, ensuring that anyone can verify and rebuild the L2 state if necessary.
 - **State Validation**: involves verifying the legitimacy of a set of bundled transactions. For ZK Sync, this is done using zero-knowledge proofs through an algorithm known as PLONK (Permutations over Lagrange-bases for Oecumenical Noninteractive arguments of Knowledge).
 - **Sequencer Failure**: describes the ability to process transactions even if the sequencer is down. In ZK Sync, transactions can still be submitted to L1, though not necessarily enforced immediately.
-    > 🗒️ **NOTE**
-    >
-    > The sequencer is the operator responsible for _ordering_ user transactions and often _batching_ them before committing them to Layer 1.
+
+  > 🗒️ **NOTE**
+  >
+  > The sequencer is the operator responsible for _ordering_ user transactions and often _batching_ them before committing them to Layer 1.
 
 - **Proposer Failure**: describes the ability to process transactions even if the proposer is down. In this case, ZK Sync will halt all withdrawals and transactions executions.
 - **Exit Window**: In the current ZK Sync stage, there is no window for exit during unwanted upgrades.
@@ -49,5 +49,3 @@ The stages of rollups provide a framework for assessing and encouraging the matu
 
 1. 📕 What are the main differences between Stage 0, 1 and 2 rollups in terms of governance and exit mechanisms?
 2. 📕 Describe the parts that constitute a risk analysis for a Layer 2 solution.
-
-[Back to top](#top)

@@ -28,7 +28,7 @@ Despite setting initial values, the `Certora` prover assumes that these values c
 
 In our particular circumstance, `Certora` had the variable start at 0, but was unsure if this variable could change. The `transferFrom` call, for example, could be calling `mint`!
 
-> [!WARNING]
+> ❗ **WARNING**
 > If `Certora` is unsure if a function can interact with a variable - it's going to HAVOC
 
 Here's the thing: even if these values were initialized at `-1`, we wouldn't really expect this to be an issue, from the perspective of our invariant... let's look a bit deeper in the call trace to determine exactly what happened.

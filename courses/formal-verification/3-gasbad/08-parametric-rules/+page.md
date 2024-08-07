@@ -40,7 +40,7 @@ rule no_change_to_total_supply(method f) {
 
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > Passing a variable as an input parameter is almost identical to defining it within the rule body.
 
 What's cool about this set up is that it nearly functions like our `stateful fuzz testing`. `Certora` is going to `HAVOC` the storage variables (replace them with random values), and simulate the contract in different states. At each step it calls a method, our rule is going to assure that the `totalSupply` variable never changes.

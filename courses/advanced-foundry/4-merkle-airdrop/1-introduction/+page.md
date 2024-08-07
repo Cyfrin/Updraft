@@ -6,8 +6,7 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-Welcome back! I'm Ciara, and I'll be guiding you through the Merkle Airdrop section of this course. In this project, we'll delve into **Merkle Trees** and **Signatures** to create our very own _ERC20 airdrop contract_.
+> Welcome back! I'm Ciara, and I'll be guiding you through the Merkle Airdrop section of this course. In this project, we'll delve into **Merkle Trees** and **Signatures** to create our very own _ERC20 airdrop contract_.
 
 ### Airdrop
 
@@ -27,7 +26,6 @@ We will generate **scripts** to create Merkle Trees, Proofs, and Root Hash, as w
 
 In this course, we will cover several topics besides Merkle Trees and Merkle Proofs, such as signatures, the ECDSA (Elliptical Curve Digital Signature) Algorithm, and transaction types.
 
-
 - After initializing a ZK Sync local node with Docker, we'll deploy the `Bagel` token and `MerkleAirdrop` contracts on it
 - We'll then **sign a message** to allow someone else to call `claim` on your behalf so you can receive the token while not paying for gas fees
 - The initial supply of tokens is created and sent to the airdrop contract
@@ -35,5 +33,3 @@ In this course, we will cover several topics besides Merkle Trees and Merkle Pro
 - The address will now hold a balance of the airdropped tokens
 
 Let's get started!
-
-[Back to top](#top)

@@ -41,7 +41,7 @@ function mint(address _to, uint256 _amount) public {
 }
 ```
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > You probably **_don't_** want a function that anyone can call in order to mint your governance token, we're just applying this here to make our testing easier.
 
 ```js
@@ -102,7 +102,7 @@ contract MyGovernorTest is Test {
 }
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > Leaving the `proposers` and `executors` arrays empty is how you tell the timelock that anyone can fill these roles.
 
 Now's the point where we want to tighten up who is able to control what aspects of the DAO protocol. The Timelock contract we're using contains a number of roles which we can set on deployment. For example, we only want our governor to be able to submit proposals to the timelock, so this is something we want want to configure explicitly after deployment. Similarly the `admin` role is defaulted to the address which deployed our timelock, we absolutely want this to be our governor to avoid centralization.
@@ -180,7 +180,7 @@ function testGovernanceUpdatesBox() public {
 }
 ```
 
-> [!NOTE]
+> ❗ **NOTE**
 > You'll need to declare the constant variables `uint256[] values`, `bytes[] calldatas`, and `address[] targets` in your `MyGovernorTest.t.sol` contract!
 
 From this point we can call our propose function! propose returns a uint256 proposalId, which will be important for the next stages of our test.

@@ -6,16 +6,16 @@ In this lesson, our main objective is to make sure that our contract can only be
 - update our constructor to take `entryPoint`
 - create our first state variable, getter function, and modifier
 
-First, let's make sure that `validateUserOp` is only callable by the `EntryPoint` Contract. Let's import the `IEntryPoint` Interface. This will help us understand how the `EntryPoint` works and give us some valuable getter functions. 
+First, let's make sure that `validateUserOp` is only callable by the `EntryPoint` Contract. Let's import the `IEntryPoint` Interface. This will help us understand how the `EntryPoint` works and give us some valuable getter functions.
 
 ```js
-import {IEntryPoint} from "lib/account-abstraction/contracts/interfaces/IEntryPoint.sol";
+import { IEntryPoint } from "lib/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 ```
 
-Next, add `address entryPoint` as a parameter to our constructor. Then, create a state variable and set it to private immutable. 
+Next, add `address entryPoint` as a parameter to our constructor. Then, create a state variable and set it to private immutable.
 
 ```js
-IEntryPoint private immutable i_entryPoint; 
+IEntryPoint private immutable i_entryPoint;
 
 constructor(address entryPoint) Ownable(msg.sender) {
      i_entryPoint = IEntryPoint(entryPoint)
@@ -24,7 +24,7 @@ constructor(address entryPoint) Ownable(msg.sender) {
 
 If we click into the contract we can see all of the functions that the `EntryPoint` can use. Feel free to look over them before moving on.
 
-As previously mentioned, `IEntryPoint` will give us some getters. Copy and paste this header at the bottom of your code. Then, we will add some getter functions under it. 
+As previously mentioned, `IEntryPoint` will give us some getters. Copy and paste this header at the bottom of your code. Then, we will add some getter functions under it.
 
 ```js
 /*//////////////////////////////////////////////////////////////
@@ -32,8 +32,8 @@ As previously mentioned, `IEntryPoint` will give us some getters. Copy and paste
 //////////////////////////////////////////////////////////////*/
 ```
 
->[!NOTE] There is a neat tool that can produce these awesome headers automatically in the terminal. You can check that out here if you want. 
-[transmission11/headers](https://github.com/transmissions11/headers)
+> ❗ **NOTE** There is a neat tool that can produce these awesome headers automatically in the terminal. You can check that out here if you want.
+> [transmission11/headers](https://github.com/transmissions11/headers)
 
 Here is the getter function.
 
@@ -42,7 +42,8 @@ function getEntryPoint() external view returns (address) {
         return address(i_entryPoint);
     }
 ```
-Next, we want to create a modifier called `requireFromEntryPoint`. Place it above your constructor. 
+
+Next, we want to create a modifier called `requireFromEntryPoint`. Place it above your constructor.
 
 ```js
 modifier requireFromEntryPoint() {
@@ -53,13 +54,13 @@ modifier requireFromEntryPoint() {
     }
 ```
 
-Here, if the caller of the contract is not `EntryPoint` it will revert. You may have also noticed that our modifier has a custom error. Let's place it above our state variable. 
+Here, if the caller of the contract is not `EntryPoint` it will revert. You may have also noticed that our modifier has a custom error. Let's place it above our state variable.
 
 ```js
 error MinimalAccount__NotFromEntryPoint();
 ```
 
-Now we can use our modifier to make our `validateUserOp` callable exclusively from the `EntryPoint`. Let's place `requireFromEntryPoint` in our function. 
+Now we can use our modifier to make our `validateUserOp` callable exclusively from the `EntryPoint`. Let's place `requireFromEntryPoint` in our function.
 
 ```js
 function validateUserOp(PackedUserOperation calldata userOp, bytes32 userOpHash, uint256 missingAccountFunds)
@@ -73,7 +74,7 @@ function validateUserOp(PackedUserOperation calldata userOp, bytes32 userOpHash,
     }
 ```
 
-And now we are all set for the next steps. Before we move on, let's take a look at what our code looks like so far. Take a moment to reflect on what we have gained to this point in the course. When you are ready, move on to the next lesson. 
+And now we are all set for the next steps. Before we move on, let's take a look at what our code looks like so far. Take a moment to reflect on what we have gained to this point in the course. When you are ready, move on to the next lesson.
 
 ```js
 contract MinimalAccount is IAccount, Ownable {

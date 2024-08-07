@@ -12,7 +12,7 @@ Alright, welcome back! Now that we have all this context and understanding of DA
 
 While this is a very common/simple way to deploy a governance protocol, I want to challenge you not to default to this. It seems simple to deploy and manage at first, but issues inevitably arise when trading of governance tokens comes into play and speculation on price throws governance to the wind. This makes me sad so, I challenge you to find better solutions in your own projects.
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > Don't make Patrick sad.
 
 You can of course find all the code we'll be writing in this lesson's [**GitHub Repo**](https://github.com/Cyfrin/foundry-dao-f23).

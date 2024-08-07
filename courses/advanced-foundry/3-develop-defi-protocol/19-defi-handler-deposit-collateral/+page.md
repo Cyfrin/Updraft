@@ -174,7 +174,7 @@ Look! Our address passed is valid, but we're getting a different error `DSCEngin
 
 Let's keep narrowing the focus of our tests and the validity of our data.
 
-> [!IMPORTANT]
+> ❗ **IMPORTANT**
 > Be careful when configuring fail*on_revert to be true \_or* false. Sometimes we risk narrowing our tests too much with our Handler that we miss edge cases.
 
 In the same way we narrowed our test to provide a valid collateral type, we can bind the `amountCollateral` being passed to our function in order to ensure this is greater than 0 and avoid this error. StdUtils has a function we can use called `bound`.

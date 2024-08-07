@@ -42,7 +42,7 @@ ghost mathint log4Count {
 }
 ```
 
-> [!TIP]
+> ❗ **PROTIP**
 > Try running the prover _without_ initializing these variables. What happens?
 
 ### The Rule
@@ -58,7 +58,7 @@ invariant anytime_mapping_updated_emit_event()
 
 That's it, that's all we need. The reason we chose `<=` is because there may be other LOG4 emissions we aren't accounting for, when other storage variables are emitted, but this should allow us to verify this one case!
 
-> [!NOTE]
+> ❗ **NOTE**
 > In an audit scenario you would **definitely** want to expand on what we've done here, assuring that _any time_ storage is updated an event is emitted, but for simplicity's sake we've pared down our example.
 
 ### Wrap Up

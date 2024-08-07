@@ -94,7 +94,7 @@ function callTransferWithBinary(address someAddress, uint256 amount) public retu
 }
 ```
 
-> [!TIP]
+> ❗ **PROTIP**
 > We could also use `address(this).call(getDataToCallTransfer(someAddress, amount));`
 
 In the above we're sending our function call to the contract's own address, but this could be any address technically. This call is going to return two things which we're assigning to `success` and `returnData`.
@@ -115,7 +115,7 @@ function callTransferWithBinary(address someAddress, uint256 amount) public retu
 
 What makes this so powerful is the ability to send transaction data this way, agnostic of the contract you send it to. All you need is to change `address(this)` to the address you want to send the data to.
 
-> [!NOTE]
+> ❗ **NOTE**
 > This doesn't mean all addresses receiving the data will know what to do with it!
 
 Let's run this function in Remix to see it in action. Compile and redeploy `CallAnything.sol`.

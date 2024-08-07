@@ -4,8 +4,6 @@ title: Project Set up
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 Let's begin by coding `FundMe`, a crowdfunding contract allowing users to send funds, which the owner can later withdraw. Before we start, let's clean up our Remix IDE workspace
@@ -56,5 +54,3 @@ In this lesson, we created a new `FundMe` contract and broadly defined the logic
 ### 🧑‍💻 Test yourself
 
 1. 📕 Why should a developer always outline his coding goals before starting to code?
-
-[Back to top](#top)

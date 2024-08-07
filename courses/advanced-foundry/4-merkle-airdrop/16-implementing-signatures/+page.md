@@ -6,8 +6,6 @@ _Follow along with the video_
 
 ---
 
-<a name="top"></a>
-
 ### Introduction
 
 In this lesson, we will implement signature verification in our [`MerkleAirdrop::claim`](https://github.com/Cyfrin/foundry-merkle-airdrop-cu/blob/main/src/MerkleAirdrop.sol) function. We'll begin by adding a check at the start of the function to ensure the signature's validity. Next, we'll implement the `_isValidSignature` function, which requires a hashed message as input. This message contains the _account_ and the _amount_ to be claimed.
@@ -103,5 +101,3 @@ function _isValidSignature(
 ```
 
 This function uses `ECDSA::tryRecover` to recover the signer's address from the signature and compare it to the provided account. It also protects against signature malleability and reverts on zero addresses according to OpenZeppelin's ECDSA implementation.
-
-[Back to top](#top)

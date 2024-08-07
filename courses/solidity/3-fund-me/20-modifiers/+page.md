@@ -4,8 +4,6 @@ title: Modifiers
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In this lesson, we will explore **modifiers** and how they can simplify code writing and management in Solidity. Modifiers enable developers to create reusable code snippets that can be applied to multiple functions, enhancing code readability, maintainability, and security.
@@ -60,5 +58,3 @@ Using modifiers like `onlyOwner` simplifies contract development by centralizing
 
 1. 📕 Why is it beneficial to use `modifiers` for access control?
 2. 🧑‍💻 Implement a modifier named `onlyAfter(uint256 _time)` that ensures a function can only be executed after a specified time.
-
-[Back to top](#top)

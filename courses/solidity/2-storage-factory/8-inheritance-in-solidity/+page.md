@@ -4,8 +4,6 @@ title: Inheritance in Solidity
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In this lesson, we are going to introduce the concept of **inheritance** and **overriding**, two powerful tools that allow developers to create more modular, maintainable, and reusable smart contracts. By leveraging these techniques, you can build upon existing contracts and customize their functions.
@@ -85,5 +83,3 @@ In this lesson, we utilized inheritance to modify the `SimpleStorage` contract, 
 1. 📕 Why do we need inheritance to extend a contract's functionality?
 2. 📕 How are the keywords `override` and `virtual` used together?
 3. 🧑‍💻 Create a contract `Squared` that overrides the `store` function and returns the favorite number squared.
-
-[Back to top](#top)

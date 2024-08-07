@@ -4,8 +4,6 @@ title: Setting up
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In this `StorageFactory` setup, we'll explore what _composability_ means, showing its ability to deploy and interact with external `SimpleStorage` contracts.
@@ -49,5 +47,3 @@ In this setup, we'll delve into the concept of _composability_ and develop the `
 
 1. 📕 What does _composability_ mean?
 2. 📕 How many contracts is possible to deploy inside one .sol file?
-
-[Back to top](#top)

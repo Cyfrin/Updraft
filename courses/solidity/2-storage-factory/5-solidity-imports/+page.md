@@ -4,8 +4,6 @@ title: Solidity Imports
 
 _You can follow along with the video course from here._
 
-<a name="top"></a>
-
 ### Introduction
 
 In the previous lesson, we integrated the `SimpleStorage` code directly into the `StorageFactory` contract. This allowed `StorageFactory` to have full access to the `SimpleStorage` contract’s functionality. In this lesson, we will explore a more efficient way to arrange and organize the code by using the **`import`** statement.
@@ -53,5 +51,3 @@ The import keyword allows a contract to use code from other files without includ
 
 1. 📕 What's a named import and what are the advantages of using it?
 2. 📕 In which way the `pragma` keyword can cause issues while using the `import` statement? Make 2 examples.
-
-[Back to top](#top)

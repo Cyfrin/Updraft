@@ -7,8 +7,8 @@ _Follow along with this video:_
 
 ### Testing on a forked chain
 
->[!IMPORTANT]
-Up until now we've followed Patrick's video in 99.9% of the cases. But between Patrick filming the video lessons and the writing of this lesson Chainlink VRF got upgraded to v2.5. So with the code we have right now, we won't be able to test it on a fork. One of the main changes is the type of `subscriptionId`. If you followed the lesson when we created a new subscription using Chainlink's UI you saw that your code looks more like this `56337043680668238338308639953697831315254325227567930909387210179785852470990` while Patrick's looks like this `2924`, this is because the new `subscriptionId` is `uint256` and not `uint64`. Even if this looks like a small change, it has a ton of ramifications throughout the Chainlink contracts. You can read more about the migration from v2.0 to v2.5 [here](https://docs.chain.link/vrf/v2-5/migration-from-v2).
+> ❗ **IMPORTANT**
+> Up until now we've followed Patrick's video in 99.9% of the cases. But between Patrick filming the video lessons and the writing of this lesson Chainlink VRF got upgraded to v2.5. So with the code we have right now, we won't be able to test it on a fork. One of the main changes is the type of `subscriptionId`. If you followed the lesson when we created a new subscription using Chainlink's UI you saw that your code looks more like this `56337043680668238338308639953697831315254325227567930909387210179785852470990` while Patrick's looks like this `2924`, this is because the new `subscriptionId` is `uint256` and not `uint64`. Even if this looks like a small change, it has a ton of ramifications throughout the Chainlink contracts. You can read more about the migration from v2.0 to v2.5 [here](https://docs.chain.link/vrf/v2-5/migration-from-v2).
 
 That being said:
 
@@ -30,7 +30,7 @@ import {AutomationCompatibleInterface} from "chainlink/src/v0.8/automation/inter
  * @notice This contract if Particpating in a Raffle and standing the chance to win.
  * @dev This contract heavily implements the chainlink VRF and Automation
  */
-// 0x9ddfaca8183c41ad55329bdeed9f6a8d53168b1b => VRFCoordinator 
+// 0x9ddfaca8183c41ad55329bdeed9f6a8d53168b1b => VRFCoordinator
 // 54528670710849503547892655734386820566589065322714869834102560641565075666367 => subId
 contract Raffle is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
 
@@ -63,7 +63,7 @@ contract Raffle is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
 
     uint16 private constant REQUEST_CONFIRMATIONS = 3;
     uint32 private constant NUM_WORDS = 1;
-    
+
 
     uint256 private immutable i_entranceFee;
     uint256 private immutable i_interval;
@@ -72,11 +72,11 @@ contract Raffle is VRFConsumerBaseV2Plus, AutomationCompatibleInterface {
     bytes32 private immutable i_gasLane;
     uint32 private immutable i_callbackGasLimit;
 
-    
+
     address payable private s_recentWinner;
     address payable[] private s_players;
 
-    
+
 
     constructor(uint256 _entranceFee, uint256 _interval,address  _vrfCoordinator, bytes32 _gasLane, uint256 _subscriptionId, uint32 callbackGasLimit) VRFConsumerBaseV2Plus( _vrfCoordinator) {
         i_entranceFee = _entranceFee;
@@ -596,7 +596,7 @@ It failed on setup:
 
 ```
     │   │   ├─ [0] VM::startBroadcast()
-    │   │   │   └─ ← [Return] 
+    │   │   │   └─ ← [Return]
     │   │   ├─ [236] VRFCoordinatorV2::addConsumer(5000032745829988966686682423284879867102409618787289144283231874950241281744 [5e75], Raffle: [0x90193C961A926261B756D1E5bb255e67ff9498A1])
     │   │   │   └─ ← [Revert] EvmError: Revert
     │   │   └─ ← [Revert] EvmError: Revert
@@ -614,13 +614,13 @@ You could say, `ok, I get it, let's hardcode the subscriptionId inside the Helpe
 ```
     │   ├─ [9690] FundSubscription::fundSubscription(VRFCoordinatorV2: [0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625], 11932 [1.193e4], LinkToken: [0x779877A7B0D9E8603169DdbD7836e478b4624789])
     │   │   ├─ [0] console::log("Funding subscription: ", 11932 [1.193e4]) [staticcall]
-    │   │   │   └─ ← [Stop] 
+    │   │   │   └─ ← [Stop]
     │   │   ├─ [0] console::log("Using vrfCoordinator: ", VRFCoordinatorV2: [0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625]) [staticcall]
-    │   │   │   └─ ← [Stop] 
+    │   │   │   └─ ← [Stop]
     │   │   ├─ [0] console::log("On ChainID: ", 11155111 [1.115e7]) [staticcall]
-    │   │   │   └─ ← [Stop] 
+    │   │   │   └─ ← [Stop]
     │   │   ├─ [0] VM::startBroadcast()
-    │   │   │   └─ ← [Return] 
+    │   │   │   └─ ← [Return]
     │   │   ├─ [3558] LinkToken::transferAndCall(VRFCoordinatorV2: [0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625], 3000000000000000000 [3e18], 0x0000000000000000000000000000000000000000000000000000000000002e9c)
     │   │   │   └─ ← [Revert] revert: ERC20: transfer amount exceeds balance
     │   │   └─ ← [Revert] revert: ERC20: transfer amount exceeds balance
@@ -662,7 +662,7 @@ Open your `HelperConfig.s.sol` and perform the following changes:
 
 ```javascript
 contract HelperConfig is Script {
-    
+
 
     struct NetworkConfig {
         uint256 entranceFee;
@@ -695,7 +695,8 @@ Below the `struct NetworkConfig` create a new variable:
 ```javascript
 uint256 public constant DEFAULT_ANVIL_KEY = 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
 ```
-and use it inside the `getOrCreateAnvilEthConfig` function 
+
+and use it inside the `getOrCreateAnvilEthConfig` function
 
 ```javascript
     function getOrCreateAnvilEthConfig()
@@ -854,7 +855,7 @@ By the way, you should never be afraid of running a `forge build` regardless of 
 [⠢] Compiling...
 [⠊] Compiling 4 files with Solc 0.8.23
 [⠒] Solc 0.8.23 finished in 684.48ms
-Error: 
+Error:
 Compiler run failed:
 Error (6160): Wrong argument count for function call: 1 arguments given but expected 2.
   --> script/DeployRaffle.s.sol:25:30:
@@ -949,7 +950,7 @@ contract RaffleTest is Test {
     uint32 callbackGasLimit;
     address link;
     uint256 deployerKey;
-    
+
     address public PLAYER = makeAddr("player");
     uint256 public constant STARTING_USER_BALANCE = 10 ether;
 
@@ -976,8 +977,9 @@ Let's run `forge build` again. There are two possible outcomes here:
 
 1. Everything compiles, amazing!
 2. You get the following error:
+
 ```
-Error: 
+Error:
 Compiler run failed:
 Error: Compiler error (/solidity/libsolidity/codegen/CompilerUtils.cpp:1429):Stack too deep. Try compiling with `--via-ir` (cli) or the equivalent `viaIR: true` (standard JSON) while enabling the optimizer. Otherwise, try removing local variables.
 CompilerError: Stack too deep. Try compiling with `--via-ir` (cli) or the equivalent `viaIR: true` (standard JSON) while enabling the optimizer. Otherwise, try removing local variables.
@@ -1002,7 +1004,7 @@ contract RaffleTest is Test {
     uint32 callbackGasLimit;
     address link;
     // uint256 deployerKey;
-    
+
     address public PLAYER = makeAddr("player");
     uint256 public constant STARTING_USER_BALANCE = 10 ether;
 
@@ -1048,7 +1050,7 @@ Suite result: FAILED. 10 passed; 2 failed; 0 skipped; finished in 4.45s (1.70s C
 
 Ok, some failed, but it feels super good not failing at `setUp` level.
 
-The first failing test is `testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep`, the fuzz test. The fail reason is `call reverted as expected, but without data`. This means that it reverts, but not with the message we specified, and this is expected, given that we are using a mock contract, and the real version of the contract is most likely different. Mocks are usually simplified to facilitate ease of testing. 
+The first failing test is `testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep`, the fuzz test. The fail reason is `call reverted as expected, but without data`. This means that it reverts, but not with the message we specified, and this is expected, given that we are using a mock contract, and the real version of the contract is most likely different. Mocks are usually simplified to facilitate ease of testing.
 
 We should not run this test on Sepolia.
 
@@ -1087,22 +1089,19 @@ Add it next to the `raffleEnteredAndTimePassed` modifier:
 The other failing test is `testFulfillRandomWordsPicksAWinnerRestesAndSendsMoney`. Looking through its code we can see why it fails:
 
 ```javascript
-        // pretend to be Chainlink VRF
-        VRFCoordinatorV2PlusMock(vrfCoordinator).fulfillRandomWords(
-            uint256(requestId),
-            address(raffle)
-        );
+// pretend to be Chainlink VRF
+VRFCoordinatorV2PlusMock(vrfCoordinator).fulfillRandomWords(
+  uint256(requestId),
+  address(raffle)
+);
 ```
 
 We simply can't do this on Sepolia, because you can't pretend you are a Chainlink VRF node on a live testnet, there are already real Chainlink VRF nodes working on the live testnet and they are the ones that should call `fulfillRandomWords`.
 
 Add the `skipFork` modifier to this test as well.
 
-Run `forge test --fork-url $SEPOLIA_RPC_URL` again. 
+Run `forge test --fork-url $SEPOLIA_RPC_URL` again.
 
 Everything passes! Amazing!
 
 This was a lot! Take a break, touch some grass and come back to finish this section!
-
-
-
