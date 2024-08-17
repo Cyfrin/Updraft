@@ -17,7 +17,7 @@ Decentralized Finance (DeFi) is an enormous ecosystem, we couldn't hope to offer
 
 A good starting place is [**DeFi Llama**](https://defillama.com/). This website aggregates data from major DeFi protocols and provides a snapshot of what's happening in the space.
 
-<img src="static/foundry-defi/1-defi-introduction/defi-introduction1.PNG" style="width: 100%; height: auto;">
+<img src="/static/foundry-defi/1-defi-introduction/defi-introduction1.PNG" style="width: 100%; height: auto;">
 
 DeFi Llama demonstrates the size of various DeFi protocols by ranking them by Total Value Locked (TVL). Some of the biggest include:
 
