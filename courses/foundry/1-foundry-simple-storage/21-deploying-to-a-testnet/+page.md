@@ -42,7 +42,7 @@ With our Sepolia RPC URL and private key from MetaMask, executing a transaction 
 
 ```bash
 source .env
-forge script script deploySimpleStorage.s.sol --rpc_url=$Sepolia_RPC_URL --private-key=$private_key --broadcast
+forge script script/deploySimpleStorage.s.sol --rpc-url=$Sepolia_RPC_URL --private-key=$PRIVATE_KEY --broadcast
 ```
 
 This command deploys our contract to the testnet, and we can monitor the transaction on our Alchemy dashboard.
