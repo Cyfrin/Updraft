@@ -17,7 +17,7 @@ Do the following modifications in `FundMe.sol`
 
 1. In the storage variables section create a new variable:
 ```javascript
-AggregatorV3Interace private s_priceFeed;
+AggregatorV3Interface private s_priceFeed;
 ```
 2. We need to add this as an input in our constructor and assign it to the state variable. This is done as follows:
 ```javascript
