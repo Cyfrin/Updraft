@@ -57,14 +57,14 @@ Pfeww! Great now we can test points 2 and 3 indicated above:
 Add the following test in `FundMe.t.sol`:
 
 ```javascript
-    function testFundUpdatesFundDataStrucutre() public {
+    function testFundUpdatesFundDataStructure() public {
         fundMe.fund{value: 10 ether}();
         uint256 amountFunded = fundMe.getAddressToAmountFunded(msg.sender);
         assertEq(amountFunded, 10 ether);
     }
 ```
 
-Run `forge test --mt testFundUpdatesFundDataStrucutre` in your terminal.
+Run `forge test --mt testFundUpdatesFundDataStructure` in your terminal.
 
 Aaaand it fails! Why does it fail? Let's try it again, but this time put `address(this)` instead of `msg.sender`. Now it passed, but we still don't quite get why.
 
@@ -93,7 +93,7 @@ To further increase the readability of our contract, let's avoid using a magic n
 Back to our test, add the following test in `FundMe.t.sol`:
 
 ```javascript
-    function testFundUpdatesFundDataStrucutre() public {
+    function testFundUpdatesFundDataStructure() public {
         vm.prank(alice);
         fundMe.fund{value: SEND_VALUE}();
         uint256 amountFunded = fundMe.getAddressToAmountFunded(alice);
@@ -101,17 +101,17 @@ Back to our test, add the following test in `FundMe.t.sol`:
     }
 ```
 
-Finally, now let's run `forge test --mt testFundUpdatesFundDataStrucutre` again.
+Finally, now let's run `forge test --mt testFundUpdatesFundDataStructure` again.
 
 It fails ... again!
 
-But why? Let's call `forge test --mt testFundUpdatesFundDataStrucutre -vvv` to get more information about where and why it fails.
+But why? Let's call `forge test --mt testFundUpdatesFundDataStructure -vvv` to get more information about where and why it fails.
 
 ```
 Ran 1 test for test/FundMe.t.sol:FundMeTest
-[FAIL. Reason: EvmError: Revert] testFundUpdatesFundDataStrucutre() (gas: 16879)
+[FAIL. Reason: EvmError: Revert] testFundUpdatesFundDataStructure() (gas: 16879)
 Traces:
-  [16879] FundMeTest::testFundUpdatesFundDataStrucutre()
+  [16879] FundMeTest::testFundUpdatesFundDataStructure()
     ├─ [0] VM::prank(alice: [0x328809Bc894f92807417D2dAD6b7C998c1aFdac6])
     │   └─ ← [Return] 
     ├─ [0] FundMe::fund{value: 100000000000000000}()
@@ -141,7 +141,7 @@ Declare the `STARTING_BALANCE` as a constant variable up top:
 uint256 constant STARTING_BALANCE = 10 ether;
 ```
 
-Let's run `forge test --mt testFundUpdatesFundDataStrucutre` again.
+Let's run `forge test --mt testFundUpdatesFundDataStructure` again.
 
 And now it passes. Congratulations!
 
