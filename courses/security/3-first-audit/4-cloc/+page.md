@@ -46,7 +46,7 @@ cloc ./src/
 
 This is what the output might look like:
 
-<img src="/security-section-3/4-cloc/cloc1.png" style="width: 100%; height: auto;">
+<img src="/static/security-section-3/4-cloc/cloc1.png" style="width: 100%; height: auto;">
 
 ### The Importance of Knowing Your Codebase Size
 

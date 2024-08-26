@@ -43,7 +43,7 @@ Your ultimate aim should be to make the protocol more secure. Therefore, ensure 
 Remember, the goal of conducting contract audits isn't simply to tick a box. It's about ensuring the security and smooth running of the smart contract at all stages of its lifecycle. The more audits you conduct, the better you become at identifying potential security issues.
 
 <div style="text-align:center">
-<img src="/security-section-2/2-the-audit/the-audit1.png" style="width: 75%; height: auto;">
+<img src="/static/security-section-2/2-the-audit/the-audit1.png" style="width: 75%; height: auto;">
 </div>
 
 ## Embedding Security Audits in Development Lifecycle

@@ -39,7 +39,7 @@ contract B {
 
 If we recall, storage acts _kind of_ like an array and each storage variable is sequentially assigned a slot in storage, in the order in which the variable is declared in a contract.
 
-<img src="/foundry-upgrades/2-delegatecall/delegatecall1.png" width="100%" height="auto">
+<img src="/static/foundry-upgrades/2-delegatecall/delegatecall1.png" width="100%" height="auto">
 
 Now consider Contract A:
 
@@ -64,7 +64,7 @@ This works fundamentally similar to `call`. In the case of `call` we would be ca
 
 With delegateCall however, we're borrowing the logic from Contract B and referencing the storage of Contract A. This is entirely independent of what the variables are actually named.
 
-<img src="/foundry-upgrades/2-delegatecall/delegatecall2.png" width="100%" height="auto">
+<img src="/static/foundry-upgrades/2-delegatecall/delegatecall2.png" width="100%" height="auto">
 
 ### Remix
 
@@ -72,28 +72,28 @@ Let's give this a shot ourselves, in Remix. If you'd like to try this yourself a
 
 Once the code has been pasted into Remix, we should be able to compile and begin with deploying Contract B. We can see that all of our storage variables begin empty.
 
-<img src="/foundry-upgrades/2-delegatecall/delegatecall3.png" width="100%" height="auto">
+<img src="/static/foundry-upgrades/2-delegatecall/delegatecall3.png" width="100%" height="auto">
 
 By calling setVars and passing an argument, we can see how the storage variables within Contract B are updated as we've come to expect.
 
-<img src="/foundry-upgrades/2-delegatecall/delegatecall4.png" width="100%" height="auto">
+<img src="/static/foundry-upgrades/2-delegatecall/delegatecall4.png" width="100%" height="auto">
 
 Now we can deploy Contract A. This contract should default to empty storage variables as well. When we call `setVars` on Contract A however, it's going to borrow the setVars logic from Contract B and we'll see it update it's own storage, rather than Contract B's.
 
 > ❗ **NOTE**
 > We'll need to pass Contract B as an input parameter to Contract A's setVars function so it knows where to delegate to!
 
-<img src="/foundry-upgrades/2-delegatecall/delegatecall5.png" width="100%" height="auto">
+<img src="/static/foundry-upgrades/2-delegatecall/delegatecall5.png" width="100%" height="auto">
 
 Importantly, this behaviour, due to referencing storage slots directly, is independent of any naming conventions used for the variables themselves.
 
-<img src="/foundry-upgrades/2-delegatecall/delegatecall6.png" width="100%" height="auto">
+<img src="/static/foundry-upgrades/2-delegatecall/delegatecall6.png" width="100%" height="auto">
 
 In fact, if Contract A didn't have any of it's own declared variables at all, the appropriate storage slots would _still_ be updated!
 
 Now, this is where things get really interesting. What if we changed the variable type of `number` in Contract A to a `bool`? If we then call delegateCall on Contract B, we'll see it's set our storage slot to `true`. The bool type detects our input as `true`, with `0` being the only acceptable input for `false`.
 
-<img src="/foundry-upgrades/2-delegatecall/delegatecall7.png" width="100%" height="auto">
+<img src="/static/foundry-upgrades/2-delegatecall/delegatecall7.png" width="100%" height="auto">
 
 ### Wrap Up
 

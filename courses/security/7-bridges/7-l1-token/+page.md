@@ -16,7 +16,7 @@ Let's employ The Tincho and start with the smallest contract again and work our 
 
 Right-click the `src` folder and select `Solidity: Metrics` to generate our report.
 
-<img src="/security-section-7/7-l1token/l1token1.png" width="100%" height="auto">
+<img src="/static/security-section-7/7-l1token/l1token1.png" width="100%" height="auto">
 
 It looks like our smallest contract is going to be L1Token.sol, so let's start there.
 

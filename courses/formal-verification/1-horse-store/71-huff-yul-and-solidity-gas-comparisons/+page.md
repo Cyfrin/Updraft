@@ -15,7 +15,7 @@ forge snapshot
 
 This is going to run all of our tests, but keep a record of gas costs in a local file named `.gas-snapshot`.
 
-<img src="/70-huff-yul-and-solidity-gas-comparison/huff-yul-and-solidity-gas-comparison1.png" width="100%" height="auto">
+<img src="/static/70-huff-yul-and-solidity-gas-comparison/huff-yul-and-solidity-gas-comparison1.png" width="100%" height="auto">
 
 This output file lets us compare the gas costs of each test performed for each of our implementations. We can see things like:
 

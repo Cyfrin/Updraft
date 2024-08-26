@@ -35,7 +35,7 @@ Let's run it!
 forge test --mt invariant_ProtocolTotalSupplyLessThanCollateralValue -vvvv
 ```
 
-<img src="/foundry-defi/21-defi-handler-redeem-collateral/defi-handler-redeem-collateral1.png" width="100%" height="auto">
+<img src="/static/foundry-defi/21-defi-handler-redeem-collateral/defi-handler-redeem-collateral1.png" width="100%" height="auto">
 
 Uh oh, it looks like we're running into an issue when the maxCollateralToRedeem is 0. We can fix this with a small adjustment to our function.
 
@@ -55,7 +55,7 @@ function redeemCollateral(uint256 collateralSeed, uint256 amountCollateral) publ
 }
 ```
 
-<img src="/foundry-defi/21-defi-handler-redeem-collateral/defi-handler-redeem-collateral2.png" width="100%" height="auto">
+<img src="/static/foundry-defi/21-defi-handler-redeem-collateral/defi-handler-redeem-collateral2.png" width="100%" height="auto">
 
 Woo, nailed it again! Our handler now allows us to test both the depositCollateral and redeemCollateral functionality of our protocol. Through the use of our handler, we've ensured that all the calls to deposit and redeem are going to be valid as well, avoiding reverts and wasted fuzz runs.
 
@@ -121,10 +121,10 @@ In the above function, we are constraining the amount minted to be greater than 
 
 Lo and behold, let's run the functional mint DSC and observe the result.
 
-<img src="/foundry-defi/21-defi-handler-minting-dsc/defi-handler-minting-dsc1.PNG" style="width: 100%; height: auto;">
+<img src="/static/foundry-defi/21-defi-handler-minting-dsc/defi-handler-minting-dsc1.PNG" style="width: 100%; height: auto;">
 
 You should notice that we've performed multiple calls without any reverts, and that's exactly what success looks like! Your mint function is now up and running and ready to increase the supply of DSC.
 
 Stay tuned for our next adventure! We hope you are now more comfortable with testing the mechanism used for injecting tokens into the DSC ecosystem.
 
-<img src="/foundry-defi/21-defi-handler-minting-dsc/defi-handler-minting-dsc2.PNG" style="width: 100%; height: auto;">
+<img src="/static/foundry-defi/21-defi-handler-minting-dsc/defi-handler-minting-dsc2.PNG" style="width: 100%; height: auto;">

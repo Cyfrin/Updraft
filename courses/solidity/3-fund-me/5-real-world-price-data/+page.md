@@ -39,16 +39,16 @@ Chainlink offers ready-made features that can be added to a smart contract. And 
 
 _Chainlink Data Feeds_ are responsible for powering over $50 billion in the DeFi world. This network of Chainlink nodes aggregates data from various **exchanges** and **data providers**, with each node independently verifying the asset price.
 
-<img src="/solidity/remix/lesson-4/datafeeds/datafeed2.png" style="width: 100%; height: auto;">
+<img src="/static/solidity/remix/lesson-4/datafeeds/datafeed2.png" style="width: 100%; height: auto;">
 
 They aggregate this data and deliver it to a reference contract, the **price feed contract**, in a single transaction. Each contract will store the pricing details of a specific cryptocurrency
-<img src="/solidity/remix/lesson-4/datafeeds/datafeed1.png" style="width: 100%; height: auto;">
+<img src="/static/solidity/remix/lesson-4/datafeeds/datafeed1.png" style="width: 100%; height: auto;">
 
 ### Chainlink CRF
 
 The Chainlink VRF (Verifiable Random Function) provides a solution for generating **provably random numbers**, ensuring true fairness in applications such as NFT randomization, lotteries, and gaming. These numbers are determined off-chain, and they are immune to manipulation.
 
-<img src="/solidity/remix/lesson-4/datafeeds/datafeed3.png" style="width: 100%; height: auto;">
+<img src="/static/solidity/remix/lesson-4/datafeeds/datafeed3.png" style="width: 100%; height: auto;">
 
 ### Chainlink Keepers
 

@@ -63,7 +63,7 @@ function invariant_ProtocolTotalSupplyLessThanCollateralValue() external view re
 
 Run it!
 
-<img src="/foundry-defi/23-defi-fuzz-debugging/defi-fuzz-debugging1.png" width="100%" height="auto">
+<img src="/static/foundry-defi/23-defi-fuzz-debugging/defi-fuzz-debugging1.png" width="100%" height="auto">
 
 Well, at least we've confirmed that mintDsc isn't being called. It's _likely_ because one of our conditionals in our function are catching. What I would suggest is moving our Ghost Variable up this function to determine why things revert.
 
@@ -137,7 +137,7 @@ Let's give our tests a shot now.
 forge test --mt invariant_ProtocolTotalSupplyLessThanCollateralValue -vvvv
 ```
 
-<img src="/foundry-defi/23-defi-fuzz-debugging/defi-fuzz-debugging2.png" width="100%" height="auto">
+<img src="/static/foundry-defi/23-defi-fuzz-debugging/defi-fuzz-debugging2.png" width="100%" height="auto">
 
 A new error! New errors mean progress. It seems as though our mintDsc function is causing a `division or modulo by 0`. Ah, this is because our new array of usersWithCollateralDeposited may be empty. Let's account for this with a conditional.
 
@@ -171,7 +171,7 @@ function mintDsc(uint256 amount, uint256 addressSeed) public {
 
 Once more with feeling.
 
-<img src="/foundry-defi/23-defi-fuzz-debugging/defi-fuzz-debugging3.png" width="100%" height="auto">
+<img src="/static/foundry-defi/23-defi-fuzz-debugging/defi-fuzz-debugging3.png" width="100%" height="auto">
 
 </details>
 

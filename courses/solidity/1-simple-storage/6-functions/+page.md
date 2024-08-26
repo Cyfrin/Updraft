@@ -49,11 +49,11 @@ At this stage, you can compile your code by navigating to the compile tab and hi
 The **Deploy and Run Transactions** tab holds a variety of parameters that are used during the deployment process.
 You'll be assigned an _account_ with some ETH to deploy your smart contract.
 
-<img src="/solidity/remix/lesson-2/functions/deploy_and_run.png" style="width: 100%; height: auto;">
+<img src="/static/solidity/remix/lesson-2/functions/deploy_and_run.png" style="width: 100%; height: auto;">
 
 In this environment, your contract is assigned a unique address. You can re-access your deployed contract by expanding the **Deployed Contracts** interface and simultaneously opening the terminal, which shows log data of all contract deployments and transactions.
 
-<img src="/solidity/remix/lesson-2/functions/deployment_address.png" style="width: 100%; height: auto;">
+<img src="/static/solidity/remix/lesson-2/functions/deployment_address.png" style="width: 100%; height: auto;">
 
 If we open the Remix terminal we can see that deploying the contract has just sent a simulated transaction on the Remix environment. You can check out its details such as status, hash, from, to and gas.
 
@@ -81,7 +81,7 @@ uint256 public favoriteNumber;
 
 After completing compilation and deployment, a button labelled `favoriteNumber` will become visible. When pressed, it should return the most recent stored value of the variable `favoriteNumber`.
 
-<img src="/solidity/remix/lesson-2/functions/favorite-number.png" style="width: 100%; height: auto;">
+<img src="/static/solidity/remix/lesson-2/functions/favorite-number.png" style="width: 100%; height: auto;">
 
 #### Visibility
 
@@ -110,7 +110,7 @@ function retrieve() public pure returns(uint256){
 }
 ```
 
-<img src="/solidity/remix/lesson-2/functions/blue-button.png" style="width: 50%; height: auto;">
+<img src="/static/solidity/remix/lesson-2/functions/blue-button.png" style="width: 50%; height: auto;">
 
 The keyword `returns` specifies the type(s) of value a function will return.
 

@@ -163,7 +163,7 @@ LT             //
 
 Continuing from our `JUMPDEST` (this is if `msg.value == 0`), we are then clearing our stack with `POP`. Next we push `0x04` to our stack with `PUSH1`, we'll see why soon. Then we execute an op code we haven't seen before. `CALLDATASIZE`.
 
-<img src="/formal-verification-1/48-function-selector-size-check/function-selector-size-check1.png" width="100%" height="auto">
+<img src="/static/formal-verification-1/48-function-selector-size-check/function-selector-size-check1.png" width="100%" height="auto">
 
 We can see that this op code takes no stack input, but the stack output is the `byte size of the call data`. A couple examples:
 
@@ -177,7 +177,7 @@ if call data = 0x05284a06
 
 We then hit another new op code `LT` this stands for `less than`.
 
-<img src="/formal-verification-1/48-function-selector-size-check/function-selector-size-check2.png" width="100%" height="auto">
+<img src="/static/formal-verification-1/48-function-selector-size-check/function-selector-size-check2.png" width="100%" height="auto">
 
 The LT op code will return 1 if the top item of the stack is less than the second from top item in the stack. Functionally this is checking the the call data being received is long enough to satisfy the required length of a contracts function selector (4 bytes).
 

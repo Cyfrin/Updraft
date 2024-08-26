@@ -36,7 +36,7 @@ function getInputAmountBasedOnOutput(
 
 First, let's begin with the formula our invariant was derived from `x * y = (x + ∆x) * (y - ∆y)`, we can substitute `∆y` for outputAmount since this will reflect by how much our poolToken is changing:
 
-<img src="/security-section-5/23-handler-swap-function/handler-swap-function1.png" width="100%" height="auto">
+<img src="/static/security-section-5/23-handler-swap-function/handler-swap-function1.png" width="100%" height="auto">
 
 From the equation `x*outputAmount  = ∆x(y - outputAmount)` we just need to substitute a few known variables.
 
@@ -44,7 +44,7 @@ From the equation `x*outputAmount  = ∆x(y - outputAmount)` we just need to sub
 - `∆x` is going to be the `inputAmount` as discussed earlier, the input of poolTokens to get the desired output in `weth`.
 - `y` will be our `outputReserves`, just as x was a reflection of total poolTokens, this will be a reflection of total `weth` tokens.
 
-<img src="/security-section-5/23-handler-swap-function/handler-swap-function2.png" width="100%" height="auto">
+<img src="/static/security-section-5/23-handler-swap-function/handler-swap-function2.png" width="100%" height="auto">
 
 Our resulting formula is remarkably similar to what's returned by the `getInputAmountBasedOnOutput`function (10000 and 997 are related to fees, we can ignore them for now):
 

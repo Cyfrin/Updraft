@@ -52,7 +52,7 @@ Let's write a `fuzz test` to check if in fact addresses other than the owner are
 
 Foundry will pass this function random addresses to see if the assert holds, based on the number of runs we've configured.
 
-<img src="/security-section-3/20-missing-access-controls-proof-of-code/access-control1.png" style="width: 100%; height: auto;">
+<img src="/static/security-section-3/20-missing-access-controls-proof-of-code/access-control1.png" style="width: 100%; height: auto;">
 
 We can see that through 256 runs, our fuzz test passed! So indeed any address was able to call our `setPassword` function!.
 

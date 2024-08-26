@@ -42,7 +42,7 @@ make slither
 
 Our output is more concise than ever, but already we can see some vulnerabilities detected. This is a great place to start our review.
 
-<img src="/security-section-6/11-static-analysis-slither-aderyn/static-analysis-slither-aderyn1.png" width="100%" height="auto">
+<img src="/static/security-section-6/11-static-analysis-slither-aderyn/static-analysis-slither-aderyn1.png" width="100%" height="auto">
 
 Let's even just begin by taking a look at the very first issue detected.
 
@@ -85,6 +85,6 @@ or
 aderyn .
 ```
 
-<img src="/security-section-6/11-static-analysis-slither-aderyn/static-analysis-slither-aderyn2.png" width="100%" height="auto">
+<img src="/static/security-section-6/11-static-analysis-slither-aderyn/static-analysis-slither-aderyn2.png" width="100%" height="auto">
 
 Looking good, thanks `Aderyn`! Let's go through some of the issues detected by `Aderyn` together, in the next lesson.

@@ -6,7 +6,7 @@ title: Diagramming Thunder Loan
 
 It's at this point in a review that I may begin to diagram out what I currently understand of a protocol. A diagram of Thunder Loan might look something like this:
 
-<img src="/security-section-6/31-diagramming-thunderloan/diagramming-thunderloan1.png" width="100%" height="auto">
+<img src="/static/security-section-6/31-diagramming-thunderloan/diagramming-thunderloan1.png" width="100%" height="auto">
 
 From what we understand so far, a `liquidity provider` calls `deposit` on the `ThunderLoan` contract passing a token which has has an `AssetToken` contract created by the protocol owner at an earlier point.
 

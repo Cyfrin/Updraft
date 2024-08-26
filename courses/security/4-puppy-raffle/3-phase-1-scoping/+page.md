@@ -41,7 +41,7 @@ make
 
 Once we've run our `make` command, we should check out the protocol tests. I like to start by running `forge coverage` to see what kind of baseline we're starting with.
 
-<img src="/security-section-4/3-phase-1-scoping/phase-1-scoping2.png" style="width: 50%; height: auto;">
+<img src="/static/security-section-4/3-phase-1-scoping/phase-1-scoping2.png" style="width: 50%; height: auto;">
 
 Thing's don't look great.
 
@@ -62,7 +62,7 @@ We also see exactly which contracts are under review.
 
 Moving on, we should take notice of the **Compatibilities** section.
 
-<img src="/security-section-4/3-phase-1-scoping/phase-1-scoping3.png" style="width: 50%; height: auto;">
+<img src="/static/security-section-4/3-phase-1-scoping/phase-1-scoping3.png" style="width: 50%; height: auto;">
 
 That Solc version is strange - definitely make note of it.
 

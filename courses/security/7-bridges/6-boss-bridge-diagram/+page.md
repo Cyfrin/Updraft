@@ -8,7 +8,7 @@ _Follow along with the video lesson:_
 
 ### Boss Bridge Diagram
 
-<img src="/security-section-7/6-boss-bridge-diagram/boss-bridge-diagram1.png" width="100%" height="auto">
+<img src="/static/security-section-7/6-boss-bridge-diagram/boss-bridge-diagram1.png" width="100%" height="auto">
 
 How does your diagram compare to mine? You _did_ try to do one .. **_right?_**
 

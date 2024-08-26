@@ -31,7 +31,7 @@ To understand what an `SVG` is, we'll dive right into a helpful tutorial from ou
 </html>
 ```
 
-<img src="/foundry-nfts/11-what-is-svg/what-is-svg1.png" width="100%" height="auto">
+<img src="/static/foundry-nfts/11-what-is-svg/what-is-svg1.png" width="100%" height="auto">
 
 SVGs are awesome because they maintain their quality, no matter what size you make them. If you stretch a traditional image file like a .jpg or .png, they become pixelated and lose clarity. SVGs don’t suffer from this issue because they’re scalable. They’re defined within an exact parameter, thus maintaining their quality regardless of scale.
 
@@ -52,7 +52,7 @@ Let's look at how we can create our own simple SVG, right in our IDE. Create the
 > ❗ **IMPORTANT**
 > You will likely need to download a SVG preview extention to view the SVG in your IDE. I recommend trying [**SVG Preview**](https://marketplace.visualstudio.com/items?itemName=SimonSiefke.svg-preview).
 
-<img src="/foundry-nfts/11-what-is-svg/what-is-svg2.png" width="100%" height="auto">
+<img src="/static/foundry-nfts/11-what-is-svg/what-is-svg2.png" width="100%" height="auto">
 
 Importantly, this SVG code **_is not_** a URI, but we can convert this into a URI that a browser can understand by passing all the necessary data through the URL of our browser.
 
@@ -86,7 +86,7 @@ Copy this whole string into your browser and you should see our SVG!
 data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj4KPHRleHQgeD0iMjAwIiB5PSIyNTAiIGZpbGw9IndoaXRlIj5IaSEgWW91IGRlY29kZWQgdGhpcyEgPC90ZXh0Pgo8L3N2Zz4=
 ```
 
-<img src="/foundry-nfts/11-what-is-svg/what-is-svg3.png" width="100%" height="auto">
+<img src="/static/foundry-nfts/11-what-is-svg/what-is-svg3.png" width="100%" height="auto">
 
 This same process can be applied to our SVG images for our NFTs. You can navigate to the [**GitHub Repo**](https://github.com/Cyfrin/foundry-nft-f23/blob/main/images/dynamicNft/happy.svg?short_path=224d82e) to see the code which represents our happy and sad SVGs.
 

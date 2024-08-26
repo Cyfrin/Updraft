@@ -255,11 +255,11 @@ Already, we should be able to run this test to determine if there's an issue her
 forge test --mt testRedeemAfterLoan -vvvv
 ```
 
-<img src="/security-section-6/37-improving-test-coverage-to-find-a-high/improving-test-coverage-to-find-a-high1.png" width="100%" height="auto">
+<img src="/static/security-section-6/37-improving-test-coverage-to-find-a-high/improving-test-coverage-to-find-a-high1.png" width="100%" height="auto">
 
 Oh snap. Let's take a closer look at the trace output to determine where the test is failing.
 
-<img src="/security-section-6/37-improving-test-coverage-to-find-a-high/improving-test-coverage-to-find-a-high2.png" width="100%" height="auto">
+<img src="/static/security-section-6/37-improving-test-coverage-to-find-a-high/improving-test-coverage-to-find-a-high2.png" width="100%" height="auto">
 
 We can clearly see from the trace that `transferUnderlyingTo` is failing because `AssetToken` has an insufficient balance... I wonder if commenting out the weird `updateExchangeRate` in our `deposit` function would resolve this. Let's give it a try...
 
@@ -284,7 +284,7 @@ Now run the test once more.
 forge test --mt testRedeemAfterLoan -vvvv
 ```
 
-<img src="/security-section-6/37-improving-test-coverage-to-find-a-high/improving-test-coverage-to-find-a-high3.png" width="100%" height="auto">
+<img src="/static/security-section-6/37-improving-test-coverage-to-find-a-high/improving-test-coverage-to-find-a-high3.png" width="100%" height="auto">
 
 WOOOOO! We found something! The `updateExchangeRate` function effectively keeps track of how much money is in the protocol at all times. By calling this function within `deposit` (when the protocol isn't expecting to gain value through fees) the expected amount to withdraw is breaking when a `liquidity provider` calls `redeem`.
 

@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 So where does our `Certora` situation leave us? The call trace we were provided actually provides a clue we can use to side step this issue of our ghost variables being HAVOC'd.
 
-<img src="/formal-verification-3/14-persistent-ghosts/persistent-ghosts1.png" width="100%" height="auto">
+<img src="/static/formal-verification-3/14-persistent-ghosts/persistent-ghosts1.png" width="100%" height="auto">
 
 It can be seen, within the function call which resulted in our HAVOC, a flag which indicates:
 

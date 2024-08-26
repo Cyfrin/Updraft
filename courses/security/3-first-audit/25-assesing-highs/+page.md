@@ -62,7 +62,7 @@ The answer is - _very likely_. There's nothing stopping any malicious actor from
 
 Applying our assessment to our finding title should look like this:
 
-<img src="/security-section-3/25-assessing-highs/severity1.png" style="width: 100%; height: auto;">
+<img src="/static/security-section-3/25-assessing-highs/severity1.png" style="width: 100%; height: auto;">
 
 > Pro-tip: We should try to arrange our findings in our report from High -> Low and from Worst -> Least Offenders
 

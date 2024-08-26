@@ -24,23 +24,23 @@ deployMood:
 
 Looks great! Remember, you can add anvil as at network to Metamask by navigating to your network selector and choosing `+ Add network`.
 
-<img src="/foundry-nfts/17-svg-anvil/svg-anvil2.png" width="100%" height="auto">
+<img src="/static/foundry-nfts/17-svg-anvil/svg-anvil2.png" width="100%" height="auto">
 
 Choose to add a network manually and enter the details as shown below:
 
-<img src="/foundry-nfts/17-svg-anvil/svg-anvil3.png" width="100%" height="auto">
+<img src="/static/foundry-nfts/17-svg-anvil/svg-anvil3.png" width="100%" height="auto">
 
 If you need to import an anvil account, this is simple as well. When an anvil chain is spun up, it provides you with public and private keys for a number of default accounts. In your Metamask account selector, choose `+ add account or hardware wallet`
 
-<img src="/foundry-nfts/17-svg-anvil/svg-anvil4.png" width="100%" height="auto">
+<img src="/static/foundry-nfts/17-svg-anvil/svg-anvil4.png" width="100%" height="auto">
 
 Select `import account` and enter one of the default private keys offered by the anvil chain.
 
-<img src="/foundry-nfts/17-svg-anvil/svg-anvil5.png" width="100%" height="auto">
+<img src="/static/foundry-nfts/17-svg-anvil/svg-anvil5.png" width="100%" height="auto">
 
 Once everything is set up, we should be able to run `make deployMood`...
 
-<img src="/foundry-nfts/17-svg-anvil/svg-anvil1.png" width="100%" height="auto">
+<img src="/static/foundry-nfts/17-svg-anvil/svg-anvil1.png" width="100%" height="auto">
 
 With the contract address, we should be able to use a cast command to interact with it.
 
@@ -52,7 +52,7 @@ When that transaction completes, what we can _finally_ do, is take that contract
 
 Once imported ...
 
-<img src="/foundry-nfts/17-svg-anvil/svg-anvil6.png" width="100%" height="auto">
+<img src="/static/foundry-nfts/17-svg-anvil/svg-anvil6.png" width="100%" height="auto">
 
 LETS GOOOO! Now we need to flip it. We should be able to use largely the same `cast` command, let's just adjust the function to `flipMood`
 
@@ -66,7 +66,7 @@ rpc-url http://localhost:8545
 
 Once we reimport our NFT however...
 
-<img src="/foundry-nfts/17-svg-anvil/svg-anvil7.png" width="100%" height="auto">
+<img src="/static/foundry-nfts/17-svg-anvil/svg-anvil7.png" width="100%" height="auto">
 
 ### Wrap Up
 

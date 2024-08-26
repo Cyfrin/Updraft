@@ -19,13 +19,13 @@ Let's kick things off with some resources and best practices to succeed in this 
 > ❗ **NOTE**
 > Each section's respective repo will have its own `discussions` tab. Please use this to raise questions, doubts or concerns! Please leverage `discussions` for technical questions as often as you can so others may learn from your question!
 
-<img src="/formal-verification-0/best-practices/best-practices1.png" width="100%" height="auto">
+<img src="/static/formal-verification-0/best-practices/best-practices1.png" width="100%" height="auto">
 
 Given the advanced nature of this course, I expect everyone to have some idea as to how to formulate and ask good questions. For those looking for a bit of guidance in this respect, the course repo contains guidelines you can follow in [**how-to-ask-a-question.md**](https://github.com/Cyfrin/assembly-evm-opcodes-and-formal-verification-course/blob/main/how-to-ask-a-question.md) and [**how-to-answer-a-question.md**](https://github.com/Cyfrin/assembly-evm-opcodes-and-formal-verification-course/blob/main/how-to-answer-a-question.md)
 
 This space moves quickly and things are always changing, because of this some recorded content may become inaccurate. Keep an eye out below each video for an `Updates` section if you come across any inconsistencies in the course content. If you don't find an update there, consider submitting feedback, or double checking your issue in GitHub discussions! 🙏
 
-<img src="/formal-verification-0/best-practices/best-practices2.png" width="100%" height="auto">
+<img src="/static/formal-verification-0/best-practices/best-practices2.png" width="100%" height="auto">
 
 ### Tips
 
@@ -34,7 +34,7 @@ This space moves quickly and things are always changing, because of this some re
 - **Pace Yourself:** Go at the speed that makes sense for you. Everyone is going to have their own speed, their own level of experience and their own circumstances that all add up to a unique pace of learning. What makes sense for one person may not make sense for you, and that's ok. Find consistency without it feeling forced.
 - **Customize Video Playback:** Updraft allows you to set the speed at which the video is played, so if I'm talking too quickly - slow me down! Addtionally, Updraft supports an ever growing list of closed caption languages, so customize your experience in a way that removes the friction from learning.
 
-<img src="/formal-verification-0/best-practices/best-practices3.png" width="100%" height="auto">
+<img src="/static/formal-verification-0/best-practices/best-practices3.png" width="100%" height="auto">
 
 > ❗ **NOTE**
 > If you would like to contribute subtitles for your native language, please reach out via [**GitHub Issues**](https://github.com/Cyfrin/assembly-evm-opcodes-and-formal-verification-course/issues), or [**Cyfrin Discord**](https://discord.gg/cyfrin) server.

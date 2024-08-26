@@ -10,7 +10,7 @@ _Follow along with the video lesson:_
 
 `Slither` did a great job detecting a `high severity` vulnerability in our protocol, in the last lesson. Let's see what else it has to show us.
 
-<img src="/security-section-7/21-recon-continued-again/recon-continued-again1.png" width="100%" height="auto">
+<img src="/static/security-section-7/21-recon-continued-again/recon-continued-again1.png" width="100%" height="auto">
 
 `sends eth to arbitrary user`, I wonder what this is identifying. Let's navigate to the link `Slither` provides for detail.
 
@@ -55,7 +55,7 @@ function sendToL1(uint8 v, bytes32 r, bytes32 s, bytes memory message) public no
 
 Ok, what's the next potential issue detected by Slither?
 
-<img src="/security-section-7/21-recon-continued-again/recon-continued-again2.png" width="100%" height="auto">
+<img src="/static/security-section-7/21-recon-continued-again/recon-continued-again2.png" width="100%" height="auto">
 
 `ignores return value by token.approve(target,amount)`, this seems to be identified within L1Vault.sol.
 
@@ -75,13 +75,13 @@ In other circumstances, something like this may be higher severity, but we know,
 
 **Slither's next output:**
 
-<img src="/security-section-7/21-recon-continued-again/recon-continued-again3.png" width="100%" height="auto">
+<img src="/static/security-section-7/21-recon-continued-again/recon-continued-again3.png" width="100%" height="auto">
 
 This detection is pointing out `zero-address checks`. Would be fine, but the protocol outlines `zero-address checks` being omitted intentionally to save gas. Known issue, moving on!
 
 **Next output:**
 
-<img src="/security-section-7/21-recon-continued-again/recon-continued-again4.png" width="100%" height="auto">
+<img src="/static/security-section-7/21-recon-continued-again/recon-continued-again4.png" width="100%" height="auto">
 
 OooOoo `Reentrancy in L1BossBridge::depositTokensToL2`, this sounds like it has potential, let's take a look at the function and discuss what may be happening here.
 
@@ -108,11 +108,11 @@ function depositTokensToL2(address from, address l2Recipient, uint256 amount) ex
 
 **Next output:**
 
-<img src="/security-section-7/21-recon-continued-again/recon-continued-again5.png" width="100%" height="auto">
+<img src="/static/security-section-7/21-recon-continued-again/recon-continued-again5.png" width="100%" height="auto">
 
 `Slither`... just doesn't like `Assembly`, so it calls it out any time it sees it. We're using `Assembly` intentionally, so we can ignore this one. The next few are actually non-issues for us, so let's address them all at once.
 
-<img src="/security-section-7/21-recon-continued-again/recon-continued-again6.png" width="100%" height="auto">
+<img src="/static/security-section-7/21-recon-continued-again/recon-continued-again6.png" width="100%" height="auto">
 
 1. `Slither` detects different versions of solidity being used in `Boss Bridge`, but we can see that the 4 contracts we're concerned about all use `0.8.20`. This should be fine.
 
@@ -122,7 +122,7 @@ function depositTokensToL2(address from, address l2Recipient, uint256 amount) ex
 
 **Next output:**
 
-<img src="/security-section-7/21-recon-continued-again/recon-continued-again7.png" width="100%" height="auto">
+<img src="/static/security-section-7/21-recon-continued-again/recon-continued-again7.png" width="100%" height="auto">
 
 Alright, now we're onto something, albeit something small. It seems the `L1BossBridge` variable `DEPOSIT_LIMIT` never changes and as such should be declared as a constant. An easy informational finding.
 
@@ -133,7 +133,7 @@ uint256 public DEPOSIT_LIMIT = 100_000 ether;
 
 Similarly, our next `Slither` output is calling out that our `token` variable, in `L1Vault.sol` could be declared as immutable.
 
-<img src="/security-section-7/21-recon-continued-again/recon-continued-again8.png" width="100%" height="auto">
+<img src="/static/security-section-7/21-recon-continued-again/recon-continued-again8.png" width="100%" height="auto">
 
 ```js
 // @Audit-Informational: Unchanged state variables could be declared as constant
