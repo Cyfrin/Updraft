@@ -17,7 +17,7 @@ forge test --debug testEntryPointCanExecuteCommands -vvv
 ---
 
 <img
-    src="/foundry-account-abstraction/15-advanced-debugging/forge-debug1.png"
+    src="/static/foundry-account-abstraction/15-advanced-debugging/forge-debug1.png"
     width="100%"
     height="auto"
   />
@@ -27,7 +27,7 @@ forge test --debug testEntryPointCanExecuteCommands -vvv
 ---
 
 <img
-    src="/foundry-account-abstraction/15-advanced-debugging/forge-debug2.png"
+    src="/static/foundry-account-abstraction/15-advanced-debugging/forge-debug2.png"
     width="100%"
     height="auto"
   />
@@ -39,7 +39,7 @@ Simply hit shift G, and you will be taken to where the test reverted. You'll see
 ---
 
 <img
-    src="/foundry-account-abstraction/15-advanced-debugging/forge-debug3.png"
+    src="/static/foundry-account-abstraction/15-advanced-debugging/forge-debug3.png"
     width="100%"
     height="auto"
   />
@@ -51,7 +51,7 @@ We know that the issue is likely in the `handleOps`, as this is the part that we
 ---
 
 <img
-    src="/foundry-account-abstraction/15-advanced-debugging/forge-debug4.png"
+    src="/static/foundry-account-abstraction/15-advanced-debugging/forge-debug4.png"
     width="100%"
     height="auto"
   />

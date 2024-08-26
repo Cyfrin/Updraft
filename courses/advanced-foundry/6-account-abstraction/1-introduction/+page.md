@@ -13,7 +13,7 @@ Account abstraction is a fundamental concept of blockchain technology. It offers
 ## Problems Solved
 
 <img
-    src="/foundry-account-abstraction/1-introduction/current-wallet-issues.png"
+    src="/static/foundry-account-abstraction/1-introduction/current-wallet-issues.png"
     width="100%"
     height="auto"
   />
@@ -29,7 +29,7 @@ Another challenge is that traditional transactions are validated by the sender's
 ## Two Entry Points
 
 <img
-    src="/foundry-account-abstraction/1-introduction/trade-eth-trans.png"
+    src="/static/foundry-account-abstraction/1-introduction/trade-eth-trans.png"
     width="100%"
     height="auto"
   />
@@ -48,7 +48,7 @@ zkSync, on the other hand, has account abstraction natively integrated into its 
 ## Account Abstraction Uses Alt-Mempools
 
 <img
-    src="/foundry-account-abstraction/1-introduction/user-op.png"
+    src="/static/foundry-account-abstraction/1-introduction/user-op.png"
     width="100%"
     height="auto"
   />
@@ -71,7 +71,7 @@ Another optional component is the pay master. It handles gas payments, allowing 
 ## zkSync
 
 <img
-    src="/foundry-account-abstraction/1-introduction/zksync-entry-point.png"
+    src="/static/foundry-account-abstraction/1-introduction/zksync-entry-point.png"
     width="100%"
     height="auto"
   />
