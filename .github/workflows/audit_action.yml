@@ -27,5 +27,5 @@ jobs:
       - name: audit
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.UPDRAFT_BOT_NPM_TOKEN }}" > ~/.npmrc
-          npm i @cyfrin/updraft-cli@2.0.9
+          npm i -g @cyfrin/updraft-cli@2.0.9
           python audit.py
