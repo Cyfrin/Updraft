@@ -12,7 +12,7 @@ In this lesson, you'll discover the basics of Remix and how to create and compil
 
 ### Remix IDE
 
-Open <a href="https://remix.ethereum.org/" target="_blank" style="color: blue; text-decoration: underline;">Remix</a> to get started.
+Open this link [to get started]("https://remix.ethereum.org/")
 
 This is an IDE (Integrated Development Environment), a powerful tool used to build and develop smart contracts in Solidity. It helps to easily visualize and interact with our smart contracts. It contains a file explorer that hosts all the files, a Solidity compiler and a tab where you can deploy your contracts.
 
