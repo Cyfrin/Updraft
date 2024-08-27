@@ -93,7 +93,7 @@ From this information, we know that we will need some specific functions to make
 ---
 
 <img
-    src="/foundry-account-abstraction/3-eth-setup/eip-4337.png"
+   src="/static/foundry-account-abstraction/3-eth-setup/eip-4337.png"
     width="100%"
     height="auto"
   />
@@ -107,7 +107,7 @@ Furthermore, we can [view the contract code directly in our browser here.](https
 ---
 
 <img
-    src="/foundry-account-abstraction/3-eth-setup/etherscan-deth.png"
+   src="/static/foundry-account-abstraction/3-eth-setup/etherscan-deth.png"
     width="100%"
     height="auto"
   />
@@ -137,7 +137,7 @@ Scroll down until you see the **Account Contract Interface**.
 ---
 
 <img
-    src="/foundry-account-abstraction/3-eth-setup/account-interface.png"
+   src="/static/foundry-account-abstraction/3-eth-setup/account-interface.png"
     width="100%"
     height="auto"
   />

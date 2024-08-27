@@ -41,7 +41,7 @@ It's recommended to start with the smaller and more manageable contracts and bui
 
 There's a point in an audit where your frame of mind should switch to an adversarial one. You should be thinking _"How can I break this..."_
 
-<img src="/security-section-3/6-the-tincho/tincho1.png" style="width: 100%; height: auto;">
+<img src="/static/security-section-3/6-the-tincho/tincho1.png" style="width: 100%; height: auto;">
 
 Given even simple functions like above, we should be asking ourselves
 

@@ -14,7 +14,7 @@ We know the EVM is looking for this encoded information, this binary _stuff_. An
 
 <div>
 <div style="text-align: center">
-    <img src="/security-section-1/11-encoding-function/encoding-function2.png" style="width: 95%; height: auto;" alt="block fee"> 
+    <img src="/static/security-section-1/11-encoding-function/encoding-function2.png" style="width: 95%; height: auto;" alt="block fee"> 
     <div style="font-size: 10">Remember the properties of a Transaction</div>
 </div>
 </div>
@@ -40,7 +40,7 @@ This encoded function call in the data field is how the EVM, or any EVM compatib
 
 ### Direct Function Calls
 
-<img src="/security-section-1/11-encoding-function/encoding-function1.png" style="width: 100%; height: auto;" alt="block fee">
+<img src="/static/security-section-1/11-encoding-function/encoding-function1.png" style="width: 100%; height: auto;" alt="block fee">
 
 With our understanding of ABI encoding, the possibilities expand. We're now able to populate the data field of our transactions directly with the binary or hex code corresponding to the desired function call. Remember, when you initially compile your transaction, `data` was a field that existed? This is where that comes into play.
 

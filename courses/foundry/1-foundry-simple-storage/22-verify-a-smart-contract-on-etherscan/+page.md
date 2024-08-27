@@ -12,7 +12,7 @@ Soooo ... we just deployed our smart contract on Sepolia, let's check it out!
 
 We go [here](https://sepolia.etherscan.io/address/0x1093560Fe9029c4fB9044AbF2fC94288970D98Db#code) click on `Contract` and find this:
 
-<img src="../../../../static/foundry-simply-storage/21-verify-a-smart-contract-on-etherscan/Image1.PNG" style="width: 75%; height: auto;">
+<img src="/static../../../../static/foundry-simply-storage/21-verify-a-smart-contract-on-etherscan/Image1.PNG" style="width: 75%; height: auto;">
 
 This bytecode looks horrendous. We need to do something to improve the readability (which currently is non-existent).
 

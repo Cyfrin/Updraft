@@ -27,7 +27,7 @@ Proceed with cleaning up the workspace by deleting `src/Counter.sol`, `test/Coun
 
 Create a new folder within `src` named `horseStoreV1` and within that folder create the file `HorseStore.sol`
 
-<img src="/formal-verification-1/1-huff-yul-opcodes/huff-yul-opcodes-1.png" width="100%" height="auto">
+<img src="/static/formal-verification-1/1-huff-yul-opcodes/huff-yul-opcodes-1.png" width="100%" height="auto">
 
 It's a fairly simple contract, feel free to copy it from the [**GitHub**](https://github.com/Cyfrin/1-horse-store-s23/blob/main/src/horseStoreV1/HorseStore.sol) associated with this lesson, or copy it below:
 
@@ -64,7 +64,7 @@ Success should grace your screen, and with it, confirmation of a job well done.
 
 Once built, you should be able to navigate to `out/HorseStore.sol/HorseStore.json`. I recommend utilizing your command pallet in VS Code to format the document and toggle word-wrap, to assist in readability.
 
-<img src="/formal-verification-1/1-huff-yul-opcodes/huff-yul-opcodes-2.png" width="100%" height="auto">
+<img src="/static/formal-verification-1/1-huff-yul-opcodes/huff-yul-opcodes-2.png" width="100%" height="auto">
 
 This json is going to have a _lot_ of stuff in it, and much of it isn't important to us right now. Minimize the `abi` and locate the outputs `bytecode` and `deployedBytecode` This is going to be our focus in the coming lesson!
 

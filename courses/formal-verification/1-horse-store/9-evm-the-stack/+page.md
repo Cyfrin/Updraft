@@ -49,7 +49,7 @@ As developers, we usually let Solidity handle these complexities automatically. 
 
 Let's examine this brilliant visual that prominent developer Pascal shared on Twitter:
 
-<img src="/formal-verification-1/9-evm-the-stack/evm-the-stack-1.png" width="75%" height="auto">
+<img src="/static/formal-verification-1/9-evm-the-stack/evm-the-stack-1.png" width="75%" height="auto">
 
 For our purposes, our focus will be the areas **Stack**, **Memory**, and **Storage**.
 
@@ -59,10 +59,10 @@ When we want to perform computions on data, we have to consider where the data w
 
 If we take a look at the `ADD` op code in [**evm.codes**](https://www.evm.codes/?fork=shanghai) we can see how this addition operation actually works.
 
-<img src="/formal-verification-1/9-evm-the-stack/evm-the-stack-2.png" width="75%" height="auto">
+<img src="/static/formal-verification-1/9-evm-the-stack/evm-the-stack-2.png" width="75%" height="auto">
 
 `The stack` can quite literally be thought of as a stack. New operations must be placed on the top of the stack and processed or reallocated before operations lower in the stack can be performed. Hopefully this image will help clarifying the concept.
 
-<img src="/formal-verification-1/9-evm-the-stack/evm-the-stack-3.png" width="75%" height="auto">
+<img src="/static/formal-verification-1/9-evm-the-stack/evm-the-stack-3.png" width="75%" height="auto">
 
 In the next lesson, we'll take a look at how `memory` and `storage` is handled differently from eachother.

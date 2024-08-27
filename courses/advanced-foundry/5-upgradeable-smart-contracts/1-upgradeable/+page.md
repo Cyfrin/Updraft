@@ -12,11 +12,11 @@ Welcome to another informative blog post on the world of smart contracts. In thi
 
 To put this into perspective, upgradable smart contracts are a complex subject with potential drawbacks, which isn't the best route to default on. They sound great in theory, promising flexibility and adaptability. However, we've repeatedly seen that when there's too much centralized control over contracts, problems arise.
 
-<img src="/upgrades/1-intro/upgrade1.png" style="width: 100%; height: auto;">
+<img src="/static/upgrades/1-intro/upgrade1.png" style="width: 100%; height: auto;">
 
 Let's dig deeper to understand the nuance of this subject and why it's important for your career as a smart contract developer.
 
-<img src="/upgrades/1-intro/upgrade2.png" style="width: 100%; height: auto;">
+<img src="/static/upgrades/1-intro/upgrade2.png" style="width: 100%; height: auto;">
 
 ## What Are the Downside of Upgradable Smart Contracts?
 

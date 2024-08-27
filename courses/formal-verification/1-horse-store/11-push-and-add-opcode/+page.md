@@ -18,11 +18,11 @@ You may be asking **"How does data get added to the stack to begin with?"**. Thi
 
 We'll start by considering how to add a 1 byte object to the stack, for this we'd use the `PUSH1` op code.
 
-<img src="/formal-verification-1/11-push-and-add-opcodes/push-and-add-opcodes-1.png" width="75%" height="auto">
+<img src="/static/formal-verification-1/11-push-and-add-opcodes/push-and-add-opcodes-1.png" width="75%" height="auto">
 
 If we were then to call the `ADD` op code, it's going to take the top 2 items on our stack, sum them and add this sum back to the top of our stack.
 
-<img src="/formal-verification-1/11-push-and-add-opcodes/push-and-add-opcodes-2.png" width="75%" height="auto">
+<img src="/static/formal-verification-1/11-push-and-add-opcodes/push-and-add-opcodes-2.png" width="75%" height="auto">
 
 > **Remember:** Were there _three_ items in our stack, the `ADD` op code would only sum the top two items, the result would be pushed to the top of the stack, leaving the first item in our stack untouched.
 

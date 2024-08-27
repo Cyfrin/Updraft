@@ -65,7 +65,7 @@ function _revertIfHealthFactorIsBroken(address user){}
 
 `Health Factor` is a concept borrowed from Aave.
 
-<img src="/foundry-defi/7-defi-mint-dsc/defi-mint-dsc1.png" width="100%" height="auto">
+<img src="/static/foundry-defi/7-defi-mint-dsc/defi-mint-dsc1.png" width="100%" height="auto">
 
 In addition to the above, we'll need a function which checks an account's `Health Factor`. Let's write that now.
 

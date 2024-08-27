@@ -2,7 +2,7 @@
 
 ---
   <img
-    src="/foundry-account-abstraction/1-introduction/user-op.png"
+   src="/static/foundry-account-abstraction/1-introduction/user-op.png"
     width="100%"
     height="auto"
   />

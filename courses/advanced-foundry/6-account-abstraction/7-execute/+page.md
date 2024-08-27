@@ -17,7 +17,7 @@ We've come a long way, but we aren't quite done yet. We still need to enable our
 ---
 
 <img
-    src="/foundry-account-abstraction/7-execute-function-ethereum/account-abstraction.jpg"
+   src="/static/foundry-account-abstraction/7-execute-function-ethereum/account-abstraction.jpg"
     width="100%"
     height="auto"
   />

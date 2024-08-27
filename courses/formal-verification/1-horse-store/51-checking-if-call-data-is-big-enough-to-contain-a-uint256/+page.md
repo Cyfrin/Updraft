@@ -176,11 +176,11 @@ JUMPI        // [0x00, 0x04, calldata_size, 0x3f, 0x43, func_selector]
 
 Our stack is getting a little crazy, but each step should be pretty clear to us, we `PUSH0`, then `PUSH1 0x20` (0x20 == 32, this is important to know!) Then we reach DUP3, which we can speculate about, but haven't actually seen. Here's what [evm.codes](https://www.evm.codes/#34?fork=cancun) has to say:
 
-<img src="/formal-verification-1/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size1.png" width="100%" height="auto">
+<img src="/static/formal-verification-1/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size1.png" width="100%" height="auto">
 
 In essence the DUP3 op code is taking the third item from the top of the stack and duplicating it, adding this copy to the top of the stack. Given this, what do you think DUP5 does?
 
-<img src="/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size2.png" width="100%" height="auto">
+<img src="/static/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size2.png" width="100%" height="auto">
 
 Shocking, I know.
 
@@ -188,11 +188,11 @@ Next we see two more op codes we've not come across yet `SUB` and `SLT`
 
 `SUB` is quite simply - subtraction. It's going to take the top item of our stack and subtract from it the second from top item in our stack.
 
-<img src="/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size3.png" width="100%" height="auto">
+<img src="/static/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size3.png" width="100%" height="auto">
 
 `SLT` is `signed less than` and compares two signed integer values, returning 1 if the top item of our stack is less than the second from top item in our stack and returning 0 otherwise.
 
-<img src="/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size4.png" width="100%" height="auto">
+<img src="/static/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size4.png" width="100%" height="auto">
 
 We can see the steps, but what are these operations actually doing?
 

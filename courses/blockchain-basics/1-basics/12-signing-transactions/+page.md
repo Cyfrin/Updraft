@@ -18,17 +18,17 @@ The private key is then passed through an algorithm (the [**Elliptic Curve Digit
 
 When we send a transaction to the blockchain, we're passing a private key - this allows others to verify the transaction through the generated public key
 
-<img src="/blockchain-basics/08-signing-transactions/signing-transactions1.png" width="100%" height="auto" alt="signing-transactions1">
+<img src="/static/blockchain-basics/08-signing-transactions/signing-transactions1.png" width="100%" height="auto" alt="signing-transactions1">
 
 ### How does Transaction Signing Happen?
 
 When we sign a transaction on the blockchain, we're digitally signing some data with our private key. The hashing algorithm used makes it impossible for something to derive your private key from a message signature.
 
-<img src="/blockchain-basics/08-signing-transactions/signing-transactions2.png" width="100%" height="auto" alt="signing-transactions2">
+<img src="/static/blockchain-basics/08-signing-transactions/signing-transactions2.png" width="100%" height="auto" alt="signing-transactions2">
 
 This signing method allows anyone to verify the validity of a transaction by comparing the message signature to a user's public key!
 
-<img src="/blockchain-basics/08-signing-transactions/signing-transactions3.png" width="100%" height="auto" alt="signing-transactions3">
+<img src="/static/blockchain-basics/08-signing-transactions/signing-transactions3.png" width="100%" height="auto" alt="signing-transactions3">
 
 ### Importance of Hiding Private Keys
 

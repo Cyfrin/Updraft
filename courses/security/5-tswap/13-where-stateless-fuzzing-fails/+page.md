@@ -62,7 +62,7 @@ contract StatefulFuzzCatchesTest is Test {
 
 A set up just like before, no curveballs. Let's see if it can catch the bug.
 
-<img src="/security-section-5/13-where-stateless-fuzzing-fails/where-stateless-fuzzing-fails1.png" width="100%" height="auto">
+<img src="/static/security-section-5/13-where-stateless-fuzzing-fails/where-stateless-fuzzing-fails1.png" width="100%" height="auto">
 
 No such luck.
 
@@ -119,7 +119,7 @@ Let's run the test.
 forge test --mt statefulFuzz_catchesInvariant
 ```
 
-<img src="/security-section-5/13-where-stateless-fuzzing-fails/where-stateless-fuzzing-fails2.png" width="100%" height="auto">
+<img src="/static/security-section-5/13-where-stateless-fuzzing-fails/where-stateless-fuzzing-fails2.png" width="100%" height="auto">
 
 Well, it catches something... but a closer look at the trace output reveals that it's actually reverting due to `arithmetic underflow or overflow (0x11)]`. This is good to know, but it's not actually breaking our invariant. This is where `fail_on_revert` comes into play.
 
@@ -132,6 +132,6 @@ depth = 32
 fail_on_revert = false
 ```
 
-<img src="/security-section-5/13-where-stateless-fuzzing-fails/where-stateless-fuzzing-fails3.png" width="100%" height="auto">
+<img src="/static/security-section-5/13-where-stateless-fuzzing-fails/where-stateless-fuzzing-fails3.png" width="100%" height="auto">
 
 In this case our stateful fuzz test works perfectly! The trace indicates that our fuzzer passed `0` to the `changeValue` function, and then subsequently passed `0` to `doMoreMathAgain` resulting in a return of `0`, breaking our invariant!

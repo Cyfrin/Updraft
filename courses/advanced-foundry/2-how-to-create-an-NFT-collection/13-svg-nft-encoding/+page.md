@@ -276,11 +276,11 @@ Logs:
 
 This looks pretty good! If we paste this into our browser we should see...
 
-<img src="/foundry-nfts/13-svg-nft-encoding/svg-nft-encoding2.png" width="100%" height="auto">
+<img src="/static/foundry-nfts/13-svg-nft-encoding/svg-nft-encoding2.png" width="100%" height="auto">
 
 ... That looks like a JSON to me! Now, let's copy that imageURI into our browser...
 
-<img src="/foundry-nfts/13-svg-nft-encoding/svg-nft-encoding3.png" width="100%" height="auto">
+<img src="/static/foundry-nfts/13-svg-nft-encoding/svg-nft-encoding3.png" width="100%" height="auto">
 
 Close enough!
 

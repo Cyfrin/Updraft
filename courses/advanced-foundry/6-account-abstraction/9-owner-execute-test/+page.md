@@ -85,7 +85,7 @@ The owner should be able to call this function and send a transaction.
 ---
 
 <img
-    src="/foundry-account-abstraction/9-owner-execute-test/basic-account-flow.png"
+   src="/static/foundry-account-abstraction/9-owner-execute-test/basic-account-flow.png"
     width="100%"
     height="auto"
 />

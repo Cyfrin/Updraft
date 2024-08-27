@@ -42,7 +42,7 @@ A system contract contains smart contracts that are deployed on zkSync by defaul
 
 ---
 <img
-    src="/foundry-account-abstraction/20-system-contracts/contract-deployer1.png"
+   src="/static/foundry-account-abstraction/20-system-contracts/contract-deployer1.png"
     width="100%"
     height="auto"
 />

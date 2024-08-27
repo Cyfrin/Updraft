@@ -18,7 +18,7 @@ It's worth noting, however, that constants or immutable variables do not occupy 
 
 To illustrate:
 
-<img src="/security-section-1/7-advanced-solidity/sol2.png" style="width: 100%; height: auto;" alt="block fee">
+<img src="/static/security-section-1/7-advanced-solidity/sol2.png" style="width: 100%; height: auto;" alt="block fee">
 
 ### Hands-on Learning with Code
 

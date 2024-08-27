@@ -22,7 +22,7 @@ Ok, fairly simple file again. This seems to be an interface for the ThunderLoan.
 - Does the contract actually implement the interface
 - Do the functions in the interface match the functions to be called on the contract
 
-<img src="/security-section-6/17-ithunderloan/ithunderloan1.png" width="100%" height="auto">
+<img src="/static/security-section-6/17-ithunderloan/ithunderloan1.png" width="100%" height="auto">
 
 Straight away, we can see that Thunder Loan isn't actually implementing this interface, easy informational finding.
 
@@ -53,4 +53,4 @@ Whether or not the above would classify as a `low` or `informational` severity f
 
 Great! Two more findings, let's keep going!
 
-<img src="/security-section-6/17-ithunderloan/ithunderloan2.png" width="100%" height="auto">
+<img src="/static/security-section-6/17-ithunderloan/ithunderloan2.png" width="100%" height="auto">

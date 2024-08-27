@@ -42,7 +42,7 @@ function verifySignerSimple(
 
 EIP 191 facilitates pre-made signatures or _sponsored transactions_. For instance, Bob can sign a message, and Alice can send the transaction and pay for Bob’s gas fees.
 
-<img src="/foundry-merkle-airdrop/10-signature-standards/signed-tx.png" width="100%" height="auto">
+<img src="/static/foundry-merkle-airdrop/10-signature-standards/signed-tx.png" width="100%" height="auto">
 
 This EIP standardizes the signed data format:
 

@@ -51,7 +51,7 @@ Again, we expect this to fail, since the contract contains a mint function, but 
 certoraRun ./certora/conf/NftMock.conf
 ```
 
-<img src="/formal-verification-3/8-parametric-rules/parametric-rules1.png" width="100%" height="auto">
+<img src="/static/formal-verification-3/8-parametric-rules/parametric-rules1.png" width="100%" height="auto">
 
 As expected, we can see this fails, but by taking a closer look we can ascertain why and better understand the conclusion the prover came to. Intuitively we know that the `totalSupply` of `NftMock` is going to increase with `mint` function calls, but perhaps less intuitively the prover has pointed out that callback functions through `onERC721Received` can recursively call the `mint` function _also_ calling this assertion to fail!
 

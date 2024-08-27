@@ -16,7 +16,7 @@ We learnt that a Flash Loan is a loan which lasts for a single transaction. The 
 
 Flash loans are a powerful and important DeFi primitive because they afford any user the ability to act as a 'whale', or someone with a lot of liquidity.
 
-<img src="/security-section-6/49-section-6-recap/section-6-recap1.png" width="100%" height="auto">
+<img src="/static/security-section-6/49-section-6-recap/section-6-recap1.png" width="100%" height="auto">
 
 ### Additional Research
 

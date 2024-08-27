@@ -8,7 +8,7 @@ _Follow along with the video lesson:_
 
 ### L1Vault.sol
 
-<img src="/security-section-7/8-vault/l1vault1.png" width="100%" height="auto">
+<img src="/static/security-section-7/8-vault/l1vault1.png" width="100%" height="auto">
 
 Alright! The next most complex contract that our Solidity Metrics report identifies is `L1Vault.sol`. Let's take a look at that contract next.
 

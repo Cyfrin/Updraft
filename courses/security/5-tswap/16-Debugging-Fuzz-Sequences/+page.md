@@ -12,7 +12,7 @@ Alright! The moment of truth, let's run our test with:
 forge test --mt statefulFuzz_testInvariantBreaksHandler
 ```
 
-<img src="/security-section-5/16-debugging-fuzz-sequences/debugging-fuzz-sequences1.png" width="100%" height="auto">
+<img src="/static/security-section-5/16-debugging-fuzz-sequences/debugging-fuzz-sequences1.png" width="100%" height="auto">
 
 Oh no! Something went wrong. We can see `assertion violated` in the output, but there's not a lot of information. In situations like this, we should leverage the `-vvvv` flag.
 
@@ -54,7 +54,7 @@ function setUp() public {
 
 Now let's try it.
 
-<img src="/security-section-5/16-debugging-fuzz-sequences/debugging-fuzz-sequences2.png" width="100%" height="auto">
+<img src="/static/security-section-5/16-debugging-fuzz-sequences/debugging-fuzz-sequences2.png" width="100%" height="auto">
 
 Alright! It looks like we may have found something! We're seeing an error of `ERC20InsufficientBalance` when calling `withdrawToken` on `yeildERC20`. That's odd. Let's look at the `withdrawToken` function again.
 

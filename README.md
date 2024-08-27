@@ -37,7 +37,7 @@
 <p align="center">
     <br />
     <a href="https://cyfrin.io/">
-        <img src=".github/images/poweredbycyfrinblue.png" width="145" alt=""/></a>
+        <img src="/static.github/images/poweredbycyfrinblue.png" width="145" alt=""/></a>
     <br />
 </p>
 </div>
@@ -142,7 +142,7 @@ Encounter an issue or have a suggestion? Open an issue on this repository with a
 This project exists thanks to all the people who contribute.<br>
 
 <a href="https://github.com/Cyfrin/Updraft/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Cyfrin/Updraft" />
+  <img src="/statichttps://contrib.rocks/image?repo=Cyfrin/Updraft" />
 </a>
 
 ## License

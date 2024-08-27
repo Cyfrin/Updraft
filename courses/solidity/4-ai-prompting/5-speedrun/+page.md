@@ -8,7 +8,7 @@ _Follow along the course with this video._
 
 In this section we're examining a resource that isn't explicitly part of this course but is highly useful in expanding your knowledge about Ethereum and the Ethereum Virtual Machine (EVM). This resource comes courtesy of my good friend Austin Griffin. Let's go over what it can do for you.
 
-<img src="/solidity/speedrun/speedrun1.png" style="width: 100%; height: auto;">
+<img src="/static/solidity/speedrun/speedrun1.png" style="width: 100%; height: auto;">
 
 ### Introduction to Speedrun Ethereum w/ Austin Griffin
 
@@ -26,7 +26,7 @@ Through Speedrun Ethereum, you'll delve into a plethora of projects, including:
 
 ...and much more
 
-<img src="/solidity/speedrun/speedrun2.png" style="width: 100%; height: auto;">
+<img src="/static/solidity/speedrun/speedrun2.png" style="width: 100%; height: auto;">
 
 To take advantage of these learning opportunities, visit [Speedrunethereum.com](https://speedrunethereum.com/) and get started!
 
@@ -36,7 +36,7 @@ Scaffold-eth-2 is a great resource for those learning Solidity and trying to vis
 
 It provides a clean front-end UI that will update dynamically with your smart contract changes, allowing you to interact with it and monitor adjustments you've made.
 
-<img src="/solidity/speedrun/speedrun3.png" style="width: 100%; height: auto;">
+<img src="/static/solidity/speedrun/speedrun3.png" style="width: 100%; height: auto;">
 
 ### Final Remarks
 

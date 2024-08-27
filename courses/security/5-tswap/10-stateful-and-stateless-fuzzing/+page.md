@@ -64,7 +64,7 @@ function testIAlwaysGetZero(uint256 data) public {
 
 Instead of using a unit test to assess a single situation, we can leverage fuzz testing to test a wide range of scenarios for us. When we run this test now with `forge test --mt testIAlwaysGetZero` We can see that we do actually catch the broken invariant when `2` is passed as data to our function!
 
-<img src="/security-section-5/10-stateful-and-stateless-fuzzing/stateful-and-stateless-fuzzing1.png" width="100%" height="auto">
+<img src="/static/security-section-5/10-stateful-and-stateless-fuzzing/stateful-and-stateless-fuzzing1.png" width="100%" height="auto">
 
 Great job, Foundry!
 
@@ -74,7 +74,7 @@ I do need to mention that it's not technically choosing random data it's `semi-r
 
 Now, an important concept to understand when running fuzz tests is that of `runs`.
 
-<img src="/security-section-5/10-stateful-and-stateless-fuzzing/stateful-and-stateless-fuzzing2.png" width="100%" height="auto">
+<img src="/static/security-section-5/10-stateful-and-stateless-fuzzing/stateful-and-stateless-fuzzing2.png" width="100%" height="auto">
 
 In the successful test above, I've highlighted the number of runs the fuzzer performed. This represents the number of times random inputs were passed to our test function.
 
@@ -87,7 +87,7 @@ runs=1000
 
 The resulting test:
 
-<img src="/security-section-5/10-stateful-and-stateless-fuzzing/stateful-and-stateless-fuzzing3.png" width="100%" height="auto">
+<img src="/static/security-section-5/10-stateful-and-stateless-fuzzing/stateful-and-stateless-fuzzing3.png" width="100%" height="auto">
 
 Higher runs will take longer to run, but will give your functions a more thorough coverage of potential cases. That's all there is to stateless fuzzing!
 
@@ -164,7 +164,7 @@ function invariant_testAlwaysReturnsZero() public {
 
 And that's all that's required. Now Foundry will pass data to random functions (in this case our single function) over and over again while carrying state changes over from each run.
 
-<img src="/security-section-5/10-stateful-and-stateless-fuzzing/stateful-and-stateless-fuzzing4.png" width="100%" height="auto">
+<img src="/static/security-section-5/10-stateful-and-stateless-fuzzing/stateful-and-stateless-fuzzing4.png" width="100%" height="auto">
 
 In the screenshot above, the Foundry Fuzzer is passing 7 to our `doStuff` function (this is actually a coincidence lol), this is setting our `hiddenValue` to `7` because of:
 

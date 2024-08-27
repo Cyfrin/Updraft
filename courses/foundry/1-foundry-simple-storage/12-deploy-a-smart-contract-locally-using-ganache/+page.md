@@ -16,7 +16,7 @@ Anvil is a local testnet node shipped with Foundry. You can use it for testing y
 
 To run Anvil you simply have to type `anvil` in the terminal.
 
-<img src="../../../../static/foundry-simply-storage/10-deploy-a-smart-contract-locally-using-ganache/Image1.PNG" style="width: 75%; height: auto;">
+<img src="/static../../../../static/foundry-simply-storage/10-deploy-a-smart-contract-locally-using-ganache/Image1.PNG" style="width: 75%; height: auto;">
 
 You now have access to 10 test addresses funded with 10_000 ETH each, with their associated private keys.
 
