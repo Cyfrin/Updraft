@@ -107,12 +107,12 @@ forge install openzeppelin/openzeppelin-contracts --no-commit
 And of course, we can add our remappings to our
 `foundry.toml`.
 
-```js
-[profile.default];
-src = "src";
-out = "out";
-libs = ["lib"];
-remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts"];
+```toml
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts"]
 ```
 
 Rather than importing a standard ERC20 contract, we'll be leveraging the ERC20Burnable extention of this standard. ERC20Burnable includes `burn` functionality for our tokens which will be important when we need to take the asset out of circulation to support stability.

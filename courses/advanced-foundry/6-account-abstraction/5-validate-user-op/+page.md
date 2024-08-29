@@ -62,8 +62,8 @@ forge install openzeppelin/openzeppelin-contracts@v5.0.2 --no-commit
 
 Before we import `Ownable`, we need to add it our remappings. Go to `foundry.toml` and add the following.
 
-```js
-remappings = ["@openzeppelin/contracts=lib/openzeppelin-contracts/contracts"];
+```toml
+remappings = ["@openzeppelin/contracts=lib/openzeppelin-contracts/contracts"]
 ```
 
 Now we can head back to our `MinimalAccount` contract and import it.

@@ -16,7 +16,7 @@ The token that we are going to airdrop will be a ERC20 token. In the same direct
 
 In the `foundry.toml` file we the spcify a remapping:
 
-```
+```toml
 remappings = [ '@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/']
 ```
 

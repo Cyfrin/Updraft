@@ -127,7 +127,7 @@ Nailed it! Our solidity scripted encoding is working just like our command line.
 
 Before we can allow Foundry to read our files into our deploy script, we'll need to set some permissions in `foundry.toml`. Add this to your `foundry.toml`:
 
-```js
+```toml
 fs_permissions = [{access = "read", path = "./img/"}]
 ```
 

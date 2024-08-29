@@ -28,9 +28,9 @@ function setUp() public {
 
 > Note: `mainnet` will need to be set as an alias in your `foundry.toml` under a new variable `[rpc_endpoints]`
 
-```js
-[rpc_endpoints];
-mainnet = "{MAINNET_RPC_URL}";
+```toml
+[rpc_endpoints]
+mainnet = "{MAINNET_RPC_URL}"
 ```
 
 With the above in place running the following will run your tests with respect to a fork of a live chain!

@@ -12,7 +12,7 @@ To access our private variables in the `MerkleAirdrop` contract, we need to add 
 
 We can then create a test file named `/test/MerkleAirdropTest.sol` and add some remappings in `foundy.toml`:
 
-```
+```toml
 remappings = [
     'murky/=lib/murky/',
     '@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/',

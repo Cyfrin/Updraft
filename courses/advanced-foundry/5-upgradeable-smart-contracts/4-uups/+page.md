@@ -91,10 +91,10 @@ forge install OpenZeppelin/openzeppelin-contracts-upgradeable --no-commit
 
 Once installed we can add our remappings to our `foundry.toml`
 
-```js
+```toml
 remappings = [
   "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts",
-];
+]
 ```
 
 And now, we can import UUPSUpgradeable into BoxV1.sol and break down how it's applied.
