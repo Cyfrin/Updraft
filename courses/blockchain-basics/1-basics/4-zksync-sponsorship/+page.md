@@ -12,7 +12,7 @@ In the context of blockchain technology, Layer 2 (L2) solutions like ZK Sync off
 
 We extend our gratitude to Matter Labs and the ZK Sync team for being the lead sponsor of Cyphrin Updraft: their commitment to making Web3 developer and security research education accessible has allowed us to offer this course for free. Additionally, we thank Arbitrum and Optimism for their historical support. Transparency is crucial, so we list all sponsors in the [dedicated section](https://github.com/Cyfrin/foundry-full-course-cu?tab=readme-ov-file#sponsors) of the GitHub repository associated with this course. We also provide alternatives to ensure you can choose the technology that best suits your needs.
 
-> 👀❗**IMPORTANT** :br
+> 👀❗**IMPORTANT** ::br
 > At the end of each section, you'll find links to challenge contracts that you can solve to earn NFTs.
 
 ### Deploying to production
