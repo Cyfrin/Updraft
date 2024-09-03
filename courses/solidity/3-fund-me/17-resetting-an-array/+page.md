@@ -16,7 +16,7 @@ The simplest way to reset the `funders` array is similar to the method used with
 funders = new address[]();
 ```
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > You might recall using the `new` keyword when deploying a contract. In this context, however, it resets the `funders` array to a zero-sized, blank address array.
 
 ### Conclusion

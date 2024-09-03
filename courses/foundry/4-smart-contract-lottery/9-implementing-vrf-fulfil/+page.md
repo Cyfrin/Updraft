@@ -16,7 +16,7 @@ function fulfillRandomWords(uint256 requestId, uint256[] calldata randomWords) i
 
 - After a certain number of block confirmations, the Chainlink Node will generate a random number and call the `VRFConsumerBaseV2Plus::rawFulfillRandomWords` function. This function validates the caller address and then invokes the `fulfillRandomWords` function in our `Raffle` contract.
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > Since `VRFConsumerBaseV2Plus::fulfillRandomWords` is marked as `virtual`, we need to **override** it in its child contract. This requires defining the actions to take when the random number is returned, such as selecting a winner and distributing the prize.
 
 Here’s how you override the `fulfillRandomWords` function:

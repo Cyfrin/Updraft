@@ -21,7 +21,7 @@ You can now remove the previously added `SimpleStorage` code and replace it with
 import "./SimpleStorage.sol";
 ```
 
-> 🚧 **WARNING** <br>
+> 🚧 **WARNING**:br
 > All the solidity contracts should be compiled together using the _same compiler version_. It's important to ensure **consistency** between compiler versions across files since each one will have its own `pragma` statement.
 
 ### Named Imports
@@ -40,7 +40,7 @@ You can also use named imports to import multiple contracts:
 import { SimpleStorage, SimpleStorage1 } from "./SimpleStorage.sol";
 ```
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > Try to always default to named imports instead of importing the entire file.
 
 ### Conclusion

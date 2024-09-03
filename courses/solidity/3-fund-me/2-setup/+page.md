@@ -12,7 +12,7 @@ Let's begin by coding `FundMe`, a crowdfunding contract allowing users to send f
 
 Start from scratch by opening your [Remix IDE](https://remix.ethereum.org/) and deleting all existing contracts. Next, create a new contract named `FundMe`.
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > Before you start coding, try to write down in plain English what you want your code to achieve. This helps clarify your goals and structure your approach.
 
 We want `FundMe` to perform the following tasks:

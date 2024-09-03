@@ -18,7 +18,7 @@ This module is made of sections for compiling, deploying, and interacting with c
 
 Let's start by compiling the `SimpleStorage.sol` file by hitting the "Compile" button.
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > Ensure that the **Solidity Compiler Version** in the contract matches the _[zkSync compiler requirements](https://github.com/Cyfrin/foundry-full-course-cu?tab=readme-ov-file#zksync-l2-deploy)_. As of this recording, the required version is `0.8.24`.
 
 ### Deploying
@@ -35,7 +35,7 @@ After hitting the deploy button, MetaMask will request a **signature**. Approve 
 
 To check our deployment, you can copy the contract address and paste it into the [zksync Sepolia explorer](https://sepolia.explorer.zksync.io/). Here, you can view the contract details.
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > At the moment of recording, the zkSync plugin contains a minor bug. Please refer to lesson 14.
 
 ### Conclusion

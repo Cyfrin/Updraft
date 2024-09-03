@@ -45,7 +45,7 @@ function store(uint256 _newFavNumber) public {}
 TypeError: Overriding function is missing "override" specifier.
 ```
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > To override a method from the parent contract, we must replicate the exact function **signature**, including its name, parameters and adding the visibility and the `override` keyword to it:
 
 ```solidity

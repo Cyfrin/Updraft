@@ -14,7 +14,7 @@ import {Script} from "forge-std/Script.sol";
 import {Raffle} from "../src/Raffle.sol";
 ```
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > There are two ways to import files in Solidity: using a direct path or a relative path. In this example, we are using a relative path, where the `Raffle.sol` file is inside the `src` directory but one level up (`..`) from the current file's location.
 
 ### The `deployContract` Function
@@ -89,7 +89,7 @@ abstract contract CodeConstants {
 
 These values can be used inside the `HelperConfig` constructor:
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > We are choosing the use of **constants** over magic numbers
 
 ```js

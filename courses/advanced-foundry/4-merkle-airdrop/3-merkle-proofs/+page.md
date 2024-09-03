@@ -20,7 +20,7 @@ For example, to prove that `Hash B` is part of the Merkle Tree, you would provid
 
 This allows the Merkle Tree **verifier** to reconstruct a root hash and compare it to the expected root hash. If they match, the original data is confirmed to be part of the Merkle tree.
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > Secure hashing functions, such as `keccak256`, are designed to prevent hash collisions
 
 ### Applications
@@ -37,7 +37,7 @@ function verify(bytes32[] memory proof, bytes32 root, bytes32 leaf) internal pur
 }
 ```
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > The **root** is typically stored _on-chain_, while the **proof** is generated _off-chain_.
 
 The [`processProof`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/dbb6104ce834628e473d2173bbc9d47f81a9eec3/contracts/utils/cryptography/MerkleProof.sol#L49) function iterates through the proof array, updating the computed hash by hashing it with the next proof element. This process ultimately returns a computed hash, which is compared to the expected root to verify the leaf's presence in the Merkle Tree.

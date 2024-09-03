@@ -22,7 +22,7 @@ function getSignerSimple(uint256 message, uint8 _v, bytes32 _r, bytes32 _s) publ
 }
 ```
 
-> 🗒️ **NOTE** <br> > `ecrecover` is a function built into the Ethereum protocol.
+> 🗒️ **NOTE**:br > `ecrecover` is a function built into the Ethereum protocol.
 
 ```js
 function verifySignerSimple(
@@ -223,7 +223,7 @@ function verifySignerOZ(
 }
 ```
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > EIP 712 prevents replay attacks by uniquely identifying the transaction.
 
 ### Conclusion

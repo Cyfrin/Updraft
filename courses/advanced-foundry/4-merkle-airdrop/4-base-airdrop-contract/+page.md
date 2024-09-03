@@ -77,7 +77,7 @@ We can then use `safeTransfer` from the `SafeERC20` library to handle token tran
 i_airdropToken.safeTransfer(account, amount);
 ```
 
-> 👮‍♂️ **BEST PRACTICE** <br>
+> 👮‍♂️ **BEST PRACTICE**:br
 > Using `safeTransfer` instead of `transfer` in ERC-20 token contracts provides an added level of security when performing token transfers. This library includes built-in checks to **automatically revert** the transaction if the transfer fails for any reason. If `transfer` fails, on the other hand, it can go unnoticed and create inconsistencies in the contract logic.
 
 ### Conclusion

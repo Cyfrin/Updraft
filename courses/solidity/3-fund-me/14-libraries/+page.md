@@ -13,7 +13,7 @@ In the previous lesson, we used the `getPrice()` function and `getConversionRate
 Great examples of Libraries can be found in the [Solidity by example](https://solidity-by-example.org/library/) website.
 Solidity libraries are similar to contracts but do not allow the declaration of any **state variables** and **cannot receive ETH**.
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > All functions in a library must be declared as `internal` and are embedded in the contract during compilation. If any function is not marked as such, the library cannot be embedded directly, but it must be deployed independently and then linked to the main contract.
 
 We can start by creating a new file called `PriceConverter.sol`, and replace the `contract` keyword with `library`.

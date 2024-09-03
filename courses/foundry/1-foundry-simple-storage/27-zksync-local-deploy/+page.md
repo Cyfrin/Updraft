@@ -18,7 +18,7 @@ forge create src/SimpleStorage.sol:SimpleStorage --rpc_url <RPC_URL> --private_k
 
 Here, `<RPC_URL>` represents zkSync node address, such as `http://127.0.0.1:8011`.
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > Including private keys directly in commands is not a safe practice.
 
 This command instructs Foundry to locate the `SimpleStorage` contract in the `src/SimpleStorage.sol` file and deploy it. Upon execution, the contract compiles and deploys successfully. The output will display details such as the deployer, the deployed contract address, and the transaction hash.

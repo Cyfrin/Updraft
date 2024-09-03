@@ -26,7 +26,7 @@ After successfully deploying the `FundMe` contract, you'll see several buttons t
 
 The `fund` function allows us to send ETH to the contract (minimum 5 USD). The `owner` of the contract is our MetaMask account, as the **constructor** sets the deployer as the owner.
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > If the `fund` function is called without any value or with less than 5 USD, you will encounter a gas estimation error, indicating insufficient ETH, and gas will be wasted.
 
 ### Successful Transaction

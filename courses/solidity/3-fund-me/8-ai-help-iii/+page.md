@@ -50,7 +50,7 @@ As explained by the AI:
 If the implementation contract at the given address does not have a `version()` function or if it has a different function signature, calling `version()` on that contract will result in a compilation error or a runtime error.
 ```
 
-> 🚧 **WARNING** <br>
+> 🚧 **WARNING**:br
 > Always verify AI-provided information by consulting a discussion forum
 
 ### Conclusion

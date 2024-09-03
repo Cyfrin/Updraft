@@ -33,5 +33,5 @@ To isolate each component, we'll create a function called `splitSignature` . Thi
     }
 ```
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > When working with functions from libraries like OpenZeppelin or other APIs, the signature format typically follows the order _v,r,s_ instead of the _r,s,v_ we used in this lesson.

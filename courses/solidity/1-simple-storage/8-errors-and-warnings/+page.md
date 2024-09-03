@@ -51,7 +51,7 @@ It is advised to make active use of AI tools, as they can substantially boost yo
 
 You can also take part of online communities like **GitHub discussions** and **Stack Exchange**, where you'll find valuable insights, answers to your questions, and support from fellow developers.
 
-> 💡 **TIP** <br>
+> 💡 **TIP**:br
 > One of the most important aspects of being an excellent software engineer or prompt engineer is not just having the information but knowing where to find it.
 
 ### Conclusion
