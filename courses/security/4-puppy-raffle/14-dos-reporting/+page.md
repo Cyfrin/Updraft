@@ -219,7 +219,7 @@ function testDenialOfService() public {
 ```
 
 </details>
-<br>
+:br
 
 **Recommended Mitigations:**
 

@@ -61,7 +61,7 @@ contract SelfDestructMe {
 ```
 
 </details>
-<br>
+:br
 
 `SelfDestructMe.sol` is a fairly straightforward contract at a glance, experiment with the basic functions of the contract as you wish.
 

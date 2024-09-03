@@ -56,7 +56,7 @@ And with that you should have this simple front end open in a browser.
 
 ::image{src='../../../../static//html-fundme/1-setup/html-fund-me2.png' style='width: 75%; height: auto;'}
 
-<br>
+:br
 We'll be using this to glean a deeper understanding of what exactly is happening when we're interacting with websites in the coming lessons.
 
 ### Questions to Consider

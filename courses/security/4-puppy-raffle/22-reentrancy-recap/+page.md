@@ -75,7 +75,7 @@ contract ReentrancyTest is Test {
 ```
 
 </details>
-<br>
+:br
 
 Additionally, we learnt that `static analysis` tools like `Slither` can even catch this vulnerability (though not always)!
 
@@ -109,7 +109,7 @@ function withdrawBalance() public {
 ```
 
 </details>
-<br>
+:br
 
 Lastly, we learnt how this problem still plagues us today. Through this [**repo**](https://github.com/pcaversaccio/reentrancy-attacks) managed by Pascal et al, we can see a horrifying list, 7 years long, of just this single attack vector. We also uncovered a case study in [**The DAO hack**](https://medium.com/@zhongqiangc/smart-contract-reentrancy-thedao-f2da1d25180c) and saw just how severe this issue can be.
 

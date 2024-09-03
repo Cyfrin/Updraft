@@ -128,7 +128,7 @@ contract ReentrancyAttacker {
 ```
 
 </details>
-<br>
+:br
 
 Alright, let's add this logic to our test. First we'll create an instance of the attacker contract and an attacker address, funding it with 1 ether.
 
@@ -199,7 +199,7 @@ function test_reentrancyRefund() public {
 ```
 
 </details>
-<br>
+:br
 
 All we need to do now is run this test with the command `forge test --mt test_reentrancyRefund -vvv` and we should receive...
 
