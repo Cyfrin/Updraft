@@ -17,7 +17,7 @@ What we've been provided is a little sparse - but read through the README of [**
 
 <p align="center">
 ::image{src='/security-section-4/7-recon-reading-docs/reading-docs1.svg' style='width: 75%; height: auto;'}
-<br/>
+:br
 
 # Puppy Raffle
 
