@@ -203,7 +203,7 @@ function test_reentrancyRefund() public {
 
 All we need to do now is run this test with the command `forge test --mt test_reentrancyRefund -vvv` and we should receive...
 
-<img src="/security-section-4/23-reentrancy-poc/reentrancy-poc1.png" style="width: 75%; height: auto;">
+::image{src='/security-section-4/23-reentrancy-poc/reentrancy-poc1.png' style='width: 75%; height: auto;'}
 
 ### Wrap Up
 

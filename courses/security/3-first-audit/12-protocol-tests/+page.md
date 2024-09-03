@@ -6,7 +6,7 @@ _Follow along with this video:_
 
 ---
 
-<img src="/security-section-3/12-protocol-tests/protocol-tests1.png" style="width: 100%; height: auto;">
+::image{src='/security-section-3/12-protocol-tests/protocol-tests1.png' style='width: 100%; height: auto;'}
 
 As security researchers our job is to ultimatly do what's necessary to make a protocol more secure. While we've thoroughly examined everything within scope of `PasswordStore` there can be some value in expanding our recon.
 
@@ -27,7 +27,7 @@ The above will run all current tests, to check `coverage` we'll use:
 forge coverage
 ```
 
-<img src="/security-section-3/12-protocol-tests/protocol-tests2.png" style="width: 100%; height: auto;">
+::image{src='/security-section-3/12-protocol-tests/protocol-tests2.png' style='width: 100%; height: auto;'}
 
 Wow! Our coverage looks great...right? It's important to note that coverage may be a vanity metric and not truly representative of what's being tested for. If we look closely at the tests included, we can see the a major vulnerability we found (`Access Control`) wasn't tested for at all.
 

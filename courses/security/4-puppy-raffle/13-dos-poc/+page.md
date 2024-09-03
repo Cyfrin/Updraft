@@ -96,7 +96,7 @@ function testDenialOfService() public {
 
 Running the command `forge test --mt testDenialOfService -vvv` should give us an output like this:
 
-<img src="/security-section-4/13-dos-poc/dos-poc1.png" style="width: 75%; height: auto;">
+::image{src='/security-section-4/13-dos-poc/dos-poc1.png' style='width: 75%; height: auto;'}
 
 Now let's do the same thing for the second 100 players! We'll need to add something like this to our test.
 
@@ -119,7 +119,7 @@ assert(gasUsedFirst < gasUsedSecond);
 
 If we rerun our test we can see.. Our test passes! The second 100 players are paying _a LOT_ more and are at a significant disadvantage!
 
-<img src="/security-section-4/13-dos-poc/dos-poc2.png" style="width: 75%; height: auto;">
+::image{src='/security-section-4/13-dos-poc/dos-poc2.png' style='width: 75%; height: auto;'}
 
 </details>
 

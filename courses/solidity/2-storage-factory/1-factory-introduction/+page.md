@@ -30,7 +30,7 @@ It's possible to interact with this newly deployed `SimpleStorage` via the `stor
 
 The **`sfGet`** function, when given the input '0', will indeed return the number provided by the previous function. The **address** of the `SimpleStorage` contract can then be retrieved by clicking on the get function `listOfSimpleStorageContracts`.
 
-<img src="/solidity/remix/lesson-3/setting-up/graph-1.png" style="width: 100%; height: auto;">
+::image{src='/solidity/remix/lesson-3/setting-up/graph-1.png' style='width: 100%; height: auto;'}
         
 ### Conclusion
 The `StorageFactory` contract manages numerous instances of an external contract `SimpleStorage`. It provides functionality to deploy new contract instances dynamically and allows for the storage and retrieval of values from each instance. These instances are maintained and organized within an array, enabling efficient tracking and interaction.

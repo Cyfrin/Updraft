@@ -18,7 +18,7 @@ Let's review a few recommendations we could make to improve the code for this pr
 
 The first thing we notice, at the very top of this repo are the naming conventions used for storage variables.
 
-<img src="/security-section-4/38-info-and-gas/info-and-gas1.png" style="width: 75%; height: auto;">
+::image{src='/security-section-4/38-info-and-gas/info-and-gas1.png' style='width: 75%; height: auto;'}
 
 A convention I like to use for storage variables is the `s_variableName` convention! So this may be an informational finding we would want to submit.
 
@@ -62,7 +62,7 @@ This section of the OpenZepplin repo is kept updated with known security vulnera
 
 By clicking on one of the advisories, we get a detailed breakdown including the affected versions.
 
-<img src="/security-section-4/38-info-and-gas/info-and-gas2.png" style="width: 75%; height: auto;">
+::image{src='/security-section-4/38-info-and-gas/info-and-gas2.png' style='width: 75%; height: auto;'}
 
 ### Gas
 

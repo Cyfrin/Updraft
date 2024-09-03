@@ -45,15 +45,15 @@ Our function has no checks, but simply by reordering things this way, with our e
 
 First, let's make sure we've re-ordered things in our contract.
 
-<img src="/security-section-4/20-reentrancy-mitigation/reentrancy-mitigation1.png" style="width: 75%; height: auto;">
+::image{src='/security-section-4/20-reentrancy-mitigation/reentrancy-mitigation1.png' style='width: 75%; height: auto;'}
 
 Now fund your victim contract and try calling the `attack` function with a second wallet address, as we did before.
 
-<img src="/security-section-4/20-reentrancy-mitigation/reentrancy-mitigation2.png" style="width: 75%; height: auto;">
+::image{src='/security-section-4/20-reentrancy-mitigation/reentrancy-mitigation2.png' style='width: 75%; height: auto;'}
 
 It reverts! So, what's happening here?
 
-<img src="/security-section-4/20-reentrancy-mitigation/reentrancy-mitigation3.png" style="width: 75%; height: auto;">
+::image{src='/security-section-4/20-reentrancy-mitigation/reentrancy-mitigation3.png' style='width: 75%; height: auto;'}
 
 ### Alternative Mitigation
 

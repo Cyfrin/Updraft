@@ -135,7 +135,7 @@ Rather than typing out long scripts, we'll use a makefile here. The associated G
 
 In the makefile, we've captured most of the topics we've discussed so far, including our deploy script, which we'll use to deploy our basic NFT.
 
-<img src="/foundry-nfts/9-testnet/testnet1.png" style="width: 100%; height: auto;">
+::image{src='/foundry-nfts/9-testnet/testnet1.png' style='width: 100%; height: auto;'}
 
 Here is what the deploy script looks like:
 
