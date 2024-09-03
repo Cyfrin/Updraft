@@ -55,7 +55,7 @@ This recovery phrase (sometimes referred to as a mnemonic) is your master key, s
 
 From this point, you should be able to see your metamask interface. It should look something like this:
 
-<img src="/blockchain-basics/05-first-transaction/first-transaction1.png" width="75%" height="auto">
+::image{src='/blockchain-basics/05-first-transaction/first-transaction1.png' style='width: 75%; height: auto;'}
 
 You can Pin Metamask to the top of your browser for easy access to this view in future.
 
@@ -76,7 +76,7 @@ In addition to this, we'll also be covering how to test and deploy on a _local_ 
 
 By toggling the `show test networks` option, we can see which testnets come included by default.
 
-<img src="/blockchain-basics/05-first-transaction/first-transaction2.png" width="75%" height="auto">
+::image{src='/blockchain-basics/05-first-transaction/first-transaction2.png' style='width: 75%; height: auto;'}
 
 We're able to switch networks simply by clicking on any network on the available list. Try out Sepolia!
 
@@ -90,28 +90,28 @@ In order to experience your first transaction, we're going to navigate to a `fau
 
 [**Sepolia Faucet**](https://faucets.chain.link/sepolia)
 
-<img src="/blockchain-basics/05-first-transaction/first-transaction3.png" width="75%" height="auto">
+::image{src='/blockchain-basics/05-first-transaction/first-transaction3.png' style='width: 75%; height: auto;'}
 
 From this page you can connect your wallet with the click of a button. Once clicked, agree to the terms of service and select `Metamask`.
 
-<img src="/blockchain-basics/05-first-transaction/first-transaction4.png" width="75%" height="auto">
+::image{src='/blockchain-basics/05-first-transaction/first-transaction4.png' style='width: 75%; height: auto;'}
 
 Your Metamask should pop up and give you the option to select your account, following by a confirmation to connect your wallet.
 
-<img src="/blockchain-basics/05-first-transaction/first-transaction5.png" width="75%" height="auto">
-<img src="/blockchain-basics/05-first-transaction/first-transaction6.png" width="75%" height="auto">
+::image{src='/blockchain-basics/05-first-transaction/first-transaction5.png' style='width: 75%; height: auto;'}
+::image{src='/blockchain-basics/05-first-transaction/first-transaction6.png' style='width: 75%; height: auto;'}
 
 In order to request testnet native tokens (like SepoliaEth) you'll need to verify your GitHub account. One that's done, you should be ready to send your request!
 
-<img src="/blockchain-basics/05-first-transaction/first-transaction7.png" width="75%" height="auto">
+::image{src='/blockchain-basics/05-first-transaction/first-transaction7.png' style='width: 75%; height: auto;'}
 
 After a brief delay we should see something like this!
 
-<img src="/blockchain-basics/05-first-transaction/first-transaction8.png" width="75%" height="auto">
+::image{src='/blockchain-basics/05-first-transaction/first-transaction8.png' style='width: 75%; height: auto;'}
 
 I encourage you to click the transaction hash, you'll be brought to Sepolia Etherscan and provided a tonne of information about the details of your transaction. Additionally, you should be able to open up your Metamask wallet and confirm you did indeed receive your requested Sepolia Eth!
 
-<img src="/blockchain-basics/05-first-transaction/first-transaction9.png" width="75%" height="auto">
+::image{src='/blockchain-basics/05-first-transaction/first-transaction9.png' style='width: 75%; height: auto;'}
 
 Try toggling your Metamask wallet between networks now, you'll notice that it's only on Sepolia that you've gained your test ETH. If you want to practice further, there are additional testnet blockchains with faucets available for you to try.
 
@@ -125,7 +125,7 @@ Taking a brief look at some of the details of our transaction on Etherscan, we'r
 - Value - any funds included with the transaction
 - Gas - the cost of the transaction to execute, we'll be looking into gas more closely in the next lesson.
 
-<img src="/blockchain-basics/05-first-transaction/first-transaction10.png" width="75%" height="auto">
+::image{src='/blockchain-basics/05-first-transaction/first-transaction10.png' style='width: 75%; height: auto;'}
 
 ### Wrap Up
 

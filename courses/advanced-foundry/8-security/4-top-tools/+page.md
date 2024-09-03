@@ -164,7 +164,7 @@ We haven't gone over the exploit in this code before, but it's known as reentran
 
 With Slither installed, I can run the command `slither .` and Slither will output all of the issues it detects in our code, right to the terminal.
 
-<img src="/foundry-security/3-top-tools/top-tools1.png" width="100%" height="auto">
+::image{src='/foundry-security/3-top-tools/top-tools1.png' style='width: 100%; height: auto;'}
 
 Look how easy that is. It won't catch everything, but Slither is one of those tools I believe everyone should run on their codebase before going to audit.
 
@@ -242,7 +242,7 @@ contract CaughtWithFuzzTest is Test {
 
 Running this test shows us clearly the power of a thorough fuzz testing suite.
 
-<img src="/foundry-security/3-top-tools/top-tools2.png" width="100%" height="auto">
+::image{src='/foundry-security/3-top-tools/top-tools2.png' style='width: 100%; height: auto;'}
 
 Our fuzz test identifies the counter-example of 1265!
 
@@ -301,7 +301,7 @@ contract CaughtWithStatefulFuzzTest is StdInvariant, Test {
 
 We can see here the running our stateful fuzz test `invariant_testMathDoesntReturnZero` indentifies the arguments to pass and order of functions to call which breaks our invariant.
 
-<img src="/foundry-security/3-top-tools/top-tools3.png" width="100%" height="auto">
+::image{src='/foundry-security/3-top-tools/top-tools3.png' style='width: 100%; height: auto;'}
 
 Lastly, we have `CaughtWithSymbolic.sol` where we can actually just use the solidity compiler to try and catch some bugs.
 
@@ -341,7 +341,7 @@ targets = ['assert']
 
 By running `forge build` with these settings, we'll receive an output from our compiler, clearly indicating where the assertion is violated with a counter-example:
 
-<img src="/foundry-security/3-top-tools/top-tools4.png" width="100%" height="auto">
+::image{src='/foundry-security/3-top-tools/top-tools4.png' style='width: 100%; height: auto;'}
 
 ### Wrap Up
 

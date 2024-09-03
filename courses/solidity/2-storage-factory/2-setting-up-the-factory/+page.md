@@ -14,7 +14,7 @@ You can begin by visiting the [Github repository of the previous section](https:
 This contract allows to store a favorite number, a list of people with their favorite number, a mapping and different functionalities to interact with them.
 This lesson aims to create a **new contract** that can deploy and interact with `SimpleStorage`.
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > One of the fundamental aspects of blockchain development is the seamless and permissionless interaction between contracts, known as **composability**. This is particularly crucial in decentralized finance (DeFi), where complex financial products interact effortlessly through common smart contract interfaces.
 
 Let's set up the backbone of the code, that contains the function `createSimplestorageContract`. This function will deploy a `SimpleStorage` contract and save the result into a _storage variable_:
@@ -33,10 +33,10 @@ contract StorageFactory {
 
 We need to establish a connection between the two contracts, since `StorageFactory` needs to have a complete knowledge of `SimpleStorage`. One first approach could be copying the `SimpleStorage` contract above `StorageFactory`.
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > It's allowed to have multiple contracts in the same file. As best practice, however, it's recommended to use only one file for each contract
 
-> 💡 **TIP** <br>
+> 💡 **TIP**:br
 > You can avoid confusion by keeping open **only** the file(s) you're currently working on.
 
 ### Conclusion

@@ -16,12 +16,7 @@ We've come a long way, but we aren't quite done yet. We still need to enable our
 
 ---
 
-<img
-    src="/foundry-account-abstraction/7-execute-function-ethereum/account-abstraction.jpg"
-    width="100%"
-    height="auto"
-  />
-
+::image{src='/foundry-account-abstraction/7-execute-function-ethereum/account-abstraction.jpg' style='width: 100%; height: auto;'}
 ---
 
 In order for us to make all this happen, we need a new external function called `execute`. It will pass an address for the destination, uint256 for eth, and bytes calldata for ABI encoded function data. If not successful, it will revert. Be sure to add `MinimalAccount__CallFailed(result)` to the errors section of your code.

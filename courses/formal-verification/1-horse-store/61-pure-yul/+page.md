@@ -41,7 +41,7 @@ object "HorseStoreYul" {
 
 Datacopy, dataoffset and datasize might seem unfamiliar, but these are function within Yul which assist it to access disparate parts of a Yul Object.
 
-<img src="/formal-verification-1/61-pure-yul/pure-yul1.png" width="100%" height="auto">
+::image{src='/formal-verification-1/61-pure-yul/pure-yul1.png' style='width: 100%; height: auto;'}
 
 We can see that in our circunstances the `datacopy` function is being used as equivalent to the `codecopy` op code, and what does `codecopy` do? Well, it's taking the size and offset of our `runtime code` (we haven't written the `runtime` yet!) and returning it to be copied to the blockchain!
 
@@ -74,7 +74,7 @@ solc --strict-assembly --optimize --optimize-runs 20000 yul/HorseStoreYul.yul --
 
 This is going to return the binary of our contract after compilation!
 
-<img src="/formal-verification-1/61-pure-yul/pure-yul2.png" width="100%" height="auto">
+::image{src='/formal-verification-1/61-pure-yul/pure-yul2.png' style='width: 100%; height: auto;'}
 
 ### Runtime Code
 

@@ -10,13 +10,13 @@ _Follow along with this video:_
 
 At it's most minimalistic, a re-entrancy attack looks like this:
 
-<img src="/security-section-4/18-exploit-reentrancy/exploit-reentrancy3.png" style="width: 75%; height: auto;">
+::image{src='/security-section-4/18-exploit-reentrancy/exploit-reentrancy3.png' style='width: 75%; height: auto;'}
 
 A reentrancy attack occurs when an attacker takes advantage of the recursive calling capability of a contract. By repeatedly calling a function within a contract, the attacker can withdraw funds or manipulate contract state before the initial function call is resolved, often leading to the theft of funds or other unintended consequences.
 
 As a more indepth reference:
 
-<img src="/security-section-4/18-exploit-reentrancy/exploit-reentrancy2.png" style="width: 75%; height: auto;">
+::image{src='/security-section-4/18-exploit-reentrancy/exploit-reentrancy2.png' style='width: 75%; height: auto;'}
 
 We learnt that re-entrancy is a _very_ common attack vector and walked through how to indentify and reproduce the vulnerability both in [**Remix**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/reentrancy/Reentrancy.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js) and locally as well as how to test for them.
 
@@ -75,7 +75,7 @@ contract ReentrancyTest is Test {
 ```
 
 </details>
-<br>
+:br
 
 Additionally, we learnt that `static analysis` tools like `Slither` can even catch this vulnerability (though not always)!
 
@@ -109,7 +109,7 @@ function withdrawBalance() public {
 ```
 
 </details>
-<br>
+:br
 
 Lastly, we learnt how this problem still plagues us today. Through this [**repo**](https://github.com/pcaversaccio/reentrancy-attacks) managed by Pascal et al, we can see a horrifying list, 7 years long, of just this single attack vector. We also uncovered a case study in [**The DAO hack**](https://medium.com/@zhongqiangc/smart-contract-reentrancy-thedao-f2da1d25180c) and saw just how severe this issue can be.
 

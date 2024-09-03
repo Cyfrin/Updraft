@@ -46,7 +46,7 @@ Before getting to deep with encoding, let's take a step back to understand what'
 
 ### Compilation Breakdown
 
-<img src="/security-section-1/10-encoding/encoding1.png" style="width: 100%; height: auto;" alt="block fee">
+::image{src='/security-section-1/10-encoding/encoding1.png' style='width: 100%; height: auto;' alt='block fee'}
 
 As seen in the image above, when we compile a smart contract, the solidity compiler is returning two things `contract.abi` and `contract.bin`. The `abi` you likely remember from previous lessons.
 
@@ -98,11 +98,11 @@ Read more about [**Non-standard Packed Mode**](https://docs.soliditylang.org/en/
 
 The other side to this whole equation is that we also have the ability to _`decode`_ things.
 
-<img src="/security-section-1/10-encoding/encoding2.png" style="width: 100%; height: auto;" alt="block fee">
+::image{src='/security-section-1/10-encoding/encoding2.png' style='width: 100%; height: auto;' alt='block fee'}
 
 and finally .. we can even `multiEncode` and `multiDecode`.
 
-## <img src="/security-section-1/10-encoding/encoding3.png" style="width: 100%; height: auto;" alt="block fee">
+## ::image{src='/security-section-1/10-encoding/encoding3.png' style='width: 100%; height: auto;' alt='block fee'}
 
 # Conclusion
 

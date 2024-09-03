@@ -82,7 +82,7 @@ Now, we can run this test.
 forge test --mt testCanMoveApprovedTokensOfOtherUsers -vvv
 ```
 
-<img src="/security-section-7/20-arbitrary-poc/arbitrary-poc1.png" width="100%" height="auto">
+::image{src='/security-section-7/20-arbitrary-poc/arbitrary-poc1.png' style='width: 100%; height: auto;'}
 
 ### Wrap Up
 

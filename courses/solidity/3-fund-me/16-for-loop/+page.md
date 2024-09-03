@@ -56,7 +56,7 @@ The loop begins at index 0 and goes through all the elements in the `funders` ar
 1. Accesses the `funder` address at the current index
 2. Resets the corresponding funding amount in the `addressToAmountFunded` mapping to zero, clearing the `funder`'s record.
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > The **addressToAmountFunded** map connects addresses with the respective amounts they funded.
 
 ### Shortcuts

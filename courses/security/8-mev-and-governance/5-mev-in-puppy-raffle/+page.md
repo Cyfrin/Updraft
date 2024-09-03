@@ -56,7 +56,7 @@ A user does this by recognizing that they lost, and then paying more gas to have
 
 This will lower the prize of the winner!
 
-<img src="/security-section-8/5-puppy-mev/mev-in-puppy-raffle1.png" width="100%" height="auto">
+::image{src='/security-section-8/5-puppy-mev/mev-in-puppy-raffle1.png' style='width: 100%; height: auto;'}
 
 ### Wrap Up
 

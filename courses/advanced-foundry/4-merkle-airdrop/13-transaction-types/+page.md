@@ -28,7 +28,7 @@ Introduced by EIP1559 during Ethereum's London fork, this transaction type aims 
 - Adds the **Max Priority Fee per Gas**, the maximum fee the sender is willing to pay for prioritization.
 - Introduces the **Max Fee per Gas**, the total maximum fee the sender is willing to pay.
 
-  > 🗒️ **NOTE** <br>
+  > 🗒️ **NOTE**:br
   > While ZK Sync supports type 2 transactions, it does not utilize the max fee parameters, as gas functions differently on ZK Sync.
 
 ### Type 3 (0x03)
@@ -37,7 +37,7 @@ Introduced by EIP4844, this transaction type provides an initial scaling solutio
 
 - **Max Blob Fee per Gas**: This parameter sets the maximum fee the sender is willing to pay per gas unit specifically for **blob gas**.
 
-  > 🗒️ **NOTE** <br>
+  > 🗒️ **NOTE**:br
   > Blob gas is a specific type of gas used in Ethereum to handle large data structures and is used in rollups. Blob gas is distinct from regular gas and has its own market.
 
 - **Blob Versioned Hashes**: A list of versioned blob hashes associated with the transaction blobs. These hashes are used to verify the integrity of the blobs and ensure they are correctly linked to the transaction.
@@ -50,7 +50,7 @@ Next, we have two transaction types specific to ZK Sync:
 
 Defined by EIP712, these transactions standardize **data hashing** and **signing**, enabling features like **account abstraction** and **paymasters**.
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > Smart contracts on ZK Sync must be deployed using type 113 transactions.
 
 Fields specific to type 113 transactions are:

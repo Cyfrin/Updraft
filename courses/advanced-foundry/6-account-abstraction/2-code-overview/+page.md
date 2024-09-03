@@ -18,10 +18,6 @@ Or, you can head straight to the main sources below.
 
 These two ecosystems are vastly different. The upcoming lessons will allow us to become more familiar with both of them. For now, we can see some examples from the README file. Click on ZkMinimalAccount.sol to see the example deployments for zkSync and MinimalAccount.sol for Ethereum.
 
-<img
-    src="/foundry-account-abstraction/2-code-overview/example-deployments.png"
-    width="100%"
-    height="auto"
-  />
+::image{src='/foundry-account-abstraction/2-code-overview/example-deployments.png' style='width: 100%; height: auto;'}
 
 When you are ready, let's begin our journey with Ethereum minimal account abstraction.  

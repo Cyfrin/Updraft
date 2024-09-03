@@ -8,7 +8,7 @@ _Follow along with the video_
 
 ### Introduction
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > This lesson is optional. If you encounter difficulties installing or understanding the required tools, feel free to proceed to the next section and continue using Anvil to test your smart contract locally.
 
 In the previous lessons, we learned about deploying smart contracts with the `forge create` and `forge script` commands on our **local Anvil chain**. In this lesson, we will set up and run a **zkSync local environment**.
@@ -25,7 +25,7 @@ To deploy locally on a zkSync local chain, you'll need additional tools: Docker,
 
 To start your local zkSync node, run `npx zksync-cli dev start`. This command spins up a zkSync node in Docker and runs it in the background. Verify the process is running with `docker ps`.
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > If Docker isn’t running, the `npx zksync-cli dev start` command will fail. Ensure Docker is running before attempting to start the zkSync node again.
 
 ### Deployment

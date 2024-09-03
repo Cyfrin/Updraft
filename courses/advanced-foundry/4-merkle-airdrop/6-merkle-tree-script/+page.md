@@ -69,7 +69,7 @@ The `GenerateInput.s.sol` file will write the claim amounts, types, and addresse
 forge script script/GenerateInput.s.sol:GenerateInput
 ```
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > To avoid the following error:
 
 ```

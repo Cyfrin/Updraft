@@ -54,15 +54,15 @@ Once you're in remix with the re-entrancy examples open, begin by compiling and 
 
 _Be sure to deploy both contracts, first `ReentrancyVictim` then `ReentrancyAttacker`_
 
-<img src="/security-section-4/19-reentrancy-remix/reentrancy-remix1.png" style="width: 75%; height: auto;">
+::image{src='/security-section-4/19-reentrancy-remix/reentrancy-remix1.png' style='width: 75%; height: auto;'}
 
 Both contracts should have 0 balance. Begin by having a sucker deposit 5 ether into `ReentrancyVictim` contract.
 
-<img src="/security-section-4/19-reentrancy-remix/reentrancy-remix2.png" style="width: 75%; height: auto;">
+::image{src='/security-section-4/19-reentrancy-remix/reentrancy-remix2.png' style='width: 75%; height: auto;'}
 
 Now, change the account/wallet you're calling functions from (near the top). Our `ReentrancyAttacker::attack` function requires at least 1 ether. Once that's set and our attack function is called...
 
-<img src="/security-section-4/19-reentrancy-remix/reentrancy-remix3.png" style="width: 75%; height: auto;">
+::image{src='/security-section-4/19-reentrancy-remix/reentrancy-remix3.png' style='width: 75%; height: auto;'}
 
 The attacker has made off with all of the protocol's ETH!
 

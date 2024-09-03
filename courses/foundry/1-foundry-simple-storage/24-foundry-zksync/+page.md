@@ -16,7 +16,7 @@ To get started with zkSync, we will follow these three steps:
 2. 🧑‍💻 Compile the Solidity contract with the `--zksync` flag
 3. 🔄🏠 Reinstall the original Vanilla Foundry
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > Installing `foundry-zksync` will override any existing Foundry binaries, such as `forge` and `cast`.
 
 The GitHub resources for this course contain a link to the [Foundry zkSync repository](https://github.com/Cyfrin/foundry-full-course-cu?tab=readme-ov-file#compiling-to-zksync-in-foundry-zksync). `foundry-zksync` is a fork of Foundry tailored for the zkSync environment. The [repository](https://github.com/matter-labs/foundry-zksync) includes quick install instructions to help you set up the tool.

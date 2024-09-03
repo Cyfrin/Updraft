@@ -12,7 +12,7 @@ In this lesson, we'll delve into _end-to-end testing_ of a Solidity contract's d
 
 First, we need to _compile_ the contract to ensure the code is correct. On Remix, set the **injected provider** to MetaMask and confirm it is properly synced to the testnet. Ensure you have some Sepolia Ether (ETH) in your wallet if you plan to deploy the contract on Sepolia.
 
-<img src="/solidity/remix/lesson-4/testnet/testnet1.png" style="width: 100%; height: auto;">
+::image{src='/solidity/remix/lesson-4/testnet/testnet1.png' style='width: 100%; height: auto;'}
 
 We'll deploy the `FundMe` contract by clicking deploy and then confirming the transaction in MetaMask, which may take some time.
 
@@ -26,7 +26,7 @@ After successfully deploying the `FundMe` contract, you'll see several buttons t
 
 The `fund` function allows us to send ETH to the contract (minimum 5 USD). The `owner` of the contract is our MetaMask account, as the **constructor** sets the deployer as the owner.
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > If the `fund` function is called without any value or with less than 5 USD, you will encounter a gas estimation error, indicating insufficient ETH, and gas will be wasted.
 
 ### Successful Transaction

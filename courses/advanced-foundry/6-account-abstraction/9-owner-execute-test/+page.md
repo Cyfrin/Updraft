@@ -84,12 +84,7 @@ The owner should be able to call this function and send a transaction.
 
 ---
 
-<img
-    src="/foundry-account-abstraction/9-owner-execute-test/basic-account-flow.png"
-    width="100%"
-    height="auto"
-/>
-
+::image{src='/foundry-account-abstraction/9-owner-execute-test/basic-account-flow.png' style='width: 100%; height: auto;'}
 ---
 
 ### Test if Owner Can Execute Commands

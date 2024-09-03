@@ -41,10 +41,10 @@ Previously, we created an `addPerson` function that was adding a struct `Person`
 nameToFavoriteNumber[_name] = _favoriteNumber;
 ```
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > Mappings have a constant time complexity for lookups, meaning that retrieving a value by its key is done in constant time,
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > The default value for all key types is zero. In our case, `nameToFavoriteNumber["ET"]` will be equal to 0.
 
 ### Conclusion

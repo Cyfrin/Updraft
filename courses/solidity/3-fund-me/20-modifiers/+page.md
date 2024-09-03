@@ -31,7 +31,7 @@ modifier onlyOwner {
 }
 ```
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > The modifier is named `onlyOwner` to reflect the condition it checks.
 
 ### The `_` (underscore)

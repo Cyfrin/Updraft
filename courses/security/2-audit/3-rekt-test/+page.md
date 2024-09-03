@@ -14,7 +14,7 @@ The concept that once you've had an audit done, you're ready to ship - is wrong.
 
 The Rekt Test is highly important as it poses a set of questions to gauge your protocol's preparedness for an audit. This tool forces you to think about security measures from a more proactive angle. Should your protocols fail to answer these questions, the chances are that they're not audit-ready.
 
-<img src="/security-section-2/3-rekt/rekt1.png" style="width: 100%; height: auto;">
+::image{src='/security-section-2/3-rekt/rekt1.png' style='width: 100%; height: auto;'}
 
 The questions touch on several aspects like documentation, security roles, security tools, and protective measures, among others. Here's a curated list:
 

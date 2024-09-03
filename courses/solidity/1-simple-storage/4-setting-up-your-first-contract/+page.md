@@ -39,7 +39,7 @@ pragma solidity ^0.8.19;
 pragma solidity >=0.8.19 <0.9.0;
 ```
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > Remember to write comments in your code for you to refer to later on.
 
 ### SPDX License Identifier

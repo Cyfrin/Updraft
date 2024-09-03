@@ -126,7 +126,7 @@ function testDenialOfService() public {
 ```
 
 </details>
-<br>
+:br
 
 **Recommended Mitigations:** There are a few recommended mitigations.
 

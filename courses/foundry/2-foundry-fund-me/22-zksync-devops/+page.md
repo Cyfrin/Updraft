@@ -60,5 +60,5 @@ For more details on these modifiers, refer to the [foundry-devops repo](https://
 
 Some tests may fail depending on the Foundry version. The `FoundryZkSyncChecker` package assists in executing functions based on the Foundry version. The `onlyFoundryZkSync` modifier allows tests to run only if `foundryup--zksync` is active, while `onlyVanillaFoundry` works only if `foundryup` is active.
 
-> 🗒️ **Note** <br>
+> 🗒️ **Note**:br
 > Ensure `ffi = true` is enabled in the `foundry.toml` file.

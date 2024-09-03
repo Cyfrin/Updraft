@@ -252,7 +252,7 @@ targetSelector(FuzzSelector({ addr: address(handler), selectors: selectors }));
 
 By running our tests through our handler we're able to trade randomness for much more sensible testing scenarios which don't revert.
 
-<img src="/security-section-5/15-stateful-fuzzing-method-2/stateful-fuzzing-method-21.png" width="100%" height="auto">
+::image{src='/security-section-5/15-stateful-fuzzing-method-2/stateful-fuzzing-method-21.png' style='width: 100%; height: auto;'}
 
 ### The Test
 

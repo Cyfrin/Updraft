@@ -46,17 +46,17 @@ code html-fund-me-f23
 
 In order to spin up a local front end, we're going to use an extension called [**Live Server**](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer). Once installed you can simply press the `Go Live` button in the bottom right.
 
-<img src="../../../../static/html-fundme/1-setup/live-server.png" style="width: 75%; height: auto;">
+::image{src='../../../../static/html-fundme/1-setup/live-server.png' style='width: 75%; height: auto;'}
 
 Once installed, you can simply press the 'Go Live' button in the bottom right of your VS Code.
 
-<img src="../../../../static//html-fundme/1-setup/html-fund-me1.png" style="width: 75%; height: auto;">
+::image{src='../../../../static//html-fundme/1-setup/html-fund-me1.png' style='width: 75%; height: auto;'}
 
 And with that you should have this simple front end open in a browser.
 
-<img src="../../../../static//html-fundme/1-setup/html-fund-me2.png" style="width: 75%; height: auto;">
+::image{src='../../../../static//html-fundme/1-setup/html-fund-me2.png' style='width: 75%; height: auto;'}
 
-<br>
+:br
 We'll be using this to glean a deeper understanding of what exactly is happening when we're interacting with websites in the coming lessons.
 
 ### Questions to Consider

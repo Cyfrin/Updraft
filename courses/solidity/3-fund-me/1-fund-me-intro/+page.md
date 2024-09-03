@@ -12,7 +12,7 @@ In this section, we'll create a _decentralized crowdfunding_ contract. The compl
 
 For this project, we will be using two contracts: `FundMe`, the main crowdfunding contract, and `PriceConverter`. They function much like _Kickstarter_, allowing users to **send** any native blockchain cryptocurrency. They also enable the owner of the contract to **withdraw** all the funds collected. We will then deploy these contracts on a **testnet**.
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > Use testnet sparingly. Limiting testnet transactions helps prevent network congestion, ensuring a smoother testing experience for everyone.
 
 ### fund and withdraw

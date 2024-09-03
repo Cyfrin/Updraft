@@ -27,7 +27,7 @@ cast call 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512 "getMessageHash(address,uin
 
 With the data ready for signing, use the `cast wallet sign` command. Include the `--no-hash` flag to prevent rehashing, as the message is already in bytes format. Also, use the `--private-key` flag with the first Anvil private key.
 
-> 👮‍♂️ **Best Practice** <br>
+> 👮‍♂️ **Best Practice**:br
 > When working on a testnet or using a real account, avoid using the private key directly. Instead, use the `--account` flag and your keystore account for signing.
 
 ```bash
