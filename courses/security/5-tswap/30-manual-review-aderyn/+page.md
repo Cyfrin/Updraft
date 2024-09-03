@@ -12,7 +12,6 @@ First thing's first, assure your version of `Aderyn` is up-to-date with `cargo i
 
 We should be able to run the command `aderyn .` and receive an output in the default form of `report.md`.
 
-<img>
 
 Let's have a peek at what `Aderyn` found!
 

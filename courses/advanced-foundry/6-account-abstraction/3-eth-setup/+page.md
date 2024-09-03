@@ -92,12 +92,7 @@ From this information, we know that we will need some specific functions to make
 
 ---
 
-<img
-    src="/foundry-account-abstraction/3-eth-setup/eip-4337.png"
-    width="100%"
-    height="auto"
-  />
-
+::image{src='/foundry-account-abstraction/3-eth-setup/eip-4337.png' style='width: 100%; height: auto;'}
 ---
 
 Here we will find the `UserOperation` containing all of the data that needs to go to the alt-mempools. When passed to on-chain contracts, a packed version of this called **EntryPoint definition** is used. You can have a [look at the contract on Etherscan here](https://etherscan.io/address/0x0000000071727de22e5e9d8baf0edac6f37da032).
@@ -106,12 +101,7 @@ Furthermore, we can [view the contract code directly in our browser here.](https
 
 ---
 
-<img
-    src="/foundry-account-abstraction/3-eth-setup/etherscan-deth.png"
-    width="100%"
-    height="auto"
-  />
-
+::image{src='/foundry-account-abstraction/3-eth-setup/etherscan-deth.png' style='width: 100%; height: auto;'}
 ---
 
 Click on the magnifying glass icon in the top left of the screen. Type **function handleops** in the search box. You will see that it takes a `PackedUserOperation` and an `address payable`. When we send our information to the alt-mempool nodes, we need to send it so that the nodes can then send the `PackedUserOperation`, which is essentially a struct and is a stand alone contract - `PackedUserOperation.sol`.
@@ -136,12 +126,7 @@ Scroll down until you see the **Account Contract Interface**.
 
 ---
 
-<img
-    src="/foundry-account-abstraction/3-eth-setup/account-interface.png"
-    width="100%"
-    height="auto"
-  />
-
+::image{src='/foundry-account-abstraction/3-eth-setup/account-interface.png' style='width: 100%; height: auto;'}
 ---
 
 The function takes a userOp, userOpHas, and missingAccountFunds to determine whether or not the user operation is valid. If not valid, it will revert and the alt-mempool nodes won't be able to send the transaction.

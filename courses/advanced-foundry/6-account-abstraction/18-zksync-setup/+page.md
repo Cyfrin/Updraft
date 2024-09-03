@@ -6,12 +6,7 @@ Welcome to the beginning of our journey with **account abstraction** on **zkSync
 
 **zkSync Account Flow**
 
-<img
-    src="/foundry-account-abstraction/18-zksync-setup/zksync-account-flow.png"
-    width="100%"
-    height="auto"
-/>
-
+::image{src='/foundry-account-abstraction/18-zksync-setup/zksync-account-flow.png' style='width: 100%; height: auto;'}
 ---
 
 ### Overview of ZK System Contracts
@@ -46,12 +41,7 @@ On the other hand, in zkSync EOAs are smart contracts. Thus, all smart contract 
 
 ---
 
-<img
-    src="/foundry-account-abstraction/18-zksync-setup/zk-era-explorer.png"
-    width="100%"
-    height="auto"
-/>
-
+::image{src='/foundry-account-abstraction/18-zksync-setup/zk-era-explorer.png' style='width: 100%; height: auto;'}
 ---
 
 ### IAccount Interface

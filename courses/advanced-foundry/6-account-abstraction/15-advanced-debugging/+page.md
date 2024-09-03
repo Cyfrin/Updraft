@@ -16,46 +16,27 @@ forge test --debug testEntryPointCanExecuteCommands -vvv
 
 ---
 
-<img
-    src="/foundry-account-abstraction/15-advanced-debugging/forge-debug1.png"
-    width="100%"
-    height="auto"
-  />
+::image{src='/foundry-account-abstraction/15-advanced-debugging/forge-debug1.png' style='width: 100%; height: auto;'}
 
 ---
 
 ---
 
-<img
-    src="/foundry-account-abstraction/15-advanced-debugging/forge-debug2.png"
-    width="100%"
-    height="auto"
-  />
-
+::image{src='/foundry-account-abstraction/15-advanced-debugging/forge-debug2.png' style='width: 100%; height: auto;'}
 ---
 
 Simply hit shift G, and you will be taken to where the test reverted. You'll see that the line of code where the issue is highlighted.
 
 ---
 
-<img
-    src="/foundry-account-abstraction/15-advanced-debugging/forge-debug3.png"
-    width="100%"
-    height="auto"
-  />
-
+::image{src='/foundry-account-abstraction/15-advanced-debugging/forge-debug3.png' style='width: 100%; height: auto;'}
 ---
 
 We know that the issue is likely in the `handleOps`, as this is the part that we recently refactored in this line. Now we have to find the line in the `handleOps` code that actually failed. Start hitting the J to walk back through the code base. It may take a few seconds, but eventually you should see this:
 
 ---
 
-<img
-    src="/foundry-account-abstraction/15-advanced-debugging/forge-debug4.png"
-    width="100%"
-    height="auto"
-  />
-
+::image{src='/foundry-account-abstraction/15-advanced-debugging/forge-debug4.png' style='width: 100%; height: auto;'}
 ---
 
 ### Getting the Correct Sender
