@@ -57,7 +57,7 @@ There's no universal statement that covers all the possible situations in which 
 
 Another thing we can consider for defence is the use of a private or "dark" `mempool`, such as [**Flashbots Protect**](https://docs.flashbots.net/flashbots-protect/overview), [**MEVBlocker**](https://mevblocker.io/) or [**Securerpc**](https://securerpc.com/).
 
-<img src="/security-section-8/12-mev-prevention/flashbots.png" style="width: 100%; height: auto;" alt="pashov">
+::image{src='/security-section-8/12-mev-prevention/flashbots.png' style='width: 100%; height: auto;' alt='pashov'}
 
 Instead of submitting your transaction to a `public mempool`, you can send your transaction to this `private mempool`. Unlike the `public mempool`, this keeps the transaction for itself until it's time to post it on the chain.
 

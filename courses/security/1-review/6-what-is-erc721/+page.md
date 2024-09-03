@@ -22,8 +22,8 @@ Although NFTs are mostly associated with art, they extend beyond that. They can 
 
 <div>
 <div style="text-align: center">
-    <img src="/security-section-1/6-erc721s/erc721s1.png" style="width: 20%; height: auto;" alt="block fee">
-    <img src="/security-section-1/6-erc721s/erc721s2.png" style="width: 21.7%; height: auto;" alt="block fee"> 
+    ::image{src='/security-section-1/6-erc721s/erc721s1.png' style='width: 20%; height: auto;' alt='block fee'}
+    ::image{src='/security-section-1/6-erc721s/erc721s2.png' style='width: 21.7%; height: auto;' alt='block fee'} 
     <div style="font-size: 10">An NFT example from <a href="https://opensea.io/assets/ethereum/0x5af0d9827e0c53e4799bb226655a1de152a425a5/7874">Milady</a></div>
 </div>
 </div>
