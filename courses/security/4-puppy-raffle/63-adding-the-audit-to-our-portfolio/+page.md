@@ -14,7 +14,7 @@ First step, let's add what we need to our `audit-data` folder.
 
 Boilerplating things is something you should get used to. This involves reusing assets and templating processes so that it's quick to get started. Here, we can grab our logo from our previous `PasswordStore` repo, and our formatted report template can be copied from [**`audit-report-templating`**](https://github.com/Cyfrin/audit-report-templating) repo into a new file we name `report-formatted.md` within our `audit-data` folder.
 
-<img src="/security-section-4/63-pdf-report/pdf-report1.png" width="75%" height="auto">
+::image{src='/security-section-4/63-pdf-report/pdf-report1.png' style='width: 75%; height: auto;'}
 
 With this template in place, we can just begin filling it out. Start by adding your name and details to customize the report.
 

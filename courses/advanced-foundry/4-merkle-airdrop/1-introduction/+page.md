@@ -12,7 +12,7 @@ _Follow along with the video_
 
 An airdrop occurs when a token development team distributes tokens or allows people to claim them. These tokens can be of various types, including ERC-20, ERC-1155, or ERC-721.
 
-<img src="/foundry-merkle-airdrop/01-introduction/airdrop.png" width="75%" height="auto">
+::image{src='/foundry-merkle-airdrop/01-introduction/airdrop.png' style='width: 75%; height: auto;'}
 
 Tokens are tipically given for free, with eligibility criteria such as contributing to the project's GitHub repository or participating in the community. This process helps to _bootstrap the project_ by distributing tokens to a **list of eligible addresses**.
 

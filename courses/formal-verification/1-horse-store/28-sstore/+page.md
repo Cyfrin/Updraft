@@ -18,7 +18,7 @@ _Follow along with this video:_
 
 These are the steps, determined in our previous lesson, that we need to take in order to add the necessary logic to our Huff macro. For our first step, we're going to leverage the `SSTORE` op code.
 
-<img src="/formal-verification-1/28-sstore/sstore-1.png" width="50%" height="auto">
+::image{src='/formal-verification-1/28-sstore/sstore-1.png' style='width: 50%; height: auto;'}
 
 The stack inputs required are a **key** and a **value**
 

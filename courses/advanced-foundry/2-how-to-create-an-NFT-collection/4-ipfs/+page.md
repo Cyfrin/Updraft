@@ -21,7 +21,7 @@ Each IPFS Node is once part of a much larger network and each of them constantly
 
 What we would do then is upload our data to IPFS and then pin it in our node, assuring that the IPFS Hash of the data is available to anyone calling the network.
 
-<img src="/foundry-nfts/4-ipfs/IPFS1.png" width="100%" height="auto">
+::image{src='/foundry-nfts/4-ipfs/IPFS1.png' style='width: 100%; height: auto;'}
 
 Importantly, unlike a blockchain, where every node has a copy of the entire register, IPFS nodes can choose what they want to pin.
 
@@ -31,18 +31,18 @@ There are a few ways to actually use IPFS including a CLI installation, a browse
 
 Let's go ahead and [**install the IPFS Desktop application**](https://docs.ipfs.tech/install/ipfs-desktop/). Once installed you should be able to open the application and navigate to a files section that looks like this:
 
-<img src="/foundry-nfts/4-ipfs/IPFS2.png" width="100%" height="auto">
+::image{src='/foundry-nfts/4-ipfs/IPFS2.png' style='width: 100%; height: auto;'}
 
 Pay no mind to all my pictures of cats. If you have no data to view, navigate to import in the top right and select any small file you don't mind being public.
 
 > ❗ **IMPORTANT**
 > Any data uploaded to this service will be **_public_** by nature.
 
-<img src="/foundry-nfts/4-ipfs/IPFS3.png" width="100%" height="auto">
+::image{src='/foundry-nfts/4-ipfs/IPFS3.png' style='width: 100%; height: auto;'}
 
 Once a file is uploaded, you can click on that file and view that data.
 
-<img src="/foundry-nfts/4-ipfs/IPFS4.png" width="100%" height="auto">
+::image{src='/foundry-nfts/4-ipfs/IPFS4.png' style='width: 100%; height: auto;'}
 
 What makes this _really_ cool, is we can then copy the data's CID (content ID), as seen above and view our data within our browser by entering it into our address bar.
 
@@ -59,7 +59,7 @@ Alternatively, if you're having trouble viewing your data directly from the IPFS
 https://ipfs.io/ipfs/<CID>
 ```
 
-<img src="/foundry-nfts/4-ipfs/IPFS5.png" width="100%" height="auto">
+::image{src='/foundry-nfts/4-ipfs/IPFS5.png' style='width: 100%; height: auto;'}
 
 ### Wrap Up
 

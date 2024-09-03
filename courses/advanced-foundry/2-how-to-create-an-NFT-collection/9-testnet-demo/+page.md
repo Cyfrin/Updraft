@@ -92,7 +92,7 @@ make deploy ARGS="--netwok sepolia"
 
 After a brief wait...
 
-<img src="/foundry-nfts/9-testnet-demo/testnet-demo1.png" width="100%" height="auto">
+::image{src='/foundry-nfts/9-testnet-demo/testnet-demo1.png' style='width: 100%; height: auto;'}
 
 All deployed!
 
@@ -107,11 +107,11 @@ make mint ARGS="--network sepolia"
 
 While this is minting, we can navigate to our Metamask wallet and import our NFT Token. Grab the address of the contract we deployed from Etherscan (or `broadcast/DeployBasicNft.s.sol/11155111/run-latest.json`).
 
-<img src="/foundry-nfts/9-testnet-demo/testnet-demo2.png" width="100%" height="auto">
+::image{src='/foundry-nfts/9-testnet-demo/testnet-demo2.png' style='width: 100%; height: auto;'}
 
 Enter the contract address and a tokenId of `0` when prompted. Then, after a brief wait...
 
-<img src="/foundry-nfts/9-testnet-demo/testnet-demo3.png" width="100%" height="auto">
+::image{src='/foundry-nfts/9-testnet-demo/testnet-demo3.png' style='width: 100%; height: auto;'}
 
 We can see our NFT in our wallet!!!
 
@@ -123,7 +123,7 @@ We've learnt so much already and you should be very proud, but it's not time to 
 
 Let's gooo!
 
-<img src="/foundry-nfts/9-testnet-demo/testnet-demo4.png" width="100%" height="auto">
+::image{src='/foundry-nfts/9-testnet-demo/testnet-demo4.png' style='width: 100%; height: auto;'}
 
 While testing is a vital part of NFT creation, deploying it in a real use case can bring more clarity to your understanding. Luckily, there are several ways to deploy your NFT. You could consider using Anvil, your own Anvil server, or a testnet. If you're not keen on waiting for the testnet or spending the gas, I'd recommend deploying it to Anvil.
 

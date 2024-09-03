@@ -32,7 +32,7 @@ Completing these steps sets up a development environment with some convenient bo
 
 Go ahead and delete our 3 `Counter` examples so we can start with a clean slate.
 
-<img src="/foundry-erc20s/2-erc20-manual-creation/erc20-manual-creation1.png" width="100%" height="auto">
+::image{src='/foundry-erc20s/2-erc20-manual-creation/erc20-manual-creation1.png' style='width: 100%; height: auto;'}
 
 I'm going to show you 2 different ways to create our own token, first the hard way and then a much easier way!
 
