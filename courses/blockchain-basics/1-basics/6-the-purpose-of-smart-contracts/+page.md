@@ -16,7 +16,7 @@ To make it more relatable, think of contracts and agreements as promises. Tradit
 
 ### The Problem with Traditional Agreements
 
-Lets consider some real world examples of where trust leverages agreements can go wrong and why blockchain technology and smart contracts mitigates these risks.
+Lets consider some real world examples of where trust leveraged agreements can go wrong and why blockchain technology and smart contracts mitigates these risks.
 
 ### Consumer Trust
 
@@ -65,7 +65,7 @@ As an emerging developer or user in this space, it's important to discern betwee
 
 ### Wrap Up
 
-What we've learnt is that traditional contracts or agreements between parties are almost always trust based. Trust based agreements come with inherent flaws and the potential of broken agreements, the conseequences of which we've seen throughout history - The Great Depression, Monopoly Lottery, Robin Hood etc.
+What we've learnt is that traditional contracts or agreements between parties are almost always trust based. Trust based agreements come with inherent flaws and the potential of broken agreements, the consequences of which we've seen throughout history - The Great Depression, Monopoly Lottery, Robin Hood etc.
 
 Blockchain technology and smart contracts solve these problems by introducing fairness, transparency and immutability to promises. These attributes of smart contracts assure that trust isn't required and we can be certain that an agreement will be executed as described 100% of the time.
 
