@@ -16,7 +16,7 @@ To make it more relatable, think of contracts and agreements as promises. Tradit
 
 ### The Problem with Traditional Agreements
 
-Lets consider some real world examples of where trust leveraged agreements can go wrong and why blockchain technology and smart contracts mitigates these risks.
+Lets consider some real world examples of where trust leveraged agreements can go wrong and why blockchain technology and smart contracts mitigate these risks.
 
 ### Consumer Trust
 
