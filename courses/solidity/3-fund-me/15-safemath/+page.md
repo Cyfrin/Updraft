@@ -59,7 +59,7 @@ function add() public {
 }
 ```
 
-> 🔥 **CAUTION** <br>
+> 🔥 **CAUTION**:br
 > It's important to use unchecked blocks with caution as they reintroduce the possibility of overflows and underflows.
 
 ### Conclusion

@@ -49,15 +49,15 @@ At this stage, you can compile your code by navigating to the compile tab and hi
 The **Deploy and Run Transactions** tab holds a variety of parameters that are used during the deployment process.
 You'll be assigned an _account_ with some ETH to deploy your smart contract.
 
-<img src="/solidity/remix/lesson-2/functions/deploy_and_run.png" style="width: 100%; height: auto;">
+::image{src='/solidity/remix/lesson-2/functions/deploy_and_run.png' style='width: 100%; height: auto;'}
 
 In this environment, your contract is assigned a unique address. You can re-access your deployed contract by expanding the **Deployed Contracts** interface and simultaneously opening the terminal, which shows log data of all contract deployments and transactions.
 
-<img src="/solidity/remix/lesson-2/functions/deployment_address.png" style="width: 100%; height: auto;">
+::image{src='/solidity/remix/lesson-2/functions/deployment_address.png' style='width: 100%; height: auto;'}
 
 If we open the Remix terminal we can see that deploying the contract has just sent a simulated transaction on the Remix environment. You can check out its details such as status, hash, from, to and gas.
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > The process of sending a transaction is the **same** for deploying a contract and for sending Ethers. The only difference is that the machine-readable code of the deployed contract is placed inside the _data_ field of the deployment transaction.
 
 ### Transactions creation
@@ -72,7 +72,7 @@ This contract is missing a way to check if the number has been updated: now we c
 
 The default visibility of the `favoriteNumber` variable is **internal**, preventing external contracts and users from viewing it.
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > Appending the `public` keyword next to a variable will automatically change its visibility and it will generate a **get function**.
 
 ```solidity
@@ -81,7 +81,7 @@ uint256 public favoriteNumber;
 
 After completing compilation and deployment, a button labelled `favoriteNumber` will become visible. When pressed, it should return the most recent stored value of the variable `favoriteNumber`.
 
-<img src="/solidity/remix/lesson-2/functions/favorite-number.png" style="width: 100%; height: auto;">
+::image{src='/solidity/remix/lesson-2/functions/favorite-number.png' style='width: 100%; height: auto;'}
 
 #### Visibility
 
@@ -110,11 +110,11 @@ function retrieve() public pure returns(uint256){
 }
 ```
 
-<img src="/solidity/remix/lesson-2/functions/blue-button.png" style="width: 50%; height: auto;">
+::image{src='/solidity/remix/lesson-2/functions/blue-button.png' style='width: 50%; height: auto;'}
 
 The keyword `returns` specifies the type(s) of value a function will return.
 
-> 🚧 **WARNING** <br>
+> 🚧 **WARNING**:br
 > While calling `view` or `pure` functions doesn’t typically require gas, they do require it when called by another function that modifies the state or storage through a transaction (e.g. calling the function `retrieve` inside the function `storage`). This cost is called **execution cost** and it will add up to the transaction cost.
 
 ### The scope of a variable

@@ -114,7 +114,7 @@ contract InvariantsTest is StdInvariant Test {
 
 We can see this fails for the expected reasons below.
 
-<img src="/foundry-defi/20-defi-handler-deposit-collateral/defi-handler-redeem-collateral1.png" width="100%" height="auto">
+::image{src='/foundry-defi/20-defi-handler-deposit-collateral/defi-handler-redeem-collateral1.png' style='width: 100%; height: auto;'}
 
 Let's use our Handler to ensure that only _valid_ collateral is deposited. Begin by importing ERC20Mock as we'll need this for our collateral types. In our constructor, we can leverage the getCollateralTokens function added to DSCEngine.sol.
 
@@ -166,11 +166,11 @@ Now our test should only call this Handler function with valid collateral addres
 forge test --mt invariant_ProtocolTotalSupplyLessThanCollateralValue -vvvv
 ```
 
-<img src="/foundry-defi/20-defi-handler-deposit-collateral/defi-handler-redeem-collateral2.png" width="100%" height="auto">
+::image{src='/foundry-defi/20-defi-handler-deposit-collateral/defi-handler-redeem-collateral2.png' style='width: 100%; height: auto;'}
 
 Look! Our address passed is valid, but we're getting a different error `DSCEngine__NeedsMoreThanZero()`. This is actually great progress and shows we've accounted for at least some of the causes of our reverts.
 
-<img src="/foundry-defi/20-defi-handler-deposit-collateral/defi-handler-redeem-collateral3.png" width="100%" height="auto">
+::image{src='/foundry-defi/20-defi-handler-deposit-collateral/defi-handler-redeem-collateral3.png' style='width: 100%; height: auto;'}
 
 Let's keep narrowing the focus of our tests and the validity of our data.
 
@@ -193,11 +193,11 @@ We can declare a MAX_DEPOSIT_SIZE constant at the top of our contract. I like to
 uint256 MAX_DEPOSIT_SIZE = type(uint96).max;
 ```
 
-<img src="/foundry-defi/20-defi-handler-deposit-collateral/defi-handler-redeem-collateral4.png" width="100%" height="auto">
+::image{src='/foundry-defi/20-defi-handler-deposit-collateral/defi-handler-redeem-collateral4.png' style='width: 100%; height: auto;'}
 
 Not a massive change, but we _have_ made progress on the number of reverts our function it hitting. Running the test again with `fail_on_revert` set to true should reveal what's causing our reverts now.
 
-<img src="/foundry-defi/20-defi-handler-deposit-collateral/defi-handler-redeem-collateral5.png" width="100%" height="auto">
+::image{src='/foundry-defi/20-defi-handler-deposit-collateral/defi-handler-redeem-collateral5.png' style='width: 100%; height: auto;'}
 
 Well, of course this is going to revert! We haven't set an allowance on our tokens! Let's remedy this by leveraging vm.prank in our Handler to ensure appropriate addresses are approved for our deposit function.
 
@@ -220,7 +220,7 @@ function depositCollateral(uint256 collateralSeed, uint256 amountCollateral) pub
 
 If we run our test now...
 
-<img src="/foundry-defi/20-defi-handler-deposit-collateral/defi-handler-redeem-collateral6.png" width="100%" height="auto">
+::image{src='/foundry-defi/20-defi-handler-deposit-collateral/defi-handler-redeem-collateral6.png' style='width: 100%; height: auto;'}
 
 Woah! We eliminated **_all_** of the situations that were causing our test to revert! This means we're using our fuzz runs much more efficiently, and no matter how often depositCollateral is called, our totalCollateral will never be less than our totalSupply.
 

@@ -51,7 +51,7 @@ With that said, this is definitely an invariant we can test. The ratio between t
 
 Remember back to `How an AMM works`.
 
-<img src="/security-section-5/20-constant-product-formula-explained/constant-product-formula-explained1.png" width="100%" height="auto">
+::image{src='/security-section-5/20-constant-product-formula-explained/constant-product-formula-explained1.png' style='width: 100%; height: auto;'}
 
 Writing an assert for `x * y = (x + ∆x) * (y − ∆y)` can be difficult, but what we can do is write one that defines that any change in token balance must follow some formula.
 
@@ -71,19 +71,19 @@ Let's go through the math to understand how we derive this invariant.
 
 We begin with this formula:
 
-<img src="/security-section-5/20-constant-product-formula-explained/constant-product-formula-explained2.png" width="100%" height="auto">
+::image{src='/security-section-5/20-constant-product-formula-explained/constant-product-formula-explained2.png' style='width: 100%; height: auto;'}
 
 We should be able to leverage some basic algebra to get where we need. First we're going to apply the concept of FOIL (First Outside Inside Last) to multiply our binomials.
 
-<img src="/security-section-5/20-constant-product-formula-explained/constant-product-formula-explained3.png" width="100%" height="auto">
+::image{src='/security-section-5/20-constant-product-formula-explained/constant-product-formula-explained3.png' style='width: 100%; height: auto;'}
 
 Next the equation will need to be simplified with the following steps.
 
-<img src="/security-section-5/20-constant-product-formula-explained/constant-product-formula-explained4.png" width="100%" height="auto">
+::image{src='/security-section-5/20-constant-product-formula-explained/constant-product-formula-explained4.png' style='width: 100%; height: auto;'}
 
 In the next step we're going to introduce a new term `β` and define it as `∆y/y`. Which will allow us to simplify things further.
 
-<img src="/security-section-5/20-constant-product-formula-explained/constant-product-formula-explained5.png" width="100%" height="auto">
+::image{src='/security-section-5/20-constant-product-formula-explained/constant-product-formula-explained5.png' style='width: 100%; height: auto;'}
 
 And that's it, we can go back to the TSwap documentation to confirm: `∆x = (β/(1-β)) * x`
 

@@ -22,7 +22,7 @@ function getSignerSimple(uint256 message, uint8 _v, bytes32 _r, bytes32 _s) publ
 }
 ```
 
-> 🗒️ **NOTE** <br> > `ecrecover` is a function built into the Ethereum protocol.
+> 🗒️ **NOTE**:br > `ecrecover` is a function built into the Ethereum protocol.
 
 ```js
 function verifySignerSimple(
@@ -42,7 +42,7 @@ function verifySignerSimple(
 
 EIP 191 facilitates pre-made signatures or _sponsored transactions_. For instance, Bob can sign a message, and Alice can send the transaction and pay for Bob’s gas fees.
 
-<img src="/foundry-merkle-airdrop/10-signature-standards/signed-tx.png" width="100%" height="auto">
+::image{src='/foundry-merkle-airdrop/10-signature-standards/signed-tx.png' style='width: 100%; height: auto;'}
 
 This EIP standardizes the signed data format:
 
@@ -223,7 +223,7 @@ function verifySignerOZ(
 }
 ```
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > EIP 712 prevents replay attacks by uniquely identifying the transaction.
 
 ### Conclusion

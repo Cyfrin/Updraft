@@ -10,7 +10,7 @@ _Follow along with the video_
 
 In this lesson, you're about to learn the same type of layer 2 or rollup deployment that professional developers are using. On Remix, we can start by activating the **zkSync plugin** in our environment. In the _plugin manager_, search for "zkSync" and activate the zkSync module. You'll notice that a new zkSync tab on the left side will appear.
 
-<image src="/solidity/1-simple-storage/15-zksync-plugin/zksync-module.png" width="100%" height="auto">
+::image{src='/solidity/1-simple-storage/15-zksync-plugin/zksync-module.png' style='width: 100%; height: auto;'}
 
 This module is made of sections for compiling, deploying, and interacting with contracts on zkSync.
 
@@ -18,14 +18,14 @@ This module is made of sections for compiling, deploying, and interacting with c
 
 Let's start by compiling the `SimpleStorage.sol` file by hitting the "Compile" button.
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > Ensure that the **Solidity Compiler Version** in the contract matches the _[zkSync compiler requirements](https://github.com/Cyfrin/foundry-full-course-cu?tab=readme-ov-file#zksync-l2-deploy)_. As of this recording, the required version is `0.8.24`.
 
 ### Deploying
 
 After compilation, you can go to the `environment tab` to connect your MetaMask wallet, ensuring it is set to the _zkSync Sepolia testnet_. Once connected, you can **deploy and verify** the `SimpleStorage` contract.
 
-<image src="/solidity/1-simple-storage/15-zksync-plugin/wallet.png" width="100%" height="auto">
+::image{src='/solidity/1-simple-storage/15-zksync-plugin/wallet.png' style='width: 100%; height: auto;'}
 
 ### Verifying Deployment
 
@@ -35,7 +35,7 @@ After hitting the deploy button, MetaMask will request a **signature**. Approve 
 
 To check our deployment, you can copy the contract address and paste it into the [zksync Sepolia explorer](https://sepolia.explorer.zksync.io/). Here, you can view the contract details.
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > At the moment of recording, the zkSync plugin contains a minor bug. Please refer to lesson 14.
 
 ### Conclusion

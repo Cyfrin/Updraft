@@ -12,7 +12,7 @@ The first concept we need to grasp when working with a website in Web3 is that o
 
 We can gain more insight into how this works by right-clicking our `FundMe` website and selecting `inspect`. You can also open this panel by pressing F12.
 
-<img src="/html-fundme/2-metamask/metamask1.png" style="width: 75%; height: auto;">
+::image{src='/html-fundme/2-metamask/metamask1.png' style='width: 75%; height: auto;'}
 
 Navigate to the console tab of this panel. This tab contains a live JavaScript shell which houses a tonne of information about the browser we have open. Among this data is a JavaScript object, `window`.
 
@@ -20,7 +20,7 @@ By typing `window` and hitting enter the console will display this object and al
 
 We should see something like this:
 
-<img src="/html-fundme/2-metamask/metamask2.png" style="width: 75%; height: auto;">
+::image{src='/html-fundme/2-metamask/metamask2.png' style='width: 75%; height: auto;'}
 
 As seen in the image, there are some properties of this object which are not there by default, one of which is `window.ethereum`. It's through this property that a front end is able to interact with our wallet and it's accounts.
 
@@ -80,7 +80,7 @@ This grabs the element of the webpage by the `id` we set and then uses the `onCl
 
 Clicking on the `Connect` button on our `html-fund-me` front end, should trigger our Metamask to pop up. From there we can select an account and click connect.
 
-<img src="/html-fundme/2-metamask/metamask3.png" style="width: 75%; height: auto;">
+::image{src='/html-fundme/2-metamask/metamask3.png' style='width: 75%; height: auto;'}
 
 You'll know this works if your `Connect` button changes to `Connected` and an address is printed to your browser console.
 
@@ -88,7 +88,7 @@ Now you're ready to interact! The functions on our front-end example should look
 
 Let's try calling `getBalance` and see how it works - if you're chain is currently set to Ethereum, you might actually get a balance.
 
-<img src="/html-fundme/2-metamask/metamask4.png" style="width: 75%; height: auto;">
+::image{src='/html-fundme/2-metamask/metamask4.png' style='width: 75%; height: auto;'}
 
 When the `getBalance` buttons is clicked, this is the function we're calling on our front-end.
 
@@ -116,7 +116,7 @@ As before, we're checking for the existence of `window.ethereum` and then .. def
 
 What `ethers.BrowserProvider(window.ethereum)` is doing, is deriving the providers Metamask is injecting into our `window.ethereum` object. The providers are the RPC URLs associated with the networks in our Metamask account.
 
-<img src="/html-fundme/2-metamask/metamask5.png" style="width: 75%; height: auto;">
+::image{src='/html-fundme/2-metamask/metamask5.png' style='width: 75%; height: auto;'}
 
 When we call functions on our front-end. We're effectively making API calls via the RPC URL to the blockchain.
 
@@ -134,13 +134,13 @@ This will compile and deploy our FundMe project onto our locally running blockch
 
 Return to Metamask, and within your network selector choose `Add Network`.
 
-<img src="/html-fundme/2-metamask/metamask6.png" style="width: 75%; height: auto;">
+::image{src='/html-fundme/2-metamask/metamask6.png' style='width: 75%; height: auto;'}
 
 Select `Add a network manually` linked at the bottom of the served page.
 
 In the subsequent page, inter your local network information as follows and click `Save`.
 
-<img src="/html-fundme/2-metamask/metamask5.png" style="width: 75%; height: auto;">
+::image{src='/html-fundme/2-metamask/metamask5.png' style='width: 75%; height: auto;'}
 
 Next, we need to add one of our `anvil` accounts to the wallet!
 
@@ -148,7 +148,7 @@ Click the account displayed at the top of your Metamask and select `Add an accou
 
 You'll be prompted to `add a new account`, `import an account`, or `add a hardware wallet`. Select `import an account` and enter your previously copied mock private key into the field provided.
 
-<img src="/html-fundme/2-metamask/metamask7.png" style="width: 75%; height: auto;">
+::image{src='/html-fundme/2-metamask/metamask7.png' style='width: 75%; height: auto;'}
 
 ALRIGHT. With all the set up done, we should be able to select our `anvil` chain in Metamask, then select the account we just added and click the `connect` button.
 

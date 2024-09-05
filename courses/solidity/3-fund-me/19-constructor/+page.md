@@ -20,7 +20,7 @@ A more efficient solution is to use a **constructor** function:
 constructor() {}
 ```
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > The constructor does not use the `function` and `public` keywords.
 
 ### Assigning the Owner in the Constructor

@@ -41,11 +41,7 @@ A system contract contains smart contracts that are deployed on zkSync by defaul
 - You should see **ContractDeployer**. 
 
 ---
-<img
-    src="/foundry-account-abstraction/20-system-contracts/contract-deployer1.png"
-    width="100%"
-    height="auto"
-/>
+::image{src='/foundry-account-abstraction/20-system-contracts/contract-deployer1.png' style='width: 100%; height: auto;'}
 ---
 
 Scroll down a bit and click on the contract tab. You should then be able to see `ContractDeployer.sol` along with many other zkSync contracts. Essentially, the ContractDeployer governs other contracts. It is a system contract that is responsible: 

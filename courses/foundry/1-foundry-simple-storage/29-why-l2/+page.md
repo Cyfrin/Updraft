@@ -26,5 +26,5 @@ Deploying even a minimal contract like `SimpleStorage` on Ethereum can be expens
 
 Deploying to ZK Sync Sepolia is similar to deploying to a ZK Sync local node. You can retrieve a ZK Sync Sepolia RPC URL from [Alchemy](https://www.alchemy.com/) by creating a new app based on the ZK Sepolia network. Then, you can proceed to add the `ZKSYNC_RPC_URL` to your `.env` configuration.
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > To understand the cost benefits of Layer 2 solutions, visit [L2Fees.info](https://l2fees.info) and compare the significant cost differences between sending a transaction on Ethereum and ZK Sync Era.

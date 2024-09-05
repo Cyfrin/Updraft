@@ -23,7 +23,7 @@ Solidity can store data in **six** different locations. In this lesson, we will 
 
 In Solidity, `calldata` and `memory` are temporary storage locations for variables during function execution. `calldata` is read-only, used for function inputs that can't be modified. In contrast, `memory` allows for read-write access, letting variables be changed within the function. To modify `calldata` variables, they must first be loaded into `memory`.
 
-> 🚧 **WARNING** <br>
+> 🚧 **WARNING**:br
 > Most variable types default to `memory` automatically. However, for **strings**, you must specify either `memory` or `calldata` due to the way arrays are handled in memory.
 
 ```solidity
@@ -43,7 +43,7 @@ function addPerson(string calldata _name, uitn256 _favoriteNumber) public {
 }
 ```
 
-<img src="/solidity/remix/lesson-2/memory/calldata.png" style="width: 100%; height: auto;">
+::image{src='/solidity/remix/lesson-2/memory/calldata.png' style='width: 100%; height: auto;'}
 
 ### Storage
 
@@ -65,11 +65,11 @@ If you try to specify the `memory` keyword for an `uint256` variable, you'll enc
 > Data location can only be specified for array, struct, or mapping type
 ```
 
-<img src="/solidity/remix/lesson-2/memory/memory-err.png" style="width: 100%; height: auto;">
+::image{src='/solidity/remix/lesson-2/memory/memory-err.png' style='width: 100%; height: auto;'}
 
 In Solidity, a `string` is recognized as an **array of bytes**. On the other hand, primitive types, like `uint256` have built-in mechanisms that dictate how and where they are stored, accessed and manipulated.
 
-> 🚧 **WARNING** <br>
+> 🚧 **WARNING**:br
 > You can't use the `storage` keyword for variables inside a function. Only `memory` and `calldata` are allowed here, as the variable only exists temporarily.
 
 ```solidity

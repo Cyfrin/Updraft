@@ -36,7 +36,7 @@ Here is my full code:
 
 The AI can provide insightful and very comprehensive answers. For instance, an AI may indicate that `simpleStorage` is a variable of type `SimpleStorage`, which is a contract defined in the file `SimpleStorage.sol`.
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > AI systems are highly efficient at solving basic coding tasks. However, as the complexity of codebases and projects increases, the effectiveness of AI begins to diminish. Advanced tasks often require deep contextual understanding, innovative problem-solving, and area integrations where current AI capabilities fall short.
 
 ### Other resources

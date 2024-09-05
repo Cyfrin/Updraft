@@ -99,4 +99,4 @@ Awesome! We've finished our recon of `OracleUpgradeable.sol`! That's one more co
 
 Let's mark this first pass done for now and move on to `AssetToken.sol` in the next lesson!
 
-<img src="/security-section-6/23-oracle-upgradeable-continued/oracle-upgradeable-continued1.png" width="100%" height="auto">
+::image{src='/security-section-6/23-oracle-upgradeable-continued/oracle-upgradeable-continued1.png' style='width: 100%; height: auto;'}

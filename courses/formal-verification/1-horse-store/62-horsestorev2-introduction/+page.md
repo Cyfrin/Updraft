@@ -102,7 +102,7 @@ You should also add an interface IHorseStore.sol to this folder, you can copy an
 
 The final bit of preparation we'll need is to adjust our `foundry.toml` to include our new remappings.  Our remappings should look like:
 
-```js
+```toml
 remappings = [
     'foundry-huff/=lib/foundry-huff/src/',
     '@openzeppelin/=lib/openzeppelin-contracts/',

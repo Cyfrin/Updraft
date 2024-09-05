@@ -16,11 +16,11 @@ In a practical sense this has transactions formatting data in such a way that ra
 
 From this:
 
-<img src="/security-section-7/14-eip-712/eip-7121.png" width="100%" height="auto">
+::image{src='/security-section-7/14-eip-712/eip-7121.png' style='width: 100%; height: auto;'}
 
 To this:
 
-<img src="/security-section-7/14-eip-712/eip-7122.png" width="100%" height="auto">
+::image{src='/security-section-7/14-eip-712/eip-7122.png' style='width: 100%; height: auto;'}
 
 ### EIP-712 Example
 

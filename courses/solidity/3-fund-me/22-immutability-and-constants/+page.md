@@ -24,10 +24,10 @@ We can apply these keywords to variables assigned once and never change. For val
 
 Using the `constant` keyword can save approximately 19,000 gas, which is close to the cost of sending ETH between two accounts.
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > Naming conventions for `constant` are all caps with underscores in place of spaces (e.g., `MINIMUM_USD`).
 
-> 🚧 **WARNING** <br>
+> 🚧 **WARNING**:br
 > Converting the current ETH gas cost to USD, we see that when ETH is priced at 3000 USD, defining `MINIMUM_USD` as a constant costs 9 USD, nearly 1 USD more than its public equivalent.
 
 ### Immutable
@@ -36,7 +36,7 @@ While `constant` variables are for values known at compile time, `immutable` can
 
 Comparing gas usage after making `owner` an `immutable` variable, we observe similar gas savings to the `constant` keyword.
 
-> 💡 **TIP** <br>
+> 💡 **TIP**:br
 > Don't focus too much on gas optimization at this early stage of learning.
 
 ### Conclusion

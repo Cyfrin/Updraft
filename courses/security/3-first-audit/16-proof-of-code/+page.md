@@ -44,7 +44,7 @@ make deploy
 
 Foundry allows us to check the storage of a deployed contract with a very simple `cast` command. For this we'll need to recall to which storage slot the `s_password` variable is assigned.
 
-<img src="/security-section-3/16-proof-of-code/proof-of-code1.png" style="width: 100%; height: auto;">
+::image{src='/security-section-3/16-proof-of-code/proof-of-code1.png' style='width: 100%; height: auto;'}
 
 With this consideration we can run the command `cast storage <address> <storageSlot>` like this (_your address may be different_).
 
@@ -75,17 +75,17 @@ And we've done it. In a few quick commands we've shown that the data our client 
 <details closed>
 <summary>Finding Report</summary>
 ### [S-#] Storing the password on-chain makes it visible to anyone and no longer private
-<br>
-<br>
+:br
+:br
 **Description:** All data stored on chain is public and visible to anyone. The `PasswordStore::s_password` variable is intended to be hidden and only accessible by the owner through the `PasswordStore::getPassword` function.
-<br>
-<br>
+:br
+:br
 I show one such method of reading any data off chain below.
-<br>
-<br>
+:br
+:br
 **Impact:** Anyone is able to read the private password, severaly breaking the functionality of the protocol.
-<br>
-<br>
+:br
+:br
 **Proof of Concept:**The below test case shows how anyone could read the password directly from the blockchain. We use foundry's cast tool to read directly from the storage of the contract, without being the owner.
 
     Create a locally running chain
@@ -114,7 +114,7 @@ And get an output of:
 
     myPassword
 
-<br>
+:br
 **Recommended Mitigation:**
 
 </details>

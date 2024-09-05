@@ -19,7 +19,7 @@ Access [OpenZeppelin's documentation](https://docs.openzeppelin.com/contracts/4.
 
 Additionally, OpenZeppelin offers a contract wizard, streamlining the contract creation process — perfect for tokens, governances, or custom contracts.
 
-<img src="/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin1.png" width="100%" height="auto">
+::image{src='/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin1.png' style='width: 100%; height: auto;'}
 
 Let's leverage OpenZeppelin to create a new ERC20 Token. Create a new file within `src` named `OurToken.sol`. Once that's done, let's install the OpenZeppelin library into our contract.
 
@@ -29,8 +29,8 @@ forge install OpenZeppelin/openzeppelin-contracts --no-commit
 
 Once installed you'll see the ERC20 contract from OpenZeppelin within `lib/openzeppelin-contracts/token/ERC20/ERC20.sol`. Let's add a remapping in our foundry.toml to make importing a little easier on us.Within foundry.toml add the line:
 
-```js
-remappings = ["@openzeppelin=lib/openzeppelin-contracts"];
+```toml
+remappings = ["@openzeppelin=lib/openzeppelin-contracts"]
 ```
 
 We can now import and inherit this contract into `OurToken.sol`!
@@ -70,7 +70,7 @@ For the purposes of simple examples like this, I like to mint the initialSupply 
 
 As always we can perform a sanity check to assure things are working as expected by running `forge build`.
 
-<img src="/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin2.png" width="100%" height="auto">
+::image{src='/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin2.png' style='width: 100%; height: auto;'}
 
 Nailed it.
 

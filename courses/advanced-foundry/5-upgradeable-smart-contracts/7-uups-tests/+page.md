@@ -111,7 +111,7 @@ forge test --mt testProxyStartAsBoxV1
 
 We would expect this to pass if it reverts.
 
-<img src="/foundry-upgrades/7-uups-tests/uups-tests1.png" width="100%" height="auto">
+::image{src='/foundry-upgrades/7-uups-tests/uups-tests1.png' style='width: 100%; height: auto;'}
 
 Looks great! Our BoxV1 doesn't have the setNumber function. Now we can try our other test!
 
@@ -119,7 +119,7 @@ Looks great! Our BoxV1 doesn't have the setNumber function. Now we can try our o
 forge test --mt testUpgrades
 ```
 
-<img src="/foundry-upgrades/7-uups-tests/uups-tests1.png" width="100%" height="auto">
+::image{src='/foundry-upgrades/7-uups-tests/uups-tests1.png' style='width: 100%; height: auto;'}
 
 ### Wrap Up
 

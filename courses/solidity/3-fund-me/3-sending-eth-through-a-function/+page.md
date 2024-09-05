@@ -46,10 +46,10 @@ require(msg.value > 1 ether, "Didn't send enough ETH"); //if the condition is fa
 
 An online tool like [Ethconverter](https://eth-converter.com/) can be useful for executing conversions between _Ether_, _Wei_, and _Gwei_.
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > 1 Ether = 1e9 Gwei = 1e18 Wei
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > Gas costs are usually expressed in Gwei
 
 If a user attempts to send less Ether than the required amount, the transaction will **fail** and a _message_ will be displayed. For example, if a user attempts to send 1000 Wei, which is significantly less than one Ether, the function will revert and does not proceed.

@@ -28,9 +28,9 @@ function setUp() public {
 
 > Note: `mainnet` will need to be set as an alias in your `foundry.toml` under a new variable `[rpc_endpoints]`
 
-```js
-[rpc_endpoints];
-mainnet = "{MAINNET_RPC_URL}";
+```toml
+[rpc_endpoints]
+mainnet = "{MAINNET_RPC_URL}"
 ```
 
 With the above in place running the following will run your tests with respect to a fork of a live chain!
@@ -47,7 +47,7 @@ Before signing off, I'd encourage you to join the [Cyfrin Discord](https://disco
 
 In addition to this, check out the [**Discussions on GitHub**](https://github.com/Cyfrin/security-and-auditing-full-course-s23/discussions) - this is a phenomenal place to get support and have your questions answered in a way that will be indexed by search engines and AI in an effort to improve the experience for people coming behind us.
 
-<img src="/security-section-1/14-fork-tests/forking1.png" style="width: 100%; height: auto;" alt="block fee">
+::image{src='/security-section-1/14-fork-tests/forking1.png' style='width: 100%; height: auto;' alt='block fee'}
 
 Congratulations on finishing the refresher! Take a break, you greatly deserve it for getting this far!
 

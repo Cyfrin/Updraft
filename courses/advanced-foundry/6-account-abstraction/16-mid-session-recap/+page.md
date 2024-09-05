@@ -1,12 +1,7 @@
 ## Account Abstraction Lesson 16: Mid Session Recap
 
 ---
-  <img
-    src="/foundry-account-abstraction/1-introduction/user-op.png"
-    width="100%"
-    height="auto"
-  />
-
+::image{src='/foundry-account-abstraction/1-introduction/user-op.png' style='width: 100%; height: auto;'}
 ---
 ### Summary of Our Account Abstraction Minimal Account Journey
 

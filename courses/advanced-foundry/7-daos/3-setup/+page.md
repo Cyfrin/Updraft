@@ -46,8 +46,8 @@ forge install openzeppelin/openzeppelin-contracts --no-commit
 
 And naturally we can add our remapping...
 
-```js
-remappings = ["@openzeppelin/contracts=lib/openzeppelin-contracts/contracts"];
+```toml
+remappings = ["@openzeppelin/contracts=lib/openzeppelin-contracts/contracts"]
 ```
 
 The start of our contract should look very familiar.

@@ -115,7 +115,7 @@ function incrementMinNonceIfEquals(uint256 _expectedNonce) external onlySystemCa
 
 To do this, we are first going to have to add a flag under our `remappings` in `foundry.toml`.
 
-```js
+```toml
 is-system = true
 ```
 

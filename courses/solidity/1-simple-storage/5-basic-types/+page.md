@@ -28,7 +28,7 @@ bool hasFavoriteNumber = true; //the variable hasFavoriteNumber` represents the 
 
 It's possible to specify the number of **bits** used for `uint` and `int`. For example, uint256 specifies that the variable has 256 bits. uint is a shorthand for uint256.
 
-> 🗒️ **NOTE** <br>
+> 🗒️ **NOTE**:br
 > It's always advisable to be **explicit** when specifying the length of the data type.
 
 The _semicolon_ at the end of each line signifies that a statement is completed.
@@ -72,7 +72,7 @@ Bytes can be allocated in size (up to `bytes32`). However, bytes and bytes32 rep
 uint256 favoriteNumber;
 ```
 
-> 👀❗**IMPORTANT** <br>
+> 👀❗**IMPORTANT**:br
 > Every variable in Solidity comes with a _default value_. Uninitialized uint256 for example, defaults to `0` (zero) and an uninitialized boolean defaults to `false`.
 
 ## Conclusion

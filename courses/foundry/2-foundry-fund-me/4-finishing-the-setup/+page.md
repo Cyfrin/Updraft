@@ -42,7 +42,7 @@ But if you open the `FundMe.sol` you'll see that we are importing `{AggregatorV3
 
 Open `foundry.toml`. Below the last line of `[profile.default]` paste the following:
 
-```
+```toml
 remappings = ['@chainlink/contracts/=lib/chainlink-brownie-contracts/contracts/']
 ```
 

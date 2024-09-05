@@ -14,10 +14,10 @@ Take a moment to consider what you would do in a `live audit` situation. Conside
 
 <details closed>
 <summary> The Answer </summary>
-<br>
+:br
 Maybe.
-<br>
-<br>
+:br
+:br
 
 Honestly, we can always look at one more line of code. We can always further scrutinize a repo. At some point however, we have to say "I'm done."
 

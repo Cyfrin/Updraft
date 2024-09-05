@@ -91,10 +91,10 @@ forge install OpenZeppelin/openzeppelin-contracts-upgradeable --no-commit
 
 Once installed we can add our remappings to our `foundry.toml`
 
-```js
+```toml
 remappings = [
   "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts",
-];
+]
 ```
 
 And now, we can import UUPSUpgradeable into BoxV1.sol and break down how it's applied.
@@ -131,7 +131,7 @@ Within UUPSUpgradeable we can see the main function we'll need to leverage upgra
 
 Once inherited, we'll see a compiler warning advising that BoxV1 should be marked as abstract.
 
-<img src="/foundry-upgrades/4-UUPS/UUPS1.png" width="100%" height="auto">
+::image{src='/foundry-upgrades/4-UUPS/UUPS1.png' style='width: 100%; height: auto;'}
 
 We receive this error because we don't have all the necessary functions defined in BoxV1 as required by UUPSUpgradeable which is an abstract contract.
 
@@ -173,7 +173,7 @@ In older implementations of UUPSUpgradeable, you may see a line that I wanted to
 uint256[50] private __gap;
 ```
 
-<img src="/foundry-upgrades/4-UUPS/UUPS2.png" width="100%" height="auto">
+::image{src='/foundry-upgrades/4-UUPS/UUPS2.png' style='width: 100%; height: auto;'}
 
 If you recall to previous lessons, when values are assigned by a function, the variable name doesn't ultimately matter as the value is assigned to a storage slot. We saw that storage clashes were possible when an upgraded implementation contract made changes to the order of storage variable assignements, leading to some funky behaviours.
 
@@ -211,7 +211,7 @@ import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/I
 
 If we open Intializable.sol, there's a lot of valuable insight to be gained about what's happening and how it works.
 
-<img src="/foundry-upgrades/4-UUPS/UUPS3.png" width="100%" height="auto">
+::image{src='/foundry-upgrades/4-UUPS/UUPS3.png' style='width: 100%; height: auto;'}
 
 This line of the documentation really gets to the heart of what the purpose of the initializer is.
 

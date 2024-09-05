@@ -39,7 +39,7 @@ function combineStrings() public pure returns(string memory){
 
 Now, if we deploy this and call our combineStrings function, our output is `Hi Mom! Miss you!`.
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm1.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm1.png' style='width: 100%; height: auto;'}
 
 What our function is ultimtely doing is encoding `Hi Mom! ` and `Miss you!` into its bytes form and then casting these bytes into a string.
 
@@ -62,13 +62,13 @@ Before we dive deeper into what's happening when we call `encodePacked`, let's f
 
 When we compile using `forge build`, a JSON file is added to our `out` directory. This file contains a lot of data, but our purposes focus primarily on the abi and the bytecode.
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm2.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm2.png' style='width: 100%; height: auto;'}
 
 Looking at this for the first time can be a little overwhelming, but don't worry we'll break things down a bit.
 
 You can actually get this data right out of Remix. With our `Encoding.sol` deployed, navigate to the `Solidity Compiler` tab and click `Compilation Details`. This will provide a readout which includes the ABI and Bytecode for this contract!
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm3.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm3.png' style='width: 100%; height: auto;'}
 
 The Bytecode object represents the binary that is actually being put on the blockchain, when we send a transaction.
 
@@ -93,11 +93,11 @@ We can see this in Etherscan for any contract we've deployed. Here's an [**examp
 
 The above may look like random numbers and letters to us, but to the `Ethereum Virtual Machine (EVM)`, this is effectively the alphabet it uses to perform computation. Every 2 bytes in the data above actually represents an op code. The website [**evm.codes**](https://www.evm.codes/) is an amazing resource for referencing these things.
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm5.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm5.png' style='width: 100%; height: auto;'}
 
 You could almost use this reference like a dictionary. It tells us any time we see `00` in our bytecode, this represents the `STOP` operation, for example. In the bytecode example above, the first op code is `60`. This pertains to the PUSH1 operation!
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm6.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm6.png' style='width: 100%; height: auto;'}
 
 This is what is meant by being `EVM Compatible`, `Polygon`, `Avalanche`, `Arbitrum` etc all compile to the same style of binary, readable by the `Ethereum Virtual Machine`.
 
@@ -123,7 +123,7 @@ function encodeNumber() public pure returns(bytes memory){
 
 Go ahead and compile/deploy Encoding.sol with this new function and call it. We should have the encoded version of the number `1` output.
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm7.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm7.png' style='width: 100%; height: auto;'}
 
 This hex formmat, this encoding, is how a computer understands the number `1`.
 
@@ -136,7 +136,7 @@ function encodeString() public pure returns(string memory){
 }
 ```
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm8.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm8.png' style='width: 100%; height: auto;'}
 
 Something you may notice of each of our outputs is how many bytes of the output are comprised of zeros. This padding takes up a lot of space, whether or not it is important to the value being returned.
 
@@ -167,7 +167,7 @@ function encodeStringPacked() public pure returns(bytes memory){
 }
 ```
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm9.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm9.png' style='width: 100%; height: auto;'}
 
 We can clearly see how much smaller the encodePacked output is, if we were trying to by gas efficient, the advantages of one over the other are obvious.
 
@@ -180,7 +180,7 @@ function encodeStringBytes() public pure returns(bytes memory) {
 }
 ```
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm10.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm10.png' style='width: 100%; height: auto;'}
 
 So, it looks like abi.encodePacked and bytes casting are doing the same thing here, and for us - functionally they are - but behind the scenes things are a little more complicated. We won't go into the spefics here, but I encourage you to check out the deep dive in [**this forum post**](https://forum.openzeppelin.com/t/difference-between-abi-encodepacked-string-and-bytes-string/11837).
 
@@ -190,7 +190,7 @@ Concatenating strings is fun and all, but in addition to _encoding_ things, we c
 
 From the docs we can see the decode function takes the encoded data and a tuple of types to decode the data into.
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm11.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm11.png' style='width: 100%; height: auto;'}
 
 ```js
 function decodeString() public pure returns(string memory) {
@@ -201,7 +201,7 @@ function decodeString() public pure returns(string memory) {
 
 Once again, we can add this function to our Encoding.sol contract and redeploy in remix to see how it works.
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm12.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm12.png' style='width: 100%; height: auto;'}
 
 ### Muli-Encoding/MultiDecoding
 
@@ -219,7 +219,7 @@ function multiDecode() public pure returns(string memory, string memory){
 }
 ```
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm13.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm13.png' style='width: 100%; height: auto;'}
 
 When we multiEncode, you can see that our output is an _even bigger_ bytes object, with tonnes of padding. What do you think we can do about it?
 
@@ -232,7 +232,7 @@ function multiEncodePacked() public pure returns (bytes memory){
 }
 ```
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm14.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm14.png' style='width: 100%; height: auto;'}
 
 This is actually where our fun stops a little bit. Because we're packing the encoding of multiple strings, the decoding function is unable to properly split these up. It's not possible to multiDecode a multiEncodePacked object 😦. If you try something like:
 
@@ -254,7 +254,7 @@ function multiStringCastPacked() public pure returns (string memory){
 
 This one actually _will_ work.
 
-<img src="/foundry-nfts/19-advanced-evm/advanced-evm15.png" width="100%" height="auto">
+::image{src='/foundry-nfts/19-advanced-evm/advanced-evm15.png' style='width: 100%; height: auto;'}
 
 ### Wrap Up
 
