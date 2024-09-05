@@ -45,11 +45,11 @@ Let's finally start applying this methodology to our code base.
 
 The first thing we want to do to prepare our stateful fuzzing suite is to configure some of the fuzzer options in our `foundry.toml`.
 
-```js
-[invariant];
-runs = 128;
-depth = 128;
-fail_on_revert = false;
+```toml
+[invariant]
+runs = 128
+depth = 128
+fail_on_revert = false
 ```
 
 Adding the above to our foundry.toml will configure our fuzz tests to attempt `128 runs` and make `128 calls` in each run (depth). We'll go over `fail_on_revert` in more detail soon.

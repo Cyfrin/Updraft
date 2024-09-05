@@ -193,11 +193,11 @@ forge install smartcontractkit/chainlink-brownie-contracts@0.6.1 --no-commit
 
 And of course, we'll append this to our remappings within `foundry.toml`.
 
-```js
+```toml
 remappings = [
   "@chainlink/contracts/=lib/chainlink-brownie-contracts/contracts",
   "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts",
-];
+]
 ```
 
 Alright, back to our `getUsdValue` function.

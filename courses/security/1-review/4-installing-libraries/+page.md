@@ -22,7 +22,7 @@ forge install OpenZeppelin/openzeppelin-contracts --no-commit
 
 Now, navigate to the `foundry.toml` file in your project directory. Here, specify the remappings by setting `@openzeppelin/contracts` equal to `lib/openzeppelin-contracts/contracts`. This sets up the path for the compiler to locate OpenZeppelin contracts.
 
-```markdown
+```toml
 remappings = ['@openzeppelin/contracts=lib/openzeppelin-contracts/contracts']
 ```
 

@@ -4,11 +4,9 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "dev" ]
-  pull_request:
-    branches: [ "dev" ]
+  # runs midnight every Monday
+  schedule:
+    - cron: '0 0 * * 1'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -25,6 +23,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: python audit.py
+      # Install Updraft CLI and Run Audit.py
+      - name: audit
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.UPDRAFT_BOT_NPM_TOKEN }}" > ~/.npmrc
+          npm i -g @cyfrin/updraft-cli@2.0.9
+          python audit.py

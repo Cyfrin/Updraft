@@ -53,12 +53,12 @@ forge install OpenZeppelin/openzeppelin-contracts --no-commit
 
 To make things a little easier on ourselves, we can add this as a remapping to our `foundry.toml`. This remapping allows us to use some short-hand when importing from this directory.
 
-```js
-[profile.default];
-src = "src";
-out = "out";
-libs = ["lib"];
-remappings = ["@openzeppelin/contracts=lib/openzeppelin-contracts/contracts"];
+```toml
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+remappings = ["@openzeppelin/contracts=lib/openzeppelin-contracts/contracts"]
 ```
 
 Now we can import and inherit the ERC721 contract into `BasicNft.sol`

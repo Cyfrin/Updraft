@@ -182,9 +182,9 @@ In our example, the fuzz tester took 18 random inputs to find our edge case.
 
 However, we can customize how many attempts the fuzzer makes within our foundry.toml by adding a section like:
 
-```js
-[fuzz];
-runs = 1000;
+```toml
+[fuzz]
+runs = 1000
 ```
 
 Now, if we adjust our example function...
