@@ -20,7 +20,7 @@ The transaction fee is the amount rewarded to the block producer for processing 
 
 > Gas price is not to be confused with gas. While gas refers to the computational effort required to execute the transaction, gas price is the cost per unit of that effort.
 
-When we click on "more details" in a transaction overview, we can see further information including the `gasLimit and Usage by transaction`.
+When we click on "more details" in a transaction overview, we can see further information including the `Gas Limit and Usage by transaction`.
 
 Now, let's address an important question: who gets these transaction fees and why?
 

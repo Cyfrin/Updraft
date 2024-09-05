@@ -16,7 +16,7 @@ Understanding the relationship between private and public keys is essential to g
 
 The private key is then passed through an algorithm (the [**Elliptic Curve Digital Signature Algorithm**](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) for Ethereum and Bitcoin) to create the corresponding public key. Both the private and public keys are central to the transaction process. However, while the private key must remain secret, the public key needs to be accessible to everyone.
 
-When we send a transaction to the blockchain, we're passing a private key - this allows others to verify the transaction through the generated public key
+When we send a transaction to the blockchain, we're passing a private key. This allows others to verify the transaction through the generated public key.
 
 <img src="/blockchain-basics/08-signing-transactions/signing-transactions1.png" width="100%" height="auto" alt="signing-transactions1">
 
@@ -42,7 +42,7 @@ Anyone with access to your private key can perform and sign transactions, on you
 
 Lets recap some of the things covered in this lesson.
 
-We discovered that transactions on the blockchain are signed using a user's `private key`, the generated `message signature` can then be verified by anyone through a comparison to a user's `public key`.
+We discovered that transactions on the blockchain are signed using a user's `private key`. The generated `message signature` can then be verified by anyone through a comparison to a user's `public key`.
 
 **KEEP YOUR PRIVATE KEY SECURE!**
 
