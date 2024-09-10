@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Analyzing the Counter contracts
 
-Continuing from the previous lesson, the `forge --init` populated our project with the `Counter` files.
+Continuing from the previous lesson, the `forge init` populated our project with the `Counter` files.
 
 #### Counter.sol
 
