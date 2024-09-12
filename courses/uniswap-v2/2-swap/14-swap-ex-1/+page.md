@@ -87,5 +87,4 @@ In our test, the **amountIn** is 1e18, the **amountOutMin** is 1, the **path** i
 
 This is just a simple example of Uniswap V2 Router testing. We can expand on this by testing other functions, varying inputs, and simulating more complex scenarios. 
 
-The next step is to write more tests to cover other functions. We will also learn how to test the `swapExactTokensForETH` function.  Let me know if you'd like to delve deeper into these topics.
-/home/equious/Nevermore/uniswap-v2/2-swap/14-swap-ex-1/+page.md
+The next step is to write more tests to cover other functions. We will also learn how to test the `swapExactTokensForETH` function.
