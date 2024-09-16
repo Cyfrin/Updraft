@@ -52,7 +52,6 @@ function withdraw(
 
 </details>
 
----
 
 So, we know that liquidity providers are provided LP tokens in exchange for the liquidity they add to a pool - at a rate proportional to the percentage of the pool they've contributed.
 
@@ -136,7 +135,6 @@ function getOutputAmountBasedOnInput(
 
 </details>
 
----
 
 I want to draw your attention to these lines - which of course we would flag for `magic numbers`:
 
@@ -181,7 +179,6 @@ function getInputAmountBasedOnOutput(
 
 </details>
 
----
 
 Alright, there's only only line, a return calculation, but something should stick out to you here. Rather than using 1,000 in the fee calculation, the protocol has used 10,000!
 

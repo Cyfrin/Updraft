@@ -244,7 +244,6 @@ contract DSCEngine is ReentrancyGuard {
 
 </details>
 
----
 
 ### redeemCollateral
 

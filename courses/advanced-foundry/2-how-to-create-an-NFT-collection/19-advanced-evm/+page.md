@@ -89,7 +89,6 @@ We can see this in Etherscan for any contract we've deployed. Here's an [**examp
 
 </details>
 
----
 
 The above may look like random numbers and letters to us, but to the `Ethereum Virtual Machine (EVM)`, this is effectively the alphabet it uses to perform computation. Every 2 bytes in the data above actually represents an op code. The website [**evm.codes**](https://www.evm.codes/) is an amazing resource for referencing these things.
 

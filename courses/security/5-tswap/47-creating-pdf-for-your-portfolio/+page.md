@@ -393,7 +393,6 @@ I've included a copy of my completed template here for reference if you get stuc
 
 </details>
 
----
 
 Once your report template is filled out, we just have to run `pandoc` on it!
 

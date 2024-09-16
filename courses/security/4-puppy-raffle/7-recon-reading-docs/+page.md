@@ -32,7 +32,6 @@ This project is to enter a raffle to win a cute dog NFT. The protocol should do 
 
 </details>
 
----
 
 Above we see a pretty clear description of the protocol and it's intended functionality. What I like to do is open a `notes.md` file in my project and summarize things in my own words.
 

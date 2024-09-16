@@ -51,7 +51,6 @@ When it comes to auditing smart contracts, there are a lot of nitty-gritty detai
 
 </details>
 
----
 
 > **Note:** We omitted a PoC in our write up above. This vulnerability is pretty self-evident, but if you wanted to write one as a challenge, I encourage you to try!
 
@@ -106,7 +105,6 @@ We identified a magic number resulting in an inaccurate fee caculation! This one
 
 </details>
 
----
 
 Attempting to write the `PoC` for the above is really important. Writing lots of `PoCs` is how you'll get better at them and `PoCs` are how you _prove_ there's an issue, often they help you _test_ if there's an issue.
 
@@ -163,7 +161,6 @@ This will be our second low, compare your write up to mine below:
 
 </details>
 
----
 
 ### Wrap Up
 

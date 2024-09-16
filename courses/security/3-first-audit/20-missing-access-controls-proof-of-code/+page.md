@@ -29,7 +29,6 @@ emit SetNewPassword();
 
 </details>
 
----
 
 ### Proof of Concept/Proof of Code
 

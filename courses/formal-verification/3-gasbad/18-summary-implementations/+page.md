@@ -138,7 +138,6 @@ invariant anytime_mapping_updated_emit_event()
 
 </details>
 
----
 
 ::image{src='/formal-verification-3/18-summary-implementations/summary-implementations3.png' style='width: 100%; height: auto;'}
 

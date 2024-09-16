@@ -43,7 +43,6 @@ I'll keep a running reminder of our current total contract state at the top of e
 
 </details>
 
----
 
 ### feedHorse Macro
 

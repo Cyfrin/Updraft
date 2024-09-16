@@ -121,7 +121,6 @@ Now we have our **ZK Minimal Account** set up. Things are starting to get exciti
 
 </details>
 
----
 
 <summary>2. How are EOAs different in zkSync compared to Ethereum?</summary>
 
@@ -135,7 +134,6 @@ In zkSync, EOAs are smart contracts.
 
 </details>
 
----
 
 <summary>3. What are the 4 functions of the IAccount interface?</summary>
 
@@ -152,4 +150,3 @@ In zkSync, EOAs are smart contracts.
 
 </details>
 
----

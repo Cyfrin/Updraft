@@ -51,7 +51,6 @@ And get an output of:
 
 </details>
 
----
 
 ### Recap
 

@@ -82,7 +82,6 @@ Now we know that we are getting the correct signatures and that our validation i
 
 <summary>1. What is the main objective of the testValidationOfUserOps?</summary> 
 
----
 <details> 
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
@@ -91,10 +90,8 @@ Now we know that we are getting the correct signatures and that our validation i
       
 </details>
 
----
 <summary>2. Why do we set missingAccountFunds to 1e18?</summary> 
 
----
 <details> 
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
@@ -103,10 +100,8 @@ Now we know that we are getting the correct signatures and that our validation i
       
 </details>
 
----
 <summary>3. What does the assertEq(validationData, 0) statement check for?</summary> 
 
----
 <details> 
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
@@ -115,5 +110,4 @@ Now we know that we are getting the correct signatures and that our validation i
       
 </details>
 
----
 

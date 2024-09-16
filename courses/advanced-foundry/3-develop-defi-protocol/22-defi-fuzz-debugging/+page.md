@@ -177,7 +177,6 @@ Once more with feeling.
 
 </details>
 
----
 
 ### Wrap Up
 

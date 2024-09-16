@@ -146,7 +146,6 @@ I'll update this reference as we go through each section of bytecode:
 
 </details>
 
----
 
 Let's remind ourselves of the 3 sections found in a smart contract's bytecode and start from the top!
 

@@ -282,7 +282,6 @@ Consider removing empty blocks.
 
 </details>
 
----
 
 The remainder of detections by `Aderyn` are going to qualify as gas/informational findings. As such we'll likely just copy these outputs into our audit report - this is a huge time saving benefit of `Aderyn`.
 

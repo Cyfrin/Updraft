@@ -156,7 +156,6 @@ _Follow along with this video:_
 
 </details>
 
----
 
 We're really getting into the flow of things now, let's keep our momentum and look at the next chunk at jump dest 3.
 
@@ -356,7 +355,6 @@ Look at our updated op code list to see where we've jumped to now, we're about t
 
 </details>
 
----
 
 From jump dest 4, we're able to finally save our value to storage, but we've only been able to here if:
 

@@ -104,7 +104,6 @@ library MessageHashUtils {
 
 </details>
 
----
 
 ```js
 /* @dev Signature message hash utilities for producing digests to be consumed by {ECDSA} recovery or signing.

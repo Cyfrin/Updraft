@@ -161,7 +161,6 @@ _Follow along with this video:_
 
 </details>
 
----
 
 Take a moment above to appreciate how much low level knowledge you've gleaned from just this one small Solidity smart contract! You should be very proud of yourself!
 

@@ -53,7 +53,6 @@ And get an output of:
 
 </details>
 
----
 
 ### Recommended Mitigation
 

@@ -305,7 +305,6 @@ contract ThunderLoan is Initializable, OwnableUpgradeable, UUPSUpgradeable, Orac
 
 </details>
 
----
 
 Continuing with our review of the ThunderLoan.sol contract, the very next bit of code we approach may seem unfamiliar.
 

@@ -92,7 +92,6 @@ contract PoolFactory {
 
 </details>
 
----
 
 ### Imports and Errors
 

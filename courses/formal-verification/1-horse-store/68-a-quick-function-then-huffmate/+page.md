@@ -83,7 +83,6 @@ I'll keep a running reminder of our current total contract state at the top of e
 
 </details>
 
----
 
 We'll start this lesson by knocking out the getting macro for our `HORSE_HAPPY_IF_FED_WITHIN_CONST` constant. All we need to do is call that location in storage, store the data at that location in memory, return that data from memory. Very simple.
 
@@ -830,7 +829,6 @@ Assure your contract closely resembles below to avoid missing anything we've add
 
 </details>
 
----
 
 Encourage you not to worry about most of the details we've just inherited, it represents a bunch of ERC721 "stuff" that is important to the standard, but not a focus of ours.
 

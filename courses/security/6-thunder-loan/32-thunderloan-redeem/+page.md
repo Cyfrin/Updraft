@@ -35,7 +35,6 @@ function redeem(
 
 </details>
 
----
 
 We would expect this function to behave in opposite to the `deposit` function. Thankfully we have `NATSPEC` this time to verify the function's intent!
 

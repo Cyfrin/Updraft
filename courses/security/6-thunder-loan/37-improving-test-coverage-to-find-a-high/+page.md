@@ -121,7 +121,6 @@ contract ThunderLoanTest is BaseTest {
 
 </details>
 
----
 
 This seems like a good place to start as it will weed out any issues that may arise from the issue we identified in `deposit` outlined above.
 
@@ -227,7 +226,6 @@ contract MockFlashLoanReceiver {
 
 </details>
 
----
 
 Ok, now we know that the exchange rate is being updated when `deposit` is called (in this case in our modifier), as well as when `flashloan` is called. Let's add a call to redeem into our test, at this point we'd expect a liquidity provider to be able to redeem their asset tokens in exchange for underlying.
 

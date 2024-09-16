@@ -105,7 +105,6 @@ contract DAO is DAOInterface, Token, TokenCreation {
 
 </details>
 
----
 
 Hopefully we can spot the problem above. The DAO was making external calls before updating its state!
 

@@ -65,7 +65,6 @@ function deposit(
 
 </details>
 
----
 
 Continuing down from `uint63 deadline`, we see a modifier we assessed earlier being applied - `revertIfZero(wethToDeposit)`.
 

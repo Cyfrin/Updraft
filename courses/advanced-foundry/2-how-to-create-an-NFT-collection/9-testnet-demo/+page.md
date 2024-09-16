@@ -79,7 +79,6 @@ flipMoodNft:
 
 </details>
 
----
 
 Assuming our `.env` is ready to go, we should be able to run the following...
 

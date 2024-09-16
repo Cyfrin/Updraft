@@ -124,7 +124,6 @@ contract AssetToken is ERC20 {
 
 </details>
 
----
 
 We should recall from the README:
 

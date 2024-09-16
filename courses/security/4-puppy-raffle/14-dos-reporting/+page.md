@@ -225,6 +225,5 @@ function testDenialOfService() public {
 
 </details>
 
----
 
 Things look great! Lets finally have a look at what mitigations we can recommend for this vulnerability, in the next lesson.

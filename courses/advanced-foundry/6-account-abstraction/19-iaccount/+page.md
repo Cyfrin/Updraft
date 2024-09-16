@@ -79,7 +79,6 @@ struct Transaction {
 
 </details>
 
----
 
 When we send an Account Abstraction transaction through zkSync, the `Transaction` struct will essentially be populated. This will be our focus for now. The following parameters we won't worry about, for now. But here is the gist of what they do.
 
@@ -164,7 +163,6 @@ This lesson gave us a gist of what our IAccount interface will do. Take a moment
 
 </details>
 
----
 
 <summary>2.  What is the role of the executeTransactionFromOutside function?</summary>
 
@@ -178,7 +176,6 @@ This lesson gave us a gist of what our IAccount interface will do. Take a moment
 
 </details>
 
----
 
 <summary>3. When is the prepareForPaymaster function called?</summary>
 
@@ -192,4 +189,3 @@ This lesson gave us a gist of what our IAccount interface will do. Take a moment
 
 </details>
 
----

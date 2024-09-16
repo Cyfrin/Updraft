@@ -48,7 +48,6 @@ function selectWinner() external {
 
 </details>
 
----
 
 Effectively, when the `selectWinner` function is called, the transaction is then sent to the MemPool. At this point anyone can see the results of the selectWinner function. If a user participating in the raffle identifies that they didn't win, the potential exists for them to refund their entry fee!
 

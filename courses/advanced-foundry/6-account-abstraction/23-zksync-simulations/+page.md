@@ -244,7 +244,6 @@ It makes a system call to the NonceHolder contract to conditionally increment th
 
 </details>
 
----
 
 <summary>2.  Which function in NonceHolder.sol is called to increment the nonce?</summary>
 
@@ -258,7 +257,6 @@ It makes a system call to the NonceHolder contract to conditionally increment th
 
 </details>
 
----
 
 <summary>3. What library did we import to help with system contract calls?</summary>
 
@@ -272,4 +270,3 @@ It makes a system call to the NonceHolder contract to conditionally increment th
 
 </details>
 
----
