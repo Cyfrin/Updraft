@@ -4,7 +4,6 @@ title: Deploy a smart contract locally using Ganache
 
 _Follow along with this video:_
 
----
 
 ### Deploying a smart contract
 
