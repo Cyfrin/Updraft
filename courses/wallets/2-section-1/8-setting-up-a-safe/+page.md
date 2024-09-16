@@ -89,6 +89,4 @@ Once connected, your Safe wallet will be linked to Uniswap or any other app you 
 
 Now you have set up a Safe smart contract wallet. For those with mainnet funds, it is highly recommended to use a smart contract wallet. Congratulations on completing this setup!
 
----
-
 Take a moment to verify all transactions and ensure everything is set up correctly. When dealing with significant amounts of money, double-checking every detail is crucial. Enjoy the enhanced security and functionality of your new multi-sig wallet.
