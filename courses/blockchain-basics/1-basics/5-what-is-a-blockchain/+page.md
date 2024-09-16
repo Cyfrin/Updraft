@@ -30,7 +30,7 @@ Blockchains are deterministic systems, so everything happens within their ecosys
 
 Oracles serve this purpose. They are devices or services that provide data to blockchains or run external computation. To maintain decentralization, it's necessary to use a decentralized Oracle network rather than relying on a single source. This combination of on-chain logic with off-chain data leads to `hybrid smart contracts`.
 
-> **Note:** Most of this course will assume we'r working with an Etherum or EVM environment. The skills you learn here will be compatible with the vast majority of blockchain architectures!
+> **Note:** Most of this course will assume we're working with an Etherum or EVM environment. The skills you learn here will be compatible with the vast majority of blockchain architectures!
 
 ### Chainlink
 

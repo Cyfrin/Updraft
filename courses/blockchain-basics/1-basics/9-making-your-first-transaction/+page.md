@@ -61,7 +61,7 @@ You can Pin Metamask to the top of your browser for easy access to this view in 
 
 A couple things to note:
 
-1. In Metamask, you can create multiple accounts. Each account has a different address. You can do this by selected `Create Account` from the menu in the top right.~~~~
+1. In Metamask, you can create multiple accounts. Each account has a different address. You can do this by selected `Create Account` from the menu in the top right.
 2. All accounts created in Metamask share the same secret phrase but have different private keys.
 
    **Note**: Access to the secret phrase grants control to all accounts, while access to a private key only grants control to a single account.
@@ -101,7 +101,7 @@ Your Metamask should pop up and give you the option to select your account, foll
 ::image{src='/blockchain-basics/05-first-transaction/first-transaction5.png' style='width: 75%; height: auto;'}
 ::image{src='/blockchain-basics/05-first-transaction/first-transaction6.png' style='width: 75%; height: auto;'}
 
-In order to request testnet native tokens (like SepoliaEth) you'll need to verify your GitHub account. One that's done, you should be ready to send your request!
+In order to request testnet native tokens (like SepoliaEth) you'll need to verify your GitHub account. Once that's done, you should be ready to send your request!
 
 ::image{src='/blockchain-basics/05-first-transaction/first-transaction7.png' style='width: 75%; height: auto;'}
 
@@ -119,11 +119,11 @@ Try toggling your Metamask wallet between networks now, you'll notice that it's 
 
 Taking a brief look at some of the details of our transaction on Etherscan, we're given a lot of insight. Understanding these properties is a fundamental part of being a blockchain developer. Some of the basic details include:
 
-- Transaction Hash - This is a unique idenfier for our transaction
-- From - the originating address of the transaction request
-- To - the address a transaction was sent to
-- Value - any funds included with the transaction
-- Gas - the cost of the transaction to execute, we'll be looking into gas more closely in the next lesson.
+- Transaction Hash - This is a unique identifier for our transaction
+- From - The originating address of the transaction request
+- To - The address a transaction was sent to
+- Value - Any funds included with the transaction
+- Gas - The cost of the transaction to execute, we'll be looking into gas more closely in the next lesson.
 
 ::image{src='/blockchain-basics/05-first-transaction/first-transaction10.png' style='width: 75%; height: auto;'}
 

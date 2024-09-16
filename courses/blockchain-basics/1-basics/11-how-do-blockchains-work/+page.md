@@ -21,7 +21,7 @@ If I add `Patrick Collins` to our `SHA-256` algorithm, it will:
 
 `Patrick Collins` gets converted to `7e5b5a1a6b80e2908b534dd5728a998173d502469c37121dd63fca283068077c`
 
-Ethereum, uses its own version of a hashing algorithm (Keccak256)that isn't exactly SHA-256 but belongs to the SHA family. This doesn't change things significantly here as we're primarily concentrating on the concept of hashing.
+Ethereum, uses its own version of a hashing algorithm (Keccak256) that isn't exactly SHA-256 but belongs to the SHA family. This doesn't change things significantly here as we're primarily concentrating on the concept of hashing.
 
 In the application, whatever data you enter into the data section, undergoes processing by the SHA-256 hash algorithm resulting in a unique hash.
 
@@ -29,7 +29,7 @@ In the application, whatever data you enter into the data section, undergoes pro
 
 ### Understanding Blocks
 
-Now that we've grasped the concept of hashing and fixed-length string, let's inspect the structure of a blockchain—a collection of "blocks."
+Now that we've grasped the concept of hashing and fixed-length string, let's inspect the structure of a blockchain. A collection of "blocks."
 
 ::image{src='/blockchain-basics/07-how-do-blockchains-work/how-do-blockchains-work2.png' style='width: 100%; height: auto;' alt='blockchain'}
 
@@ -69,6 +69,6 @@ Until now we've been considering the data passed in a block to be a random strin
 
 ### Wrap Up
 
-To summarize, every transaction, block, and indeed the whole blockchain itself comes down to understanding the concept of a hash—this unique fixed-length string that is intrinsically linked with the original data. We've also underscored the importance of decentralization and highlighted how the concept of immutability plays into the system's security.
+To summarize, every transaction, block, and indeed the whole blockchain itself comes down to understanding the concept of a hash. This unique fixed-length string that is intrinsically linked with the original data. We've also underscored the importance of decentralization and highlighted how the concept of immutability plays into the system's security.
 
 In our next lesson we'll look more closely at private keys, wallets and signing transactions!

@@ -1,5 +1,5 @@
 ---
-title: Welcome to the course!!!!<3 
+title: Welcome to the course!!!!<3
 ---
 
 _Follow along with the video_
@@ -46,17 +46,17 @@ Let's start by covering some of the best practices to help you get the absolute 
 
 **Code along with me** - As we progress through the course, it's a good idea to code along with me. Actually _doing_ the work and performing the actions is how you'll build familiarity with these processes and how they'll really stick.
 
-**Watch for Updates** - This space moves very quickly - as things are updated, I do my best to catalogue them. In each video, at the bottom, there will be an "updates" section if there is some information that differs from the vide. 
+**Watch for Updates** - This space moves very quickly - as things are updated, I do my best to catalogue them. In each video, at the bottom, there will be an "updates" section if there is some information that differs from the video.
 
 **Move at your Pace** - Adjust the pace of the course to meet your needs. The course is modular, so if you want to skip to particular areas - absolutely do that.
 
-**Reflect on your Learnings** - repetition is the mother of skill. The more you repeat these development practices, the more they'll stick
+**Reflect on your Learnings** - repetition is the mother of skill. The more you repeat these development practices, the more they'll stick.
 
 **Complete the Optional Challenges** - The GitHub Repo has links to fun challenges at the end of each lesson - these are meant to test your skills and reward you with a fun way to show of your progress as a smart contract developer!
 
 **Leverage the Community** - Blockchain development is incredibly collaborative. Get involved on [**GitHub**](https://github.com/Cyfrin/foundry-full-course-f23/discussions), [**Peeranha**](https://peeranha.io/) and other forums. Join our [**Discord**](https://discord.gg/cyfrin) server and have conversations with developers just like yourself.
 
-> **Remember:** a challenge is not a roadblock, but an opportunity to learn something new.
+> **Remember:** A challenge is not a roadblock, but an opportunity to learn something new.
 
 ### Let's Get Started
 

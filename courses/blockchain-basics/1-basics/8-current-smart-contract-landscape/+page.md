@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 Smart contracts come with various features that distinguish them from traditional agreements.
 
-### Decentralization This is edited
+### Decentralization
 
 The first feature is decentralization; smart contracts do not rely on any centralized intermediary. Instead, they run on a blockchain which is maintained by thousands of individuals known as node operators. It's the collective effort of these node operators running the smart contracts that make the network decentralized. This aspect will be discussed more in-depth later.
 
