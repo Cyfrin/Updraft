@@ -20,7 +20,7 @@ Openchain allows you to paste a transaction hash into their transaction tracer, 
 
 This tool is essential for conducting post-mortem analyses by revealing detailed transaction flows.
 
-![](../../../../static/post-deployment/8-blockchain-sleuthing/openchain.png)
+![](/post-deployment/8-blockchain-sleuthing/openchain.png)
 
 ### Phalcon: Detailed Transaction Analysis
 
@@ -33,7 +33,7 @@ Phalcon offers similar functionality to Openchain, providing comprehensive data 
 
 Phalcon systematically explains each action taken in a transaction.
 
-![](../../../../static/post-deployment/8-blockchain-sleuthing/PhalconTracer.png)
+![](/post-deployment/8-blockchain-sleuthing/PhalconTracer.png)
 
 ### Tenderly: Comprehensive Blockchain Analysis
 
@@ -46,7 +46,7 @@ Tenderly goes beyond basic transaction tracing by offering:
 
 Tenderly allows for interactive and forward-looking transaction analysis.
 
-![](../../../../static/post-deployment/8-blockchain-sleuthing/TenderlyExplorer.png)
+![](/post-deployment/8-blockchain-sleuthing/TenderlyExplorer.png)
 
 ## Enhancing Etherscan with MetaDoc
 
@@ -58,7 +58,7 @@ MetaDoc is a browser extension that enhances Etherscan with features such as:
 
 MetaDoc transforms Etherscan into a more powerful tool for blockchain analysis.
 
-![](../../../../static/post-deployment/8-blockchain-sleuthing/MetaSuiteAugmented.png)
+![](/post-deployment/8-blockchain-sleuthing/MetaSuiteAugmented.png)
 
 ## Dune Analytics: SQL-Based Blockchain Querying
 
