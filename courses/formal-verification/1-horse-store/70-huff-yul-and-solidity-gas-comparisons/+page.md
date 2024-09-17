@@ -19,7 +19,6 @@ This is going to run all of our tests, but keep a record of gas costs in a local
 
 This output file lets us compare the gas costs of each test performed for each of our implementations. We can see things like:
 
----
 
 ```
 - HorseStoreHuff:testReadValue() (gas: 7419)
