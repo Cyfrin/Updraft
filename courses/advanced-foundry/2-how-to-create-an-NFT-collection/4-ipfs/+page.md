@@ -31,7 +31,7 @@ There are a few ways to actually use IPFS including a CLI installation, a browse
 
 Let's go ahead and [**install the IPFS Desktop application**](https://docs.ipfs.tech/install/ipfs-desktop/). Once installed you should be able to open the application and navigate to a files section that looks like this:
 
-::image{src='/foundry-nfts/4-ipfs/IPFS2.png' style='width: 100%; height: auto;'}
+::image{src='/foundry-nfts/4-ipfs/ipfs2.png' style='width: 100%; height: auto;'}
 
 Pay no mind to all my pictures of cats. If you have no data to view, navigate to import in the top right and select any small file you don't mind being public.
 
