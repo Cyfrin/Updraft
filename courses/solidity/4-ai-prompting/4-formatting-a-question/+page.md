@@ -49,8 +49,6 @@ AggregatorV3Interface priceFeed = AggregatorV3Interface()
 
 Could someone please help me figure out what the issue is? 🙏
 
----
-
 Quite simply, we can take the following necessary steps while crafting our questions:
 
 1. **Describe the issue clearly and concisely** - Be clear in the problem you're facing and what steps got you there
