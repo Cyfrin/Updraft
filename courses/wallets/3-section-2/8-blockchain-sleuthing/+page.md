@@ -79,6 +79,4 @@ For professional post-mortem analyses and hack investigations, tools like Opench
 
 Familiarize yourself with these tools to enhance your ability to investigate and analyze blockchain transactions effectively. With these advanced tools, you can navigate the complexities of blockchain data and uncover the full story behind each transaction.
 
----
-
 Equip yourself with these tools and embrace the role of a blockchain detective. Whether for security audits or transaction analyses, these resources are essential for anyone working with blockchain technology.
