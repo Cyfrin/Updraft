@@ -29,8 +29,6 @@ We need to be clear in describing our problem, the steps we took that got us to 
 
 A better example would be:
 
----
-
 "I am receiving this error when compiling.":
 
 ```bash
