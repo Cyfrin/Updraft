@@ -98,7 +98,6 @@ invariant anytime_mapping_updated_emit_event()
 
 </details>
 
----
 
 ### Wrap Up
 

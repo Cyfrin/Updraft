@@ -154,6 +154,5 @@ PUSH23 0x9a77032ceb92497a64736f6c63430008140033
 ```
 </details>
 
----
 
 Paste this into our `solc-breakdowns.c++` files and we'll get started walking through this contract's execution in the next lesson.

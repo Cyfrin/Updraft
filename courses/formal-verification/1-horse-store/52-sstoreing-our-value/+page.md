@@ -356,7 +356,6 @@ Look at our updated op code list to see where we've jumped to now, we're about t
 
 </details>
 
----
 
 From jump dest 4, we're able to finally save our value to storage, but we've only been able to here if:
 
