@@ -29,8 +29,6 @@ We need to be clear in describing our problem, the steps we took that got us to 
 
 A better example would be:
 
----
-
 "I am receiving this error when compiling.":
 
 ```bash
@@ -48,8 +46,6 @@ AggregatorV3Interface priceFeed = AggregatorV3Interface()
 ```
 
 Could someone please help me figure out what the issue is? 🙏
-
----
 
 Quite simply, we can take the following necessary steps while crafting our questions:
 

@@ -12,7 +12,8 @@ Now that you've **definitely** tried reviewing the codebase on your own, let's s
 
 Take a look at the [**Puppy Raffle Repo**](https://github.com/Cyfrin/4-puppy-raffle-audit)'s README
 
-::image{src='static/security-section-4/3-phase-1-scoping/phase-1-scoping1.png' style='width: 50%; height: auto;'}
+::image{src='/security-section-4/3-phase-1-scoping/phase-1-scoping1.png' style='width: 50%; height: auto;'}
+
 
 ### README Overview
 

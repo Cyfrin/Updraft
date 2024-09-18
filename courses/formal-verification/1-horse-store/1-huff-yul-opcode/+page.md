@@ -69,5 +69,3 @@ Once built, you should be able to navigate to `out/HorseStore.sol/HorseStore.jso
 This json is going to have a _lot_ of stuff in it, and much of it isn't important to us right now. Minimize the `abi` and locate the outputs `bytecode` and `deployedBytecode` This is going to be our focus in the coming lesson!
 
 See you there!
-
----

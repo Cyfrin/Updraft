@@ -61,7 +61,7 @@ git config --global user.name "yourUsername"
 
 And that's it, your folder should look as follows:
 
-::image{src='../../../../static/foundry-simply-storage/7-create-a-new-foundry-project/Image1.PNG' style='width: 75%; height: auto;'}
+::image{src='/foundry-simply-storage/7-create-a-new-foundry-project/Image1.PNG' style='width: 75%; height: auto;'}
 
 **But what does all this mean?**
 

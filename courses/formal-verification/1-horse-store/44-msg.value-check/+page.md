@@ -184,7 +184,7 @@ REVERT
 
 It's going to revert! You can even see this in our foundry script if you try to pass a value to our contract creation, in our test. It won't even let us compile!
 
-::image{src='/44-msg.value-check/msg_value-check3.png' style='width: 100%; height: auto;'}
+::image{src='/formal-verification-1/44-msg.value-check/msg_value-check3.png' style='width: 100%; height: auto;'}
 
 ### Summary
 
