@@ -44,7 +44,7 @@ I often encourage people to go checkout AAVE and Uniswap to get a feel for what 
 
 [**AAVE**](https://aave.com/), as mentioned, is a decentralized borrowing and lending platform. By logging into the dApp by connecting a wallet, users can see assets they hold which can be offered as collateral and assets available to borrow.
 
-::image{src='/foundry-defi/1-defi-introduction/defi-introduction2.png' style='width: 100%; height: auto;'}
+::image{src='/foundry-defi/1-defi-introduction/defi-introduction2.PNG' style='width: 100%; height: auto;'}
 
 Each asset has it's own calculated Annual Percentage Yield (APY) which effectively represents the interest a lender to the protocol would make on deposits of a given asset.
 
@@ -52,7 +52,7 @@ Each asset has it's own calculated Annual Percentage Yield (APY) which effective
 
 Another massively popular protocol that I like to bring to people's attention is [**Uniswap**](https://uniswap.org/).
 
-::image{src='/foundry-defi/1-defi-introduction/defi-introduction3.png' style='width: 100%; height: auto;'}
+::image{src='/foundry-defi/1-defi-introduction/defi-introduction3.PNG' style='width: 100%; height: auto;'}
 
 Uniswap is a decentralized exchange which allows users to swap tokens for any other token.
 
