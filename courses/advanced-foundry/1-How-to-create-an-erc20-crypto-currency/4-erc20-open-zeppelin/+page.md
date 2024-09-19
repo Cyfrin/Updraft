@@ -70,7 +70,7 @@ For the purposes of simple examples like this, I like to mint the initialSupply 
 
 As always we can perform a sanity check to assure things are working as expected by running `forge build`.
 
-::image{src='/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin2.png' style='width: 100%; height: auto;'}
+::image{src='/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin2.PNG' style='width: 100%; height: auto;'}
 
 Nailed it.
 
