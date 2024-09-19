@@ -10,7 +10,7 @@ To help understand the fundamentals of how concepts like public and private keys
 
 ### Public and Private Keys
 
-In this lesson, all the pieces we learnt about with Metamask should start coming together.
+In this lesson, all the pieces we learnt about with MetaMask should start coming together.
 
 Understanding the relationship between private and public keys is essential to grasping the concept of blockchain transactions. In essence, a private key is a randomly generated secret key used to sign all transactions.
 
@@ -32,11 +32,11 @@ This signing method allows anyone to verify the validity of a transaction by com
 
 ### Importance of Hiding Private Keys
 
-Your Metamask account's private key is accessible through `Account Details` > `Show Private Key`. You'll be asked to provide a password, again underscoring the importance of keeping this key safe.
+Your MetaMask account's private key is accessible through `Account Details` > `Show Private Key`. You'll be asked to provide a password, again underscoring the importance of keeping this key safe.
 
 Anyone with access to your private key can perform and sign transactions, on your behalf consequently making it absolutely vital to safeguard private keys.
 
-> **Note:** As an interesting side note, wallet addresses, like the one Metamask provided to you, are actually derived from your public key. A public key is passed through the Ethereum Hashing Algorithm, the last 20 bytes of the resulting hash is the address!
+> **Note:** As an interesting side note, wallet addresses, like the one MetaMask provided to you, are actually derived from your public key. A public key is passed through the Ethereum Hashing Algorithm, the last 20 bytes of the resulting hash is the address!
 
 ### Wrap Up
 
