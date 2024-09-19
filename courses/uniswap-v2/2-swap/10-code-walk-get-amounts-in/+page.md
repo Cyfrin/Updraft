@@ -31,4 +31,3 @@ numerator = reserveIn * amountOut * 1000 / (amountOut * 997 + reserveIn * 1000)
 The result of this calculation is then stored in the amounts array. 
 
 We will keep looping through the array until we get to `amounts[0]`, which will contain the amount of tokens that are needed to execute the swap. This entire process is performed inside the for loop. 
-/home/equious/Nevermore/uniswap-v2/2-swap/10-code-walk-get-amounts-in/+page.md
