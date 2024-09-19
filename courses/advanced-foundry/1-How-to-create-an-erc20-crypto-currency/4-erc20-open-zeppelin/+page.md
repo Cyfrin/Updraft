@@ -19,7 +19,7 @@ Access [OpenZeppelin's documentation](https://docs.openzeppelin.com/contracts/4.
 
 Additionally, OpenZeppelin offers a contract wizard, streamlining the contract creation process — perfect for tokens, governances, or custom contracts.
 
-::image{src='/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin1.png' style='width: 100%; height: auto;'}
+::image{src='/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin1.PNG' style='width: 100%; height: auto;'}
 
 Let's leverage OpenZeppelin to create a new ERC20 Token. Create a new file within `src` named `OurToken.sol`. Once that's done, let's install the OpenZeppelin library into our contract.
 
