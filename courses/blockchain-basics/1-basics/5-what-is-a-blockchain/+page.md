@@ -30,7 +30,7 @@ Blockchains are deterministic systems, so everything happens within their ecosys
 
 Oracles serve this purpose. They are devices or services that provide data to blockchains or run external computation. To maintain decentralization, it's necessary to use a decentralized Oracle network rather than relying on a single source. This combination of on-chain logic with off-chain data leads to `hybrid smart contracts`.
 
-> **Note:** Most of this course will assume we're working with an Etherum or EVM environment. The skills you learn here will be compatible with the vast majority of blockchain architectures!
+> **Note:** Most of this course will assume we're working with an Ethereum or EVM environment. The skills you learn here will be compatible with the vast majority of blockchain architectures!
 
 ### Chainlink
 
@@ -41,7 +41,7 @@ Oracles serve this purpose. They are devices or services that provide data to bl
 As blockchains grow, they face scaling issues. Layer 2, or L2, solutions have been developed to address this. L2 solutions involve other blockchains hooking into the main blockchain, essentially allowing it to scale. There are two primary types of L2 solutions:
 
 - **Optimistic Rollups:** eg. Optimism, Arbitrum
-- **Zero-Knowledge Rollups:** eg. ZK Sync, Polygon ZK EVM
+- **Zero-Knowledge Rollups:** eg. ZKsync, Polygon ZK EVM
 
 Don't worry too much about this now. Once we understand how blockchains work 'under the hood', we'll go further into Layer 2's then.
 
