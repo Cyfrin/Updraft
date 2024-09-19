@@ -14,7 +14,7 @@ I definitely would recommend going back and reviewing the parts that you don't q
 
 Now that we know all the cryptography pieces, how the blockchain actually works, how our signatures work and how everything sticks together, let's talk a little bit about how this works in actuality and what's really going on.
 
-It's important to note that many of the concepts we've covered and will cover are going to pertain to Ethereum, or the EVM ecosystem. Each specific blockchain however, may have their own nuances and intricies to watch out for. Trust that the overarching concepts will all be the same, but keep an eye out for the specific criteria that may very from chain to chain, how blocktime is handled, or which hashing algorithm is used for example.
+It's important to note that many of the concepts we've covered and will cover are going to pertain to Ethereum, or the EVM ecosystem. Each specific blockchain however, may have their own nuances and intricacies to watch out for. Trust that the overarching concepts will all be the same, but keep an eye out for the specific criteria that may very from chain to chain, how blocktime is handled, or which hashing algorithm is used for example.
 
 ### Traditional Networks vs Blockchain
 
