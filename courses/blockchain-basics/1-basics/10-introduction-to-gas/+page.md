@@ -49,7 +49,7 @@ Here are the steps:
 5. Enter the account to send the Ether to, and the amount you wish to send.
 6. Click "Next". MetaMask will automatically calculate the gas fee for you. The total amount to be paid is the sum of the Ether value you're sending and the gas fee.
 
-Something of note, if you click the `market` link in Metamask, you'll be shown some optional settings for gas in the transaction. You may wonder _Why would I choose to spend more gas?_
+Something of note, if you click the `market` link in MetaMask, you'll be shown some optional settings for gas in the transaction. You may wonder _Why would I choose to spend more gas?_
 
 A simplified explanation of this is: if lots of people are trying to process transactions at the same time, the space on a given block is competitive, gas prices are increased to throttle and prioritize transactions during congestion.
 

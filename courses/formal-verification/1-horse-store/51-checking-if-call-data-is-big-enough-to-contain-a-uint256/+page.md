@@ -179,7 +179,7 @@ Our stack is getting a little crazy, but each step should be pretty clear to us,
 
 In essence the DUP3 op code is taking the third item from the top of the stack and duplicating it, adding this copy to the top of the stack. Given this, what do you think DUP5 does?
 
-::image{src='/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size2.png' style='width: 100%; height: auto;'}
+::image{src='/formal-verification-1/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size2.png' style='width: 100%; height: auto;'}
 
 Shocking, I know.
 
@@ -187,11 +187,11 @@ Next we see two more op codes we've not come across yet `SUB` and `SLT`
 
 `SUB` is quite simply - subtraction. It's going to take the top item of our stack and subtract from it the second from top item in our stack.
 
-::image{src='/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size3.png' style='width: 100%; height: auto;'}
+::image{src='/formal-verification-1/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size3.png' style='width: 100%; height: auto;'}
 
 `SLT` is `signed less than` and compares two signed integer values, returning 1 if the top item of our stack is less than the second from top item in our stack and returning 0 otherwise.
 
-::image{src='/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size4.png' style='width: 100%; height: auto;'}
+::image{src='/formal-verification-1/51-Checking-If-Call-Data-Is-Big-Enough-To-Contain-A-Uint256/checking-call-data-size4.png' style='width: 100%; height: auto;'}
 
 We can see the steps, but what are these operations actually doing?
 

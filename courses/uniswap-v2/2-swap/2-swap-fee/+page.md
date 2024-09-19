@@ -35,4 +35,3 @@ dy = 1000 * 0.997 * 3000 / (6000000 + 1000 * 0.997)
 ```
 
 We can now use a calculator to determine the value of *dy*, which would be approximately 0.498341 ETH. 
-/home/equious/Nevermore/uniswap-v2/2-swap/2-swap-fee/+page.md

@@ -20,7 +20,7 @@ In this lesson, we will execute a transaction on the **zkSync testnet**, also kn
 Our first transaction involves receiving funds. There are two ways to receive funds on zkSync:
 
 1. **Using a Faucet**: This method requires the use of APIs or GitHub sign-in.
-2. **Bridging**: Our reommended method, that involves transfering funds from one chain (Sepolia) to another (zkSync Sepolia). There are two types of bridging mechanisms:
+2. **Bridging**: Our recommended method, that involves transferring funds from one chain (Sepolia) to another (zkSync Sepolia). There are two types of bridging mechanisms:
 
    - **Locking and Unlocking**: Tokens are locked on the source chain and unlocked on the destination chain.
 

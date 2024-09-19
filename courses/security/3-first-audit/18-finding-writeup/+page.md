@@ -51,7 +51,6 @@ And get an output of:
 
 </details>
 
-
 ### Recap
 
 Our finding report looks great. All we're missing is the severity (`[S-#]`), but we'll get to that shortly. Let's recap some of the important aspects we went over while compiling this report.

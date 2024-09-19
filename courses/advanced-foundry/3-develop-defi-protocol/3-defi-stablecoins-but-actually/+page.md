@@ -42,7 +42,7 @@ A simple example of unstable buying power is `Bitcoin (BTC)`. The number of appl
 
 **_Money is important._**
 
-::image{src='/foundry-defi/3-defi-stablecoins-but-actually/defi-stablecoins-but-actually2.png' style='width: 100%; height: auto;'}
+::image{src='/foundry-defi/3-defi-stablecoins-but-actually/defi-stablecoins-but-actually2.PNG' style='width: 100%; height: auto;'}
 
 Ok, not Scrooge McDuck important.
 
