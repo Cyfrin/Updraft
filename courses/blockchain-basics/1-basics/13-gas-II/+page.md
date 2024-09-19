@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Transactions and Gas
 
-In this lesson we're going to take a an even closer look at `gas`, how it functions and the purpose it serves on the blockchain.
+In this lesson we're going to take an even closer look at `gas`, how it functions and the purpose it serves on the blockchain.
 
 Don't stress if this topic sounds complex; gas can absolutely be a confusing topic, but the more experience you gain and more examples we go through, it'll start to become clear.
 
@@ -18,8 +18,8 @@ Don't stress if this topic sounds complex; gas can absolutely be a confusing top
 
 Before we continue, there are a couple important terms to understand.
 
-    Wei: 1,000,000,000 Wei = 1 Gwei (Gigawei)
-    Gwei: 1000,000,000 Gwei = 1 Eth
+    Wei:  1,000,000,000 Wei  = 1 Gwei (Gigawei)
+    Gwei: 1,000,000,000 Gwei = 1 Eth
 
 ::image{src='/blockchain-basics/09-gas-II/gas-II1.png' style='width: 75%; height: auto;'}
 
