@@ -33,7 +33,7 @@ function deposit(uint256 assets) public virtual {
 
 To illustrate, as show in the Foundry Docs as well, open testing has our framework calling functions directly as defined in the contracts within scope.
 
-::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests1.png' style='width: 100%; height: auto;'}
+::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests1.PNG' style='width: 100%; height: auto;'}
 
 Conversely, handler based tests route our frameworks function calls through our handler, allowing us to configure only the functions/behaviour we want it to perform, filtering out bad runs from our tests.
 
