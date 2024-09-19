@@ -170,7 +170,6 @@ contract MaliciousFlashLoanReceiver is IFlashLoanReceiver {
 
 </details>
 
----
 
 ::image{src='/security-section-6/41-oracle-manipulation-recap/oracle-manipulation-recap3.png' style='width: 100%; height: auto;'}
 

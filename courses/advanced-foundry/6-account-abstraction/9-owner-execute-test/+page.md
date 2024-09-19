@@ -302,7 +302,6 @@ It requires the msg.sender to be either the owner or the entry point, and it tak
 
 </details>
 
----
 
 <summary>2. What is the expected behavior of the testNonOwnerCannotExecuteCommands test?</summary>
 
@@ -316,4 +315,3 @@ The test should revert if a non-owner (a random user) attempts to execute comman
 
 </details>
 
----

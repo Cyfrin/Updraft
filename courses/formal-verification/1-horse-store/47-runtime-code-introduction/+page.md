@@ -148,7 +148,6 @@ With `contract creation` understood, we move onto the runtime section of our op 
 
 </details>
 
----
 
 This section of code is the `runtime code` this is what is copied to the blockchain and represents the entry point of all calls sent to its address.
 

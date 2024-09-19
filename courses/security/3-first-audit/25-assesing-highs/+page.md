@@ -40,7 +40,6 @@ Alright! We're ready to start applying our understanding of `likelihood` and `im
 
 </details>
 
----
 
 Let's consider impacts and likelhoods of our first scenario (I've provided you a reference to them above).
 
@@ -88,7 +87,6 @@ Applying our assessment to our finding title should look like this:
 
 </details>
 
----
 
 Considering our second finding, we can tell that anyone being able to set the password at any time is a severe disruption of protocol functionality. A clear `High` `Impact`.
 

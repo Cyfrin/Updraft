@@ -159,7 +159,6 @@ _Follow along with this video:_
 ```    
 </details>
 
----
 
 So, in order to walk through the execution of a `readNumberOfHorses` call, we'll need to go back to our `function dispatcher`:
 
@@ -439,7 +438,6 @@ Here's where we've come so far:
 ```    
 </details>
 
----
 
 The last section of our bytecode is going to be Metadata. We're almost done!
 

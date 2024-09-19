@@ -361,7 +361,6 @@ function testGovernanceUpdatesBox() public {
 
 </details>
 
----
 
 Woo! This is exciting, we're ready to run the test.
 

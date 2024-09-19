@@ -310,7 +310,6 @@ contract DSCEngine is ReentrancyGuard {
 
 </details>
 
----
 
 ### Liquidation/Refactoring
 

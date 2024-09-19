@@ -151,7 +151,6 @@ Ok! We've reach a section that may finally be new to us. Not sure what's going t
 
 </details>
 
----
 
 ```js
 JUMPDEST       // [msg.value]

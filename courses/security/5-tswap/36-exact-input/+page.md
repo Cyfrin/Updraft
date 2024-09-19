@@ -55,7 +55,6 @@ function swapExactInput(
 
 </details>
 
----
 
 Let's better understand the parameters required by `swapExactInput`.
 

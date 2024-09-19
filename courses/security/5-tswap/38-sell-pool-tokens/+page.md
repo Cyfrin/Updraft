@@ -22,7 +22,6 @@ function sellPoolTokens(uint256 poolTokenAmount) external returns (uint256 wethA
 
 </details>
 
----
 
 This function just serves as a simplified wrapper for users to call `swapExactOutput` through. With any function call passing parameters, we should verify that what's being passed is correct as well as it's order. These are easy things for developers to overlook.
 

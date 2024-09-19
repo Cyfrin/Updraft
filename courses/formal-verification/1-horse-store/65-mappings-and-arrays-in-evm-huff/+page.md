@@ -48,7 +48,6 @@ I'll keep a running reminder of our current total contract state at the top of e
 
 </details>
 
----
 
 Now's a good time to go back and reference the Solidity Documentation. We should be reminded that mappings are handled using a very specific algorithm.
 

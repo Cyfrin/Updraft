@@ -28,7 +28,6 @@ _Follow along with this video:_
 
 </details>
 
----
 
 Just like before, let's ask ourselves things like
 

@@ -48,7 +48,6 @@ contract OracleUpgradeable is Initializable {
 
 </details>
 
----
 
 Starting from the top, we can verify that our 3 imports `ITSwapPool`, `IPoolFactory` and `Initializable` are being utilized, and they are.
 

@@ -23,7 +23,6 @@ Reference our [**finding_layout.md**](https://github.com/Cyfrin/security-and-aud
 
 </details>
 
----
 
 <details>
 <summary>[I-2] `PoolFactory::constructor` Lacking zero address check</summary>
@@ -41,7 +40,6 @@ constructor(address wethToken) {
 
 </details>
 
----
 
 <details>
 <summary>[I-3] `PoolFactory::createPool should use .symbol() instead of .name()</summary>
@@ -55,7 +53,6 @@ constructor(address wethToken) {
 
 </details>
 
----
 
 <details>
 <summary>[I-4] `TSwapPool::constructor` Lacking zero address check - wethToken & poolToken</summary>
@@ -81,7 +78,6 @@ constructor(
 
 </details>
 
----
 
 <details>
 <summary>[I-5] `TSwapPool` events should be indexed</summary>
@@ -95,7 +91,6 @@ constructor(
 
 </details>
 
----
 
 ### Wrap Up
 

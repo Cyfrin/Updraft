@@ -171,7 +171,6 @@ rule calling_any_function_should_result_in_each_contract_having_the_same_state(m
 
 </details>
 
----
 
 ::image{src='/formal-verification-3/25-finishing-the-rule/finishing-the-rule2.png' style='width: 100%; height: auto;'}
 

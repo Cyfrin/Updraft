@@ -151,7 +151,6 @@ The next chunk of op codes we come across is going to represent Solidity's `func
 ```
 </details>
 
----
 
 ```js
 PUSH0 0x00        // [0x00]

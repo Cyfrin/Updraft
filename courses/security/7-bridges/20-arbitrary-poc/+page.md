@@ -74,7 +74,6 @@ function testCanMoveApprovedTokensOfOtherUsers() public {
 
 </details>
 
----
 
 Now, we can run this test.
 

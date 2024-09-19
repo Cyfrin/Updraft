@@ -67,7 +67,6 @@ function _swap(IERC20 inputToken, uint256 inputAmount, IERC20 outputToken, uint2
 
 </details>
 
----
 
 Alright, we can begin by giving the test a unique name. It looks like the first half of this function is handling deposits to add liquidity to the pool, we can keep that in.
 
@@ -271,7 +270,6 @@ Place the following into `TSwapPool.t.sol`.
 
 </details>
 
----
 
 ### Wrap Up
 

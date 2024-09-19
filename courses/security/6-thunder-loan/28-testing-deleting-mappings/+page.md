@@ -60,7 +60,6 @@ contract DeleteMappingTest {
 
 </details>
 
----
 
 If we deploy the above contract in Remix we can then set two addresses as `token` and `token2` to see the mapping working as expected:
 

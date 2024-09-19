@@ -110,7 +110,6 @@ contract InvariantsTest is StdInvariant Test {
 
 </details>
 
----
 
 We can see this fails for the expected reasons below.
 

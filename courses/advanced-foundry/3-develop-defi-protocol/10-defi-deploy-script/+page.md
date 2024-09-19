@@ -193,7 +193,6 @@ contract MockV3Aggregator {
 
 </details>
 
----
 
 Once mocks are deployed, we can configure the anvilNetworkConfig with those deployed addresses, and return this struct.
 

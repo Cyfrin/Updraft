@@ -144,7 +144,6 @@ contract L1BossBridge is Ownable, Pausable, ReentrancyGuard {
 
 </details>
 
----
 
 There's actually not _a lot_ of code here, but it's arguably _pretty tough_ code. Let's jump in.
 

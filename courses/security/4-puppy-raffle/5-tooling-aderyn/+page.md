@@ -257,7 +257,6 @@ Index event fields make the field more quickly accessible to off-chain tools tha
 
 </details>
 
----
 
 _**WOW!**_ We have a report of vulnerabilities already gorgeously formatted and ready to be added to our audit report.
 

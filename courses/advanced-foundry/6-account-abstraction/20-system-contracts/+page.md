@@ -70,7 +70,6 @@ As always, Let's do some review. Move on to the next lesson when you are ready.
 ---
 <summary>1. What are the two phases of sending an account abstraction transaction in zkSync?</summary> 
 
----
 <details> 
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
@@ -79,11 +78,9 @@ As always, Let's do some review. Move on to the next lesson when you are ready.
  
 </details>
 
----
 
 <summary>2.  What is the role of the ContractDeployer system contract in zkSync?</summary> 
 
----
 <details> 
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
@@ -95,11 +92,9 @@ As always, Let's do some review. Move on to the next lesson when you are ready.
  
 </details>
 
----
 
 <summary>3. How does deploying a smart contract on zkSync differ from deploying on Ethereum?</summary> 
 
----
 <details> 
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
@@ -108,7 +103,6 @@ As always, Let's do some review. Move on to the next lesson when you are ready.
  
 </details>
 
----
   
 
 

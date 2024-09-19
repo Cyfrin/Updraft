@@ -46,7 +46,6 @@ contract OracleUpgradeable is Initializable {
 
 </details>
 
----
 
 ```js
 function getPriceInWeth(address token) public view returns (uint256) {

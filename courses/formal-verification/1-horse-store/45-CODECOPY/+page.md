@@ -147,7 +147,6 @@ Let's continue from our `JUMPDEST`. Our contructor wasn't sent any value and we 
 
 </details>
 
----
 
 ```
 JUMPDEST      // [msg.value]

@@ -250,7 +250,6 @@ contract CallAnything {
 
 </details>
 
----
 
 One last thing I want to point out is that we're not limited to this kind of interaction. Through this low-level calling method, two contracts are able to interact without possessing all the information associated with eachother. Consider this second contract `CallFunctionWithoutContract`.
 
@@ -291,7 +290,6 @@ contract CallFunctionWithoutContract {
 
 </details>
 
----
 
 By passing this contract the address of our `CallAnything.sol` deployment. We're able to use the functions it possesses to interact with `CallAnything.sol`
 

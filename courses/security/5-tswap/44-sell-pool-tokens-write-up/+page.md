@@ -62,7 +62,6 @@ Additionally, it might be wise to add a deadline to the function, as there is cu
 
 </details>
 
----
 
 ### Wrap Up
 
