@@ -29,13 +29,13 @@ function getConversionRate(uint256 ethAmount) internal view returns (uint256) {
 > The line `uint256 ethAmountInUsd = (ethPrice * ethAmount)` results in a value with a precision of 1e18 \* 1e18 = 1e36. To bring the precision of `ethAmountInUsd` back to 1e18, we need to divide the result by 1e18.
 
 > 🔥 **CAUTION**:br
-> Always multiply before dividing to maintain precision and avoid truncation errors. For instance, in floating-point arithmetic, `(5/3) * 2` equals approximately 3.33. In Solidity, `(5/3)` equals 1, which when multiplied by 2 yields 2. If you multiply first `(5*2)` and then divide by 3, you achieve better precision.
+> Always multiply before dividing to maintain precision and avoid truncation errors. For instance, in floating-point arithmetic, `(5/3) * 2` equals approximately 3.33. In Solidity, `(5/3)` equals 1, which when multiplied by 2 yields 2. If you multiply first `(5*2)` and then divide by 3, you achieve better accuracy.
 
 ### Example of `getConversionRate`
 
 - `ethAmount` is set at 1 ETH, with 1e18 precision.
 - `ethPrice` is set at 2000 USD, with 1e18 precision, resulting in 2000e18.
-- `ethPrice * ethAmount` results in 2000e18.
+- `ethPrice * ethAmount` results in 2000e36.
 - To scale down `ethAmountInUsd` to 1e18 precision, divide `ethPrice * ethAmount` by 1e18.
 
 ### Checking Minimum USD Value
