@@ -45,7 +45,7 @@ We can input the compiler error under the drop-down menu, execute the search, an
 
 ::image{src='/solidity/remix/lesson-2/errors-warnings/phind-answer.png' style='width: 100%; height: auto;'}
 
-#### Othe resources
+#### Other resources
 
 It is advised to make active use of AI tools, as they can substantially boost your understanding and skills. Later in this course, we will explore how to ask effective questions, utilize AI prompts, structure your inquiries, and improve your search and learning techniques.
 

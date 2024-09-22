@@ -39,7 +39,7 @@ Since the contract has been deployed, we can now interact with it and **update t
 
 > 💡 **TIP**:br > _Celebrate small victories and milestones. These psychological boosts will keep you engaged in the learning process._
 
-It's possible to deploy a contract to different testnets or a real mainnet, just by switching the Metamask network. Be sure to have enough net-compatible ETHs to deploy your contract.
+It's possible to deploy a contract to different testnets or a real mainnet, just by switching the MetaMask network. Be sure to have enough net-compatible ETHs to deploy your contract.
 
 ### Conclusion
 

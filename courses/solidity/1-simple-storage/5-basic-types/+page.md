@@ -15,7 +15,7 @@ Solidity supports various _elementary_ types that can be combined to create more
 - Boolean (bool): true or false
 - Unsigned Integer (uint): unsigned whole number (positive)
 - Integer (int): signed whole number (positive and negative)
-- Address (address): 20 bytes value. An example of an address can be found within your Metamask account.
+- Address (address): 20 bytes value. An example of an address can be found within your MetaMask account.
 - Bytes (bytes): low-level raw byte data
 
 ### Variables definition
@@ -23,7 +23,7 @@ Solidity supports various _elementary_ types that can be combined to create more
 Variables are just placeholders for **values**. A value can be one **data type** described in the list above. For instance, we could create a Boolean variable named `hasFavoriteNumber`, which would represent whether someone has a favourite number or not (constant `true` or `false`).
 
 ```solidity
-bool hasFavoriteNumber = true; //the variable hasFavoriteNumber` represents the value `true`
+bool hasFavoriteNumber = true; // The variable `hasFavoriteNumber` represents the value `true`
 ```
 
 It's possible to specify the number of **bits** used for `uint` and `int`. For example, uint256 specifies that the variable has 256 bits. uint is a shorthand for uint256.
@@ -37,7 +37,7 @@ The _semicolon_ at the end of each line signifies that a statement is completed.
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-contract Simple Storage{
+contract SimpleStorage {
     // Basic types
     bool hasFavoriteNumber = true;
     uint256 favoriteNumber = 88;
@@ -60,7 +60,7 @@ bytes dynamicBytes = "I am a dynamic array, so you can manipulate my size";
 
 Bytes can be allocated in size (up to `bytes32`). However, bytes and bytes32 represent distinct data types.
 
-**Strings** are internally represented as _dynamic byte arrays_ (`bytes` tipe) and designed specifically for working with text. For this reason, a string can easily be converted into bytes.
+**Strings** are internally represented as _dynamic byte arrays_ (`bytes` type) and designed specifically for working with text. For this reason, a string can easily be converted into bytes.
 
 [Bits and Bytes overview](https://www.youtube.com/watch?v=Dnd28lQHquU)
 
