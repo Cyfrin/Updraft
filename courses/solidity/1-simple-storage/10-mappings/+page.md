@@ -44,7 +44,7 @@ nameToFavoriteNumber[_name] = _favoriteNumber;
 > Mappings have a constant time complexity for lookups, meaning that retrieving a value by its key is done in constant time.
 
 > 🗒️ **NOTE**:br
-> The default value for all key types is zero. In our case, `nameToFavoriteNumber["ET"]` will equal to 0.
+> The default value for all key types is zero. In our case, `nameToFavoriteNumber["ET"]` equals 0.
 
 ### Conclusion
 
