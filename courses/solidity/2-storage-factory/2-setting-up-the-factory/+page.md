@@ -10,7 +10,7 @@ In this `StorageFactory` setup, we'll explore what _composability_ means, showin
 
 ### StorageFactory setup
 
-You can begin by visiting the [Github repository of the previous section](https://github.com/cyfrin/remix-simple-storage-f23) and copying the contract `SimpleStorage` inside Remix.
+You can begin by visiting the [Github repository of the previous section](https://github.com/cyfrin/remix-simple-storage-cu) and copying the contract `SimpleStorage` inside Remix.
 This contract allows to store a favorite number, a list of people with their favorite number, a mapping and different functionalities to interact with them.
 This lesson aims to create a **new contract** that can deploy and interact with `SimpleStorage`.
 
@@ -26,7 +26,7 @@ pragma solidity ^0.8.18;
 contract StorageFactory {
 
     function createSimplestorageContract() public {
-        //how does StorageFactory know what SimpleStorage looks like?
+        // How does StorageFactory know what SimpleStorage looks like?
     }
 }
 ```

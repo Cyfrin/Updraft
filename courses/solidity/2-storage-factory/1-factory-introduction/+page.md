@@ -6,7 +6,7 @@ _You can follow along with the video course from here._
 
 ### Introduction
 
-You can find the code for this section in the [Remix Storage Factory Github repository](https://github.com/cyfrin/remix-storage-factory-f23). In these nine lessons we'll work with three new contracts:
+You can find the code for this section in the [Remix Storage Factory Github repository](https://github.com/cyfrin/remix-storage-factory-f23). In these nine lessons, we'll work with three new contracts:
 
 1. `SimpleStorage.sol` - the contract we build in the previous section, with some modifications
 2. `AddFiveStorage.sol` - a child contract of `SimpleStorage` that leverages _inheritance_
@@ -30,8 +30,6 @@ It's possible to interact with this newly deployed `SimpleStorage` via the `stor
 
 The **`sfGet`** function, when given the input '0', will indeed return the number provided by the previous function. The **address** of the `SimpleStorage` contract can then be retrieved by clicking on the get function `listOfSimpleStorageContracts`.
 
-::image{src='/solidity/remix/lesson-3/setting-up/graph-1.png' style='width: 100%; height: auto;'}
-        
 ### Conclusion
 The `StorageFactory` contract manages numerous instances of an external contract `SimpleStorage`. It provides functionality to deploy new contract instances dynamically and allows for the storage and retrieval of values from each instance. These instances are maintained and organized within an array, enabling efficient tracking and interaction.
 
