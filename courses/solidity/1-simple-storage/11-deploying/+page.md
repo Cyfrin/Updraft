@@ -9,9 +9,9 @@ _You can follow along with the video course from here._
 Over the past eight lessons, we crafted the `SimpleStorage` contract. It defines a custom type `Person`, includes an internal variable that can be read and updated, and contains a public array and mapping that can also be modified. In this lesson, we will deploy the contract to a **real testnet**, which fully simulates a live blockchain environment without using real Ether.
 
 > 🔥 **CAUTION**:br
-> You could be tempted to immediately deploy this contract to a testnet. As a general rule, I caution against this. Make sure to write tests, carry out audits and ensure the robustness of your contract before deploying it to production. However, for the sake of this demonstration, we're going to deploy this as a dummy contract on a testnet.
+> You could be tempted to immediately deploy this contract to the mainnet. As a general rule, I caution against this. Make sure to write tests, carry out audits and ensure the robustness of your contract before deploying it to production. However, for the sake of this demonstration, we're going to deploy this as a dummy contract on a testnet.
 
-Before deploying, be always sure to make a **compilation check**. This ensures that the contract has no errors or warnings and is fit for deployment.
+Before deploying, be always sure to make a **compilation check**. This ensures that the contract has no errors or warnings, and is fit for deployment.
 
 ### Deployment on a testnet
 
@@ -37,9 +37,9 @@ Since the contract has been deployed, we can now interact with it and **update t
 > 👀❗**IMPORTANT**:br
 > View and pure functions will not send transactions
 
-> 💡 **TIP**:br > _Celebrate small victories and milestones. These psychological boosts will keep you engaged in the learning process._
+> 💡 **TIP**:br _Celebrate small victories and milestones. These psychological boosts will keep you engaged in the learning process._
 
-It's possible to deploy a contract to different testnets or a real mainnet, just by switching the Metamask network. Be sure to have enough net-compatible ETHs to deploy your contract.
+It's possible to deploy a contract to different testnets or a real mainnet, just by switching the MetaMask network. Be sure to have enough net-compatible ETHs to deploy your contract.
 
 ### Conclusion
 

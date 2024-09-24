@@ -6,7 +6,7 @@ _You can follow along with the video course from here._
 
 ### Introduction
 
-We have just created a contract that stores multiple `Person`'s' names and favorite numbers in a list. In this session, you will learn about mappings, their functionality, and when it is more advantageous to use them.
+We have just created a contract that stores multiple `Person`'s names and favorite numbers in a list. In this session, you will learn about mappings, their functionality, and when it is more advantageous to use them.
 
 ### Avoiding Costly Iterations
 
@@ -18,9 +18,8 @@ list_of_people.add(Person("John", 8));
 list_of_people.add(Person("Mariah", 10));
 list_of_people.add(Person("Chelsea", 232));
 
-/* go through all the people to check their favorite number.
-If name is "Chelsea" -> return 232
-*/
+// Go through all the people to check their favorite number.
+// If name is "Chelsea" -> return 232
 ```
 
 Iterating through a long list of data is usually expensive and time-consuming, especially when we do not need to access elements by their index.
@@ -42,10 +41,10 @@ nameToFavoriteNumber[_name] = _favoriteNumber;
 ```
 
 > 👀❗**IMPORTANT**:br
-> Mappings have a constant time complexity for lookups, meaning that retrieving a value by its key is done in constant time,
+> Mappings have a constant time complexity for lookups, meaning that retrieving a value by its key is done in constant time.
 
 > 🗒️ **NOTE**:br
-> The default value for all key types is zero. In our case, `nameToFavoriteNumber["ET"]` will be equal to 0.
+> The default value for all key types is zero. In our case, `nameToFavoriteNumber["ET"]` equals 0.
 
 ### Conclusion
 

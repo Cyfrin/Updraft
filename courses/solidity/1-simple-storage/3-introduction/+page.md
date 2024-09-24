@@ -28,7 +28,7 @@ The repository serves two main purposes:
 
 #### Asking Questions
 
-It’s very likely that during your journey you’ll have questions. It’s recommended to use the [**Q&A**](https://github.com/Cyfrin/foundry-full-course-f23/discussions/new?category=q-a) section provided inside the discussion tab. You will be guided into how to best formulate your dubts and queries, such that have the highest chance of being answered by the community, AI or a forum.
+It’s very likely that during your journey you’ll have questions. It’s recommended to use the [**Q&A**](https://github.com/Cyfrin/foundry-full-course-f23/discussions/new?category=q-a) section provided inside the discussion tab. You will be guided into how to best formulate your doubts and queries, such that have the highest chance of being answered by the community, AI or a forum.
 
 ### Setting Up
 

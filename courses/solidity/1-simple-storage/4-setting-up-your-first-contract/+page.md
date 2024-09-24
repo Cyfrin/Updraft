@@ -85,6 +85,6 @@ Well done! You just created and compiled your first smart contract in Solidity.
 ### 🧑‍💻 Test yourself
 
 1. 📕 What does IDE mean and what are Remix main features?
-2. 📕 What's the keywork `pragma` used for?
+2. 📕 What's the keyword `pragma` used for?
 3. 📕 Explain what compiling a contract means.
 4. 🧑‍💻 Write an empty contract that contains a SPDX License Identifier and compiles with version 0.8.11 or 0.8.13.
