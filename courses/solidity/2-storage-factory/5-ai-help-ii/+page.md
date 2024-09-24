@@ -25,7 +25,7 @@ We can ask the AI to clarify it by:
 
 This is the AI prompt:
 
-````
+````text
 Hi, I'm having a hard time understanding the difference between these simple storages on this line:
 ```// paste the confusing line of code here```
 Here is my full code:
