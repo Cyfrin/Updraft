@@ -12,19 +12,19 @@ From lessons 1 to 5 we've explored the usage of the keyword `payable`, the globa
 
 To enable a function to receive a native blockchain token such as Ethereum, it must be marked as `payable`:
 
-```js
+```solidity
 function deposit() public payable {
- balances[msg.sender] += msg.value;
+    balances[msg.sender] += msg.value;
 }
 ```
 
 If we want a function to fail under certain conditions, we can use the `require` statement. For example, in a bank transfer scenario, we want the operation to fail if the sender does not have enough balance. Here's an example:
 
-```js
+```solidity
 function transfer(address recipient, uint amount) public {
- require(balances[msg.sender] >= amount);
- balances[msg.sender] -= amount;
- balances[recipient] += amount;
+    require(balances[msg.sender] >= amount);
+    balances[msg.sender] -= amount;
+    balances[recipient] += amount;
 }
 ```
 
@@ -41,11 +41,11 @@ Chainlink is a revolutionary technology that enables the integration of external
 
 Consider a smart contract that deals with a commodity like gold. _Chainlink Price Feeds_ can provide real-time gold prices, allowing the smart contract to reflect the current market prices.
 
-```js
+```solidity
 import "@chainlink/contracts/src/v0.6/interfaces/AggregatorV3Interface.sol";
 contract GoldPriceContract {
     AggregatorV3Interface internal priceFeed;
-    //The Chainlink price feed contract address
+    // The Chainlink price feed contract address
     constructor() public {
         priceFeed = AggregatorV3Interface(0x8468b2bDCE073A157E560AA4D9CcF6dB1DB98507);
     }

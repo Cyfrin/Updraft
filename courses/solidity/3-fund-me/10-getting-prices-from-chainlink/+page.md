@@ -18,13 +18,13 @@ AggregatorV3Interface priceFeed = AggregatorV3Interface(0x1b44F3514812d835EB1BDB
 
 We can call the `latestRoundData()` function on this interface to obtain several values, including the latest price.
 
-```js
+```solidity
 function latestRoundData() external view returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
 ```
 
 For now, we'll focus on the `answer` value and ignore the other returned values by using commas as placeholders for the unneeded variables.
 
-```js
+```solidity
 function getLatestPrice() public view returns (int) {
     (,int price,,,) = priceFeed.latestRoundData();
     return price;
@@ -48,13 +48,13 @@ return price * 1e10;
 
 Typecasting, or type conversion, involves converting a value from one data type to another. In Solidity, not all data types can be converted due to differences in their underlying representations and the potential for data loss. However, certain conversions, such as from `int` to `uint`, are allowed.
 
-```js
+```solidity
 return uint(price) * 1e10;
 ```
 
 We can finalize our `view` function as follows:
 
-```js
+```solidity
 function getLatestPrice() public view returns (uint256) {
     (,int answer,,,) = priceFeed.latestRoundData();
     return uint(answer) * 1e10;

@@ -12,7 +12,7 @@ In this part, we'll learn how to **convert** Ethereum (ETH) into Dollars (USD) a
 
 We begin by trying to convert the `msg.value`, which is now specified in ETH, into USD. This process requires fetching the **current USD market price** of Ethereum and using it to convert the `msg.value` amount into USD.
 
-```js
+```solidity
  // Function to get the price of Ethereum in USD
  function getPrice() public {}
  // Function to convert a value based on the price
@@ -39,10 +39,10 @@ An alternative method involves the use of an **Interface**, which defines method
 
 We can test the Interface usage by calling the `version()` function:
 
-```js
- function getVersion() public view returns (uint256) {
+```solidity
+function getVersion() public view returns (uint256) {
     return AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419).version();
- }
+}
 ```
 
 > 🗒️ **NOTE**:br
