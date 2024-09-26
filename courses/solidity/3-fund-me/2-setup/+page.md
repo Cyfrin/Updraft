@@ -38,7 +38,7 @@ The FundMe contract will have two primary functions that serve as the main inter
 
 First, let's code the `fund` function and leave the `withdraw` function commented out for the moment.
 
-```js
+```solidity
 contract FundMe {
     // send funds into our contract
     function fund() public {}

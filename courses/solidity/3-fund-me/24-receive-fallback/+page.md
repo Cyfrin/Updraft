@@ -14,7 +14,7 @@ In Solidity, if Ether is sent to a contract without a `receive` or `fallback` fu
 
 To illustrate, let's create a simple contract:
 
-```js
+```solidity
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
@@ -33,22 +33,24 @@ contract FallbackExample {
 
 In this contract, `result` is initialized to zero. When Ether is sent to the contract, the `receive` function is triggered, setting `result` to one. If a transaction includes **data** but the specified function _does not exist_, the `fallback` function will be triggered, setting `result` to two. For a comprehensive explanation, refer to [SolidityByExample](https://solidity-by-example.org/fallback/).
 
-// Ether is sent to the contract
-// is msg.data empty?
-// / \
-// yes no
-// / \
-// receive() ? fallback()
-// / \
-// yes no
-// / \
-// receive() fallback()
+```text
+// Ether is sent to contract
+//      is msg.data empty?
+//          /   \
+//         yes  no
+//         /     \
+//    receive()?  fallback()
+//     /   \
+//   yes   no
+//  /        \
+//receive()  fallback()
+```
 
 ### Sending Ether to fundMe
 
 When a user sends Ether **directly** to the `fundMe` contract without calling the `fund` function, the `receive` function can be used to _redirect_ the transaction to the `fund` function:
 
-```js
+```solidity
 receive() external payable {
     fund();
 }
