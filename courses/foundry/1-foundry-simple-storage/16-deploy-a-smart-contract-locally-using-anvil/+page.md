@@ -26,7 +26,7 @@ Open the newly created file. Here we'll write a solidity script for deploying ou
 
 Type the following:
 
-```javaScript
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
@@ -46,7 +46,7 @@ For it to be considered a Foundry script and to be able to access the extended f
 
 Furthermore, to be able to deploy `SimpleStorage` we also need to import it by typing `import {SimpleStorage} from "../src/SimpleStorage.sol";`
 
-```javaScript
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
