@@ -14,7 +14,7 @@ We have encountered the special functions `receive`, `fallback`, and `constructo
 
 To save gas, Solidity provides keywords like `constant` and `immutable` for variables that can only be set once:
 
-```js
+```solidity
 uint constant minimumUSD = 50 * 1e18;
 ```
 

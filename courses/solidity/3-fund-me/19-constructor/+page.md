@@ -16,7 +16,7 @@ One solution could be to create a function, `callMeRightAway`, to assign the rol
 
 A more efficient solution is to use a **constructor** function:
 
-```js
+```solidity
 constructor() {}
 ```
 
@@ -29,7 +29,7 @@ The constructor function is automatically called during contract deployment, wit
 
 We can use the constructor to set the contract's owner immediately after deployment:
 
-```js
+```solidity
 address public owner;
 constructor() {
     owner = msg.sender;
@@ -42,14 +42,14 @@ Here, we initialize the state variable `owner` with the contract deployer's addr
 
 The next step is to update the `withdraw` function to ensure it can only be called by the owner:
 
-```js
+```solidity
 function withdraw() public {
     require(msg.sender == owner, "must be owner");
- // rest of the function here
+    // rest of the function here
 }
 ```
 
-Before executing any withdrawal actions, we check that `msg.sender` is the owner. If the caller is not the owner, the operation **reverts** with the error message "must be the owner." This access restriction ensures that only the intended account can execute the function.
+Before executing any withdrawal actions, we check that `msg.sender` is the owner. If the caller is not the owner, the operation **reverts** with the error message "must be the owner" This access restriction ensures that only the intended account can execute the function.
 
 ### Conclusion
 
