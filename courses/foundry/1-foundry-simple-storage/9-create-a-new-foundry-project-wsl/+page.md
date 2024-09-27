@@ -12,7 +12,7 @@ Hallo 👋🏻, I'm Vasily and I'll be your instructor for all Windows developme
 
 ### WSL setup
 
-Microsoft has singificantly inproved its development environment support in recent years. However, for _smart contract development_, installing dependencies can sometimes be tricky. To streamline this process, we will use the **Windows Subsystem for Linux (WSL)**: this is a better option because it enables a full-fledged _unix-like console_ on your Windows machine, simplifying the use of tools and utilities commonly found in unix-based environments. This setup ensures compatibility with all the code that runs on unix-based systems like macOS and Linux.
+Microsoft has significantly improved its development environment support in recent years. However, for _smart contract development_, installing dependencies can sometimes be tricky. To streamline this process, we will use the **Windows Subsystem for Linux (WSL)**: this is a better option because it enables a full-fledged _unix-like console_ on your Windows machine, simplifying the use of tools and utilities commonly found in unix-based environments. This setup ensures compatibility with all the code that runs on unix-based systems like macOS and Linux.
 
 To install WSL, you can begin by opening the Windows terminal. On Windows 11, press the Windows key, type "terminal," and hit `enter`. On Windows 10, you need to install the Windows terminal from the Microsoft Store (select the official app from Microsoft Corporation).
 

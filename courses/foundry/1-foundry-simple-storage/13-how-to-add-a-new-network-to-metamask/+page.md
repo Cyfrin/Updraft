@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Adding New Networks Using MetaMask
 
-Conveniently, MetaMask provides an easy way to add EVM-compatible chains. By pre-configuring a host of them, you can add a chain such as the Arbitram One by simply clicking on the `Networks` button on the top left, then `Add Network` and proceeding to `Add`. The pleasing part is that MetaMask does all the grunt work, filling in all the necessary information for you. A click on Approve Network ensures the successful addition of the network.
+Conveniently, MetaMask provides an easy way to add EVM-compatible chains. By pre-configuring a host of them, you can add a chain such as the Arbitrum One by simply clicking on the `Networks` button on the top left, then `Add Network` and proceeding to `Add`. The pleasing part is that MetaMask does all the grunt work, filling in all the necessary information for you. A click on Approve Network ensures the successful addition of the network.
 
 Steps:
 

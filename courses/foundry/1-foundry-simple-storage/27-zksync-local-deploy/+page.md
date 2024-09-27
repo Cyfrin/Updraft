@@ -1,14 +1,14 @@
 ---
-title: zkSync Local Deployment
+title: ZKsync Local Deployment
 ---
 
 _Follow along with the video_
 
 ---
 
-In this lesson, we are going to deploy the contract `SimpleStorage.sol` on a **zkSync local chain**.
+In this lesson, we are going to deploy the contract `SimpleStorage.sol` on a **ZKsync local chain**.
 
-We start by verifying that the Forge version we are using is correct. By running the `forge --version` command it confirms that we are on version 0.2: this indicates we are using the right Foundry zkSync edition.
+We start by verifying that the Forge version we are using is correct. By running the `forge --version` command it confirms that we are on version 0.2: this indicates we are using the right Foundry ZKsync edition.
 
 Next, we proceed with creating a `SimpleStorage` contract using the command:
 
@@ -16,7 +16,7 @@ Next, we proceed with creating a `SimpleStorage` contract using the command:
 forge create src/SimpleStorage.sol:SimpleStorage --rpc_url <RPC_URL> --private_key <PRIVATE_KEY> --legacy --zksync
 ```
 
-Here, `<RPC_URL>` represents zkSync node address, such as `http://127.0.0.1:8011`.
+Here, `<RPC_URL>` represents ZKsync node address, such as `http://127.0.0.1:8011`.
 
 > 👀❗**IMPORTANT**:br
 > Including private keys directly in commands is not a safe practice.

@@ -43,10 +43,10 @@ Once you have signed in, create a new application.
 Next, give your application a name and a description. Then, select a chain and network. Alchemy currently supports the majority of EVM-compatible chains, including:
 
 - Ethereum
-- Polygon (POS)
-- Zkevm
+- Polygon PoS
+- Polygon zkEVM
 - Optimism
-- Astar
+- Arbitrum
 - Solana (non-EVM chain)
 
 ## The Application-Specific Dashboard
