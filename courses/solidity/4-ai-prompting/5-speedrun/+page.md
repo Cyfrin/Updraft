@@ -19,10 +19,10 @@ Through Speedrun Ethereum, you'll delve into a plethora of projects, including:
 - **Creating a simple Non-Fungible Token (NFT)**
 - **Constructing a decentralized staking app**
 - **Developing a token vendor**
-- **Building a dice game** - learning about randomness on chain
-- **Creating a decentralized exchange (DEX)**
+- **Building a Dice Game** - learning about randomness on chain
+- **Creating a Decentralized Exchange (Dex)**
 - **Contructing and using a MultiSig Wallet**
-- **SVG NFTs and on-chain data**
+- **SVG NFTs and on chain Data**
 
 ...and much more
 
@@ -30,9 +30,9 @@ Through Speedrun Ethereum, you'll delve into a plethora of projects, including:
 
 To take advantage of these learning opportunities, visit [Speedrunethereum.com](https://speedrunethereum.com/) and get started!
 
-### Intro to Scaffold-ETH 2
+### Intro to Scaffold-ETH2
 
-[Scaffold-ETH 2](https://scaffoldeth.io/) is a great resource for those learning Solidity and trying to visualize what their code is doing.
+Scaffold-eth-2 is a great resource for those learning Solidity and trying to visualize what their code is doing.
 
 It provides a clean front-end UI that will update dynamically with your smart contract changes, allowing you to interact with it and monitor adjustments you've made.
 
@@ -40,7 +40,7 @@ It provides a clean front-end UI that will update dynamically with your smart co
 
 ### Final Remarks
 
-Leverage the knowledge and resources provided by Speedrun Ethereum and Scaffold ETH to equip you in building innovative solutions on Ethereum. With determined effort and continuous learning, you're sure to make significant strides in the blockchain ecosystem.
+Leverage the knowledge and resources provided by speedrun ethereum and Scaffold ETH to equip you in building innovative solutions on Ethereum. With determined effort and continuous learning, you're sure to make significant strides in the blockchain ecosystem.
 
 Happy Bow-Tie Friday, Austin.
 
