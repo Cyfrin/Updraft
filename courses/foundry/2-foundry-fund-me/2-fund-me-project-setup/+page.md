@@ -8,18 +8,18 @@ _Follow along with this video:_
 
 ## Foreword
 
-Welcome the the second section of `Foundry Fundamentals`. Here we'll cover `Fund Me`, a simple funding contract.
+Welcome the second section of `Foundry Fundamentals`. Here we'll cover `Fund Me`, a simple funding contract.
 
 You will learn:
 
-- How to push your project to GitHub;
-- Write and run amazing tests;
-- Advanced deploy scripts, used to deploy on different chains that require different addresses;
-- How to use scripts to interact with contracts, so we can easily reproduce our actions;
-- How to use a price feed;
-- How to use Chisel;
-- Smart contract automation;
-- How to make our contracts more gas efficient;
+- How to push your project to GitHub
+- Write and run amazing tests
+- Advanced deploy scripts, used to deploy on different chains that require different addresses
+- How to use scripts to interact with contracts, so we can easily reproduce our actions
+- How to use a price feed
+- How to use Chisel
+- Smart contract automation
+- How to make our contracts more gas efficient
 - And many more interesting things!
 
 Until now, we talked a lot about storage and state, but we didn't delve into what they really mean. We will learn what all these means!
@@ -33,10 +33,10 @@ Going through the [repo](https://github.com/Cyfrin/foundry-fund-me-f23) we can s
 
 As you can see we are employing some advanced tools/standard naming conventions:
 
-- We use a named error `FundMe__NotOwner();`;
-- We use all caps for constants;
-- `i_` for immutable variables;
-- `s_` for private variables;
+- We use a named error `FundMe__NotOwner();`
+- We use all caps for constants
+- `i_` for immutable variables
+- `s_` for private variables
 
 Let's clone this project locally. Open your VS Code, and make sure you are in the `foundry-f23` folder, if not use `cd` to navigate to it.
 
