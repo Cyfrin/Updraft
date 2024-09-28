@@ -21,7 +21,7 @@ You now have access to 10 test addresses funded with 10_000 ETH each, with their
 
 This testnet node always listens on `127.0.0.1:8545` this will be our `RPC_URL` parameter when we deploy smart contracts here. More on this later!
 
-More info about Anvil is available [here](https://book.getfoundry.sh/reference/anvil/)](https://book.getfoundry.sh/reference/anvil/).
+More info about Anvil is available [here](https://book.getfoundry.sh/reference/anvil/).
 
 Please press `Ctrl/CMD + C` to close Anvil.
 

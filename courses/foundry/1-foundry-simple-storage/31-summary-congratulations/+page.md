@@ -28,7 +28,7 @@ We obtained practical knowledge on how to compile code in Foundry and write a So
 
 ## Understanding Contract Deployment and Interaction on the Blockchain
 
-We delved into the automation of contract deployments to a blockchain. Post-deployment, we interacted with them using the `Cast` keyword and `send` to make transactions, then `Cast call` to read from those contracts.
+We delved into the automation of contract deployments to a blockchain. Post-deployment, we interacted with them using the `cast` keyword and `send` to make transactions, then `cast call` to read from those contracts.
 
 Moreover, the knowledge on how to auto format contracts with `Forge format` was acquired. We also learnt the painstaking yet rewarding manual method of verifying our contracts on the blockchain.
 
