@@ -17,7 +17,7 @@ In the previous lessons, we learned about deploying smart contracts with the `fo
 
 To deploy locally on a ZKsync local chain, you'll need additional tools: Docker, Node.js, and zksync-cli.
 
-1. **Docker**: Start the [Docker](https://www.docker.com/) dooemon. On Mac OS, you can start it using the Docker application interface. On Linux, use commands like `sudo systemctl start docker` and `sudo systemctl stop docker` will manage Docker lifecycles. Verify the installation with `docker --version` and `docker ps` commands.
+1. **Docker**: Start the [Docker](https://www.docker.com/) daemon. On Mac OS, you can start it using the Docker application interface. On Linux, use commands like `sudo systemctl start docker` and `sudo systemctl stop docker` will manage Docker lifecycles. Verify the installation with `docker --version` and `docker ps` commands.
 
 2. **Node.js and npm**: Install [Node.js](https://nodejs.org/en) and [npm](https://www.npmjs.com/). Follow the Node.js documentation to install the right version for your operating system. Verify the installations with `npm --version` and `node --version` commands.
 

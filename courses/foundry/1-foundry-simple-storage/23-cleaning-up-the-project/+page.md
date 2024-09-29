@@ -22,7 +22,7 @@ The `README.md` file is written in Markdown, which is a lightweight markup langu
 
 Here's an example of what you might include in your `README.md` file:
 
-```markdown
+````markdown
 # SimpleStorage
 
 This is a simple Solidity contract that stores a single uint256 value.
@@ -58,3 +58,5 @@ We can preview our `README.md` file in VS Code by going to the `View` menu and s
 ### Using AI for Markdown Formatting
 
 If you find that formatting Markdown is a bit tedious, you can use an AI tool like ChatGPT to help you out. Just copy and paste the text you want to format into ChatGPT and ask it to format it in Markdown. It will do a pretty good job of converting your plain text into Markdown, and you can then review and edit it as needed.
+
+````
