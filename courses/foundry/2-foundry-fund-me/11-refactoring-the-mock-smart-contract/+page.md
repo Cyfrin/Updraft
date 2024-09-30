@@ -1,5 +1,6 @@
 ---
 title: Refactoring the mock smart contract
+---
 
 _Follow along with this video:_
 
@@ -17,11 +18,11 @@ First of all, we need to make sure we import `Script.sol` in the `HelperConfig.s
 
 Update your start of the `HelperConfig.s.sol` file as follows:
 
-```javascript
+```solidity
 import {Script} from "forge-std/Script.sol";
 
 contract HelperConfig is Script {
-
+}
 ```
 
 In order to be able to deploy a mock contract we need ... a mock contract. So, in `test` folder please create a new folder called `mocks`. Inside `mocks` create a new file `MockV3Aggregator.sol`. Rewriting the AggregatorV3 as a mock is not the easiest task out there. Please copy the contents of [this contract](https://github.com/Cyfrin/foundry-fund-me-f23/blob/main/test/mock/MockV3Aggregator.sol) into your newly created file.
@@ -32,26 +33,27 @@ We need to import this in our `HelperConfig.s.sol` file and deploy it in the `ge
 
 Perform the following changes in `HelperConfig`:
 
-```javascript
+```solidity
 import {MockV3Aggregator} from "../test/mocks/MockV3Aggregator.sol";
 
 [...]
-    // In state variables section
-    MockV3Aggregator mockPriceFeed;
+
+// In state variables section
+MockV3Aggregator mockPriceFeed;
+
 [...]
 
-    function getAnvilEthConfig() public returns (NetworkConfig memory){
+function getAnvilEthConfig() public returns (NetworkConfig memory) {
+    vm.startBroadcast();
+    mockPriceFeed = new MockV3Aggregator(8, 2000e8);
+    vm.stopBroadcast();
 
-        vm.startBroadcast();
-        mockPriceFeed = new MockV3Aggregator(8, 2000e8);
-        vm.stopBroadcast();
+    NetworkConfig memory anvilConfig = NetworkConfig({
+        priceFeed: address(mockPriceFeed)
+    });
 
-        NetworkConfig memory anvilConfig = NetworkConfig({
-            priceFeed: address(mockPriceFeed)
-        });
-
-        return anvilConfig;
-    }
+    return anvilConfig;
+}
 ```
 
 More testing and refactorings in the next lessons!

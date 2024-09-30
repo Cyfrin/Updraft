@@ -1,5 +1,6 @@
 ---
 title: Introduction to Foundry Chisel
+---
 
 _Follow along with this video:_
 
