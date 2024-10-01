@@ -8,7 +8,7 @@ _Follow along the course with this video._
 
 ### Intro to Function Selectors
 
-Continuing from the last lesson, when we call the `fund` function our Metamask is going to pop up with a bunch of information about the transaction.
+Continuing from the last lesson, when we call the `fund` function our MetaMask is going to pop up with a bunch of information about the transaction.
 
 ::image{src='/html-fundme/3-function-selector/function-selector1.png' style='width: 75%; height: auto;'}
 
@@ -24,7 +24,7 @@ When we call our `fund` function, this is converted to a `function selector` tha
 cast sig "fund()"
 ```
 
-The above should result in the output `0xb60d4288` and when we compare this to the `Hex` data in our Metamask, we see that it does indeed match!
+The above should result in the output `0xb60d4288` and when we compare this to the `Hex` data in our MetaMask, we see that it does indeed match!
 
 Were the function being called something secret/nefarious like `stealMoney()`. This function selector would be completely different. Running our cast command again confirms this clearly with a return of `0xa7ea5e4e`.
 
@@ -43,7 +43,7 @@ function fund(uint256 amount) public payable {
 }
 ```
 
-If we were to call this function, the information Metamask gives us is a little different.
+If we were to call this function, the information MetaMask gives us is a little different.
 
 ::image{src='/html-fundme/3-function-selector/function-selector3.png' style='width: 75%; height: auto;'}
 
