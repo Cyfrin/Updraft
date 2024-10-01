@@ -1,5 +1,6 @@
 ---
 title: Debug your Solidity tests
+---
 
 _Follow along with this video:_
 

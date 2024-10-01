@@ -1,5 +1,6 @@
 ---
 title: Introduction to Foundry Chisel
+---
 
 _Follow along with this video:_
 
@@ -61,4 +62,4 @@ It reverts!
 
 Press `Ctrl + C` twice to exit and return to your normal terminal.
 
-To find more about other Chisel functionality please click [here](https://book.getfoundry.sh/reference/chisel/).
+To find more about other Chisel functionality, please click [here](https://book.getfoundry.sh/reference/chisel/).

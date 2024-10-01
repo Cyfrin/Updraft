@@ -1,5 +1,6 @@
 ---
 title: Create integration tests
+---
 
 _Follow along with this video:_
 
@@ -25,7 +26,9 @@ Each contract will contain one script, and for it to work each needs to inherit 
 
 In order to properly interact with our `fundMe` contract we would want to interact only with the most recent deployment we made. This task is easily achieved using the `foundry-devops` library. Please install it using the following command:
 
-`forge install Cyfrin/foundry-devops --no-commit`
+```bash
+forge install Cyfrin/foundry-devops --no-commit
+```
 
 Ok, now with that out of the way, let's work on our scripts.
 

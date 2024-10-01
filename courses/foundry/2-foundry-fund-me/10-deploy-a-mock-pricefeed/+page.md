@@ -1,5 +1,6 @@
 ---
 title: Deploy a mock priceFeed
+---
 
 _Follow along with this video:_
 
@@ -9,7 +10,7 @@ _Follow along with this video:_
 
 In the previous lesson, we refactored our contracts to avoid being forced to use Sepolia every single time when we ran tests. The problem is we didn't quite fix this aspect. We made our contracts more flexible by changing everything for us to input the `priceFeed` address only once. We can do better!
 
-It is very important to be able to run our all tests locally. We will do this using a `mock contract`.
+It is very important to be able to run our all tests locally. We will do this using a **mock contract**.
 
 Before we dive into the code, let's emphasize why this practice is so beneficial. By creating a local testing environment, you reduce your chances of breaking anything in the refactoring process, as you can test all changes before they go live. No more hardcoding of addresses and no more failures when you try to run a test without a forked chain. As a powerful yet simple tool, a mock contract allows you to simulate the behavior of a real contract without the need to interact with a live blockchain.
 
@@ -21,7 +22,7 @@ Please create a new file in your `script` folder called `HelperConfig.s.sol`. He
 
 The start:
 
-```javascript
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
@@ -31,28 +32,26 @@ import {Script} from "forge-std/Script.sol";
 contract HelperConfig {
     // If we are on a local Anvil, we deploy the mocks
     // Else, grab the existing address from the live network
-
 }
 ```
 
 Copy the following functions inside the contract:
 
-```javascript
+```solidity
+struct NetworkConfig {
+    address priceFeed; // ETH/USD price feed address
+}
 
-    struct NetworkConfig {
-        address priceFeed; // ETH/USD price feed address
-    }
+function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
+    NetworkConfig memory sepoliaConfig = NetworkConfig({
+        priceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306
+    });
+    return sepoliaConfig;
+}
 
-    function getSepoliaEthConfig() public pure returns (NetworkConfig memory){
-        NetworkConfig memory sepoliaConfig = NetworkConfig({
-            priceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306
-        });
-        return sepoliaConfig;
-    }
+function getAnvilEthConfig() public pure returns (NetworkConfig memory) {
 
-    function getAnvilEthConfig() public pure returns (NetworkConfig memory){
-        
-    }
+}
 ```
 
 We decided to structure the information we need depending on the chain we are testing on. We use a `struct` to hold this information for every chain. You might think that we could have gotten away with a simple `address variable` but that changes if we need to store multiple addresses or even more blockchain-specific information.
@@ -65,20 +64,20 @@ First of all, we need to be aware of the chain we are using. We can do this in t
 
 Update the `HelperConfig` as follows:
 
-```javascript
-    NetworkConfig public activeNetworkConfig;
+```solidity
+NetworkConfig public activeNetworkConfig;
 
-    struct NetworkConfig {
-        address priceFeed; // ETH/USD price feed address
-    }
+struct NetworkConfig {
+    address priceFeed; // ETH/USD price feed address
+}
 
-    constructor(){
-        if (block.chainid == 11155111) {
-            activeNetowrkConfig = getSepoliaEthConfig();
-        } else {
-            activeNetowrkConfig = getAnvilEthConfig();
-        }
+constructor(){
+    if (block.chainid == 11155111) {
+        activeNetworkConfig = getSepoliaEthConfig();
+    } else {
+        activeNetworkConfig = getAnvilEthConfig();
     }
+}
 ```
 
 As you can see, we've defined a new state variable, called activeNetworkConfig which will be the struct that gets queried for blockchain-specific information. We will check the `block.chainId` at the constructor level, and depending on that value we select the appropriate config.
@@ -91,13 +90,12 @@ Let's update the `DeployFundMe.s.sol` to use our newly created `HelperConfig`.
 
 Add the following before the `vm.startBroadcast` line inside the `run` function:
 
-```javascript
-        // The next line runs before the vm.startBroadcast() is called
-        // This will not be deployed because the `real` signed txs are happening
-        // between the start and stop Broadcast lines.
-        HelperConfig helperConfig = new HelperConfig();
-        address ethUsdPriceFeed = helperConfig.activeNetworkConfig();
-
+```solidity
+// The next line runs before the vm.startBroadcast() is called
+// This will not be deployed because the `real` signed txs are happening
+// between the start and stop Broadcast lines.
+HelperConfig helperConfig = new HelperConfig();
+address ethUsdPriceFeed = helperConfig.activeNetworkConfig();
 ```
 
 Run the `forge test --fork-url $SEPOLIA_RPC_URL` command to check everything is fine. All tests should pass.

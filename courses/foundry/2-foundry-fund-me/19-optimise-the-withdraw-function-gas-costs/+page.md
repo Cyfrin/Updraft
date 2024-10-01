@@ -1,5 +1,6 @@
 ---
 title: Optimise the withdraw function gas costs
+---
 
 _Follow along with this video:_
 
@@ -16,13 +17,17 @@ Open a new terminal, and type `anvil` to start a new `anvil` instance.
 
 Deploy the `fundMe` contract using the following script:
 
-`forge script DeployFundMe --rpc-url http://127.0.0.1:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --broadcast`
+```bash
+forge script DeployFundMe --rpc-url http://127.0.0.1:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --broadcast`
+```
 
 Copy the `fundMe` contract address.
 
 Run the following command:
-
-`cast code 0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9` (replace the address here with the address of your newly deployed `fundMe` contract)
+(replace the address here with the address of your newly deployed `fundMe` contract)
+```bash
+cast code 0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9`
+```
 
 Ok, the output looks like an extremely big chunk of random numbers and letters. Perfect!
 
@@ -62,17 +67,17 @@ We start with a `for` loop, that is initializing a variable called `funderIndex`
 
 Let's rewrite the function. Add the following to your `FundMe.sol`:
 
-```javascript
+```solidity
 function cheaperWithdraw() public onlyOwner {
     uint256 fundersLength = s_funders.length;
     for(uint256 funderIndex = 0; funderIndex < fundersLength; funderIndex++) {
-            address funder = s_funders[funderIndex];
-            s_addressToAmountFunded[funder] = 0;
+        address funder = s_funders[funderIndex];
+        s_addressToAmountFunded[funder] = 0;
     }
-        s_funders = new address[](0);
+    s_funders = new address[](0);
 
-        (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
-        require(callSuccess, "Call failed");
+    (bool callSuccess,) = payable(msg.sender).call{value: address(this).balance}("");
+    require(callSuccess, "Call failed");
 }
 ```
 
@@ -86,27 +91,27 @@ Let's find out how much we saved. Open `FundMe.t.sol`.
 
 Let's copy the `testWithdrawFromMultipleFunders` function and replace the `withdraw` function with `cheaperWithdraw`. 
 
-```
-    function testWithdrawFromMultipleFundersCheaper() public funded {
-        uint160 numberOfFunders = 10;
-        uint160 startingFunderIndex = 1;
-        for (uint160 i = startingFunderIndex; i < numberOfFunders + startingFunderIndex; i++) {
-            // we get hoax from stdcheats
-            // prank + deal
-            hoax(address(i), SEND_VALUE);
-            fundMe.fund{value: SEND_VALUE}();
-        }
+```solidity
+function testWithdrawFromMultipleFundersCheaper() public funded {
+    uint160 numberOfFunders = 10;
+    uint160 startingFunderIndex = 1;
+    for (uint160 i = startingFunderIndex; i < numberOfFunders + startingFunderIndex; i++) {
+        // we get hoax from stdcheats
+        // prank + deal
+        hoax(address(i), SEND_VALUE);
+        fundMe.fund{value: SEND_VALUE}();
+    }
 
-        uint256 startingFundMeBalance = address(fundMe).balance;
-        uint256 startingOwnerBalance = fundMe.getOwner().balance;
+    uint256 startingFundMeBalance = address(fundMe).balance;
+    uint256 startingOwnerBalance = fundMe.getOwner().balance;
 
-        vm.startPrank(fundMe.getOwner());
-        fundMe.cheaperWithdraw();
-        vm.stopPrank();
+    vm.startPrank(fundMe.getOwner());
+    fundMe.cheaperWithdraw();
+    vm.stopPrank();
 
-        assert(address(fundMe).balance == 0);
-        assert(startingFundMeBalance + startingOwnerBalance == fundMe.getOwner().balance);
-        assert((numberOfFunders + 1) * SEND_VALUE == fundMe.getOwner().balance - startingOwnerBalance);
+    assert(address(fundMe).balance == 0);
+    assert(startingFundMeBalance + startingOwnerBalance == fundMe.getOwner().balance);
+    assert((numberOfFunders + 1) * SEND_VALUE == fundMe.getOwner().balance - startingOwnerBalance);
 }
 ```
 
@@ -120,4 +125,3 @@ FundMeTest:testWithdrawFromMultipleFundersCheaper() (gas: 534219)
 As you can see, we saved up 929 gas just by caching one variable.
 
 One of the reasons we easily identified this optimization was the use of `s_` in the `s_funders` array declaration. The ability to know, at any time, what comes from storage and what is in memory facilitates this type of optimization. That's why we recommend using the `s_` and `i_` and all upper case for constants, to always know what comes from where. Familiarize yourself with the style guide available [here](https://docs.soliditylang.org/en/v0.8.4/style-guide.html).
-

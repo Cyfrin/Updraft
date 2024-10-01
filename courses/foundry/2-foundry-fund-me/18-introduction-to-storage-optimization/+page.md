@@ -1,5 +1,6 @@
 ---
 title: Introduction to Storage optimization
+---
 
 _Follow along with this video:_
 
@@ -7,7 +8,7 @@ _Follow along with this video:_
 
 ### Optimizing GAS consumption by properly managing Storage
 
-**Storage** is the specific area within the blockchain where data associated with a smart contract is permanently saved. These are the variables that we defined at the top of our contract, before going into functions, also called `state variable` or `global variables`. 
+**Storage** is the specific area within the blockchain where data associated with a smart contract is permanently saved. These are the variables that we defined at the top of our contract, before going into functions, also called **state variables** or **global variables**.
 
 Imagine yourself being in a giant locker room, and in each locker, you have a space of 32 bytes. Each locker (storage space) is numbered/labeled and its number/label acts as the key, in the key-value pair, thus using this number/label we can access what's stored in the locker. Think of state variables as the labels you give to these lockers, allowing you to easily retrieve the information you've stored. But remember, space on this shelf isn't unlimited, and every time you add or remove something, it comes at a computational cost. From the previous lessons, we learned that this computational cost bears the name of `gas`. 
 
@@ -33,7 +34,7 @@ The important aspects are the following:
 
 Now this seems like a lot, but let's go through some examples: (Try to think about how the storage looks before reading the description)
 
-```
+```solidit
 uint256 var1 = 1337;
 uint256 var2 = 9000;
 uint64 var3 = 0;
@@ -43,7 +44,7 @@ How are these stored?
 
 In `slot 0` we have `var1`, in `slot 1` we have `var2`, and in `slot 3` we have `var 3`. Because `var 3` only used 8 bytes, we have 24 bytes left in that slot. Let's try another one:
 
-```
+```solidity
 uint64 var1 = 1337;
 uint128 var2 = 9000;
 bool var3 = true;
@@ -91,23 +92,23 @@ Mappings and Dynamic Arrays can't be stored in between the state variables as we
 
 Make sure that you have the following getter in `FundMe.sol`:
 
-```javascript
-    function getPriceFeed() public view returns (AggregatorV3Interface) {
-        return s_priceFeed;
-    }
+```solidity
+function getPriceFeed() public view returns (AggregatorV3Interface) {
+    return s_priceFeed;
+}
 ```
 
 Please add the following function in your `FundMe.t.sol`:
 
-```javascript
-    function testPrintStorageData() public {
-        for (uint256 i = 0; i < 3; i++) {
-            bytes32 value = vm.load(address(fundMe), bytes32(i));
-            console.log("Vaule at location", i, ":");
-            console.logBytes32(value);
-        }
-        console.log("PriceFeed address:", address(fundMe.getPriceFeed()));
+```solidity
+function testPrintStorageData() public {
+    for (uint256 i = 0; i < 3; i++) {
+        bytes32 value = vm.load(address(fundMe), bytes32(i));
+        console.log("Vaule at location", i, ":");
+        console.logBytes32(value);
     }
+    console.log("PriceFeed address:", address(fundMe.getPriceFeed()));
+}
 ```
 
 In the test above we used a new cheatcode: `vm.load`. Its sole purpose is to load the value found in the provided storage slot of the provided address. Read more about it [here](https://book.getfoundry.sh/cheatcodes/load).
