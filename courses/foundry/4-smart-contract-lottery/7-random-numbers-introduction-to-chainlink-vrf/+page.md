@@ -27,7 +27,7 @@ Go [here](https://docs.chain.link/vrf/v2/subscription/examples/get-a-random-numb
 
 Press on the blue button that says `Create Subscription`. You don't need to provide a project name or an email address, but you can if you want to. 
 
-When you press `Create subscription` you will need to approve the subscription creation. Sign it using your Metamask and wait until you receive the confirmation. You will be asked to sign the message again. If you are not taken to the `Add Funds` page, go to `My Subscriptions` section and click on the id of the subscription you just created, then click on `Actions` and `Fund subscription`. Proceed in funding your subscription.
+When you press `Create subscription` you will need to approve the subscription creation. Sign it using your MetaMask and wait until you receive the confirmation. You will be asked to sign the message again. If you are not taken to the `Add Funds` page, go to `My Subscriptions` section and click on the id of the subscription you just created, then click on `Actions` and `Fund subscription`. Proceed in funding your subscription.
 
 The next step is adding consumers. On the same page, we clicked on the `Actions` button you can find a button called `Add consumer`. You will be prompted with an `Important` message that communicates your `Subscription ID`. That is a very important thing that we'll use in our smart contract.
 
@@ -49,17 +49,16 @@ Build and deploy the contract on Sepolia.
 
 Ignoring the configuration parameters for now let's look through the most important elements of the contract:
 
-```javascript
-    struct RequestStatus {
-        bool fulfilled; // whether the request has been successfully fulfilled
-        bool exists; // whether a requestId exists
-        uint256[] randomWords;
-    }
-    mapping(uint256 => RequestStatus)
-        public s_requests; /* requestId --> requestStatus */
+```solidity
+struct RequestStatus {
+    bool fulfilled; // whether the request has been successfully fulfilled
+    bool exists;    // whether a requestId exists
+    uint256[] randomWords;
+}
 
-    uint256[] public requestIds;
-    uint256 public lastRequestId;
+mapping(uint256 => RequestStatus) public s_requests; // requestId --> requestStatus
+uint256[] public requestIds;
+uint256 public lastRequestId;
 ```
 
 This is the way the contract keeps track of the requests, their status and the `randomWords` provided as a response to the requests. The mapping uses the `requestId` as a key and the details regarding the request are stored inside the `RequestStatus` struct which acts as a mapping value. Given that we can't loop through mappings we will also have a `requestIds` array. We also record the `lastRequestId` for efficiency.
@@ -68,38 +67,38 @@ We will also store the `subscriptionId` as a state variable, this will be checke
 
 The next important piece is the `VRFCoordinatorV2Interface` which is one of the dependencies we import, this [contract](https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/vrf/interfaces/VRFCoordinatorV2Interface.sol) has a lot of methods related to subscription management and requests, but the one we are interested in right now is `requestRandomWords`, this is the function that we need to call to trigger the process of receiving the random words, that we'll use as a source of randomness in our application.
 
-```javascript
+```solidity
 // Assumes the subscription is funded sufficiently.
-    function requestRandomWords()
-        external
-        onlyOwner
-        returns (uint256 requestId)
-    {
-        // Will revert if subscription is not set and funded.
-        requestId = COORDINATOR.requestRandomWords(
-            keyHash,
-            s_subscriptionId,
-            requestConfirmations,
-            callbackGasLimit,
-            numWords
-        );
-        s_requests[requestId] = RequestStatus({
-            randomWords: new uint256[](0),
-            exists: true,
-            fulfilled: false
-        });
-        requestIds.push(requestId);
-        lastRequestId = requestId;
-        emit RequestSent(requestId, numWords);
-        return requestId;
-    }
+function requestRandomWords()
+    external
+    onlyOwner
+    returns (uint256 requestId)
+{
+    // Will revert if subscription is not set and funded.
+    requestId = COORDINATOR.requestRandomWords(
+        keyHash,
+        s_subscriptionId,
+        requestConfirmations,
+        callbackGasLimit,
+        numWords
+    );
+    s_requests[requestId] = RequestStatus({
+        randomWords: new uint256[](0),
+        exists: true,
+        fulfilled: false
+    });
+    requestIds.push(requestId);
+    lastRequestId = requestId;
+    emit RequestSent(requestId, numWords);
+    return requestId;
+}
 ```
 
 This function is the place where we call the `requestRandomWords` on the `VRFCoordinatorV2Interface` which sends us back the `requestId`. We record this `requestId` in the mapping, creating its `RequestStatus`, we push it into the `requestIds` array and update the `lastRequestId` variable. The function returns the `requestId`.
 
 After calling the function above, Chainlink will call your `fulfillRandomWords` function. They will provide the `_requestId` corresponding to your `requestRandomWords` call together with the `_randomWrods`. It updates the `fulfilled` and `randomWords` struct parameters. In real-world applications, this is where the logic happens. If you have to assign some traits to an NFT, roll a dice, draw the raffle winner, etc.
 
-Great! Let's come back to the configuration parameters. The `keyHash` variable represents the gas lane we want to use. Think of those as the maximum gas price you are willing to pay for a request in WEI. It functions as an ID of the off-chain VRF job that runs in response to requests.
+Great! Let's come back to the configuration parameters. The `keyHash` variable represents the gas lane we want to use. Think of those as the maximum gas price you are willing to pay for a request in gwei. It functions as an ID of the off-chain VRF job that runs in response to requests.
 
 ```
 200 gwei Key Hash   0x8af398995b04c28e9951adb9721ef74c74f93e6a478f39e7e0777be13527e7ef

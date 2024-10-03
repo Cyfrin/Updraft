@@ -11,15 +11,15 @@ Continuing from where we left in the last lesson. We've picked the winner, we've
 
 We add the following line inside the `fulfillRandomWords` function:
 
-```javascript
+```solidity
 s_players = new address payable[](0);
 ```
 
-This initializes a new empty array over the existing array, which is another way of saying `we wipe out the existing array`.
+This initializes a new empty array over the existing array, which is another way of saying **we wipe out the existing array**.
 
 Additionally, given that we are starting up a fresh raffle, we also need to bring the `s_lastTimeStamp` to the present time.
 
-```javascript
+```solidity
 s_lastTimeStamp = block.timestamp;
 ```
 

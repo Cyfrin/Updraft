@@ -11,16 +11,15 @@ Great! Let's move on with writing the contract.
 
 Previously we defined the `i_entranceFee` variable. This is the amount the user has to send to enter the raffle. How do we check this?
 
-```javascript
-    function enterRaffle() external payable {
-        require(msg.value >= i_entranceFee, "Not enough ETH sent");
-    }
-
+```solidity
+function enterRaffle() external payable {
+    require(msg.value >= i_entranceFee, "Not enough ETH sent");
+}
 ```
 
-First, we changed the visibility from `public` to `external`. `External` is more gas efficient, and we won't call the `enterRaffle` function internally.
+First, we changed the visibility from `public` to `external`. `external` is more gas efficient, and we won't call the `enterRaffle` function internally.
 
-We used a `require` statement to ensure that the `msg.value` is higher than `i_entranceFee`. If that is false we will yield an error message `"Not enough ETH sent"`.
+We used a `require` statement to ensure that the `msg.value` is higher than `i_entranceFee`. If that is false, we will yield an error message `"Not enough ETH sent"`.
 
 **Note: The `require` statement is used to enforce certain conditions at runtime. If the condition specified in the `require` statement evaluates to `false`, the transaction is reverted, and any changes made to the state within that transaction are undone. This is useful for ensuring that certain prerequisites or validations are met before executing further logic in a smart contract.**
 
@@ -34,16 +33,16 @@ I know we just wrote this using the `require` statement, we did that because `re
 
 We will refactor `enterRaffle`, but before that let's define our custom error. Be mindful of the layout we talked about in the previous lesson
 
-```javascript
+```solidity
 error Raffle_NotEnoughEthSent();
 ```
 Now the `enterRaffle()` function:
 
-```javascript
-    function enterRaffle() external payable {
-        // require(msg.value >= i_entranceFee, "Not enough ETH sent!");
-        if(msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
-    }
+```solidity
+function enterRaffle() external payable {
+    // require(msg.value >= i_entranceFee, "Not enough ETH sent!");
+    if(msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
+}
 ```
 
 You will see that we named the custom error using the `Raffle__` prefix. This is a very good practice that will save you a ton of time when you need to debug a protocol with 20 smart contracts. You will run your tests and then ask yourself `Ok, it failed with this error ... but where does this come from?`. Because you thought ahead and used prefixes in naming your error you won't have that problem! Awesome!
@@ -54,11 +53,11 @@ You will see that we named the custom error using the `Raffle__` prefix. This is
 
 There is no difference between this:
 
-```javascript
+```solidity
 if(msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
 ```
 and this:
-```javascript
+```solidity
 if(msg.value < i_entranceFee) {
     revert Raffle__NotEnoughEthSent();
 }
