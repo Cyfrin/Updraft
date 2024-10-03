@@ -56,7 +56,6 @@ function flashloan(
 
 </details>
 
----
 
 ```js
 // @Audit-Informational: No NATSPEC!
@@ -240,7 +239,6 @@ function functionCallWithValue(address target, bytes memory data, uint256 value)
 
 </details>
 
----
 
 We can see, in the end of the chain of executions, we're hitting a very classic piece of code.
 
@@ -333,7 +331,6 @@ contract MockFlashLoanReceiver {
 
 </details>
 
----
 
 Let's consider this example implementation of executeOperation for a better idea of how funds are handled once borrowed:
 

@@ -18,7 +18,7 @@ _Follow along the course with this video._
 
 ### Overview
 
-Let's look at how what we've built interacts with a wallet. Remember, you can find all the code for this lesson [**here**](https://github.com/Cyfrin/html-fund-me-f23).
+Let's look at how what we've built interacts with a wallet. Remember, you can find all the code for this lesson [**here**](https://github.com/Cyfrin/html-fund-me-cu).
 
 We won't be going over a whole full-stack application here, but the repo above contains a raw front-end you can try to replicate if you would like to challenge yourself.
 
@@ -35,13 +35,13 @@ Now that you've installed Git and created a GitHub in previous lessons, we're go
 **Step 1:** In our terminal use the command:
 
 ```bash
-git clone https://github.com/Cyfrin/html-fund-me-f23.git
+git clone https://github.com/Cyfrin/html-fund-me-cu.git
 ```
 
 **Step 2:** Now we can open this in a new instance of VS Code with:
 
 ```bash
-code html-fund-me-f23
+code html-fund-me-cu
 ```
 
 In order to spin up a local front end, we're going to use an extension called [**Live Server**](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer). Once installed you can simply press the `Go Live` button in the bottom right.

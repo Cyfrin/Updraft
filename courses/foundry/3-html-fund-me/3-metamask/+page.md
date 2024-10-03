@@ -8,7 +8,7 @@ _Follow along the course with this video._
 
 ### Browser Wallets
 
-The first concept we need to grasp when working with a website in Web3 is that of a browser wallet - in our case Metamask. It's through a wallet like Metamask that we are able to interact with the blockchain and the Web3 ecosystem.
+The first concept we need to grasp when working with a website in Web3 is that of a browser wallet - in our case MetaMask. It's through a wallet like MetaMask that we are able to interact with the blockchain and the Web3 ecosystem.
 
 We can gain more insight into how this works by right-clicking our `FundMe` website and selecting `inspect`. You can also open this panel by pressing F12.
 
@@ -26,7 +26,7 @@ As seen in the image, there are some properties of this object which are not the
 
 > Try inspecting a browser without a browser wallet installed. You'll see that `window.ethereum` doesn't exist!
 
-I recommend reading the [**Metamask documentation**](https://docs.metamask.io/guide/) on the window.ethereum object to learn more.
+I recommend reading the [**MetaMask documentation**](https://docs.metamask.io/guide/) on the window.ethereum object to learn more.
 
 ### The Code
 
@@ -78,7 +78,7 @@ This grabs the element of the webpage by the `id` we set and then uses the `onCl
 
 ### Connecting in Action
 
-Clicking on the `Connect` button on our `html-fund-me` front end, should trigger our Metamask to pop up. From there we can select an account and click connect.
+Clicking on the `Connect` button on our `html-fund-me` front end, should trigger our MetaMask to pop up. From there we can select an account and click connect.
 
 ::image{src='/html-fundme/2-metamask/metamask3.png' style='width: 75%; height: auto;'}
 
@@ -114,7 +114,7 @@ As before, we're checking for the existence of `window.ethereum` and then .. def
 
 `ethers` is a javascript package that simplifies the use and interacation of browser wallets with our code.
 
-What `ethers.BrowserProvider(window.ethereum)` is doing, is deriving the providers Metamask is injecting into our `window.ethereum` object. The providers are the RPC URLs associated with the networks in our Metamask account.
+What `ethers.BrowserProvider(window.ethereum)` is doing, is deriving the providers MetaMask is injecting into our `window.ethereum` object. The providers are the RPC URLs associated with the networks in our MetaMask account.
 
 ::image{src='/html-fundme/2-metamask/metamask5.png' style='width: 75%; height: auto;'}
 
@@ -122,17 +122,17 @@ When we call functions on our front-end. We're effectively making API calls via 
 
 ### Trying it Out
 
-In order to get some experience trying this ourselves, we'll need to set up the backend of our project and import our anvil account into Metamask.
+In order to get some experience trying this ourselves, we'll need to set up the backend of our project and import our anvil account into MetaMask.
 
 Open your foundry-fund-me directory in VS Code and in your terminal run `anvil`.
 
-This should spin up a local test chain for you. Copy one of the mock private keys it provides you in the terminal, we'll need this to import the account into our Metamask wallet.
+This should spin up a local test chain for you. Copy one of the mock private keys it provides you in the terminal, we'll need this to import the account into our MetaMask wallet.
 
 With this chain running, open a second terminal and run the command `make deploy`.
 
 This will compile and deploy our FundMe project onto our locally running blockchain. Assuming you've not run into errors. That's all that's required to set up the back end.
 
-Return to Metamask, and within your network selector choose `Add Network`.
+Return to MetaMask, and within your network selector choose `Add Network`.
 
 ::image{src='/html-fundme/2-metamask/metamask6.png' style='width: 75%; height: auto;'}
 
@@ -144,17 +144,17 @@ In the subsequent page, inter your local network information as follows and clic
 
 Next, we need to add one of our `anvil` accounts to the wallet!
 
-Click the account displayed at the top of your Metamask and select `Add an account or hardware wallet` from the bottom of the list.
+Click the account displayed at the top of your MetaMask and select `Add an account or hardware wallet` from the bottom of the list.
 
 You'll be prompted to `add a new account`, `import an account`, or `add a hardware wallet`. Select `import an account` and enter your previously copied mock private key into the field provided.
 
 ::image{src='/html-fundme/2-metamask/metamask7.png' style='width: 75%; height: auto;'}
 
-ALRIGHT. With all the set up done, we should be able to select our `anvil` chain in Metamask, then select the account we just added and click the `connect` button.
+ALRIGHT. With all the set up done, we should be able to select our `anvil` chain in MetaMask, then select the account we just added and click the `connect` button.
 
 If we click `getBalance` we should have `0` returned in our console reflecting the balance of our deployed contract. At this point, we should be able to enter an amount and click `fund`.
 
-Our Metamask pops up and has us sign the transaction, funding the contract with the amount we've entered!
+Our MetaMask pops up and has us sign the transaction, funding the contract with the amount we've entered!
 
 ```js
 async function fund() {
@@ -184,11 +184,11 @@ The function being called when we click this button is very similar in structure
 - define our `provider`
 - acquire the `signer` (account credentials)
 - define the contract/target of our call
-  - these are hardcoded for simplification purposes in this example and can be found in the [**constants.js**](https://github.com/Cyfrin/html-fund-me-f23/blob/main/constants.js) file of our [**html-fund-me repo**](https://github.com/Cyfrin/html-fund-me-f23).
+  - these are hardcoded for simplification purposes in this example and can be found in the [**constants.js**](https://github.com/Cyfrin/html-fund-me-cu/blob/main/constants.js) file of our [**html-fund-me repo**](https://github.com/Cyfrin/html-fund-me-cu).
 - submit transaction to the target contract with provided arguments.
 
 > **Note:** I'll stress again that this call being made by the front-end does **not** give the front-end access to private key data. The transaction is always sent to the wallet for confirmation/signing.
 
 ### Wrap Up
 
-We've learnt a lot about how browser wallets like Metamask work under the hood and actually send our transactions to the blockchain. Great work - we've more low level concepts to cover in our next lesson.
+We've learnt a lot about how browser wallets like MetaMask work under the hood and actually send our transactions to the blockchain. Great work - we've more low level concepts to cover in our next lesson.

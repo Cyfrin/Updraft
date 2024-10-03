@@ -36,7 +36,7 @@ REVERT
 - Yes! Technically it does. In fact, I challange you to go add this to our contract and see for yourself, this check will actually be removed from our bytecode!
 
 ```js
-contructor payable () {}
+constructor() payable {}
 ```
 
 >**Note:** Just because it saves gas, doesn't mean it's the best choice. The msg.value check brings some valuable security functionality such as not accidentally locking a bunch of funds on contract creation. Consider your optimizations carefully!

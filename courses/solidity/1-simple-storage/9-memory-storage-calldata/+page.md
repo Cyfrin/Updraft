@@ -53,7 +53,7 @@ In our contract, the variable `myFavoriteNumber` is a storage variable. Variable
 
 ```solidity
 contract MyContract {
-    uint256 favoriteNumber; //this is a storage variable
+    uint256 favoriteNumber; // this is a storage variable
 };
 ```
 
@@ -73,7 +73,7 @@ In Solidity, a `string` is recognized as an **array of bytes**. On the other han
 > You can't use the `storage` keyword for variables inside a function. Only `memory` and `calldata` are allowed here, as the variable only exists temporarily.
 
 ```solidity
-function addPerson(string memory _name, uitn256 _favoriteNumber) public {  //cannot use storage as input parameters
+function addPerson(string memory _name, uitn256 _favoriteNumber) public {  // cannot use storage as input parameters
     uint256 test = 0; // variable here can be stored in memory or stack
     listOfPeople.push(Person(_favoriteNumber, _name));
 }

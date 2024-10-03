@@ -112,7 +112,6 @@ verify:
 
 </details>
 
----
 
 Now, by running `make anvil` (open a new terminal once your chain has started!) followed by `make deploy`...
 

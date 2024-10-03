@@ -121,7 +121,6 @@ contract Example {
 
 </details>
 
----
 
 The test function at the bottom of the contract shows how everything ultimately comes together.
 

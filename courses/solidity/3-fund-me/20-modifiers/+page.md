@@ -12,7 +12,7 @@ In this lesson, we will explore **modifiers** and how they can simplify code wri
 
 If we build a contract with multiple _administrative functions_, that should only be executed by the contract owner, we might repeatedly check the caller identity:
 
-```js
+```solidity
 require(msg.sender == owner, "Sender is not owner");
 ```
 
@@ -24,7 +24,7 @@ Modifiers in Solidity allow embedding **custom lines of code** within any functi
 
 Here's how to create a modifier:
 
-```js
+```solidity
 modifier onlyOwner {
     require(msg.sender == owner, "Sender is not owner");
     _;
@@ -40,7 +40,7 @@ The underscore `_` placed in the body is a placeholder for the modified function
 
 For example, the `onlyOwner` modifier can be applied to the `withdraw` function like this:
 
-```js
+```solidity
 function withdraw(uint amount) public onlyOwner {
     // Function logic
 }

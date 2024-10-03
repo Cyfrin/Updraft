@@ -777,7 +777,6 @@ View the report in the dropdown below, please know it's quiet long.
 
 </details>
 
----
 
 The final step, once the template has been filled out is to run our CLI command
 

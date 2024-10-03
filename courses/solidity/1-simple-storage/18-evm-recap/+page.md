@@ -11,10 +11,10 @@ In this section, we'll quickly summarize the lessons from 1 to 9 and learn about
 ### EVM
 
 EVM stands for _Ethereum Virtual Machine_. It's a decentralized computational engine that executes smart contracts.
-Any contract that it's written in Solidity, can be deployed to any EVM-compatible blockchain. Examples of such blockchains and Layer 2 solutions include **Ethereum**, **Polygon**, **Arbitram**, **Optimism**, and **Zksync**.
+Any contract that it's written in Solidity, can be deployed to any EVM-compatible blockchain. Examples of such blockchains and Layer 2 solutions include **Ethereum**, **Polygon**, **Arbitrum**, **Optimism**, and **ZKsync**.
 
 > 🚧 **WARNING**:br
-> Although a blockchain like Zksync may be EVM-compatible, it is essential to verify that all Solidity keywords are supported
+> Although a blockchain like ZKsync may be EVM-compatible, it is essential to verify that all Solidity keywords are supported
 
 ### Contract Setup
 

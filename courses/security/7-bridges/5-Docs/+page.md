@@ -38,7 +38,6 @@ The bridge operator is in charge of signing withdrawal requests submitted by use
 
 </details>
 
----
 
 The docs seem thorough, but unless we have experience with bridges, or similar protocols this is pretty confusing. This would be the point in a private audit that I would ask for some `protocol diagrams`.
 

@@ -233,7 +233,6 @@ contract MoodNFTTest is Test {
 
 </details>
 
----
 
 With these adjustments, our tests should function identically to before.
 

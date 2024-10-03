@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 Welcome to Foundry 101. Throughout this course, you will acquire the skills you’ll need to start developing your smart contracts and protocols using the best web3 development tools and frameworks like **_Chainlink_**, **_Alchemy_**, and **_Foundry_**.
 
-### What is foundry?
+### What is Foundry?
 
 Foundry is a relatively new but rapidly growing smart contract development framework known for its efficiency and modularity. The best short description of this powerful tool can be found in the [Foundry Book](https://book.getfoundry.sh/):
 

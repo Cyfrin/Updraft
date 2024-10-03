@@ -78,7 +78,6 @@ Let's write up our second `high severity` finding! Compare your write up to mine
 
 </details>
 
----
 
 ### Wrap Up
 

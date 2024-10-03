@@ -93,7 +93,6 @@ It allows the minimal account contract to interact with other dapps by sending t
 
 </details>
 
----
 
 <summary>2. Why do we need the `requireFromEntryPointOrOwner` modifier?</summary>
 
@@ -107,7 +106,6 @@ It ensures that only the EntryPoint contract or the owner of the minimal account
 
 </details>
 
----
 
 <summary>3. How does the `receive` function enable our contract to accept payments?</summary>
 
@@ -121,6 +119,5 @@ This is a special function in Solidity that allows the contract to accept plain 
 
 </details>
 
----
 
 When you are ready, move on to the next lesson.

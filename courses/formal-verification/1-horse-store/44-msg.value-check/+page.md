@@ -141,7 +141,6 @@ _Follow along with this video:_
 
 </details>
 
----
 
 ### Non-Payable Constructor Check
 

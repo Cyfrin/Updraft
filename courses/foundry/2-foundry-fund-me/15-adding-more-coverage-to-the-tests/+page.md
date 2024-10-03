@@ -1,5 +1,6 @@
 ---
 title: Adding more coverage to the tests
+---
 
 _Follow along with this video:_
 
@@ -11,15 +12,15 @@ In the previous lesson, we tested if the `s_addressToAmountFunded` is updated co
 
 Add the following test to your `FundMe.t.sol`:
 
-```javascript
-    function testAddsFunderToArrayOfFunders() public {
-        vm.startPrank(alice);
-        fundMe.fund{value: SEND_VALUE}();
-        vm.stopPrank();
+```solidity
+function testAddsFunderToArrayOfFunders() public {
+    vm.startPrank(alice);
+    fundMe.fund{value: SEND_VALUE}();
+    vm.stopPrank();
 
-        address funder = fundMe.getFunder(0);
-        assertEq(funder, alice);
-    }
+    address funder = fundMe.getFunder(0);
+    assertEq(funder, alice);
+}
 ```
 
 What's happening here? We start with our user `alice` who calls `fundMe.fund` in order to fund the contract. Then we use the `getter` function we created in the previous lesson to query what is registered inside the `funders` array at index `0`. We then use the `assertEq` cheatcode to compare the address we queried against `alice`.
@@ -32,15 +33,15 @@ Moving on, we should test the `withdraw` function. Let's check that only the own
 
 Add the following test to your `FundMe.t.sol`:
 
-```javascript
-    function testOnlyOwnerCanWithdraw() public {
-        vm.prank(alice);
-        fundMe.fund{value: SEND_VALUE}();
+```solidity
+function testOnlyOwnerCanWithdraw() public {
+    vm.prank(alice);
+    fundMe.fund{value: SEND_VALUE}();
 
-        vm.expectRevert();
-        vm.prank(alice);
-        fundMe.withdraw();
-    }
+    vm.expectRevert();
+    vm.prank(alice);
+    fundMe.withdraw();
+}
 ```
 
 What's happening here? We start with our user `alice` who calls `fundMe.fund` in order to fund the contract. We then use Alice's address to try and withdraw. Given that Alice is not the owner of the contract, it should fail. That's why we are using the `vm.expectRevert` cheatcode. 
@@ -53,24 +54,24 @@ As you can see, in both `testAddsFunderToArrayOfFunders` and `testOnlyOwnerCanWi
 
 Add the following modifier to your `FundMe.t.sol`:
 
-```javascript
-    modifier funded() {
-        vm.prank(alice);
-        fundMe.fund{value: SEND_VALUE}();
-        assert(address(fundMe).balance > 0);
-        _;
-    }
+```solidity
+modifier funded() {
+    vm.prank(alice);
+    fundMe.fund{value: SEND_VALUE}();
+    assert(address(fundMe).balance > 0);
+    _;
+}
 ```
 
 We first use the `vm.prank` cheatcode to signal the fact that the next transaction will be called by `alice`. We call `fund` and then we assert that the balance of the `fundMe` contract is higher than 0, if true, it means that Alice's transaction was successful. Every single time we need our contract funded we can use this modifier to do it.
 
 Refactor the previous test as follows:
 
-```javascript
-    function testOnlyOwnerCanWithdraw() public funded {
-        vm.expectRevert();
-        fundMe.withdraw();
-    }
+```solidity
+function testOnlyOwnerCanWithdraw() public funded {
+    vm.expectRevert();
+    fundMe.withdraw();
+}
 ```
 
 Slim and efficient!
@@ -79,10 +80,10 @@ Ok, we've tested that a non-owner cannot withdraw. But can the owner withdraw?
 
 To test this we will need a new getter function. Add the following to the `FundMe.sol` file next to the other getter functions:
 
-```javascript
-    function getOwner() public view returns (address) {
-        return i_owner;
-    }
+```solidity
+function getOwner() public view returns (address) {
+    return i_owner;
+}
 ```
 Make sure to make `i_owner` private.
 
@@ -97,25 +98,26 @@ The arrange-act-assert (AAA) methodology is one of the simplest and most univers
 
 We will start our test as usual:
 
-```javascript
+```solidity
 function testWithdrawFromASingleFunder() public funded {
+}
 ```
 
 Now we are in the first stage of the `AAA` methodology: `Arrange`
 
 We first need to check the initial balance of the owner and the initial balance of the contract.
 
-```javascript
-        uint256 startingFundMeBalance = address(fundMe).balance;
-        uint256 startingOwnerBalance = fundMe.getOwner().balance;
+```solidity
+uint256 startingFundMeBalance = address(fundMe).balance;
+uint256 startingOwnerBalance = fundMe.getOwner().balance;
 ```
 
 We have what we need to continue with the `Act` stage.
 
-```javascript
-        vm.startPrank(fundMe.getOwner());
-        fundMe.withdraw();
-        vm.stopPrank();
+```solidity
+vm.startPrank(fundMe.getOwner());
+fundMe.withdraw();
+vm.stopPrank();
 ```
 Our action stage is comprised of pranking the owner and then calling `withdraw`.
 
@@ -123,15 +125,14 @@ We have reached our final testing part, the `Assert` stage.
 
 We need to find out the new balances, both for the contract and the owner. We need to check if these match the expected numbers:
 
-```javascript
-        uint256 endingFundMeBalance = address(fundMe).balance;
-        uint256 endingOwnerBalance = fundMe.getOwner().balance;
-        assertEq(endingFundMeBalance, 0);
-        assertEq(
-            startingFundMeBalance + startingOwnerBalance,
-            endingOwnerBalance
-        );
-    }
+```solidity
+uint256 endingFundMeBalance = address(fundMe).balance;
+uint256 endingOwnerBalance = fundMe.getOwner().balance;
+assertEq(endingFundMeBalance, 0);
+assertEq(
+    startingFundMeBalance + startingOwnerBalance,
+    endingOwnerBalance
+);
 ```
 
 The `endingFundMeBalance` should be `0`, because we just withdrew everything from it. The `owner`'s balance should be the `startingFundMeBalance + startingOwnerBalance` because we withdrew the `fundMe` starting balance.
@@ -146,28 +147,28 @@ Ok, we've tested that the owner can indeed `withdraw` when the `fundMe` contract
 
 Put the following test in your `FundMe.t.sol`:
 
-```javascript
-    function testWithdrawFromMultipleFunders() public funded {
-        uint160 numberOfFunders = 10;
-        uint160 startingFunderIndex = 1;
-        for (uint160 i = startingFunderIndex; i < numberOfFunders + startingFunderIndex; i++) {
-            // we get hoax from stdcheats
-            // prank + deal
-            hoax(address(i), SEND_VALUE);
-            fundMe.fund{value: SEND_VALUE}();
-        }
-
-        uint256 startingFundMeBalance = address(fundMe).balance;
-        uint256 startingOwnerBalance = fundMe.getOwner().balance;
-
-        vm.startPrank(fundMe.getOwner());
-        fundMe.withdraw();
-        vm.stopPrank();
-
-        assert(address(fundMe).balance == 0);
-        assert(startingFundMeBalance + startingOwnerBalance == fundMe.getOwner().balance);
-        assert((numberOfFunders + 1) * SEND_VALUE == fundMe.getOwner().balance - startingOwnerBalance);
+```solidity
+function testWithdrawFromMultipleFunders() public funded {
+    uint160 numberOfFunders = 10;
+    uint160 startingFunderIndex = 1;
+    for (uint160 i = startingFunderIndex; i < numberOfFunders + startingFunderIndex; i++) {
+        // we get hoax from stdcheats
+        // prank + deal
+        hoax(address(i), SEND_VALUE);
+        fundMe.fund{value: SEND_VALUE}();
     }
+
+    uint256 startingFundMeBalance = address(fundMe).balance;
+    uint256 startingOwnerBalance = fundMe.getOwner().balance;
+
+    vm.startPrank(fundMe.getOwner());
+    fundMe.withdraw();
+    vm.stopPrank();
+
+    assert(address(fundMe).balance == 0);
+    assert(startingFundMeBalance + startingOwnerBalance == fundMe.getOwner().balance);
+    assert((numberOfFunders + 1) * SEND_VALUE == fundMe.getOwner().balance - startingOwnerBalance);
+}
 ```
 
 That seems like a lot! Let's go through it.

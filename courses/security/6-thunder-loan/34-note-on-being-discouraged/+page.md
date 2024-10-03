@@ -15,7 +15,6 @@ _Follow along with the video lesson:_
 
 </details>
 
----
 
 Having just gone through one of the major functions in Thunder Loan, and still finding nothing juicy, we may start to feel discouraged again.
 

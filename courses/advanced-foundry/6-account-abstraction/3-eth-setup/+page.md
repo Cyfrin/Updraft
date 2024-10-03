@@ -84,7 +84,6 @@ Next, we need to know what to put in our contract. Well, we know that we are wor
 
 </details>
 
----
 
 From this information, we know that we will need some specific functions to make this happen. [Let's head over to the EIP](https://eips.ethereum.org/EIPS/eip-4337) and see what we need.
 

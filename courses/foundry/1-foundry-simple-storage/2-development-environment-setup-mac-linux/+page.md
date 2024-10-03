@@ -23,7 +23,7 @@ You can open up multiple terminals at the same time running different shells ran
 
 Use the `+` button to create a new terminal or the trash button to kill the current terminal.
 
-Whether you are learning **foundry** for development work or security work, moving fast is one of the keys to efficiency. VS Code is very versatile in terms of keyboard shortcuts, you can learn more [here](https://code.visualstudio.com/docs/getstarted/keybindings).
+Whether you are learning **Foundry** for development work or security work, moving fast is one of the keys to efficiency. VS Code is very versatile in terms of keyboard shortcuts, you can learn more [here](https://code.visualstudio.com/docs/getstarted/keybindings).
 
 ### Git installation
 

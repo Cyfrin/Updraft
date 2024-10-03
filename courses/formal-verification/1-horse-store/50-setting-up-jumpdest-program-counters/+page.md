@@ -154,7 +154,6 @@ Alright, let's keep going!
 
 </details>
 
----
 
 Let's see if we can determine which JUMPDEST we're working with first, based on what it does.
 

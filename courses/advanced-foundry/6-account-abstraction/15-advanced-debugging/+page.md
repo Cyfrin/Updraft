@@ -154,7 +154,6 @@ Before we move on, take a look at the review questions. Move on to the next less
 
 </details>
 
----
 
 <summary>2. What modification was made to the vm.getNonce function in the generateSignedUserOperation function?</summary>
 
@@ -168,4 +167,3 @@ It was modified to subtract 1 from the nonce value. This change ensures that the
 
 </details>
 
----

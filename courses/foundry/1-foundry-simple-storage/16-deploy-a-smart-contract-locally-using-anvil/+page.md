@@ -26,12 +26,12 @@ Open the newly created file. Here we'll write a solidity script for deploying ou
 
 Type the following:
 
-```javaScript
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
 
-contract DeploySimpleStorage{
+contract DeploySimpleStorage {
     
 }
 ```
@@ -46,7 +46,7 @@ For it to be considered a Foundry script and to be able to access the extended f
 
 Furthermore, to be able to deploy `SimpleStorage` we also need to import it by typing `import {SimpleStorage} from "../src/SimpleStorage.sol";`
 
-```javaScript
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
@@ -61,7 +61,7 @@ contract DeploySimpleStorage is Script {
 
 Every script needs a main function, which, according to the best practice linked above is called `run`. Whenever you run `forge script` this is the function that gets called.
 
-```
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.19;
@@ -98,7 +98,7 @@ We end the function with `return simpleStorage;`.
 
 Please select the `Anvil` terminal and press `CTRL(CMD) + C` to stop it. Now run the following command:
 
-```
+```bash
 forge script script/DeploySimpleStorage.s.sol
 ```
 
@@ -108,7 +108,7 @@ If you want to further extend your knowledge about scripting please go [here](ht
 
 You should get the following output:
 
-```
+```text
 [⠆] Compiling...
 [⠔] Compiling 2 files with 0.8.19
 [⠒] Solc 0.8.19 finished in 1.08s
@@ -128,13 +128,13 @@ If the RPC URL is not specified, Foundry automatically launches an Anvil instanc
 
 Run the `anvil` command in the terminal, open up a new terminal and type the following:
 
-```
+```bash
 forge script script/DeploySimpleStorage.s.sol --rpc-url http://127.0.0.1:8545
 ```
 
 To get the following output:
 
-```
+```text
 No files changed, compilation skipped
 EIP-3855 is not supported in one or more of the RPCs used.
 Unsupported Chain IDs: 31337.
@@ -172,7 +172,7 @@ Our contract is now successfully deployed! Fantastic!
 
 Switch to the `anvil` terminal where you'll see:
 
-```
+```text
     Transaction: 0x73eb9fb4ef7b159e03c50d669c42e2ec4eeaa9358bea0a710cb07168e5192570
     Contract created: 0x5fbdb2315678afecb367f032d93f642f64180aa3
     Gas used: 357088

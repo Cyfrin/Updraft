@@ -59,4 +59,4 @@ By leveraging AI and discussion forums, you can gain a deeper understanding of c
 
 ### 🧑‍💻 Test yourself
 
-1. 📕 Dive deeper into the `getVersion` function by asking AI three more questions about it
+1. 📕 Delve deeper into the `getVersion` function by asking AI three more questions about it

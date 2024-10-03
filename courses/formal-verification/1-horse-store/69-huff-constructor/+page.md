@@ -749,7 +749,6 @@ I'll keep a running reminder of our current total contract state at the top of e
 
 </details>
 
----
 
 Alright! We're nearly done, the last bit outstanding is our contract's constructor.
 

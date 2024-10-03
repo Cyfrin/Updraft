@@ -36,7 +36,6 @@ The command would look something like this:
 
 ```bash
 curl -L https://foundry.paradigm.xyz | bash
-
 ```
 
 Hit `Enter` after pasting this in your terminal.
@@ -73,7 +72,8 @@ Try typing `forge --version` into your terminal. Have you received an unwelcome 
 Note: Most of the time the `bashrc` file gets loaded automatically. However, if this doesn't apply to your setup, the following lines can add the required command to the end of your `Bash profile`. This will ensure that your `bashrc` file loads by default.
 
 ```bash
-cd ~echo 'source /home/user/.bashrc' >> ~/.bash_profile
+cd ~
+echo 'source /home/user/.bashrc' >> ~/.bash_profile
 ```
 
 > this depends on your operating system, please check foundry docs to see detailed instructions.

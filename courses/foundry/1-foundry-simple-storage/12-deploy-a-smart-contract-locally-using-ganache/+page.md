@@ -21,7 +21,7 @@ You now have access to 10 test addresses funded with 10_000 ETH each, with their
 
 This testnet node always listens on `127.0.0.1:8545` this will be our `RPC_URL` parameter when we deploy smart contracts here. More on this later!
 
-More info about Anvil is available [here](https://book.getfoundry.sh/reference/anvil/)](https://book.getfoundry.sh/reference/anvil/).
+More info about Anvil is available [here](https://book.getfoundry.sh/reference/anvil/).
 
 Please press `Ctrl/CMD + C` to close Anvil.
 
@@ -78,7 +78,7 @@ To send a transaction to your custom blockchain, you need to add it as a network
 
    Block explorer URL: - (we don't have a block explorer for our newly created blockchain, which will most likely disappear when we close the VS Code / Ganache app)
 
-Great! Now that we configured our local network, the next step is to add one of the accounts available in Ganche or Anvil into our Metamask. [This is done as follows](https://support.metamask.io/hc/en-us/articles/360015489331-How-to-import-an-account#h_01G01W07NV7Q94M7P1EBD5BYM4):
+Great! Now that we configured our local network, the next step is to add one of the accounts available in Ganche or Anvil into our MetaMask. [This is done as follows](https://support.metamask.io/hc/en-us/articles/360015489331-How-to-import-an-account#h_01G01W07NV7Q94M7P1EBD5BYM4):
 
 1. Click the account selector at the top of your wallet.
 
@@ -90,4 +90,4 @@ Great! Now that we configured our local network, the next step is to add one of 
 
 **NOTE: Do not use this account for anything else, do not interact with it or send things to it on mainnet or any other real blockchain, use it locally, for testing purposes. Everyone has access to it.**
 
-Next up we shall talk more about adding a new network to Metamask.
+Next up we shall talk more about adding a new network to MetaMask.

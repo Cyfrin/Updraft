@@ -11,7 +11,7 @@ In this lesson, we are going to introduce the concept of **inheritance** and **o
 ### Inheritance
 
 We are going to enhance the `SimpleStorage` contract by adding a new functionality: the ability to add five (5) to the stored `favoriteNumber`.
-To achieve this, we could duplicate the existing `SimpleStorage` contract and make changes to the new version. However, this approach leads to redundant code. A better practice could be to utilize **inheritance**, wich is the mechanism that allows the `AddFiveStorage` contract to derive all the functionalities of `SimpleStorage`.
+To achieve this, we could duplicate the existing `SimpleStorage` contract and make changes to the new version. However, this approach leads to redundant code. A better practice could be to utilize **inheritance**, which is the mechanism that allows the `AddFiveStorage` contract to derive all the functionalities of `SimpleStorage`.
 
 Let's begin by creating a new file `AddFiveStorage.sol` and name-importing `SimpleStorage.sol`:
 

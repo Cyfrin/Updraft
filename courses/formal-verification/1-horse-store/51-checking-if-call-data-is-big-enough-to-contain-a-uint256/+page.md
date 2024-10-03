@@ -156,7 +156,6 @@ _Follow along with this video:_
 
 </details>
 
----
 
 Ok, so what happens in our code when we reach jump dest 2?
 

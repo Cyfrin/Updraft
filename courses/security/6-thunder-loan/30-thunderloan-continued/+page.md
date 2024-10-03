@@ -24,7 +24,6 @@ function deposit(IERC20 token, uint256 amount) external revertIfZero(amount) rev
 
 </details>
 
----
 
 The first thing the `deposit` function does is leverage the `s_tokenToAssetToken` mapping to acquire the `AssetToken` paired with the passed token parameter. Remember, these `asset tokens` ultimately represent how much of the pool the depositer owns as a result of their deposits.
 

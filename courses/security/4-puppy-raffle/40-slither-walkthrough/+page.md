@@ -136,7 +136,6 @@ payable(msg.sender).sendValue(entranceFee);
   - `_tokenOwners.set(tokenId,to) (lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol#399)`
   </details>
 
----
 
 You can remove these warning from your `Slither` report by navigating to the respective lines for each call in the library and adding:
 
@@ -327,7 +326,6 @@ We called this one out as an informational/gas finding as well. You can disable 
     - `(success) = feeAddress.call{value: feesToWithdraw}() (src/PuppyRaffle.sol#167)`
     </details>
 
----
 
 Much like Assembly, `Slither` doesn't like low level calls. We'll be ignoring these for now, but you can remove them from your warnings by applying this line above the described calls.
 

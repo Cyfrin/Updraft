@@ -237,7 +237,6 @@ contract DSCEngine is ReentrancyGuard {
 
 </details>
 
----
 
 Welcome back! I'm excited to keep going. So far our DSCEngine.sol has quite a bit of functionality already. We've the ability to mint DSC, we can deposit collateral, check account information and more.
 

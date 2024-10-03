@@ -35,7 +35,6 @@ contract FailureToInitialize is Initializable {
 
 </details>
 
----
 
 The example here is very simple, but it should illustrate the potential impact of failing to initialize. Go ahead and compile and deploy `FailureToInitialize.sol`
 

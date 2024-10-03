@@ -123,7 +123,6 @@ If we rerun our test we can see.. Our test passes! The second 100 players are pa
 
 </details>
 
----
 
 ### Wrap Up
 

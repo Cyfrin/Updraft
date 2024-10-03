@@ -1,5 +1,6 @@
 ---
 title: Foundry tests cheatcodes
+---
 
 _Follow along with this video:_
 
@@ -23,11 +24,11 @@ To test point 1 we will use one of the most important cheatcodes: `expectRevert`
 
 Open `FundMe.t.sol` and add the following function:
 
-```javascript
-    function testFundFailsWIthoutEnoughETH() public {
-        vm.expectRevert(); // <- The next line after this one should revert! If not test fails.
-        fundMe.fund(); // <- We send 0 value
-    }
+```solidity
+function testFundFailsWIthoutEnoughETH() public {
+    vm.expectRevert(); // <- The next line after this one should revert! If not test fails.
+    fundMe.fund();     // <- We send 0 value
+}
 ```
 We are attempting to fund the contract with `0` value, it reverts and our test passes.
 
@@ -40,28 +41,28 @@ Now that we made those two variables private, we need to write some getters for 
 
 Please add the following at the end of `FundMe.sol`:
 
-```javascript
-    /** Getter Functions */
+```solidity
+/** Getter Functions */
 
-    function getAddressToAmountFunded(address fundingAddress) public view returns (uint256) {
-        return s_addressToAmountFunded[fundingAddress];
-    }
+function getAddressToAmountFunded(address fundingAddress) public view returns (uint256) {
+    return s_addressToAmountFunded[fundingAddress];
+}
 
-    function getFunder(uint256 index) public view returns (address) {
-        return s_funders[index];
-    }
+function getFunder(uint256 index) public view returns (address) {
+    return s_funders[index];
+}
 ```
 
 Pfeww! Great now we can test points 2 and 3 indicated above:
 
 Add the following test in `FundMe.t.sol`:
 
-```javascript
-    function testFundUpdatesFundDataStructure() public {
-        fundMe.fund{value: 10 ether}();
-        uint256 amountFunded = fundMe.getAddressToAmountFunded(msg.sender);
-        assertEq(amountFunded, 10 ether);
-    }
+```solidity
+function testFundUpdatesFundDataStructure() public {
+    fundMe.fund{value: 10 ether}();
+    uint256 amountFunded = fundMe.getAddressToAmountFunded(msg.sender);
+    assertEq(amountFunded, 10 ether);
+}
 ```
 
 Run `forge test --mt testFundUpdatesFundDataStructure` in your terminal.
@@ -82,7 +83,7 @@ Ok, cool, but who is the actual user that we are going to use in one of the chea
 
 Add the following line at the start of your `FundMeTest` contract:
 
-```javascript
+```solidity
 address alice = makeAddr("alice");
 ```
 
@@ -92,13 +93,13 @@ To further increase the readability of our contract, let's avoid using a magic n
 
 Back to our test, add the following test in `FundMe.t.sol`:
 
-```javascript
-    function testFundUpdatesFundDataStructure() public {
-        vm.prank(alice);
-        fundMe.fund{value: SEND_VALUE}();
-        uint256 amountFunded = fundMe.getAddressToAmountFunded(alice);
-        assertEq(amountFunded, SEND_VALUE);
-    }
+```solidity
+function testFundUpdatesFundDataStructure() public {
+    vm.prank(alice);
+    fundMe.fund{value: SEND_VALUE}();
+    uint256 amountFunded = fundMe.getAddressToAmountFunded(alice);
+    assertEq(amountFunded, SEND_VALUE);
+}
 ```
 
 Finally, now let's run `forge test --mt testFundUpdatesFundDataStructure` again.
@@ -131,13 +132,13 @@ Foundry to the rescue! There's always a cheatcode to help you overcome your hurd
 
 Add the following line at the end of the setup.
 
-```javascript
+```solidity
 vm.deal(alice, STARTING_BALANCE);
 ```
 
 Declare the `STARTING_BALANCE` as a constant variable up top:
 
-```
+```solidity
 uint256 constant STARTING_BALANCE = 10 ether;
 ```
 
@@ -146,11 +147,3 @@ Let's run `forge test --mt testFundUpdatesFundDataStructure` again.
 And now it passes. Congratulations!
 
 I know a lot of new cheatcodes were introduced in this lesson. Keep in mind that these are the most important cheatcodes there are, and you are going to use them over and over again. Regardless if you are developing or auditing a project, that project will always have at least an `owner` and a `user`. These two would always have different access to different functionalities. Most of the time the user needs some kind of balance, be it ETH or some other tokens. So, making a new address, giving it some balance, and pranking it to act as a caller for a tx will 100% be part of your every test file.
-
-
-
-
-
-
-
-

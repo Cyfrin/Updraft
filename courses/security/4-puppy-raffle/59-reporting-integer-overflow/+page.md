@@ -112,7 +112,6 @@ function testTotalFeesOverflow() public playersEntered {
 
 </details>
 
----
 
 I trust you attempted the PoC yourself - time to add our recommended mitigation
 

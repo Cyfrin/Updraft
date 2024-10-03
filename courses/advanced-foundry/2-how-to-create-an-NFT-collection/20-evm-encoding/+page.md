@@ -75,7 +75,6 @@ Originally we were referring to the human-readable ABI.
 
 </details>
 
----
 
 We can also accomplish our goals with the `bytecode` version directly. All you _really_ need to send a function call is the name of a function and the input types.
 

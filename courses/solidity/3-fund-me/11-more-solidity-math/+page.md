@@ -35,7 +35,7 @@ function getConversionRate(uint256 ethAmount) internal view returns (uint256) {
 
 - `ethAmount` is set at 1 ETH, with 1e18 precision.
 - `ethPrice` is set at 2000 USD, with 1e18 precision, resulting in 2000e18.
-- `ethPrice * ethAmount` results in 2000e18.
+- `ethPrice * ethAmount` results in 2000e36.
 - To scale down `ethAmountInUsd` to 1e18 precision, divide `ethPrice * ethAmount` by 1e18.
 
 ### Checking Minimum USD Value

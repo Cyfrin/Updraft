@@ -172,7 +172,6 @@ To ensure that the callee is correctly identified as an address or contract bein
 
 </details>
 
----
 
 <summary>2.  What does the assembly code in the executeTransaction function do? </summary>
 
@@ -186,7 +185,6 @@ To ensure that the callee is correctly identified as an address or contract bein
 
 </details>
 
----
 
 <summary>3. What is the purpose of the requireFromBootLoaderOrOwner modifier?</summary>
 
@@ -200,4 +198,3 @@ To ensure that the callee is correctly identified as an address or contract bein
 
 </details>
 
----

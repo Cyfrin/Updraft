@@ -145,7 +145,6 @@ In step 2 we will call the `getUserOpHash` on the `entryPoint` and pass in `user
 
 </details>
 
----
 
 Now that we have this imported, we need to be sure to add the following line to in our contract, just above the `run` function.
 
@@ -403,7 +402,6 @@ Just for the purpose of testing or working on a local chain, we are going to hav
 
 </details>
 
----
 
 <summary>2. Why is `using MessageHashUtils for bytes32` necessary? What does it do?</summary>
 
@@ -417,7 +415,6 @@ It allows the function to call `toEthSignedMessageHash` directly on a bytes32 va
 
 </details>
 
----
 
 <summary>3. What is the purpose of the generateSignedUserOperation function in the SendPackedUserOp script?</summary>
 
@@ -431,7 +428,6 @@ It generates a signed `PackedUserOperation` by creating an unsigned user operati
 
 </details>
 
----
 
 <summary>4. What is included in the `userOpHash` to prevent cross-chain replay attacks?</summary>
 
@@ -445,4 +441,3 @@ It generates a signed `PackedUserOperation` by creating an unsigned user operati
 
 </details>
 
----

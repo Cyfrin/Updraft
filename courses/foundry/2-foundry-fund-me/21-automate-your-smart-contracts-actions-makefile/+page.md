@@ -141,7 +141,3 @@ And you just deployed a fresh `FundMe` contract on a fresh `anvil` blockchain. S
 We could do the same for Sepolia by running `make deploy ARGS="--network sepolia"`.
 
 Makefile is amazing!
-
-
-
-

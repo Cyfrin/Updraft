@@ -98,7 +98,6 @@ This is essentially what will happen in our transaction lifecycle through the va
 
 </details>
 
----
 
 <summary>2.  Who is the msg.sender when validateTransaction is called in zkSync?</summary>
 
@@ -112,7 +111,6 @@ This is essentially what will happen in our transaction lifecycle through the va
 
 </details>
 
----
 
 <summary>3.  What happens if validateTransaction does not update the nonce?</summary>
 
@@ -126,7 +124,6 @@ This is essentially what will happen in our transaction lifecycle through the va
 
 </details>
 
----
 
 <summary>4.  What is the role of the bootloader in zkSync?</summary>
 
@@ -140,4 +137,3 @@ This is essentially what will happen in our transaction lifecycle through the va
 
 </details>
 
----

@@ -36,8 +36,8 @@ Hacking private keys is one of the most important reasons people and projects lo
 
 [Early Crypto Investor Bo Shen Says He Lost $42 Million in Wallet Hack](https://www.bnnbloomberg.ca/early-crypto-investor-bo-shen-says-he-lost-42-million-in-wallet-hack-1.1850446)
 
-[The $477 million FTX hack](https://www.elliptic.co/blog/the-477-million-ftx-hack-following-the-blockchain-trail) where `The new CEO of FTX revealed that private keys allowing access to the firm’s crypto assets were stored in unencrypted form, and a former employee disclosed that over $150 million was stolen from Alameda Research, due to poor security. `
+[The \$477 million FTX hack](https://www.elliptic.co/blog/the-477-million-ftx-hack-following-the-blockchain-trail) where `The new CEO of FTX revealed that private keys allowing access to the firm’s crypto assets were stored in unencrypted form, and a former employee disclosed that over $150 million was stolen from Alameda Research, due to poor security. `
 
 Don't be like that! Maybe you are not holding millions, but what you hold is yours, don't let it become theirs!
 
-In the following lessons, we'll learn how to access RPC URLs for free using Alchemy for any blockchain. e will also delve into exploring safer methodologies for dealing with private keys. Stay tuned!
+In the following lessons, we'll learn how to access RPC URLs for free using Alchemy for any blockchain. We will also delve into exploring safer methodologies for dealing with private keys. Stay tuned!

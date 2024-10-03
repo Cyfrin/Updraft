@@ -61,7 +61,6 @@ I'll keep a running reminder of our current total contract state at the top of e
 
 </details>
 
----
 
 Next we'll tackle the `IS_HAPPY_HORSE()` macro. This macro is going to be a little more complicated, and if we remind ourselves of this function is Solidity it will be clear why.
 

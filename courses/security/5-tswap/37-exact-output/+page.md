@@ -34,7 +34,6 @@ function swapExactOutput(
 
 </details>
 
----
 
 One thing that may stand out to us right away is that there doesn't seem to be any check on maximum input (and there's one fewer parameter as well), similar to how our `swapExactInput` function has the `minOutputAmount`, this difference definitely has our senses tingling.
 

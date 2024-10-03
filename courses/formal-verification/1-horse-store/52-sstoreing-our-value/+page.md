@@ -156,7 +156,6 @@ _Follow along with this video:_
 
 </details>
 
----
 
 We're really getting into the flow of things now, let's keep our momentum and look at the next chunk at jump dest 3.
 
