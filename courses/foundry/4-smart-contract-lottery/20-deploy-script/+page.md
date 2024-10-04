@@ -8,7 +8,7 @@ _Follow along with the video_
 
 Let's begin by creating a new file in the `/script` directory called `DeployRaffle.sol` and importing the `Raffle` contract.
 
-```js
+```solidity
 pragma solidity ^0.8.19;
 import {Script} from "forge-std/Script.sol";
 import {Raffle} from "../src/Raffle.sol";
@@ -21,7 +21,7 @@ import {Raffle} from "../src/Raffle.sol";
 
 Next, let's define a function called `deployContract` to handle the **deployment process**. This function will be similar to the one we used in the `FundMe` contract.
 
-```js
+```solidity
 contract DeployRaffle is Script {
     function run() external {
         deployContract();
@@ -37,9 +37,9 @@ To deploy our contract, we need various parameters required by the `Raffle` cont
 
 ### The `HelperConfig.s.sol` Contract
 
-To retrieve the correct networ configuration, we can create a new file in the same directory called `HelperConfig.s.sol` and define a **Network Configuration Structure**:
+To retrieve the correct network configuration, we can create a new file in the same directory called `HelperConfig.s.sol` and define a **Network Configuration Structure**:
 
-```js
+```solidity
 contract HelperConfig is Script {
     struct NetworkConfig {
         uint256 entranceFee;
@@ -54,14 +54,14 @@ contract HelperConfig is Script {
 
 We'll then define two functions that return the _network-specific configuration_. We'll set up these functions for Sepolia and a local network.
 
-```js
+```solidity
 function getSepoliaEthConfig() public pure returns (NetworkConfig memory) {
     return NetworkConfig({
-        entranceFee: 0.01 ether, //1e16
+        entranceFee: 0.01 ether, // 1e16
         interval: 30, // 30 seconds
         vrfCoordinator: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
         gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
-        callbackGasLimit: 500000, //500,000 gas
+        callbackGasLimit: 500000, // 500,000 gas
         subscriptionId: 0
     });
 }
@@ -78,9 +78,9 @@ function getLocalConfig() public pure returns (NetworkConfig memory) {
 }
 ```
 
-We will then create an abstract contract `CodeConstants` where we define some network IDs. The `HelperConfig` contract will be able to use them later through ineritance.
+We will then create an abstract contract `CodeConstants` where we define some network IDs. The `HelperConfig` contract will be able to use them later through inheritance.
 
-```js
+```solidity
 abstract contract CodeConstants {
     uint256 public constant ETH_SEPOLIA_CHAIN_ID = 11155111;
     uint256 public constant LOCAL_CHAIN_ID = 31337;
@@ -92,7 +92,7 @@ These values can be used inside the `HelperConfig` constructor:
 > 👀❗**IMPORTANT**:br
 > We are choosing the use of **constants** over magic numbers
 
-```js
+```solidity
 constructor() {
     networkConfigs[ETH_SEPOLIA_CHAIN_ID] = getSepoliaEthConfig();
 }
@@ -100,7 +100,7 @@ constructor() {
 
 We also have to build a function to fetch the appropriate configuration based on the actual chain ID. This can be done first by verifying that a VRF coordinator exists. In case it does not and we are not on a local chain, we'll revert.
 
-```js
+```solidity
 function getConfigByChainId(uint256 chainId) public view returns (NetworkConfig memory) {
     if (networkConfigs[chainId].vrfCoordinator != address(0)) {
         return networkConfigs[chainId];
@@ -114,7 +114,7 @@ function getConfigByChainId(uint256 chainId) public view returns (NetworkConfig 
 
 In case we are on a local chain but the VRF coordinator has already been set, we should use the existing configuration already created.
 
-```js
+```solidity
 function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
     // Check to see if we set an active network config
     if (localNetworkConfig.vrfCoordinator != address(0)) {

@@ -17,35 +17,37 @@ First, import the newly created HelperConfig.
 
 Then, modify the run function:
 
-```javascript
-    function run() external returns (Raffle, HelperConfig) {
-        HelperConfig helperConfig = new HelperConfig(); // This comes with our mocks!
-        (
-            uint256 entranceFee;
-            uint256 interval;
-            address vrfCoordinator;
-            bytes32 gasLane;
-            uint64 subscriptionId;
-            uint32 callbackGasLimit;
+```solidity
+function run() external returns (Raffle, HelperConfig) {
+    HelperConfig helperConfig = new HelperConfig(); // This comes with our mocks!
+    (
+        uint256 entranceFee;
+        uint256 interval;
+        address vrfCoordinator;
+        bytes32 gasLane;
+        uint64 subscriptionId;
+        uint32 callbackGasLimit;
 
-        ) = helperConfig.activeNetworkConfig();
+    ) = helperConfig.activeNetworkConfig();
+
+}
 ```
 
 Great! Now that we have deconstructed the NetworkConfig we have all the variables we need to deploy::
 
-```javascript
-    vm.startBroadcast();
-    Raffle raffle = new Raffle(
-        entranceFee,
-        interval,
-        vrfCoordinator,
-        gasLane,
-        subscriptionId,
-        callbackGasLimit
-    )
-    vm.stopBroadcast();
+```solidity
+vm.startBroadcast();
+Raffle raffle = new Raffle(
+    entranceFee,
+    interval,
+    vrfCoordinator,
+    gasLane,
+    subscriptionId,
+    callbackGasLimit
+)
+vm.stopBroadcast();
 
-    return raffle;
+return raffle;
 ```
 
 We use the `vm.startBroadcast` and `vm.stopBroadcast` commands to indicate that we are going to send a transaction. The transaction is the deployment of a new `Raffle` contract using the parameters we've obtained from the `HelperConfig`. In the end, we are returning the newly deployed contract.
@@ -60,7 +62,7 @@ Let's start writing the first test. You've already done this at least two times 
 
 Your unit test should start like this:
 
-```javascript
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.19;
@@ -79,37 +81,37 @@ We've declared the SPDX-License-Identifier, the solidity version, imported the `
 
 In `DeployRaffle.s.sol` we need to make sure that `run` also returns the `HelperConfig` contract:
 
-```javascript
-    function run() external returns (Raffle, HelperConfig) {
-        HelperConfig helperConfig = new HelperConfig();
-        (
+```solidity
+function run() external returns (Raffle, HelperConfig) {
+    HelperConfig helperConfig = new HelperConfig();
+    (
         uint256 entranceFee,
         uint256 interval,
         address vrfCoordinator,
         bytes32 gasLane,
         uint64 subscriptionId,
         uint32 callbackGasLimit
-        ) = helperConfig.activeNetworkConfig();
+    ) = helperConfig.activeNetworkConfig();
 
-        vm.startBroadcast();
-        Raffle raffle = new Raffle(
-            entranceFee,
-            interval,
-            vrfCoordinator,
-            gasLane,
-            subscriptionId,
-            callbackGasLimit
-        );
-        vm.stopBroadcast();
+    vm.startBroadcast();
+    Raffle raffle = new Raffle(
+        entranceFee,
+        interval,
+        vrfCoordinator,
+        gasLane,
+        subscriptionId,
+        callbackGasLimit
+    );
+    vm.stopBroadcast();
 
-        return (raffle, helperConfig);
-    }
+    return (raffle, helperConfig);
+}
 ```
 
 Next comes the state variables and `setUp` function in `RaffleTest.t.sol`:
 
 
-```javascript
+```solidity
 contract RaffleTest is Test {
 
     Raffle public raffle;
@@ -159,18 +161,18 @@ Amazing! With all these done let's write a small test to ensure our `setUp` is f
 
 First, we need a getter function to retrieve the raffle state. Put the following towards the end of the `Raffle.sol`:
 
-```javascript
-    function getRaffleState() public view returns (RaffleState) {
-        return s_raffleState;
-    }
+```solidity
+function getRaffleState() public view returns (RaffleState) {
+    return s_raffleState;
+}
 ```
 
 Inside `RaffleTest.t.sol` paste the following test:
 
-```javascript
-    function testRaffleInitializesInOpenState() public view {
-        assert(raffle.getRaffleState() == Raffle.RaffleState.OPEN);
-    }
+```solidity
+function testRaffleInitializesInOpenState() public view {
+    assert(raffle.getRaffleState() == Raffle.RaffleState.OPEN);
+}
 ```
 **Note**: we used `Raffle.RaffleState.OPEN` to get the value attributed to `OPEN` inside the `RaffleState` enum. This is possible because `RaffleState` is considered a [type](https://docs.soliditylang.org/en/latest/types.html#enums). So we can access that by calling the type `RaffleState` inside a `Raffle` contract to retrieve the `OPEN` value. 
 

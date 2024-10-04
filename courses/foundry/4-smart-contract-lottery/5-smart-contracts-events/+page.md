@@ -11,9 +11,9 @@ Ok, our user paid the entrance fee, but how do we track his registration? We can
 
 Take a moment and decide what would be the best from the following:
 
-1. Mapping;
-2. Array;
-3. A bunch of address variables and limit the number of participants;
+1. Mapping
+2. Array
+3. A bunch of address variables and limit the number of participants
 
 .
 .
@@ -27,11 +27,11 @@ We've made it `address payable` because one of the participants registered in th
 
 Back in the `enterRaffle` function, we need to add the address that paid into the `s_players` array:
 
-```javascript
-    function enterRaffle() external payable {
-        if(msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
-        s_players.push(payable(msg.sender));
-    }
+```solidity
+function enterRaffle() external payable {
+    if(msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
+    s_players.push(payable(msg.sender));
+}
 ```
 
 The `.push` method is used to append an element to an array, increasing its length by 1.
@@ -48,7 +48,7 @@ How can we use events?
 
 Imagine we have a more complex function that changes an important parameter, let's say we are recording the exchange rate of BTC/USDC. We change it by calling the function `changeER()`. After we perform the call and the exchange rate is changed we need to make sure this also gets picked up by our front-end. We make the front-end listen for the `BTCUSDCupdated` event. An example of that event could be this:
 
-```javascript
+```solidity
 event BTCUSDCupdated(
     uint256 indexed oldER,
     uint256 indexed newER,
@@ -64,26 +64,20 @@ For an event to be logged we need to emit it.
 Let's come back to our `Raffle` contract where we'll also learn how to emit them.
 
 First, we define the event (be mindful of where the events should go in terms of our defined layout)
-```javascript
+```solidity
 event EnteredRaffle(address indexed player);
 ```
 
 Then, we emit it in `enterRaffle`:
 
-```javascript
-    function enterRaffle() external payable {
-        if(msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
-        s_players.push(payable(msg.sender));
-        emit EnteredRaffle(msg.sender);
-    }
+```solidity
+function enterRaffle() external payable {
+    if(msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
+    s_players.push(payable(msg.sender));
+    emit EnteredRaffle(msg.sender);
+}
 ```
 
 Great! I know there is a possibility you don't quite understand the importance/usage of this event, but don't worry, we'll get back to it in the testing section.
 
 But before that, let's discuss randomness.
-
-
-
-
-
-

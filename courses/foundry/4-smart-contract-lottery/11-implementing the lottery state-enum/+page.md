@@ -7,7 +7,7 @@ _Follow along with this video:_
 
 ### Introduction to the Concept of Enum
 
-In Solidity, `enum stands` for Enumerable. It is a user-defined data type that restricts a variable to have only one of the predefined values listed within the enum declaration. These predefined values are internally treated as unsigned integers, starting from 0 up to the count of elements minus one. Enums are useful for improving code readability and reducing potential errors by limiting the range of acceptable values for a variable. Read more about enums [here](https://docs.soliditylang.org/en/v0.8.26/types.html#enums).
+In Solidity, `enum` stands for Enumerable. It is a user-defined data type that restricts a variable to have only one of the predefined values listed within the enum declaration. These predefined values are internally treated as unsigned integers, starting from 0 up to the count of elements minus one. Enums are useful for improving code readability and reducing potential errors by limiting the range of acceptable values for a variable. Read more about enums [here](https://docs.soliditylang.org/en/v0.8.26/types.html#enums).
 
 **How can we use enums in our Project?**
 
@@ -17,22 +17,22 @@ Let's code all these!
 
 Paste the following code between the errors definition section and the state variables section:
 
-```javascript
-    // Type declarations
-    enum RaffleState {
-        OPEN,           // 0
-        CALCULATING     // 1
-    }
+```solidity
+// Type declarations
+enum RaffleState {
+    OPEN,           // 0
+    CALCULATING     // 1
+}
 
-    // Put this one in `Raffle related variables`
-    RaffleState private s_raffleState;
+// Put this one in `Raffle related variables`
+RaffleState private s_raffleState;
 ```
 
 Amazing, let's default our raffle state to open inside the constructor.
 
 Add the following inside your constructor:
 
-```javascript
+```solidity
 s_raffleState = RaffleState.OPEN;
 ```
 
@@ -42,40 +42,41 @@ Chainlink VRF has an [interesting page](https://docs.chain.link/vrf/v2-5/securit
 
 Let's implement this in the code:
 
-```javascript
-    function enterRaffle() external payable {
-        if(msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
-        if(s_raffleState != RaffleState.OPEN) revert Raffle__RaffleNotOpen(); // If not open you don't enter.
-        
-        s_players.push(payable(msg.sender));
-        emit EnteredRaffle(msg.sender);
-    }
+```solidity
+function enterRaffle() external payable {
+    if(msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
+    if(s_raffleState != RaffleState.OPEN) revert Raffle__RaffleNotOpen(); // If not open you don't enter.
+
+    s_players.push(payable(msg.sender));
+    emit EnteredRaffle(msg.sender);
+}
 ```
 Make sure to also define the new `Raffle__RaffleNotOpen()` error.
 
 Great, now let's also change the state of the Raffle when we commence the process of picking the winner.
 
-```javascript
-    function pickWinner() external {
-        // check to see if enough time has passed
-        if (block.timestamp - s_lastTimeStamp < i_interval) revert();
+```solidity
+function pickWinner() external {
+    // check to see if enough time has passed
+    if (block.timestamp - s_lastTimeStamp < i_interval) revert();
 
-        s_raffleState = RaffleState.CALCULATING;
+    s_raffleState = RaffleState.CALCULATING;
+}
 ```
 
 The last thing we need to do is to reopen the Raffle after we pick the winner inside `fulfillRandomWords` function.
 
-```javascript
-    function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
-        uint256 indexOfWinner = randomWords[0] % s_players.length;
-        address payable winner = s_players[indexOfWinner];
-        s_recentWinner = winner;
-        s_raffleState = RaffleState.OPEN;
-        (bool success,) = winner.call{value:address(this).balance}("");
-        if (!success) {
-            revert Raffle__TransferFailed();
-        }
+```solidity
+function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
+    uint256 indexOfWinner = randomWords[0] % s_players.length;
+    address payable winner = s_players[indexOfWinner];
+    s_recentWinner = winner;
+    s_raffleState = RaffleState.OPEN;
+    (bool success,) = winner.call{value:address(this).balance}("");
+    if (!success) {
+        revert Raffle__TransferFailed();
     }
+}
 ```
 
 I know you thought about it: `But why are we opening the Raffle again? We've selected a winner but the s_players array is still full!` And you are right!
