@@ -7,9 +7,9 @@ _Follow along with this video:_
 
 ### Continuing our testing journey
 
-Let's jump straight into testing! But ... where do we start?
+Let's jump straight into testing! But where do we start?
 
-Easy! Let's call `forge -coverage`:
+Easy! Let's call `forge coverage`:
 
 ```
 Analysing contracts...
@@ -35,14 +35,14 @@ Patrick chose number 2. So what is the main entry point of our Raffle contract? 
 
 Let's look closely at it:
 
-```javascript
-    function enterRaffle() external payable {
-        if(msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
-        if (s_raffleState != RaffleState.OPEN) revert Raffle__RaffleNotOpen();
+```solidity
+function enterRaffle() external payable {
+    if(msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
+    if (s_raffleState != RaffleState.OPEN) revert Raffle__RaffleNotOpen();
 
-        s_players.push(payable(msg.sender));
-        emit EnteredRaffle(msg.sender);
-    }
+    s_players.push(payable(msg.sender));
+    emit EnteredRaffle(msg.sender);
+}
 ```
 
 1. We check if the `msg.value` is high enough;
@@ -52,14 +52,14 @@ Let's look closely at it:
 
 Let's test point 1:
 
-```javascript
-    function testRaffleRevertsWHenYouDontPayEnough() public {
-        // Arrange
-        vm.prank(PLAYER);
-        // Act / Assert
-        vm.expectRevert(Raffle.Raffle__NotEnoughEthSent.selector);
-        raffle.enterRaffle();
-    }
+```solidity
+function testRaffleRevertsWHenYouDontPayEnough() public {
+    // Arrange
+    vm.prank(PLAYER);
+    // Act / Assert
+    vm.expectRevert(Raffle.Raffle__NotEnoughEthSent.selector);
+    raffle.enterRaffle();
+}
 ```
 
 We call `vm.prank(PLAYER)` to configure the fact that the next transaction will be called by the `PLAYER`. [Refresher](https://book.getfoundry.sh/cheatcodes/prank?highlight=prank#prank)
@@ -78,23 +78,23 @@ We will skip point 2 for now, let's go straight to point 3:
 
 But before being able to test if a player is properly recorded in the `s_players` array we first need a view function to access the players in the `s_players`:
 
-```javascript
-    function getPlayer(uint256 index) public view returns (address) {
-        return s_players[index];
-    }
+```solidity
+function getPlayer(uint256 index) public view returns (address) {
+    return s_players[index];
+}
 ```
 Now that we have all the tools we need:
 
-```javascript
-    function testRaffleRecordsPlayerWhenTheyEnter() public {
-        // Arrange
-        vm.prank(PLAYER);
-        // Act
-        raffle.enterRaffle{value: entranceFee}();
-        // Assert
-        address playerRecorded = raffle.getPlayer(0);
-        assert(playerRecorded == PLAYER);
-    }
+```solidity
+function testRaffleRecordsPlayerWhenTheyEnter() public {
+    // Arrange
+    vm.prank(PLAYER);
+    // Act
+    raffle.enterRaffle{value: entranceFee}();
+    // Assert
+    address playerRecorded = raffle.getPlayer(0);
+    assert(playerRecorded == PLAYER);
+}
 ```
 
 We start by pranking the PLAYER, then properly calling the `enterRaffle` function specifying the correct `value`. We call the new `getPLayer` function to copy the player recorded at index 0 in memory. Then we compare that value to the `PLAYER` address to ensure they match.
