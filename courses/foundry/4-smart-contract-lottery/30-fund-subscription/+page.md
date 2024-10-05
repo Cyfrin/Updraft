@@ -1,4 +1,3 @@
-<<<<<<< HEAD:courses/foundry/4-smart-contract-lottery/24-fund-subscription/+page.md
 ---
 title: Fund subscription
 

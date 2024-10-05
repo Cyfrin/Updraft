@@ -21,22 +21,22 @@ So, inside `RaffleTest.t.sol` declare the following event:
 
 Then we proceed to the test:
 
-```javascript
-    function testEmitsEventOnEntrance() public {
-        // Arrange
-        vm.prank(PLAYER);
+```solidity
+function testEmitsEventOnEntrance() public {
+    // Arrange
+    vm.prank(PLAYER);
 
-        // Act / Assert
-        vm.expectEmit(true, false, false, false, address(raffle));
-        emit EnteredRaffle(PLAYER);
-        raffle.enterRaffle{value: entranceFee}();
-    }
+    // Act / Assert
+    vm.expectEmit(true, false, false, false, address(raffle));
+    emit EnteredRaffle(PLAYER);
+    raffle.enterRaffle{value: entranceFee}();
+}
 ```
 
-- We prank the `PLAYER`;
+- We prank the `PLAYER`
 - We call the `expectEmit` cheatcode - `vm.expectEmit(true, false, false, false, address(raffle));`
   I know this looks a bit weird. But let's look at what `expectEmit` expects:
-  ```javascript
+  ```solidity
   function expectEmit(
     bool checkTopic1,
     bool checkTopic2,
