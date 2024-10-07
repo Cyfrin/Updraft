@@ -25,13 +25,13 @@ It looks like when we call `performUpkeep` it internally calls `requestRandomWor
 
 Go to `HelperConfig.s.sol` and try to follow the path of the `VRFCoordinatorV2Mock`. Inside we can see why our function failed:
 
-```javascript
-  modifier onlyValidConsumer(uint64 _subId, address _consumer) {
+```solidity
+modifier onlyValidConsumer(uint64 _subId, address _consumer) {
     if (!consumerIsAdded(_subId, _consumer)) {
-      revert InvalidConsumer();
+        revert InvalidConsumer();
     }
     _;
-  }
+}
 
 ```
 
@@ -49,69 +49,68 @@ Inside the `script` folder create a new file called `Interactions.sol`. This is 
 
 Let's start with the basics:
 
-```javascript
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
 import {Script} from "forge-std/Script.sol";
 
 contract CreateSubscription is Script {
-    
+
 }
 ```
 
 Every script needs a `run` function. Inside the `run` function we will call the `createSubscriptionUsingConfig`.
 
-```javascript
-    function createSubscriptionUsingConfig() public returns (uint64) {
-        
-    }
+```solidity
+function createSubscriptionUsingConfig() public returns (uint64) {
+}
 
-    function run() external returns (uint64) {
-        return createSubscriptionUsingConfig();
-    }
+function run() external returns (uint64) {
+    return createSubscriptionUsingConfig();
+}
 ```
 
 Let's pause and talk about what we are doing and what we need to make things happen. Thinking back about what we did in Lesson 6. We created a subscription, we added a consumer and we funded the subscription. Open the `VRFCoordinatorV2Mock` and let's look for functions that we need to do it programmatically:
 
-```javascript
-  function createSubscription() external override returns (uint64 _subId) {
+```solidity
+function createSubscription() external override returns (uint64 _subId) {
     s_currentSubId++;
     s_subscriptions[s_currentSubId] = Subscription({owner: msg.sender, balance: 0});
     emit SubscriptionCreated(s_currentSubId, msg.sender);
     return s_currentSubId;
-  }
+}
 
 [...]
 
-  function addConsumer(uint64 _subId, address _consumer) external override onlySubOwner(_subId) {
+function addConsumer(uint64 _subId, address _consumer) external override onlySubOwner(_subId) {
     if (s_consumers[_subId].length == MAX_CONSUMERS) {
-      revert TooManyConsumers();
+        revert TooManyConsumers();
     }
-    
+
     if (consumerIsAdded(_subId, _consumer)) {
-      return;
+        return;
     }
 
     s_consumers[_subId].push(_consumer);
     emit ConsumerAdded(_subId, _consumer);
-  }
+}
 
 [...]
 
-  function fundSubscription(uint64 _subId, uint96 _amount) public {
+function fundSubscription(uint64 _subId, uint96 _amount) public {
     if (s_subscriptions[_subId].owner == address(0)) {
-      revert InvalidSubscription();
+        revert InvalidSubscription();
     }
     uint96 oldBalance = s_subscriptions[_subId].balance;
     s_subscriptions[_subId].balance += _amount;
     emit SubscriptionFunded(_subId, oldBalance, oldBalance + _amount);
-  }
+}
 ```
 
 Great! Now we need to call all of them, but before that, we first need to pull the VRFv2 address, available in the `HelperConfig`.
 
-```javascript
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
@@ -149,7 +148,7 @@ As we said above, we created a `run` function that calls `createSubscriptionUsin
 
 Amazing! Let's work on the `createSubscription` function. We need to import some things to make it work. First, let's update the contract in order to import `console`, to log a message every time we create a subscription. Second, let's import the `VRFCoordinatorV2Mock` to be able to call the functions we specified above.
 
-```javascript
+```solidity
 import {Script, console} from "forge-std/Script.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
 import {VRFCoordinatorV2Mock} from "chainlink/src/v0.8/vrf/mocks/VRFCoordinatorV2Mock.sol";
@@ -157,25 +156,25 @@ import {VRFCoordinatorV2Mock} from "chainlink/src/v0.8/vrf/mocks/VRFCoordinatorV
 
 Perfect, not let's finish the `createSubscription`:
 
-```javascript
-    function createSubscription(
-        address vrfCoordinator
-    ) public returns (uint64) {
-        console.log("Creating subscription on ChainID: ", block.chainid);
-        vm.startBroadcast();
-        uint64 subId = VRFCoordinatorV2Mock(vrfCoordinator).createSubscription();
-        vm.stopBroadcast();
-        console.log("Your sub Id is: ", subId);
-        console.log("Please update subscriptionId in HelperConfig!");
-        return subId;
-    }
+```solidity
+function createSubscription(
+    address vrfCoordinator
+) public returns (uint64) {
+    console.log("Creating subscription on ChainID: ", block.chainid);
+    vm.startBroadcast();
+    uint64 subId = VRFCoordinatorV2Mock(vrfCoordinator).createSubscription();
+    vm.stopBroadcast();
+    console.log("Your sub Id is: ", subId);
+    console.log("Please update subscriptionId in HelperConfig!");
+    return subId;
+}
 ```
 
 First, we log the `Creating subscription` message. Then, we encapsulate the `VRFCoordinatorV2Mock(vrfCoordinator).createSubscription();` call inside the `vm.startBroadcast` and `vm.stopBroadcast` block. We assign the return of the `VRFCoordinatorV2Mock(vrfCoordinator).createSubscription` call to `uint64 subId` variable. Then we log the `subId` and return it to end the function.
 
 Amazing work! Coming back to `DeployRaffle.s.sol`, we should create a subscription if we don't have one, like this:
 
-```javascript
+```solidity
 import {Script} from "forge-std/Script.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
 import {Raffle} from "../src/Raffle.sol";
@@ -218,4 +217,3 @@ contract DeployRaffle is Script {
 We import the newly created `CreateSubscription` contract from `Interactions.s.sol`. After the `helperConfig` definition, we check if our `subscriptionId` is 0. If that yields true then we don't have a `subscriptionId` and we need to create one. We use the new functions inside the `CreateSubscription` to get an appropriate `subscriptionId`.
 
 Amazing work!
-

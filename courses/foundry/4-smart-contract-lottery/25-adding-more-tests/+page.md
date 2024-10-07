@@ -11,18 +11,18 @@ Welcome back! Let's continue testing our `Raffle` contract.
 
 We should test if the check upkeep returns false if the contract has no balance. Open your `RaffleTest.t.sol` and write the following:
 
-```javascript
-    function testCheckUpkeepReturnsFalseIfItHasNoBalance() public {
-        // Arrange
-        vm.warp(block.timestamp + interval + 1);
-        vm.roll(block.number + 1);
+```solidity
+function testCheckUpkeepReturnsFalseIfItHasNoBalance() public {
+    // Arrange
+    vm.warp(block.timestamp + interval + 1);
+    vm.roll(block.number + 1);
 
-        // Act
-        (bool upkeepNeeded, ) = raffle.checkUpkeep("");
+    // Act
+    (bool upkeepNeeded, ) = raffle.checkUpkeep("");
 
-        // Assert
-        assert(!upkeepNeeded);
-    }
+    // Assert
+    assert(!upkeepNeeded);
+}
 ```
 
 We use `warp` and `roll` to set the `block.timestamp` in the future. We call `checkUpkeep` and record its return in memory. We check it returned `false`. 
@@ -35,21 +35,21 @@ It passes, amazing!
 
 What else? We should test if the check upkeep function returns false if the raffle is not Open. Paste the following inside `RaffleTest.t.sol`:
 
-```javascript
-    function testCheckUpkeepReturnsFalseIfRaffleIsntOpen() public {
-        // Arrange
-        vm.prank(PLAYER);
-        raffle.enterRaffle{value: entranceFee}();
-        vm.warp(block.timestamp + interval + 1);
-        vm.roll(block.number + 1);
-        raffle.performUpkeep("");
-        Raffle.RaffleState raffleState = raffle.getRaffleState();
-        // Act
-        (bool upkeepNeeded, ) = raffle.checkUpkeep("");
-        // Assert
-        assert(raffleState == Raffle.RaffleState.CALCULATING);
-        assert(upkeepNeeded == false);
-    }
+```solidity
+function testCheckUpkeepReturnsFalseIfRaffleIsntOpen() public {
+    // Arrange
+    vm.prank(PLAYER);
+    raffle.enterRaffle{value: entranceFee}();
+    vm.warp(block.timestamp + interval + 1);
+    vm.roll(block.number + 1);
+    raffle.performUpkeep("");
+    Raffle.RaffleState raffleState = raffle.getRaffleState();
+    // Act
+    (bool upkeepNeeded, ) = raffle.checkUpkeep("");
+    // Assert
+    assert(raffleState == Raffle.RaffleState.CALCULATING);
+    assert(upkeepNeeded == false);
+}
 ```
 
 We start by pranking the `PLAYER`. Then we enter the `raffle` using the correct `entranceFee`. After that, we use `warp` and `roll` to set `block.timestamp` in the future. We call `performUpkeep`. This will modify the `RaffleState` into `CALCULATING`. We then call `checkUpkeep` and record its return in memory. We check it returned `false`. We also check that the `RaffleState` is indeed `CALCULATING`.
@@ -91,7 +91,7 @@ Uncovered for src/Raffle.sol:
 
 You can follow the locations indicated to find the lines not covered by tests. For example, in my `Raffle.sol` the code block starting on line 97 is this:
 
-```javascript
+```solidity
     function performUpkeep(bytes calldata /* performData */) external override {
         (bool upkeepNeeded, ) = checkUpkeep("");
         // require(upkeepNeeded, "Upkeep not needed");
