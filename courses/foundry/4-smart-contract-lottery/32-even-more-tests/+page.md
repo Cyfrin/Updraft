@@ -19,7 +19,7 @@ To improve our coverage, we need to write additional tests. For example we can a
 
 1. Let’s start by ensuring that `checkUpkeep` returns `false` when there is no balance. We’ll do this by setting up our test environment similarly to previous tests but without entering the raffle. Here’s the code:
 
-   ```js
+   ```solidity
    function testCheckUpkeepReturnsFalseIfItHasNoBalance() public {
            // Arrange
            vm.warp(block.timestamp + automationUpdateInterval + 1);
@@ -30,11 +30,11 @@ To improve our coverage, we need to write additional tests. For example we can a
 
            // Assert
            assert(!upkeepNeeded);
-       }
+    }
    ```
 
 2. Next, we want to assert that `checkUpkeep` returns `false` when the raffle is in a _not open_ state. To do this, we can use a setup similar to our previous test:
-   ```js
+   ```solidity
    function testCheckUpkeepReturnsFalseIfRaffleIsntOpen() public {
            // Arrange
            vm.prank(PLAYER);
@@ -43,12 +43,14 @@ To improve our coverage, we need to write additional tests. For example we can a
            vm.roll(block.number + 1);
            raffle.performUpkeep("");
            Raffle.RaffleState raffleState = raffle.getRaffleState();
+
            // Act
            (bool upkeepNeeded,) = raffle.checkUpkeep("");
+
            // Assert
            assert(raffleState == Raffle.RaffleState.CALCULATING);
            assert(upkeepNeeded == false);
-       }
+    }
    ```
 
 ### Conclusion

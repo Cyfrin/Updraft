@@ -11,7 +11,7 @@ Remember how everything started from a simple and inoffensive `InvalidConsumer()
 
 Open `Interactions.s.sol` and create a new contract:
 
-```javascript
+```solidity
 contract AddConsumer is Script {
     function run() external {
 
@@ -29,7 +29,7 @@ Import it at the top of the `Interactions.s.sol`:
 
 Update the `run` function to get the address and call `addConsumerUsingConfig(raffle)`:
 
-```javascript
+```solidity
     function run() external {
         address raffle = DevOpsTools.get_most_recent_deployment("MyContract", block.chainid);
         addConsumerUsingConfig(raffle);
@@ -38,7 +38,7 @@ Update the `run` function to get the address and call `addConsumerUsingConfig(ra
 
 And right about now, everything should feel extremely familiar. Let's define `addConsumerUsingConfig` and all the rest:
 
-```javascript
+```solidity
 contract AddConsumer is Script {
 
     function addConsumer(address raffle, address vrfCoordinator, uint64 subscriptionId) public {
@@ -91,7 +91,7 @@ Let's go back to `DeployRaffle.s.sol` and import the thing we added in `Interact
 
 Now let's integrate the `FundSubscription` with the `CreateSubscription` bit:
 
-```javascript
+```solidity
         if (subscriptionId == 0) {
             CreateSubscription createSubscription = new CreateSubscription();
             subscriptionId = createSubscription.createSubscription(vrfCoordinator);
@@ -129,4 +129,3 @@ Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 11.06ms (102.80µs 
 Amazing work!
 
 There is a lot more to do in this section, but you are a true hero for reaching this point, take a well-deserved break! See you in the next one!
-
