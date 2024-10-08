@@ -5,13 +5,13 @@ _Follow along with this video:_
 
 ---
 
-### Fuzz testing 
+### Fuzz testing
 
 Generally, fuzz testing, also known as fuzzing, is an automated software testing technique that involves injecting invalid, malformed, or unexpected inputs into a system to identify software defects and vulnerabilities. This method helps in revealing issues that may lead to crashes, security breaches, or performance problems. Fuzz testing operates by feeding a program with large volumes of random data (referred to as "fuzz") to observe how the system handles such inputs. If the system crashes or exhibits abnormal behavior, it indicates a potential vulnerability or defect that needs to be addressed.
 
 How can we apply this in Foundry?
 
-Let's find out by testing the fact that fulfillRandomWords can only be called after the upkeep is performed.
+Let's find out by testing the fact that `fulfillRandomWords` can only be called after the upkeep is performed.
 
 
 
@@ -65,7 +65,7 @@ Moving on, we called `vm.expectRevert` then we called `fulfillRandomWords` with 
 Here comes Foundry fuzzing:
 
 ```solidity
-function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256 requestId)
+function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256 randomRequestId)
     public
     raffleEntredAndTimePassed
 {
@@ -74,7 +74,7 @@ function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256 request
     vm.expectRevert("nonexistent request");
     // vm.mockCall could be used here...
     VRFCoordinatorV2_5Mock(vrfCoordinator).fulfillRandomWords(
-        requestId,
+        randomRequestId,
         address(raffle)
     );
 }
