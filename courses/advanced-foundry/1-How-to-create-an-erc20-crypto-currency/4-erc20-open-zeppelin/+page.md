@@ -13,13 +13,13 @@ Welcome back! As mentioned in the closing of our last lesson, we could absolutel
 In this section, I'll guide you on using the OpenZeppelin Library to achieve this.
 
 > ❗ **NOTE**
-> OpenZeppelin is renowned for its Smart Contract framework, offering a vast repository of audited contracts readily integratable into your codebase.
+> OpenZeppelin is renowned for its Smart Contract framework, offering a vast repository of audited contracts readily integrable into your codebase.
 
-Access [OpenZeppelin's documentation](https://docs.openzeppelin.com/contracts/4.x/) via their official website. By navigating to [Products -> Contracts](https://www.openzeppelin.com/contracts), you can discover a vast array of ready-to-use contracts.
+Access [OpenZeppelin's documentation](https://docs.openzeppelin.com/contracts/5.x/) via their official website. By navigating to [Products -> Contracts Library](https://www.openzeppelin.com/contracts), you can discover a vast array of ready-to-use contracts.
 
 Additionally, OpenZeppelin offers a contract wizard, streamlining the contract creation process — perfect for tokens, governances, or custom contracts.
 
-::image{src='/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin1.PNG' style='width: 100%; height: auto;'}
+![OpenZeppelin's Contract Wizard](https://github.com/Cyfrin/Updraft/blob/main/static/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin1.png?raw=true)
 
 Let's leverage OpenZeppelin to create a new ERC20 Token. Create a new file within `src` named `OurToken.sol`. Once that's done, let's install the OpenZeppelin library into our contract.
 
@@ -35,7 +35,7 @@ remappings = ["@openzeppelin=lib/openzeppelin-contracts"]
 
 We can now import and inherit this contract into `OurToken.sol`!
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
@@ -53,14 +53,14 @@ By importing the OpenZeppelin implementation of ERC20 this way, we inherit all t
 
 Now, we should recall that when inheriting from a contract with a constructor, our contract must fulfill the requirements of that constructor. We'll need to define details like a name and symbol for OurToken.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract OurToken is ERC20 {
-    constructor(uint256 initialSupply) ERC20("OurToken", "OT"){
+    constructor(uint256 initialSupply) ERC20("OurToken", "OT") {
         _mint(msg.sender, initialSupply);
     }
 }
@@ -70,7 +70,7 @@ For the purposes of simple examples like this, I like to mint the initialSupply 
 
 As always we can perform a sanity check to assure things are working as expected by running `forge build`.
 
-::image{src='/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin2.PNG' style='width: 100%; height: auto;'}
+![Compiler run successful](https://github.com/Cyfrin/Updraft/blob/main/static/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin2.png?raw=true)
 
 Nailed it.
 

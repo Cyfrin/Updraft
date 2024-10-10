@@ -16,7 +16,7 @@ We expect OurToken to behave the same, regardless of the chain it's deployed on,
 
 To begin, we can import Script and OurToken as well as add the skeleton of our run function:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -24,14 +24,14 @@ pragma solidity ^0.8.18;
 import {Script} from "forge-std/Script.sol";
 import {OurToken} from "../src/OurToken.sol";
 
-contract DeployOurToken is Script returns (OurToken){
+contract DeployOurToken is Script {
     function run() external {}
 }
 ```
 
 We're going to keep this really basic, we just want to deploy OurToken. We know that OurToken requires an initial supply as a constructor parameter, so let's declare that and then deploy our contract.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -55,10 +55,10 @@ contract DeployOurToken is Script {
 
 Our deploy script looks great! To make things a little easier on ourselves when using the CLI to run this script, copy the Makefile from the course GitHub repo and add this to our workspace (I've included it below to copy if needed).
 
-<details>
-<summary>Makefile</summary>
 
-```
+### Makefile
+
+```make
 -include .env
 
 .PHONY: all test clean deploy fund help install snapshot format anvil
@@ -110,16 +110,17 @@ verify:
 
 ```
 
-</details>
 
 ---
 
 Now, by running `make anvil` (open a new terminal once your chain has started!) followed by `make deploy`...
 
-::image{src='/foundry-erc20s/4-erc20-deploy-script/erc20-deploy-script1.png' style='width: 100%; height: auto;'}
+![Script ran
+successfully](https://github.com/Cyfrin/Updraft/blob/main/static/foundry-erc20s/4-erc20-deploy-script/erc20-deploy-script1.png?raw=true)
+
 
 ### Wrap Up
 
 Woo! Deployment to our anvil chain successful, let's go!
 
-In the next lesson we'll test our contracts with the help of some AI tools and recap everything we've gone over so far. See you there!
+In the next lesson, we'll test our contracts with the help of some AI tools and recap everything we've gone over so far. See you there!
