@@ -13,7 +13,7 @@ If you have any questions or just want to join the discussion, you can do it at 
 ---
 [Discord](https://discord.gg/cyfrin)
 ---
-[GitHub](https://github.com/Cyfrin/path-solidity-developer-2023/discussions)
+[GitHub](https://github.com/Cyfrin/foundry-full-course-cu/discussions)
 ---
 
 See you in the next lesson!
