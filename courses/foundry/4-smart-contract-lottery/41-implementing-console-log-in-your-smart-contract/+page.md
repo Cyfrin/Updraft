@@ -11,16 +11,16 @@ Do you remember how inside our `Raffle.t.sol` we did `import {Test, console} fro
 
 1. Add the following in the import section of your `Raffle.sol` file: `import {console} from "forge-std/Script.sol";`
 2. Change the `enterRaffle` function as follows:
-   
-```javascript
-    function enterRaffle() public payable {
-        if (s_raffleState == RaffleState.CALCULATING) revert Raffle__RaffleNotOpen();
-        if (msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
-        console.log("Debugging at its finest");
-        s_players.push(payable(msg.sender));
 
-        emit EnteredRaffle(msg.sender);
-    }
+```solidity
+function enterRaffle() public payable {
+    if (s_raffleState == RaffleState.CALCULATING) revert Raffle__RaffleNotOpen();
+    if (msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
+    console.log("Debugging at its finest");
+    s_players.push(payable(msg.sender));
+
+    emit EnteredRaffle(msg.sender);
+}
 ```
 
 3. Run `forge test --mt testRaffleRecordsPlayerWhenTheyEnter -vv`.

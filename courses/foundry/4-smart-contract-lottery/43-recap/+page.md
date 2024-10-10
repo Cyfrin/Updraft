@@ -34,7 +34,7 @@ The automation upkeep of our smart contracts led to an amazing result—it ran o
 
 ## Smart Contract Execution and Testing
 
-Once triggered, the Chainlink network replies by calling the `fulfill random words` function, which selects our random winner. We got a good look into the CEI - checks effects interactions pattern, where we implement checks, conduct effects and eventually process our external interactions outside of the smart contracts.
+Once triggered, the Chainlink network replies by calling the `fulfillRandomWords` function, which selects our random winner. We got a good look into the CEI - checks effects interactions pattern, where we implement checks, conduct effects and eventually process our external interactions outside of the smart contracts.
 
 We provided several getter functions. Surprisingly, the codebase for this project is only about 200 lines long, but it felt much longer because of the advanced scripting and deployment methods we had to learn.
 
@@ -52,7 +52,7 @@ During the process, we wrote comprehensive unit tests, though we intentionally l
 
 We also worked a lot with modifiers and expected a revert with this `abi encoder` thing. Understanding that will be a task for later.
 
-Finally, we deployed this lottery on an actual testnet chain, funding our automation subscription and our VRF subscription with Link. We observed chainlink nodes handling all this with no issues.
+Finally, we deployed this lottery on an actual testnet chain, funding our automation subscription and our VRF subscription with Link. We observed Chainlink nodes handling all this with no issues.
 
 ## Recap
 
