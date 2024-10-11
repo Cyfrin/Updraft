@@ -115,8 +115,7 @@ verify:
 
 Now, by running `make anvil` (open a new terminal once your chain has started!) followed by `make deploy`...
 
-![Script ran
-successfully](https://github.com/Cyfrin/Updraft/blob/main/static/foundry-erc20s/4-erc20-deploy-script/erc20-deploy-script1.png?raw=true)
+::image{src='/foundry-erc20s/4-erc20-deploy-script/erc20-deploy-script1.png' style='width: 100%; height: auto;'}
 
 
 ### Wrap Up

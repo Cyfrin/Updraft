@@ -19,7 +19,7 @@ Access [OpenZeppelin's documentation](https://docs.openzeppelin.com/contracts/5.
 
 Additionally, OpenZeppelin offers a contract wizard, streamlining the contract creation process — perfect for tokens, governances, or custom contracts.
 
-![OpenZeppelin's Contract Wizard](https://github.com/Cyfrin/Updraft/blob/main/static/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin1.png?raw=true)
+::image{src='/foundry-erc20s/3-erc20-open-zeppelin/erc20-open-zeppelin1.PNG' style='width: 100%; height: auto;'}
 
 Let's leverage OpenZeppelin to create a new ERC20 Token. Create a new file within `src` named `OurToken.sol`. Once that's done, let's install the OpenZeppelin library into our contract.
 
@@ -70,7 +70,7 @@ For the purposes of simple examples like this, I like to mint the initialSupply 
 
 As always we can perform a sanity check to assure things are working as expected by running `forge build`.
 
-![Compiler run successful](https://github.com/Cyfrin/Updraft/blob/main/static/foundry-erc20s/3-erc20-open-zeppelin/ERC20-open-zeppelin2.png?raw=true)
+::image{src='/foundry-erc20s/3-erc20-open-zeppelin/erc20-open-zeppelin2.PNG' style='width: 100%; height: auto;'}
 
 Nailed it.
 
