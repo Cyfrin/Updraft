@@ -16,10 +16,9 @@ Before we get started, I'll mention you don't _have_ to do this yourself. This p
 
 We'll be leveraging a Makefile for this again, I'll just be copying mine from the GitHub repo associated with this course, I've also provided it below for your conveninence.
 
-<details>
-<summary>Makefile</summary>
+Makefile:
 
-```
+```make
 -include .env
 
 .PHONY: all test clean deploy fund help install snapshot format anvil
@@ -77,8 +76,6 @@ flipMoodNft:
 	@forge script script/Interactions.s.sol:FlipMoodNft $(NETWORK_ARGS)
 ```
 
-</details>
-
 
 Assuming our `.env` is ready to go, we should be able to run the following...
 
@@ -133,8 +130,6 @@ The processes detailed below are optional, but feel free to follow along if you'
 Rather than typing out long scripts, we'll use a makefile here. The associated Git repo contains the makefile we're using, allowing you to simply copy and paste rather than rewriting everything.
 
 In the makefile, we've captured most of the topics we've discussed so far, including our deploy script, which we'll use to deploy our basic NFT.
-
-::image{src='/foundry-nfts/9-testnet-demo/testnet1.png' style='width: 100%; height: auto;'}
 
 Here is what the deploy script looks like:
 
