@@ -8,7 +8,7 @@ _Follow along the course with this video._
 
 ### SVG NFT Deploy Script
 
-In this lesson, we'll jump right into creating the script to deploy our MoodNFT collection. We'll look at how this can be used to upgrade our tests, making them more dynamic and we'll discuss the value of integration tesing.
+In this lesson, we'll jump right into creating the script to deploy our MoodNFT collection. We'll look at how this can be used to upgrade our tests, making them more dynamic and we'll discuss the value of integration testing.
 
 To begin, we'll need to create the file `script/DeployMoodNft.s.sol` and fill it with our script boilerplate.
 
@@ -24,12 +24,12 @@ contract DeployMoodNft is Script {
 }
 ```
 
-Looks great! Now we should consider how we're mention to deploy MoodNft.sol. We know that the constructor arguments for this contract take a sadSvgImagUri and a happySvgImageUri, so much like we did in `MoodNftTest.t.sol`, we _could_ hardcode these values. A better approach however may be to write our deploy script to read this data itself from our workspace. Our script can even do all the encoding for us.
+Looks great! Now we should consider how we're mention to deploy MoodNft.sol. We know that the constructor arguments for this contract take a sadSvgImageUri and a happySvgImageUri, so much like we did in `MoodNftTest.t.sol`, we _could_ hardcode these values. A better approach however may be to write our deploy script to read this data itself from our workspace. Our script can even do all the encoding for us.
 
 Let's start with creating this encoding function.
 
 ```js
-function svgToImageURI(string memory svg) public purse returns (string memory){
+function svgToImageURI(string memory svg) public pure returns (string memory){
     string memory baseURL = "data:image/svg+xml;base64,";
 }
 ```
@@ -47,7 +47,7 @@ import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
 contract DeployMoodNft is Script {
     function run() external returns (MoodNft) {}
 
-    function svgToImageURI(string memory svg) public purse returns (string memory){
+    function svgToImageURI(string memory svg) public pure returns (string memory){
     string memory baseURL = "data:image/svg+xml;base64,";
     string memory svgBase64Encoded = Base64.encode(bytes(svg));
 
@@ -56,7 +56,7 @@ contract DeployMoodNft is Script {
 }
 ```
 
-The above function is taking the svg string parameter, encoding it with the OpenZeppeling Base64.encode function, and then prepends the encoded value with our baseURL. Great job!
+The above function is taking the svg string parameter, encoding it with the OpenZeppelin Base64.encode function, and then prepends the encoded value with our baseURL. Great job!
 
 > ❗ **PROTIP**
 > You can replace `abi.encodePacked` with the more up-to-date `string.concat`!
@@ -97,8 +97,8 @@ In our test now, we can assign an expectedUri variable to this string. We'll nee
 
 ```js
 function testConvertSvgToUri() public view {
-    string memory expectedUri = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj4KPHRleHQgeD0iMjAwIiB5PSIyNTAiIGZpbGw9ImJsYWNrIj5IaSEgWW91IGRlY29kZWQgdGhpcyEgPC90ZXh0Pgo8L3N2Zz4="
-    string memory svg = '<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><text x="200" y="250" fill="black">Hi! You decoded this! </text></svg>'
+    string memory expectedUri = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj4KPHRleHQgeD0iMjAwIiB5PSIyNTAiIGZpbGw9ImJsYWNrIj5IaSEgWW91IGRlY29kZWQgdGhpcyEgPC90ZXh0Pgo8L3N2Zz4=";
+    string memory svg = '<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><text x="200" y="250" fill="black">Hi! You decoded this!</text></svg>';
 
     string memory actualUri = deployer.svgToImageURI(svg);
 }
@@ -150,7 +150,7 @@ contract DeployMoodNft is Script {
         string memory happySvg = vm.readFile("./img/happySvg.svg");
     }
 
-    function svgToImageURI(string memory svg) public purse returns (string memory){
+    function svgToImageURI(string memory svg) public pure returns (string memory){
     string memory baseURL = "data:image/svg+xml;base64,";
     string memory svgBase64Encoded = Base64.encode(bytes(svg));
 
@@ -195,9 +195,7 @@ moodNft = new MoodNft(SAD_SVG_URI, HAPPY_SVG_URI);
 
 We can use our newly written deployer. It'll need to be imported.
 
-<details>
-<summary>MoodNftIntegrationsTest.t.sol</summary>
-
+MoodNftIntegrationsTest.t.sol
 ```js
 //SPDX-License-Identifier: MIT
 
@@ -230,9 +228,6 @@ contract MoodNFTTest is Test {
     }
 }
 ```
-
-</details>
-
 
 With these adjustments, our tests should function identically to before.
 
