@@ -14,7 +14,7 @@ That being said:
 
 1. Please rename your current `Raffle.sol` into `Raffle_Old.sol`. Create a new file called `Raffle.sol` and paste the following contract inside:
 
-```javascript
+```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.19;
 
@@ -190,7 +190,7 @@ You will see that the new contract is very similar. It only has some changes rel
 
 5. Copy the following inside the newly created file:
 
-```javascript
+```solidity
 // SPDX-License-Identifier: MIT
 // A mock for testing code that relies on VRFCoordinatorV2Plus.
 pragma solidity 0.8.23;
@@ -641,29 +641,27 @@ Let's take these problems one by one. We tried to add a consumer, but it failed 
 
 Open your `HelperConfig.s.sol` and perform the following changes:
 
-```javascript
-    function getSepoliaEthConfig()
-        public
-        view
-        returns (NetworkConfig memory)
-    {
-        return NetworkConfig({
-            entranceFee: 0.01 ether,
-            interval: 30, // 30 seconds
-            vrfCoordinator: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
-            gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
-            subscriptionId: 5000032745829988966686682423284879867102409618787289144283231874950241281744, // Your own subscriptionId goes here
-            callbackGasLimit: 500000, // 500,000 gas
-            link: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
-            deployerKey: vm.envUint("SEPOLIA_PRIVATE_KEY")
-        });
-    }
+```solidity
+function getSepoliaEthConfig()
+    public
+    view
+    returns (NetworkConfig memory)
+{
+    return NetworkConfig({
+        entranceFee: 0.01 ether,
+        interval: 30, // 30 seconds
+        vrfCoordinator: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
+        gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
+        subscriptionId: 5000032745829988966686682423284879867102409618787289144283231874950241281744, // Your own subscriptionId goes here
+        callbackGasLimit: 500000, // 500,000 gas
+        link: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
+        deployerKey: vm.envUint("SEPOLIA_PRIVATE_KEY")
+    });
+}
 ```
 
-```javascript
+```solidity
 contract HelperConfig is Script {
-
-
     struct NetworkConfig {
         uint256 entranceFee;
         uint256 interval;
@@ -674,6 +672,7 @@ contract HelperConfig is Script {
         address link;
         uint256 deployerKey;
     }
+}
 ```
 
 Given that we've updated the struct above ... we are going to have to update a lot of places. Let's keep going inside `HelperConfig`.
@@ -692,39 +691,39 @@ Private Keys
 
 Below the `struct NetworkConfig` create a new variable:
 
-```javascript
+```solidity
 uint256 public constant DEFAULT_ANVIL_KEY = 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
 ```
 
 and use it inside the `getOrCreateAnvilEthConfig` function
 
-```javascript
-    function getOrCreateAnvilEthConfig()
-        public
-        returns (NetworkConfig memory anvilNetworkConfig)
-    {
-        [...]
-        LinkToken link = new LinkToken();
-        vm.stopBroadcast();
+```solidity
+function getOrCreateAnvilEthConfig()
+    public
+    returns (NetworkConfig memory anvilNetworkConfig)
+{
+    [...]
+    LinkToken link = new LinkToken();
+    vm.stopBroadcast();
 
-        return NetworkConfig({
-            entranceFee: 0.01 ether,
-            interval: 30, // 30 seconds
-            vrfCoordinator: address(vrfCoordinatorV2Mock),
-            gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
-            subscriptionId: 0, // If left as 0, our scripts will create one!
-            callbackGasLimit: 500000, // 500,000 gas
-            link: address(link),
-            deployerKey: DEFAULT_ANVIL_KEY
-        });
-    }
+    return NetworkConfig({
+        entranceFee: 0.01 ether,
+        interval: 30, // 30 seconds
+        vrfCoordinator: address(vrfCoordinatorV2Mock),
+        gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
+        subscriptionId: 0, // If left as 0, our scripts will create one!
+        callbackGasLimit: 500000, // 500,000 gas
+        link: address(link),
+        deployerKey: DEFAULT_ANVIL_KEY
+    });
+}
 ```
 
 With this change, we have finished the work in `HelperConfig.s.sol`. Let's keep going with fixing `Interactions.s.sol`:
 
 1. `AddConsumer` contract
 
-```javascript
+```solidity
 contract AddConsumer is Script {
 
     function addConsumer(address raffle, address vrfCoordinator, uint256 subscriptionId, uint256 deployerKey) public {
@@ -766,7 +765,7 @@ We start everything from `helperConfig.activeNetworkConfig` because the main cha
 
 We will perform the same changes to the other two contracts:
 
-```javascript
+```solidity
 contract FundSubscription is Script {
     uint96 public constant FUND_AMOUNT = 3 ether;
 
@@ -808,7 +807,7 @@ contract FundSubscription is Script {
 
 We start with `fundSubscriptionUsingConfig` we add the `deployerKey` variable in the `activeNetworkConfig` call line. We use that newly acquired `deployerKey` inside the `fundSubscription` call, providing it as input. Going to `fundSubscription` we add the 4th input variable `uint256 deployerKey`. We use the new input in both `vm.startBroadcast` places.
 
-```javascript
+```solidity
 contract CreateSubscription is Script {
 
     function createSubscriptionUsingConfig() public returns (uint256) {
@@ -887,7 +886,7 @@ Let's read it. We modified the 3 functions `createSubscription`, `fundSubscripti
 
 Open the `DeployRaffle.s.sol` file and modify the 3 functions call to include `deployerKey` as an input parameter.
 
-```javascript
+```solidity
 contract DeployRaffle is Script {
     function run() external returns (Raffle, HelperConfig) {
         HelperConfig helperConfig = new HelperConfig(); // This comes with our mocks!
@@ -933,7 +932,7 @@ contract DeployRaffle is Script {
 
 Open the `RaffleTest.t.sol` and add the `deployerKey` in the variables section and in the `setUp` function where `helperConfig.activeNetworkConfig()` is called:
 
-```javascript
+```solidity
 contract RaffleTest is Test {
 
     event EnteredRaffle(address indexed player);
@@ -971,6 +970,7 @@ contract RaffleTest is Test {
 
         ) = helperConfig.activeNetworkConfig();
     }
+}
 ```
 
 Let's run `forge build` again. There are two possible outcomes here:
@@ -987,7 +987,7 @@ CompilerError: Stack too deep. Try compiling with `--via-ir` (cli) or the equiva
 
 If you get this error just go and comment out the `deployerKey` lines in `Raffle.t.sol`:
 
-```javascript
+```solidity
 contract RaffleTest is Test {
 
     event EnteredRaffle(address indexed player);
@@ -1025,6 +1025,7 @@ contract RaffleTest is Test {
 
         ) = helperConfig.activeNetworkConfig();
     }
+}
 ```
 
 Run `forge build` again and everything should compile.
@@ -1056,40 +1057,40 @@ We should not run this test on Sepolia.
 
 Add the following modifier in `Raffle.t.sol`:
 
-```javascript
-    modifier skipFork() {
-        if (block.chainid != 31337){
-            return;
-        }
-        _;
+```solidity
+modifier skipFork() {
+    if (block.chainid != 31337){
+        return;
     }
+    _;
+}
 ```
 
 This will check the `block.chainid` to see if we are on Sepolia. If we are on Sepolia then it returns, skipping the test.
 
 Add it next to the `raffleEnteredAndTimePassed` modifier:
 
-```javascript
-    function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256 requestId)
-        public
-        raffleEntredAndTimePassed
-        skipFork
-    {
-        // Arrange
-        // Act / Assert
-        vm.expectRevert("nonexistent request");
-        // vm.mockCall could be used here...
-        VRFCoordinatorV2PlusMock(vrfCoordinator).fulfillRandomWords(
-            requestId,
-            address(raffle)
-        );
-    }
+```solidity
+function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256 requestId)
+    public
+    raffleEntredAndTimePassed
+    skipFork
+{
+    // Arrange
+    // Act / Assert
+    vm.expectRevert("nonexistent request");
+    // vm.mockCall could be used here...
+    VRFCoordinatorV2PlusMock(vrfCoordinator).fulfillRandomWords(
+        requestId,
+        address(raffle)
+    );
+}
 ```
 
 The other failing test is `testFulfillRandomWordsPicksAWinnerRestesAndSendsMoney`. Looking through its code we can see why it fails:
 
-```javascript
-// pretend to be Chainlink VRF
+```solidity
+// Pretend to be Chainlink VRF
 VRFCoordinatorV2PlusMock(vrfCoordinator).fulfillRandomWords(
   uint256(requestId),
   address(raffle)
