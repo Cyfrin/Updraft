@@ -38,7 +38,8 @@ contract MoodNft is ERC721 {
 }
 ```
 
-> ❗ **IMPORTANT** >**tokenURI != imageURI**
+> ❗ **IMPORTANT** 
+>**tokenURI != imageURI**
 >
 > It's important to remember that imageURI is one property of a token's tokenURI. A tokenURI is usually a JSON object!
 
@@ -160,8 +161,7 @@ function _baseURI() internal pure override returns(string memory){
 Now, in our tokenURI function again, we can concatenate the result of this \_baseURI function with the Base64 encoding of our JSON object... and finally we can type cast all of this as a string to be returned by our tokenURI function.
 
 ```js
-return;
-string(
+return string(
   abi.encodePacked(
     _baseURI(),
     Base64.encode(
