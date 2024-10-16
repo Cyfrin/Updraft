@@ -18,8 +18,8 @@ All the code we discuss/write will of course be available on this section's [**G
 Let's start by making our project directory.
 
 ```bash
-mkdir foundry-defi-stablecoin-f23
-cd foundry-defi-stablecoin-f23
+mkdir foundry-defi-stablecoin
+cd foundry-defi-stablecoin
 code .
 ```
 
@@ -35,7 +35,7 @@ In our README.md, let's start taking some notes about our project and outlining 
 
 Our stablecoin is going to be:
 
-1. Relative Stability: Achored or Pegged to the US Dollar
+1. Relative Stability: Anchored or Pegged to the US Dollar
    1. Chainlink Pricefeed
    2. Function to convert ETH & BTC to USD
 2. Stability Mechanism (Minting/Burning): Algorithmicly Decentralized
@@ -144,6 +144,13 @@ All of the properties of our protocol are going to be governed ultimately by the
 
 In order to accomplish this, we're going to also inherit `Ownable` with DecentralizedStableCoin.sol. This will allow us to configure access control, assuring only our DSCEngine contract is authorized to call these functions.
 
+> ❗ **NOTE**
+> For version 5 of OpenZeppelin's Ownable contract, we need to pass an address
+> in the constructor. We have to modify our code to account for this when
+> running `forge build` so that our project will not error. Like this:
+> `constructor(address initialOwner) ERC20("DecentralizedStableCoin", "DSC")
+Ownerable(initialOwner) {}`
+
 ```js
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -166,8 +173,8 @@ function burn(uint256 _amount) external override onlyOwner{}
 
 We're going to want to check for two things when this function is called.
 
-1. The amount burnt musn't be less than zero
-2. The amount burnt musn't be less than the user's balance
+1. The amount burnt must not be less than zero
+2. The amount burnt must not be more than the user's balance
 
 We'll configure two custom errors for when these checks fail.
 
