@@ -152,8 +152,7 @@ I mentioned there were a few different ways to acquire a function selector and t
 
 We wont walk through all the different methods here, but I've provided some of them below and these are also available in the course's [**GitHub repo**](https://github.com/Cyfrin/foundry-nft-f23/blob/main/src/sublesson/CallAnything.sol).
 
-<details>
-<summary>CallAnything.sol</summary>
+CallAnything.sol
 
 ```js
 // SPDX-License-Identifier: MIT
@@ -248,13 +247,9 @@ contract CallAnything {
 }
 ```
 
-</details>
-
-
 One last thing I want to point out is that we're not limited to this kind of interaction. Through this low-level calling method, two contracts are able to interact without possessing all the information associated with eachother. Consider this second contract `CallFunctionWithoutContract`.
 
-<details>
-<summary>CallFunctionWithoutContract</summary>
+CallFunctionWithoutContract
 
 ```js
 contract CallFunctionWithoutContract {
@@ -288,9 +283,6 @@ contract CallFunctionWithoutContract {
 }
 ```
 
-</details>
-
-
 By passing this contract the address of our `CallAnything.sol` deployment. We're able to use the functions it possesses to interact with `CallAnything.sol`
 
 ::image{src='/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors6.png' style='width: 100%; height: auto;'}
@@ -307,7 +299,7 @@ Now we can call `callTransferFunctionDirectlyThree` on our `CallFunctionWithoutC
 
 Hopefully by now you can see the power available through this methodology of low-level calls. Now, despite hyping it up for several lessons, low-level calls are risky, and it's worth noting that they should be avoided when possible. Use an interface or something similar if you can, because low-level calls can leave you open to a number of potential issues and vulnerabilities.
 
-With that said, you've just learnt some really advanced stuff. If it's a little confusing, don't feel bad, you can always come back later when you've gained a little more experience and context of the EVM
+With that said, you've just learnt some really advanced stuff. If it's a little confusing, don't feel bad, you can always come back later when you've gained a little more experience and context of the EVM.
 
 If you're excited to learn more about how Solidity works under-the-hood, I recommend reading through the [**Deconstructing Solidity**](https://blog.openzeppelin.com/deconstructing-a-solidity-contract-part-i-introduction-832efd2d7737) series by OpenZeppelin. It does a great job breaking things down in a very digestible and granular way.
 

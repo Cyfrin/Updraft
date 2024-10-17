@@ -12,7 +12,7 @@ Before looking at how we can apply all our new encoding knowledge to call our ow
 
 ### Concatenation
 
-At a high-level we learnt that abi.encodePacked can be used to concatenate strings.
+At a high-level, we learnt that abi.encodePacked can be used to concatenate strings.
 
 ```js
 string memory someString = string(abi.encodePacked("Hi Mom! ", "Miss you!"))

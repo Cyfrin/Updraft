@@ -11,7 +11,7 @@ _Follow along the course with this video._
 Welcome back! In this section of the course we'll be investigate Non-fungible Tokens (NFTs), we'll learn what an NFT is, why they're so cool and how to create our very own NFTs, one basic and one advanced.
 
 > ❗ **PROTIP**
-> All the code discussed in this section is available in the associated [**GitHub Repo**](https://github.com/Cyfrin/foundry-nft-f23).
+> All the code discussed in this section is available in the associated [**GitHub Repo**](https://github.com/Cyfrin/foundry-nft-cu).
 
 ### Two Flavors
 

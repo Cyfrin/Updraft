@@ -27,9 +27,9 @@ I've said previously that in order to send a transaction you're always going to 
 
 Originally we were referring to the human-readable ABI.
 
-<details>
-<summary>Human-readable ABI</summary>
-```
+Human-readable ABI
+
+```json
 [
 	{
 		"inputs": [],
@@ -73,9 +73,6 @@ Originally we were referring to the human-readable ABI.
 ]
 ```
 
-</details>
-
-
 We can also accomplish our goals with the `bytecode` version directly. All you _really_ need to send a function call is the name of a function and the input types.
 
 Two questions arise:
@@ -99,7 +96,8 @@ function withdraw(address recentWinner) public {
 
 **staticcall:** How we call view or pure functions
 
-> ❗ **PROTIP** > `send` and `delegatecall` also exist as options for low-level calling to the blockchain, but we'll go over these in greater detail later!
+> ❗ **PROTIP**
+> `send` and `delegatecall` also exist as options for low-level calling to the blockchain, but we'll go over these in greater detail later!
 
 When we write `recentWinner.call{value: address(this).balance}("");` we're directly updating the value property of the transaction we're sending. The parenthesis at the end of this call are where we provide our transaction data.
 
