@@ -93,7 +93,7 @@ We'll probably want to initialize this mapping in our contract's constructor. To
 constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){}
 ```
 
-Here's where we should definitely perform a sanity check, since a contract is only constructed once. If the indexes of our lists are meant to be mapped to eachother, we should assure the lengths of the lists match, and if they don't we can revert with another custom error.
+Here's where we should definitely perform a sanity check, since a contract is only constructed once. If the indexes of our lists are meant to be mapped to each other, we should assure the lengths of the lists match, and if they don't we can revert with another custom error.
 
 ```js
 ///////////////////
@@ -115,7 +115,7 @@ constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses
 }
 ```
 
-Now we can add our for loop which will map our two lists of addresses to eachother.
+Now we can add our for loop which will map our two lists of addresses to each other.
 
 ```js
 ///////////////////
@@ -219,6 +219,11 @@ function depositCollateral(address tokenCollateralAddress, uint256 amountCollate
 I've additionally included the nonReentrant modifier, which we'll need to import from OpenZeppelin. When interacting with external contracts it's often good to consider the implications of reentrancy. Reentrancy is one of the most common and damaging attacks in all of Web3, and sometimes I'll throw this modifier on as a **_better safe than sorry_** methodology. It may not explicitly be required, but we'll find out when this code goes to audit! The trade off to include it is an expense of gas required to perform these extra checks.
 
 Let's add the import to our contract.
+
+> ❗ **NOTE**
+> In version 5 of OpenZeppelin's contracts library, `ReentrancyGuard.sol` is
+> in a different location. Edit the filepath from `/security/` to `/utils/` will
+> work.
 
 ```js
 pragma solidity ^0.8.18;
@@ -355,8 +360,7 @@ I've left our DSCEngine.sol (up to this point in the lesson) below for reference
 
 See you in the next lesson!
 
-<details>
-<summary>DSCEngine.sol</summary>
+DSCEngine.sol
 
 ```js
 // Layout of Contract:
@@ -506,6 +510,3 @@ contract DSCEngine is ReentrancyGuard {
     function getHealthFactor() external view {}
 }
 ```
-
-</details>
-
