@@ -10,8 +10,7 @@ _Follow along the course with this video._
 
 Our current DSCEngine.sol for reference:
 
-<details>
-<summary>DSCEngine.sol</summary>
+DSCEngine.sol
 
 ```js
 // Layout of Contract:
@@ -235,9 +234,6 @@ contract DSCEngine is ReentrancyGuard {
 }
 ```
 
-</details>
-
-
 Welcome back! I'm excited to keep going. So far our DSCEngine.sol has quite a bit of functionality already. We've the ability to mint DSC, we can deposit collateral, check account information and more.
 
 The next thing I want to tackle is sort of the main function we'd expect in this protocol, depositCollateralAndMintDsc. This function should serve as a combination of the last two we wrote which allows users to deposit and mint in a single transaction.
@@ -262,7 +258,7 @@ Because this is one of our main functions, we're absolutely going to add some NA
  * @param amountDscToMint: The amount of DecentralizedStableCoin to mint
  * @notice: This function will deposit your collateral and mint DSC in one transaction
  */
-function depositCollateralAndMintDsc(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountDscToMint){
+function depositCollateralAndMintDsc(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountDscToMint) external {
     depositCollateral(tokenCollateralAddress, amountCollateral);
     mintDsc(amountDscToMint);
 }
