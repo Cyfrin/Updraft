@@ -10,7 +10,8 @@ _Follow along the course with this video._
 
 Our current DSCEngine.sol for reference:
 
-DSCEngine.sol
+<details>
+<summary>DSCEngine.sol</summary>
 
 ```js
 // Layout of Contract:
@@ -233,6 +234,9 @@ contract DSCEngine is ReentrancyGuard {
     function getHealthFactor() external view {}
 }
 ```
+
+</details>
+
 
 Welcome back! I'm excited to keep going. So far our DSCEngine.sol has quite a bit of functionality already. We've the ability to mint DSC, we can deposit collateral, check account information and more.
 
