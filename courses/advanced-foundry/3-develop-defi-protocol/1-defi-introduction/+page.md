@@ -71,7 +71,7 @@ Before we get too deep into DeFi, I do want to bring the concept of Miner/Maxima
 
 At a very high-level, MEV is the process by which a node validator or miner orders the transactions of a block they're validating in such as way as to benefit themselves or conspirators.
 
-There are many teams and protocols working hard to mitigate the effects of MEV advantages, but for now, I recommend that anyone looking to get deep into DeFi read through and understand the content on [**flashbots.net's New to MEV guide**](https://docs.flashbots.net/new-to-mev). This content is both an entertaining way to learn about a complex concept and extremely eye-openning to the dangers MEV represents in the DeFi space.
+There are many teams and protocols working hard to mitigate the effects of MEV advantages, but for now, I recommend that anyone looking to get deep into DeFi read through and understand the content on [**flashbots.net's New to MEV guide**](https://docs.flashbots.net/new-to-mev). This content is both an entertaining way to learn about a complex concept and extremely eye-opening to the dangers MEV represents in the DeFi space.
 
 ### Wrap Up
 
@@ -79,11 +79,11 @@ The project we're going to be building in this section is a _stablecoin_. Stable
 
 - AI gets better each day. Use assistants like [**ChatGPT**](https://chatgpt.com) for insight into your problems (beware hallucinations)
 - [**The Discussions Tab**](https://github.com/Cyfrin/foundry-full-course-f23/discussions) of the course is a great place to start dialogues and seek assistance
-- [**Cyfrin's Discord Server**](https://discord.gg/cyfrin) contains thousands of likeminded students eager to help eachother succeed.
+- [**Cyfrin's Discord Server**](https://discord.gg/cyfrin) contains thousands of likeminded students eager to help each other succeed.
 
 Like I said, there is _a lot_ to DeFi and this is easily going to be the most advanced section in this whole course. If you're able to succeed here you'll have reason to be exceptionally proud.
 
-The core is, DeFi is `permissionless`, `open-source`, finance and to _me_ is the best thing smart contracts enable. Through DeFi we can move away from contemporary financial instutions towards a fairer and more transparent finance system.
+The core is, DeFi is `permissionless`, `open-source`, finance and to _me_ is the best thing smart contracts enable. Through DeFi we can move away from contemporary financial institutions towards a fairer and more transparent finance system.
 
 Let's get started walking through the project code.
 
@@ -126,9 +126,5 @@ Even though we have following lessons on upgrades, governance, introduction to s
 Stepping into DeFi and understanding everything in this lesson can be a daunting task. Seek help from [Chat GPT](https://chat.openai.com/), use the [GitHub repo](https://github.com/Cyfrin/foundry-full-course-f23/) discussion tab or even browse the [MakerDAO forum](https://forum.makerdao.com/) to understand how the industry stalwarts are working and implementing DeFi.
 
 You can even check out Coinbase's educational content to get a headstart on DeFi.
-
-And remember,
-
-::image{src='/foundry-defi/1-defi-introduction/defi-introduction4.PNG' style='width: 100%; height: auto;'}
 
 In the following section, we will be walking you through the code. Happy learning!
