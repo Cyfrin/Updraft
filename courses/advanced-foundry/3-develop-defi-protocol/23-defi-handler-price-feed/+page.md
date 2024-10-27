@@ -10,7 +10,7 @@ _Follow along the course with this video._
 
 Our handler looks great at this point, but it doesn't reflect everything. Another powerful feature of this methodology is that we're able to leverage our handler to guide not only our target contract, but any contract we want!
 
-Take price feeds for example. These are external references that our protcol depends upon to function properly. We can use our handler to more realistically emulate how price feeds would behave in real-world scenarios.
+Take price feeds for example. These are external references that our protocol depends upon to function properly. We can use our handler to more realistically emulate how price feeds would behave in real-world scenarios.
 
 Our project should already contain a MockV3Aggregator within the mocks folder, so let's begin by importing it into Handler.t.sol. This file mimics the behaviour of a price feed.
 

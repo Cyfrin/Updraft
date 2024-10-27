@@ -137,7 +137,7 @@ contract SmallSol {
 }
 ```
 
-In the above simple contract example, the obvious path is returning the `result of a + 1`. Another less obvious path would be this function `f` reverting due to overflow. Symbolic Execution, through it's mathetmatical modelling, would traverse all possible paths, looking for criteria that break our invariant. These paths might be represented something like this:
+In the above simple contract example, the obvious path is returning the `result of a + 1`. Another less obvious path would be this function `f` reverting due to overflow. Symbolic Execution, through it's mathematical modelling, would traverse all possible paths, looking for criteria that break our invariant. These paths might be represented something like this:
 
 **Path 1:** `assert(a not 2**256 - 1); a:= a+1; return a;`
 
