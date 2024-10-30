@@ -104,7 +104,7 @@ Please add the following function in your `FundMe.t.sol`:
 function testPrintStorageData() public {
     for (uint256 i = 0; i < 3; i++) {
         bytes32 value = vm.load(address(fundMe), bytes32(i));
-        console.log("Vaule at location", i, ":");
+        console.log("Value at location", i, ":");
         console.logBytes32(value);
     }
     console.log("PriceFeed address:", address(fundMe.getPriceFeed()));
@@ -121,11 +121,11 @@ Run the test above by calling this in your terminal:
 Ran 1 test for test/FundMe.t.sol:FundMeTest
 [PASS] testPrintStorageData() (gas: 19138)
 Logs:
-  Vaule at location 0 :
+  Value at location 0 :
   0x0000000000000000000000000000000000000000000000000000000000000000
-  Vaule at location 1 :
+  Value at location 1 :
   0x0000000000000000000000000000000000000000000000000000000000000000
-  Vaule at location 2 :
+  Value at location 2 :
   0x00000000000000000000000090193c961a926261b756d1e5bb255e67ff9498a1
   PriceFeed address: 0x90193C961A926261B756D1E5bb255e67ff9498A1
 
