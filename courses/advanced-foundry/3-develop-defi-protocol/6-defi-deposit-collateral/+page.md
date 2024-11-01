@@ -262,7 +262,7 @@ Now we can finally add the deposited collateral to our user's balance within our
  * @param amountCollateral: The amount of collateral you're depositing
  */
 function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{
-    s_collateralDeposited[msg.sender][tokenCollateralAddress] =+ amountCollateral;
+    s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
 }
 ```
 
@@ -286,7 +286,7 @@ event CollateralDeposited(address indexed user, address indexed token, uint256 i
  * @param amountCollateral: The amount of collateral you're depositing
  */
 function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{
-    s_collateralDeposited[msg.sender][tokenCollateralAddress] =+ amountCollateral;
+    s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
     emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
 }
 ```
@@ -313,7 +313,7 @@ import {IERC20} from "@openzeppelin/contracts/tokens/ERC20/IERC20.sol";
  * @param amountCollateral: The amount of collateral you're depositing
  */
 function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{
-    s_collateralDeposited[msg.sender][tokenCollateralAddress] =+ amountCollateral;
+    s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
     emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
 
     IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);

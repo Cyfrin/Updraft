@@ -399,7 +399,7 @@ function liquidate(address collateral, address user, uint256 debtToCover) extern
 
     uint256 tokenAmountFromDebtCovered = getTokenAmountFromUsd(collateral, debtToCover);
 
-    uint256 bonusCollateral = (tokeAmountFromDebtCovered * LIQUIDATION_BONUS) / LIQUIDATION_PRECISION;
+    uint256 bonusCollateral = (tokenAmountFromDebtCovered * LIQUIDATION_BONUS) / LIQUIDATION_PRECISION;
 }
 ```
 
@@ -424,7 +424,7 @@ function liquidate(address collateral, address user, uint256 debtToCover) extern
 
     uint256 tokenAmountFromDebtCovered = getTokenAmountFromUsd(collateral, debtToCover);
 
-    uint256 bonusCollateral = (tokeAmountFromDebtCovered * LIQUIDATION_BONUS) / LIQUIDATION_PRECISION;
+    uint256 bonusCollateral = (tokenAmountFromDebtCovered * LIQUIDATION_BONUS) / LIQUIDATION_PRECISION;
 
     uint256 totalCollateralRedeemed = tokenAmountFromDebtCovered + bonusCollateral;
 }

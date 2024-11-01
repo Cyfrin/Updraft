@@ -8,7 +8,7 @@ _Follow along the course with this video._
 
 ### Handler - Redeeming Collateral
 
-Ok! In this lesson we're going to adjust the code in our Invariants.t.sol such that our tests are more focused by being routed through a handler contract. In so doing, our tests will have a more sensible order of functions to call and more contexually relavent random data.
+Ok! In this lesson we're going to adjust the code in our Invariants.t.sol such that our tests are more focused by being routed through a handler contract. In so doing, our tests will have a more sensible order of functions to call and more contextually relevant random data.
 
 We'll start by creating the Handler.t.sol contract.
 

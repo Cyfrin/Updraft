@@ -29,7 +29,7 @@ We have 3 lessons remaining in this section, and they'll be a breeze compared to
 
 See you soon!
 
-### Excercises
+### Exercises
 
 [**Arbitrum NFT Challenge**](https://arbiscan.io/address/0x3DbBF2F9AcFB9Aac8E0b31563dd75a2D69148D64#code)
 
