@@ -14,7 +14,7 @@ We can begin by creating a repository for our project with the command `mkdir me
 
 The token that we are going to airdrop will be a ERC20 token. In the same directory we can make a `BagelToken.sol` contract, where we will use the OpenZeppelin libraries `ERC20` and `Ownable` to create it. For that we first need to install the dependency with the command `forge install openzeppelin/openzeppelin-contracts --no-commit`.
 
-In the `foundry.toml` file we the spcify a remapping:
+In the `foundry.toml` file we the specify a remapping:
 
 ```toml
 remappings = [ '@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/']
@@ -66,7 +66,7 @@ function claim(address account) external {
 }
 ```
 
-However, looping through an array that can grow indefinetely can lead to **performance issues** and calling this function. If there are for example, hundresds of claimers, will become cost prohibitive and will cause a Denial Of Service (DOS). Merkle trees will help solving this issue.
+However, looping through an array that can grow indefinately can lead to **performance issues** and calling this function. If there are for example, hundreds of claimers, will become cost prohibitive and will cause a Denial Of Service (DOS). Merkle trees will help solving this issue.
 
 ### Merkle Trees and Proofs
 

@@ -44,7 +44,7 @@ To retrieve and use the last deployed contract in our `MerkleAirdrop.t.sol` file
 forge install cyfrin/foundry-devops --no-commit
 ```
 
-Then, in the `setUp` function, add a check to determine if the current chain is zkSync:
+Then, in the `setUp` function, add a check to determine if the current chain is ZKsync:
 
 ```js
 //..
@@ -64,4 +64,4 @@ function setUp() public {
 }
 ```
 
-The `zkSyncChainChecker` determines if we are currently on a zkSync chain. If we are not, we deploy the contracts using our script and proceed with testing. Otherwise, we directly deploy new instances of the `BagelToken` and `MerkleAirdrop` contracts, mint the necessary tokens to the contract owner, and transfer the required amount of tokens to the `MerkleAirdrop` contract.
+The `zkSyncChainChecker` determines if we are currently on a ZKsync chain. If we are not, we deploy the contracts using our script and proceed with testing. Otherwise, we directly deploy new instances of the `BagelToken` and `MerkleAirdrop` contracts, mint the necessary tokens to the contract owner, and transfer the required amount of tokens to the `MerkleAirdrop` contract.
