@@ -8,7 +8,7 @@ _Follow along with the video_
 
 ### Introduction
 
-In this lesson, we will explore the **four** primary transaction types shared by both Ethereum and ZK Sync. After that, we'll take a look at the transaction types specific to the ZK Sync chain.
+In this lesson, we will explore the **four** primary transaction types shared by both Ethereum and ZKsync. After that, we'll take a look at the transaction types specific to the ZKsync chain.
 
 ### Type 0 (Legacy Transactions)
 
@@ -29,7 +29,7 @@ Introduced by EIP1559 during Ethereum's London fork, this transaction type aims 
 - Introduces the **Max Fee per Gas**, the total maximum fee the sender is willing to pay.
 
   > 🗒️ **NOTE**:br
-  > While ZK Sync supports type 2 transactions, it does not utilize the max fee parameters, as gas functions differently on ZK Sync.
+  > While ZKsync supports type 2 transactions, it does not utilize the max fee parameters, as gas functions differently on ZKsync.
 
 ### Type 3 (0x03)
 
@@ -44,14 +44,14 @@ Introduced by EIP4844, this transaction type provides an initial scaling solutio
 
 The blob fee is deducted and burned from the sender's account before the transaction executes, meaning it is not refunded if the transaction fails.
 
-Next, we have two transaction types specific to ZK Sync:
+Next, we have two transaction types specific to ZKsync:
 
 ### Type 113 (0x71)
 
 Defined by EIP712, these transactions standardize **data hashing** and **signing**, enabling features like **account abstraction** and **paymasters**.
 
 > 👀❗**IMPORTANT**:br
-> Smart contracts on ZK Sync must be deployed using type 113 transactions.
+> Smart contracts on ZKsync must be deployed using type 113 transactions.
 
 Fields specific to type 113 transactions are:
 
@@ -62,4 +62,4 @@ Fields specific to type 113 transactions are:
 
 ### Type 5 (0xFF) Transactions
 
-Known as **priority transactions**, these allow users to send transactions directly from L1 to L2 in ZK Sync.
+Known as **priority transactions**, these allow users to send transactions directly from L1 to L2 in ZKsync.

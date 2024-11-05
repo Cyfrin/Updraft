@@ -14,7 +14,7 @@ An airdrop occurs when a token development team distributes tokens or allows peo
 
 ::image{src='/foundry-merkle-airdrop/01-introduction/airdrop.png' style='width: 75%; height: auto;'}
 
-Tokens are tipically given for free, with eligibility criteria such as contributing to the project's GitHub repository or participating in the community. This process helps to _bootstrap the project_ by distributing tokens to a **list of eligible addresses**.
+Tokens are typically given for free, with eligibility criteria such as contributing to the project's GitHub repository or participating in the community. This process helps to _bootstrap the project_ by distributing tokens to a **list of eligible addresses**.
 
 ### Walkthrough
 
@@ -26,7 +26,7 @@ We will generate **scripts** to create Merkle Trees, Proofs, and Root Hash, as w
 
 In this course, we will cover several topics besides Merkle Trees and Merkle Proofs, such as signatures, the ECDSA (Elliptical Curve Digital Signature) Algorithm, and transaction types.
 
-- After initializing a ZK Sync local node with Docker, we'll deploy the `Bagel` token and `MerkleAirdrop` contracts on it
+- After initializing a ZKsync local node with Docker, we'll deploy the `Bagel` token and `MerkleAirdrop` contracts on it
 - We'll then **sign a message** to allow someone else to call `claim` on your behalf so you can receive the token while not paying for gas fees
 - The initial supply of tokens is created and sent to the airdrop contract
 - Finally, we can claim tokens on behalf of the claiming address (so they do not have to pay gas) using a signature
