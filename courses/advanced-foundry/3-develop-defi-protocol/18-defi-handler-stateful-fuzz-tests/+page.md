@@ -100,7 +100,7 @@ import {DSCEngine} from "../../src/DSCEngine.sol";
 import {DecentralizedStableCoin} from "../../src/DecentralizedStableCoin.sol";
 import {HelperConfig} from "../../script/HelperConfig.s.sol";
 
-contract InvariantsTest is StdInvariant Test {
+contract InvariantsTest is StdInvariant, Test {
     DeployDSC deployer;
     DSCEngine dsce;
     DecentralizedStableCoin dsc;
@@ -121,7 +121,7 @@ In order to test the invariant that our collateral value must always be more tha
 ...
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 ...
-contract InvariantsTest is StdInvariant Test {
+contract InvariantsTest is StdInvariant, Test {
     DeployDSC deployer;
     DSCEngine dsce;
     DecentralizedStableCoin dsc;
