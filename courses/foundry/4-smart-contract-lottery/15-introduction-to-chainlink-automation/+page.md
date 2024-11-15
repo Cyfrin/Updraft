@@ -9,7 +9,7 @@ _Follow along with this video:_
 
 Amazing work! Our project starts looking good!
 
-Looking through it we can see that there's an obvious problem. For the winner to be picked we need someone to call `pickWinner`. Manually calling this day after day is not optimal, and we, as engineers, need to come up with a better solution! Let's discuss Chainlink Automation! 
+Looking through it we can see that there's an obvious problem. For the winner to be picked we need someone to call `pickWinner`. Manually calling this day after day is not optimal, and we, as engineers, need to come up with a better solution! Let's discuss Chainlink Automation!
 
 **Chainlink Automation** is a decentralized service designed to automate key functions and DevOps tasks within smart contracts in a highly reliable, trust-minimized, and cost-efficient manner. It allows smart contracts to automatically execute transactions based on predefined conditions or schedules.
 
@@ -21,7 +21,7 @@ Let's open the contract available [here](https://docs.chain.link/chainlink-autom
 
 Following Richard's tutorial let's delete the `is AutomationCompatibleInterface` inheritance, both the `interval` and `lastTimeStamp` variables, adjust the constructor and delete both available functions. Create a new function called `count` which increments the `counter` state variable. It should look like this:
 
-```javascript
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 

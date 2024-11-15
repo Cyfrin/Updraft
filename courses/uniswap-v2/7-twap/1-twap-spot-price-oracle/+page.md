@@ -16,9 +16,7 @@ Let's imagine a lending protocol that allows users to borrow DAI by locking ETH 
 
 A hacker could exploit this protocol by manipulating the spot price of ETH. They could buy a large amount of ETH with DAI, increasing the price. Then, they could borrow a large amount of DAI, exceeding the value of their collateral.
 
-**Diagram:** [Insert Diagram Here]
-
-In the diagram, the hacker:
+Imagine a hacker:
 
 1. Buys 832 WETH using 10,000,000 DAI, increasing the spot price of ETH to 71,819 DAI per ETH.
 2. Borrows 5,745,599 DAI by locking 100 ETH as collateral.

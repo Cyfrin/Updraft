@@ -12,8 +12,8 @@ We began by exploring more efficient methods for data verification using **Merkl
 
 Next, we delved into the use and mechanics of **signatures**, which are crucial for ensuring transaction authenticity and integrity. We learned how to generate signatures with `vm.sign` and `cast wallet sign`, and how to implement them within our smart contracts using OpenZeppelin's `ECDSA` library.
 
-Following this, we developed few scripts for deploying and interacting with our smart contracts on different platforms, including Anvil, zkSync local node, and zkSync Sepolia.
+Following this, we developed few scripts for deploying and interacting with our smart contracts on different platforms, including Anvil, ZKsync local node, and ZKsync Sepolia.
 
-Lastly, we examined various transaction types and the principles of the elliptic curve digital signature algorithm (eCDSA).
+Lastly, we examined various transaction types and the principles of the elliptic curve digital signature algorithm (ECDSA).
 
 Well done! 🪩 🕺🏼

@@ -93,7 +93,7 @@ We'll probably want to initialize this mapping in our contract's constructor. To
 constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){}
 ```
 
-Here's where we should definitely perform a sanity check, since a contract is only constructed once. If the indexes of our lists are meant to be mapped to eachother, we should assure the lengths of the lists match, and if they don't we can revert with another custom error.
+Here's where we should definitely perform a sanity check, since a contract is only constructed once. If the indexes of our lists are meant to be mapped to each other, we should assure the lengths of the lists match, and if they don't we can revert with another custom error.
 
 ```js
 ///////////////////
@@ -115,7 +115,7 @@ constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses
 }
 ```
 
-Now we can add our for loop which will map our two lists of addresses to eachother.
+Now we can add our for loop which will map our two lists of addresses to each other.
 
 ```js
 ///////////////////
@@ -220,6 +220,11 @@ I've additionally included the nonReentrant modifier, which we'll need to import
 
 Let's add the import to our contract.
 
+> ❗ **NOTE**
+> In version 5 of OpenZeppelin's contracts library, `ReentrancyGuard.sol` is
+> in a different location. Edit the filepath from `/security/` to `/utils/` will
+> work.
+
 ```js
 pragma solidity ^0.8.18;
 
@@ -257,7 +262,7 @@ Now we can finally add the deposited collateral to our user's balance within our
  * @param amountCollateral: The amount of collateral you're depositing
  */
 function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{
-    s_collateralDeposited[msg.sender][tokenCollateralAddress] =+ amountCollateral;
+    s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
 }
 ```
 
@@ -281,7 +286,7 @@ event CollateralDeposited(address indexed user, address indexed token, uint256 i
  * @param amountCollateral: The amount of collateral you're depositing
  */
 function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{
-    s_collateralDeposited[msg.sender][tokenCollateralAddress] =+ amountCollateral;
+    s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
     emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
 }
 ```
@@ -308,7 +313,7 @@ import {IERC20} from "@openzeppelin/contracts/tokens/ERC20/IERC20.sol";
  * @param amountCollateral: The amount of collateral you're depositing
  */
 function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{
-    s_collateralDeposited[msg.sender][tokenCollateralAddress] =+ amountCollateral;
+    s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
     emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
 
     IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);
@@ -355,8 +360,7 @@ I've left our DSCEngine.sol (up to this point in the lesson) below for reference
 
 See you in the next lesson!
 
-<details>
-<summary>DSCEngine.sol</summary>
+DSCEngine.sol
 
 ```js
 // Layout of Contract:
@@ -506,6 +510,3 @@ contract DSCEngine is ReentrancyGuard {
     function getHealthFactor() external view {}
 }
 ```
-
-</details>
-

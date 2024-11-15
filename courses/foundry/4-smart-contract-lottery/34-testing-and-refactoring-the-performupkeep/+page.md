@@ -11,18 +11,18 @@ Let's give some love to `performUpkeep`, starting with some tests.
 
 Starting light, open the `RaffleTest.t.sol` and paste the following:
 
-```javascript
-    function testPerformUpkeepCanOnlyRunIfCheckUpkeepIsTrue() public {
-        // Arrange
-        vm.prank(PLAYER);
-        raffle.enterRaffle{value: entranceFee}();
-        vm.warp(block.timestamp + interval + 1);
-        vm.roll(block.number + 1);
+```solidity
+function testPerformUpkeepCanOnlyRunIfCheckUpkeepIsTrue() public {
+    // Arrange
+    vm.prank(PLAYER);
+    raffle.enterRaffle{value: entranceFee}();
+    vm.warp(block.timestamp + interval + 1);
+    vm.roll(block.number + 1);
 
-        // Act / Assert
-        // It doesnt revert
-        raffle.performUpkeep("");
-    }
+    // Act / Assert
+    // It doesnt revert
+    raffle.performUpkeep("");
+}
 ```
 
 We prank the `PLAYER` address, then use it to call `enterRaffle` with the correct `entranceFee`. We use the `warp` and `roll` to set `block.timestamp` into the future. Lastly, we call `performUpkeep`.
@@ -33,30 +33,30 @@ Run the test using: `forge test --mt testPerformUpkeepCanOnlyRunIfCheckUpkeepIsT
 
 It passes, amazing!
 
-Keep going! Let's test if perform upkeep reverts in case check upkeep is false:
+Keep going! Let's test if `performUpkeep` reverts in case `checkUpkeep` is false:
 
-```javascript
-    function testPerformUpkeepRevertsIfCheckUpkeepIsFalse() public {
-        // Arrange
-        uint256 currentBalance = 0;
-        uint256 numPlayers = 0;
-        Raffle.RaffleState rState = raffle.getRaffleState();
-        // Act / Assert
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                Raffle.Raffle__UpkeepNotNeeded.selector,
-                currentBalance,
-                numPlayers,
-                rState
-            )
-        );
-        raffle.performUpkeep("");
-    }
+```solidity
+function testPerformUpkeepRevertsIfCheckUpkeepIsFalse() public {
+    // Arrange
+    uint256 currentBalance = 0;
+    uint256 numPlayers = 0;
+    Raffle.RaffleState rState = raffle.getRaffleState();
+    // Act / Assert
+    vm.expectRevert(
+        abi.encodeWithSelector(
+            Raffle.Raffle__UpkeepNotNeeded.selector,
+            currentBalance,
+            numPlayers,
+            rState
+        )
+    );
+    raffle.performUpkeep("");
+}
 ```
 
 This can be understood easier if we start from the end. We want to call `performUpkeep` and we expect it to revert. For that, we use the `vm.expectRevert` to indicate that we expect the next call to revert. If we access [this link](https://book.getfoundry.sh/cheatcodes/expect-revert) we can see that in case we use a custom error with parameters we can specify them as follows:
 
-```javascript
+```solidity
 vm.expectRevert(
     abi.encodeWithSelector(CustomError.selector, 1, 2)
 );
@@ -64,12 +64,12 @@ vm.expectRevert(
 
 In our case the custom error has 3 parameters:
 
-```javascript
-    error Raffle__UpkeepNotNeeded(
-        uint256 currentBalance,
-        uint256 numPlayers,
-        uint256 raffleState
-    );
+```solidity
+error Raffle__UpkeepNotNeeded(
+    uint256 currentBalance,
+    uint256 numPlayers,
+    uint256 raffleState
+);
 ```
 
 First parameter: `Raffle.Raffle__UpkeepNotNeeded.selector`;

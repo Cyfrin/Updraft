@@ -9,11 +9,11 @@ _Follow along with this video:_
 
 We ended the previous lesson when we defined the following function:
 
-```javascript
+```solidity
 function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {}
 ```
 
-As we've said before, this function is going to be called by the VRF service. Here we will be given 1 random word (1 because of the NUM_WORDS we defined in the previous lesson). This isn't a `word` as in a string of letters like `pizza`, this is a big and random uint256. Being a number we can use it to do math.
+As we've said before, this function is going to be called by the VRF service. Here we will be given 1 random word (1 because of the `NUM_WORDS` we defined in the previous lesson). This isn't a `word` as in a string of letters like `pizza`, this is a big and random uint256. Being a number we can use it to do math.
 
 What we need is to use the `modulo` operator denoted as `%` in Solidity.
 
@@ -47,40 +47,38 @@ This means that the player with index 1 (`s_players[1]`) is the winner of our ra
 Enough theory, let's implement it in code!
 
 
-```javascript
-    function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
-        uint256 indexOfWinner = randomWords[0] % s_players.length;
-        address payable winner = s_players[indexOfWinner];
-    }
+```solidity
+function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
+    uint256 indexOfWinner = randomWords[0] % s_players.length;
+    address payable winner = s_players[indexOfWinner];
+}
 ```
 
 Now let's record this last winner in state and send them their prize.
 
-```javascript
-    function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
-        uint256 indexOfWinner = randomWords[0] % s_players.length;
-        address payable winner = s_players[indexOfWinner];
-        s_recentWinner = winner;
-        (bool success,) = winner.call{value:address(this).balance}("");
-        if (!success) {
-            revert Raffle__TransferFailed();
-        }
+```solidity
+function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
+    uint256 indexOfWinner = randomWords[0] % s_players.length;
+    address payable winner = s_players[indexOfWinner];
+    s_recentWinner = winner;
+    (bool success,) = winner.call{value:address(this).balance}("");
+    if (!success) {
+        revert Raffle__TransferFailed();
     }
+}
 ```
 Let's define the `Raffle__TransferFailed()` custom error and the `s_recentWinner` variable in the state variables section.
 
-```javascript
-    error Raffle__NotEnoughEthSent();
-    error Raffle__TransferFailed();
+```solidity
+error Raffle__NotEnoughEthSent();
+error Raffle__TransferFailed();
 
-    // Raffle related variables
-    uint256 private immutable i_entranceFee;
-    uint256 private immutable i_interval;
-    uint256 private s_lastTimeStamp;
-    address payable[] private s_players;
-    address payable private s_recentWinner;
+// Raffle related variables
+uint256 private immutable i_entranceFee;
+uint256 private immutable i_interval;
+uint256 private s_lastTimeStamp;
+address payable[] private s_players;
+address payable private s_recentWinner;
 ```
 
 Amazing! Let's keep going!
-
-

@@ -8,17 +8,17 @@ _Follow along with the video_
 
 ### Introduction
 
-In this lesson, we are going to deploy and claim our tokens on a **local zkSync node**. First, we need to terminate the Anvil node and then run `foundryup --zksync` to switch to the zkSync foundry environment.
+In this lesson, we are going to deploy and claim our tokens on a **local ZKsync node**. First, we need to terminate the Anvil node and then run `foundryup --zksync` to switch to the ZKsync foundry environment.
 
-⚠️ At the time of this recording, foundry scripts cannot be used on zkSync. Instead, we will use a bash script that runs the same commands as before. You can copy the [interactZk](https://github.com/Cyfrin/foundry-merkle-airdrop-cu/blob/main/interactZk.sh) script from the GitHub repository and follow along.
+⚠️ At the time of this recording, foundry scripts cannot be used on ZKsync. Instead, we will use a bash script that runs the same commands as before. You can copy the [interactZk](https://github.com/Cyfrin/foundry-merkle-airdrop-cu/blob/main/interactZk.sh) script from the GitHub repository and follow along.
 
 ### Script Overview
 
 The script is organized into the following sections:
 
-1. It begins by declaring all the necessary variables. These include the default zkSync and Anvil local accounts and key pairs, along with the Merkle Root and the two Merkle Proofs.
+1. It begins by declaring all the necessary variables. These include the default ZKsync and Anvil local accounts and key pairs, along with the Merkle Root and the two Merkle Proofs.
 
-2. Using the zkSync CLI, a local zkSync node is started. The script then deploys the `BagelToken` and the `MerkleAirdrop` contracts.
+2. Using the ZKsync CLI, a local ZKsync node is started. The script then deploys the `BagelToken` and the `MerkleAirdrop` contracts.
 
 3. It calls `MerkleAirdrop::getMessageHash` function using the default Anvil address and token amount to obtain the message hash. This message is then signed using `cast wallet sign` with the default Anvil key. The resulting signature is cleaned by removing the "0x" prefix and saved inside the file `signature.txt`.
 

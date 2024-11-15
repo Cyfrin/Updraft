@@ -8,18 +8,18 @@ _Follow along the course with this video._
 
 ### Foundry Setup
 
-Now that we know what an NFT is, let's investigate how we can build our own. As always the code we're writing will be available in the [**GitHub Repo**](https://github.com/Cyfrin/foundry-nft-f23) associate with this section.
+Now that we know what an NFT is, let's investigate how we can build our own. As always the code we're writing will be available in the [**GitHub Repo**](https://github.com/Cyfrin/foundry-nft-cu) associate with this section.
 
 To start, let's initialize our workspace. Create a new directory in your course folder.
 
 ```bash
-mkdir foundry-nft-f23
+mkdir foundry-nft
 ```
 
 We can then switch to this directory and open it in VSCode.
 
 ```bash
-cd foundry-nft-f23
+cd foundry-nft
 code .
 ```
 
@@ -37,7 +37,7 @@ Now, as mentioned previously, NFTs are just another type of [**Token Standard**]
 
 Begin by creating `src/BasicNft.sol` and setting up our usual boilerplate.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -63,7 +63,7 @@ remappings = ["@openzeppelin/contracts=lib/openzeppelin-contracts/contracts"]
 
 Now we can import and inherit the ERC721 contract into `BasicNft.sol`
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -75,7 +75,7 @@ contract BasicNft is ERC721 {}
 
 Your IDE will likely indicate an error until we've passed the necessary arguments to the ERC721 constructor. You can ctrl + left-click (cmd + left-click) on the imported ERC721.sol to navigate to this contract and confirm what the constructor requires.
 
-```js
+```solidity
 constructor(string memory name_, string memory symbol_) {
     _name = name_;
     _symbol = symbol_;
@@ -84,7 +84,7 @@ constructor(string memory name_, string memory symbol_) {
 
 Just like the ERC20, we need to give our token a name and a symbol, that makes sense. Feel free to choose your own, but I'm going to go with the name `Doggie` and the symbol `DOG`.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -99,7 +99,7 @@ contract BasicNft is ERC721 {
 
 Great! While this contract may have the basic functionality of an NFT protocol, there's a lot to be done yet. Because each token is unique and possesses a unique tokenId, we absolutely need a token counter to track this in storage. We'll increment this each time a token is minted.
 
-```js
+```solidity
 uint256 private s_tokenCounter;
 
 constructor() ERC721("Doggie", "DOG"){
@@ -161,8 +161,7 @@ Both the tokenUri and imageUri for this example are hosted on IPFS (Inter-planet
 
 So what's this tokenURI function going to look like for us? Well, our BasicNFT is going to also use IPFS, so similarly to our example above, we'll need to set up our function to return this string, pointing to the correct location in IPFS.
 
-```js
-
+```solidity
 function tokenURI(uint256 tokenId) public view override returns (string memory) {}
 ```
 

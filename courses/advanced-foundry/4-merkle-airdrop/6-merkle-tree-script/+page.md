@@ -10,7 +10,7 @@ _Follow along with the video_
 
 To access our private variables in the `MerkleAirdrop` contract, we need to add some getter functions like `getMerkleRoot` and `getAirdropToken`.
 
-We can then create a test file named `/test/MerkleAirdropTest.sol` and add some remappings in `foundy.toml`:
+We can then create a test file named `/test/MerkleAirdropTest.sol` and add some remappings in `foundry.toml`:
 
 ```toml
 remappings = [
