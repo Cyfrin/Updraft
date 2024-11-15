@@ -262,7 +262,7 @@ Because this is one of our main functions, we're absolutely going to add some NA
  * @param amountDscToMint: The amount of DecentralizedStableCoin to mint
  * @notice: This function will deposit your collateral and mint DSC in one transaction
  */
-function depositCollateralAndMintDsc(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountDscToMint){
+function depositCollateralAndMintDsc(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountDscToMint) external {
     depositCollateral(tokenCollateralAddress, amountCollateral);
     mintDsc(amountDscToMint);
 }
