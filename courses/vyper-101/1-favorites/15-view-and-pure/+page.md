@@ -1,0 +1,3 @@
+---
+        title: View And Pure
+        ---
