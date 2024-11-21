@@ -1,3 +1,0 @@
----
-        title: Gas Profile
-        ---

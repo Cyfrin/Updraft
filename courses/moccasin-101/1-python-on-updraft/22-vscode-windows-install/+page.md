@@ -1,3 +1,0 @@
----
-        title: Vscode Windows Install
-        ---

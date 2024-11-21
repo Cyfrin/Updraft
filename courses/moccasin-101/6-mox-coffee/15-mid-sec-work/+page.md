@@ -1,3 +1,0 @@
----
-        title: Mid Sec Work
-        ---

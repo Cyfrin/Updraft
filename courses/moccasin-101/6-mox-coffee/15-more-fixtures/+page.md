@@ -1,3 +1,0 @@
----
-        title: More Fixtures
-        ---
