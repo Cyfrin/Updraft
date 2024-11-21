@@ -1,3 +1,0 @@
----
-        title: Interacting Anvil
-        ---
