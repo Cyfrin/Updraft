@@ -1,3 +1,0 @@
----
-        title: Our First Python
-        ---
