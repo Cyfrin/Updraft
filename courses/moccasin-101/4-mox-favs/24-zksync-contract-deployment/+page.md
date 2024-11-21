@@ -1,3 +1,0 @@
----
-        title: Zksync Contract Deployment
-        ---
