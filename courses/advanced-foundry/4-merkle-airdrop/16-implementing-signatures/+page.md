@@ -88,15 +88,17 @@ With this setup, we can correctly encode and hash the `MESSAGE_TYPEHASH`, accoun
 Finally, implement the `_isValidSignature` function:
 
 ```js
+import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+
 function _isValidSignature(
-    address signer,
+    address account,
     bytes32 digest,
     uint8 v,
     bytes32 r,
     bytes32 s
 ) internal pure returns (bool) {
     (address actualSigner,,) = ECDSA.tryRecover(digest, v, r, s);
-    return (actualSigner == signer);
+    return (actualSigner == account);
 }
 ```
 
