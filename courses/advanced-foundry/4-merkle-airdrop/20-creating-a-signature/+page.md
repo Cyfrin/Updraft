@@ -19,7 +19,7 @@ Copy the [Makefile content](https://github.com/Cyfrin/foundry-merkle-airdrop-cu/
 To obtain the data for signing, use the `getMessageHash` function on the `MerkleAirdrop` contract. This function requires an account address, a `uint256` amount, and the Anvil node URL (`http://localhost:8545`).
 
 ```bash
-cast call 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512 "getMessageHash(address,uint256)" 0xf39Fd6e51aad88F6f4ce6aB88272ffFb92266 25000000000000000000 --rpc-url http://localhost:8545
+cast call 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512 "getMessageHash(address,uint256)" 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 25000000000000000000 --rpc-url http://localhost:8545
 0x184e30c4b19f5e304a893524210d50346dad61c461e79155b910e73fd856dc72
 ```
 
