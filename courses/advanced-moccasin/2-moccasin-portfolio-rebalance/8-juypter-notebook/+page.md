@@ -1,3 +1,0 @@
----
-        title: Juypter Notebook
-        ---

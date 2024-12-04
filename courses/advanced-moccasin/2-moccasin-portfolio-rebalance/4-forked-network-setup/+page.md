@@ -1,3 +1,0 @@
----
-        title: Forked Network Setup
-        ---
