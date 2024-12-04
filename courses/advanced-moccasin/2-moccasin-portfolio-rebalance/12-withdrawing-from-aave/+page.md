@@ -1,3 +1,0 @@
----
-        title: Withdrawing From Aave
-        ---
