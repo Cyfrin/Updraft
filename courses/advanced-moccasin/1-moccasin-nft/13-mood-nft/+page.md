@@ -1,5 +1,0 @@
-
-           ---
-           title: Mood Nft
-           ---
-        

@@ -1,5 +1,0 @@
-
-           ---
-           title: Workshop 1
-           ---
-        

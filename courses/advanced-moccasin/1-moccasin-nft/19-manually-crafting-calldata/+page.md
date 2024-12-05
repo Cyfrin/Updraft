@@ -1,5 +1,0 @@
-
-           ---
-           title: Manually Crafting Calldata
-           ---
-        
