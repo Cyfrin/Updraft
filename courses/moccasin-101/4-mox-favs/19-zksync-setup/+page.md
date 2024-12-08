@@ -26,12 +26,12 @@ which runs our deploy script. This runs on a PyEVM network but is still EVM-comp
 
 To start working with ZkSync, we need to install two additional tools:
 
-- Era Test Node
+- anvil-zksync
 - Era Compiler Vyper
 
-### Era Test Node
+### Anvil ZKSync Node
 
-The Era Test Node is an in-memory node that supports forking the state of other networks.
+The Anvil ZKSync Node is an in-memory node that supports forking the state of other networks.
 
 The first thing we need to do is make sure we have Rust installed on our machine.
 
@@ -49,7 +49,7 @@ rustup --help
 
 It will output a list of available Rust commands.
 
-Now we need to install the Era Test Node. We can do this by running the installation script. In the Era Test Node repository, we'll need to run:
+Now we need to install the Anvil ZKsync Node. We can do this by running the [installation script](https://github.com/matter-labs/anvil-zksync?tab=readme-ov-file#using-the-installation-script). In the Anvil ZKSync repository, we'll need to run:
 
 ```bash
 sudo ./install.sh
@@ -58,7 +58,7 @@ sudo ./install.sh
 This will download the Era Test Node and install it to our machine. We can then confirm the installation by running
 
 ```bash
-which era_test_node
+which anvil-zksync
 ```
 
 which will output the Era Test Node's location.
@@ -66,7 +66,7 @@ which will output the Era Test Node's location.
 We can also run
 
 ```bash
-era_test_node --version
+anvil-zksync --version
 ```
 
 which will output the version of the Era Test Node that we have installed.
@@ -74,7 +74,7 @@ which will output the version of the Era Test Node that we have installed.
 Finally, if we run
 
 ```bash
-era_test_node run
+anvil-zksync run
 ```
 
 it will start the Era Test Node, which will be the local ZkSync instance that we can deploy to. It will output a bunch of info, starting with the chain ID, which is L2ChainID (260).

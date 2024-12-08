@@ -2,10 +2,10 @@
 
 In this lesson, we will continue our journey with Moccasin by working with ZK Sync. We will be focusing on deploying and testing our contracts with ZK Sync.
 
-First, let's make sure we have installed the necessary tools. We need to install the `era_test_node` and `zkVyper` commands. We can verify their installations with the following commands in our terminal:
+First, let's make sure we have installed the necessary tools. We need to install the `anvil-zksync` and `zkVyper` commands. We can verify their installations with the following commands in our terminal:
 
 ```bash
-era_test_node --version
+anvil-zksync --version
 ```
 
 ```bash
