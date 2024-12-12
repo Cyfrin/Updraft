@@ -12,7 +12,7 @@ In a default transaction, data is stored and visible on-chain permanently. Blob 
 
 ### EIP4844
 
-These transactions originate from EIP4844, also known as "Proto-DankSharding", introduced in the Dancun upgrade in March 2024. The purpose of this transaction type is to address Ethereum's high transaction costs.
+These transactions originate from EIP4844, also known as "Proto-Danksharding", introduced in the Dencun upgrade in March 2024. The purpose of this transaction type is to address Ethereum's high transaction costs.
 
 Roll-ups help scale Ethereum by executing multiple transactions on their own chains, compressing them into batches, and submitting these batches back to Ethereum. Prior to the upgrade, all compressed transaction data had to be permanently stored on Ethereum nodes, which was inefficient and costly. With EIP4844, the data can be submitted **temporarily** for validation, avoiding permanent storage.
 

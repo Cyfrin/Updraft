@@ -39,7 +39,7 @@ function run() external {
 
 The `claimAirdrop` function will take the deployed `MerkleAirdrop` address as a parameter.
 
-First, we need to broadcast the transaction on the blockchain by wrapping our code between `vm.startBroadcast` and `vm.endBroadcast`.
+First, we need to broadcast the transaction on the blockchain by wrapping our code between `vm.startBroadcast` and `vm.stopBroadcast`.
 
 Next, we invoke the `MerkleAirdrop::claim` function, passing the following required parameters:
 

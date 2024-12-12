@@ -32,7 +32,7 @@ The `signMessage` function will calculate the **message digest**, which will be 
 
 ```js
 function signMessage(uint256 privKey, address account) public view returns (uint8 v, bytes32 r, bytes32 s) {
-    bytes32 hashedMessage = airdrop.getMessageHash(account, amountToCollect);
+        bytes32 hashedMessage = airdrop.getMessageHash(account, AMOUNT_TO_CLAIM);
     (v, r, s) = vm.sign(privKey, hashedMessage);
 }
 ```
@@ -43,7 +43,7 @@ Finally, the `gasPayer` address can call the `MerkleAirdrop::claim` function on 
 
 ```js
 vm.prank(gasPayer);
-airdrop.claim(user, amountToCollect, proof, v, r, s);
+airdrop.claim(user, AMOUNT_TO_CLAIM, PROOF, v, r, s);
 ```
 
 Afterward, we can verify that the test passes: the user's balance increases as expected, indicating that the `gasPayer` successfully claimed the tokens on the `user`'s behalf.
