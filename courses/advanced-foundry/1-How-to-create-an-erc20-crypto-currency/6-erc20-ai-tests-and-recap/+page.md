@@ -98,7 +98,7 @@ Let's run it!
 forge test --mt testBobBalance
 ```
 
-::image{src='/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap1.png' style='width: 100%; height: auto;'}
+::image{src='/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap1.PNG' style='width: 100%; height: auto;'}
 
 Easy pass. Let's write a couple more tests and then we'll see what AI can do to help us.
 
