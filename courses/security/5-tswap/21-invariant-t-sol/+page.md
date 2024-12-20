@@ -42,7 +42,7 @@ contract DeployTSwap is Script {
         vm.startBroadcast();
         if (block.chainid == MAINNET_CHAIN_ID) {
             new PoolFactory(WETH_TOKEN_MAINNET);
-            // We are are not on mainnet, assume we are testing
+            // We are not on mainnet, assume we are testing
         } else {
             ERC20Mock mockWeth = new ERC20Mock();
             new PoolFactory(address(mockWeth));
