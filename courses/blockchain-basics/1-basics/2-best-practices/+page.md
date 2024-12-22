@@ -16,7 +16,7 @@ In the top right corner of the lesson view, you'll find a link to the [**GitHub 
 
 Next to the video lesson, there is a **written lesson** tab 📝. This tab provides the course content in text format, which is useful for reading along, copy-pasting code snippets or reviewing updates.
 
-If you're watching on YouTube, links to these resources are available in the video description. However, watching this course on Cyphrin Updraft offers additional benefits like tracking your progress and accessing written lessons, which will enhance your learning experience.
+If you're watching on YouTube, links to these resources are available in the video description. However, watching this course on Cyfrin Updraft offers additional benefits like tracking your progress and accessing written lessons, which will enhance your learning experience.
 
 ### Best Practices for Learning
 

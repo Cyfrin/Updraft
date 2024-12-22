@@ -14,7 +14,7 @@ Remember, you can always reference the audit-data branch of the ThunderLoan repo
 
 Customize the report to your liking, but _do not_ skip this step. **_Actually_** create this report.
 
-It's only through repetition that you'll build familiarity and get really good at these things, and you'll have a bad-ass new audit to add to your porfolio.
+It's only through repetition that you'll build familiarity and get really good at these things, and you'll have a bad-ass new audit to add to your portfolio.
 
 ### First Flights
 

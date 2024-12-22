@@ -1,12 +1,12 @@
 ---
-title: Formal Vertification Setup
+title: Formal Verification Setup
 ---
 
 _Follow along with this video:_
 
 ---
 
-### Formal Vertification Setup
+### Formal Verification Setup
 
 We're ready to finally formally verify our GasBadNftMarketplace contract! Start by creating `GasBad.spec` and `GasBad.conf` files in their respective Certora folders.
 

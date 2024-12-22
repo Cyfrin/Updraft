@@ -17,7 +17,7 @@ uint256 calculatedFee = getCalculatedFee(token, amount);
 assetToken.updateExchangeRate(calculatedFee);
 ```
 
-Our review has taught us that `updateExchangeRate` is effectively keeping track of the ratio of `underlying` and `asset tokens`. If the `deposit` function isn't acruing any fees, it doesn't really make sense to be updating this value here...
+Our review has taught us that `updateExchangeRate` is effectively keeping track of the ratio of `underlying` and `asset tokens`. If the `deposit` function isn't accruing any fees, it doesn't really make sense to be updating this value here...
 
 We need to write some tests.
 

@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ## What Happens When We Don't "Jump"?
 
-Now that we've accounted for each of our contract's function in our function dispatcher, we're done, right? Not exactly. Our code won't just stop executing if no valid `JUMPDEST` is found, it'll continue to the next operation (which in ourcase happens to be a `JUMPDEST`).
+Now that we've accounted for each of our contract's function in our function dispatcher, we're done, right? Not exactly. Our code won't just stop executing if no valid `JUMPDEST` is found, it'll continue to the next operation (which in our case happens to be a `JUMPDEST`).
 
 We could easily imagine a scenario where `call data` is sent to our contract, no `function selector` matches are found, and arbitrary code is executed when we don't intend!
 

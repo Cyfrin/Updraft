@@ -16,9 +16,9 @@ Here is how we'll do it:
 
     We'll use this command to run our tests, which will output the coverage we have achieved. 
 
-2. Sign up for [Cyfrn Profiles](https://profiles.cyfrn.io/). 
+2. Sign up for [Cyfrin Profiles](https://profiles.cyfrn.io/). 
 
-     This is very important for building your web3 career. Cyfrn Profiles provides a platform for you to showcase your skills, find opportunities, and build a network of fellow developers.
+     This is very important for building your web3 career. Cyfrin Profiles provides a platform for you to showcase your skills, find opportunities, and build a network of fellow developers.
 
 3. Push your code to GitHub
 

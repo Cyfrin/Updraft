@@ -42,7 +42,7 @@ The value of knowing how to formally verify a protocol can be seen regardless of
 
 ### Wrap Up
 
-As I mentioned, this is going to be the most advanced content we've offered yet and it's specifically tailered to those of you who want to take their development or their security skills to the next level
+As I mentioned, this is going to be the most advanced content we've offered yet and it's specifically tailored to those of you who want to take their development or their security skills to the next level
 
 A sincere thank you for taking this course. This is how we scale Web3 in a sustainable and secure way.
 

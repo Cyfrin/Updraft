@@ -11,7 +11,7 @@ What did we learn in this section?
 
 ### The Stack, Memory and Storage
 
-We learnt how the stack, memory and storage work and how they interact with eachother.
+We learnt how the stack, memory and storage work and how they interact with each other.
 
 - Memory is temporary, this is the space in which we interact with data, this is cleared after execution
 - Storage is permanent and data here will persist after execution.

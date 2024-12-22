@@ -4,7 +4,7 @@ title: AssetToken.sol
 
 ### AssetToken.sol
 
-As we progress with tincho method the order we assess things we become less and less important. As the contracts get bigger they're going to start relying on eachother a lot and we may starting bouncing back and forth.
+As we progress with tincho method the order we assess things we become less and less important. As the contracts get bigger they're going to start relying on each other a lot and we may starting bouncing back and forth.
 
 For example, we know the `ThunderLoanUpgraded.sol` contract is _smaller_ but it's also the _upgrade_ to `ThunderLoan.sol`, so it's a good idea to start with `ThunderLoan.sol` for context.
 
@@ -23,7 +23,7 @@ import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.s
 
 contract AssetToken is ERC20 {
     error AssetToken__onlyThunderLoan();
-    error AssetToken__ExhangeRateCanOnlyIncrease(uint256 oldExchangeRate, uint256 newExchangeRate);
+    error AssetToken__ExchangeRateCanOnlyIncrease(uint256 oldExchangeRate, uint256 newExchangeRate);
     error AssetToken__ZeroAddress();
 
     using SafeERC20 for IERC20;
@@ -105,7 +105,7 @@ contract AssetToken is ERC20 {
         uint256 newExchangeRate = s_exchangeRate * (totalSupply() + fee) / totalSupply();
 
         if (newExchangeRate <= s_exchangeRate) {
-            revert AssetToken__ExhangeRateCanOnlyIncrease(s_exchangeRate, newExchangeRate);
+            revert AssetToken__ExchangeRateCanOnlyIncrease(s_exchangeRate, newExchangeRate);
         }
         s_exchangeRate = newExchangeRate;
         emit ExchangeRateUpdated(s_exchangeRate);
@@ -168,7 +168,7 @@ The comments left for some of our variables may be a little confusing at first g
 
 ```js
 error AssetToken__onlyThunderLoan();
-error AssetToken__ExhangeRateCanOnlyIncrease(uint256 oldExchangeRate, uint256 newExchangeRate);
+error AssetToken__ExchangeRateCanOnlyIncrease(uint256 oldExchangeRate, uint256 newExchangeRate);
 error AssetToken__ZeroAddress();
 
 using SafeERC20 for IERC20;
@@ -190,7 +190,7 @@ When the protocol mentions `underlying` it's referring to the asset which is rep
 
 You can note that this exchange rate mechanism is distinct from a percentage share of a liquidity pool which we outlined earlier in TSwap. The exchange rate in this instance functions a lot like [**Compound Finance**](https://github.com/compound-finance/) (I'm secretly teaching you compound finance) and how their [**CToken**](https://github.com/compound-finance/compound-protocol/blob/master/contracts/CToken.sol) works.
 
-This may even be a point in a review where I would go on a side quest to better understand Compound and how it influenced the development of `ThunderLoan`. We aren't going to go on this tangeant here together, but I encourage you to become familiar with some of these DeFi protocols we touch on as the context and experience will go a long way in your future security reviews.
+This may even be a point in a review where I would go on a side quest to better understand Compound and how it influenced the development of `ThunderLoan`. We aren't going to go on this tangent here together, but I encourage you to become familiar with some of these DeFi protocols we touch on as the context and experience will go a long way in your future security reviews.
 
 ### Modifiers
 

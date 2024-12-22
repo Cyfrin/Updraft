@@ -44,6 +44,6 @@ To get started with Filecoin, try deploying a smart contract to FVM, or use the 
 
 With this brief aside complete, we have one major concept I want to add context to in this lesson. Repeatedly we've been using `abi.encode` and `abi.encodePacked` to concatenate strings basically. It's about time we learnt what's actually going on under-the-hood.
 
-In the next lesson we're gunna get a little more low-level. I'm sure you're ready for it.
+In the next lesson we're gonna get a little more low-level. I'm sure you're ready for it.
 
 See you soon!

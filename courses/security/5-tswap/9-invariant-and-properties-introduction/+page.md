@@ -21,7 +21,7 @@ In TSwap, we're fortunate enough that the developers have provided us their core
 ```
 ## Core Invariant
 
-Our system works because the ratio of Token A & WETH will always stay the same. Well, for the most part. Since we add fees, our invariant technially increases.
+Our system works because the ratio of Token A & WETH will always stay the same. Well, for the most part. Since we add fees, our invariant technically increases.
 
 `x * y = k`
 - x = Token Balance X

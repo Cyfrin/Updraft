@@ -1,5 +1,5 @@
 ---
-title: Severity Rating Assesing Informational/Gas/Non-Crit
+title: Severity Rating Assessing Informational/Gas/Non-Crit
 ---
 
 _Follow along with this video:_

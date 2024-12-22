@@ -32,7 +32,7 @@ forge test --mt statefulFuzz_constantProductFormulaStaysTheSameX -vvvv
 
 It errors! We can see that our expectedDeltaX and our actualDeltaX are wildly different. _What could possibly be going on here?_
 
-> **Protip:** Rather than scrolling through all the function calls in our test's trace, often the steps that lead to our issue can be found in the most recent function exectution near the bottom.
+> **Protip:** Rather than scrolling through all the function calls in our test's trace, often the steps that lead to our issue can be found in the most recent function execution near the bottom.
 
 ::image{src='/security-section-5/26-one-last-huzzah/one-last-huzzah2.png' style='width: 100%; height: auto;'}
 
@@ -83,7 +83,7 @@ function _swap(IERC20 inputToken, uint256 inputAmount, IERC20 outputToken, uint2
 }
 ```
 
-BINGO! TSwap is transfering extra tokens! This is similar to our `fee on transfer` issue seen earlier and in fact, `fee on transfer` tokens would break this protocol as well.
+BINGO! TSwap is transferring extra tokens! This is similar to our `fee on transfer` issue seen earlier and in fact, `fee on transfer` tokens would break this protocol as well.
 
 ```js
 /*

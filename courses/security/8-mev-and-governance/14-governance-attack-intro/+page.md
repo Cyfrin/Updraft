@@ -46,7 +46,7 @@ There are a few ways to mitigate the effects of governance attacks, but at their
 
 - **Centralization of Power** - while not ideal in a Web3 ecosystem, this _does_ solve the issue of control being democratically wielded through `voting mechanisms`.
 
-- **Strategic Voting Power Distribution** - think carefully about who holds the most power over protocol `governance`, by strategic in assuring voting power is alotted to those invested and not made available to anyone with a flash loan
+- **Strategic Voting Power Distribution** - think carefully about who holds the most power over protocol `governance`, by strategic in assuring voting power is allotted to those invested and not made available to anyone with a flash loan
 
 - **Guardian Buffer** - while this also sacrifices a degree of decentrality, this is an entity which serves as a buffer to vet proposals for malicious actions and assure pursued proposals are financially viable for the organization. This protects against `governance attacks` by filtering malicious proposals before they reach the voting stage
 

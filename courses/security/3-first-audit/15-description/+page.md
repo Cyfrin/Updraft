@@ -26,7 +26,7 @@ Alright, `title` done. What's next? Let's take a look at description and impact.
 
 ### Description
 
-Our goal here is to describe the vulnerability consicely while clearly illustrating the problem. A description for our finding here might look like this.
+Our goal here is to describe the vulnerability concisely while clearly illustrating the problem. A description for our finding here might look like this.
 
 ---
 
@@ -61,7 +61,7 @@ This is the kind of clarity we should strive for in our reports!
 The impact is fairly self-evident, but to articulate it:
 
 ```
-**Impact:** Anyone is able to read the private password, severly breaking the functionality of the protocol.
+**Impact:** Anyone is able to read the private password, severely breaking the functionality of the protocol.
 ```
 
 Putting things together, our report so far should look like this
@@ -75,7 +75,7 @@ Putting things together, our report so far should look like this
 
 I show one such method of reading any data off chain below.
 
-**Impact:** Anyone is able to read the private password, severly breaking the functionality of the protocol.
+**Impact:** Anyone is able to read the private password, severely breaking the functionality of the protocol.
 
 **Proof of Concept:**
 
@@ -88,6 +88,6 @@ I show one such method of reading any data off chain below.
 
 In the next lesson, we're going to go over `Proof of Concept` sometimes called `Proof of Code`. This is a critical section of our report where we show, irrefutably, that the vulnerability exists and has considerable impact.
 
-This is the section that prevents protocols from disregarding legitmate concerns.
+This is the section that prevents protocols from disregarding legitimate concerns.
 
 Let's get to the code!

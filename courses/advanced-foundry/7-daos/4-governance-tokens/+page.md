@@ -46,7 +46,7 @@ contract GovToken is ERC20, ERC20Permit, ERC20Votes {
 }
 ```
 
-Let's go over how this differs from a standard ERC20. Primarily it's the same base token contract with 2 extentions to the functionality, Permit and Votes.
+Let's go over how this differs from a standard ERC20. Primarily it's the same base token contract with 2 extensions to the functionality, Permit and Votes.
 
 **ERC20Permit:**
 

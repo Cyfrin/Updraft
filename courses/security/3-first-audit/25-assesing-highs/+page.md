@@ -41,7 +41,7 @@ Alright! We're ready to start applying our understanding of `likelihood` and `im
 </details>
 
 
-Let's consider impacts and likelhoods of our first scenario (I've provided you a reference to them above).
+Let's consider impacts and likelihoods of our first scenario (I've provided you a reference to them above).
 
 Upon consideration we see that, while funds aren't at risk, the user's 'hidden' password being visible to anyone is a pretty severe impact to how the protocol is expected to function.
 
@@ -92,7 +92,7 @@ Considering our second finding, we can tell that anyone being able to set the pa
 
 The `likelihood` is also going to be `High`. Anyone can do this, at any time, the vulnerability is rooted in `access control`.
 
-### Likehood & Impact:
+### Likelihood & Impact:
 
 - Impact: High
 - Likelihood: High

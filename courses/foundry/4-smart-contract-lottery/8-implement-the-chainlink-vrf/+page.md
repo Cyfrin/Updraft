@@ -73,7 +73,7 @@ I've divided the `Raffle` variables from the `Chainlink VRF` variables to keep t
 Adjust the constructor to accommodate all the new variables and imports:
 
 ```solidity
-constructor(uint256 entranceFee, uint256 interval, addsress vrfCoordinator) {
+constructor(uint256 entranceFee, uint256 interval, address vrfCoordinator) {
     i_entranceFee = entranceFee;
     i_interval = interval;
     s_lastTimeStamp = block.timestamp;

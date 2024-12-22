@@ -25,7 +25,7 @@ The `calldata` we've added to our stack is the first 32 bytes of the `calldata` 
 
 We only need the `function selector`, or the first 4 bytes. In order to isolate this section of the `calldata` we will need to utilize `shr` to shift 28 bytes to the right.
 
-> **Remember:** `shr` takes the number of _bits_ to shift. 28 x 8 = 224 bits. Use `cast --to-base 224 hex` to glean that this number is `0xe0` in hexidecimal format.
+> **Remember:** `shr` takes the number of _bits_ to shift. 28 x 8 = 224 bits. Use `cast --to-base 224 hex` to glean that this number is `0xe0` in hexadecimal format.
 
 With that determined, let's add what we need to our contract.
 

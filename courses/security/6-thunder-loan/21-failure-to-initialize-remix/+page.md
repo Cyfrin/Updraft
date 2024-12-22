@@ -40,7 +40,7 @@ The example here is very simple, but it should illustrate the potential impact o
 
 ::image{src='/security-section-6/21-failure-to-initialize-remix/failure-to-initialize-remix1.png' style='width: 100%; height: auto;'}
 
-You should see it begin unitialized with `myValue` set to zero. If the protocol then proceeds to be used (by calling `increment`), the `initialize` function can be called at any time to overwrite the expected `myValue`.
+You should see it begin initialized with `myValue` set to zero. If the protocol then proceeds to be used (by calling `increment`), the `initialize` function can be called at any time to overwrite the expected `myValue`.
 
 ::image{src='/security-section-6/21-failure-to-initialize-remix/failure-to-initialize-remix2.png' style='width: 100%; height: auto;'}
 

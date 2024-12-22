@@ -21,7 +21,7 @@ Through Speedrun Ethereum, you'll delve into a plethora of projects, including:
 - **Developing a token vendor**
 - **Building a Dice Game** - learning about randomness on chain
 - **Creating a Decentralized Exchange (Dex)**
-- **Contructing and using a MultiSig Wallet**
+- **Constructing and using a MultiSig Wallet**
 - **SVG NFTs and on chain Data**
 
 ...and much more

@@ -41,7 +41,7 @@ We can check if the import is being inherited anywhere by searching our workspac
 
 It seems as though this import is only being used in one of Thunder Loan's mock files for testing.
 
-This isn't a good practice, we're changing a live contract file solely to fascilitate testing. Our test should be importing it's own instance of this interface if it's needed.
+This isn't a good practice, we're changing a live contract file solely to facilitate testing. Our test should be importing it's own instance of this interface if it's needed.
 
 ```js
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";

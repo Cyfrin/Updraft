@@ -50,7 +50,7 @@ Let's look at how we can create our own simple SVG, right in our IDE. Create the
 ```
 
 > ❗ **IMPORTANT**
-> You will likely need to download a SVG preview extention to view the SVG in your IDE. I recommend trying [**SVG Preview**](https://marketplace.visualstudio.com/items?itemName=SimonSiefke.svg-preview).
+> You will likely need to download a SVG preview extension to view the SVG in your IDE. I recommend trying [**SVG Preview**](https://marketplace.visualstudio.com/items?itemName=SimonSiefke.svg-preview).
 
 ::image{src='/foundry-nfts/11-what-is-svg/what-is-svg2.png' style='width: 100%; height: auto;'}
 

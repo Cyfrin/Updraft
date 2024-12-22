@@ -95,13 +95,13 @@ Alternatively to this, we have static analysis as a tool available to us. In sta
 function withdraw() external {
     uint256 balance = balances[msg.sender];
     require(balance > 0);
-    (bool successs, ) = msg.sender.call{value:balance}("");
+    (bool success, ) = msg.sender.call{value:balance}("");
     require(success, "Failed to send Ether");
     balances[msg.sender] = 0;
 }
 ```
 
-The above withdraw function has a classic reentrancy attack. We know an issue like this arrises from not following the CEI pattern! A static analysis tool like Slither will be able to pick up on this quite easily.
+The above withdraw function has a classic reentrancy attack. We know an issue like this arises from not following the CEI pattern! A static analysis tool like Slither will be able to pick up on this quite easily.
 
 ::image{src='/foundry-defi/16-defi-leveling-up-testing/defi-leveling-up-testing3.png' style='width: 100%; height: auto;'}
 
@@ -132,7 +132,7 @@ contract SmallSol {
 }
 ```
 
-In the above simple contract example, the obvious path is returning the `result of a + 1`. Another less obvious path would be this function `f` reverting due to overflow. Symbolic Execution, through it's mathetmatical modelling, would traverse all possible paths, looking for criteria that break our invariant. These paths might be represented something like this:
+In the above simple contract example, the obvious path is returning the `result of a + 1`. Another less obvious path would be this function `f` reverting due to overflow. Symbolic Execution, through it's mathematical modelling, would traverse all possible paths, looking for criteria that break our invariant. These paths might be represented something like this:
 
 **Path 1:** `assert(a not 2**256 - 1); a:= a+1; return a;`
 

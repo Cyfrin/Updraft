@@ -1,5 +1,5 @@
 ---
-title: Create Claming Script
+title: Create Claiming Script
 ---
 
 _Follow along with the video_

@@ -111,7 +111,7 @@ It's important to understand these few settings we're using here.
 - depth - how many random functions will be called per run
 - fail_on_revert - this value determines if a test will fail as a product of reverted transactions. We'll go into more detail soon.
 
-Remember you can always reference the [**Foundry Book**](https://book.getfoundry.sh/reference/config/testing?highlight=%5Binvariant%5D#invariant) for an exaustive list of these configurations.
+Remember you can always reference the [**Foundry Book**](https://book.getfoundry.sh/reference/config/testing?highlight=%5Binvariant%5D#invariant) for an exhaustive list of these configurations.
 
 Let's run the test.
 

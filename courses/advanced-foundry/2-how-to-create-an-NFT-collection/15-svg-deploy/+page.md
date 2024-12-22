@@ -8,7 +8,7 @@ _Follow along the course with this video._
 
 ### SVG NFT Deploy Script
 
-In this lesson, we'll jump right into creating the script to deploy our MoodNFT collection. We'll look at how this can be used to upgrade our tests, making them more dynamic and we'll discuss the value of integration tesing.
+In this lesson, we'll jump right into creating the script to deploy our MoodNFT collection. We'll look at how this can be used to upgrade our tests, making them more dynamic and we'll discuss the value of integration testing.
 
 To begin, we'll need to create the file `script/DeployMoodNft.s.sol` and fill it with our script boilerplate.
 
@@ -24,7 +24,7 @@ contract DeployMoodNft is Script {
 }
 ```
 
-Looks great! Now we should consider how we're mention to deploy MoodNft.sol. We know that the constructor arguments for this contract take a sadSvgImagUri and a happySvgImageUri, so much like we did in `MoodNftTest.t.sol`, we _could_ hardcode these values. A better approach however may be to write our deploy script to read this data itself from our workspace. Our script can even do all the encoding for us.
+Looks great! Now we should consider how we're mention to deploy MoodNft.sol. We know that the constructor arguments for this contract take a sadSvgImageUri and a happySvgImageUri, so much like we did in `MoodNftTest.t.sol`, we _could_ hardcode these values. A better approach however may be to write our deploy script to read this data itself from our workspace. Our script can even do all the encoding for us.
 
 Let's start with creating this encoding function.
 
@@ -56,7 +56,7 @@ contract DeployMoodNft is Script {
 }
 ```
 
-The above function is taking the svg string parameter, encoding it with the OpenZeppeling Base64.encode function, and then prepends the encoded value with our baseURL. Great job!
+The above function is taking the svg string parameter, encoding it with the OpenZeppelin Base64.encode function, and then prepends the encoded value with our baseURL. Great job!
 
 > ❗ **PROTIP**
 > You can replace `abi.encodePacked` with the more up-to-date `string.concat`!

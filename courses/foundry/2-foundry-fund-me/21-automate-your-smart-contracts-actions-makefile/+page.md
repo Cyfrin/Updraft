@@ -122,7 +122,7 @@ Treat this `Makefile` as a framework for your projects.
 
 Open the file and go through it.
 
-The `.PHONY:` tells make that all the `all test clean deploy fund help install snapshot format anvil` are not folders. Following that we declare the `DEFAULT_ANIVL_KEY` and a custom help message.
+The `.PHONY:` tells make that all the `all test clean deploy fund help install snapshot format anvil` are not folders. Following that we declare the `DEFAULT_ANVIL_KEY` and a custom help message.
 
 Run make help to print it in your terminal.
 

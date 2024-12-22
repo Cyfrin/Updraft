@@ -2,11 +2,11 @@
 
 The UV tool helps us manage Python packages and dependencies across different projects and versions. 
 
-We'll use the **Titanobo** package in this lesson to showcase how UV can be used to manage dependencies. 
+We'll use the **Titanoboa** package in this lesson to showcase how UV can be used to manage dependencies. 
 
 **Titano Boa** is a package that allows us to evaluate code written in Python. 
 
-First, let's create a simple Python script that will utilize **Titanobo**.
+First, let's create a simple Python script that will utilize **Titanoboa**.
 ```python
 import boa
 import sys
@@ -15,7 +15,7 @@ print(boa.eval('"empty(uint256())"'))
 print("Hello!")
 ```
 
-If we try to run this script without having **Titano Boa** installed, we'll encounter an error message as **Titanobo** is not available.  
+If we try to run this script without having **Titano Boa** installed, we'll encounter an error message as **Titanoboa** is not available.  
 
 **Let's install Titano Boa globally using pip** 
 ```bash

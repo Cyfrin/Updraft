@@ -18,7 +18,7 @@ rule calling_any_function_should_result_in_each_contract_having_the_same_state(m
 }
 ```
 
-...we are calling `method f` on _whichever contract is currently being verfied_. Remember that functionally `f(e, args) == currentContract.f(e, args)`. With that said, we need a way to reference the specific contracts we mean for our rule to compare, and this is where the `using` keyword comes in.
+...we are calling `method f` on _whichever contract is currently being verified_. Remember that functionally `f(e, args) == currentContract.f(e, args)`. With that said, we need a way to reference the specific contracts we mean for our rule to compare, and this is where the `using` keyword comes in.
 
 ::image{src='/formal-verification-3/24-using/using1.png' style='width: 100%; height: auto;'}
 
@@ -41,6 +41,6 @@ rule calling_any_function_should_result_in_each_contract_having_the_same_state(m
 
 ### Wrap Up
 
-With some finer control over which files are being tested against eachother, we're ready to finish fleshing out our rule, in the next lesson.
+With some finer control over which files are being tested against each other, we're ready to finish fleshing out our rule, in the next lesson.
 
 Almost done!

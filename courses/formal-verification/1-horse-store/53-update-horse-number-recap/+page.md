@@ -207,7 +207,7 @@ JUMP ✅
 
 ### CALLDATASIZE Check
 
-Next our execution is going to check our `CALLDATASIZE`. We want to be sure that the data received, when the `function selector` is removed, is still large enough to satify the requirements of our function parameter - in this case we need a 32 byte integer or our `CALLDATASIZE - func_selector` to be > `0x20`
+Next our execution is going to check our `CALLDATASIZE`. We want to be sure that the data received, when the `function selector` is removed, is still large enough to satisfy the requirements of our function parameter - in this case we need a 32 byte integer or our `CALLDATASIZE - func_selector` to be > `0x20`
 
 ```js
 JUMPDEST ✅

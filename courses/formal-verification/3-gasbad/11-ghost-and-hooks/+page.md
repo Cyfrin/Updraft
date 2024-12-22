@@ -31,7 +31,7 @@ This may be a little tricky, but it's entirely possible. However, we first need 
 
 ::image{src='/formal-verification-3/11-ghosts-and-hooks/ghosts-and-hooks1.png' style='width: 100%; height: auto;'}
 
-At their core, `Ghost Variables` are variable which are declared specifically to be used by `Certora`. Declaring them this way allows them to act as extentions to contract state and their values will mimic the behaviour of contract storage (reverting and resetting when appropriate).
+At their core, `Ghost Variables` are variable which are declared specifically to be used by `Certora`. Declaring them this way allows them to act as extensions to contract state and their values will mimic the behaviour of contract storage (reverting and resetting when appropriate).
 
 The most common use of `Ghost Variables` is in conjunction with `Hooks` to communication information back to specified `rules`.
 

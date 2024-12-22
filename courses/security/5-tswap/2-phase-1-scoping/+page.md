@@ -17,7 +17,7 @@ cd 5-t-swap-audit
 
 `git branch` can be used to verify you're on the `main` branch.
 
-In Puppy Raffle, the protocol had completed a basic onboarding questionnaire. In TSwap, we're going to introduct the [**Extensive Onboarding Form**](https://github.com/Cyfrin/5-t-swap-audit/blob/main/t-swap-onboarded.md). You'll learn that the more information and context we can gain about the protocol, the easier our review is going to be.
+In Puppy Raffle, the protocol had completed a basic onboarding questionnaire. In TSwap, we're going to introduce the [**Extensive Onboarding Form**](https://github.com/Cyfrin/5-t-swap-audit/blob/main/t-swap-onboarded.md). You'll learn that the more information and context we can gain about the protocol, the easier our review is going to be.
 
 > Information is **_currency_** in a security review
 
@@ -42,13 +42,13 @@ git checkout <COMMIT_HASH>
 
 > **Protip:** After `git checkout` you can run `git branch` to acquire the ID of the hash commit. By running `git diff <COMMIT_ID> <BRANCH>` you'll receive an output of all the changed between the provided branch and the commit hash!
 
-Notice that TSwap's SLOC is 374 - this is nearly DOUBLE what Puppy Raffle was and should be an important consideraton of ours when determining the time we need for the audit.
+Notice that TSwap's SLOC is 374 - this is nearly DOUBLE what Puppy Raffle was and should be an important consideration of ours when determining the time we need for the audit.
 
 We should also note that the coverage reported here is ... abysmal.
 
 ::image{src='/security-section-5/2-phase-1-scoping/scoping2.png' style='width: 100%; height: auto;'}
 
-The next sections I won't go over in great detail now, but read through these questions and their importance will beecome clear as we go through the protocol.
+The next sections I won't go over in great detail now, but read through these questions and their importance will become clear as we go through the protocol.
 
 ::image{src='/security-section-5/2-phase-1-scoping/scoping3.png' style='width: 100%; height: auto;'}
 

@@ -1,8 +1,8 @@
 ## Vyper VS Code Extension
 
-We'll go back to the GitHub repo for this course: [link to repo] and then we can either grab the `favorites.vy` file from the Web3py Favorite's Cyffin Updraft, or go back to the Moccasin full course.
+We'll go back to the GitHub repo for this course: [link to repo] and then we can either grab the `favorites.vy` file from the Web3py Favorite's Cyfrin Updraft, or go back to the Moccasin full course.
 
-We'll scroll up and look for the Favorite's Cyffin Updraft repo. We'll click the `favorites.vy` file and then copy the entire file.
+We'll scroll up and look for the Favorite's Cyfrin Updraft repo. We'll click the `favorites.vy` file and then copy the entire file.
 
 Next, we'll go to our VS Code and right-click in the file explorer. We'll create a new file and name it `favorites.vy`, and then paste the copied code into it.
 

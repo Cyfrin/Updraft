@@ -10,7 +10,7 @@ With our informationals out of the way, we're moving on to our first `medium sev
 
 Since the lesson in which we identified this I had a change of heart about the severity here. Since this isn't a `swap` function and is `deposit` the impact of not having a deadline is less severe than if users were able to remove liquidity from the pool. As such, we're going with `medium`!
 
-Within `TSwapPool::deposit` we identified that the `deadline` parameter wasn't being used! This is a critical oversight as it will allow people to continue to deposit even when it's expected that they'll have been disallowed, severly altering the protocol's expected functionality.
+Within `TSwapPool::deposit` we identified that the `deadline` parameter wasn't being used! This is a critical oversight as it will allow people to continue to deposit even when it's expected that they'll have been disallowed, severely altering the protocol's expected functionality.
 
 Our write up is going to start with our template as always.
 
@@ -81,7 +81,7 @@ function deposit(
 
 ### Wrap Up
 
-Great! This one wasn't too tough. Let's look at what the write-up looks like when we put it all together befor moving to the next finding!
+Great! This one wasn't too tough. Let's look at what the write-up looks like when we put it all together before moving to the next finding!
 
 <details>
 <summary> [M-1] `TSwapPool::deposit` is missing deadline check causing transactions to complete even after the deadline</summary>

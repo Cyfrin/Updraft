@@ -13,7 +13,7 @@ Taking a look at our next `@Audit` tag, this finding should be another quick one
 ````
 **Title:** [I-4] does not follow CEI, which is not a best practice
 
-It's best to keep code cleaen and follow CEI (Checks, Effects, Interactions).
+It's best to keep code clean and follow CEI (Checks, Effects, Interactions).
 
     ```diff
 -   (bool success,) = winner.call{value: prizePool}("");

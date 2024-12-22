@@ -21,7 +21,7 @@ s_password = newPassword;
 emit SetNewPassword();
 }
 
-**Impact:** Anyone can set/change the stored password, severly breaking the contract's intended functionality
+**Impact:** Anyone can set/change the stored password, severely breaking the contract's intended functionality
 
 **Proof of Concept:**
 
@@ -77,7 +77,7 @@ function setPassword(string memory newPassword) external {
 }
 '''
 
-**Impact:** Anyone can set/change the stored password, severly breaking the contract's intended functionality
+**Impact:** Anyone can set/change the stored password, severely breaking the contract's intended functionality
 
 **Proof of Concept:** Add the following to the PasswordStore.t.sol test file:
 
@@ -131,6 +131,6 @@ if(msg.sender != s_owner){
 
 ### Wrap Up
 
-That's two findings down. Repetition is what will strengthen these skills and make writting these reports second nature. As we saw in this lesson, security reviewers even get to do a little coding 😋.
+That's two findings down. Repetition is what will strengthen these skills and make writing these reports second nature. As we saw in this lesson, security reviewers even get to do a little coding 😋.
 
 Let's move on to our third finding, this one should be quick!

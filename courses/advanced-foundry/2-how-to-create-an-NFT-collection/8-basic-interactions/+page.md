@@ -13,7 +13,7 @@ Alright, with our tests passing we're going to want a way to interact with our c
 ```js
 // SPDX-License-Identifier: MIT
 
-pragme solidity ^0.8.18;
+pragma solidity ^0.8.18;
 
 import {Script} from "forge-std/Script.sol";
 

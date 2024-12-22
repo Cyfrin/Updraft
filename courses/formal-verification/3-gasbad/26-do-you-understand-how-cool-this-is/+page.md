@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 You now have the power to write READABLE Solidity code, and then rewrite it in Assembly/Huff to be SUPER gas optimized.
 
-Furthermore, you now possess the ability to FORMALLY VERIFY that the gas optimized code functions indentically to the Solidity code.
+Furthermore, you now possess the ability to FORMALLY VERIFY that the gas optimized code functions identically to the Solidity code.
 
 This is HUGE. I can't stress this enough. We've mathematically proven that _any_ function called on these two contracts will behave the same.
 

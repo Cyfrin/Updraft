@@ -359,7 +359,7 @@ contract OurTokenTest is StdCheats, Test {
 
 I'll caution you against blindly copying and pasting AI responses and to use what's generated intelligently. Some things will make more sense for your situation that others.
 
-When you've implemented your AI suggestsion, run `forge test -vvvv` and see what happens!
+When you've implemented your AI suggestion, run `forge test -vvvv` and see what happens!
 
 ### Wrap Up
 

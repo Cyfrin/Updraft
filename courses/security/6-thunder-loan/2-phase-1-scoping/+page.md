@@ -45,7 +45,7 @@ The protocol has also provided us a clear detailing of chains and tokens with wh
 
 Knowing which tokens are used allows us to filter out considerations of Weird ERC20s etc making our jobs easier!
 
-Within the `Roles` section of the README, we see some familiar terms. Knowing which actors are capable of what actions in a protocol is another interal piece of information in this process.
+Within the `Roles` section of the README, we see some familiar terms. Knowing which actors are capable of what actions in a protocol is another internal piece of information in this process.
 
 ```
 ## Roles

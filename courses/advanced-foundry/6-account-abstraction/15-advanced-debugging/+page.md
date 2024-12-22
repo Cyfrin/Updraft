@@ -4,7 +4,7 @@ We left off of our previous lesson with a debugging challenge. If you weren't ab
 
 ---
 
-### Degug with Forge
+### Debug with Forge
 
 Forge has some great debugging tools. Let's check them out. Run the following in your terminal.
 

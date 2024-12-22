@@ -225,4 +225,4 @@ REVERT
 
 This will prevent calls to our contract from executing arbitrary code if a `function selector` match isn't found.
 
-We're already through over half the op codes of our contract and you're doing phenomally. Let's keep going!
+We're already through over half the op codes of our contract and you're doing phenomenally. Let's keep going!
