@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 Maybe you're the type of security reviewer who likes to save all the write ups to the end. There's nothing wrong with that! As you grow and gain experience you'll begin to carve out your own workflow and ways of doing things.
 
-In future lessons, we may not go through writing things up together, but for now - let's report this uncovered DoS vulnverability
+In future lessons, we may not go through writing things up together, but for now - let's report this uncovered DoS vulnerability
 
 We of course start with our template, create a `findings.md` file and paste this within:
 
@@ -102,7 +102,7 @@ If we have 2 sets of 100 players enter, the gas costs will be as such:
 - 1st 100 players: ~6252048 gas
 - 2nd 100 players: ~18068138 gas
 
-This is more than 3x more expensivee for the second 100 players.
+This is more than 3x more expensive for the second 100 players.
 
 <details>
 <summary>Proof of Code</summary>
@@ -126,7 +126,7 @@ function testDenialOfService() public {
       uint256 gasUsedFirst = (gasStart - gasEnd) * tx.gasprice;
       console.log("Gas cost of the first 100 players: ", gasUsedFirst);
 
-      // Creats another array of 100 players
+      // Creates another array of 100 players
       address[] memory playersTwo = new address[](playersNum);
       for (uint256 i = 0; i < playersTwo.length; i++) {
           playersTwo[i] = address(i + playersNum);
@@ -177,7 +177,7 @@ If we have 2 sets of 100 players enter, the gas costs will be as such:
 - 1st 100 players: ~6252048 gas
 - 2nd 100 players: ~18068138 gas
 
-This is more than 3x more expensivee for the second 100 players.
+This is more than 3x more expensive for the second 100 players.
 
 <details>
 <summary>Proof of Code</summary>
@@ -201,7 +201,7 @@ function testDenialOfService() public {
       uint256 gasUsedFirst = (gasStart - gasEnd) * tx.gasprice;
       console.log("Gas cost of the first 100 players: ", gasUsedFirst);
 
-      // Creats another array of 100 players
+      // Creates another array of 100 players
       address[] memory playersTwo = new address[](playersNum);
       for (uint256 i = 0; i < playersTwo.length; i++) {
           playersTwo[i] = address(i + playersNum);

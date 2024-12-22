@@ -19,7 +19,7 @@ _Follow along with this video:_
 
 I show one such method of reading any data off chain below.
 
-**Impact:** Anyone is able to read the private password, severaly breaking the functionality of the protocol.
+**Impact:** Anyone is able to read the private password, severely breaking the functionality of the protocol.
 
 **Proof of Concept:** The below test case shows how anyone could read the password directly from the blockchain. We use foundry's cast tool to read directly from the storage of the contract, without being the owner.
 
@@ -84,7 +84,7 @@ Here's our report now:
 I show one such method of reading any data off chain below.
 :br
 :br
-**Impact:** Anyone is able to read the private password, severaly breaking the functionality of the protocol.
+**Impact:** Anyone is able to read the private password, severely breaking the functionality of the protocol.
 :br
 :br
 **Proof of Concept:** The below test case shows how anyone could read the password directly from the blockchain. We use foundry's cast tool to read directly from the storage of the contract, without being the owner.

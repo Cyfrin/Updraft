@@ -94,7 +94,7 @@ These are pretty basic getters. The `getPrice` function is a little redundant wi
 
 ### Wrap Up
 
-Awesome! We've finished our recon of `OracleUpgradeable.sol`! That's one more contract checked off our first pass list. We managed to find a low severity bug in our risks associated with intializion and we asked lots of good follow up questions to come back to for the `getPriceInWeth` function.
+Awesome! We've finished our recon of `OracleUpgradeable.sol`! That's one more contract checked off our first pass list. We managed to find a low severity bug in our risks associated with initialization and we asked lots of good follow up questions to come back to for the `getPriceInWeth` function.
 
 Let's mark this first pass done for now and move on to `AssetToken.sol` in the next lesson!
 

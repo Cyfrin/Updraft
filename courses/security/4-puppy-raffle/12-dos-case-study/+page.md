@@ -34,7 +34,7 @@ function distributeDividends(uint amount) public payable lock {
    for (uint i; i < length; i++){
       if(users[i] != address(0)){
          UserInfo storage user = userInfo[users[i]];
-         user.rewards += (amount.mul(IERC20(address(thiss).balanceOf(users[i])).div(totalSupply.sub(MINIMUM_LIQUIDITY))));
+         user.rewards += (amount.mul(IERC20(address(this).balanceOf(users[i])).div(totalSupply.sub(MINIMUM_LIQUIDITY))));
       }
    }
 }
@@ -46,7 +46,7 @@ The practical effect of this is that, were the length of the `users[]` array lon
 
 ### Confirming the Attack Vector
 
-In order to verify this is a vulnerability. We should invesitgate under what circumstances the `user[]` array can be added to.
+In order to verify this is a vulnerability. We should investigate under what circumstances the `user[]` array can be added to.
 
 By searching for the variable we see the array is appended to in the mint function:
 
@@ -111,7 +111,7 @@ To summarize, here are a couple things to keep an eye out for which may lead to 
    - Is the iterable entity bounded by size?
    - Can a user append arbitrary items to the list?
    - How much does it cost the user to do so?
-2. **External calls**: These can be anything from transfering Eth to calling a third-party contract. Evaluate ways these external calls could fail, leading to an incomplete transaction.
+2. **External calls**: These can be anything from transferring Eth to calling a third-party contract. Evaluate ways these external calls could fail, leading to an incomplete transaction.
 
 DoS attacks put simply are - the denial of functions of a protocol. They can arise from multiple sources, but the end result is always a transaction failing to execute.
 

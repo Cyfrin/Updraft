@@ -129,10 +129,10 @@ mapping(uint256 id => uint256 lastFedTimeStamp) public horseIdToFedTimeStamp;
 
 Ultimately however all this contract allows a user to do is to mint a horse NFT via the `mintHorse()` function, feed a horse via `feedHorse()` (this function just updates a mapping) and check if a horse is happy via `isHappyHorse()`
 
-Our goal in the comming lessons will be to rewrite this V2 contract in Huff!
+Our goal in the coming lessons will be to rewrite this V2 contract in Huff!
 
 Before moving forward, I want you to take a look at the [GitHub repo](https://github.com/Cyfrin/1-horse-store-s23/tree/main/test/v2) for this lesson and copy over the files contained within `test/v2`. We won't write all these tests from scratch, but these files will allow us to test our `HorseStoreV2` contracts with ease and compare our implementations.
 
-Feel free to pause here and try writting `HorseStoreV2` in Huff yourself! It will be a great opportunity to challenge yourself and see how much you've learnt so far!
+Feel free to pause here and try writing `HorseStoreV2` in Huff yourself! It will be a great opportunity to challenge yourself and see how much you've learnt so far!
 
 Otherwise, let's get started and write `HorseStoreV2` in Huff together!

@@ -32,7 +32,7 @@ Timelock - Configuration related to delays and timelines for various parts of th
 
 Upgradeability - Our bells from last lesson should be going off! This includes proxy functionality within our DAO
 
-We'll keep everything default for this excercise, let's just copy the provided Governor contract into our own file `src/MyGovernor.sol`.
+We'll keep everything default for this exercise, let's just copy the provided Governor contract into our own file `src/MyGovernor.sol`.
 
 ```js
 // SPDX-License-Identifier: MIT
@@ -294,11 +294,11 @@ This contract extracts voting weight from the ERC20 tokens used for a protocols 
 
 **GovernorSettings.sol:**
 
-An extension contract that allows configuration of things like voting delay, voting period and proposalThreshhold to the protocol.
+An extension contract that allows configuration of things like voting delay, voting period and proposalThreshold to the protocol.
 
 **GovernorCountingSimple.sol:**
 
-This extention implements a simplied vote counting mechanism by which each proposal is assigned a ProposalVote struct in which forVotes, againstVotes and abstainVotes are tallied.
+This extension implements a simplified vote counting mechanism by which each proposal is assigned a ProposalVote struct in which forVotes, againstVotes and abstainVotes are tallied.
 
 ```js
 struct ProposalVotes {
@@ -311,7 +311,7 @@ struct ProposalVotes {
 
 **GovernorVotesQuorumFraction:**
 
-An extention which assists in token voting weight extraction.
+An extension which assists in token voting weight extraction.
 
 **GovernorTimelockControl.sol:**
 

@@ -94,7 +94,7 @@ event Deposit(address from, address to, uint256 amount);
 
 The errors are fairly standard, but the state variables reveal and confirm valuable information. We see that `token` and `vault` are immutable, which confirms our previous suspicions that there's to be one `token` and one `vault` per `bridge`. We also see a `signers` mapping. `Signers`, we can see in the `Actor/Roles` section of the protocol README are `Users who can "send" a token from L2 -> L1.`. Setting `signers` we expect to be access controlled, so we should watch out for that.
 
-Next we've the constructor and what seem to be some admintrator functions.
+Next we've the constructor and what seem to be some administrator functions.
 
 ```js
 constructor(IERC20 _token) Ownable(msg.sender) {

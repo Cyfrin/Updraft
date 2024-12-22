@@ -14,7 +14,7 @@ So let's take it from the top, just like Tincho did…
 
 ### Understanding What the Codebase Is Supposed to Do
 
-Our client's documentation has let us know what the intended functionality of the protocol are. Namely: A user should be able to store and retreive their password, no one else should be able to see it.
+Our client's documentation has let us know what the intended functionality of the protocol are. Namely: A user should be able to store and retrieve their password, no one else should be able to see it.
 
 Let's try to find this functionality within the code as we go through things line by line.
 

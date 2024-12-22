@@ -9,7 +9,7 @@ title: Constant Product Formula Explained
 In order to get started writing our fuzzing test suite we'll need to define what TSwap's core invariant is. Fortunately the protocol provides this in their README.
 
 ```md
-Our system works because the ratio of Token A & WETH will always stay the same. Well, for the most part. Since we add fees, our invariant technially increases.
+Our system works because the ratio of Token A & WETH will always stay the same. Well, for the most part. Since we add fees, our invariant technically increases.
 
 x \* y = k
 
@@ -44,7 +44,7 @@ This may look confusing at first, and that's ok. This is known as the `constant 
 We should pay special mind to this line in our documentation however:
 
 ```
-Since we add fees, our invariant technially increases.
+Since we add fees, our invariant technically increases.
 ```
 
 With that said, this is definitely an invariant we can test. The ratio between tokens x and y should always remain the same `x * y = (x + ∆x) * (y − ∆y)`.

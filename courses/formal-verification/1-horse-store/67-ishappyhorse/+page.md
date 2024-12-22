@@ -85,7 +85,7 @@ The start shouldn't be too complicated, we're going to need the parameter being 
     timestamp                        // [timestamp, horseFedTimestamp]
 }
 ```
-In order to retain some items on the stack before our next operations we're going to exectute two `dup2`s. We'll then call `sub` in order to subtract our `horseFedTimestamp` from our current `timestamp`.
+In order to retain some items on the stack before our next operations we're going to execute two `dup2`s. We'll then call `sub` in order to subtract our `horseFedTimestamp` from our current `timestamp`.
 
 ```js
 #define macro IS_HAPPY_HORSE() = takes (0) returns (0) {

@@ -23,7 +23,7 @@ If we assure that the call data we're passing begins with the updateHorseNumber 
 
 ::image{src='/formal-verification-1/24-testing-jumpdest/testing-jumpdest-2.png' style='width: 50%; height: auto;'}
 
-We can see our first `JUMPI` code pertains to one of the JUMPDEST codes at the bottom of our list of operations. Because we're passing JUMPI this location, and a 1 (which represents a matching selector), we would expect our next step to jump our exectution to this location further in the code-bypassing the second check entirely.
+We can see our first `JUMPI` code pertains to one of the JUMPDEST codes at the bottom of our list of operations. Because we're passing JUMPI this location, and a 1 (which represents a matching selector), we would expect our next step to jump our execution to this location further in the code-bypassing the second check entirely.
 
 ::image{src='/formal-verification-1/24-testing-jumpdest/testing-jumpdest-3.png' style='width: 50%; height: auto;'}
 

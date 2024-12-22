@@ -16,7 +16,7 @@ A `function dispatcher` is a section of code which is responsible for checking t
 
 ### Op Codes
 
-In addition to working with `function dispatachers`, we learnt how to manage storage slots via Huff's `FREE_STORAGE_POINTER()`! We also learnt a variety of op codes and they're uses. We learnt:
+In addition to working with `function dispatchers`, we learnt how to manage storage slots via Huff's `FREE_STORAGE_POINTER()`! We also learnt a variety of op codes and they're uses. We learnt:
 
 - PUSH# - Adds items to the stack with # being representative of the number of bytes being pushed.
 - CALLDATALOAD - loads received `call data` into the stack for reference.
@@ -25,10 +25,10 @@ In addition to working with `function dispatachers`, we learnt how to manage sto
 - MSTORE - add values to memory
 - JUMPI - routes code executing to a particular section of logic based on a conditional.
 - STOP - ends execution successfully
-- REVERT - ends exectution with error, unsuccessfully
+- REVERT - ends execution with error, unsuccessfully
 
 ### Wrap Up
 
-This is heavy stuff, but you're doing great. If you're feeling a little overwhelmed - now's a great time to take a break. If things aren't quite clicking, I encourage you to come back and tinker with things. Make changes to our Huff contract, experiment with how the different op codes interact with eachother. Addtionally, the [Huff Documention](docs.huff.sh) does a great job helping to understand the EVM and I encourage you to give it a read as supplemental learnings.
+This is heavy stuff, but you're doing great. If you're feeling a little overwhelmed - now's a great time to take a break. If things aren't quite clicking, I encourage you to come back and tinker with things. Make changes to our Huff contract, experiment with how the different op codes interact with each other. Additionally, the [Huff Documentation](docs.huff.sh) does a great job helping to understand the EVM and I encourage you to give it a read as supplemental learnings.
 
-In the next lessons we're goihg to be diving into how to write Foundry tests which are compatible with Huff, allowing us to do all of our Huff debugging in Foundry. Let's go!
+In the next lessons we're going to be diving into how to write Foundry tests which are compatible with Huff, allowing us to do all of our Huff debugging in Foundry. Let's go!

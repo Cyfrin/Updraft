@@ -14,7 +14,7 @@ The README has more contextual information about the project that we should take
 
 If we're unfamiliar with Aave, we're even directed to a [**short explainer video**](https://www.youtube.com/watch?v=dTCwssZ116A) by Whiteboard Crypto that I encourage you to take a moment to watch for a high-level understanding of things.
 
-We'll be doing a much more comprehesive dive into these DeFi systems in this section of course! It's just good to be prepared.
+We'll be doing a much more comprehensive dive into these DeFi systems in this section of course! It's just good to be prepared.
 
 ### About Section
 

@@ -262,6 +262,6 @@ _**WOW!**_ We have a report of vulnerabilities already gorgeously formatted and 
 
 ### Wrap Up
 
-Fast, and efficient, [**Aderyn**](https://github.com/Cyfrin/aderyn) offers a swift vulnerability report of your smart contracts which is almost ready to be presented. Aesthetically neat and structurally organized, the tool is a quick starter for anyone performing security reviews. We'll be leveraging the poweer of Aderyn throughout the course!.
+Fast, and efficient, [**Aderyn**](https://github.com/Cyfrin/aderyn) offers a swift vulnerability report of your smart contracts which is almost ready to be presented. Aesthetically neat and structurally organized, the tool is a quick starter for anyone performing security reviews. We'll be leveraging the power of Aderyn throughout the course!.
 
 Let's look at one more tool briefly in the next lesson.

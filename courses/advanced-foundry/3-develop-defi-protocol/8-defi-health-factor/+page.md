@@ -107,7 +107,7 @@ uint256 private constant LIQUIDATION_PRECISION = 100;
 uint256 private constant MIN_HEALTH_FACTOR = 1e18;
 ```
 
-We're ready to put our `_healthFactor` function and our `MIN_HEALTH_FACTOR` constant to work. We can use these to declare a conditional statemment within `_revertIfHealthFactorIsBroken`, which will revert with a custom error if the conditional fails to pass.
+We're ready to put our `_healthFactor` function and our `MIN_HEALTH_FACTOR` constant to work. We can use these to declare a conditional statement within `_revertIfHealthFactorIsBroken`, which will revert with a custom error if the conditional fails to pass.
 
 ```js
 function _revertIfHealthFactorIsBroken(address user) internal view {
@@ -342,7 +342,7 @@ contract DSCEngine is ReentrancyGuard {
         return ((uint256(price) * ADDITIONAL_FEED_PRECISION) * amount) / PRECISION;
     }
 
-    function depositCollaterAndMintDsc() external {}
+    function depositCollateralAndMintDsc() external {}
 
     function redeemCollateralForDsc() external {}
 

@@ -22,7 +22,7 @@ We should take the time to read and understand the provided NATSPEC for this fun
 /// @param deadline The deadline for the transaction to be completed by
 ```
 
-An assessment of the function's paramaters in our IDE points to an issue our compiler identified earlier...
+An assessment of the function's parameters in our IDE points to an issue our compiler identified earlier...
 
 ::image{src='/security-section-5/33-using-the-compiler-as-static-analysis-tool/using-the-compiler-as-static-analysis-tool1.png' style='width: 100%; height: auto;'}
 

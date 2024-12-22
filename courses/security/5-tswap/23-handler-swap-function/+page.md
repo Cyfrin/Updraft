@@ -14,7 +14,7 @@ Alright! Let's remind ourselves of our core invariant in TSwap again.
 
 Recall that our term `β` was set equal to `∆y/y` and we've already worked out `∆y`, this was our `wethAmount`, the output of our swap.
 
-Now, we need to determine `∆x`. We could work the math out ourselves, but we'll cheat a little bit again and I'll mention that TSwapPool.sol has another useful function for us - `getInputAmountBaseOnOutput`. This function will ultmately return the poolToken amount that our user needs to input for the swap. This is our `∆y`! Let's take a look at `getInputAmountBaseOnOutput` and walk through how the math is derived for practice and a deeper understanding of the protocol.
+Now, we need to determine `∆x`. We could work the math out ourselves, but we'll cheat a little bit again and I'll mention that TSwapPool.sol has another useful function for us - `getInputAmountBaseOnOutput`. This function will ultimately return the poolToken amount that our user needs to input for the swap. This is our `∆y`! Let's take a look at `getInputAmountBaseOnOutput` and walk through how the math is derived for practice and a deeper understanding of the protocol.
 
 ### getInputAmountBaseOnOutput: The Math
 

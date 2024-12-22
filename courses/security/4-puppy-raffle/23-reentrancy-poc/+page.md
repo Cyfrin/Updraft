@@ -138,7 +138,7 @@ address attacker = makeAddr("attacker");
 vm.deal(attacker, 1 ether);
 ```
 
-Next, we'll grab some balances so we're ablee to log our changes after the attack.
+Next, we'll grab some balances so we're able to log our changes after the attack.
 
 ```js
 uint256 startingAttackContractBalance = address(attackerContract).balance;

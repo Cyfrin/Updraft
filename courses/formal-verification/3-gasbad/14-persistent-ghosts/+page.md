@@ -30,7 +30,7 @@ persistent ghost mathint log4Count {
 }
 ```
 
-This would technically _solve_ our HAVOC problem, but it's worth considering that while this make our proof `valid`, it does not allow it to be `sound`. Simple put, these external calls _could_ change the value of variables in storage, but the use of the `persistent` keyword is effectly choosing to ignore this.
+This would technically _solve_ our HAVOC problem, but it's worth considering that while this make our proof `valid`, it does not allow it to be `sound`. Simple put, these external calls _could_ change the value of variables in storage, but the use of the `persistent` keyword is effectively choosing to ignore this.
 
 ### Wrap Up
 

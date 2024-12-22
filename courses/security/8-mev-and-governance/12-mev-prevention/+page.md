@@ -55,7 +55,7 @@ There's no universal statement that covers all the possible situations in which 
 
 ### Private or Dark Mempool
 
-Another thing we can consider for defence is the use of a private or "dark" `mempool`, such as [**Flashbots Protect**](https://docs.flashbots.net/flashbots-protect/overview), [**MEVBlocker**](https://mevblocker.io/) or [**Securerpc**](https://securerpc.com/).
+Another thing we can consider for defense is the use of a private or "dark" `mempool`, such as [**Flashbots Protect**](https://docs.flashbots.net/flashbots-protect/overview), [**MEVBlocker**](https://mevblocker.io/) or [**Securerpc**](https://securerpc.com/).
 
 ::image{src='/security-section-8/12-mev-prevention/flashbots.png' style='width: 100%; height: auto;' alt='pashov'}
 
@@ -79,6 +79,6 @@ function swapExactInput(
     ){...}
 ```
 
-As we discussed previously, leveraging a parameter like this allows the user to set their tolerance of price change during their transaction, limiting their exposure to sudden price fluxtuations by MEV Exploits!
+As we discussed previously, leveraging a parameter like this allows the user to set their tolerance of price change during their transaction, limiting their exposure to sudden price fluctuations by MEV Exploits!
 
 As security experts, we should always be advising protocols how they can defend their users against MEV. Let's recap everything we've been over, in the next lesson.

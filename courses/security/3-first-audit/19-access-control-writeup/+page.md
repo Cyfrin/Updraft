@@ -72,7 +72,7 @@ function setPassword(string memory newPassword) external {
 The impact of our vulnerability should be pretty easy. Let's write it out now.
 
 ```
-**Impact:** Anyone can set/change the stored password, severly breaking the contract's intended functionality
+**Impact:** Anyone can set/change the stored password, severely breaking the contract's intended functionality
 ```
 
 Let's put things together in our report so far.
@@ -92,7 +92,7 @@ function setPassword(string memory newPassword) external {
 }
 '''
 
-**Impact:** Anyone can set/change the stored password, severly breaking the contract's intended functionality
+**Impact:** Anyone can set/change the stored password, severely breaking the contract's intended functionality
 
 **Proof of Concept:**
 

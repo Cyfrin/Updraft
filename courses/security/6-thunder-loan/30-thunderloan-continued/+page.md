@@ -25,7 +25,7 @@ function deposit(IERC20 token, uint256 amount) external revertIfZero(amount) rev
 </details>
 
 
-The first thing the `deposit` function does is leverage the `s_tokenToAssetToken` mapping to acquire the `AssetToken` paired with the passed token parameter. Remember, these `asset tokens` ultimately represent how much of the pool the depositer owns as a result of their deposits.
+The first thing the `deposit` function does is leverage the `s_tokenToAssetToken` mapping to acquire the `AssetToken` paired with the passed token parameter. Remember, these `asset tokens` ultimately represent how much of the pool the depositor owns as a result of their deposits.
 
 The function then needs to know how many asset tokens to mint as a result of the amount of tokens being deposited. To accomplish this we're using the `getExchangeRate` function, which we know from earlier is returning the ratio between the asset tokens and their underlying. We then use the exchangeRate to do a bit of math.
 
@@ -80,7 +80,7 @@ function getCalculatedFee(IERC20 token, uint256 amount) public view returns (uin
 // @Audit-Informational: Function missing NATSPEC!
 ```
 
-Without any explicit comments we're left to speculate, but something here seems wrong. If this function is caculating the flash loan fee, I'm left with a bunch of questions..
+Without any explicit comments we're left to speculate, but something here seems wrong. If this function is calculating the flash loan fee, I'm left with a bunch of questions..
 
 **_Why are we calculating this fee during deposit?_**
 

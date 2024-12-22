@@ -26,7 +26,7 @@ We also learnt the value of pursuing knowledge of popular existing protocols. Ha
 
 We were exposed to a whole new batch of vulnerabilities which include:
 
-- **Failure to Initialize** - as showcased by the Parity Wallet case study as well as our [**Remix example**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/failure-to-initialize/FailureToInitialize.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js). Failure to initialize a protocol leaves it open to these values being initialize at an unexpected time, resulting in unintented protocol behaviour.
+- **Failure to Initialize** - as showcased by the Parity Wallet case study as well as our [**Remix example**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/failure-to-initialize/FailureToInitialize.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js). Failure to initialize a protocol leaves it open to these values being initialize at an unexpected time, resulting in unintended protocol behaviour.
 - **Storage Collision** - we saw first had, through PoCs and [**Remix examples**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/storage-collision/StorageCollision.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js) how altering storage slot assignments during a protocol upgrade can have dire implications.
 - **Oracle & Price Manipulation** - Using an AMM as an oracle can have unintended consequences with respect to asset price feeds. Dexs/AMMs are susceptible to having their prices manipulated via swaps on the platform. A decentralized oracle like a [**Chainlink Price Feed**](https://data.chain.link/) is a more secure route.
 
@@ -38,7 +38,7 @@ We also learnt about risks associated with using proxies both with regards to pr
 
 Something we didn't actually touch on, but I _do_ want to mention briefly, is the concept of `malicious scope`.
 
-It may be the case that a protocol approaches you for an audit and they provide you scope, but intentially leave malicious code _outside of scope_ - try your best to sniff these out.
+It may be the case that a protocol approaches you for an audit and they provide you scope, but intentionally leave malicious code _outside of scope_ - try your best to sniff these out.
 
 Protocols that you audit resulting in rug pulls is going to look bad on you, so defend yourself and be cautious!
 

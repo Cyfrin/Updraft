@@ -16,11 +16,11 @@ You can read more about the [Bean attack in Rekt](https://rekt.news/beanstalk-re
 
 - $182,000,000 loss to the protocol
 
-- Attacker profitted $76,000,000 which they laundered through Tornado Cash
+- Attacker profited $76,000,000 which they laundered through Tornado Cash
 
 - $106,000,000 was paid in flash loan and swap feed on Aave and Uniswap respectively.
 
-- Governnance Manipulation Attack
+- Governance Manipulation Attack
 
 - Highly Sophisticated
 

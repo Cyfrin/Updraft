@@ -75,7 +75,7 @@ require(block.timestamp >=
   raffleStartTime + raffleDuration, "PuppyRaffle: Raffle not over");
 ```
 
-I encourage you to write these thoughts down in your `notes.md` file and actually write in-line notes to keep them organized. Being able to reference these thoughts during our write ups and later in the review is incredibly valuable to the proceess.
+I encourage you to write these thoughts down in your `notes.md` file and actually write in-line notes to keep them organized. Being able to reference these thoughts during our write ups and later in the review is incredibly valuable to the process.
 
 ```js
 // @Audit: Does this follow CEI?
@@ -106,7 +106,7 @@ It's important that this selection is fair and truly random or this could be exp
 
 ### Wrap Up
 
-Having gone through the `selectWinner` function, we now have a better understanding of this process and how it's controlleed.
+Having gone through the `selectWinner` function, we now have a better understanding of this process and how it's controlled.
 
 The function can't be called until the `raffleDuration` has passed and there are at least 4 people entered. Once `selectWinner` is called and passes checks, it uses a pseudo-random method to determine a winner of the raffle and then transfers the `prizePool` and mints them an NFT.
 

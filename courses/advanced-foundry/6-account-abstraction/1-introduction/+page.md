@@ -26,7 +26,7 @@ Another challenge is that traditional transactions are validated by the sender's
 
 ::image{src='/foundry-account-abstraction/1-introduction/trade-eth-trans.png' style='width: 100%; height: auto;'}
 
-The traditional Ethereum transactions consists of first the signing of the transaction by the sender's private key, and then sending it to an Ethereum node. The node verifies that the signature is valid and if so, adds it to its mempool for later inclusion in a block. Account Absctraction, as we have already mentioned add improvemnts to this process. There are two entry points that we need to understand - Ethereum's `EntryPoint.sol` and zkSync's native integration.
+The traditional Ethereum transactions consists of first the signing of the transaction by the sender's private key, and then sending it to an Ethereum node. The node verifies that the signature is valid and if so, adds it to its mempool for later inclusion in a block. Account Abstraction, as we have already mentioned add improvements to this process. There are two entry points that we need to understand - Ethereum's `EntryPoint.sol` and zkSync's native integration.
 
 ### Ethereum – EntryPoint.sol
 Ethereum implements account abstraction using a smart contract called `EntryPoint.sol`. This contract acts as a gateway for handling user operations and transactions in a more flexible manner.

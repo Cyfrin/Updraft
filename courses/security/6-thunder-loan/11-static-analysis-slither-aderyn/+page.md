@@ -6,7 +6,7 @@ title: Static Analysis Slither + Aderyn
 
 ### Static Analysis Slither + Aderyn
 
-Ok! We're ready to start attacking this code base and indentifying vulnerabilities. A good first step is our static analyzers of course.
+Ok! We're ready to start attacking this code base and identifying vulnerabilities. A good first step is our static analyzers of course.
 
 ### Slither
 

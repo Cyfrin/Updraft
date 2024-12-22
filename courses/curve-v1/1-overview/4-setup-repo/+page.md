@@ -17,7 +17,7 @@ cd advanced-defi-2024
 The exercises are written in Foundry, so to do the exercises, we first need to install Foundry. If you have not done so, copy and paste this command to install Foundry:
 
 ```bash
-curl -L https://foundry.paradigm.xyz | bash foundrysup
+curl -L https://foundry.paradigm.xyz | bash foundryup
 ```
 
 Now this command only works for Linux.

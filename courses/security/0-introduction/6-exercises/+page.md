@@ -8,7 +8,7 @@ _Follow along with this video_
 
 ---
 
-### Section 0: Excercises
+### Section 0: Exercises
 
 The first exercise is important. This is **just for you**. This isn't meant to be a motivation to share with others, or chat about publicly, this is what inspired you to take the first step and what will continue to inspire you to take the next.
 

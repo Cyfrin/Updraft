@@ -1,6 +1,6 @@
 ## What Do I Do Now?
 
-We've finished the advanced Mochassin curriculum here. You should be proud of yourself! Now, we're going to scroll all the way down to the bottom because there's more to learn.
+We've finished the advanced Mocassin curriculum here. You should be proud of yourself! Now, we're going to scroll all the way down to the bottom because there's more to learn.
 
 The most common question we get asked after these courses is "What do I do now?". There's always more to learn, so here are some resources on where to go next.
 
@@ -39,8 +39,8 @@ Another great option is competitive audits. These are a great way to become a po
 
 CodeHawks also has a thing called "First Flights", which are beginner-friendly audit competitions. We've specifically placed some bugs in there that you should be able to find.
 
-If you're looking at Cyfirn Updraft, they have a lot of curriculum, including one of our favorites, the Python and Vyper course. There are also more advanced courses, like Assembly and Formal Verification, Smart Contract DevOps, and Smart Contract Security.  
+If you're looking at Cyfrin Updraft, they have a lot of curriculum, including one of our favorites, the Python and Vyper course. There are also more advanced courses, like Assembly and Formal Verification, Smart Contract DevOps, and Smart Contract Security.  
 
 We also have a course on Curve StableSwap, which is all in Vyper, which you've just learned.  Curve is a multi-billion dollar protocol, and the codebase is used and forked by tons of other projects, so learning Curve will teach you more about other protocols.
 
-In general, be sure to subscribe to anything Cyfirn puts out. We're dedicated to making the lives of developers and security researchers better! 
+In general, be sure to subscribe to anything Cyfrin puts out. We're dedicated to making the lives of developers and security researchers better! 

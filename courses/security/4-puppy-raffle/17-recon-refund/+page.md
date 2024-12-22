@@ -45,7 +45,7 @@ Before this however, we see the `sendValue` function being called. This is what 
 
 ---
 
-`sendValue` may look unusual, this is just a simplfied method to transfer funds contained within the [**OpenZeppelin Address.sol library**](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Address.sol).
+`sendValue` may look unusual, this is just a simplified method to transfer funds contained within the [**OpenZeppelin Address.sol library**](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Address.sol).
 
 > ```js
 > function sendValue(address payable recipient, >uint256 amount) internal {

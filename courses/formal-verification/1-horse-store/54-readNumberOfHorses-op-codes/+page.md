@@ -257,7 +257,7 @@ We're then reordering our stack a little bit using `SWAP1` and `DUP2`. This is n
 
 `MSTORE` takes the top item of our stack (the memory offset, or location of free memory that our pointer gave us), and stores there the second from the top item in our stack - numHorses. We now have `0x40:0x80` and `0x80:numHorses` as items at their respective locations in memory!
 
-Our next step would normally be updating our `free memory pointer` with the next location of free memory, but Solodity is actually smart enough to know the call is about to end and memory won't be accessed anymore, so `MLOAD` is never called!
+Our next step would normally be updating our `free memory pointer` with the next location of free memory, but Solidity is actually smart enough to know the call is about to end and memory won't be accessed anymore, so `MLOAD` is never called!
 
 Let's see how the call completes it's return though:
 
@@ -440,4 +440,3 @@ Here's where we've come so far:
 
 
 The last section of our bytecode is going to be Metadata. We're almost done!
-

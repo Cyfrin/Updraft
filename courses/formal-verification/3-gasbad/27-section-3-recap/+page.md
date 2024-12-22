@@ -12,7 +12,7 @@ We just learnt a tonne, and in record time. Let's recap some of the things we co
 
 ### .conf
 
-By writing 2 more .conf files, we gained a bunch more experience in configurating our formal verification tests. We learnt different options within this configuration such as:
+By writing 2 more .conf files, we gained a bunch more experience in configuring our formal verification tests. We learnt different options within this configuration such as:
 
 - `rule_sanity` - We experimented with `basic` and `none` and saw how this affected Certora's assessment of the `sanity` or soundness of our tests
 - `prover_args` - options we can pass our CLI to fine tune the assumptions of the prover.
@@ -42,7 +42,7 @@ By writing 2 more .conf files, we gained a bunch more experience in configuratin
 
 **Summary Declarations**
 
-We also learnt about summary declarations, the DISPATCHER summary in particular. Summary Declaractions allow us to tell the Certora provers to replace any function logic with whatever behaviour we want. In the case of our external calls, we use the DISPATCHER summary in order to restrict what the prover expects to be the result of these calls, which is otherwise unpredicatable.
+We also learnt about summary declarations, the DISPATCHER summary in particular. Summary Declarations allow us to tell the Certora provers to replace any function logic with whatever behaviour we want. In the case of our external calls, we use the DISPATCHER summary in order to restrict what the prover expects to be the result of these calls, which is otherwise unpredictable.
 
 ```js
 function _.onERC721Received(address, address, uint256, bytes) external => DISPATCHER(true);

@@ -388,7 +388,7 @@ Just for the purpose of testing or working on a local chain, we are going to hav
 
 ### Questions for Review
 
-> ❗ **NOTE** These questions may be a bit challenging. Take your time and don't stres too much. We learn one brick at a time.
+> ❗ **NOTE** These questions may be a bit challenging. Take your time and don't stress too much. We learn one brick at a time.
 
 <summary>1. In the testRecoverSignedOp function, what is the significance of using ECDSA.recover and what is being verified?</summary>
 

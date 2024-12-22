@@ -10,7 +10,7 @@ _Follow along with the video lesson:_
 
 Did you find the bug in depositTokensToL2 from the previous lesson?
 
-If not, that's ok. Our friend Slither is here to help us. This vulnerabilitiy is actually one that Slither caught for us earlier. Let's run the tool again.
+If not, that's ok. Our friend Slither is here to help us. This vulnerability is actually one that Slither caught for us earlier. Let's run the tool again.
 
 ```bash
 make slither
@@ -57,7 +57,7 @@ Because this function allows the setting of any `from` parameter, instead of def
 **Severity - HIGH!**
 
 ```js
-// @Audit-High: Arbirary transferFrom risks any approved tokens
+// @Audit-High: Arbitrary transferFrom risks any approved tokens
 function depositTokensToL2(address from, address l2Recipient, uint256 amount) external whenNotPaused {...}
 ```
 

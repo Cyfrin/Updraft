@@ -32,7 +32,7 @@ Let's crack open the README to verify the setup steps recommended by the protoco
 
 ::image{src='/formal-verification-3/2-setup//setup1.png' style='width: 100%; height: auto;'}
 
-The protocol wants us to use the `make` command! This should largely set our workspace up for us by removing old modules, installing our dependences and building the project.
+The protocol wants us to use the `make` command! This should largely set our workspace up for us by removing old modules, installing our dependencies and building the project.
 
 > ❗ **WARNING**
 > Before running `make` we should always check our foundry.toml to assure `FFI=False`, running arbitrary code while our framework has these permissions is dangerous! **Be safe!**

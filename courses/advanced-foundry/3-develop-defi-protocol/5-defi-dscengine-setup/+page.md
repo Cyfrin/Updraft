@@ -17,7 +17,7 @@ Begin with creating a new file, `src/DSCEngine.sol`. I'll bring over my contract
 ```js
 // SPDX-License-Identifier: MIT
 
-// This is considered an Exogenous, Decentralized, Anchored (pegged), Crypto Collateralized low volitility coin
+// This is considered an Exogenous, Decentralized, Anchored (pegged), Crypto Collateralized low volatility coin
 
 // Layout of Contract:
 // version
@@ -111,7 +111,7 @@ contract DSCEngine {
 ///////////////////////////
 //   External Functions  //
 ///////////////////////////
-    function depositCollaterAndMintDsc() external {}
+    function depositCollateralAndMintDsc() external {}
 
     function depositCollateral() external {}
 

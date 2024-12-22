@@ -39,7 +39,7 @@ Having a skim through the TSwapPool.sol code there are a few functions that stan
 - swapExactOutput
 - swapExactInput
 
-You may notice that `swapExactInput` doesn't have any documentation! This makes is incredibly difficult to gain any insight into what this function is meant to do without reading the code. Fortunately `swapExactOutput` has some NATPEC, so we should start there.
+You may notice that `swapExactInput` doesn't have any documentation! This makes is incredibly difficult to gain any insight into what this function is meant to do without reading the code. Fortunately `swapExactOutput` has some NATSPEC, so we should start there.
 
 ```js
 /*
