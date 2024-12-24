@@ -13,8 +13,7 @@ In this lesson we'll apply what we've learnt and get our hands dirty with a smal
 > ❗ **NOTE**
 > This is one of the more advanced section of this course, don't feel bad if things are confusing. You're welcome to skip this sublesson if you're less worried about how things work behind the scenes.
 
-<details>
-<summary>SmallProxy.sol</summary>
+### SmallProxy.sol
 
 ```js
 // SPDX-License-Identifier: MIT
@@ -40,16 +39,13 @@ contract SmallProxy is Proxy {
     }
 ```
 
-</details>
-
 This `SmallProxy` example contains a lot of `Yul`. Yul is a sort of in-line Assembly that allows you to write really low-level code. Like anything low-level it comes with increased risk and severity of mistakes, it's good to avoid using `Yul` as often as you can justify.
 
 For more information on `Yul`, check out the [**Yul Documentation**](https://docs.soliditylang.org/en/latest/yul.html).
 
 Now, within `SmallProxy` we're importing Proxy.sol from our good friends OpenZeppelin. Looking at the code, we can get a better idea of how things are actually being handled.
 
-<details>
-<summary>Proxy.sol</summary>
+### Proxy.sol
 
 ```js
 // SPDX-License-Identifier: MIT
@@ -122,8 +118,6 @@ abstract contract Proxy {
     }
 }
 ```
-
-</details>
 
 There are really only 2 functions in this contract (ignoring the virtual \_implementation function). We have \_delegate, fallback/\_fallback. The fallback functions simply route unrecognized call data to the \_delegate function which then routes the call to an implementation contract.
 
