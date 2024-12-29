@@ -49,7 +49,7 @@ pragma solidity ^0.8.18;
 contract BoxV1 {
     uint256 internal number;
 
-    function getNumber() external view returns (uint256){
+    function getNumber() external view returns (uint256) {
         return number;
     }
 
@@ -73,7 +73,7 @@ contract BoxV2 {
         number = _number;
     }
 
-    function getNumber() external view returns (uint256){
+    function getNumber() external view returns (uint256) {
         return number;
     }
 
@@ -109,7 +109,7 @@ import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/U
 contract BoxV1 {
     uint256 internal number;
 
-    function getNumber() external view returns (uint256){
+    function getNumber() external view returns (uint256) {
         return number;
     }
 
@@ -156,7 +156,7 @@ function _authorizeUpgrade(address newImplementation) internal virtual;
 This is a function we'll need to define within our protocol with the logic to denote how an upgrade is authorized, perhaps limitations on who can upgrade with a check on msg.sender, for example. Let's go ahead and implement this override function in BoxV1.sol now.
 
 ```js
-function _authorizeUpgrade(address newImplementation) internal override{}
+function _authorizeUpgrade(address newImplementation) internal override {}
 ```
 
 This line is actually all that's needed. For our example, we're not going to implement any further authorization, but you could easily image how this function would be used to implement a check on the address calling the upgrade.
@@ -251,7 +251,7 @@ contract BoxV1 is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         _disableInitializers();
     }
 
-    function initialize() initializer public {
+    function initialize() public initializer {
         __Ownable_init(msg.sender);
         __UUPSUpgradeable_init();
     }
