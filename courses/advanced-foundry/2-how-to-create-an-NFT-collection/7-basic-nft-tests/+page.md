@@ -83,7 +83,7 @@ We'll leverage abi.encodePacked to convert this to bytes, then finally we can us
 If we apply this encoding and hashing methodology to our BasicNft test, we should come out with something that looks like this:
 
 ```js
-function testNameisCorrect() public view {
+function testNameIsCorrect() public view {
   string memory expectedName = "Doggie";
   string memory actualName = basicNft.name();
 
@@ -99,13 +99,13 @@ Great work! Let's write a couple more tests together.
 
 ### Testing Mint and Balance
 
-The next test we write will assure a user can mint the NFT and then chance the user's balance. We'll need to create a user to prank in our test. Additionally, we'll need to provide our mint function a tokenUri, I've provided one below for convenience. If you've one prepared from the previous lesson, feel free to use it!
+The next test we write will assure a user can mint the NFT and then change the user's balance. We'll need to create a user to prank in our test. Additionally, we'll need to provide our mint function a tokenUri, I've provided one below for convenience. If you've one prepared from the previous lesson, feel free to use it!
 
 ```js
 contract BasicNftTest is Test {
   ...
-  address public user = makeAddr("user");
-  string public constant TOKENURI =
+  address public USER = makeAddr("user");
+  string public constant PUG =
       "ipfs://bafybeig37ioir76s7mg5oobetncojcm3c3hxasyd4rvid4jqhy4gkaheg4/?filename=0-PUG.json";
   ...
   function testCanMintAndHaveABalance() public {
@@ -113,7 +113,7 @@ contract BasicNftTest is Test {
     basicNft.mintNft(PUG);
 
     assert(basicNft.balanceOf(USER) == 1);
-    assert(keccask256(abi.encodePacked(PUG)) == keccak256(abi.encodePacked(basicNft.tokenURI(0))));
+    assert(keccak256(abi.encodePacked(PUG)) == keccak256(abi.encodePacked(basicNft.tokenURI(0))));
   }
 }
 ```
