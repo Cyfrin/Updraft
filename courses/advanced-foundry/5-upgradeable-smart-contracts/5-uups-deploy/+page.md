@@ -64,7 +64,7 @@ We'll also need to add this remapping to our `foundry.toml`.
 remappings = [
   "@openzeppelin/contracts=lib/openzeppelin-contracts/contracts",
   "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts",
-];
+]
 ```
 
 Finally, we can add the deployment of our proxy to our deploy script. The ERC1967Proxy contract _does_ have a constructor we need to consider.
