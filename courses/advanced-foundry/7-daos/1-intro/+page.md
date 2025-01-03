@@ -47,7 +47,7 @@ We can access their governance system, and view past and pending proposals, thro
 
 ::image{src='/foundry-daos/1-intro/intro1.png' style='width: 100%; height: auto;'}
 
-If we navigate to one [**specific proposal**](https://compound.finance/governance/proposals/256), we can gain a lot of insight into how this process works. The proposal view breaks down the votes received, the number of particating addresses and importantly the Proposal History. We're able to see that every proposal begins with a transaction.
+If we navigate to one [**specific proposal**](https://compound.finance/governance/proposals/256), we can gain a lot of insight into how this process works. The proposal view breaks down the votes received, the number of participating addresses and importantly the Proposal History. We're able to see that every proposal begins with a transaction.
 
 ::image{src='/foundry-daos/1-intro/intro2.png' style='width: 100%; height: auto;'}
 
@@ -80,7 +80,7 @@ If voting succeeds, a proposal will be queued for execution. This queue period a
 
 - security checks
 - challenges to the proposal
-- an exit opportunity for stakeholers who disagree with the proposal
+- an exit opportunity for stakeholders who disagree with the proposal
 - preparation for execution
 
 Following this timelock period, the proposal is executed!
@@ -100,7 +100,7 @@ One consideration that must be made is: **How do we identify stakeholders, or me
 
 Often this is handled via an ERC20 or an NFT of some kind, but this runs the risk of being _less_ fair if the tokens are more available to the wealthy than others. This is not dissimilar to Web2 companies and how the voting power of company shares works.
 
-One methodology is the "Skin in the Game" method whereby voting records are recording and negative outcomes result in tokens/voting power being lost. This is beneficial in that it holds users accountable for the decisions they make. A downside to this approach is how difficult it can be to reach a concensus on what a _bad_ outcome is.
+One methodology is the "Skin in the Game" method whereby voting records are recording and negative outcomes result in tokens/voting power being lost. This is beneficial in that it holds users accountable for the decisions they make. A downside to this approach is how difficult it can be to reach a consensus on what a _bad_ outcome is.
 
 A third approach is something called "Proof of Personhood Participation" and while potentially ideal, isn't something with a sound implementation yet. The idea would be a method by which someone can be verified as being a single human entity, but the logics of this are difficult and rub up against anonymity. Some projects like WorldCoin are trying to find solutions here!
 
@@ -120,7 +120,7 @@ It's important to be careful the the implementation of any off-chain features, i
 
 ### Tools
 
-There are a number of no-code/low-code tools that can fascilitate a DAO, services like [**DAO Stack**](https://www.alchemy.com/dapps/daostack), [**Aragon**](https://aragon.org/), [**Colony**](https://colony.io/) and [**DAO House**](https://www.daohouse.global/) can greatly assist in the operations side of running a DAO.
+There are a number of no-code/low-code tools that can facilitate a DAO, services like [**DAO Stack**](https://www.alchemy.com/dapps/daostack), [**Aragon**](https://aragon.org/), [**Colony**](https://colony.io/) and [**DAO House**](https://www.daohouse.global/) can greatly assist in the operations side of running a DAO.
 
 Additional tools with more granular control and integrations include things like [**Snapshot**](https://snapshot.org/) which allows a team to glean sentiment of a community before execution while also including functionality to manage and execute proposals if desired. Other tools to check out include [**Zodiac**](https://github.com/gnosisguild/zodiac) a development library offered by Gnosis and our old friends [**OpenZeppelin**](https://github.com/OpenZeppelin/openzeppelin-contracts/tree/master/contracts/governance). We'll be using the OZ library in our development for sure!
 

@@ -83,7 +83,7 @@ contract BoxV2 {
 }
 ```
 
-In order to implement the UUPS functionality, we're going to leverage an OpenZeppelin library. This one is actually different from the OpenZeppelin/Contracts we're used to and is tailered specifically for upgradeability. Let's install this library.
+In order to implement the UUPS functionality, we're going to leverage an OpenZeppelin library. This one is actually different from the OpenZeppelin/Contracts we're used to and is tailored specifically for upgradeability. Let's install this library.
 
 ```bash
 forge install OpenZeppelin/openzeppelin-contracts-upgradeable --no-commit
@@ -175,7 +175,7 @@ uint256[50] private __gap;
 
 ::image{src='/foundry-upgrades/4-UUPS/UUPS2.png' style='width: 100%; height: auto;'}
 
-If you recall to previous lessons, when values are assigned by a function, the variable name doesn't ultimately matter as the value is assigned to a storage slot. We saw that storage clashes were possible when an upgraded implementation contract made changes to the order of storage variable assignements, leading to some funky behaviours.
+If you recall to previous lessons, when values are assigned by a function, the variable name doesn't ultimately matter as the value is assigned to a storage slot. We saw that storage clashes were possible when an upgraded implementation contract made changes to the order of storage variable assignments, leading to some funky behaviours.
 
 Storage gaps are an effort to get ahead of this problem by pre-allocating an array of slots to account for future protocol changes. This effectively creates a buffer of available storage slots to be used by subsequent implementation contracts for new variables and functionality.
 
@@ -203,7 +203,7 @@ contract BoxV1 is UUPSUpgradeable {
 }
 ```
 
-BoxV1 as written above is deployable and could be upgraded, BoxV2 can't be upgraded, but we'll cross that bridge later. If you look at the examples of OpenZepplin UUPS contract on their Contract Wizard, you'll see that they are importing far more than we are however. One of which is the Initializable.sol library. Let's import this into BoxV1 and discuss it's importance here.
+BoxV1 as written above is deployable and could be upgraded, BoxV2 can't be upgraded, but we'll cross that bridge later. If you look at the examples of OpenZeppelin UUPS contract on their Contract Wizard, you'll see that they are importing far more than we are however. One of which is the Initializable.sol library. Let's import this into BoxV1 and discuss it's importance here.
 
 ```js
 import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";

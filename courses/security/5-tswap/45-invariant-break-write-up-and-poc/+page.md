@@ -96,7 +96,7 @@ function testInvariantBroken() public {
 }
 ```
 
-Our handler has an example we can now implement of a single swap being executed. Let's move that into our new unit test. Additionally, we can carry over our caculations for `endingX` and `actualDeltaX` as well as add our assert statement.
+Our handler has an example we can now implement of a single swap being executed. Let's move that into our new unit test. Additionally, we can carry over our calculations for `endingX` and `actualDeltaX` as well as add our assert statement.
 
 > **Note:** `TSwapPool.t.sol` uses `user` instead of `swapper` as we have in our handler.
 
@@ -212,7 +212,7 @@ Most simply put, the protocol's core invariant is broken.
 **Proof of Concept:**
 
 1. A user swaps 10 times, and collects the extra incentive of `1_000_000_000_000_000_000` tokens
-2. That user continues to swap untill all the protocol funds are drained
+2. That user continues to swap until all the protocol funds are drained
 
 <details>
 <summary>Proof Of Code</summary>

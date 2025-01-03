@@ -12,11 +12,11 @@ We've learnt tonnes already, let's do a quick summary of what we've gone over so
 
 ### Ghost Variables
 
-We investigated ghost variables and how they're configured within a .spec file. We learnt that these variables are treated as temporary parts of the contract which are used by the pover alone.
+We investigated ghost variables and how they're configured within a .spec file. We learnt that these variables are treated as temporary parts of the contract which are used by the prover alone.
 
 Ghost variables are initialized using an `init_state axiom`.
 
-In many instances a situation arived at by the prover may result in ghost variables being HAVOC'd (randomized). To prevent this, we can use the `persistent` key word when declaring our ghost variables.
+In many instances a situation arrived at by the prover may result in ghost variables being HAVOC'd (randomized). To prevent this, we can use the `persistent` key word when declaring our ghost variables.
 
 ```js
 persistent ghost mathint listingUpdatesCount{
@@ -71,6 +71,6 @@ The root of what I'm trying to instill is this idea that - the prover is going t
 
 It's ultimately our job to vet these outputs and determine - is this the fault of my code, or is the prover unclear about what my goals are?
 
-In the next lesson we'll drill this concept in with a final rule that should be a blast to connfigure.
+In the next lesson we'll drill this concept in with a final rule that should be a blast to configure.
 
 See you there!

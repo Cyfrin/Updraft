@@ -34,7 +34,7 @@ The important aspects are the following:
 
 Now this seems like a lot, but let's go through some examples: (Try to think about how the storage looks before reading the description)
 
-```solidit
+```solidity
 uint256 var1 = 1337;
 uint256 var2 = 9000;
 uint64 var3 = 0;

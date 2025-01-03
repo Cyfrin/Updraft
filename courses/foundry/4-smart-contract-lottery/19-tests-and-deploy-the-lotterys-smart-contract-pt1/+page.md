@@ -56,7 +56,7 @@ This code is good on its own, but, we can make it better. For example, we need a
 
 Before that, let's write some tests.
 
-Inside the `test` folder create two new folders called `intergration` and `unit`. Here we'll put our integration and unit tests. Inside the newly created `unit` folder create a file called `RaffleTest.t.sol`.
+Inside the `test` folder create two new folders called `integration` and `unit`. Here we'll put our integration and unit tests. Inside the newly created `unit` folder create a file called `RaffleTest.t.sol`.
 
 Let's start writing the first test. You've already done this at least two times in this section. Try to do it on your own and come back when you get stuck.
 

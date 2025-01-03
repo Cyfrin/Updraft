@@ -14,6 +14,6 @@ We can take a look at this image to see a minimized visual representation of wha
 
 ### MEV - Everywhere
 
-To demonstrate just how prevasive this vulnerability is in Web3 .. I've got a secret.
+To demonstrate just how pervasive this vulnerability is in Web3 .. I've got a secret.
 
 **_EVERY_** code base we've audited up to now has been susceptible to MEV attacks! Let's go over how it applies in each situation, starting with Puppy Raffle!

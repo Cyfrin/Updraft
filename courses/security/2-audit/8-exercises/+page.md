@@ -6,7 +6,7 @@ _Follow along with this video:_
 
 ---
 
-### Section 2: Excercises
+### Section 2: Exercises
 
 ---
 

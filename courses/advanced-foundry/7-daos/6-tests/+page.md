@@ -13,7 +13,7 @@ Let's jump right into writing our tests. Begin with creating `test/MyGovernorTes
 ```js
 // SPDX-License-Identifier: MIT
 
-pragme solidity ^0.8.18;
+pragma solidity ^0.8.18;
 
 import {Test} from "forge-std/Test.sol";
 import {MyGovernor} from "../src/MyGovernor.sol";
@@ -163,7 +163,7 @@ function testGovernanceUpdatesBox() public {}
 The function we're going to call is store, of course, so we'll declare the value we expect to pass. Beyond this, the first thing we'll need to do to kick off a vote is submit a proposal.
 
 ```js
-function propose(addresses[] memory targets, uint256[] memory values, bytes[] memory calldatas, string memory descrription) public virtual override returns (uint256){...}
+function propose(addresses[] memory targets, uint256[] memory values, bytes[] memory calldatas, string memory description) public virtual override returns (uint256){...}
 ```
 
 Many of these parameters we should already know. The target of our proposed function call is going to be our Box contract address, the value we're passing with the function call is zero, and the calldata is going to be our function signature encoded with our data. All things we've done before!
@@ -203,7 +203,7 @@ function testGovernanceUpdatesBox() public {
 It might be a good idea for our test to check the state of the proposal that's been submitted! We can do this by calling the `state` function with our proposalId. This call will return a uint256 which pertains to an index of the ProposalState enum.
 
 ```js
-abstract constract IGovernor is IERC165 {
+abstract contract IGovernor is IERC165 {
     enum ProposalState {
         Pending,
         Active,

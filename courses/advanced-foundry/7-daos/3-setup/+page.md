@@ -62,7 +62,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 contract Box is Ownable {}
 ```
 
-This contract is only going to serve as the contract which is managed by our DAO. In practice this contract could be quite complex, or multiple contracts could be managed by a single DAO, but for our purposes we'll keep things concise. The goal is to understanding how the voting mechanism allows the DAO to autonmously execute function calls.
+This contract is only going to serve as the contract which is managed by our DAO. In practice this contract could be quite complex, or multiple contracts could be managed by a single DAO, but for our purposes we'll keep things concise. The goal is to understanding how the voting mechanism allows the DAO to autonomously execute function calls.
 
 Let's add the ability to store and retrieve a value from our contract. The ability to change this number will be modifier with `onlyOwner` such that only our DAO may call it.
 

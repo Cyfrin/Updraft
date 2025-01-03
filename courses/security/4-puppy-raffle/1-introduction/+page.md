@@ -16,7 +16,7 @@ We'll see the differences between a private audit report and a competitive audit
 
 CodeHawks First Flights offer an excellent platform for budding smart contract security researchers. This platform contains relatively easy-to-understand codebases that resemble those you will find in this course.
 
-If you are a beginner, they are a perfect opportunity to get live auditing experience and build upon the things you've learnt in a practical setting. For experienced auditors, they serve as a chance to engage in the community and itterate on your established skills.
+If you are a beginner, they are a perfect opportunity to get live auditing experience and build upon the things you've learnt in a practical setting. For experienced auditors, they serve as a chance to engage in the community and iterate on your established skills.
 
 ::image{src='/security-section-4/1-introduction/introduction1.png' style='width: 100%; height: auto;'}
 
@@ -48,13 +48,13 @@ This should give you real insight into what's at stake as we're performing secur
 
 ### Exercises
 
-At the end of the section we'll have _even more_ excercises for you to expand on your knowledge and challenge yourself beyond the course's teachings. These are your opportunities to branch out, network and gain additional experience.
+At the end of the section we'll have _even more_ exercises for you to expand on your knowledge and challenge yourself beyond the course's teachings. These are your opportunities to branch out, network and gain additional experience.
 
 This includes participating in a CodeHawks First Flight or a competitive audit! Get ready!
 
 ### Prep for Puppy Raffle
 
-If you take a look at the [**repo**](https://github.com/Cyfrin/4-puppy-raffle-audit) associated with this section, you'll see a fairly robust README already supplied. For this review, we're assuming the protocol has already undergone some degreee of onboarding and they've provided us a respectable repo.
+If you take a look at the [**repo**](https://github.com/Cyfrin/4-puppy-raffle-audit) associated with this section, you'll see a fairly robust README already supplied. For this review, we're assuming the protocol has already undergone some degree of onboarding and they've provided us a respectable repo.
 
 I will transparently point out that, much like our previous protocol review, this repo has multiple branches, one of which is the `audit-data` branch. I **STRONGLY** encourage you to resist peeking in this branch until the end. The `audit-data` branch effectively serves as an `answer key`, in which all the vulnerabilities and write-ups can be found.
 

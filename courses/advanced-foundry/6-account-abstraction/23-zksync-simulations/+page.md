@@ -22,7 +22,7 @@ Let's start by making two updates to our code.
 ---
 
 ```js
-foudryup - zksync;
+foundryup - zksync;
 ```
 
 ```js

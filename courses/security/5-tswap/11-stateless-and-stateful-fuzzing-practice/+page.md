@@ -32,7 +32,7 @@ In the following sections we're going to focus on 3 types of testing to check fo
 2. Open Stateful Fuzzing (harder)
 3. Closed Stateful Fuzzing w/ Handler (Hardest)
 
-Now, before moving forward, I strong encourage you to read through and understand the infomation in the [**invariant-break README**](https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/invariant-break/README.md). Understanding the concepts contained therein will give you a big advantage in the next sections as we employ them practically.
+Now, before moving forward, I strong encourage you to read through and understand the information in the [**invariant-break README**](https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/invariant-break/README.md). Understanding the concepts contained therein will give you a big advantage in the next sections as we employ them practically.
 
 The next thing I want you to do, is delete the `test/invariant-break` folder in the `sc-exploits-minimized` repo you just cloned. Actually writing out this code is and understanding how these tests work is what will allow you to master these skills.
 

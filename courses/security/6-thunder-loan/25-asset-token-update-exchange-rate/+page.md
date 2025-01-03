@@ -19,7 +19,7 @@ function updateExchangeRate(uint256 fee) external onlyThunderLoan {
     uint256 newExchangeRate = s_exchangeRate * (totalSupply() + fee) / totalSupply();
 
     if (newExchangeRate <= s_exchangeRate) {
-        revert AssetToken__ExhangeRateCanOnlyIncrease(s_exchangeRate, newExchangeRate);
+        revert AssetToken__ExchangeRateCanOnlyIncrease(s_exchangeRate, newExchangeRate);
     }
     s_exchangeRate = newExchangeRate;
     emit ExchangeRateUpdated(s_exchangeRate);
@@ -43,11 +43,11 @@ The next bit of code is actually pretty clever.
 
 ```js
 if (newExchangeRate <= s_exchangeRate) {
-    revert AssetToken__ExhangeRateCanOnlyIncrease(s_exchangeRate, newExchangeRate);
+    revert AssetToken__ExchangeRateCanOnlyIncrease(s_exchangeRate, newExchangeRate);
 }
 ```
 
-This is explicitly checking for the invariant mentioned in the function comments. If the newExchangeRate is less than or equal to the old exchange rate, we revert with a custom error `AssetToken__ExhangeRateCanOnlyIncrease`.
+This is explicitly checking for the invariant mentioned in the function comments. If the newExchangeRate is less than or equal to the old exchange rate, we revert with a custom error `AssetToken__ExchangeRateCanOnlyIncrease`.
 
 Then we're updating the exchange rate and emitting an event.
 

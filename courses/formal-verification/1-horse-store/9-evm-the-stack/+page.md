@@ -55,7 +55,7 @@ For our purposes, our focus will be the areas **Stack**, **Memory**, and **Stora
 
 ### The Stack
 
-When we want to perform computions on data, we have to consider where the data will be stored and the order of our computions. Of all the spaces in the image above, the cheapest location for this (from the perspective of gas) is going to be on `the stack`.
+When we want to perform computations on data, we have to consider where the data will be stored and the order of our computations. Of all the spaces in the image above, the cheapest location for this (from the perspective of gas) is going to be on `the stack`.
 
 If we take a look at the `ADD` op code in [**evm.codes**](https://www.evm.codes/?fork=shanghai) we can see how this addition operation actually works.
 
@@ -65,4 +65,4 @@ If we take a look at the `ADD` op code in [**evm.codes**](https://www.evm.codes/
 
 ::image{src='/formal-verification-1/9-evm-the-stack/evm-the-stack-3.png' style='width: 75%; height: auto;'}
 
-In the next lesson, we'll take a look at how `memory` and `storage` is handled differently from eachother.
+In the next lesson, we'll take a look at how `memory` and `storage` is handled differently from each other.

@@ -85,7 +85,7 @@ By employing the `wildcard entry` we can avoid issues with where this function i
 
 Because the scope we're providing the prover includes `NftMock.sol`, we're instructing `Certora`, through our above configuration, to treat every `safeTransferFrom` call as though it behaves like the one in our `NftMock.sol` contract.
 
-Now, it's worth pointing out that by employing our declaraction this way we're adopting some assumptions. Primarily, we're assuming that our NFTs `safeTransferFrom` function won't alter storage and that the `safeTransferFrom` function behaves fairly innocuously. This may not necessarily be a safe assumption, but for the purposes of our example this is fine.
+Now, it's worth pointing out that by employing our declaration this way we're adopting some assumptions. Primarily, we're assuming that our NFTs `safeTransferFrom` function won't alter storage and that the `safeTransferFrom` function behaves fairly innocuously. This may not necessarily be a safe assumption, but for the purposes of our example this is fine.
 
 ### Running the Prover
 
@@ -141,7 +141,7 @@ invariant anytime_mapping_updated_emit_event()
 
 ::image{src='/formal-verification-3/18-summary-implementations/summary-implementations3.png' style='width: 100%; height: auto;'}
 
-Uh oh, we're still seeing an issue. Let's drill into the call trace to determine what's happening. If we navigate through the call trace Certora provides to the safeTranferFrom call that was previously failing, we can see a few interesting things.
+Uh oh, we're still seeing an issue. Let's drill into the call trace to determine what's happening. If we navigate through the call trace Certora provides to the safeTransferFrom call that was previously failing, we can see a few interesting things.
 
 ::image{src='/formal-verification-3/18-summary-implementations/summary-implementations4.png' style='width: 100%; height: auto;'}
 

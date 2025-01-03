@@ -7,21 +7,21 @@ Before we can use a Jupyter notebook, we'll need to create one. To do this, crea
 The next step is to select the kernel. We want to make sure we're using the correct Python environment. To do this, click on the kernel selector, and then select "Python Environments".  We want to choose the ".venv" environment. If we haven't already added Mocassin to our ".venv", we can do this using the following terminal commands:
 
 ```bash
-uv add moccasain
+uv add moccasin
 uv sync
 ```
 
 Now that we've selected our kernel, we'll go ahead and copy and paste the following code into the first cell.
 
 ```python
-from moccasain import setup_notebook
+from moccasin import setup_notebook
 setup_notebook()
 ```
 
 To run this code, hit Shift Enter. Now, let's add a new code cell and copy the following code:
 
 ```python
-from moccasain.config import get_active_network
+from moccasin.config import get_active_network
 active_network = get_active_network()
 print(active_network.name)
 ```

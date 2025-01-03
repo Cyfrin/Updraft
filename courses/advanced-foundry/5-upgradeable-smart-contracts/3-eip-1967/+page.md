@@ -135,7 +135,7 @@ This virtual function is returning the implementation address and showcases the 
 
 [**Ethereum Improvement Proposal (now ERC)-1967**](https://eips.ethereum.org/EIPS/eip-1967).
 
-The need to regularly utilize storage to reference things in implementation (specifically the implementation address) led to the desire for EIP-1967: Standard Proxy Storage Slots. This proposal would allocate standardardized slots in storage specifically for use by proxies.
+The need to regularly utilize storage to reference things in implementation (specifically the implementation address) led to the desire for EIP-1967: Standard Proxy Storage Slots. This proposal would allocate standardized slots in storage specifically for use by proxies.
 
 In our minimalistic example, we're assigning our \_IMPLEMENTATION_SLOT to a constant value for this purpose.
 

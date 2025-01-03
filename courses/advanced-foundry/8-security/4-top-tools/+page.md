@@ -52,13 +52,13 @@ Technically, there's nothing wrong with this code. It would only be through read
 
 Let's talk about some of the tools security professionals and developers have in their toolbox.
 
-1. **Test Suites:** This is the first line of defence and why we placed such an emphasis on them throughout the course. All of the most popular development frameworks include test suites, use them, use them often, catch those bugs.
+1. **Test Suites:** This is the first line of defense and why we placed such an emphasis on them throughout the course. All of the most popular development frameworks include test suites, use them, use them often, catch those bugs.
 2. **Static Analysis:** Static analysis is the process of checking code for issues without executing anything. Popular entries here include [**Aderyn**](https://github.com/Cyfrin/aderyn), [**Slither**](https://github.com/crytic/slither) and [**Mithril**](https://github.com/Consensys/mythril)
 3. **Fuzz Testing:** a specific test suite methodology involving providing random data as inputs during testing.
 
-   Two variantions exist including stateless and stateful fuzz testing. Stateless fuzz tests abandon the result of a previous test before running a new test, with a new contract state. Stateful, conversely will remember the ending state of one run and use this as the starting start for the next fuzz run.
+   Two variations exist including stateless and stateful fuzz testing. Stateless fuzz tests abandon the result of a previous test before running a new test, with a new contract state. Stateful, conversely will remember the ending state of one run and use this as the starting start for the next fuzz run.
 
-4. **Differential Testing:** We don't cover this in depth, but the idea is to write code in multiple ways and compare the results to eachother to ensure validity.
+4. **Differential Testing:** We don't cover this in depth, but the idea is to write code in multiple ways and compare the results to each other to ensure validity.
 5. **Formal Verification:** Formal Verification is a generic term for applying formal methods to verify the correctness of a system.
 
    Applying formal methods pertains to anything based on mathematical proofs, these are mathematical expressions that solve for the soundsness and validity of a system, a proof of correctness, or whether or not a bug _must_ exist. ie Symbolic Execution.
@@ -67,7 +67,7 @@ Let's talk about some of the tools security professionals and developers have in
 
    There's a great article hosted by hackmd that compares many of these tools and how they work, I encourage you to [**check it out**](https://hackmd.io/@SaferMaker/EVM-Sym-Exec).
 
-6. **AI Tools:** These can be hit or miss, but are absolutely evolving quickly. Any developer can find value in leveraging tools like Copilot, or state of the art models suchs a GPT4o, in their process.
+6. **AI Tools:** These can be hit or miss, but are absolutely evolving quickly. Any developer can find value in leveraging tools like Copilot, or state of the art models such as GPT4o, in their process.
 
    These tools, I would say, aren't yet reliable enough to be depended upon, but they can go a long way towards helping to quickly understand the context of codebases or summarizing/clarifying documentation. Don't rely on them, but keep AI tooling on your radar.
 
@@ -299,7 +299,7 @@ contract CaughtWithStatefulFuzzTest is StdInvariant, Test {
 }
 ```
 
-We can see here the running our stateful fuzz test `invariant_testMathDoesntReturnZero` indentifies the arguments to pass and order of functions to call which breaks our invariant.
+We can see here the running our stateful fuzz test `invariant_testMathDoesntReturnZero` identifies the arguments to pass and order of functions to call which breaks our invariant.
 
 ::image{src='/foundry-security/3-top-tools/top-tools3.png' style='width: 100%; height: auto;'}
 

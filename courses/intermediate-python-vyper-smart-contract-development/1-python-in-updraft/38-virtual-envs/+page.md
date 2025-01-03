@@ -2,7 +2,7 @@
 
 Virtual environments are an important concept to understand even if we don't use `uv`.
 
-Technically, a virtual environment is a setting that `uv` creates to isolate our Python version and packages. Back in our Cyfron Updraft terminal, we can type:
+Technically, a virtual environment is a setting that `uv` creates to isolate our Python version and packages. Back in our Cyfrin Updraft terminal, we can type:
 
 ```bash
 uv venv

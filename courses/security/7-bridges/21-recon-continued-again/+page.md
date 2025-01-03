@@ -97,7 +97,7 @@ function depositTokensToL2(address from, address l2Recipient, uint256 amount) ex
 }
 ```
 
-Ok, yes! We're transfering our tokens (making an external call), before our event. This definitely is an issue. Now, it's important to note that because we're only using `L1Tokens` and we don't have to worry about any Weird `ERC20s` with callback functions - this isn't actually a security risk.
+Ok, yes! We're transferring our tokens (making an external call), before our event. This definitely is an issue. Now, it's important to note that because we're only using `L1Tokens` and we don't have to worry about any Weird `ERC20s` with callback functions - this isn't actually a security risk.
 
 But, we can definitely call out the lack of best practices when we see them.
 

@@ -14,7 +14,7 @@ Let's get started!
 
 ### Variables from Transaction Struct
 
-We know that once the validation phase is done, it will send the transaction to the main node for execution. We aren't actually done with the validation phase just yet, as we haven't handled the acutal payment. But for this lesson, we will turn our attention to our executeTransaction function. We will be using some [variables from the `Transaction` struct:](https://github.com/Cyfrin/foundry-era-contracts/blob/3f99de4a37b126c5cb0466067f37be0c932167b2/src/system-contracts/contracts/libraries/MemoryTransactionHelper.sol)
+We know that once the validation phase is done, it will send the transaction to the main node for execution. We aren't actually done with the validation phase just yet, as we haven't handled the actual payment. But for this lesson, we will turn our attention to our executeTransaction function. We will be using some [variables from the `Transaction` struct:](https://github.com/Cyfrin/foundry-era-contracts/blob/3f99de4a37b126c5cb0466067f37be0c932167b2/src/system-contracts/contracts/libraries/MemoryTransactionHelper.sol)
 
 - `uint256 to`: The callee (address or contract being called)
 - `uint256 value`: The value to pass with the transaction.

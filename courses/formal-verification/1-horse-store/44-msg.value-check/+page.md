@@ -146,7 +146,7 @@ _Follow along with this video:_
 
 When going through op codes, I like to repeatedly ask myself _What does this chunk do?_. Let's look at the next check and walk through is execution.
 
-I'll typically look out for 'break points', things like `Revert` and `Return` to detemine where a "chunk" starts and stops.
+I'll typically look out for 'break points', things like `Revert` and `Return` to determine where a "chunk" starts and stops.
 
 ```
 CALLVALUE    // [msg.value]

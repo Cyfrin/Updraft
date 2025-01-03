@@ -47,7 +47,7 @@ We'll create a little basic NFT in here.  Now, I know in that video we went over
 from snekmate.tokens import erc721
 from snekmate.auth import ownable as ow
 initializes: ow
-initializes: erc721(owmable := ow)
+initializes: erc721(ownable := ow)
 @deploy
 def __init__():
     ow.__init__()
@@ -80,4 +80,3 @@ exports: erc721.interface
 ```
 
 So, we get all the functions of the ERC721. Nice. 
-

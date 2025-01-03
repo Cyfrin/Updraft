@@ -44,7 +44,7 @@ function withdrawBalance() public {
 
 That's it!
 
-The first time this function is called now, the user's balance is updated to zero before making external calls. This means if an enternal call causes this function to be called again - the user's balance will already be updated as zero, so no further funds will be withdrawn.
+The first time this function is called now, the user's balance is updated to zero before making external calls. This means if an external call causes this function to be called again - the user's balance will already be updated as zero, so no further funds will be withdrawn.
 
 Let's see this in action, in [**Remix**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/reentrancy/Reentrancy.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js).
 

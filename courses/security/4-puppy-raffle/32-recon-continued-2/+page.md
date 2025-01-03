@@ -133,7 +133,7 @@ So, let's break this function down to see what it's doing.
 First we see a require statement and already a couple questions come to mind _Hint: there are issues with this line_
 
 ```js
-// @Audit: If there are players, fees can't be withdrawn, does this make withdrawl difficult?
+// @Audit: If there are players, fees can't be withdrawn, does this make withdrawal difficult?
 require(address(this).balance ==
   uint256(totalFees), "PuppyRaffle: There are currently players active!");
 ```

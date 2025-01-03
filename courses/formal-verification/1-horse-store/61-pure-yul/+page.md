@@ -43,7 +43,7 @@ Datacopy, dataoffset and datasize might seem unfamiliar, but these are function 
 
 ::image{src='/formal-verification-1/61-pure-yul/pure-yul1.png' style='width: 100%; height: auto;'}
 
-We can see that in our circunstances the `datacopy` function is being used as equivalent to the `codecopy` op code, and what does `codecopy` do? Well, it's taking the size and offset of our `runtime code` (we haven't written the `runtime` yet!) and returning it to be copied to the blockchain!
+We can see that in our circumstances the `datacopy` function is being used as equivalent to the `codecopy` op code, and what does `codecopy` do? Well, it's taking the size and offset of our `runtime code` (we haven't written the `runtime` yet!) and returning it to be copied to the blockchain!
 
 ```js
 object "HorseStoreYul" {

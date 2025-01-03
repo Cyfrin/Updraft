@@ -100,13 +100,13 @@ Alternatively to this, we have static analysis as a tool available to us. In sta
 function withdraw() external {
     uint256 balance = balances[msg.sender];
     require(balance > 0);
-    (bool successs, ) = msg.sender.call{value:balance}("");
+    (bool success, ) = msg.sender.call{value:balance}("");
     require(success, "Failed to send Ether");
     balances[msg.sender] = 0;
 }
 ```
 
-The above withdraw function has a classic reentrancy attack. We know an issue like this arrises from not following the CEI pattern! A static analysis tool like Slither will be able to pick up on this quite easily.
+The above withdraw function has a classic reentrancy attack. We know an issue like this arises from not following the CEI pattern! A static analysis tool like Slither will be able to pick up on this quite easily.
 
 ::image{src='/foundry-defi/16-defi-leveling-up-testing/defi-leveling-up-testing3.png' style='width: 100%; height: auto;'}
 

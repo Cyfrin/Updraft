@@ -14,7 +14,7 @@ This is an exciting journey to improve our understanding of audits. We'll streng
 
 For out first audit we're immersing ourselves into a scenario where we're auditing the PasswordStore protocol, just like you could if you were working for a firm like Cyfrin. It's a very immersive and experiential way of learning as we'll be adopting the role of a security researcher who has just received an audit request from a protocol.
 
-In later lessons we'll also go through the process of submission findings in a competive scenario like `CodeHawks`
+In later lessons we'll also go through the process of submission findings in a competitive scenario like `CodeHawks`
 
 ::image{src='/security-section-3/1-review/firstaudit1.png' style='width: 100%; height: auto;'}
 

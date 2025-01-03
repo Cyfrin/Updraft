@@ -1,6 +1,6 @@
-## Using an encrypted key in your moccasain script
+## Using an encrypted key in your moccasin script
 
-We've already encrypted a private key in our Mocaasain project and have the following in our `mocassin.toml` file.
+We've already encrypted a private key in our Moccasin project and have the following in our `mocassin.toml` file.
 
 ```toml
 [project]
