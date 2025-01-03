@@ -70,7 +70,7 @@ Let's structure them better this time:
 `slot 1`
 - var5 8 bytes (8 total)
 - user1 20 bytes (28 total)
-- var6 has 8 bytes, it would generate a total of 36 bytes, we have a max of 32 so we start the next slot
+- var6 has 16 bytes, it would generate a total of 44 bytes, we have a max of 32 so we start the next slot
 
 `slot2`
 - var6 16 byes (16 total)
