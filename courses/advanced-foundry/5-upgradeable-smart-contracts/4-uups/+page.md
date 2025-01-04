@@ -86,7 +86,7 @@ contract BoxV2 {
 In order to implement the UUPS functionality, we're going to leverage an OpenZeppelin library. This one is actually different from the OpenZeppelin/Contracts we're used to and is tailored specifically for upgradeability. Let's install this library.
 
 ```bash
-forge install OpenZeppelin/openzeppelin-contracts-upgradeable --no-commit
+forge install OpenZeppelin/openzeppelin-contracts-upgradeable@v4.9.6 --no-commit
 ```
 
 Once installed we can add our remappings to our `foundry.toml`
