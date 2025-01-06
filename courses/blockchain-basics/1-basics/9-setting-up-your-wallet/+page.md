@@ -1,3 +1,0 @@
----
-SETTING UP YOUR WALLET
----

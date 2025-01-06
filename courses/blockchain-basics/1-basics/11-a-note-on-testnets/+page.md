@@ -1,3 +1,0 @@
----
-A NOTE ON TESTNETS
----
