@@ -1,3 +1,0 @@
----
-INCREMENT.SH
----

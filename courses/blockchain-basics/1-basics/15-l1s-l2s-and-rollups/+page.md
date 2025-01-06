@@ -40,7 +40,7 @@ This **fraud proof process** involves the operator engaging in a _call and respo
 
 ### Zero-Knowledge (ZK) Rollups
 
-ZK rollups use validity proofs, known as _zk proofs_, to verify transaction batches. In this process, the **prover** (operator) generates a zk proof to show that their inputs (the transactions) satisfy this equation. A **verifier** (an L1 contract) then checks this proof to ensure that the output matches the expected result. The solution that the prover uses to demonstrate that their input satisfies the mathematical equation in the zk proof is commonly referred as the **witness**.
+ZK rollups use validity proofs, known as _zk proofs_, to verify transaction batches. In this process, the **prover** (operator) generates a zk proof to show that their inputs (the transactions) satisfy this equation. A **verifier** (an L1 contract) then checks this proof to ensure that the output matches the expected result. The solution that the prover uses to demostrate that their input satisfies the mathematical equation in the zk proof is commonly referred as the **witness**.
 
 ### Conclusion
 
