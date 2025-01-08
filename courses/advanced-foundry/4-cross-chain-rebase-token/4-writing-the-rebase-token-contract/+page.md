@@ -1,4 +1,6 @@
-Now that we've explained what we're going to do, let's go ahead and do it. 
+## Writing the Token Code
+
+Now that we've explained what we're going to do, let's go ahead and do it.
 
 So, we need to create a file. We're going to call this `RebaseToken.sol`. And then we're going to do the usual thing:
 
@@ -6,15 +8,15 @@ So, we need to create a file. We're going to call this `RebaseToken.sol`. And th
 // SPDX-License-Identifier: MIT
 ```
 
-Don't think that normally has a space there? Looks funny. I'm going weird every time I. What's going on? 
+Don't think that normally has a space there? Looks funny. I'm going weird every time I. What's going on?
 
 ```javascript
 pragma solidity ^0.8.24;
 ```
 
-I had a weird bug there where it was removing that line every time I clicked save. Weird. 
+I had a weird bug there where it was removing that line every time I clicked save. Weird.
 
-Anyway, then we're going to do our `pragma solidity` 
+Anyway, then we're going to do our `pragma solidity`
 
 ```javascript
 contract RebaseToken is ERC20 {
@@ -27,13 +29,13 @@ like that. Now the next thing I'm going to do is, I'm actually going to install 
 forge install openzeppelin/openzeppelin-contracts
 ```
 
-You know what? We are going to go to the GitHub because we want to do pinned imports. So, at v5.1.0 is the last at v1.0. So if you're doing this at a later date then that is the version that I'm using. And we might need no commit. Yep, we do. 
+You know what? We are going to go to the GitHub because we want to do pinned imports. So, at v5.1.0 is the last at v1.0. So if you're doing this at a later date then that is the version that I'm using. And we might need no commit. Yep, we do.
 
 ```bash
 forge install openzeppelin/openzeppelin-contracts --no-commit
 ```
 
-and that will install OpenZeppelin so that we can use their ERC20 contract. So, we don't have to write all the functionality from scratch. There is going to be some modifications that we're going to need to do there. Amazing. Now we can import. We're going to do named imports because we are good developers. And this is the correct path. Thanks, copilot! So OpenZeppelin at OpenZeppelin/contracts/token/ERC20/ERC20.sol. Now the other thing we need to do is in our foundry.toml we need to add the remapping. Remappings. Every time I do this, I always forget exactly what it needs to look like. I think it's not curly square brackets and then in here I can go at OpenZeppelin slash equals lib slash OpenZeppelin-contracts slash.  Yep, that is the cracked path. So now, hopefully, the squiggly line should go away. But, sometimes it still doesn't. Let's do a little forge build to see if it's actually finding it correctly. And it is! So now, we can inherit from the ERC20 so we can use the keyword is ERC20 and then we need to create the constructor. So, constructor. 
+and that will install OpenZeppelin so that we can use their ERC20 contract. So, we don't have to write all the functionality from scratch. There is going to be some modifications that we're going to need to do there. Amazing. Now we can import. We're going to do named imports because we are good developers. And this is the correct path. Thanks, copilot! So OpenZeppelin at OpenZeppelin/contracts/token/ERC20/ERC20.sol. Now the other thing we need to do is in our `foundry.toml` we need to add the remapping. Remappings. Every time I do this, I always forget exactly what it needs to look like. I think it's not curly square brackets and then in here I can go at OpenZeppelin slash equals lib slash OpenZeppelin-contracts slash.  Yep, that is the cracked path. So now, hopefully, the squiggly line should go away. But, sometimes it still doesn't. Let's do a little `forge build` to see if it's actually finding it correctly. And it is! So now, we can inherit from the ERC20 so we can use the keyword is ERC20 and then we need to create the constructor. So, constructor.
 
 ```javascript
 import "ERC20.sol" from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -52,7 +54,7 @@ constructor() ERC20("Rebase Token", "RBT") {
 }
 ```
 
-initialize the ERC20 constructor and we are going to call. So, the first argument to the constructor the ERC20 constructor is the name. We're going to call it RebaseToken. Then the ticker, we are going to do RBT. Then we need the curly braces for the constructor. And we're not sure what we're going to do in here yet, so we're going to leave it empty for now. Amazing! We have the initial structure of our RebaseToken, we have an ERC20 token imported from OpenZeppelin. The first thing about RebaseToken is that we have that funky balance of function. So, yeah, let's let's put in some of our functions. Actually, you know what? We're not going to do that first. The first thing we're going to do is, we're going to add our natspec comments, so we can do slash star to open the comment and star slash to close it, and then we can do a little star, and then we've got the title, second star is going to be the author. 
+initialize the ERC20 constructor and we are going to call. So, the first argument to the constructor the ERC20 constructor is the name. We're going to call it RebaseToken. Then the ticker, we are going to do RBT. Then we need the curly braces for the constructor. And we're not sure what we're going to do in here yet, so we're going to leave it empty for now. Amazing! We have the initial structure of our RebaseToken, we have an ERC20 token imported from OpenZeppelin. The first thing about RebaseToken is that we have that funky balance of function. So, yeah, let's let's put in some of our functions. Actually, you know what? We're not going to do that first. The first thing we're going to do is, we're going to add our natspec comments, so we can do slash star to open the comment and star slash to close it, and then we can do a little star, and then we've got the title, second star is going to be the author.
 
 ```javascript
 // /nat-contract
@@ -286,32 +288,11 @@ function calculateUserAccumulatedInterestSinceLastUpdate(address user) internal 
     // interest rate 0.5 tokens per second
     // time elapsed is 2 seconds
     // 10 + (10 * 0.5 * 2) = 10 + 10 = 20
-}
-```
-
-10 + (10 * 0.5 * 2) = 10 + 10 = 20.  
-
-```javascript
-/**
- * @notice Calculate the interest that has accumulated since the last update
- * @param user The user to calculate the interest accumulated for
- * @return The interest that has accumulated since the last update
- */
-function calculateUserAccumulatedInterestSinceLastUpdate(address user) internal view returns (uint256) {
-    // we need to calculate the interest that has accumulated since the last update
-    // this is going to be linear growth with time
-    // 1. calculate the time since the last update
-    // 2. calculate the amount of linear growth
-    // (principle amount) + (user interest rate * time elapsed)
-    // deposit: 10 tokens
-    // interest rate 0.5 tokens per second
-    // time elapsed is 2 seconds
-    // 10 + (10 * 0.5 * 2) = 10 + 10 = 20
     uint256 timeElapsed = block.timestamp - s_userLastUpdatedTimestamp[user];
 }
 ```
 
-10 + (10 * 0.5 * 2) = 10 + 10 = 20.  uint256 timeElapsed = block. timestamp - s_userLastUpdatedTimestamp[user].
+10 + (10 * 0.5 * 2) = 10 + 10 = 20.  
 
 ```javascript
 /**
@@ -335,7 +316,7 @@ function calculateUserAccumulatedInterestSinceLastUpdate(address user) internal 
 }
 ```
 
-uint256 timeElapsed = block. timestamp - s_userLastUpdatedTimestamp[user]. And, we're going to call this linearInterest equals.  Now, we need the current time block. timestamp - the last time the user's balance was updated.  The last time that they were minted tokens. How much time has elapsed? How many tokens have accrued since their interest was last minted to them? s underscore user updated last.  User last updated timestamp, for that user. Then, we need to calculate the linear interest which is going to be some multiplier. So, we can actually bring out this principal amount. So, what we can actually do is we can divide out by principal amount and put that on the outside. And then we can * that by one plus one * blah blah blah blah blah, which you can just remove that. This 1 + user interest rate * time elapsed. So, here you can see, we've got the principal amount and then we've got the principal amount * the user interest rate * the time elapsed. Let's turn this into a comment. So, let's do that now. So, we need to first calculate the time elapsed. So, we've got uint256 and we're going to call this time elapsed equals.  Now, we need the current time block. timestamp - the last time the user's balance was updated.  The last time that they were minted tokens. How much time has elapsed? How many tokens have accrued since their interest was last minted to them? s underscore user updated last user last updated timestamp for that user.  Then, we need to calculate the linear interest, which is going to be  
+uint256 timeElapsed = block. timestamp - s_userLastUpdatedTimestamp[user]. And, we're going to call this linearInterest equals.  Now, we need the current time block. timestamp - the last time the user's balance was updated.  The last time that they were minted tokens. How much time has elapsed? How many tokens have accrued since their interest was last minted to them? s underscore user updated last.  User last updated timestamp, for that user.  Then, we need to calculate the linear interest, which is going to be  
 
 ```javascript
 /**
@@ -355,6 +336,7 @@ function calculateUserAccumulatedInterestSinceLastUpdate(address user) internal 
     // 10 + (10 * 0.5 * 2) = 10 + 10 = 20
     uint256 timeElapsed = block.timestamp - s_userLastUpdatedTimestamp[user];
     uint256 linearInterest = (s_userInterestRate[user] * timeElapsed) / PRECISION_FACTOR;
+    return linearInterest;
 }
 ```
 
@@ -388,4 +370,93 @@ function calculateUserAccumulatedInterestSinceLastUpdate(address user) internal 
 }
 ```
 
-uint256 timeElapsed = block. timestamp - s_userLastUpdatedTimestamp[user].  linearInterest equals 1 plus 1 plus.  This is effectively one in 18 decimal precision. Remember if you have one token in 18 decimals that is 1e18. If I have one ether, then in my smart contract that would look like 1e18. So, this represents one, and this is that one here because it * by the principle amount, that's like principle amount plus principal amount * any interest. * the interest rate * the time elapsed. Like we talked about before. So because this interest rate is in 18 decimal precision already, because we're doing this addition, we need to make sure that the units are the same. So, we need to make sure that this number one is in the precision factor. Now because we are doing a multiplication here, we've got precision factor * precision factor. Now, we've got 6 decimal precision, so, we need to divide by the precision factor to get it back to 1e18. Hopefully, that makes sense after the Dfy stable coin projects. But, it is a little bit confusing, so, don't worry if you need to go over this a couple of times. And let me know in the GitHub repository associated with this course, if there's an issue, if you find this confusing, because, if you don't understand it, I'm sure other people don't understand it. So, feel free to ask all your questions in there. So, we have done a lot already. We still need to make some burning functionality for when someone redeems their tokens and also some transferring functionality. But, just to recap what we have done, we have created a rebase token that is an ERC20. So, we have created a constructor that also sets the constructor for the ERC20 contract. We have created a function for the protocol owners to be able to set the interest rate. We haven't actually set at the moment anyone can just come here and here, and set the interest rate. But, we will be fixing that. We have also specified that the interest rate can only decrease. When a user mints their tokens, we check if they need any interest to be minted to them at the moment. And in here, we also set their now last, the last time that we minted is any interest to them. Their last updated timestamp.  Oops, which is up here, the user last updated timestamp. So we can be sure any time elapsed is going to be set, is going to be calculated accurately. We then set the interest rate for that user to be the interest rate in the smart contract at the time that they call mint. And then, we call underscore mint, which is the mint specified in the ERC20 contract in here. Yeah, actually, you
+Calculate the interest that has accumulated since the last update. @param user The user to calculate the interest accumulated for. @return The interest that has accumulated since the last update.  
+
+```javascript
+/**
+ * @notice Calculate the interest that has accumulated since the last update
+ * @param user The user to calculate the interest accumulated for
+ * @return The interest that has accumulated since the last update
+ */
+function calculateUserAccumulatedInterestSinceLastUpdate(address user) internal view returns (uint256) {
+    // we need to calculate the interest that has accumulated since the last update
+    // this is going to be linear growth with time
+    // 1. calculate the time since the last update
+    // 2. calculate the amount of linear growth
+    // (principle amount) + (user interest rate * time elapsed)
+    // deposit: 10 tokens
+    // interest rate 0.5 tokens per second
+    // time elapsed is 2 seconds
+    // 10 + (10 * 0.5 * 2) = 10 + 10 = 20
+    uint256 timeElapsed = block.timestamp - s_userLastUpdatedTimestamp[user];
+    uint256 linearInterest = (s_userInterestRate[user] * timeElapsed) / PRECISION_FACTOR;
+    return linearInterest;
+}
+```
+
+We need to calculate the interest that has accumulated since the last update, this is going to be linear growth with time. 1, calculate the time since the last update.
+
+```javascript
+/**
+ * @notice Calculate the interest that has accumulated since the last update
+ * @param user The user to calculate the interest accumulated for
+ * @return The interest that has accumulated since the last update
+ */
+function calculateUserAccumulatedInterestSinceLastUpdate(address user) internal view returns (uint256) {
+    // we need to calculate the interest that has accumulated since the last update
+    // this is going to be linear growth with time
+    // 1. calculate the time since the last update
+    // 2. calculate the amount of linear growth
+    // (principle amount) + (user interest rate * time elapsed)
+    // deposit: 10 tokens
+    // interest rate 0.5 tokens per second
+    // time elapsed is 2 seconds
+    // 10 + (10 * 0.5 * 2) = 10 + 10 = 20
+    uint256 timeElapsed = block.timestamp - s_userLastUpdatedTimestamp[user];
+    uint256 linearInterest = (s_userInterestRate[user] * timeElapsed) / PRECISION_FACTOR;
+    return linearInterest;
+}
+```
+
+2, calculate the amount of linear growth, principle amount (user interest rate * time elapsed).
+
+```javascript
+/**
+ * @notice Calculate the interest that has accumulated since the last update
+ * @param user The user to calculate the interest accumulated for
+ * @return The interest that has accumulated since the last update
+ */
+function calculateUserAccumulatedInterestSinceLastUpdate(address user) internal view returns (uint256) {
+    // we need to calculate the interest that has accumulated since the last update
+    // this is going to be linear growth with time
+    // 1. calculate the time since the last update
+    // 2. calculate the amount of linear growth
+    // (principle amount) + (user interest rate * time elapsed)
+    // deposit: 10 tokens
+    // interest rate 0.5 tokens per second
+    // time elapsed is 2 seconds
+    // 10 + (10 * 0.5 * 2) = 10 + 10 = 20
+    uint256 timeElapsed = block.timestamp - s_userLastUpdatedTimestamp[user];
+    uint256 linearInterest = (s_userInterestRate[user] * timeElapsed) / PRECISION_FACTOR;
+    return linearInterest;
+}
+```
+
+(Principle amount) + (user interest rate * time elapsed), deposit: 10 tokens.
+
+```javascript
+/**
+ * @notice Calculate the interest that has accumulated since the last update
+ * @param user The user to calculate the interest accumulated for
+ * @return The interest that has accumulated since the last update
+ */
+function calculateUserAccumulatedInterestSinceLastUpdate(address user) internal view returns (uint256) {
+    // we need to calculate the interest that has accumulated since the last update
+    // this is going to be linear growth with time
+    // 1. calculate the time since the last update
+    // 2. calculate the amount of linear growth
+    // (principle amount) + (user interest rate * time elapsed)
+    // deposit: 10 tokens
+    // interest rate 0.5 tokens per second
+    // time elapsed is 2 seconds
+    // 10 + (10 * 0.5 * 2) = 10 +
