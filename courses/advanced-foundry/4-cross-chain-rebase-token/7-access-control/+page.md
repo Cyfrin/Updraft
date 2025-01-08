@@ -1,2 +1,77 @@
-The next thing we need to do is add in some access control and the first thing that we are going to do in order to add some access control is make this contract ownable. So we want to have an owner which is going to be in most cases the smart contracts, the deployer of the smart contract. But this is basically like some kind of a little bit centralized control. I mean it depends what the owner is actually allowed to do, but when you are auditing a smart contract, you often look for ownable and then what can this owner actually do? Like can they do scary things for their users without any permission. But, it is also a useful contract to understand how to use. So we are going to import with named imports ownable from openzeppelin. And the path for this contract is going to be inside of contracts and then access, and then you can see here there is ownable. So then we need to add this as a contract that we are inheriting. We need to call the constructor. So ownable and then we need to pass through to the constructor whoever we want to be the owner. And then when someone calls owner on the smart contract we would return whoever the owner is. So for this smart contract I want it to be the deployer automatically, the deployer is the person who calls the constructor. So I am going to set this to the message sender. Let's just quickly have a look inside of this smart contract. So I am going to command click this.  So you can see here we have this storage variable owner. We then have some errors and events to transfer the ownership. We have the constructor where you pass through the initial owner which cannot be address zero, and then we transfer the ownership to this initial owner that is passed through. We can then use this only owner modifier, which checks whether the message sender is the owner by calling this owner public function, which returns the address of the current owner of the smart contract. We can renounce ownership of ourselves by passing the ownership back to address zero and we can transfer ownership to another owner. So this means that we can make some of our functions only callable by the protocol deployer by the owner of this protocol. And the functions that we wanted to do that were set interest rate. So after our function visibility we can add the modifier only owner. And this means that set interest rate is now only callable by the owner. Only the owner of the protocol can set the interest rate and decrease it. Now in a moment there is another place that we are going to need this only owner function and that is when we are granting roles. So that is the second thing that we now want to talk about. OpenZeppelin have this second access control contract that we can use called, ah-ha, access control. And this allows you to give some addresses roles and then you can give permissions to those certain roles. For instance, I can make a burn and mint role which will mean that anyone with this role will be able to call burn and mint. I will add the modifier has role for my burn and mint role to say you can only call this function if you have this certain role. So if we have a quick look at this smart contract you can see we have this modifier only role, which passes through a role which is a bytes 32 object. For example, you can see here the default admin role. It's a public constant bytes 32, and then you've got some bytes right there. So we need to like create a bytes object to create a role, we then check whether the address has that role. Which checks whether the message sender has that role. We can also independently check whether a specified address has a specific role. We can get the role admin, we can grant roles by passing in the specific role bytes 32 to a specific account. We can revoke roles, we can renounce roles. We can set the role admin, and then hang on, these are all the internal functions that do all of the actions that we just set up above. So obviously that's a little bit of a whistle stop tour. But effectively what we need to do is we need to create a role for minting and burning. We can add this only role modifier to check whether the person has that role, and also we want a way to easily and quickly be able to grant this role to addresses without having to call this grant role. I mean we could do, but then we would have to create this bytes 32 role object every single time and check that it matches and everything like that, like subject to error. So, we want to just create it in a smart contract that we can just call it every single time rather than having to call grant role and construct the object. The bytes 32 role from inside like a script or something like that. We could do that, but I am going to create our own little function just for the fun of it. So first thing we need to do is we need to create our role. So underneath precision factor because it is going to be another constant, we are going to create a bytes 32 private constant and we are going to name this role in capitals of course because it is a constant. Mint and then role because the other functions that we want to add permissions to are minting and burning. And then we can hash this is how you create roles, you do a keccak 256, this is a hash function, and then pass in the string Mint and burn role. So we hash this string to create our bytes 32 variable which is our role and this is just generally how this is done. This is how you create a specific role. So then we are going to create a little function called, I don't know, something like set vault and then set the vault contract. However, we are going to want another smart contract to be able to burn and mint in a second. Maybe I would have to think about what that could be. I'll give you a hint it's to do with the fact that we're making this token work across chain. All will become clear shortly. Now as I said there is a small vulnerability in this smart contract in that the owner can grant these mint and burn permissions to anyone they like. So they could even grant them it to themselves, they are the admin after all because they are the owner. And we could even have used this default admin role and set it to the message sender in the constructor and then used only admin here. But I wanted to show you how to use ownable and access control. So this is the way that I decided to do it. There are other ways as always to implement things slightly differently. This is the design that I personally chose, and so now you know how to do both of those things, which is amazing, we can now grant roles to people by hashing some string, which represents our role. We can then grant those roles to people by passing them through to the grant role internal function. We've also created an external function so that we don't need to create this role from our scripts or our tests or anything like that, and we have made our set interest rate function callable only by the owner, and we have made our mint and burn functions only callable by people with the mint and burn role. Now you also may be thinking here,  "Claire, can't you just pass through into the constructor the vault here and then inside the constructor give them the role and that would seem like an amazing thing to be able to do." Yes, ideally. However, because our vault also needs this token address to be able to call burn and mint on this token and that is passed through into the constructor, then it is a toss-up between whether you want to deploy the token first and then pass that through into the vault constructor or deploy the vault first and then pass that through into the token constructor. The reason I have done it like this will become a little bit clearer but it's because of the cross-chain aspect and we are only going to be having a vault on one chain, the source chain, and this will sound a little bit foreign right now and it will become clearer but essentially we only want people to be able to so deposit ETH and withdraw their ETH, so any rewards that they have accrued or anything from one chain, not all of the chains that we enabled for our token, for. So now that we have done all of this the final thing we want to do before we make our token cross-chain is to write our tests. And you might be thinking here, "Hmm I also probably want to create some scripts and then I can test my scripts in my test file suite" and usually that is exactly what you're going to want to do. However, in this specific instance, our scripts are going to be deploying our token but also making it work across chain, and we have to set some permissions and do some funky things to be able to do that. So, we actually just want to check that this rebase token functionality is working as expected and make sure that we don't catch any bugs and things like that. So we are going to now write our test suite for this rebase token contract and try and get that 100% coverage. P-p-p 
-                            
+## Access Control
+
+We will add some access control in our rebase token contract by using OpenZeppelin's `Ownable` and `AccessControl` contracts. 
+
+First, we will import `Ownable` and `AccessControl`.  
+
+```javascript
+import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol";
+```
+
+Then, we will inherit `Ownable` and `AccessControl` in our contract declaration.
+
+```javascript
+contract RebaseToken is ERC20, Ownable, AccessControl {
+```
+
+Next, we will create a constant byte32 role called `MINT_AND_BURN_ROLE`.
+
+```javascript
+bytes32 private constant MINT_AND_BURN_ROLE = keccak256("MINT_AND_BURN_ROLE");
+```
+
+In the constructor, we will grant the `MINT_AND_BURN_ROLE` to the message sender.
+
+```javascript
+constructor() ERC20("Rebase Token", "RBT") Ownable() AccessControl() {
+  _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+  _grantRole(MINT_AND_BURN_ROLE, msg.sender);
+}
+```
+
+Now, we will create a function called `grantMintAndBurnRole` which will grant the `MINT_AND_BURN_ROLE` to an address.
+
+```javascript
+function grantMintAndBurnRole(address account) external onlyRole(DEFAULT_ADMIN_ROLE) {
+  _grantRole(MINT_AND_BURN_ROLE, account);
+}
+```
+
+We will also add the `onlyRole` modifier to our `mint` and `burn` functions.
+
+```javascript
+function mint(address to, uint256 amount) external onlyRole(MINT_AND_BURN_ROLE) {
+  mintAccruedInterest(to);
+  _mint(to, amount);
+}
+
+function burn(address from, uint256 amount) external onlyRole(MINT_AND_BURN_ROLE) {
+  if (amount == type(uint256).max) {
+    amount = balanceOf(from);
+  }
+  mintAccruedInterest(from);
+  _burn(from, amount);
+}
+```
+
+We will also add the `onlyRole` modifier to our `setInterestRate` function.
+
+```javascript
+function setInterestRate(uint256 newInterestRate) external onlyRole(DEFAULT_ADMIN_ROLE) {
+  if (newInterestRate <= s_interestRate) {
+    revert RebaseToken__InterestRateCanOnlyDecrease(s_interestRate, newInterestRate);
+  }
+  s_interestRate = newInterestRate;
+  emit InterestRateSet(newInterestRate);
+}
+```
+
+We will also create a function called `grantRole` that will grant the specified role to an account.
+
+```javascript
+function grantRole(bytes32 role, address account) public virtual onlyRole(getRoleAdmin(role)) {
+  _grantRole(role, account);
+}
+```
