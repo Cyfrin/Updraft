@@ -1,1 +1,147 @@
-Okay, so now we need to deploy our tokens. Actually, we need to deploy our token, our vault, and our pool on the source chain. And then our token, and our pool, on the destination chain. And then we need to enable everything for CCIP. So let's just have a look at the documentation and let's go to CCIP and then go to Guides cross-chain token standard. And we've got register from an EOA burn and mint and we click on Foundry. So the first thing we need to do is to deploy the tokens. So to do that, we need to first of all store the contract in storage. So we can create a rebased token. We're going to call this sepolia token. And then, we're also going to need an Arbitrum sepolia token. Now we're going to want the owner of the protocol to be deploying this token, so that we have some kind of owner to be able to have the rights to grant the mint and burn roles. And then also, to be the CCIP admin, which we will talk about again in a second. But you'll know from the CCIP cross-chain token standard video that there needs to be an admin. And also, we made the rebased token ownable. So, let's create a little owner which we can store in storage so that we can reuse it.  constant.  This is a mistake, and you actually don't can't have the constant keyword here because it is not a compile-time constant value.  equals makeAddr and pass in the string owner. And then we can use the prank to prank the next line. The cheatcode prank to prank the next line or start prank and stop prank.  to prank a selection. So we are actually going to use vm.startPrank. Because we're going to want them to call multiple things and we are pranking that we are the owner and then I always just add in vm.stopPrank because sometimes, otherwise, I personally forget it. So, it just makes sure that I do that.  And then, we're also going to want to do it again for sepolia. For Arbitrum sepolia. So vm.prank owner. Oops, this needs to be startPrank and then again we've got vm.stopPrank. Let's add a little comment. So number one deploy and configure on sepolia. And then oops ten number two deploy and configure on Arbitrum sepolia. So from here, from before, we used create select fork to make sure that we were actually working on sepolia. So this is all fine, everything will deploy to the sepolia fork here. But, when we are doing it on Arbitrum sepolia, we need to do vm.selectFork. And use the select fork cheatcode, and then pass through the arb sepolia fork to change the thought that we are working on. To make sure that everything inside here deployed to and interacting on Arbitrum sepolia. So the first thing we need to do is to deploy the tokens. So sepolia token equals new rebased token. And then, it doesn't have any constructor arguments because we hardcoded the name and ticker. So then we can create the arb sepolia token. New rebased token. Now we have deployed it on both chains. Now the next thing we need to do is to deploy the vaults. So we can again store that in storage. So we've got vault. I'm going to just call it the contract vault to store the contract in storage so we can reuse it later on. And then vaults equals new vault. And we are only going to have this on sepolia because we are going only enable people to be able to users to be able to deposit and redeem on the source chain. But, let's just check inside vault. It takes an address of the rebased token with the interface I rebased token. So, have we imported our rebased token? Yes, we have. So we can cast our sepolia token to the interface I rebased token. Now this is going to complain at me because you know what I spelled it incorrectly. But if I was to call this it would complain. If we run forge test dash dash match contract cross chain it will still say I have no tasks. But, ah, we're also importing it from the wrong place. It seems. Okay here. We imported I rebased token using copilot. This is definitely not correct. So, this needs to be from dot slash interfaces slash I rebased token, like that. And now let's 
+## Deploy the token test
+
+We will be following the key steps you saw in the previous video:
+
+1. **Deploying tokens**: Once our tokens are deployed, we will deploy `RebasedToken` and `RebasedTokenPool` contracts on Avalanche Fuji and Sepolia testnets. 
+2. **Claiming and Accepting Roles**:  We will claim `mint` and `burn` roles for the token pools, allowing transfers and ensuring proper handling of assets across chains. 
+3. **Linking Tokens to Pools**: We will link the tokens to the pools for the token pools, allowing transfers and ensuring proper handling of assets across chains. 
+
+We will cover the key steps. 
+
+First we need to deploy our tokens on the source chain, in this case sepolia. 
+
+```javascript
+contract CrossChainIsTest is Test {
+
+    address constant owner = makeAddr("owner");
+    uint256 sepoliaFork;
+    uint256 arbSepoliaFork;
+
+    CCIPLocalSimulatorFork ccipLocalSimulatorFork;
+    
+    RebasedToken sepoliaToken;
+    RebasedToken arbSepoliaToken;
+
+    function setup() public {
+        sepoliaFork = vm.createSelectFork("sepolia");
+        arbSepoliaFork = vm.createSelectFork("arb-sepolia");
+        ccipLocalSimulatorFork = new CCIPLocalSimulatorFork();
+        vm.makePersistent(address(ccipLocalSimulatorFork));
+
+        // 1. Deploy and configure on Sepolia
+        vm.startPrank(owner);
+        sepoliaToken = new RebasedToken();
+        vm.stopPrank();
+
+        // 2. Deploy and configure on Arbitrum Sepolia
+        vm.selectFork(arbSepoliaFork);
+        vm.startPrank(owner);
+        arbSepoliaToken = new RebasedToken();
+        vm.stopPrank();
+    }
+}
+```
+
+Now, we can deploy our tokens on the destination chain, in this case, Arbitrum Sepolia. 
+
+Now, we need to deploy our vaults. 
+
+```javascript
+contract Vault {
+    IRebasedToken private immutable _rebaseToken;
+
+    event Deposit(address indexed user, uint256 amount);
+    event Redeem(address indexed user, uint256 amount);
+
+    error Vault_RedeemFailed();
+
+    constructor(IRebasedToken rebaseToken) {
+        _rebaseToken = rebaseToken;
+    }
+
+    receive() external payable {}
+
+    /// @notice Allows users to deposit ETH into the vault and mint rebase tokens in return
+    function deposit() external payable {
+        // we need to use the amount of ETH the user has sent to mint tokens to the user 
+        uint256 interestRate = _rebaseToken.getInterestRate();
+        _rebaseToken.mint(msg.sender, msg.value, interestRate);
+
+        emit Deposit(msg.sender, msg.value);
+    }
+
+    /// @param amount The amount of rebase tokens to redeem for ETH
+    /// @notice Allows users to redeem their rebase tokens for ETH
+    function redeem(uint256 amount) external {
+        if (_rebaseToken.balanceOf(msg.sender) < amount) {
+            revert Vault_RedeemFailed();
+        }
+        _rebaseToken.burn(msg.sender, amount);
+
+        (bool success, ) = msg.sender.call{ value: amount }('');
+        require(success, "Vault_RedeemFailed");
+
+        emit Redeem(msg.sender, amount);
+    }
+}
+```
+
+We will only be deploying the vault on sepolia, as this is where users will be able to deposit and redeem. 
+
+We can now deploy our pools on the destination chain, in this case, Arbitrum Sepolia. 
+
+```javascript
+contract RebasedTokenPool is TokenPool {
+    constructor(IERC20 token, address memory allowList, address memory rmProxy, address router) 
+    TokenPool(token, allowList, rmProxy, router) {}
+}
+```
+
+The next step we need to cover is claiming and accepting roles. We will need to claim the mint and burn roles for both of our token pools.  
+
+```javascript
+contract CrossChainIsTest is Test {
+    // ...
+    function setup() public {
+        // ...
+
+        // 1. Deploy and configure on Sepolia
+        vm.startPrank(owner);
+        sepoliaToken = new RebasedToken();
+        vault = new Vault(sepoliaToken);
+        vm.stopPrank();
+
+        // 2. Deploy and configure on Arbitrum Sepolia
+        vm.selectFork(arbSepoliaFork);
+        vm.startPrank(owner);
+        arbSepoliaToken = new RebasedToken();
+        vm.stopPrank();
+    }
+}
+```
+
+The final step we need to cover is linking tokens to pools. We will do this in the following manner.  
+
+```javascript
+contract CrossChainIsTest is Test {
+    // ...
+    function setup() public {
+        // ...
+
+        // 1. Deploy and configure on Sepolia
+        vm.startPrank(owner);
+        sepoliaToken = new RebasedToken();
+        vault = new Vault(sepoliaToken);
+        vm.stopPrank();
+
+        // 2. Deploy and configure on Arbitrum Sepolia
+        vm.selectFork(arbSepoliaFork);
+        vm.startPrank(owner);
+        arbSepoliaToken = new RebasedToken();
+        vm.stopPrank();
+    }
+}
+```
+
+We will cover the final step of linking the tokens to the pools in the next video. 
+
