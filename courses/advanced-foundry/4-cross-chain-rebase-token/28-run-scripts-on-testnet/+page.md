@@ -1,0 +1,3 @@
+---
+RUN SCRIPTS ON TESTNET
+---
