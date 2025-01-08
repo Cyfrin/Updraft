@@ -152,6 +152,4 @@ Now we can add the code to link the tokens to the pools using the `Pool` contrac
 
 **Configuring Token Pools**
 
-We need to configure the token pools by calling the `applyChainUpdates` method.
-
-We will cover this step in the next lesson.
+We will cover this step in the next lesson. 
