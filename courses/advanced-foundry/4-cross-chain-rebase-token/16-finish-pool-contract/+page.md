@@ -1,4 +1,4 @@
-### Finishing the Pool Contract
+## Finishing the Pool Contract
 
 We now have a rebase token pool created, so let's build it. We can run the following terminal command:
 
