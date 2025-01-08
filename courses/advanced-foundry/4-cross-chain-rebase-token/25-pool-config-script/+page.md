@@ -31,7 +31,7 @@ import "forge-std/Script.sol";
 import "cc/contracts/src/v0.8/cc/pools/TokenPool.sol";
 
 contract ConfigurePoolScript is Script {
-    function run(address localPool, uint64 remoteChainSelector, address remotePool, address remoteToken, 
+    function run(address localPool, 
 }
 ```
 
@@ -42,7 +42,7 @@ import "forge-std/Script.sol";
 import "cc/contracts/src/v0.8/cc/pools/TokenPool.sol";
 
 contract ConfigurePoolScript is Script {
-    function run(address localPool, uint64 remoteChainSelector, address remotePool, address remoteToken, 
+    function run(address localPool, uint64 remoteChainSelector, 
 }
 ```
 
@@ -53,7 +53,7 @@ import "forge-std/Script.sol";
 import "cc/contracts/src/v0.8/cc/pools/TokenPool.sol";
 
 contract ConfigurePoolScript is Script {
-    function run(address localPool, uint64 remoteChainSelector, address remotePool, address remoteToken, 
+    function run(address localPool, uint64 remoteChainSelector, address remotePool, 
 }
 ```
 
@@ -73,6 +73,7 @@ We're going to hardcode some parameters like the rate limiting, because you coul
 ```javascript
 import "forge-std/Script.sol";
 import "cc/contracts/src/v0.8/cc/pools/TokenPool.sol";
+import "cc/contracts/src/v0.8/cc/libraries/RateLimiter.sol";
 
 contract ConfigurePoolScript is Script {
     function run(address localPool, uint64 remoteChainSelector, address remotePool, address remoteToken, bool outboundRateLimiterIsEnabled, 
@@ -83,6 +84,8 @@ You know what, actually let's make this a little bit less hardcoding. We are goi
 
 ```javascript
 import "forge-std/Script.sol";
+import "cc/contracts/src/v0.8/cc/pools/TokenPool.sol";
+import "cc/contracts/src/v0.8/cc/libraries/RateLimiter.sol";
 
 contract ConfigurePoolScript is Script {
     function run(address localPool, uint64 remoteChainSelector, address remotePool, address remoteToken, bool outboundRateLimiterIsEnabled, 
@@ -93,6 +96,8 @@ Amazing, so now we start the broadcast.
 
 ```javascript
 import "forge-std/Script.sol";
+import "cc/contracts/src/v0.8/cc/pools/TokenPool.sol";
+import "cc/contracts/src/v0.8/cc/libraries/RateLimiter.sol";
 
 contract ConfigurePoolScript is Script {
     function run(address localPool, uint64 remoteChainSelector, address remotePool, address remoteToken, bool outboundRateLimiterIsEnabled, uint128 outboundRateLimiterCapacity, 
@@ -100,29 +105,6 @@ contract ConfigurePoolScript is Script {
 ```
 
 We need to create our chain update object. So that is defined in token pool, remember. .chain update. It's going to be an array.
-
-```javascript
-import "forge-std/Script.sol";
-import "cc/contracts/src/v0.8/cc/pools/TokenPool.sol";
-
-contract ConfigurePoolScript is Script {
-    function run(address localPool, uint64 remoteChainSelector, address remotePool, address remoteToken, bool outboundRateLimiterIsEnabled, uint128 outboundRateLimiterCapacity, uint128 outboundRateLimiterRate, 
-}
-```
-
-So, now we need to import token pool from cc/p/contract- src/v0.8/cc/p/pools/token pool, that is the correct path. So, now we need to add chains to add, same as before, equals new token pool.chain update struct in an array with one element.
-
-```javascript
-import "forge-std/Script.sol";
-import "cc/contracts/src/v0.8/cc/pools/TokenPool.sol";
-import "cc/contracts/src/v0.8/cc/libraries/RateLimiter.sol";
-
-contract ConfigurePoolScript is Script {
-    function run(address localPool, uint64 remoteChainSelector, address remotePool, address remoteToken, bool outboundRateLimiterIsEnabled, uint128 outboundRateLimiterCapacity, uint128 outboundRateLimiterRate, 
-}
-```
-
-So, now we need to import token pool from cc/p/contract- src/v0.8/cc/p/pools/token pool, that is the correct path. So, now we need to add chains to add, same as before, equals new token pool.chain update struct in an array with one element.
 
 ```javascript
 import "forge-std/Script.sol";
@@ -233,9 +215,10 @@ contract ConfigurePoolScript is Script {
             updates[0] = TokenPool.ChainUpdate({
                 chainSelector: remoteChainSelector, 
                 remotePoolAddresses: remotePoolAddresses,
-                remoteTokenAddresses: remoteTokenAddresses,
+                remoteTokenAddresses: abi.encode(remoteToken),
                 outboundRateLimiter: RateLimiter.Config({
                     isEnabled: outboundRateLimiterIsEnabled,
+                    capacity: outboundRateLimiterCapacity,
 }
 ```
 
@@ -260,6 +243,7 @@ contract ConfigurePoolScript is Script {
                 outboundRateLimiter: RateLimiter.Config({
                     isEnabled: outboundRateLimiterIsEnabled,
                     capacity: outboundRateLimiterCapacity,
+                    rate: outboundRateLimiterRate,
 }
 ```
 
