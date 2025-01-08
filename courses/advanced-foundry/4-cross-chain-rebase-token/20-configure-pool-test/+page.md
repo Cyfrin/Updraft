@@ -1,0 +1,3 @@
+---
+CONFIGURE POOL TEST
+---
