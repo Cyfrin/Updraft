@@ -1,3 +1,5 @@
+## Finish the Token Contract 
+
 We're going to take a look at our openzeppelin ERC20 contract, just to check that there's nothing that we want to override or change. 
 
 We've got the function name which obviously just returns the name of the token, the symbol, the number of decimals which by default is 18. You could override this if you want a different number of decimals, like USDC has six. The total supply. Now, in order to get an accurate total supply of tokens that have been minted, also but also any interest that is owed to users, then we would need to loop through every single user in the protocol, calculate their balance, which would then account for any interest that they are owed, and then update this total supply. We could override that function and do that. However, we could get some kind of DOS if like, denial of service, if the array of users becomes extremely long, therefore we have to loop through a lot of them and ca do this calculation for a lot of people. So, we are actually going to leave this total supply as is, and just accept that if you call total supply, this is going to be any minted tokens, not including any interest that is owed, so it's not going to be 100% accurate, but that is just a known floor of this protocol. 
@@ -25,24 +27,14 @@ if (balanceOf(recipient) == 0) {
 ```
 balance of the recipient is zero then we don't want to do that. Sorry. Then, we want to set the user interest rate for the recipient to be equal to the interest rate of the sender. So, if they have not yet deposited into the protocol, or received any tokens previously, then we inherit their interest rate. So, one interesting thing to think of here is the fact that if I use one wallet to deposit into the vault, and then I use another wallet to deposit into the vault at a later rate, my first wallet is going to have a higher interest rate than my second wallet. If I then send my tokens from the first wallet to the second wallet, so they're all in one wallet, then the interest rate of my entire allocation of rebased tokens is going to be at the lower interest rate. And, this is fine. That is just the way that the protocol has been designed. So, if we were writing a nice little readme, we would add into the readme this as a known, not issue necessarily but a known sort of feature of the protocol. 
 
-Additionally, that means that there's another bug here, which means that if I was to deposit using one wallet, and then to deposit using a second wallet at a later date, and then I sent those tokens from the second wallet to the first wallet, all of the tokens in my wallet would be using that initial first higher interest rate which kind of goes against the reason why, you know, if they deposit at a later date, we want to make sure that their interest rate is updating to the lower value. However, as I said, in the readme for this smart contract, we can add that as a known bug, because it's not really a bug in the sense of you can't force someone else to have a higher interest rate, or like force them to have a lower interest rate, it's more it doesn't as much incentivize people to deposit a large amount early, because they could just use one account to deposit a small amount early and then another account to deposit a large amount later, and then you send the tokens from that second wallet to the first wallet and keep your higher interest rate. One thing we could do instead is just ignore the fact that we might be sending our tokens from one wallet to another, and just set this user interest rate of the recipient to the current interest rate in the smart contract, and just say to the users, "look, if you want to transfer your tokens from one wallet to another, you are going to overwrite your current interest rate to whatever is in the smart contract, and it just sort of incentivizes people to do that as quickly as they possibly can" after they deposit into the protocol, and you can kind of weigh up which of the solutions you think is best which of the, there's sort of pros and minuses to both, because as with smart contract development, there is sometimes no perfect answer, there are trade-offs to every protocol design. So, there are different ways that you could design to do this, this is the way that we are choosing to do it. 
-
-And then, finally, it returns the return value from transfer for, from that is called on the inheriting smart contract ERC20 from openzeppelin. Let's finally add that tiny bit of natspec. So, notice transfer tokens from one user to another, param the sender, the user to transfer the tokens from, param recipient, the user to transfer the tokens to, param amount, the amount of tokens to transfer, return true if the transfer was successful. 
-
-Now, finally we need to add our transferFrom. So, we've got a function called transferFrom, and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override, returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
-```javascript
-if (amount == type(uint256).max) {
-  amount = balanceof(sender);
-}
-```
-the maximum value of uint256. If it is, then send their entire balance. If the recipient does not yet have a deposit, they do not have any tokens, then set their interest rate to the interest rate of the sender. As I'm writing this I'm just having a think about that previous problem that we talked about where if you deposit into one wallet, initially, a very small amount, and then at a later date, deposit a large amount into another wallet, and then you send the tokens from that second wallet to the first wallet and keep your higher interest rate. One thing we could do instead is just ignore the fact that we might be sending our tokens from one wallet to another, and just set this user interest rate of the recipient to the current interest rate in the smart contract. 
+Additionally, that means that there's another bug here, which means that if I was to deposit using one wallet, and then to deposit using a second wallet at a later date, and then I sent those tokens from the second wallet to the first wallet, all of the tokens in my wallet would be using that initial first higher interest rate which kind of goes against the reason why, you know, if they deposit at a later date, we want to make sure that their interest rate is updating to the lower value. However, as I said, in the readme for this smart contract, we can add that as a known bug, because it's not really a bug in the sense of you can't force someone else to have a higher interest rate, or like force them to have a lower interest rate, it's more it doesn't as much incentivize people to deposit a large amount early, because they could just use one account to deposit a small amount early and then another account to deposit a large amount later, and then you send the tokens from that second wallet to the first wallet and keep your higher interest rate. One thing we could do instead is just ignore the fact that we might be sending our tokens from one wallet to another, and just set this user interest rate of the recipient to the current interest rate in the smart contract. 
 
 ```javascript
 return super.transferFrom(sender, recipient, amount);
 ```
 And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
 
-Now, finally we need to add our transferFrom. So, we've got a function called transferFrom and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override, returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
+Now, finally, we need to add our transferFrom. So, we've got a function called transferFrom, and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again.  This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
 ```javascript
 if (amount == type(uint256).max) {
   amount = balanceof(sender);
@@ -55,7 +47,7 @@ return super.transferFrom(sender, recipient, amount);
 ```
 And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
 
-Now, finally we need to add our transferFrom. So, we've got a function called transferFrom and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override, returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
+Now, finally, we need to add our transferFrom. So, we've got a function called transferFrom, and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again.  This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
 ```javascript
 if (amount == type(uint256).max) {
   amount = balanceof(sender);
@@ -68,7 +60,7 @@ return super.transferFrom(sender, recipient, amount);
 ```
 And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
 
-Now, finally we need to add our transferFrom. So, we've got a function called transferFrom and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override, returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
+Now, finally, we need to add our transferFrom. So, we've got a function called transferFrom, and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again.  This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
 ```javascript
 if (amount == type(uint256).max) {
   amount = balanceof(sender);
@@ -81,7 +73,7 @@ return super.transferFrom(sender, recipient, amount);
 ```
 And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
 
-Now, finally we need to add our transferFrom. So, we've got a function called transferFrom and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override, returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
+Now, finally we need to add our transferFrom. So, we've got a function called transferFrom and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
 ```javascript
 if (amount == type(uint256).max) {
   amount = balanceof(sender);
@@ -94,20 +86,7 @@ return super.transferFrom(sender, recipient, amount);
 ```
 And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
 
-Now, finally we need to add our transferFrom. So, we've got a function called transferFrom and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override, returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
-```javascript
-if (amount == type(uint256).max) {
-  amount = balanceof(sender);
-}
-```
-the maximum value of uint256. If it is, then send their entire balance. If the recipient does not yet have a deposit, they do not have any tokens, then set their interest rate to the interest rate of the sender. 
-
-```javascript
-return super.transferFrom(sender, recipient, amount);
-```
-And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
-
-Now, finally we need to add our transferFrom. So, we've got a function called transferFrom and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override, returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
+Now, finally we need to add our transferFrom. So, we've got a function called transferFrom and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
 ```javascript
 if (amount == type(uint256).max) {
   amount = balanceof(sender);
@@ -159,33 +138,7 @@ return super.transferFrom(sender, recipient, amount);
 ```
 And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
 
-Now, finally we need to add our transferFrom. So, we've got a function called transferFrom and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
-```javascript
-if (amount == type(uint256).max) {
-  amount = balanceof(sender);
-}
-```
-the maximum value of uint256. If it is, then send their entire balance. If the recipient does not yet have a deposit, they do not have any tokens, then set their interest rate to the interest rate of the sender. 
-
-```javascript
-return super.transferFrom(sender, recipient, amount);
-```
-And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
-
-Now, finally we need to add our transferFrom. So, we've got a function called transferFrom and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
-```javascript
-if (amount == type(uint256).max) {
-  amount = balanceof(sender);
-}
-```
-the maximum value of uint256. If it is, then send their entire balance. If the recipient does not yet have a deposit, they do not have any tokens, then set their interest rate to the interest rate of the sender. 
-
-```javascript
-return super.transferFrom(sender, recipient, amount);
-```
-And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
-
-Now, finally we need to add our transferFrom. So, we've got a function called transferFrom and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
+Now, finally, we need to add our transferFrom. So, we've got a function called transferFrom, and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
 ```javascript
 if (amount == type(uint256).max) {
   amount = balanceof(sender);
@@ -224,6 +177,32 @@ return super.transferFrom(sender, recipient, amount);
 ```
 And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
 
+Now, finally, we need to add our transferFrom. So, we've got a function called transferFrom, and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again.  This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
+```javascript
+if (amount == type(uint256).max) {
+  amount = balanceof(sender);
+}
+```
+the maximum value of uint256. If it is, then send their entire balance. If the recipient does not yet have a deposit, they do not have any tokens, then set their interest rate to the interest rate of the sender. 
+
+```javascript
+return super.transferFrom(sender, recipient, amount);
+```
+And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
+
+Now, finally, we need to add our transferFrom. So, we've got a function called transferFrom, and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again.  This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
+```javascript
+if (amount == type(uint256).max) {
+  amount = balanceof(sender);
+}
+```
+the maximum value of uint256. If it is, then send their entire balance. If the recipient does not yet have a deposit, they do not have any tokens, then set their interest rate to the interest rate of the sender. 
+
+```javascript
+return super.transferFrom(sender, recipient, amount);
+```
+And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
+
 Now, finally, we need to add our transferFrom. So, we've got a function called transferFrom, and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
 ```javascript
 if (amount == type(uint256).max) {
@@ -237,4 +216,41 @@ return super.transferFrom(sender, recipient, amount);
 ```
 And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
 
-Now, finally, we need to add our transferFrom. So, we've got a function called transferFrom, and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again.  This is also going to be
+Now, finally, we need to add our transferFrom. So, we've got a function called transferFrom, and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again.  This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
+```javascript
+if (amount == type(uint256).max) {
+  amount = balanceof(sender);
+}
+```
+the maximum value of uint256. If it is, then send their entire balance. If the recipient does not yet have a deposit, they do not have any tokens, then set their interest rate to the interest rate of the sender. 
+
+```javascript
+return super.transferFrom(sender, recipient, amount);
+```
+And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
+
+Now, finally, we need to add our transferFrom. So, we've got a function called transferFrom, and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again. This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
+```javascript
+if (amount == type(uint256).max) {
+  amount = balanceof(sender);
+}
+```
+the maximum value of uint256. If it is, then send their entire balance. If the recipient does not yet have a deposit, they do not have any tokens, then set their interest rate to the interest rate of the sender. 
+
+```javascript
+return super.transferFrom(sender, recipient, amount);
+```
+And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the recipient, the amount of tokens. This will call the transfer function on the smart contract that we are inheriting and transfer here does return, so, it'll return true if this doesn't revert. So, there we have it. We now have our transfer function. Let's just add in a little bit of quick natspec, add notice transfer tokens from one user to another. Param, the recipient, the user to transfer the tokens to, the amount of tokens to transfer, returns true if the transfer was successful. 
+
+Now, finally, we need to add our transferFrom. So, we've got a function called transferFrom, and this is going to work very similarly. So, we should be able to go do this pretty quick. We've got an address which is the sender. We have another address which is the recipient, and then we have the uint256 amount again.  This is also going to be public override returns, and then we want to do exactly the same thing. So, we want to mint the accrued interest for the sender, mint the accrued interest for the recipient, we want to check if the amount is 
+```javascript
+if (amount == type(uint256).max) {
+  amount = balanceof(sender);
+}
+```
+the maximum value of uint256. If it is, then send their entire balance. If the recipient does not yet have a deposit, they do not have any tokens, then set their interest rate to the interest rate of the sender. 
+
+```javascript
+return super.transferFrom(sender, recipient, amount);
+```
+And then, the final thing that we need to do is we actually need to transfer the tokens, so, we can do return super.transfer, to the
