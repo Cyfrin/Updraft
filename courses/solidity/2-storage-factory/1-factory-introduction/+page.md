@@ -15,7 +15,7 @@ You can find the code for this section in the [Remix Storage Factory Github repo
 ### Section overview
 
 ```solidity
-contract SimpleStorage {
+contract StorageFactory {
     SimpleStorage[] public listOfSimpleStorageContracts;
 
     function createSimpleStorageContract() public {};
