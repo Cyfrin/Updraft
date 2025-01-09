@@ -18,7 +18,7 @@ Clearly, we need an actual testnet for a real network. But our trusty MetaMask h
 
 _To create one, we could run our own blockchain node, but let's be honest — many folks prefer avoiding that route. Instead, we utilize Node as a Service (NaaS) applications to expedite the process._
 
-One promising option is using Alchemy - a free NaaS platform that we can send the transactions to. This procedure resides within the _Deploying to Testnet or Mainnnet_ section in the full course repo of the Foundry.
+One promising option is using Alchemy - a free NaaS platform that we can send the transactions to. This procedure resides within the _Deploying to Testnet or Mainnet_ section in the full course repo of the Foundry.
 
 ::image{src='/foundry/19-testnet-deploy/testnet1.png' style='width: 100%; height: auto;'}
 

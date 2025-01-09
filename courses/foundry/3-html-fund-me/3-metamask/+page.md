@@ -112,7 +112,7 @@ As before, we're checking for the existence of `window.ethereum` and then .. def
 
 ### RPC URLs and Providers
 
-`ethers` is a javascript package that simplifies the use and interacation of browser wallets with our code.
+`ethers` is a javascript package that simplifies the use and interaction of browser wallets with our code.
 
 What `ethers.BrowserProvider(window.ethereum)` is doing, is deriving the providers MetaMask is injecting into our `window.ethereum` object. The providers are the RPC URLs associated with the networks in our MetaMask account.
 
