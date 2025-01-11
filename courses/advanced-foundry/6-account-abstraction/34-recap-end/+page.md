@@ -15,11 +15,11 @@
 - We added an `execute` function to execute commands.
 - We also made some great scripts and tests.
 
-### On zkSync
+### On ZKsync
 
 - Account Abstraction is natively built in. 
 - There aren't any alt-mempools.
-- zkSync has specific transaction types, ours is 113.
+- ZKsync has specific transaction types, ours is 113.
 - There are two phases for transactions
   - validation and execution
 - A lot is handled by their system contracts.

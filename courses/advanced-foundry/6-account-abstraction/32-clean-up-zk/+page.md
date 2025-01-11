@@ -1,6 +1,6 @@
-## Account Abstraction Lesson 32: Clean Up zkSync
+## Account Abstraction Lesson 32: Clean Up ZKsync
 
-Congratulations! You've just built a **zkSync Minimal Account Abstraction**. 
+Congratulations! You've just built a **ZKsync Minimal Account Abstraction**. 
 
 [There are some updates in the code base on the GitHub repo for this course. If you want to check it out and update your code with some of those changes, you can find it here.](https://github.com/Cyfrin/minimal-account-abstraction/tree/main)
 

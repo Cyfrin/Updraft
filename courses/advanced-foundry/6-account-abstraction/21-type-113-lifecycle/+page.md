@@ -1,6 +1,6 @@
 ## Account Abstraction Lesson 21: Type 113 Lifecycle
 
-In the previous lesson we talked about the two phases of sending a transaction on zkSync, aka **Type 113 Lifecycle**, validation and execution. We specifically honed in on the `ContractDeployer`. In this lesson, we are going to:
+In the previous lesson we talked about the two phases of sending a transaction on ZKsync, aka **Type 113 Lifecycle**, validation and execution. We specifically honed in on the `ContractDeployer`. In this lesson, we are going to:
 
 - review the remaining steps in the lifecycle.
 - get a better understanding of the bootloader and it's role
@@ -12,16 +12,16 @@ Let's go ahead and review this now.
 
 **Phase 1: Validation**
 
-1. The user sends the transaction to the "zkSync API client" (sort of a "light node").
-2. The zkSync API client checks to see that the nonce is unique by querying the `NonceHolder` system contract.
-3. The zkSync API client calls `validateTransaction`, which MUST update the nonce.
-4. The zkSync API client checks the nonce is updated.
-5. The zkSync API client calls `payForTransaction`, or `prepareForPaymaster` & `validateAndPayForPaymasterTransaction`.
-6. The zkSync API client verifies that the bootloader gets paid.
+1. The user sends the transaction to the "ZKsync API client" (sort of a "light node").
+2. The ZKsync API client checks to see that the nonce is unique by querying the `NonceHolder` system contract.
+3. The ZKsync API client calls `validateTransaction`, which MUST update the nonce.
+4. The ZKsync API client checks the nonce is updated.
+5. The ZKsync API client calls `payForTransaction`, or `prepareForPaymaster` & `validateAndPayForPaymasterTransaction`.
+6. The ZKsync API client verifies that the bootloader gets paid.
 
 **Phase 2: Execution**
 
-1. The zkSync API client passes the validated transaction to the main node / sequencer (as of today, they are the same).
+1. The ZKsync API client passes the validated transaction to the main node / sequencer (as of today, they are the same).
 2. The main node calls `executeTransaction`.
 3. If a paymaster was used, the `postTransaction` is called.
 
@@ -31,9 +31,9 @@ Let's go ahead and review this now.
 
 Let's take a closer look at step 2 in the validation phase. We can see that another system contract is mentioned - `NonceHolder.sol`.
 
-- The zkSync API client checks to see that the nonce is unique by querying the `NonceHolder` system contract.
+- The ZKsync API client checks to see that the nonce is unique by querying the `NonceHolder` system contract.
 
-If you go into the [`NonceHolder` contract](https://github.com/Cyfrin/foundry-era-contracts/blob/3f99de4a37b126c5cb0466067f37be0c932167b2/src/system-contracts/contracts/NonceHolder.sol) you will see that it contains a lot of mappings. Here we will be able to see the nonce of all the contracts in zkSync.
+If you go into the [`NonceHolder` contract](https://github.com/Cyfrin/foundry-era-contracts/blob/3f99de4a37b126c5cb0466067f37be0c932167b2/src/system-contracts/contracts/NonceHolder.sol) you will see that it contains a lot of mappings. Here we will be able to see the nonce of all the contracts in ZKsync.
 
 ---
 
@@ -61,7 +61,7 @@ This raises a very important question. Who is the `msg.sender` when `validateTra
 
 ### Phase 1 Steps 4-6: Check if the Nonce is Updated & Bootloader is Paid
 
-Essentially, if `validateTransaction` does not update the nonce, the entire transaction will revert. If the nonce is updated, then it's time to pay for the transaction. zkSync will call either `payForTransaction` or `prepareForPaymaster` and `validateAndPayForPaymasterTransaction`. Once this happens, zkSync verifies that the bootloader gets paid. If all of these steps are successful, the validation phase of our TxType 113 lifecycle is complete.
+Essentially, if `validateTransaction` does not update the nonce, the entire transaction will revert. If the nonce is updated, then it's time to pay for the transaction. ZKsync will call either `payForTransaction` or `prepareForPaymaster` and `validateAndPayForPaymasterTransaction`. Once this happens, ZKsync verifies that the bootloader gets paid. If all of these steps are successful, the validation phase of our TxType 113 lifecycle is complete.
 
 ---
 
@@ -86,7 +86,7 @@ This is essentially what will happen in our transaction lifecycle through the va
 
 ---
 
-<summary>1. What is the role of the NonceHolder system contract in zkSync?</summary>
+<summary>1. What is the role of the NonceHolder system contract in ZKsync?</summary>
 
 ---
 
@@ -94,12 +94,12 @@ This is essentially what will happen in our transaction lifecycle through the va
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
-    It is responsible for managing nonces in zkSync. It ensures that each transaction has a unique nonce, which is crucial for transaction validation and preventing replay attacks.
+    It is responsible for managing nonces in ZKsync. It ensures that each transaction has a unique nonce, which is crucial for transaction validation and preventing replay attacks.
 
 </details>
 
 
-<summary>2.  Who is the msg.sender when validateTransaction is called in zkSync?</summary>
+<summary>2.  Who is the msg.sender when validateTransaction is called in ZKsync?</summary>
 
 ---
 
@@ -107,7 +107,7 @@ This is essentially what will happen in our transaction lifecycle through the va
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
-    The msg.sender when validateTransaction is called in zkSync is always the bootloader system contract. The bootloader acts as a super-admin of the system contracts, similar to the EntryPoint on Ethereum.
+    The msg.sender when validateTransaction is called in ZKsync is always the bootloader system contract. The bootloader acts as a super-admin of the system contracts, similar to the EntryPoint on Ethereum.
 
 </details>
 
@@ -125,7 +125,7 @@ This is essentially what will happen in our transaction lifecycle through the va
 </details>
 
 
-<summary>4.  What is the role of the bootloader in zkSync?</summary>
+<summary>4.  What is the role of the bootloader in ZKsync?</summary>
 
 ---
 

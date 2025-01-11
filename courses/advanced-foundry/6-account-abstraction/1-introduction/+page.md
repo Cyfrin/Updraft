@@ -6,7 +6,7 @@ Account abstraction is a fundamental concept of blockchain technology. It offers
 
 - The basic concept of account abstraction and its importance.
 - How account abstraction solves common problems related to private key management and transaction validation.
-- The two main implementations of account abstraction in Ethereum (`EntryPoint.sol`) and zkSync.
+- The two main implementations of account abstraction in Ethereum (`EntryPoint.sol`) and ZKsync.
 - The role of alt mempools in handling user operations and transactions.
 - Optional components like the Signature Aggregator and Paymaster in Ethereum's `EntryPoint.sol` contract.
 
@@ -26,7 +26,7 @@ Another challenge is that traditional transactions are validated by the sender's
 
 ::image{src='/foundry-account-abstraction/1-introduction/trade-eth-trans.png' style='width: 100%; height: auto;'}
 
-The traditional Ethereum transactions consists of first the signing of the transaction by the sender's private key, and then sending it to an Ethereum node. The node verifies that the signature is valid and if so, adds it to its mempool for later inclusion in a block. Account Absctraction, as we have already mentioned add improvemnts to this process. There are two entry points that we need to understand - Ethereum's `EntryPoint.sol` and zkSync's native integration.
+The traditional Ethereum transactions consists of first the signing of the transaction by the sender's private key, and then sending it to an Ethereum node. The node verifies that the signature is valid and if so, adds it to its mempool for later inclusion in a block. Account Abstraction, as we have already mentioned add improvements to this process. There are two entry points that we need to understand - Ethereum's `EntryPoint.sol` and ZKsync's native integration.
 
 ### Ethereum – EntryPoint.sol
 Ethereum implements account abstraction using a smart contract called `EntryPoint.sol`. This contract acts as a gateway for handling user operations and transactions in a more flexible manner.
@@ -34,8 +34,8 @@ Ethereum implements account abstraction using a smart contract called `EntryPoin
 If you're interested, you can checkout the code here: [EntryPoint.sol on GitHub](https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/core/EntryPoint.sol)
 
 
-### zkSync – Natively Integrated
-zkSync, on the other hand, has account abstraction natively integrated into its codebase. This allows for seamless handling of transactions and operations without the need for additional contracts.
+### ZKsync – Natively Integrated
+ZKsync, on the other hand, has account abstraction natively integrated into its codebase. This allows for seamless handling of transactions and operations without the need for additional contracts.
 
 ## Account Abstraction Uses Alt-Mempools
 
@@ -56,14 +56,14 @@ An optional add-on to the EntryPoint.sol contract is the signature aggregator. T
 #### Paymaster
 Another optional component is the pay master. It handles gas payments, allowing users to pay for transactions in various ways, not limited to the native cryptocurrency.
 
-## zkSync
+## ZKsync
 
 ::image{src='/foundry-account-abstraction/1-introduction/zksync-entry-point.png' style='width: 100%; height: auto;'}
 
 ### Acts as an Alt-Mempool
-In zkSync, the alt-mempool nodes are also the zkSync nodes. This means that sending the transaction to the alt-mempool can be skipped. The reason zkSync can do this is because every account (e.g., MetaMask) is by default a smart contract account as it is automatically connected to a [DefaultAccount.sol](https://github.com/matter-labs/era-contracts/blob/main/system-contracts/contracts/DefaultAccount.sol).
+In ZKsync, the alt-mempool nodes are also the ZKsync nodes. This means that sending the transaction to the alt-mempool can be skipped. The reason ZKsync can do this is because every account (e.g., MetaMask) is by default a smart contract account as it is automatically connected to a [DefaultAccount.sol](https://github.com/matter-labs/era-contracts/blob/main/system-contracts/contracts/DefaultAccount.sol).
 
-By understanding these concepts, you'll have a solid foundation in account abstraction and its implementation in leading blockchain platforms like Ethereum and zkSync. 
+By understanding these concepts, you'll have a solid foundation in account abstraction and its implementation in leading blockchain platforms like Ethereum and ZKsync. 
 
 ## Questions for Review
 
@@ -74,5 +74,5 @@ Before we move one, here are some questions to help you review what we've covere
 - What is a mempool
 - What are the two optional add-ons for EntryPoint.sol?
 - What is the role of a pay master?
-- How does it work in Ethereum/zkSync? What's the difference between the two?
-  
+- How does it work in Ethereum/ZKsync? What's the difference between the two?
+

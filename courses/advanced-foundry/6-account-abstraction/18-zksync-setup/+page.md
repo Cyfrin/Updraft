@@ -1,10 +1,10 @@
-## Account Abstraction Lesson 18: zkSync Setup
+## Account Abstraction Lesson 18: ZKsync Setup
 
-Welcome to the beginning of our journey with **account abstraction** on **zkSync**. One of the main differences that you'll immediately notice is that we won't need to worry about alt-mempools, as zkSync has native account abstraction. Additionally, there isn't an EntryPoint.sol. Transactions go directly to your contract. Here is a description:
+Welcome to the beginning of our journey with **account abstraction** on **ZKsync**. One of the main differences that you'll immediately notice is that we won't need to worry about alt-mempools, as ZKsync has native account abstraction. Additionally, there isn't an EntryPoint.sol. Transactions go directly to your contract. Here is a description:
 
 ---
 
-**zkSync Account Flow**
+**ZKsync Account Flow**
 
 ::image{src='/foundry-account-abstraction/18-zksync-setup/zksync-account-flow.png' style='width: 100%; height: auto;'}
 ---
@@ -30,10 +30,10 @@ In Ethereum, we have two types of wallets.
 - **EOA** like Metamask
 - **Smart Contract** like our account contract that we built
 
-On the other hand, in zkSync EOAs are smart contracts. Thus, all smart contract accounts in zk are setup as default accounts. Let's take a look.
+On the other hand, in ZKsync EOAs are smart contracts. Thus, all smart contract accounts in zk are setup as default accounts. Let's take a look.
 
 1. Grab your wallet address from Metamask etc...
-2. [Click here to go to zkSync Era Block Explorer.](https://sepolia.explorer.zksync.io/)
+2. [Click here to go to ZKsync Era Block Explorer.](https://sepolia.explorer.zksync.io/)
 3. Paste your address into the search bar
 4. Follow along with the video from 4:00
 
@@ -109,7 +109,7 @@ Now we have our **ZK Minimal Account** set up. Things are starting to get exciti
 
 ### Questions for Review
 
-<summary>1. What is the main difference between zkSync and Ethereum regarding account abstraction?</summary>
+<summary>1. What is the main difference between ZKsync and Ethereum regarding account abstraction?</summary>
 
 ---
 
@@ -117,12 +117,12 @@ Now we have our **ZK Minimal Account** set up. Things are starting to get exciti
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
-    zkSync has native account abstraction, which means there is no need for alt-mempools or an EntryPoint.sol. Transactions go directly to your contract.
+    ZKsync has native account abstraction, which means there is no need for alt-mempools or an EntryPoint.sol. Transactions go directly to your contract.
 
 </details>
 
 
-<summary>2. How are EOAs different in zkSync compared to Ethereum?</summary>
+<summary>2. How are EOAs different in ZKsync compared to Ethereum?</summary>
 
 ---
 
@@ -130,7 +130,7 @@ Now we have our **ZK Minimal Account** set up. Things are starting to get exciti
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
-In zkSync, EOAs are smart contracts.
+In ZKsync, EOAs are smart contracts.
 
 </details>
 

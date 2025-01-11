@@ -1,6 +1,6 @@
-## Account Abstraction Lesson 33: Testnet zkSync Demo
+## Account Abstraction Lesson 33: Testnet ZKsync Demo
 
-The final step is to deploy and send a transaction. As of the creation of this lesson, foundry scripts don't work that well with zkSync. We are going to use Hardhat. Since Hardhat isn't a part of this course, we won't do any explanation of the code. However, you will get to see how it is deployed and sent. 
+The final step is to deploy and send a transaction. As of the creation of this lesson, foundry scripts don't work that well with ZKsync. We are going to use Hardhat. Since Hardhat isn't a part of this course, we won't do any explanation of the code. However, you will get to see how it is deployed and sent. 
 
 First, we do need to make some updates to our `ZkMinimalAccount` contract. You may remember that our `_validateTransaction` function `returns (bytes4 magic)`. However, we forgot to do this when calling it in the `executeTransactionFromOutside` function. Let's make this update now. 
 
