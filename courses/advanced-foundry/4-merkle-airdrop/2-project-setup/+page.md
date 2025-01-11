@@ -66,7 +66,7 @@ function claim(address account) external {
 }
 ```
 
-However, looping through an array that can grow indefinately can lead to **performance issues** and calling this function. If there are for example, hundreds of claimers, will become cost prohibitive and will cause a Denial Of Service (DOS). Merkle trees will help solving this issue.
+However, looping through an array that can grow indefinitely can lead to **performance issues** when calling this function. If there are for example, hundreds of claimers, the function could run out of gas, making it cost-prohibitive or even impossible to execute, effectively causing a Denial of Service (DoS) condition. Merkle trees will help solving this issue.
 
 ### Merkle Trees and Proofs
 
