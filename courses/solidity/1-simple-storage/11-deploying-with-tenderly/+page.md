@@ -1,3 +1,0 @@
----
-DEPLOYING WITH TENDERLY
----
