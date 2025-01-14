@@ -36,7 +36,7 @@ Finally, we covered how flash loans and the impact they have on Dex prices of as
 
 Flash Loans have the potential of drastically altering the ratio based pricing of asset pairs on Dexs by affording a user the ability to swap huge numbers of a token and tanking it's price - for that transaction.
 
-The practical offshoot of this is that any protocol that reads from that Dex is going to trust this inaccurate, temporarly price, leaving itself open to exploitation or unfavorable transactions.
+The practical offshoot of this is that any protocol that reads from that Dex is going to trust this inaccurate, temporary price, leaving itself open to exploitation or unfavorable transactions.
 
 ### Thunder Loan Oracle Manipulation
 

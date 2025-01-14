@@ -97,7 +97,7 @@ Lastly, try calling the `withdraw` function on `SelfDestructMe.sol`. It reverts!
 
 ### Wrap Up
 
-We've illustrated how relying on a contract's balance as a means of internal counting can be risky. There's really no way to be certain that arbitrary value isn't sent to a contract currenty.
+We've illustrated how relying on a contract's balance as a means of internal counting can be risky. There's really no way to be certain that arbitrary value isn't sent to a contract currently.
 
 As I'd mentioned previously, the concept of `Mishandling Eth` is a broad one. Our sc-exploits-minimized repo outlines another common scenario (push over pull) that I encourage you to look at, as we won't go over it here.
 

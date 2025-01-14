@@ -14,19 +14,19 @@ There's a great repository of Weird ERC20 tokens available on GitHub [**here**](
 
 We identified a `fee on transfer` issue within TSwapPool::\_swap that outlined a critical consideration - situations where extra tokens are sent will break the protocol invariant. Well, this can be the case with certain ERC20s (among other weird situations).
 
-We saw an exampe of this when building our first stateful fuzz test suite where the YieldERC20 token was sending 10% of a transaction value as a fee every 10 transfers.
+We saw an example of this when building our first stateful fuzz test suite where the YieldERC20 token was sending 10% of a transaction value as a fee every 10 transfers.
 
 ```js
 function statefulFuzz_testInvariantBreakHandler() public {
     vm.startPrank(owner);
     handlerStatefulFuzzCatches.withdrawToken(mockUSDC);
-    handlerStatefulFuzzCatches.withdrawToken(yeildERC20);
+    handlerStatefulFuzzCatches.withdrawToken(yieldERC20);
     vm.stopPrank();
 
     assert(mockUSDC.balanceOf(address(handlerStatefulFuzzCatches)) == 0);
-    assert(yeildERC20.balanceOf(address(handlerStatefulFuzzCatches)) == 0);
+    assert(yieldERC20.balanceOf(address(handlerStatefulFuzzCatches)) == 0);
     assert(mockUSDC.balanceOf(owner) == startingAmount);
-    assert(yeildERC20.balanceOf(owner) == startingAmount);
+    assert(yieldERC20.balanceOf(owner) == startingAmount);
 }
 ```
 

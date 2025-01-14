@@ -54,7 +54,7 @@ We covered the phases of an audit and each steps within.
 
 ### The Tincho
 
-The legendary Tincho from [**The Red Guild**](https://blog.theredguild.org/) blessed us with his wisdom and experience, outlining the approach he takes while peforming a security review. He stresses:
+The legendary Tincho from [**The Red Guild**](https://blog.theredguild.org/) blessed us with his wisdom and experience, outlining the approach he takes while performing a security review. He stresses:
 
 - Read the docs
 - Take notes often - right in the codebase

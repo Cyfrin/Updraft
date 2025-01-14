@@ -247,7 +247,7 @@ contract CallAnything {
 }
 ```
 
-One last thing I want to point out is that we're not limited to this kind of interaction. Through this low-level calling method, two contracts are able to interact without possessing all the information associated with eachother. Consider this second contract `CallFunctionWithoutContract`.
+One last thing I want to point out is that we're not limited to this kind of interaction. Through this low-level calling method, two contracts are able to interact without possessing all the information associated with each other. Consider this second contract `CallFunctionWithoutContract`.
 
 CallFunctionWithoutContract
 

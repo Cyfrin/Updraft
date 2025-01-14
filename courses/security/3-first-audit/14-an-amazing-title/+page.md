@@ -30,7 +30,7 @@ The first thing we need to fill out is our report's title. We want to be concise
 
 So, we ask ourselves _what is the root cause of this finding, and what impact does it have?_
 
-For this finding the root cause would be something aking to:
+For this finding the root cause would be something asking to:
 
 - **Storage variables on-chain are publicly visible**
 

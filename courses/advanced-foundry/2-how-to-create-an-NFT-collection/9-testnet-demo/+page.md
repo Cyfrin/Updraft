@@ -14,7 +14,7 @@ So let's do that.
 
 Before we get started, I'll mention you don't _have_ to do this yourself. This process will cost testnet funds, so it's fine to just follow along if needed. An alternative way to view your NFT would be to import your Anvil chain into Metamask and continue to use your local blockchain. If that works for you, great! Otherwise, let's continue with deploying this on an actual testnet.
 
-We'll be leveraging a Makefile for this again, I'll just be copying mine from the GitHub repo associated with this course, I've also provided it below for your conveninence.
+We'll be leveraging a Makefile for this again, I'll just be copying mine from the GitHub repo associated with this course, I've also provided it below for your convenience.
 
 Makefile:
 
@@ -83,7 +83,7 @@ Assuming our `.env` is ready to go, we should be able to run the following...
 > Remember to add the required environment variables if necessary. You should need a `sepolia RPC-URL`, an `account private key` and an `etherscan api key`.
 
 ```bash
-make deploy ARGS="--netwok sepolia"
+make deploy ARGS="--network sepolia"
 ```
 
 After a brief wait...

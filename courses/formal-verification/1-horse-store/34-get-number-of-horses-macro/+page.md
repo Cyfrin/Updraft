@@ -33,7 +33,7 @@ Because we don't have anything in memory, we can just `PUSH0` to our stack for t
 You'll notice that our stack is empty after executing our `mstore` operation.  This is where things can get tricky while working with Assembly and Huff. Our data structures can become difficult to keep track of when they scale.  While our stack may be empty, we now have our value contained in memory.
 
 
-When working with lots of data, it can be troublesome to keep track of 'what's in the stack?', 'what's in memory?', 'what's in storage?'.  This is precisely why people choose to program in abstacted languages like Solidity.
+When working with lots of data, it can be troublesome to keep track of 'what's in the stack?', 'what's in memory?', 'what's in storage?'.  This is precisely why people choose to program in abstracted languages like Solidity.
 
 Alright, now that we have our data in memory - we need to return it, with the `return` op code.
 

@@ -87,7 +87,7 @@ Run `forge build`. This should generate a JSON file for TokenFactory in our `out
 
 **...right-click and select `Format Document`.**
 
-We can scroll down to `bytecode` or `deployedBytecode` for a list of what's used in this contract. This string of numbers and letters is the hexidecimal representation of the opcodes of which this contract is comprised.
+We can scroll down to `bytecode` or `deployedBytecode` for a list of what's used in this contract. This string of numbers and letters is the hexadecimal representation of the opcodes of which this contract is comprised.
 
 Within this list, we expect to find the `create` opcode. A reference list for opcodes can be found here on [**evm.codes**](https://www.evm.codes/). From that reference we can see that `create` is represented by the opcode `F0`.
 

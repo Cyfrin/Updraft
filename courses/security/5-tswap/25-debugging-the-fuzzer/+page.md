@@ -20,7 +20,7 @@ forge test --mt statefulFuzz_constantProductFormulaStaysTheSameY --vvvv
 
 ::image{src='/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer1.png' style='width: 100%; height: auto;'}
 
-Fail, as expected. This output tells us the exception occuring during a call of the `deposit` function, but we can scroll up in the trace output to gain more infomation.
+Fail, as expected. This output tells us the exception occurring during a call of the `deposit` function, but we can scroll up in the trace output to gain more information.
 
 ::image{src='/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer2.png' style='width: 100%; height: auto;'}
 
@@ -90,7 +90,7 @@ function swapPoolTokenForWethBasedOnOutputWeth(uint256 outputWeth) public {
 }
 ```
 
-This above is how we're caculating our `actualDeltaY` and `actualDeltaX` in our Handler's swap function. If we look more closely at `endingY`, `endingX`, `startingY` and `startingX`, we'll notice that we erroneously have these variables tracking the changes of balance in `address(this)`. We'll that's wrong! We need to track the balances of each token in our pool.
+This above is how we're calculating our `actualDeltaY` and `actualDeltaX` in our Handler's swap function. If we look more closely at `endingY`, `endingX`, `startingY` and `startingX`, we'll notice that we erroneously have these variables tracking the changes of balance in `address(this)`. We'll that's wrong! We need to track the balances of each token in our pool.
 
 Adjust the assignments in our `Handler.t.sol` like so:
 
@@ -104,7 +104,7 @@ uint256 endingY = weth.balanceOf(address(pool));
 
 Then run it again!
 
-> **Note:** debugging our fuzz sequences is a truly iteritive process. The errors you receive, and how many of them, may actually be different if you have different errors in your code. Use the steps and skills shown here to debug any error you receive the same way.
+> **Note:** debugging our fuzz sequences is a truly iterative process. The errors you receive, and how many of them, may actually be different if you have different errors in your code. Use the steps and skills shown here to debug any error you receive the same way.
 
 ::image{src='/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer4.png' style='width: 100%; height: auto;'}
 

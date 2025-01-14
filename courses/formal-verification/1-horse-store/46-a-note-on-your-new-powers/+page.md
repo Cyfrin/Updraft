@@ -33,7 +33,7 @@ DUP1
 REVERT
 ```
 
-- Yes! Technically it does. In fact, I challange you to go add this to our contract and see for yourself, this check will actually be removed from our bytecode!
+- Yes! Technically it does. In fact, I challenge you to go add this to our contract and see for yourself, this check will actually be removed from our bytecode!
 
 ```js
 constructor() payable {}

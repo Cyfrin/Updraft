@@ -24,7 +24,7 @@ So, what the Gas Bad NFT Marketplace is doing, is similar to Seaport in that the
 
 In addition to the `NFTMarketplace.sol` contract they've also written `GasBadNFTMarketplace.sol` which is essentially the exact same code base, but much of the logic has been converted to assembly to save gas. Here's a comparison between the `listItem` functions of each:
 
-**NFTMarkplace.sol**
+**NFTMarketplace.sol**
 
 ```js
 function listItem(address nftAddress, uint256 tokenId, uint256 price) external {
@@ -76,7 +76,7 @@ function listItem(address nftAddress, uint256 tokenId, uint256 price) external {
 
 A major challenge of ours in this section will be assuring that these two code bases are _actually_ doing the same thing, and we're going to use formal verification to mathematically prove this to be true (or not!).
 
-I see this methodology as being a great way for protocols to be gas optimized in the future. A contract is written in solidity, and then written again in a more gas efficient way. The two contracts can be compared to assure they are behaving identifically and that the cheaper execution is valid.
+I see this methodology as being a great way for protocols to be gas optimized in the future. A contract is written in solidity, and then written again in a more gas efficient way. The two contracts can be compared to assure they are behaving identically and that the cheaper execution is valid.
 
 The Gas Bad NFT Marketplace code base contains certora configuration and spec files already, but this is what we're going to be trying to replicate together. You can use these files as an answer key to check your work, or if you get stuck.
 

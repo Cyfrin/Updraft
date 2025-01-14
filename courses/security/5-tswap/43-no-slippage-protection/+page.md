@@ -46,7 +46,7 @@ Let's write up our second `high severity` finding! Compare your write up to mine
 
 **Description:** The `swapExactOutput` function does not include any sort of slippage protection. This function is similar to what is done in `TSwapPool::swapExactInput`, where the function specifies a `minOutputAmount`, the `swapExactOutput` function should specify a `maxInputAmount`.
 
-**Impact:** If market conditions change before the transaciton processes, the user could get a much worse swap.
+**Impact:** If market conditions change before the transaction processes, the user could get a much worse swap.
 
 **Proof of Concept:**
 

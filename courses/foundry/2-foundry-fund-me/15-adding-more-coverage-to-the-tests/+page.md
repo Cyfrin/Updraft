@@ -27,7 +27,7 @@ What's happening here? We start with our user `alice` who calls `fundMe.fund` in
 
 Run the test using `forge test --mt testAddsFunderToArrayOfFunders`. It passed, perfect!
 
-Each of our tests uses a fresh `setUp`, so if we run all of them and `testFundUpdatesFundDataStrucutre` calls `fund`, that won't be persistent for `testAddsFunderToArrayOfFunders`.
+Each of our tests uses a fresh `setUp`, so if we run all of them and `testFundUpdatesFundDataStructure` calls `fund`, that won't be persistent for `testAddsFunderToArrayOfFunders`.
 
 Moving on, we should test the `withdraw` function. Let's check that only the owner can `withdraw`.
 
@@ -183,7 +183,7 @@ As we've talked about above, we use the `uint160` index to obtain an address. We
 
 The `SEND_VALUE` specified in `hoax` represents the ether value that will be provided to `address(i)`.
 
-Good, now that we have pranked an address and it has some balance we call `fundeMe.fund`.
+Good, now that we have pranked an address and it has some balance we call `fundMe.fund`.
 
 After the loop ends we repeat what we did in the `testWithdrawFromASingleFunder`. We record the contract and owner's starting balances. This concludes our `Arrange` stage.
 

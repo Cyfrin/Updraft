@@ -38,7 +38,7 @@ The last thing I notice in the docs here is this:
 We are planning to upgrade from the current ThunderLoan contract to the ThunderLoanUpgraded contract. Please include this upgrade in scope of a security review.
 ```
 
-If we look at ThunderLoan.sol we can see that it's inheriting a bunch of upgradeablity libraries such as `Initializable`, `OwnableUpgradeable`, `UUPSUpgradeable`, and `OracleUpgradeable`. We aren't going to go over the specifics of upgradeability or proxy functionality, in this course (again you can find further information on that in [**Advanced Foundry**](https://updraft.cyfrin.io/courses/advanced-foundry)), but this is a vital consideration for our review moving forward and represents a whole host of unique attack vectors we haven't seen yet.
+If we look at ThunderLoan.sol we can see that it's inheriting a bunch of upgradeability libraries such as `Initializable`, `OwnableUpgradeable`, `UUPSUpgradeable`, and `OracleUpgradeable`. We aren't going to go over the specifics of upgradeability or proxy functionality, in this course (again you can find further information on that in [**Advanced Foundry**](https://updraft.cyfrin.io/courses/advanced-foundry)), but this is a vital consideration for our review moving forward and represents a whole host of unique attack vectors we haven't seen yet.
 
 ### Wrap Up
 

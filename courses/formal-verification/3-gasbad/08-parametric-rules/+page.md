@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Parametric Rules
 
-In this lesson we'll go through a `parametric` formal verification example. You can read more about Parametric rules [**here in the Certora docs**](https://docs.certora.com/en/latest/docs/user-guide/parametric.html), but in brief they're rules which take ambiguious methods as parameters and differ from invariants in two key ways:
+In this lesson we'll go through a `parametric` formal verification example. You can read more about Parametric rules [**here in the Certora docs**](https://docs.certora.com/en/latest/docs/user-guide/parametric.html), but in brief they're rules which take ambiguous methods as parameters and differ from invariants in two key ways:
 
 1. Invariants are also testing after the constructor
 2. Invariants are used to assert properties of the storage (between function calls), while parametric rules are used to assert properties of _changes_ in the storage (caused by function calls).

@@ -14,6 +14,6 @@ What I mean by this is, we've assessed much of this code base so far already and
 
 It's far more likely for security researchers to uncover the majority of their bugs nearing the end of their review when the greatest context and understanding of the protocol is achieved. It's not uncommon for the discovery of one vulnerability to snowball into exploits elsewhere and the process can become exponential.
 
-Ultimately, don't be discouraged if you don't find anything immediately, perseverence is key!
+Ultimately, don't be discouraged if you don't find anything immediately, perseverance is key!
 
 Let's keep going!

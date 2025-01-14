@@ -83,7 +83,7 @@ Logic -> Implementation
 So if our constructor does something with storage, such as initializing a variable, it's not going to matter!
 `Initializable.sol` assists in initializing proxies with storage.
 
-It does these through `initializer` functions which can often be identified by the naming convensions `__init` and `__init_unchained`. We can see these function implemented within `OracleUpgradeable.sol`
+It does these through `initializer` functions which can often be identified by the naming conventions `__init` and `__init_unchained`. We can see these function implemented within `OracleUpgradeable.sol`
 
 ```js
 function __Oracle_init(address poolFactoryAddress) internal onlyInitializing {

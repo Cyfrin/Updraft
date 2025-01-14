@@ -35,4 +35,4 @@ Our value has wrapped on us again!
 // uint64(twenthEth) =  1553255926290448384
 ```
 
-This is absolutely something we're caalling out in our audit report. Puppy Raffle is at risk of losing so many fees!
+This is absolutely something we're calling out in our audit report. Puppy Raffle is at risk of losing so many fees!

@@ -90,7 +90,7 @@ Compiler run successful!
 Ran 1 test for test/FundMe.t.sol:FundMeTest
 [PASS] testWithdrawFromASingleFunder() (gas: 87869)
 Logs:
-  Withdraw consummed: 10628 gas
+  Withdraw consumed: 10628 gas
 
 Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 2.67ms (2.06ms CPU time)
 ```

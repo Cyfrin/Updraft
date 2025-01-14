@@ -10,7 +10,7 @@ It's been a journey, but let's do a quick recap of everything we've covered in t
 
 1. Context & Understanding
 
-   Without much manual review, we were able to construct fuzzing test suites (both stateful and stateless) to indentify where these invariants were broken.
+   Without much manual review, we were able to construct fuzzing test suites (both stateful and stateless) to identify where these invariants were broken.
 
    We experienced first hand how efficient using of tooling and a proper understanding of a protocol can really assist in our reviews in this way.
 
@@ -26,7 +26,7 @@ It's been a journey, but let's do a quick recap of everything we've covered in t
 
 3. Liquidity Providers
 
-   `Liquidity Providers` add funds to liquidity pools to allow an `AMM` to fascilitate trades. We learnt that fees incured while trading on an `AMM` or `Dex` are used as incentive to pay liquidity providers based on their percentage contribution to the pool!
+   `Liquidity Providers` add funds to liquidity pools to allow an `AMM` to facilitate trades. We learnt that fees incurred while trading on an `AMM` or `Dex` are used as incentive to pay liquidity providers based on their percentage contribution to the pool!
 
 4. Core Invariants & Constant Product Formula
 

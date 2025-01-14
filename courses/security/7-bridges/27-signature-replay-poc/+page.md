@@ -45,7 +45,7 @@ vm.startPrank(attacker);
 token.approve(address(tokenBridge), type(uint256).max);
 tokenBridge.depositTokensToL2(attacker, attacker, attackerInitialBalance);
 
-// Signer/Operator is going to sign the withdrawl
+// Signer/Operator is going to sign the withdrawal
 bytes memory message = abi.encode(
     address(token), 0, abi.encodeCall(IERC20.transferFrom, (address(vault), attacker, attackerInitialBalance))
 );
@@ -89,7 +89,7 @@ address(token), 0, abi.encodeCall(IERC20.transferFrom, (address(vault), attacker
 );
 ```
 
-We're going to leverage some Foundry magic by using the Cheatcode `vm.sign` to similate this signature. We need to pass `vm.sign` a private key and a message. Fortunately, Foundry can help us again.
+We're going to leverage some Foundry magic by using the Cheatcode `vm.sign` to simulate this signature. We need to pass `vm.sign` a private key and a message. Fortunately, Foundry can help us again.
 
 We're very familiar with the creation of addresses in our Foundry tests, but something we've not really touched on is the creation of accounts. At the very top of `L1TokenBridge.t.sol`, you can see we have an example.
 
