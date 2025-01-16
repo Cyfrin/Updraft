@@ -21,7 +21,7 @@ function repay(IERC20 token, uint256 amount) public {
 }
 ```
 
-`repay`, in this circumstance, serves as a helper function more than anything. A user taking a flash loan could also just call `transfer`, in their `executeOperations` functionm, to return the borrowed funds, but this exists to make things a little easier. Repay performs a check to assure a token is in the `currentlyFlashLoaning` state before performing any transfers.
+`repay`, in this circumstance, serves as a helper function more than anything. A user taking a flash loan could also just call `transfer`, in their `executeOperations` function, to return the borrowed funds, but this exists to make things a little easier. Repay performs a check to assure a token is in the `currentlyFlashLoaning` state before performing any transfers.
 
 Moving on!
 
@@ -39,7 +39,7 @@ function getCalculatedFee(IERC20 token, uint256 amount) public view returns (uin
 - **token** - token being borrowed
 - **amount** - amount being borrowed
 
-This function is calling `getPriceInWeth` (inherited from `OracleUpgrableable.sol`), and if we swing back to that contract some additional pieces will fall into play for us.
+This function is calling `getPriceInWeth` (inherited from `OracleUpgradeable.sol`), and if we swing back to that contract some additional pieces will fall into play for us.
 
 ```js
 function getPriceInWeth(address token) public view returns (uint256) {

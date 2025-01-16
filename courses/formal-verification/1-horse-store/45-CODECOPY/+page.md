@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### CODECOPY
 
-Let's continue from our `JUMPDEST`. Our contructor wasn't sent any value and we avoided the initial `REVERT`.
+Let's continue from our `JUMPDEST`. Our constructor wasn't sent any value and we avoided the initial `REVERT`.
 
 <details>
 <Summary> Op Codes </summary>

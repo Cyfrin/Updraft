@@ -12,7 +12,7 @@ There's a great [**GitHub Repo**](https://github.com/d-xo/weird-erc20) that's be
 
 The token we just dealt with in our `stateful fuzz testing` is an example of one of these `Weird ERC20s` - a `Fee on Transfer` token.
 
-`YeildERC20` contained a mechanism which sent a fee to the owner every 10 transactions. This type of behaviour in fee on transfer tokens can actually break many protocols - so it's very important to keep an eye out for these incompatibilities.
+`YieldERC20` contained a mechanism which sent a fee to the owner every 10 transactions. This type of behaviour in fee on transfer tokens can actually break many protocols - so it's very important to keep an eye out for these incompatibilities.
 
 Other examples of Weird ERC20s may:
 

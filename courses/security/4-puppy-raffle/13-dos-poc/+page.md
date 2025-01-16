@@ -101,7 +101,7 @@ Running the command `forge test --mt testDenialOfService -vvv` should give us an
 Now let's do the same thing for the second 100 players! We'll need to add something like this to our test.
 
 ```js
-// Creats another array of 100 players
+// Creates another array of 100 players
 address[] memory playersTwo = new address[](playersNum);
 for (uint256 i = 0; i < playersTwo.length; i++) {
     playersTwo[i] = address(i + playersNum);

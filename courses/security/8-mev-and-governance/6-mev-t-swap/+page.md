@@ -95,11 +95,11 @@ function deposit(
 
 We identified, during our review, that the `deadline` parameter wasn't being used. How would that potentially lead to an `MEV` attack in `TSwap`?
 
-Before a transaction is sent to the `MemPool`, it is sent to a node. Node operators have priviledged information with respect to transactions about to be added to the blockchain and in some circumstances they can delay when a transaction is processed by up to a whole block. If the `deadline` parameter was properly employed it could have prevented this!
+Before a transaction is sent to the `MemPool`, it is sent to a node. Node operators have privileged information with respect to transactions about to be added to the blockchain and in some circumstances they can delay when a transaction is processed by up to a whole block. If the `deadline` parameter was properly employed it could have prevented this!
 
 Imagine a node operator happened to be a `liquidity provider` in `TSwap`. This operator would be able to see pending deposits into the protocol, the practical effect of which would be that their shares and fees are lowered as the `LPTokens` are diluted.
 
-This malicious node operator would have the power to delay the processing of this `deposit` transaction in favor of validating more swap transactions maximizing the fees they would obtain from the protocol at the expensive of the new depositer!
+This malicious node operator would have the power to delay the processing of this `deposit` transaction in favor of validating more swap transactions maximizing the fees they would obtain from the protocol at the expensive of the new depositor!
 
 ::image{src='/security-section-8/6-tswap-mev/mev-in-tswap1.png' style='width: 100%; height: auto;'}
 

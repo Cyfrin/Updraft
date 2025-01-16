@@ -19,7 +19,7 @@ import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol
 /*
  * This contract represents a vault for ERC20 tokens.
  *
- * INVARIANT: Users must always be able to withdraw the exact balance amout out.
+ * INVARIANT: Users must always be able to withdraw the exact balance amount.
  */
 contract HandlerStatefulFuzzCatches {
     error HandlerStatefulFuzzCatches__UnsupportedToken();
@@ -96,7 +96,7 @@ import {HandlerStatefulFuzzCatches} from "src/invariant-break/HandlerStatefulFuz
 import {Test} from "forge-std/Test.sol";
 import {StdInvariant} from "forge-std/StdInvariant.sol";
 import {MockUSDC} from "test/mocks/MockUSDC.sol";
-import {YeildERC20} from "test/mocks/YeildERC20.sol";
+import {YieldERC20} from "test/mocks/YieldERC20.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 ```
 
@@ -107,7 +107,7 @@ contract AttemptedBreakTest is StdInvariant, Test {
     HandlerStatefulFuzzCatches
     handlerstatefulFuzzCatches;
     MockUSDC mockUSDC;
-    YeildERC20 yeildERC20;
+    YieldERC20 yieldERC20;
     IERC20[] supportedTokens;
 
     address user = makeAddr("user");
@@ -117,7 +117,7 @@ And now, our `setUp` function. A few things to consider here:
 
 1. Mocks need to be deployed
 2. Mocks need to be added to our `supportedTokens` array
-3. Our `user` needs to have a balance of YeildERC20 and/or MockUSDC
+3. Our `user` needs to have a balance of YieldERC20 and/or MockUSDC
 4. Our `HandlerStatefulFuzzCatches.sol` contract needs to be deployed with our `supportedTokens` argument
 5. `HandlerStatefulFuzzCatches.sol` needs to be set as our fuzzer's `targetContract`
 
@@ -127,18 +127,18 @@ What's this `setUp` function look like?
 function setUp() public {
         vm.startPrank(user);
         mockUSDC = new MockUSDC();
-        yeildERC20 = new YeildERC20();
-        mockUSDC.mint(user, yeildERC20.INITIAL_SUPPLY());
+        yieldERC20 = new YieldERC20();
+        mockUSDC.mint(user, yieldERC20.INITIAL_SUPPLY());
         vm.stopPrank();
 
-        supportedTokens.push(IERC20(address(yeildERC20)));
+        supportedTokens.push(IERC20(address(yieldERC20)));
         supportedTokens.push(IERC20(address(mockUSDC)));
         handlerstatefulFuzzCatches = new HandlerStatefulFuzzCatches(supportedTokens);
         targetContract(address(handlerstatefulFuzzCatches));
     }
 ```
 
-In the above we're pranking our `user` and then deploying and minting the tokens the `user` needs. `supportedTokens` then has both `mockUSDC` and `yeildERC20` pushed to it and our `HandlerStatefulFuzzCatches.sol` contract is deployed and set as our `targetContract`. Nailed it!
+In the above we're pranking our `user` and then deploying and minting the tokens the `user` needs. `supportedTokens` then has both `mockUSDC` and `yieldERC20` pushed to it and our `HandlerStatefulFuzzCatches.sol` contract is deployed and set as our `targetContract`. Nailed it!
 
 Let's now consider what our invariant might look like. We know _Users must always be able to withdraw the exact balance amount out_.
 
@@ -152,8 +152,8 @@ contract AttemptedBreakTest is StdInvariant, Test {
     function setUp() public {
         vm.startPrank(user);
         mockUSDC = new MockUSDC();
-        yeildERC20 = new YeildERC20();
-        startingAmount = yeildERC20.INITIAL_SUPPLY();
+        yieldERC20 = new YieldERC20();
+        startingAmount = yieldERC20.INITIAL_SUPPLY();
         mockUSDC.mint(user, startingAmount);
         vm.stopPrank();
         ...
@@ -165,7 +165,7 @@ With a little refactoring we can now reference the `startingAmount` of our `user
 ```js
 function testStartingAmount() public view {
     assert(startingAmount == mockUSDC.balanceOf(user));
-    assert(startingAmount == yeildERC20.balanceOf(user));
+    assert(startingAmount == yieldERC20.balanceOf(user));
 }
 ```
 
@@ -179,22 +179,22 @@ Now, if the `user` deposits and then withdraws everything, their startingAmount 
 function statefulFuzz_TestInvariantBreaks() public {
     vm.startPrank(user);
     handlerstatefulFuzzCatches.withdrawToken(IERC20(address(mockUSDC)));
-    handlerstatefulFuzzCatches.withdrawToken(IERC20(address(yeildERC20)));
+    handlerstatefulFuzzCatches.withdrawToken(IERC20(address(yieldERC20)));
     vm.stopPrank();
 
     assert(handlerstatefulFuzzCatches.tokenBalances(user, IERC20(address(mockUSDC))) == 0);
-    assert(handlerstatefulFuzzCatches.tokenBalances(user, IERC20(address(yeildERC20))) == 0);
+    assert(handlerstatefulFuzzCatches.tokenBalances(user, IERC20(address(yieldERC20))) == 0);
     assert(mockUSDC.balanceOf(user) == startingAmount);
-    assert(yeildERC20.balanceOf(user) == startingAmount);
+    assert(yieldERC20.balanceOf(user) == startingAmount);
 }
 ```
 
 In this function, we're assuring the the fuzz tests will end with our `user` withdrawing both types of tokens from the protocol. We're then asserting a number of things
 
 1. `user`'s deposit balance of MockUSDC is reset to 0
-2. `user`'s deposit balance of YeildERC20 is reset to 0
+2. `user`'s deposit balance of YieldERC20 is reset to 0
 3. `user`'s balance of MockUSDC returns to the startingAmount
-4. `user`'s balance of YeildERC20 returns to the startingAmount
+4. `user`'s balance of YieldERC20 returns to the startingAmount
 
 Let's run it with `forge test --mt statefulFuzz_TestInvariantBreaks`
 
@@ -226,4 +226,4 @@ We learnt about the limitations of stateless fuzzing and how many vulnerabilitie
 
 There are a few problems with our test so far. For example - we're only testing a single user's ability to deposit and withdraw. We should probably be fuzzing users in our tests. Additionally, we neglected to _approve_ any of our tokens before attempting to deposit, so even if the tokens were supported we likely would have reverted again.
 
-In the next lesson, let's clean things up and look at a methodolody which allows us to narrow down the focus of our fuzz testing leveraging a handler. See you there!
+In the next lesson, let's clean things up and look at a methodology which allows us to narrow down the focus of our fuzz testing leveraging a handler. See you there!

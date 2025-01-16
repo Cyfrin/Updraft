@@ -11,7 +11,7 @@ _Follow along with this video:_
 We're flying through these! Next note that comes up when we search our `@Audit` tag is ...
 
 ```js
-constructor(uint256 _entranceFee, address _feeAddress, uint256 _raffleDuration) EERC721 ("Puppy Raffle, "PR""){
+constructor(uint256 _entranceFee, address _feeAddress, uint256 _raffleDuration) ERC721 ("Puppy Raffle, "PR""){
 // @Audit: check for zero address!
 ...
 }
@@ -46,7 +46,7 @@ Assigning values to address state variables without checking for `address(0)`.
 Leveraging our tools is a great way to speed up the write up process. Thanks, `Aderyn`! Mark the note as complete and we'll move on to the next finding!
 
 ```js
-constructor(uint256 _entranceFee, address _feeAddress, uint256 _raffleDuration) EERC721 ("Puppy Raffle, "PR""){
+constructor(uint256 _entranceFee, address _feeAddress, uint256 _raffleDuration) ERC721 ("Puppy Raffle, "PR""){
 // @Written: check for zero address!
 ...
 }

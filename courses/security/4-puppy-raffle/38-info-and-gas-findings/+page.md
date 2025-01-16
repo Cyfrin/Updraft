@@ -58,7 +58,7 @@ A good practice will be to investigate the specific versions being used for repo
 
 We can navigate to the OpenZeppelin security section [**here**](https://github.com/OpenZeppelin/openzeppelin-contracts/security).
 
-This section of the OpenZepplin repo is kept updated with known security vulnerabilities within various versions of the OpenZeppelin library.
+This section of the OpenZeppelin repo is kept updated with known security vulnerabilities within various versions of the OpenZeppelin library.
 
 By clicking on one of the advisories, we get a detailed breakdown including the affected versions.
 

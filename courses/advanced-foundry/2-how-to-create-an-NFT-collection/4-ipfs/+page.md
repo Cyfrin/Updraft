@@ -44,20 +44,11 @@ Once a file is uploaded, you can click on that file and view that data.
 
 ::image{src='/foundry-nfts/4-ipfs/IPFS4.png' style='width: 100%; height: auto;'}
 
-What makes this _really_ cool, is we can then copy the data's CID (content ID), as seen above and view our data within our browser by entering it into our address bar.
+We then copy the data's CID (content ID), as seen above and view our data in the IPFS desktop by pasting it in.
 
-```
-ipfs://<CID>
-```
+Alternatively, if you're having trouble viewing your data directly from the IPFS network you can use the IPFS Gateway. When using a gateway, you're not directly requesting the data from the IPFS Network, you're requesting through another server which makes the request on your behalf, so it brings to question centrality and things again, but I digress. 
 
-> ❗ **NOTE**
-> If you're on firefox, this may not display properly as the address bar converts URLs to lowercase by default, ruining our CID. Test on Brave or Chrome.
-
-Alternatively, if you're having trouble viewing your data directly from the IPFS network you can use the IPFS Gateway. When using a gateway, you're not directly requesting the data from the IPFS Network, you're requesting through another server which makes the request on your behalf, so it brings to question centrality and things again, but I digress. You can view the data via the Gateway with this syntax:
-
-```
-https://ipfs.io/ipfs/<CID>
-```
+You can typically find a gateway from the [public gateway checker.](https://ipfs.github.io/public-gateway-checker/)
 
 ::image{src='/foundry-nfts/4-ipfs/IPFS5.png' style='width: 100%; height: auto;'}
 

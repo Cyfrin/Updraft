@@ -28,7 +28,7 @@ That's really it, at the end of the day. More accurately put:
 
 ::image{src='/foundry-defi/3-defi-stablecoins-but-actually/defi-stablecoins-but-actually1.png' style='width: 100%; height: auto;'}
 
-[**Investopedia**](https://www.investopedia.com/terms/s/stablecoin.asp) describes `stablecoins` as - Cryptocurriencies the value of which is pegged, or tied, to that of another currency, commondity or financial instrument.
+[**Investopedia**](https://www.investopedia.com/terms/s/stablecoin.asp) describes `stablecoins` as - Cryptocurrencies the value of which is pegged, or tied, to that of another currency, commodity or financial instrument.
 
 Aaand this is the first place I diverge from conventional media.
 
@@ -178,7 +178,7 @@ DAI is:
 
 DAI is one of the most influential DeFi projects ever created.
 
-Effectively how DAI works is, a user deposits some form of crypto collateral, such as ETH, and based on the currect value of that collateral in US Dollars, some value of DAI is minted the user. It's only possible to mint _less_ DAI than the value of collateral a user has deposited. In this way the stablecoin is said to be over-collateralized.
+Effectively how DAI works is, a user deposits some form of crypto collateral, such as ETH, and based on the current value of that collateral in US Dollars, some value of DAI is minted the user. It's only possible to mint _less_ DAI than the value of collateral a user has deposited. In this way the stablecoin is said to be over-collateralized.
 
 > ❗ **NOTE**
 > DAI also has an annual stability fee on deposited collateral ~2%
@@ -285,7 +285,7 @@ So, to summarize a bit:
 
 **_Why are stablecoins minted?_**
 
-- Investers like to make leveraged bets.
+- Investors like to make leveraged bets.
 
 ### Wrap Up
 

@@ -29,7 +29,7 @@ function batch(bytes[] calldata calls, bool revertOnFail) external payable retur
 
 In the simplest terms, this function allows a user to compile multiple calls into a single transaction - sounds useful.
 
-The oversight was in the use of `delegatecall`. When implementing delegatecall, msg.sender _and_ msg.value are persistant. This meant that a single value sent for one call in this function could be used for multiple calls!
+The oversight was in the use of `delegatecall`. When implementing delegatecall, msg.sender _and_ msg.value are persistent. This meant that a single value sent for one call in this function could be used for multiple calls!
 
 > **For example:** If I were to call a function which cost 1 Eth, to call it 100 times, it should cost 100 Eth. In the case of the `batch` function, a user would be able to call the function 100 times, for only 1 Eth!
 

@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Adding to our Portfolio
 
-Ok, we've - for the most part - completed the write ups for the findings we identified in Puppy Raffle. The next step is generatin our PDF report and adding this to our security portfolio!
+Ok, we've - for the most part - completed the write ups for the findings we identified in Puppy Raffle. The next step is generating our PDF report and adding this to our security portfolio!
 
 First step, let's add what we need to our `audit-data` folder.
 
@@ -245,7 +245,7 @@ View the report in the dropdown below, please know it's quiet long.
 
     There are a few attack vectors here.
 
-    1. Validators can know ahead of time the `block.timestamp` and `block.difficulty` and use that knowledge to predict when / how to participate. See the [solidity blog on prevrando](https://soliditydeveloper.com/prevrandao) here. `block.difficulty` was recently replaced with `prevrandao`.
+    1. Validators can know ahead of time the `block.timestamp` and `block.difficulty` and use that knowledge to predict when / how to participate. See the [solidity blog on prevrandao](https://soliditydeveloper.com/prevrandao) here. `block.difficulty` was recently replaced with `prevrandao`.
     2. Users can manipulate the `msg.sender` value to result in their index being the winner.
 
     Using on-chain values as a randomness seed is a [well-known attack vector](https://betterprogramming.pub/how-to-generate-truly-random-numbers-in-solidity-and-blockchain-9ced6472dbdf) in the blockchain space.
@@ -528,7 +528,7 @@ View the report in the dropdown below, please know it's quiet long.
 
     ### [M-2] Balance check on `PuppyRaffle::withdrawFees` enables griefers to selfdestruct a contract to send ETH to the raffle, blocking withdrawals
 
-    **Description:** The `PuppyRaffle::withdrawFees` function checks the `totalFees` equals the ETH balance of the contract (`address(this).balance`). Since this contract doesn't have a `payable` fallback or `receive` function, you'd think this wouldn't be possible, but a user could `selfdesctruct` a contract with ETH in it and force funds to the `PuppyRaffle` contract, breaking this check.
+    **Description:** The `PuppyRaffle::withdrawFees` function checks the `totalFees` equals the ETH balance of the contract (`address(this).balance`). Since this contract doesn't have a `payable` fallback or `receive` function, you'd think this wouldn't be possible, but a user could `selfdestruct` a contract with ETH in it and force funds to the `PuppyRaffle` contract, breaking this check.
 
     ```javascript
         function withdrawFees() external {
@@ -642,13 +642,13 @@ View the report in the dropdown below, please know it's quiet long.
     **Recommended Mitigation:** There are a few options to mitigate this issue.
 
     4. Do not allow smart contract wallet entrants (not recommended)
-    5. Create a mapping of addresses -> payout so winners can pull their funds out themselves, putting the owness on the winner to claim their prize. (Recommended)
+    5. Create a mapping of addresses -> payout so winners can pull their funds out themselves, putting the owners on the winner to claim their prize. (Recommended)
 
     ## Informational / Non-Critical
 
     ### [I-1] Floating pragmas
 
-    **Description:** Contracts should use strict versions of solidity. Locking the version ensures that contracts are not deployed with a different version of solidity than they were tested with. An incorrect version could lead to uninteded results.
+    **Description:** Contracts should use strict versions of solidity. Locking the version ensures that contracts are not deployed with a different version of solidity than they were tested with. An incorrect version could lead to unintended results.
 
     https://swcregistry.io/docs/SWC-103/
 

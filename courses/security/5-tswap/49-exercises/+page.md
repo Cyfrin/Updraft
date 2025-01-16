@@ -4,7 +4,7 @@ title: Exercises
 
 ---
 
-### Excercises
+### Exercises
 
 Put your skills to the test in the exercises below. These extra challenges will help you write better tests and be a better security searcher.
 

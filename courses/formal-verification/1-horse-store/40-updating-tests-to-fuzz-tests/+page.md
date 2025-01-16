@@ -24,8 +24,8 @@ contract HorseStoreTestV1 is Base_TestV1 {
     }
 
     function testReadHuffValue() public {
-        uint256 initalValue = horseStoreHuff.readNumberOfHorses();
-        assertEq(initalValue, 0);
+        uint256 initialValue = horseStoreHuff.readNumberOfHorses();
+        assertEq(initialValue, 0);
     }
 
     function testStoreAndReadHorseNumberHuff() public {
@@ -73,6 +73,6 @@ Boom. All there is to it to convert this simple function into a fuzz test.
 
 Working with op codes is POWERFUL, but as cliche as it is - *with great power, comes great responsibility*. Breaking the functionality of code written in such a low level is very easy.
 
-Any of our `PUSH` op codes, even if off by a single digit will cause things to likely fail, the precision of capturing the correct offset, or referencing the correct storage slots is paramount when writing in low level code.  Its for this reason that if you choose to write in something low level like Assembly or Huff, you should back up you logic with robust fuzz testing and even formal verification tests to assure your Huff implentation acts precisely how it should.
+Any of our `PUSH` op codes, even if off by a single digit will cause things to likely fail, the precision of capturing the correct offset, or referencing the correct storage slots is paramount when writing in low level code.  Its for this reason that if you choose to write in something low level like Assembly or Huff, you should back up you logic with robust fuzz testing and even formal verification tests to assure your Huff implementation acts precisely how it should.
 
 Don't worry, we'll absolutely be going over formal verification later in the course 😉

@@ -23,6 +23,6 @@ Here's an example of valid call data to set our number of horses to 7 and the ca
 
 I want to draw you attention to the `stop` op code I've added near the end. This code is an imperative aspect of handling functions in Huff.
 
-Code doesn't know when you want it to start and stop, it'll keep running until the application runs out of code. The `stop` op code affords a developer the power to explicitly tell the EVM 'We're done here, this execution is complete. This will prevent our code from continuing to run sebsequent operations after completion our function call!
+Code doesn't know when you want it to start and stop, it'll keep running until the application runs out of code. The `stop` op code affords a developer the power to explicitly tell the EVM 'We're done here, this execution is complete. This will prevent our code from continuing to run subsequent operations after completion our function call!
 
 This is amazing! What you'll find when we decompile our Solidity version of Horse Store, is that what we've just built out in Huff is effectively what Solidity is doing for us under the hood. Great work! Let's look at how to add the logic of our `getNumberOfHorses` function.

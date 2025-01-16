@@ -10,7 +10,7 @@ We're finally going to do it! We're going to write a robust stateful fuzz suite 
 
 This is the most challenging part of this entire course. If you're struggling to write stateful fuzz tests in this section, don't be discouraged. Feel free to come back after you finish the rest of the course.
 
-We're going to start just the same as we did in our ealier lessons. Create the following files and folders in the TSwap repo.
+We're going to start just the same as we did in our earlier lessons. Create the following files and folders in the TSwap repo.
 
 - `test/invariant`
 - `test/invariant/Invariant.t.sol`
@@ -42,7 +42,7 @@ contract DeployTSwap is Script {
         vm.startBroadcast();
         if (block.chainid == MAINNET_CHAIN_ID) {
             new PoolFactory(WETH_TOKEN_MAINNET);
-            // We are are not on mainnet, assume we are testing
+            // We are not on mainnet, assume we are testing
         } else {
             ERC20Mock mockWeth = new ERC20Mock();
             new PoolFactory(address(mockWeth));

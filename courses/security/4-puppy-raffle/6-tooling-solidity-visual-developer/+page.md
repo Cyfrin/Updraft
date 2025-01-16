@@ -20,7 +20,7 @@ We also went over `Solidity Metrics` earlier, but let's take another look as `Pu
 
 ### Solidity Metrics Insights
 
-Scrolling to the bottom of the `Solidity: Metrics` report, take a look at the `Inheritence Graph`
+Scrolling to the bottom of the `Solidity: Metrics` report, take a look at the `Inheritance Graph`
 
 ::image{src='/security-section-4/6-tooling-svd/tooling-svd1.png' style='width: 75%; height: auto;'}
 
@@ -42,7 +42,7 @@ This is incredibly valuable. It provides is a clear breakdown of `Internal` vs `
 
 There's another tool I'll briefly mention - some developers swear by it. It's the extension [**Solidity Visual Developer**](https://marketplace.visualstudio.com/items?itemName=tintinweb.solidity-visual-auditor) for VS Code.
 
-In addition to providing very similar reporting as Solidity Metrics, the inheritence graph is interactive and it provides syntax highlighting in your code based on variable types.
+In addition to providing very similar reporting as Solidity Metrics, the inheritance graph is interactive and it provides syntax highlighting in your code based on variable types.
 
 ::image{src='/security-section-4/6-tooling-svd/tooling-svd4.png' style='width: 75%; height: auto;'}
 

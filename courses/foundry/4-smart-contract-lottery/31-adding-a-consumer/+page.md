@@ -77,7 +77,7 @@ So... what happened here?
 1. We used `DevOpsTools` to grab the last deployment of the `Raffle` contract inside the `run` function;
 2. We also call `addConsumerUsingConfig` inside the `run` function;
 3. We define `addConsumerUsingConfig` as a public function taking an address as an input;
-4. We deploy a new `HelperConfig` and call `activeNetworkConfig` to grab the `vrfCoordinato` and `subscriptionId` addresses;
+4. We deploy a new `HelperConfig` and call `activeNetworkConfig` to grab the `vrfCoordinate` and `subscriptionId` addresses;
 5. We call the `addConsumer` function;
 6. We define `addConsumer` as a public function taking 3 input parameters: address of the `raffle` contract, address of `vrfCoordinator` and `subscriptionId`;
 7. We log some things useful for debugging;
@@ -87,7 +87,7 @@ Try a nice `forge build` and check if everything is compiling. Perfect!
 
 Let's go back to `DeployRaffle.s.sol` and import the thing we added in `Interactions.s.sol`:
 
-`import {CreateSubscription, FundSubscription, AddConsummer} from "./Interactions.s.sol";`
+`import {CreateSubscription, FundSubscription, AddConsumer} from "./Interactions.s.sol";`
 
 Now let's integrate the `FundSubscription` with the `CreateSubscription` bit:
 

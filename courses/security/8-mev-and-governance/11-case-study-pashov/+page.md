@@ -12,7 +12,7 @@ To walk us through some real-world reports where MEV was reported, we have guest
 
 ### What is MEV?
 
-**MEV** - Maximum Extractable Value (Miner Extractable Value) - Both good and bad for the Ethereum Ecosysem, this concept exists in 4 forms
+**MEV** - Maximum Extractable Value (Miner Extractable Value) - Both good and bad for the Ethereum Ecosystem, this concept exists in 4 forms
 
 1. **Arbitrage** - detailed in previous lessons, this process is often handled by MEV bots. A difference in price between exchanges will be identified and MEV bots will balance the pools and their prices by leveraging swaps between them (and profiting along the way)
 2. **Sandwiches** - we've covered this briefly earlier as well (remember Thunder Loan!), but we'll cover it with Pashov in more detail later

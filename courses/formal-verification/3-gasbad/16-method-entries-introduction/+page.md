@@ -64,7 +64,7 @@ methods {
 }
 ```
 
-The above is telling the `Certora` prover that any function withing the currentContract being verified should always return 1. Pehaps a strange thing to configure in our case, but you could imagine similar methodologies being applied to libraries which are in scope, but inconsequential to what is being verified at the time.
+The above is telling the `Certora` prover that any function withing the currentContract being verified should always return 1. Perhaps a strange thing to configure in our case, but you could imagine similar methodologies being applied to libraries which are in scope, but inconsequential to what is being verified at the time.
 
 ### Wrap Up
 

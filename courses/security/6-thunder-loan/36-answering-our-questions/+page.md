@@ -19,7 +19,7 @@ Some of these questions may seem obvious now that we have a much deeper understa
 
 We know this one!
 
-**Answer:** TSwap is being used to get the value of a token to calculate floan loan fees!
+**Answer:** TSwap is being used to get the value of a token to calculate flash loan fees!
 
 ```js
 // ITSwapPool.sol

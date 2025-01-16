@@ -37,7 +37,7 @@ Calldata variables are read-only and cheaper than memory. They are mostly used f
 In the following example, if we try to replace the keyword `memory` with `calldata`, we receive an error because `calldata` variables can't be manipulated.
 
 ```solidity
-function addPerson(string calldata _name, uitn256 _favoriteNumber) public {
+function addPerson(string calldata _name, uint256 _favoriteNumber) public {
     _name = "cat";
     listOfPeople.push(Person(_favoriteNumber, _name));
 }
@@ -73,7 +73,7 @@ In Solidity, a `string` is recognized as an **array of bytes**. On the other han
 > You can't use the `storage` keyword for variables inside a function. Only `memory` and `calldata` are allowed here, as the variable only exists temporarily.
 
 ```solidity
-function addPerson(string memory _name, uitn256 _favoriteNumber) public {  // cannot use storage as input parameters
+function addPerson(string memory _name, uint256 _favoriteNumber) public {  // cannot use storage as input parameters
     uint256 test = 0; // variable here can be stored in memory or stack
     listOfPeople.push(Person(_favoriteNumber, _name));
 }

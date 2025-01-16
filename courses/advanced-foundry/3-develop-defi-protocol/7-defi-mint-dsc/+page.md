@@ -10,7 +10,7 @@ _Follow along the course with this video._
 
 Now that we've a way to deposit collateral, the next logical step would be to mint DSC.
 
-The `mintDsc` function is likely going to be surprisely complex. There are a number of things we'll need to accomplish when minting our stablecoin. Primarily we'll need to check if the account's collateral value supports the amount of `DSC` being minted. To do this we'll need to engage `Chainlink` price feeds, do value conversions and more. Let's get started.
+The `mintDsc` function is likely going to be surprisingly complex. There are a number of things we'll need to accomplish when minting our stablecoin. Primarily we'll need to check if the account's collateral value supports the amount of `DSC` being minted. To do this we'll need to engage `Chainlink` price feeds, do value conversions and more. Let's get started.
 
 ```js
 ///////////////////////////
@@ -65,7 +65,7 @@ function _revertIfHealthFactorIsBroken(address user){}
 
 `Health Factor` is a concept borrowed from Aave.
 
-::image{src='/foundry-defi/7-defi-mint-dsc/defi-mint-dsc1.png' style='width: 100%; height: auto;'}
+::image{src='/foundry-defi/7-defi-mint-dsc/defi-mint-dsc1.PNG' style='width: 100%; height: auto;'}
 
 In addition to the above, we'll need a function which checks an account's `Health Factor`. Let's write that now.
 
@@ -475,7 +475,7 @@ contract DSCEngine is ReentrancyGuard {
         return ((uint256(price) * ADDITIONAL_FEED_PRECISION) * amount) / PRECISION;
     }
 
-    function depositCollaterAndMintDsc() external {}
+    function depositCollateralAndMintDsc() external {}
 
     function redeemCollateralForDsc() external {}
 

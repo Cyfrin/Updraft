@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Storage Refresher
 
-With our function dispatcher and interfaces set up, we're finally ready to add some logic to our macros! We're going to bgin with `SET_NUMBER_OF_HORSES()` as one of our first steps will be assigning a storage slot to our `numberOfHorses` variable.
+With our function dispatcher and interfaces set up, we're finally ready to add some logic to our macros! We're going to begin with `SET_NUMBER_OF_HORSES()` as one of our first steps will be assigning a storage slot to our `numberOfHorses` variable.
 
 When we think of storage, we can think of it as a giant, persistent array. When a transaction's execution completes, storage remains and is not cleared.
 

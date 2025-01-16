@@ -32,13 +32,13 @@ To start, we were introduced to even more tooling to assist in our security revi
 - AI: We didn't explicitly cover using AI, but AI is pretty pervasive in the space these days. Find a model you like, ChatGPT, Phind, Claude - you should be using AI.
 - [**"The Hans" Checklist**](https://solodit.xyz/checklist): a systematic approach to security reviews whereby a literal exhaustive checklist is applied to a protocol, to leave no stone unturned. Check it out on [**Solodit**](https://solodit.xyz/).
 
-We learnt about precompiles, like `ecrecover` and the part it plays in the signing of transactions. We saw through our [**Polygon case study**](https://www.youtube.com/watch?v=QdIG7TfjUiM) the potentially disasterous effects of overlooking precompiles and how a white hat profited $2.2 million for finding the bug.
+We learnt about precompiles, like `ecrecover` and the part it plays in the signing of transactions. We saw through our [**Polygon case study**](https://www.youtube.com/watch?v=QdIG7TfjUiM) the potentially disastrous effects of overlooking precompiles and how a white hat profited $2.2 million for finding the bug.
 
 In addition to this we dove deep into signatures, how they work and the vulnerabilities possible such as `Signature Replay Attacks`. We learnt the importance of restricting the use of signatures put on chain through a `nonce` or `deadline` to protect against their repeated use.
 
-We learnt that different blockchain are different! Surpising, I know! `EVM Equivalency` is not `EVM Compatibility`. We outlined a [**case study**](https://medium.com/coinmonks/gemstoneido-contract-stuck-with-921-eth-an-analysis-of-why-transfer-does-not-work-on-zksync-era-d5a01807227d) where overlooking this on zkSync resulted in 921 ETH being stuck because `transfer()` wouldn't work!
+We learnt that different blockchain are different! Surprising, I know! `EVM Equivalency` is not `EVM Compatibility`. We outlined a [**case study**](https://medium.com/coinmonks/gemstoneido-contract-stuck-with-921-eth-an-analysis-of-why-transfer-does-not-work-on-zksync-era-d5a01807227d) where overlooking this on zkSync resulted in 921 ETH being stuck because `transfer()` wouldn't work!
 
-And, in the process we identified a bunch of new vulnerabilites like `gas bombs`, `unlimited minting`, `centralization` and the risks of `arbitrary code`. We learnt **a lot**.
+And, in the process we identified a bunch of new vulnerabilities like `gas bombs`, `unlimited minting`, `centralization` and the risks of `arbitrary code`. We learnt **a lot**.
 
 One thing we didn't cover with as much depth was the actual writing of the findings. This is very much intentional. I'm trying to wean you off the hand holding so that you're able to perform reviews solo, confident in your ability to spot all these new exploits in your repertoire.
 

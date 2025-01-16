@@ -19,7 +19,7 @@ The key to getting a decent response from an AI model (like ChatGPT), is to give
 In our care we want the AI to proof read our report and suggest grammar and formatting changes. It's best to give the AI a bit of context.
 
 ```
-The following is a markdown write-up of a findiing in a smart contract codebase, can you help me make sure it is grammatically correct and formatted nicely?
+The following is a markdown write-up of a finding in a smart contract codebase, can you help me make sure it is grammatically correct and formatted nicely?
 
 ---
 PASTE-REPORT HERE

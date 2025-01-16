@@ -18,7 +18,7 @@ As a more indepth reference:
 
 ::image{src='/security-section-4/18-exploit-reentrancy/exploit-reentrancy2.png' style='width: 75%; height: auto;'}
 
-We learnt that re-entrancy is a _very_ common attack vector and walked through how to indentify and reproduce the vulnerability both in [**Remix**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/reentrancy/Reentrancy.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js) and locally as well as how to test for them.
+We learnt that re-entrancy is a _very_ common attack vector and walked through how to identify and reproduce the vulnerability both in [**Remix**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/reentrancy/Reentrancy.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js) and locally as well as how to test for them.
 
 <details>
 <summary>Re-entrancy Test Example</summary>
@@ -82,7 +82,7 @@ Additionally, we learnt that `static analysis` tools like `Slither` can even cat
 We also covered how to safeguard against this attack in at least two ways.
 
 - Adhering to the CEI (Checks, Effects, Interactions) pattern, assuring we perform state changes _before_ making external calls.
-- Implenting a nonReentrant modifier like one offered by [**OpenZeppellin's ReentrancyGuard**](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/ReentrancyGuard.sol).
+- Implementing a nonReentrant modifier like one offered by [**OpenZeppelin's ReentrancyGuard**](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/ReentrancyGuard.sol).
 - Applying a mutex lock to our function ourselves.
 <details>
 <summary>Mutex Lock Example</summary>

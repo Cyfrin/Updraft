@@ -83,6 +83,6 @@ We're first getting the `horseId` from our call data via `calldataload` at the `
 
 We next use another `Hashmap.huff` macro `LOAD_ELEMENT_FROM_KEYS`. This functions much like the reverse of our previous `STORE_ELEMENT_FROM_KEYS` in that we are taking the location of the mapping (`HORSE_FED_TIMESTAMP_LOCATION`) and passing it our horseId key. The macro is then returning to our stack the appropriate data mapped to that key - `horseFedTimestamp`.
 
-With our data on our stack, we then need to store it in memory in order for it to be returned. So we call `mstore` at an offset of `0x00` then we exectute: `0x20 0x00 return`
+With our data on our stack, we then need to store it in memory in order for it to be returned. So we call `mstore` at an offset of `0x00` then we execute: `0x20 0x00 return`
 
 `0X20 0X00 return` is a syntax you'll see commonly. It's saying - **return 32 bytes, starting at offset 0x00 from memory.**

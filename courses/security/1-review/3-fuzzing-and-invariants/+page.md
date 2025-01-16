@@ -65,7 +65,7 @@ function testIsAlwaysGetZeroFuzz(uint256 data) public {
 }
 ```
 
-Foundry will automatically randomize data and use numerous examples to run through the test script. This test will be supplied random data from 0 to uint256.max(), as many times as you've conifigured runs.
+Foundry will automatically randomize data and use numerous examples to run through the test script. This test will be supplied random data from 0 to uint256.max(), as many times as you've configured runs.
 
 > Reminder: You can configure the number of runs in your foundry.toml under the [fuzz] variable
 

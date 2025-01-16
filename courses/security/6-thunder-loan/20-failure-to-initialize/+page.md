@@ -12,10 +12,10 @@ With the context of proxies and the use of initializers understood, the first qu
 
 If a protocol fails to initialize a value, it could potentially have dire consequences.
 
-Even though this is technically a vulnerability in ThunderLoan.sol, and we're jumping place a little bit. Let's head there and make a note of things as well as definte what this potential exploit looks line this this code base.
+Even though this is technically a vulnerability in ThunderLoan.sol, and we're jumping place a little bit. Let's head there and make a note of things as well as definite what this potential exploit looks line this this code base.
 
 ```js
-// Audit-Low: Intializer can be front-run
+// Audit-Low: Initializer can be front-run
 function initialize(address tswapAddress) external initializer {
     __Ownable_init(msg.sender);
     __UUPSUpgradeable_init();

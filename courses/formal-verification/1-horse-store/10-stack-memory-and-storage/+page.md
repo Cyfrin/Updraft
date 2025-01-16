@@ -26,7 +26,7 @@ In addition to these, accessing data in `storage` is _much_ more expensive than 
 
 I'll draw your attention to the SSTORE and MSTORE
 
-::image{src='/formal-verification-1/10-memory-and-storage/memory-and-storage-2.png' style='width: 75%; height: auto;'}
+::image{src='/formal-verification-1/10-memory-and-storage/memory-and-storage-1.png' style='width: 75%; height: auto;'}
 
 We can see clearly to what extent I mean _"more expensive"_. The difference in gas when accessing data in `storage` is **massive.**
 

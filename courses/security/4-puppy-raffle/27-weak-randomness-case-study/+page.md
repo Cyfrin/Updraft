@@ -24,13 +24,13 @@ The concept behind Meebits was simple. If you owned a CryptoPunk, you could mint
 
 ### How the Attack Happened
 
-There were 4 distinct things that occured.
+There were 4 distinct things that occurred.
 
 **Metadata Disclosure:** The Meebit contract contained an IPFS hash which pointed to metadata for the collection. Within the Metadata there existed a string of text that clearly disclosed which traits would be the most rare
 
     "...While just five of the 20,000 Meebits are of the dissected form, which is the rarest. The kinds include dissected, visitor, skeleton, robot, elephant, pig and human, listed in decreasing order of rarity."
 
-In addition to this, the `tokenURI` function allowed public access to the traits of your minted Meetbit, by passing the function your tokenId.
+In addition to this, the `tokenURI` function allowed public access to the traits of your minted Meebit, by passing the function your tokenId.
 
 **Insecure Randomness:** Meebits calculated a random index based on this line of code:
 
@@ -99,6 +99,6 @@ The attacking contract called this mint function and reverted for over 6 hours. 
 
 ### Wrap Up
 
-There you have it. That's how an attacker in 2021 was able to exploit weak randomness in the Meetbits contract.
+There you have it. That's how an attacker in 2021 was able to exploit weak randomness in the Meebits contract.
 
 Thanks again to Andy! In the next lesson we'll be going over how to prevent this madness!

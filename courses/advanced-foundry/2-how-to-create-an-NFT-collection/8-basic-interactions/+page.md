@@ -13,7 +13,7 @@ Alright, with our tests passing we're going to want a way to interact with our c
 ```js
 // SPDX-License-Identifier: MIT
 
-pragme solidity ^0.8.18;
+pragma solidity ^0.8.18;
 
 import {Script} from "forge-std/Script.sol";
 
@@ -36,7 +36,7 @@ Now, we can import `DevOpsTools` and use this to acquire our most recent deploym
 ```js
 // SPDX-License-Identifier: MIT
 
-pragme solidity ^0.8.18;
+pragma solidity ^0.8.18;
 
 import {Script} from "forge-std/Script.sol";
 import {BasicNft} from "../src/BasicNft.sol";
@@ -55,7 +55,7 @@ contract MintBasicNft is Script{
 
     function mintNftOnContract(address contractAddress) public {
         vm.startBroadcast();
-        BasicNft(contractAddress).mintNft(TOKENURI)
+        BasicNft(contractAddress).mintNft(TOKENURI);
         vm.stopBroadcast();
     }
 }

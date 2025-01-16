@@ -24,7 +24,7 @@ Drill into the error for GasBadNftMarketplace for a better idea of what's happen
 
 Well, what's going on here? We initialized our ghost variables with a value, so what gives?
 
-Despite setting initial values, the `Certora` prover assumes that these values can be changed at any point unless specifcally instructed that they are static, or `persistent`. Effectively the prover recognizes that our ghost variables have been initialized and then starts changing them to random values.
+Despite setting initial values, the `Certora` prover assumes that these values can be changed at any point unless specifically instructed that they are static, or `persistent`. Effectively the prover recognizes that our ghost variables have been initialized and then starts changing them to random values.
 
 In our particular circumstance, `Certora` had the variable start at 0, but was unsure if this variable could change. The `transferFrom` call, for example, could be calling `mint`!
 

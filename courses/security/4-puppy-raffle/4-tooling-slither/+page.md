@@ -66,7 +66,7 @@ The output color codes potential issues:
 
 - **Green** - Areas that are probably ok, may be `informational` findings, we may want to have a look
 - **Yellow** - Potential issue detected, we should probably take a closer look
-- **Red** - Signifant issues detected that should absolutely be addressed.
+- **Red** - Significant issues detected that should absolutely be addressed.
 
 Here's an example of what some of these look like:
 

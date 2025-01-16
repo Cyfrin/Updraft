@@ -41,7 +41,7 @@ function test_signatureReplay() public {
 }
 ```
 
-In this test, we have a victim depositing funds to a protocol and then signing a transaction with `vm.sign`. The victim then calls `withdrawBySig` which broadcasts the `v, r, and s` values of the victimes signature for this message, on-chain.
+In this test, we have a victim depositing funds to a protocol and then signing a transaction with `vm.sign`. The victim then calls `withdrawBySig` which broadcasts the `v, r, and s` values of the victims signature for this message, on-chain.
 
 ```js
 signatureReplay.withdrawBySig(v, r, s, withdrawAmount);

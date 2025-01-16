@@ -55,7 +55,7 @@ Applying Tincho's methodology to this process, we can:
 
 > Please note that if your codebase contains a solitary file like ours, this step won't be necessary.
 
-Some aspects I'll draw your attention to in this metrics report are the `Inhertance Graph`, `The Call Graph`, and `The Contracts Summary`. It's not super obvious with such a simple protocol, but these are going to provide valuable insight down the line. Familiarize yourself with them now (way at the bottom).
+Some aspects I'll draw your attention to in this metrics report are the `Inheritance Graph`, `The Call Graph`, and `The Contracts Summary`. It's not super obvious with such a simple protocol, but these are going to provide valuable insight down the line. Familiarize yourself with them now (way at the bottom).
 
 ::image{src='/security-section-3/7-context/context6.png' style='width: 100%; height: auto;'}
 
