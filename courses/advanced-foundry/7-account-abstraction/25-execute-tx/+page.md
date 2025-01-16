@@ -1,4 +1,4 @@
-## Account Abstraction Lesson 25: Execute Function zkSync
+## Account Abstraction Lesson 25: Execute Function ZKsync
 
 Moving along in our course, it's time to execute a transaction. In this lesson we will do this by:
 

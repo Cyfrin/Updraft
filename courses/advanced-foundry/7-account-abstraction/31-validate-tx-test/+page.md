@@ -181,4 +181,4 @@ forge test --mt testZkValidateTransaction --zksync --system-mode=true
 
 Our test should pass and now we know that we can validate and execute transactions.
 
-We've done a lot with this test. We now have an account abstraction contract on zkSync. Take a moment to review and reflect. Move on to the next lesson when you are ready.
+We've done a lot with this test. We now have an account abstraction contract on ZKsync. Take a moment to review and reflect. Move on to the next lesson when you are ready.
