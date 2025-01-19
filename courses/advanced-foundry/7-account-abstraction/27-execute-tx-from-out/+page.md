@@ -15,7 +15,7 @@ Let's get it!
 
 Since we are beginning to use code from the bodies of `validateTransaction` and `executeTransaction` in other functions, let's go ahead and set them as their own separate functions. 
 
-Take the the following from `validateTransaction`.
+Take the following from `validateTransaction`.
 
 ```js
 // Call nonceholder
@@ -186,5 +186,4 @@ forge build --zksync
 ---
 
 Congratulations! You've just completed your ZkMinimalAccount.sol for account abstraction. This was simply a bit of refactoring so no review questions at this time. However, take some time to review and reflect. Move on to the next lesson when you are ready.
-
 

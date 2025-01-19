@@ -244,6 +244,3 @@ assertEq(usdc.balanceOf(address(minimalAccount)), AMOUNT);
 
 Phew! That was a lot. Take a look back over your code to review and reflect on what we've done. When you are ready, move on to the next lesson. 
 
-
-
-

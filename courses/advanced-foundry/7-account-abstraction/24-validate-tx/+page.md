@@ -1,4 +1,4 @@
-## Account Abstraction Lesson 24: Validate Transaction zkSync
+## Account Abstraction Lesson 24: Validate Transaction ZKsync
 
 Now that we have verified and updated the nonce, we will need to:
 

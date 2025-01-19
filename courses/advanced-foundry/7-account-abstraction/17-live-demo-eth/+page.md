@@ -69,7 +69,7 @@ function run() public {
 
 ---
 
-> ❗ **NOTE** HelperConfig for arbitrum has already been set up off screen.
+> ❗ **NOTE** HelperConfig for Arbitrum has already been set up off screen.
 
 ---
 
