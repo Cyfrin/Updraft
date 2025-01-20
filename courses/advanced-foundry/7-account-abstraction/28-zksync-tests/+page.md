@@ -1,6 +1,6 @@
-## Account Abstraction Lesson 28: zkSync Tests
+## Account Abstraction Lesson 28: ZKsync Tests
 
-Taking tests may not be much fun, but making them sure can be. Let's make some tests for our `ZkMinimalAccount`. In our test folder, create another folder called zkSync. In the zkSync folder, create a file and call it `ZkMinimalAccountTest.t.sol`. Let's go ahead and set up the essentials of our code. For this we will need:
+Taking tests may not be much fun, but making them sure can be. Let's make some tests for our `ZkMinimalAccount`. In our test folder, create another folder called ZKsync. In the ZKsync folder, create a file and call it `ZkMinimalAccountTest.t.sol`. Let's go ahead and set up the essentials of our code. For this we will need:
 
 - a license and pragma
 - to import `Test` and `ZkMinimalAccount`

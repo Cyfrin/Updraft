@@ -10,7 +10,7 @@ Welcome to the third lesson in our Account Abstraction course! In this lesson, w
 To get started, make sure you have foundry installed and up-to-date. To do this, run the following command in your terminal.
 
 ```js
-foundryup;
+foundryup
 ```
 
 Once this process is complete, you'll need to initialize your project.
@@ -40,7 +40,7 @@ Now head over to your `README.md` and type the following:
 # About
 
 1. Create minimal Account Abstraction on Ethereum
-2. Create minimal Account Abstraction on zkSync
+2. Create minimal Account Abstraction on ZKsync
 3. Deploy and send a userOp/transaction through them
     1. Not going to send an AA to Ethereum
     2. But we will send an AA tx to zksync
@@ -103,7 +103,7 @@ Furthermore, we can [view the contract code directly in our browser here.](https
 ::image{src='/foundry-account-abstraction/3-eth-setup/etherscan-deth.png' style='width: 100%; height: auto;'}
 ---
 
-Click on the magnifying glass icon in the top left of the screen. Type **function handleops** in the search box. You will see that it takes a `PackedUserOperation` and an `address payable`. When we send our information to the alt-mempool nodes, we need to send it so that the nodes can then send the `PackedUserOperation`, which is essentially a struct and is a stand alone contract - `PackedUserOperation.sol`.
+Click on the magnifying glass icon in the top left of the screen. Type **function handleops** in the search box. You will see that it takes a `PackedUserOperation` and an `address payable`. When we send our information to the alt-mempool nodes, we need to send it so that the nodes can then send the `PackedUserOperation`, which is essentially a struct and is a standalone contract - `PackedUserOperation.sol`.
 
 ```js
 struct PackedUserOperation {
