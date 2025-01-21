@@ -10,7 +10,7 @@ The next part can be a little tough to grasp at first, and that's ok. Take your 
 
 ### Slicing Bits
 
-Our ultimate goal is to access the `function selector` of the `calldata` sent to our contract. This is reprented by the first 8 bytes of our `calldata`.
+Our ultimate goal is to access the `function selector` of the `calldata` sent to our contract. This is represented by the first 8 bytes of our `calldata`.
 
 ```
 0xe026c0170000000000000000000000000000000000000000000000000000000000000001
@@ -58,4 +58,4 @@ cast --to-base 0b001000000 hex
 
 The output we receive is `0x40`!
 
-I encourage you to test this out further yourself. Try shifting a variety of decimal places and experimeent with how this affects your output.
+I encourage you to test this out further yourself. Try shifting a variety of decimal places and experiment with how this affects your output.

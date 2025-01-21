@@ -39,7 +39,7 @@ contract SimpleStorage {
 ```
 
 The content of the function is placed within the curly brackets `{}`.
-The prefix `_` before `_favoriteNumber` is used to emphasise that the **_local_** variable `_favoriteNumber` is a **different** variable from the **_state_** variable `favoriteNumber`. This helps prevent potential confusion when dealing with different variables with similar names in complex codebases.
+The prefix `_` before `_favoriteNumber` is used to emphasize that the **_local_** variable `_favoriteNumber` is a **different** variable from the **_state_** variable `favoriteNumber`. This helps prevent potential confusion when dealing with different variables with similar names in complex codebases.
 
 ### Deploying the smart contract
 

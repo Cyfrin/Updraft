@@ -32,19 +32,19 @@ The reason seems to be that we're calling `transferFrom` on a random address. Wh
 function setUp() public {
     vm.startPrank(user);
     mockUSDC = new MockUSDC();
-    yeildERC20 = new YeildERC20();
-    startingAmount = yeildERC20.INITIAL_SUPPLY();
+    yieldERC20 = new YieldERC20();
+    startingAmount = yieldERC20.INITIAL_SUPPLY();
     mockUSDC.mint(user, startingAmount);
     vm.stopPrank();
-    supportedTokens.push(IERC20(address(yeildERC20)));
+    supportedTokens.push(IERC20(address(yieldERC20)));
     supportedTokens.push(IERC20(address(mockUSDC)));
     handlerStatefulFuzzCatches = new HandlerStatefulFuzzCatches(supportedTokens);
-    handler = new Handler(handlerStatefulFuzzCatches, mockUSDC, yeildERC20, user); // HANDLER INITIALIZED
+    handler = new Handler(handlerStatefulFuzzCatches, mockUSDC, yieldERC20, user); // HANDLER INITIALIZED
 
     bytes4[] memory selectors = new bytes4[](4); // SPECIFY SELECTORS TO FUZZ
-    selectors[0] = handler.depositYeildERC20.selector;
+    selectors[0] = handler.depositYieldERC20.selector;
     selectors[1] = handler.depositMockUSDC.selector;
-    selectors[2] = handler.withdrawYeildERC20.selector;
+    selectors[2] = handler.withdrawYieldERC20.selector;
     selectors[3] = handler.withdrawMockUSDC.selector;
 
     targetSelector(FuzzSelector({addr: address(handler), selectors: selectors})); // SET TARGET SELECTORS
@@ -56,7 +56,7 @@ Now let's try it.
 
 ::image{src='/security-section-5/16-debugging-fuzz-sequences/debugging-fuzz-sequences2.png' style='width: 100%; height: auto;'}
 
-Alright! It looks like we may have found something! We're seeing an error of `ERC20InsufficientBalance` when calling `withdrawToken` on `yeildERC20`. That's odd. Let's look at the `withdrawToken` function again.
+Alright! It looks like we may have found something! We're seeing an error of `ERC20InsufficientBalance` when calling `withdrawToken` on `yieldERC20`. That's odd. Let's look at the `withdrawToken` function again.
 
 ```js
 function withdrawToken(IERC20 token) external requireSupportedToken(token) {
@@ -66,7 +66,7 @@ function withdrawToken(IERC20 token) external requireSupportedToken(token) {
 }
 ```
 
-Nothing out of the ordinary it seems, we're just calling `safeTransfer` on the token. Maybe we need to take a closer look at `YeildERC20.sol`.
+Nothing out of the ordinary it seems, we're just calling `safeTransfer` on the token. Maybe we need to take a closer look at `YieldERC20.sol`.
 
 ```js
 // SPDX-License-Identifier: MIT
@@ -74,7 +74,7 @@ pragma solidity 0.8.20;
 
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract YeildERC20 is ERC20 {
+contract YieldERC20 is ERC20 {
     uint256 public constant INITIAL_SUPPLY = 1_000_000e18;
     address public immutable owner;
     // We take a fee once every 10 transactions
@@ -83,7 +83,7 @@ contract YeildERC20 is ERC20 {
     uint256 public constant USER_AMOUNT = 90;
     uint256 public constant PRECISION = 100;
 
-    constructor() ERC20("MockYeildERC20", "MYEILD") {
+    constructor() ERC20("MockYieldERC20", "MYIELD") {
         owner = msg.sender;
         _mint(msg.sender, INITIAL_SUPPLY);
     }
@@ -113,7 +113,7 @@ contract YeildERC20 is ERC20 {
 
 ```
 
-Ah ha! This `_update` function is sending a 10% fee to the owner of YeildERC20 every 10 transactions. This is why our `withdrawTokens` function was throwing an `ERC20InsufficientBalance` error - `HandlerStatefulFuzzCatches.sol` doesn't have enough `YeildERC20` to pay the fee!
+Ah ha! This `_update` function is sending a 10% fee to the owner of YieldERC20 every 10 transactions. This is why our `withdrawTokens` function was throwing an `ERC20InsufficientBalance` error - `HandlerStatefulFuzzCatches.sol` doesn't have enough `YieldERC20` to pay the fee!
 
 This is actually a fairly common situation known is a `Fee on Transfer` token and they exist in a classification of vulnerabilities known as `Weird ERC20s`.
 

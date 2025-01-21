@@ -20,7 +20,7 @@ We know this is going to be a high, based on everything we went over and all we 
 ### [H-1] Reentrancy attack in `PuppyRaffle::refund` allows entrant to drain raffle balance
 ```
 
-> **Note:** It's often a good idea to go through the steps of building a PoC to prove an issue before taking the time to write things up. We wrote a test for reentracy, that we'll be using, earlier.
+> **Note:** It's often a good idea to go through the steps of building a PoC to prove an issue before taking the time to write things up. We wrote a test for reentrancy, that we'll be using, earlier.
 
 On to the next parts of the report template.
 
@@ -154,7 +154,7 @@ Last part - Recommendation. We know this, this protocol should be following CEI.
         require(playerAddress != address(0), "PuppyRaffle: Player already refunded, or is not active");
     +   players[playerIndex] = address(0);
     +   emit RaffleRefunded(playerAddress);
-        payable(msg.sender).sendeValue(entranceFees);
+        payable(msg.sender).sendValue(entranceFees);
     -   players[playerIndex] = address(0);
     -   emit RaffleRefunded(playerAddress);
     }

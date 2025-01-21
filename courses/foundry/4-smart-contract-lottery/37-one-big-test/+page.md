@@ -138,7 +138,7 @@ Now we are ready to start our assertions.
 11. We assert that the raffle state is `OPEN` because that's how our raffle should be after the winner is drawn and the prize is sent;
 12. We assert that we have chosen a winner;
 13. We assert that the `s_players` array has been properly reset, so players from the previous raffle don't get to participate in the next one without paying;
-14. We assert that the `fullfillRandomWords` updates the `s_lastTimeStamp` variable;
+14. We assert that the `fulfillRandomWords` updates the `s_lastTimeStamp` variable;
 15. We assert that the winner receives their ETH prize;
  
 Amazing work, let's try it out with `forge test --mt testFulfillRandomWordsPicksAWinnerResetsAndSendsMoney --vv`.

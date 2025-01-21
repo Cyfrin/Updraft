@@ -6,7 +6,7 @@ title: Manual Review - TSwapPool.sol - Add Liquidity
 
 ### Manual Review Continued
 
-Ok! We went on a bit of a tangeant following up with our compiler warnings, but let's continue where we left off, in the `deposit` function.
+Ok! We went on a bit of a tangent following up with our compiler warnings, but let's continue where we left off, in the `deposit` function.
 
 <details>
 <summary>Deposit Function</summary>
@@ -164,7 +164,7 @@ I always set bugs if this nature related to event data as `low`, but there's a b
 
 It's really hard to justify a situation like this as a `medium`, but we can imagine other parts of a protocol relying on events (such as an oracle) that could easily bump something like this up to a `medium` or even a `high`.
 
-The last thing our `_addLiquidityMintAndTransfer` function does is its interactions, it actually performs the transfers of tokens. This is great! The protocol team is following `CEI (checks, efffects, interactions)`. I may even make a note for myself indicating that this has been considered and confirmed.
+The last thing our `_addLiquidityMintAndTransfer` function does is its interactions, it actually performs the transfers of tokens. This is great! The protocol team is following `CEI (checks, effects, interactions)`. I may even make a note for myself indicating that this has been considered and confirmed.
 
 ```js
 // Follows CEI
@@ -222,7 +222,7 @@ _addLiquidityMintAndTransfer(wethToDeposit, poolTokensToDeposit, liquidityTokens
 
 ### Wrap Up
 
-Great! We're all done our review of the `deposit` function. At this point I would likely leave a note inidicating that this section of the code has been assessed and to follow-up as needed.
+Great! We're all done our review of the `deposit` function. At this point I would likely leave a note indicating that this section of the code has been assessed and to follow-up as needed.
 
 Leaving regular notes in the code base as you go will make report writing much easier in the future, so get into this habit!
 

@@ -15,7 +15,7 @@ Let's begin the write up with a title. There's some argument to be had that a vu
 Ultimately we're going to record this as a low. My title is going to look like so:
 
 ```
-[L-1] `PuppyRaffle::getActivePlayerIndex` returns 0 for non-existant players and players at index 0 causing players to incorrectly think they have not entered the raffle
+[L-1] `PuppyRaffle::getActivePlayerIndex` returns 0 for non-existent players and players at index 0 causing players to incorrectly think they have not entered the raffle
 ```
 
 Root Cause. Impact. Classic. 😆

@@ -40,9 +40,9 @@ function withdrawFees() external {
 }
 ```
 
-So, `Slither` is telling us that our feeAddress is arbirary and may be malicious. Let's look at the attack vector in the [**`Slither` documentation**](https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations).
+So, `Slither` is telling us that our feeAddress is arbitrary and may be malicious. Let's look at the attack vector in the [**`Slither` documentation**](https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations).
 
-The documentation outlines that since our `feeAddress` can be changed, whomever receives funds from `withdrawFees` could theoretically be anybody. However, in `PuppyRaffle`, the `feeAddress` can only be changed by the `owner`, so this would be considereed intention in our protocol.
+The documentation outlines that since our `feeAddress` can be changed, whomever receives funds from `withdrawFees` could theoretically be anybody. However, in `PuppyRaffle`, the `feeAddress` can only be changed by the `owner`, so this would be considered intention in our protocol.
 
 ```js
 function changeFeeAddress(address newFeeAddress) external onlyOwner {
@@ -189,7 +189,7 @@ We can have our `Slither` report remove these warnings once we've made note of t
 
   Now, you may be asking yourself _These are reentrancy, why aren't they high!?_.
 
-Well, these warnings are specifically pointing to the vulnerability described by the manipulation of the order or value of events being emitted. By reentering these functions an attacker is able to manupulate the events being emitted and potentially compromise third party reliance on them.
+Well, these warnings are specifically pointing to the vulnerability described by the manipulation of the order or value of events being emitted. By reentering these functions an attacker is able to manipulate the events being emitted and potentially compromise third party reliance on them.
 
 There's a lot of debate about what kind of severity should be ascribed to event based findings, but my personal rule of thumb is that they are _at least_ `Low Severity`. Examples include:
 
@@ -350,7 +350,7 @@ These are simply pointing out naming convention concerns in a couple of our libr
 - Dangerous Calls:
   - `"this (lib/openzeppelin-contracts/contracts/utils/Context.sol#21)" inContext (lib/openzeppelin-contracts/contracts/utils/Context.sol#15-24)`
 
-Another warning from a depedency of ours, we'll ignore this, but if you want to remove it you can add the line:
+Another warning from a dependency of ours, we'll ignore this, but if you want to remove it you can add the line:
 
 ```js
 // slither-disable-next-line redundant-statements

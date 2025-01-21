@@ -34,7 +34,7 @@ In a [**previous lesson**](https://updraft.cyfrin.io/courses/advanced-foundry/ho
       "value": "Headband"
     }
   ],
-  "description": "A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.",
+  "description": "A collection 8888 Cute Chubby Pudgy Penguins sliding around on the freezing ETH blockchain.",
   "image": "ipfs://QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/420.png",
   "name": "Pudgy Penguin #420"
 }
@@ -49,9 +49,9 @@ When this course was originally filmed, the Pudgy Penguins collection had been u
 "https://ipfs.io/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/420.png";
 ```
 
-This works, and is often leveraged due to browser compatibily with IPFS, but it's worth noting that this is pointing to a centralized server. If that server goes down, the image data will be unretrievable via the tokenURI call!
+This works, and is often leveraged due to browser compatibility with IPFS, but it's worth noting that this is pointing to a centralized server. If that server goes down, the image data will be unretrievable via the tokenURI call!
 
-A more decentralized way to retrieve the image data is by pointing to the IPFS netwok itself.
+A more decentralized way to retrieve the image data is by pointing to the IPFS network itself.
 
 ```js
 "ipfs://QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/420.png";
@@ -84,7 +84,7 @@ If you view this in your browser or through the IPFS Desktop App, you should see
 }
 ```
 
-Now, we could just paste the about tokenURI as a return value of our tokenUri function, but this would mint every Doggie identical to eachother. Let's spice things up a little bit and allow the user to choose what their NFT looks like. We'll do this by allowing the user to pass a tokenUri to the mint function and mapping this URI to their minted tokenId.
+Now, we could just paste the about tokenURI as a return value of our tokenUri function, but this would mint every Doggie identical to each other. Let's spice things up a little bit and allow the user to choose what their NFT looks like. We'll do this by allowing the user to pass a tokenUri to the mint function and mapping this URI to their minted tokenId.
 
 ```js
 contract BasicNFT is ERC721 {

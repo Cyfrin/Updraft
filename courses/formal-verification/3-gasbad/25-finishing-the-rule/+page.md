@@ -247,7 +247,7 @@ Because we're using `require` statements, instead of a `filter block`, `Certora`
 
 ### Wrap Up
 
-Despite the `sanity` errors, we can clearly see that any time the function selectors being called match, our rule is verifying the call. This test is indeed proving to us that the contracts are functioning identically under indentical circumnstances.
+Despite the `sanity` errors, we can clearly see that any time the function selectors being called match, our rule is verifying the call. This test is indeed proving to us that the contracts are functioning identically under identical circumstances.
 
 > ❗ **PROTIP**
 > We _could_ set `"rule_sanity": "none"`, in our `GasBad.conf`, in order for these sanity checks to reflect `passed`, but we should always be cautious when removing these checks.

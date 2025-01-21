@@ -18,7 +18,7 @@ Each byte, which corresponds to two hex characters, essentially represents an op
 
 ### Understanding Opcodes
 
-As humans, we're not wired to effortlessly comprehend machine-code or binary. Manually instructing thousands of transitors is just not something we're good at. Because of this, we turn to higher-level programming languages like Solidity that are easier for humans to understand!
+As humans, we're not wired to effortlessly comprehend machine-code or binary. Manually instructing thousands of transistors is just not something we're good at. Because of this, we turn to higher-level programming languages like Solidity that are easier for humans to understand!
 
 However, it's crucial to remember that the EVM doesn't understand Solidity; it operates at the lowest level of code. It's a machine that needs explicit instructions to work with data, whether storing it, memorizing it, or stacking it. These instructions are the aforementioned op codes.
 

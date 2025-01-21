@@ -20,7 +20,7 @@ For this to work we need to refactor the `pickWinner` function. That functionali
  * 2. The lottery is open.
  * 3. The contract has ETH.
  * 4. There are players registered.
- * 5. Implicity, your subscription is funded with LINK.
+ * 5. Implicitly, your subscription is funded with LINK.
  */
 function checkUpkeep(bytes memory /* checkData */) public view returns (bool upkeepNeeded, bytes memory /* performData */) {
     bool isOpen = RaffleState.OPEN == s_raffleState;
@@ -45,7 +45,7 @@ Back to our raffle now, what are the conditions required to be true in order to 
  * 2. The lottery is open.
  * 3. The contract has ETH.
  * 4. There are players registered.
- * 5. Implicity, your subscription is funded with LINK.
+ * 5. Implicitly, your subscription is funded with LINK.
 ```
 For points 1-3 we coded the following lines:
 

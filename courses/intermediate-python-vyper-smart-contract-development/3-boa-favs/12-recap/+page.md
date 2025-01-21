@@ -2,7 +2,7 @@
 
 We learned a lot of things in this section.  First, we learned how to deploy a smart contract using `Titanobo Boa`, and then how to interact with existing contracts.
 
-### Deploying with Titanobo Boa
+### Deploying with Titano Boa
 
 We can deploy a contract with a single line of code: 
 
@@ -10,7 +10,7 @@ We can deploy a contract with a single line of code:
 favorites_contract = boa.load("favorites.vy")
 ```
 
-This will compile, deploy, and send a transaction to a fake PyEVM chain, which is a local chain that `Titanobo Boa` spins up. We will not be using local chains after this section. 
+This will compile, deploy, and send a transaction to a fake PyEVM chain, which is a local chain that `Titano Boa` spins up. We will not be using local chains after this section. 
 
 ### Interacting with Existing Contracts
 
@@ -70,4 +70,4 @@ def main():
 
 ### Moccasin
 
-This is the last section of the `Titanobo Boa` series, in the next section we'll move on to the `Moccasin` series. 
+This is the last section of the `Titano Boa` series, in the next section we'll move on to the `Moccasin` series. 

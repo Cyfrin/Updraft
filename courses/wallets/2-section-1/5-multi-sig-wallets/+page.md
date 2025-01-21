@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Multi Sig Wallets
 
-A multi-sig wallet is a smart contract that governs transactions. These can be setup so taht they require several people to sign a transaction for it to go through.
+A multi-sig wallet is a smart contract that governs transactions. These can be setup so that they require several people to sign a transaction for it to go through.
 
 These can be customized such that any X number of people are required to sign out of Y before a transaction will process.
 

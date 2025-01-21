@@ -17,13 +17,13 @@ On May 31, 2020 the Matic blockchain was launched, this was later rebranded to t
 - Short Block Time
 - ZK Rollup Tech
 
-In the Gensis Block of the Polygon Chain (block 0), there are 10 transactions, one of which is the creation of a contract - MRC20. You can view this block yourself on [**PolygonScan**](https://polygonscan.com/txs?block=0). On creation, this contract was deployed with nearly 10 billion MATIC (the Polygon native currency).
+In the Genesis Block of the Polygon Chain (block 0), there are 10 transactions, one of which is the creation of a contract - MRC20. You can view this block yourself on [**PolygonScan**](https://polygonscan.com/txs?block=0). On creation, this contract was deployed with nearly 10 billion MATIC (the Polygon native currency).
 
 A defining feature of this contract is that it contains a function which allows someone to sign a transaction without sending it. These are known as metatransactions and you can read more about them in [**EIP-2771**](https://eips.ethereum.org/EIPS/eip-2771).
 
 An exploit was lurking in MRC20 though, waiting to drain the contract of all these funds.
 
-On December 3, 2021, nearly a year and a half after creation. A bug bounty report was submitted on Immunify by `LeonSpacewalker` laying out exactly how someone could exploit the MRC20 contract. Over the next 2 days, reports flooded in, detailing this exploit until, a malicious actor found the vulnerability and stole 800,000 MATIC tokens.
+On December 3, 2021, nearly a year and a half after creation. A bug bounty report was submitted on Immunefi by `LeonSpacewalker` laying out exactly how someone could exploit the MRC20 contract. Over the next 2 days, reports flooded in, detailing this exploit until, a malicious actor found the vulnerability and stole 800,000 MATIC tokens.
 
 On Dec 5th, just two days after the initial report, the Polygon Chain was forked with the exploit patched.
 
@@ -103,7 +103,7 @@ So, how did `LeonSpacewalker` find this bug, disclose it and get his massive pay
 
    2. Find a bug and search for projects - Find a bug that's rare or many people are unfamiliar with and look for projects that may be vulnerable to that bug. It can be much easier to look for a specific thing in a code base than to look for something that stands out.
 
-   3. Be fast with new updates: Be signed up to Bug Bounty announcements through platforms like Immunify to assure you're notified as soon as a bounty is made live by a protocol.
+   3. Be fast with new updates: Be signed up to Bug Bounty announcements through platforms like Immunefi to assure you're notified as soon as a bounty is made live by a protocol.
 
    4. Be creative with finding your edge: Something Leon did to give him an edge was traverse community forums to scope out which protocols were considering doing a bug bounty. He would then proactively look through code based _before_ they were even submitted for approval!
 

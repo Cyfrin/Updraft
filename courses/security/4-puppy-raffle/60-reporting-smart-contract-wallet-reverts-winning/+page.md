@@ -42,7 +42,7 @@ Also, true winners would not be able to get paid out, and someone else would win
 **Recommended Mitigation:** There are a few options to mitigate this issue.
 
 1. Do not allow smart contract wallet entrants (not recommended)
-2. Create a mapping of addresses -> payout so winners can pull their funds out themselves, putting the owness on the winner to claim their prize. (Recommended)
+2. Create a mapping of addresses -> payout so winners can pull their funds out themselves, putting the owners on the winner to claim their prize. (Recommended)
 ```
 
 To briefly touch on our recommendations here - The reason disallowing smart contract entrants would not be a preferred mitigation, is that this would restrict situations like multisignature wallets from participating. We'd much rather not lock people out entirely.

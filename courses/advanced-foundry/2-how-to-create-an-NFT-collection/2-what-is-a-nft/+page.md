@@ -21,7 +21,7 @@ Fungible tokens, like ERC20s are similar to a dollar. Any single dollar can be s
 
 ### What's an NFT do?
 
-Because of their unique nature, NFTs have been widely adopted as a medium for art and a means to trade and collect digital art. Sometimes this gets a bad rap, but NFTs are only a standard on which a tonne of use case functionality can be built. Some protocol turn them into representations of game assets, or into tradeble metaverse items, sometimes they're used as means to keep record, or grant access to services or events.
+Because of their unique nature, NFTs have been widely adopted as a medium for art and a means to trade and collect digital art. Sometimes this gets a bad rap, but NFTs are only a standard on which a tonne of use case functionality can be built. Some protocol turn them into representations of game assets, or into tradable metaverse items, sometimes they're used as means to keep record, or grant access to services or events.
 
 The use cases of NFTs grow each day, but the easiest way to think of them currently is as unique digital assets, or unique digital art.
 

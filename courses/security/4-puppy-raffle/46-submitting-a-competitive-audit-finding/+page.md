@@ -21,7 +21,7 @@ Some of this should seem very familiar. We can enter a title and choose an appro
 - The title of a competitive audit submission can omit the [S-#] categorization. This will ultimately be prepended by judges if the report is deemed valid.
 - Remember: a good title is comprised of Root Cause + Impact!
 
-For `Relevant GitHub Links`, we're meant to provide a link, not just to the code base/contract, but to the specific lines we've identified as problematic. Using our DoS Vulnerability from `PuppyRaffle.sol` as an example, we can link directly to the loop in our `enterRaffle` function by right-clicking the line in GitHub and chooosing `copy permalink`.
+For `Relevant GitHub Links`, we're meant to provide a link, not just to the code base/contract, but to the specific lines we've identified as problematic. Using our DoS Vulnerability from `PuppyRaffle.sol` as an example, we can link directly to the loop in our `enterRaffle` function by right-clicking the line in GitHub and choosing `copy permalink`.
 
 ::image{src='/security-section-4/46-submitting-competitive-finding/submitting-competitive-finding2.png' style='width: 75%; height: auto;'}
 
@@ -49,7 +49,7 @@ Something to always strive for is quality in the write ups you submit. In compet
 
 ### Wrap Up
 
-Once a First Flight or Competitive Audit concludes, you'll be able to navitgate to `My Findings` in CodeHawks and download your submissions in markdown. It's worthwhile to add these to your portfolio to show your skills and experience to the world!
+Once a First Flight or Competitive Audit concludes, you'll be able to navigate to `My Findings` in CodeHawks and download your submissions in markdown. It's worthwhile to add these to your portfolio to show your skills and experience to the world!
 
 That's all there is to submitting to a competitive audit! From there a judge will take over. Be sure to sign up to CodeHawks, I promise you that participating in competitive audits and First Flights will supercharge your abilities as a security researcher.
 

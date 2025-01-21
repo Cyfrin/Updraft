@@ -118,7 +118,7 @@ With that all set up, here's what we'd do next:
 1. deploy both `SmallProxy.sol` and `ImplementationA.sol`
 2. call the `setImplementation()` function on `SmallProxy.sol`, passing it `ImplementationA`'s address as an argument
 3. acquire the data needed for the transaction being sent
-   > By passing `777` to our `getDataToTransact()` function we have returned: `0x552410770000000000000000000000000000000000000000000000000000000000000309` this encodes the `function signature` with the passed arguement of `777`.
+   > By passing `777` to our `getDataToTransact()` function we have returned: `0x552410770000000000000000000000000000000000000000000000000000000000000309` this encodes the `function signature` with the passed argument of `777`.
 
 When this is passed to our proxy contract, the contract won't recognize the function signature, will call `fallback()` (which calls `_delegate()`) and pass the data to our implementation contract which DOES recognize this data!
 
@@ -156,4 +156,4 @@ When we then pass the same data as before to our proxy contract, we can indeed s
 
 Now, with this understanding in hand, it's easy to see the power proxies hold. On one hand, they are very convenient and afford developers some safeguard if things should need to change. On the other - if this process is controlled by a single (or small group) of wallets, this opens the door to some high risk centralization concerns.
 
-Next, we'll be looking at `selfDestruct` and how it can be used to circumvent intended contract funtionality!
+Next, we'll be looking at `selfDestruct` and how it can be used to circumvent intended contract functionality!

@@ -24,12 +24,12 @@ We also have `HAVOC summaries` available to us, which allow us to control, with 
 
 Lastly, for the scope of this course, and most applicably to our GasBad solution, we have `DISPATCHER summaries`.
 
-A `DISPATCHER summary` set to true tells the prover that a given function can only execute logic as defined by another contract within our scope. This restricts the behaviour of the function calls in the prover to something predicatable and thus validatable.
+A `DISPATCHER summary` set to true tells the prover that a given function can only execute logic as defined by another contract within our scope. This restricts the behaviour of the function calls in the prover to something predictable and thus validatable.
 
 ::image{src='/formal-verification-3/17-summary-declaration-examples/summary-declaration-examples3.png' style='width: 100%; height: auto;'}
 
 ### Wrap Up
 
-Wow, we've got way more flexibility within the `methods block` than we originally thought! We're going to be employing a `DISPATCHER summary` as means to solve our GasBad prover error. Don't worry if this summary type is hard to grasp as first. Let's apply it to our situaion and hopefully come away with a clearer understanding of how it works.
+Wow, we've got way more flexibility within the `methods block` than we originally thought! We're going to be employing a `DISPATCHER summary` as means to solve our GasBad prover error. Don't worry if this summary type is hard to grasp as first. Let's apply it to our situation and hopefully come away with a clearer understanding of how it works.
 
 See you in the next lesson!

@@ -33,9 +33,9 @@ Let's write this up!
 My example of each section of the write-up template is below, but I encourage you to write your own first and then compare!
 
 <details>
-<summary>[L-1] `TSwapPool::LiquidtyAdded` event has parameters out of order</summary>
+<summary>[L-1] `TSwapPool::LiquidityAdded` event has parameters out of order</summary>
 
-### [L-1] `TSwapPool::LiquidtyAdded` event has parameters out of order
+### [L-1] `TSwapPool::LiquidityAdded` event has parameters out of order
 
 **Description:** What the `LiquidityAdded` event is emitted in the `TSwapPool::_addLiquidityMintAndTransfer` function, it logs values in an incorrect order. The `poolTokensToDeposit` value should go in the third parameter position, whereas the `wethToDeposit` value should go second.
 
@@ -73,7 +73,7 @@ function getInputAmountBasedOnOutput(
 }
 ```
 
-We identified a magic number resulting in an inaccurate fee caculation! This one is big. Again, I challenge you to write your own `Proof of Concept`, keep those skills sharp.
+We identified a magic number resulting in an inaccurate fee calculation! This one is big. Again, I challenge you to write your own `Proof of Concept`, keep those skills sharp.
 
 <details>
 <summary>[H-1] Incorrect fee calculation in `TSwapPool::getInputAmountBasedOnOutput` causes protocol to take too many tokens from users, resulting in lost fees</summary>
@@ -133,7 +133,7 @@ This will be our second low, compare your write up to mine below:
 
 ### [L-2] Default value returned by `TSwapPool::swapExactInput` results in incorrect return value given
 
-**Description:** The `swapExactInput` function is expected to return the actual amount of tokens bought by the caller. However, while it declares the named return value `output` it is never assigned a value, nor uses an explict return statement.
+**Description:** The `swapExactInput` function is expected to return the actual amount of tokens bought by the caller. However, while it declares the named return value `output` it is never assigned a value, nor uses an explicit return statement.
 
 **Impact:** The return value will always be `0`, giving incorrect information to the caller.
 

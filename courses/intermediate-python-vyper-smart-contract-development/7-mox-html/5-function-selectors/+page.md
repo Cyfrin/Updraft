@@ -4,7 +4,7 @@ We'll look at function selectors and how they work within a smart contract. We c
 
 If we go to the **DATA** tab, we see the function type is **Fund**.
 
-We can also see the raw transaction data in the **HEX** section of the transaction. We see the value, which is 0.1 GO or etherium.
+We can also see the raw transaction data in the **HEX** section of the transaction. We see the value, which is 0.1 GO or ethereum.
 
 We are going to explore function selectors in greater detail in a later lesson, but for now, we can see how they operate.
 

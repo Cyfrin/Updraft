@@ -121,10 +121,10 @@ In the above function, we are constraining the amount minted to be greater than 
 
 Lo and behold, let's run the functional mint DSC and observe the result.
 
-::image{src='/foundry-defi/21-defi-handler-minting-dsc/defi-handler-minting-dsc1.PNG' style='width: 100%; height: auto;'}
+::image{src='/foundry-defi/22-defi-handler-mint-dsc/defi-handler-mint-dsc1.png' style='width: 100%; height: auto;'}
 
 You should notice that we've performed multiple calls without any reverts, and that's exactly what success looks like! Your mint function is now up and running and ready to increase the supply of DSC.
 
 Stay tuned for our next adventure! We hope you are now more comfortable with testing the mechanism used for injecting tokens into the DSC ecosystem.
 
-::image{src='/foundry-defi/21-defi-handler-minting-dsc/defi-handler-minting-dsc2.PNG' style='width: 100%; height: auto;'}
+::image{src='/foundry-defi/22-defi-handler-mint-dsc/defi-handler-mint-dsc2.png' style='width: 100%; height: auto;'}

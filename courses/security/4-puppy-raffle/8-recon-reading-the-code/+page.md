@@ -42,7 +42,7 @@ function enterRaffle(address[] memory newPlayers) public payable {
 Starting with the `NatSpec` we may have a few questions rise.
 
 - _What's meant by # of players?_
-- _How does the function prevent duplicant entrants?_
+- _How does the function prevent duplicate entrants?_
 
 Write questions like these in your `notes.md` or even as `@audit` notes inline. These are things we'll want to answer as we progress through the code.
 

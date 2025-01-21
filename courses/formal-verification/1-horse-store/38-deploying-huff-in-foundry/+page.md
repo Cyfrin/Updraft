@@ -32,7 +32,7 @@ Find more information on FFI **[here](https://book.getfoundry.sh/cheatcodes/ffi)
 
 > **Note:** Enabling FFI gives Foundry some pretty pervasive accesses include access to your shell and the ability to read and write from disk. Be very aware of this and use FFI with care.
 
-Addtionally to the above, we'll need to add a remapping to our `foundry.toml` as well.
+Additionally to the above, we'll need to add a remapping to our `foundry.toml` as well.
 
 ```toml
 remappings = ['foundry-huff/=lib/foundry-huff/src']

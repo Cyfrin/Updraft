@@ -124,7 +124,7 @@ function updateExchangeRate(uint256 fee) external onlyThunderLoan {
     uint256 newExchangeRate = s_exchangeRate * (totalSupply() + fee) / totalSupply();
 
     if (newExchangeRate <= s_exchangeRate) {
-        revert AssetToken__ExhangeRateCanOnlyIncrease(s_exchangeRate, newExchangeRate);
+        revert AssetToken__ExchangeRateCanOnlyIncrease(s_exchangeRate, newExchangeRate);
     }
     s_exchangeRate = newExchangeRate;
     emit ExchangeRateUpdated(s_exchangeRate);

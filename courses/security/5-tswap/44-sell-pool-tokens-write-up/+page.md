@@ -35,11 +35,11 @@ Compare your finding write-up to mine below! Again, I'm leaving the PoC in your 
 
 ### [H-4] `TSwapPool::sellPoolTokens` mismatches input and output tokens causing users to receive the incorrect amount of tokens
 
-**Description:** The `sellPoolTokens` function is intended to allow users to easily sell pool tokens and receive WETH in exchange. Users indicate how many pool tokens they're willing to sell in the `poolTokenAmount` parameter. However, the function currently miscalculaes the swapped amount.
+**Description:** The `sellPoolTokens` function is intended to allow users to easily sell pool tokens and receive WETH in exchange. Users indicate how many pool tokens they're willing to sell in the `poolTokenAmount` parameter. However, the function currently miscalculates the swapped amount.
 
 This is due to the fact that the `swapExactOutput` function is called, whereas the `swapExactInput` function is the one that should be called. Because users specify the exact amount of input tokens, not output.
 
-**Impact:** Users will swap the wrong amount of tokens, which is a severe disruption of protcol functionality.
+**Impact:** Users will swap the wrong amount of tokens, which is a severe disruption of protocol functionality.
 
 **Proof of Concept:**
 <write PoC here>

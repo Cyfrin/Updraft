@@ -66,7 +66,7 @@ We can see that this works by trying a few examples.
 Let's compile this and deploy it.
 
 ```bash
-Compile buy_me_a_cofee.vy
+Compile buy_me_a_coffee.vy
 ```
 
 We'll grab any address, like our price feed address. We'll scroll down and put in one for divide_me. What do you think we'll get if we do 1 / 3?

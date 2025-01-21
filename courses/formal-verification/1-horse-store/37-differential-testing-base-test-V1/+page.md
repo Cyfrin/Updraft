@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Where We're At
 
-Let's take a moment to consider where exactly we're at right now.  We've written our Huff contract, and we have our Solidity contract on which it was based. Looking at these two languages, it's clear to see we'd never want to write a whole contract op code by op code. It's incredibly tedius, sure you may be a little more gas efficient, but you're looking at 5x the effort to accomplish something a higher level language can achieve much more easily.
+Let's take a moment to consider where exactly we're at right now.  We've written our Huff contract, and we have our Solidity contract on which it was based. Looking at these two languages, it's clear to see we'd never want to write a whole contract op code by op code. It's incredibly tedious, sure you may be a little more gas efficient, but you're looking at 5x the effort to accomplish something a higher level language can achieve much more easily.
 
 ### Differential Testing
 

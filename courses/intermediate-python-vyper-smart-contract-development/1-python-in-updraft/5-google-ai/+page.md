@@ -30,6 +30,6 @@ It's important though, that you do understand what this code is actually doing s
 
 We'll close this, and we'll delete everything in here, and start with the next section.
 
-If you want to save this locally for later, you can hit file, download. Then you can download this as a .pymb or .py file, free to have it locally if you want to study offline as well.
+If you want to save this locally for later, you can hit file, download. Then you can download this as a .pynb or .py file, free to have it locally if you want to study offline as well.
 
 We'll go ahead and create a new cell or a new block of code by scrolling down. We'll click the + Code button here. We'll get a new cell.

@@ -38,7 +38,7 @@ function redeem(
 
 We would expect this function to behave in opposite to the `deposit` function. Thankfully we have `NATSPEC` this time to verify the function's intent!
 
-Two modifiers can be seen in `redeem`, `revertIfZero(amountOfAssetToken)` and `reverIfNotAllowedToken(token)`. This clarifies somewhat that the token parameter being passed to this function is intended to be the underlying `token`, not the `asset token`.
+Two modifiers can be seen in `redeem`, `revertIfZero(amountOfAssetToken)` and `revertIfNotAllowedToken(token)`. This clarifies somewhat that the token parameter being passed to this function is intended to be the underlying `token`, not the `asset token`.
 
 ```js
 revertIfZero(amountOfAssetToken);

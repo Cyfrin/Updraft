@@ -55,7 +55,7 @@ Alright, with things scoped out a bit, let's dive into writing some code. Start 
 ```js
 // SPDX-License-Identifier: MIT
 
-// This is considered an Exogenous, Decentralized, Anchored (pegged), Crypto Collateralized low volitility coin
+// This is considered an Exogenous, Decentralized, Anchored (pegged), Crypto Collateralized low volatility coin
 
 // Layout of Contract:
 // version
@@ -115,7 +115,7 @@ libs = ["lib"]
 remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts"]
 ```
 
-Rather than importing a standard ERC20 contract, we'll be leveraging the ERC20Burnable extention of this standard. ERC20Burnable includes `burn` functionality for our tokens which will be important when we need to take the asset out of circulation to support stability.
+Rather than importing a standard ERC20 contract, we'll be leveraging the ERC20Burnable extension of this standard. ERC20Burnable includes `burn` functionality for our tokens which will be important when we need to take the asset out of circulation to support stability.
 
 ```js
 // SPDX-License-Identifier: MIT
@@ -138,7 +138,7 @@ contract DecentralizedStableCoin is ERC20Burnable {
 }
 ```
 
-Because we're inheriting ERC20Burnable, and it inherits ERC20, we needs to satify the standard ERC20 constructor parameters within our contracts constructor. We've set the name `DecentralizedStableCoin` and the symbol `DSC`.
+Because we're inheriting ERC20Burnable, and it inherits ERC20, we need to satisfy the standard ERC20 constructor parameters within our contracts constructor. We've set the name `DecentralizedStableCoin` and the symbol `DSC`.
 
 All of the properties of our protocol are going to be governed ultimately by the DSCEngine.sol contract. Functionality like the stability mechanism, including minting and burning, need to be controlled by the DSCEngine to maintain the integrity of the stablecoin.
 
@@ -149,7 +149,7 @@ In order to accomplish this, we're going to also inherit `Ownable` with Decentra
 > in the constructor. We have to modify our code to account for this when
 > running `forge build` so that our project will not error. Like this:
 > `constructor(address initialOwner) ERC20("DecentralizedStableCoin", "DSC")
-Ownerable(initialOwner) {}`
+Ownable(initialOwner) {}`
 
 ```js
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";

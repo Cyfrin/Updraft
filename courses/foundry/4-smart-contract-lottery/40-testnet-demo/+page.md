@@ -80,7 +80,7 @@ deploy:
 
 The `@` indicates that we don't want this line printed out. We do this because if not used it will print out your private key, and we don't want that.
 
-Every time we use an environment variable in the Makefile we use the dollar sign and paranthesis to flag it as an environment variable. The `forge script` above won't work as is because we don't have any `NETWORK_ARGS` defined. Our main goal is to be able to call the following command `make deploy ARGS="--network sepolia"` and our Makefile to automatically grab the proper Sepolia deployment parameters.
+Every time we use an environment variable in the Makefile we use the dollar sign and parenthesis to flag it as an environment variable. The `forge script` above won't work as is because we don't have any `NETWORK_ARGS` defined. Our main goal is to be able to call the following command `make deploy ARGS="--network sepolia"` and our Makefile to automatically grab the proper Sepolia deployment parameters.
 
 Put the following above your `deploy` target:
 

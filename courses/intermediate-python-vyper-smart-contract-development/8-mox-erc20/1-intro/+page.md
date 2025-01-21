@@ -152,7 +152,7 @@ from eth_utils import to_wei
 ```
 
 ```python
-from moccasine.boa_tools import VyperContract
+from moccasin.boa_tools import VyperContract
 ```
 
 ```python
