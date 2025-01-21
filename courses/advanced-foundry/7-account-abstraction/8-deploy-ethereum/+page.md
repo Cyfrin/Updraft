@@ -86,7 +86,7 @@ contract HelperConfig is Script {
 
     function getZkSyncSepoliaConfig() public pure returns (NetworkConfig memory) {
         return NetworkConfig({
-            entryPoint: address(0), // There is no entryPoint in zkSync!
+            entryPoint: address(0), // There is no entryPoint in ZKsync!
             account: BURNER_WALLET
         });
     }

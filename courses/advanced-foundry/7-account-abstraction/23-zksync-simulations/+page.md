@@ -1,9 +1,9 @@
-## Account Abstraction Lesson 23: zkSync Transaction Simulations
+## Account Abstraction Lesson 23: ZKsync Transaction Simulations
 
 We have gone through a lot, but now we are ready to do some coding. In this lesson we will be working inside the `validateTransaction` function. A heavy focus here will be on steps 2 and 3 of the validation phase - validate and update the nonce. We will:
 
 - Add Headers
-- Update foundryup for zkSync
+- Update foundryup for ZKsync
 - Learn about System Contract Calls
 - Call NonceHolder
 - increment nonce by 1
@@ -127,7 +127,7 @@ is-system = true
 
 ---
 
-For now, all you need to know is that when you pass the isSystem flag to the contract, it will in-line replace all the simulations with the zkSync isSystem call counterpart. It transforms it into a system contract call.
+For now, all you need to know is that when you pass the isSystem flag to the contract, it will in-line replace all the simulations with the ZKsync isSystem call counterpart. It transforms it into a system contract call.
 
 **This is very complex and not something you need to have nailed down. Don't get bogged down here.**
 
@@ -217,7 +217,7 @@ import { INonceHolder } from "lib/foundry-era-contracts/src/system-contracts/con
 
 ### Summary
 
-In summary, this code makes a system call to the NonceHolder contract to conditionally increment the transaction nonce, ensuring the nonce handling mechanism in zkSync's account abstraction is correctly followed.
+In summary, this code makes a system call to the NonceHolder contract to conditionally increment the transaction nonce, ensuring the nonce handling mechanism in ZKsync's account abstraction is correctly followed.
 
 - `uint32(gasleft())` passes the remaining gas for the call to ensure the system call has enough gas to execute.
 - `address(NONCE_HOLDER_SYSTEM_CONTRACT)` specifies the target system contract responsible for managing nonces.
@@ -240,7 +240,7 @@ In summary, this code makes a system call to the NonceHolder contract to conditi
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
-It makes a system call to the NonceHolder contract to conditionally increment the transaction nonce, ensuring the nonce handling mechanism in zkSync's account abstraction is correctly followed.
+It makes a system call to the NonceHolder contract to conditionally increment the transaction nonce, ensuring the nonce handling mechanism in ZKsync's account abstraction is correctly followed.
 
 </details>
 

@@ -1,6 +1,6 @@
-## Account Abstraction Lesson 26: Pay For Transactions zkSync
+## Account Abstraction Lesson 26: Pay For Transactions ZKsync
 
-We are very close to having our zkSync account abstraction finished. We still need to pay for the transaction. In the `validateTransaction` function we check to see if we can pay, but now we need to actually do it. We have two possible candidates for this - `payForTransaction` and `prepareForPaymaster`. Since we aren't using a paymaster, we'll be using `payForTransaction`. 
+We are very close to having our ZKsync account abstraction finished. We still need to pay for the transaction. In the `validateTransaction` function we check to see if we can pay, but now we need to actually do it. We have two possible candidates for this - `payForTransaction` and `prepareForPaymaster`. Since we aren't using a paymaster, we'll be using `payForTransaction`. 
 
 ```js
  function payForTransaction(bytes32, /*_txHash*/ bytes32, /*_suggestedSignedHash*/ Transaction memory _transaction)

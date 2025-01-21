@@ -45,7 +45,7 @@ Running this test, we'd see:
 
 The unit test catches this right away. All of the most popular frameworks have unit tests built in!
 
-### Layer 2 Fuzz Tests
+### Layer 2: Fuzz Tests
 
 Fuzz tests are configured to have random inputs supplied to a function in an effort to identify and edgecase which breaks a protocol's invariant.
 
@@ -85,7 +85,7 @@ You can see, we don't explicitly declare the value for `data` in our test, and i
 
 ::image{src='/foundry-defi/16-defi-leveling-up-testing/defi-leveling-up-testing2.png' style='width: 100%; height: auto;'}
 
-### Layer 3 Static Analysis
+### Layer 3: Static Analysis
 
 Unit testing and fuzz testing as examples of **_dynamic tests_**, this is when code is actually executed to determine if there's a problem.
 
@@ -105,7 +105,7 @@ The above withdraw function has a classic reentrancy attack. We know an issue li
 
 ::image{src='/foundry-defi/16-defi-leveling-up-testing/defi-leveling-up-testing3.png' style='width: 100%; height: auto;'}
 
-### Layer 4 Formal Verification
+### Layer 4: Formal Verification
 
 At a high-level, formal verification is the act of proving or disproving a property of a system. It does this by generating a mathematical model of the system and using mathematical proofs to identify if a property can be broken.
 

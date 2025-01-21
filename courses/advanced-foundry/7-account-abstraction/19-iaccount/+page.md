@@ -18,7 +18,7 @@ function validateTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Tran
 
 ---
 
-You may have noticed that it is similar to the validateUserOp function in our MinimalAccount.sol that we built for Ethereum. On Ethereum, there are user operations, but zkSync just has transactions. Just like we had a `PackedUserOp` struct before, now we have a `Transaction` struct. This can be found in `MemoryTransactionHelper.sol` For your convenience, I've added it below. Click to open it and read through it.
+You may have noticed that it is similar to the validateUserOp function in our MinimalAccount.sol that we built for Ethereum. On Ethereum, there are user operations, but ZKsync just has transactions. Just like we had a `PackedUserOp` struct before, now we have a `Transaction` struct. This can be found in `MemoryTransactionHelper.sol` For your convenience, I've added it below. Click to open it and read through it.
 
 ---
 
@@ -27,7 +27,7 @@ You may have noticed that it is similar to the validateUserOp function in our Mi
 **<summary><span style="color:red">MemoryTransactionHelper.sol</span></summary>**
 
 ```js
-/// @notice Structure used to represent a zkSync transaction.
+/// @notice Structure used to represent a ZKsync transaction.
 struct Transaction {
     // The type of the transaction.
     uint256 txType;
@@ -80,7 +80,7 @@ struct Transaction {
 </details>
 
 
-When we send an Account Abstraction transaction through zkSync, the `Transaction` struct will essentially be populated. This will be our focus for now. The following parameters we won't worry about, for now. But here is the gist of what they do.
+When we send an Account Abstraction transaction through ZKsync, the `Transaction` struct will essentially be populated. This will be our focus for now. The following parameters we won't worry about, for now. But here is the gist of what they do.
 
 - `_txHash` = The hash of the transaction to be used in the explorer
 - `_suggestedSignedHash` = The hash of the transaction is signed by EOAs
@@ -151,7 +151,7 @@ This lesson gave us a gist of what our IAccount interface will do. Take a moment
 
 ---
 
-<summary>1. How is the validateTransaction function in zkSync similar to the validateUserOp function in Ethereum?</summary>
+<summary>1. How is the validateTransaction function in ZKsync similar to the validateUserOp function in Ethereum?</summary>
 
 ---
 
@@ -159,7 +159,7 @@ This lesson gave us a gist of what our IAccount interface will do. Take a moment
 
 **<summary><span style="color:red">Click for Answers</span></summary>**
 
-    Both functions are used to validate transactions or user operations. In zkSync, the Transaction struct is used instead of the PackedUserOp struct in Ethereum.
+    Both functions are used to validate transactions or user operations. In ZKsync, the Transaction struct is used instead of the PackedUserOp struct in Ethereum.
 
 </details>
 
