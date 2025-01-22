@@ -1,0 +1,5 @@
+
+           ---
+           title: Solution Price Scale
+           ---
+        
