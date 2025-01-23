@@ -1,5 +1,6 @@
 ---
 title: Implement the Chainlink VRF
+---
 
 _Follow along with this video:_
 
