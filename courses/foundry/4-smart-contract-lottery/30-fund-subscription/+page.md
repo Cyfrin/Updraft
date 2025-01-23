@@ -1,5 +1,6 @@
 ---
 title: Fund subscription
+---
 
 _Follow along with this video:_
 

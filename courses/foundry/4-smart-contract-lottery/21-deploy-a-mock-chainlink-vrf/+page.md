@@ -1,5 +1,6 @@
 ---
 title: Deploy a mock Chainlink VRF
+---
 
 _Follow along with this video:_
 

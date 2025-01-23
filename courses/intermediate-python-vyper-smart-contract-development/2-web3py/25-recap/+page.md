@@ -1,3 +1,7 @@
+---
+title: Recap
+---
+
 ## Recap
 
 We learned a lot of useful blockchain and Python fundamentals in this section. Let's take a look at what we covered.

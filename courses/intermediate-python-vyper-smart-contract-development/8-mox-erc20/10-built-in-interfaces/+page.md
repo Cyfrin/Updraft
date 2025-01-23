@@ -1,3 +1,7 @@
+---
+title: Vyper Built-in Interfaces
+---
+
 ## Vyper Built-in Interfaces
 
 This lesson will explore the built-in interfaces provided by the Vyper compiler.

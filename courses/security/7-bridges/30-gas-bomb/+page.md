@@ -1,5 +1,5 @@
 ---
-title: Exploit: Exploit - Gas Bomb
+title: "Exploit: Exploit - Gas Bomb"
 ---
 
 _Follow along with the video lesson:_

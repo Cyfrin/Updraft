@@ -1,3 +1,3 @@
 ---
-        title: Mox Console
-        ---
+title: Mox Console
+---

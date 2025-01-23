@@ -1,3 +1,3 @@
 ---
-        title: Build It
-        ---
+title: Build It
+---

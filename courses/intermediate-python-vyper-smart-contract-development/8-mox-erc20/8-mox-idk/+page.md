@@ -1,3 +1,3 @@
 ---
-        title: Mox Idk
-        ---
+title: Mox Idk
+---

@@ -1,5 +1,6 @@
 ---
 title: The CEI method - Checks, Effects, Interactions
+---
 
 _Follow along with this video:_
 

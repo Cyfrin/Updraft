@@ -1,3 +1,7 @@
+---
+title: Tests
+---
+
 ## Tests
 
 We've deployed our contract, and now we're ready to write some tests. We're not going to go in-depth with writing tests in this video, but we'll show a simple test case to get you started. 

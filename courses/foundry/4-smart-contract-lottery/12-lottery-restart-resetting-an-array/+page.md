@@ -1,5 +1,6 @@
 ---
 title: Lottery restart - Resetting an Array
+---
 
 _Follow along with this video:_
 

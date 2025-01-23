@@ -1,5 +1,6 @@
 ---
 title: Smart contracts events
+---
 
 _Follow along with this video:_
 

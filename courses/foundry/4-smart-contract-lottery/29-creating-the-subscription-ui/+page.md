@@ -1,5 +1,6 @@
 ---
 title: Creating the subscription UI
+---
 
 _Follow along with this video:_
 

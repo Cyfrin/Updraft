@@ -1,5 +1,6 @@
 ---
 title: Implementing the lottery state - Enum
+---
 
 _Follow along with this video:_
 

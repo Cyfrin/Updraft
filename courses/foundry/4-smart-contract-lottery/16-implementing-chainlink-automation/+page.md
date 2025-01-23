@@ -1,6 +1,6 @@
 ---
 title: Implementing Chainlink Automation
-
+---
 _Follow along with this video:_
 
 ---
