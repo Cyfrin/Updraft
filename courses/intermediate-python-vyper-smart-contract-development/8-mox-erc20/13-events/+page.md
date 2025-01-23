@@ -1,3 +1,7 @@
+---
+title: Events in our Raffle.sol
+---
+
 ## Lesson 9: Events in our Raffle.sol
 
 In this lesson, we learn about events. You might think you're familiar with events, but you're really not. Let's dive into that.

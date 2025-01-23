@@ -1,5 +1,6 @@
 ---
 title: Smart Contract Lottery - Project setup
+---
 
 _Follow along with this video:_
 

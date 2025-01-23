@@ -1,5 +1,6 @@
 ---
 title: Mid section recap
+---
 
 _Follow along with this video:_
 

@@ -1,5 +1,6 @@
 ---
 title: Refactoring events data
+---
 
 _Follow along with this video:_
 

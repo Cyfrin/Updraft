@@ -1,5 +1,6 @@
 ---
 title: Adding a consumer
+---
 
 _Follow along with this video:_
 

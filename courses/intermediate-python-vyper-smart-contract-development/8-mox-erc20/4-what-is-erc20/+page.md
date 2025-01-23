@@ -1,3 +1,3 @@
 ---
-        title: What Is Erc20
-        ---
+title: What Is Erc20
+---

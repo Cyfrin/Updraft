@@ -1,3 +1,7 @@
+---
+title: Deploy Scripts
+---
+
 ## Deploy Scripts
 
 Let's write a deployment script. We can create a function called:

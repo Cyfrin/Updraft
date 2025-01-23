@@ -1,3 +1,3 @@
 ---
-        title: Intro
-        ---
+title: Intro
+---

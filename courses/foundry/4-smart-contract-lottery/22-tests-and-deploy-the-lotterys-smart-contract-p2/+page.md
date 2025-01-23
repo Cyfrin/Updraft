@@ -1,5 +1,6 @@
 ---
 title: Tests and deploy the lottery smart contract pt.1
+---
 
 _Follow along with this video:_
 

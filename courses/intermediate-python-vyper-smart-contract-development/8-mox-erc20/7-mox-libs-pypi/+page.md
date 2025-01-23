@@ -1,3 +1,3 @@
 ---
-        title: Mox Libs Pypi
-        ---
+title: Mox Libs Pypi
+---

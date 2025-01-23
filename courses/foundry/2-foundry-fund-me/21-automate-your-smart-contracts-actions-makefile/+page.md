@@ -1,5 +1,6 @@
 ---
 title: Automate your smart contracts actions - Makefile
+---
 
 _Follow along with this video:_
 

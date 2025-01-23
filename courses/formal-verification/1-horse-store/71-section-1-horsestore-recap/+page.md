@@ -1,5 +1,7 @@
 ---
 title: Section 1 HorseStore Recap
+---
+
 _Follow along with this video:_
 ---
 
