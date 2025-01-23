@@ -1,6 +1,6 @@
 ---
 title: Deploy the lottery on the testnet pt.1
-
+---
 _Follow along with this video:_
 
 ---

@@ -1,5 +1,6 @@
 ---
 title: Solidity style guide
+---
 
 _Follow along with this video:_
 

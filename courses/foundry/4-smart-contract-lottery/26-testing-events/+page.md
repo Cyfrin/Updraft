@@ -1,5 +1,6 @@
 ---
 title: Testing events
+---
 
 _Follow along with this video:_
 

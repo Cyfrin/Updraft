@@ -1,5 +1,6 @@
 ---
 title: Implementing console log in your smart contract
+---
 
 _Follow along with this video:_
 
