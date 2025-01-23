@@ -1,3 +1,3 @@
 ---
-        title: Stateful Fuzz
-        ---
+title: Stateful Fuzz
+---
