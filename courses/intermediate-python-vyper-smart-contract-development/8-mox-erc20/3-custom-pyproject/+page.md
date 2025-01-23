@@ -1,3 +1,3 @@
 ---
-        title: Custom Pyproject
-        ---
+title: Custom Pyproject
+---

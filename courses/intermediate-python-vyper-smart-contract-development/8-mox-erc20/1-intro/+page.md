@@ -1,3 +1,7 @@
+---
+title: Moccasin ERC20 Introduction
+---
+
 ## Moccasin ERC20 Introduction
 
 We are about to learn a ton about ERC20 tokens, and how to deploy them. We'll also see a bug that we'll intentionally create in our smart contract.

@@ -1,3 +1,3 @@
 ---
-        title: Setup
-        ---
+title: Setup
+---

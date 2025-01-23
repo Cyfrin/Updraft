@@ -1,3 +1,3 @@
 ---
-        title: Init Supply
-        ---
+title: Init Supply
+---

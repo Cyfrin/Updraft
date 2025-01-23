@@ -1,3 +1,7 @@
+---
+title: Testing for Events
+---
+
 ## Testing for Events
 
 We've learned what events are and what they're used for. Let's look at our `snek_token` and see if we need to add it anywhere. Okay, maybe for this mint function. Okay, maybe for our initial deploy, but actually, does this mint function already emit logs? Let's take a look. And, yep, it sure does. Okay, so we don't need to do any logging on our `snek_token`. Our `snek_token` is good. 
