@@ -1,18 +1,16 @@
-### Curve V2 AMM Exercise 1: get_dy
+### Curve V2 Swap Exercise 1
 
-In this lesson, we'll begin our first exercise for swapping with Curve V2 AMM. The exercise is located in the `CurveV2Swap.test.sol` file.
+Here is our first exercise for swapping with Curve V2 AMM. The exercise is located under the following path:
+test > curve-v2 > exercises > Curve2Swap.test.sol
 
-For this exercise, we'll be using a Curve V2 pool that contains USDC, WBTC, and WETH. Our goal for the first exercise is to:
+Okay, let's take a look at our first exercise.
 
-> Call `get_dy` to calculate the amount of USDC that can be received when swapping 1 WETH.
+For this exercise we're going to be using the Curve V2 pool, that has:
+USDC
+WBTC
+WETH
 
-The space provided for writing our code is in the `test_get_dy` function:
+So for our first exercise, we need to call get_dy, to calculate the amount of USDC for swapping one WETH to USDC. And we can write our code here:
 ```javascript
-function test_get_dy() public {
-    // Calculate swap from WETH to USDC
-    uint256 dy = 0;
-    
-    console2.log("dy %e", dy);
-    assertGt(dy, 0, "dy = 0");
-}
+uint256 dy = 0;
 ```
