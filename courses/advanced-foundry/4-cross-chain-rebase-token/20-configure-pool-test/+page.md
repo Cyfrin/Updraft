@@ -6,7 +6,7 @@ We need to configure the token pools before we mint tokens and transfer them cro
 applyChainUpdates
 ```
 
-This function takes two constructor arguments: `U int 256` (the remote chain selectors to remove) and `chain updates` (an array that contains the configuration for any chains that we want to enable). 
+This function takes two constructor arguments: `uint64[] calldata remoteChainSelectorsToRemove` and `ChainUpdate[] calldata chainsToAdd` (an array that contains the configuration for any chains that we want to enable).
 
 Enabling a chain means that we are allowing tokens to be received and sent to this chain. 
 
