@@ -1,9 +1,5 @@
-Okay, here's a written lesson based on the provided video content.
+## Introducing: Tas
 
-First, we are introduced to the instructor, Tas.
+Tas is a 38-year-old software developer with a nine-year track record of exploring and innovating in the Web3 space. With a solid foundation in mathematics from his university days, he spent several years traveling the world after graduation before diving into programming as a PHP web developer. Tas’s fascination with blockchain technology began when he encountered Andreas Antonopoulos’s talks on Bitcoin, which ultimately drew him into the broader crypto realm. He later shifted his focus to Ethereum, drawn by its flexibility and smart contract capabilities.
 
-Then, we learn about Tas's background and experience. Tas has been a software developer for more than a decade and a smart contract developer for more than five years. 
-
-Tas also teaches about smart contract programming on their YouTube channel, Smart Contract Programmer.
-
-Finally, we learn that Tas is the author of the websites Solidity by Example and Vyper by Example.
+Nowadays, Tas shares his insights on decentralized technologies and smart contract development through his YouTube channel, [Smart Contract Programmer](https://www.youtube.com/@smartcontractprogrammer), and connects with fellow enthusiasts on X at [@ProgrammerSmart](https://x.com/ProgrammerSmart).
