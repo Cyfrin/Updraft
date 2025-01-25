@@ -2,7 +2,7 @@
 title: Recap II
 ---
 
-_Follow along with this video:_\
+_Follow along with this video:_
 
 ---
 

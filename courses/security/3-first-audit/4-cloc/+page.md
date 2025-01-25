@@ -50,7 +50,7 @@ This is what the output might look like:
 
 ### The Importance of Knowing Your Codebase Size
 
-Why is knowing the number of source lines of code (also referred to as Nsloc) crucial? The answer lies in the process of auditing and security research.
+Why is knowing the number of source lines of code (also referred to as nSLOC) crucial? The answer lies in the process of auditing and security research.
 
 As you perform more audits and delve further into security research, you'll start to gauge the pace at which you can audit a code base. Understanding that pace enables you to estimate more accurately the time required for future coding or auditing tasks based on the size of the code base.
 
