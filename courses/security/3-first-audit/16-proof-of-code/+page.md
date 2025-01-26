@@ -88,15 +88,15 @@ I show one such method of reading any data off chain below.
 :br
 **Proof of Concept:**The below test case shows how anyone could read the password directly from the blockchain. We use foundry's cast tool to read directly from the storage of the contract, without being the owner.
 
-    Create a locally running chain
+Create a locally running chain
 
-make anvil
+    make anvil
 
-    Deploy the contract to the chain
+Deploy the contract to the chain
 
-make deploy
+    make deploy
 
-    Run the storage tool
+Run the storage tool
 
 We use 1 because that's the storage slot of s_password in the contract.
 
