@@ -2,13 +2,13 @@
 title: Recap II
 ---
 
-_Follow along with this video:_\
+_Follow along with this video:_
 
 ---
 
 Let's recap a few of the things we've found while reviewing this protocol so far.
 
-### Vulnerability #1
+### Vulnerability 1
 
 First, we found that the `setPassword()` function, while intending to only callable by the `owner`, has no check to ensure this.
 
@@ -24,7 +24,7 @@ This is an `Access Control` vulnerability, allowing anyone to change the passwor
 ```js
 function setPassword(string memory newPassword) external {
   if (msg.sender !== s_owner) {
-  revert PasswordStore__NotOwner;
+    revert PasswordStore__NotOwner;
   }
   s_password = newPassword;
   emit SetNetPassword();
@@ -67,4 +67,4 @@ To sum up our findings:
 
 Great work in spotting these vulnerabilities! We've already shown that we're capable of making this protocol more secure.
 
-In the next lesson we're going to go over some test assessment.
+In the next lesson, we're going to go over some test assessment.

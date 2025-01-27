@@ -20,7 +20,7 @@ If we're following `The Tincho` method, our first step is going to be reading th
 
 > You can also open the preview pane by opening your command pallet and typing `markdown open preview`.
 
-_Quick tip: Check if an extension must be installed for Vs Code if it's not working for you._
+_Quick tip: Check if an extension must be installed for VS Code if it's not working for you._
 
 ::image{src='/security-section-3/7-context/context2.png' style='width: 100%; height: auto;'}
 
