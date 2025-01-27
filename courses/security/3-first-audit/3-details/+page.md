@@ -142,7 +142,7 @@ Our client reports that there are **No** known issues with their codebase. I lov
 
 ### Local Setup
 
-. Go ahead and follow the `quick start` guide our client as provided.
+Go ahead and follow the `quick start` guide our client as provided.
 
 ```md
 git clone https://github.com/Cyfrin/3-passwordstore-audit
