@@ -1,0 +1,5 @@
+
+           ---
+           title: Next Tick Algorithm
+           ---
+        
