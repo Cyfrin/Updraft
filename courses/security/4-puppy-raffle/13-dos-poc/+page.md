@@ -47,7 +47,7 @@ At this point I would add this to my `notes.md`, you may want to come back to th
 
 ### Proof of Code
 
-If the protocol has an existing test suite, it's often easier to add our tests to it then write things from scratch.
+If the protocol has an existing test suite, it's often easier to add our tests to it than write things from scratch.
 
 Run `forge test` to make sure the test suite is working correctly so far!
 
