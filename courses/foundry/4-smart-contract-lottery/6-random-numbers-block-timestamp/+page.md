@@ -70,7 +70,7 @@ And now we have all the prerequisites to perform the check:
 // 3. Automatically called
 function pickWinner() external {
     // check to see if enough time has passed
-    if (block.timestamp - s_lastTimeStamp < interval) revert();
+    if (block.timestamp - s_lastTimeStamp < i_interval) revert();
 }
 ```
 
