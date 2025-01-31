@@ -64,7 +64,7 @@ Were this a private audit, I may start an `Informational` section in my `notes.m
     ie. `i_entranceFee` or `ENTRANCE_FEE`
 ```
 
-> **Pro-tip:** In VS Code you can use these keyboard shortcuts to navigate between previous and next cursor positions:
+> **Pro-tip:** In VS Code, you can use these keyboard shortcuts to navigate between previous and next cursor positions:
 >
 > - Windows: `Alt + Left/Right Arrow`
 > - Mac:
