@@ -554,9 +554,9 @@ If you try to build the project now you'll most likely face a plethora of errors
 
 Please ensure that all the scripts, tests and main contracts use `pragma solidity ^0.8.19;`. Make sure to change the pragma of the following files `lib/chainlink/contracts/src/v0.8/vrf/dev/VRFCoordinatorV2_5.sol` and `lib/chainlink/contracts/src/v0.8/vrf/dev/SubscriptionAPI.sol` to `pragma solidity ^0.8.19;`. You shouldn't do this in any other cases. We do it for tutorial purposes. Inside `lib/chainlink/contracts/src/v0.8/vendor/@eth-optimism/contracts/v0.8.9/contracts/L2/predeploys/OVM_GasPriceOracle.sol` modify the `Ownable()` call from the constructor into `Ownable(_owner)`
 
-In `HelperConfig.s.sol` delete the existing import for `VRFCoordinatorV2Mock` and replace it with the following `import {VRFCoordinatorV2PlusMock} from "chainlink/src/v0.8/vrf/mocks/VRFCoordinatorV2PlusMock.sol";`. Change the VRF Mock deployment line in `getOrCreateAnvilEthConfig` from `VRFCoordinatorV2Mock vrfCoordinatorV2Mock = new VRFCoordinatorV2Mock(baseFee, gasPriceLink);` to `VRFCoordinatorV2PlusMock vrfCoordinatorV2Mock = new VRFCoordinatorV2PlusMock(baseFee, gasPriceLink);`
+In `HelperConfig.s.sol` delete the existing import for `VRFCoordinatorV2_5Mock` and replace it with the following `import {VRFCoordinatorV2PlusMock} from "chainlink/src/v0.8/vrf/mocks/VRFCoordinatorV2PlusMock.sol";`. Change the VRF Mock deployment line in `getOrCreateAnvilEthConfig` from `VRFCoordinatorV2_5Mock VRFCoordinatorV2_5Mock = new VRFCoordinatorV2_5Mock(baseFee, gasPriceLink);` to `VRFCoordinatorV2PlusMock VRFCoordinatorV2_5Mock = new VRFCoordinatorV2PlusMock(baseFee, gasPriceLink);`
 
-In `Interactions.s.sol` delete the existing import for `VRFCoordinatorV2Mock` and replace it with the following `import {VRFCoordinatorV2PlusMock} from "chainlink/src/v0.8/vrf/mocks/VRFCoordinatorV2PlusMock.sol";`. For all 3 existing contracts, create and fund subscriptions and add consumer perform a call to a function from `VRFCoordinatorV2Mock`, make sure to replace `VRFCoordinatorV2Mock` with `VRFCoordinatorV2PlusMock`.
+In `Interactions.s.sol` delete the existing import for `VRFCoordinatorV2_5Mock` and replace it with the following `import {VRFCoordinatorV2PlusMock} from "chainlink/src/v0.8/vrf/mocks/VRFCoordinatorV2PlusMock.sol";`. For all 3 existing contracts, create and fund subscriptions and add consumer perform a call to a function from `VRFCoordinatorV2_5Mock`, make sure to replace `VRFCoordinatorV2_5Mock` with `VRFCoordinatorV2_5Mock`.
 
 Make sure to add your `subscriptionId`, which you got by following the tutorial related to obtaining it using the Chainlink UI, inside the `HelperConfig::getSepoliaEthConfig` function.
 
@@ -598,7 +598,7 @@ It failed on setup:
 ```
     │   │   ├─ [0] VM::startBroadcast()
     │   │   │   └─ ← [Return]
-    │   │   ├─ [236] VRFCoordinatorV2::addConsumer(5000032745829988966686682423284879867102409618787289144283231874950241281744 [5e75], Raffle: [0x90193C961A926261B756D1E5bb255e67ff9498A1])
+    │   │   ├─ [236] VRFCoordinatorV2_5Mock::addConsumer(5000032745829988966686682423284879867102409618787289144283231874950241281744 [5e75], Raffle: [0x90193C961A926261B756D1E5bb255e67ff9498A1])
     │   │   │   └─ ← [Revert] EvmError: Revert
     │   │   └─ ← [Revert] EvmError: Revert
     │   └─ ← [Revert] EvmError: Revert
@@ -613,16 +613,16 @@ We need to make sure that we add a consumer using the same private key (account)
 You could say, `ok, I get it, let's hardcode the subscriptionId inside the HelperConfig::getSepoliaEthConfig function to 0, so our script create a new subscription`. That is a very smart thing to say, but if you do that you'll get this outcome:
 
 ```
-    │   ├─ [9690] FundSubscription::fundSubscription(VRFCoordinatorV2: [0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625], 11932 [1.193e4], LinkToken: [0x779877A7B0D9E8603169DdbD7836e478b4624789])
+    │   ├─ [9690] FundSubscription::fundSubscription(VRFCoordinatorV2_5Mock: [0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625], 11932 [1.193e4], LinkToken: [0x779877A7B0D9E8603169DdbD7836e478b4624789])
     │   │   ├─ [0] console::log("Funding subscription: ", 11932 [1.193e4]) [staticcall]
     │   │   │   └─ ← [Stop]
-    │   │   ├─ [0] console::log("Using vrfCoordinator: ", VRFCoordinatorV2: [0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625]) [staticcall]
+    │   │   ├─ [0] console::log("Using vrfCoordinator: ", VRFCoordinatorV2_5Mock: [0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625]) [staticcall]
     │   │   │   └─ ← [Stop]
     │   │   ├─ [0] console::log("On ChainID: ", 11155111 [1.115e7]) [staticcall]
     │   │   │   └─ ← [Stop]
     │   │   ├─ [0] VM::startBroadcast()
     │   │   │   └─ ← [Return]
-    │   │   ├─ [3558] LinkToken::transferAndCall(VRFCoordinatorV2: [0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625], 3000000000000000000 [3e18], 0x0000000000000000000000000000000000000000000000000000000000002e9c)
+    │   │   ├─ [3558] LinkToken::transferAndCall(: [0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625], 3000000000000000000 [3e18], 0x0000000000000000000000000000000000000000000000000000000000002e9c)
     │   │   │   └─ ← [Revert] revert: ERC20: transfer amount exceeds balance
     │   │   └─ ← [Revert] revert: ERC20: transfer amount exceeds balance
     │   └─ ← [Revert] revert: ERC20: transfer amount exceeds balance
@@ -710,7 +710,7 @@ function getOrCreateAnvilEthConfig()
     return NetworkConfig({
         entranceFee: 0.01 ether,
         interval: 30, // 30 seconds
-        vrfCoordinator: address(vrfCoordinatorV2Mock),
+        vrfCoordinator: address(vrfCoordinatorV2_5Mock),
         gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
         subscriptionId: 0, // If left as 0, our scripts will create one!
         callbackGasLimit: 500000, // 500,000 gas
@@ -748,7 +748,7 @@ contract AddConsumer is Script {
             ,
             ,
             uint256 deployerKey
-        ) = helperConfig.activeNetworkConfig();
+        ) = helperConfig.getConfig();
         addConsumer(raffle, vrfCoordinator, subscriptionId, deployerKey);
 
     }
@@ -762,7 +762,7 @@ contract AddConsumer is Script {
 
 Let's understand the logic behind the change and then change it in the other two contracts `FundSubscription` and `CreateSubscription`.
 
-We start everything from `helperConfig.activeNetworkConfig` because the main change we want to bake in is the `NetworkConfig` change we did in `HelperConfig`. We get the `deployerKey` from the `helperConfig.activeNetworkConfig();` call. Then we use it in the `addConsumer` function, providing it as an input. Scrolling up to the `addConsumer` function, we need to define the 4th input `function addConsumer(address raffle, address vrfCoordinator, uint256 subscriptionId, uint256 deployerKey)`. Now that we have access to the `deployerKey` we can provide it in `vm.startBroadcast(deployerKey);`. So that `addConsumer` function will be called by the right account.
+We start everything from `helperconfig.getConfig()` because the main change we want to bake in is the `NetworkConfig` change we did in `HelperConfig`. We get the `deployerKey` from the `helperConfig.getConfig();` call. Then we use it in the `addConsumer` function, providing it as an input. Scrolling up to the `addConsumer` function, we need to define the 4th input `function addConsumer(address raffle, address vrfCoordinator, uint256 subscriptionId, uint256 deployerKey)`. Now that we have access to the `deployerKey` we can provide it in `vm.startBroadcast(deployerKey);`. So that `addConsumer` function will be called by the right account.
 
 We will perform the same changes to the other two contracts:
 
@@ -781,7 +781,7 @@ contract FundSubscription is Script {
             ,
             address link,
             uint256 deployerKey
-        ) = helperConfig.activeNetworkConfig();
+        ) = helperConfig.getConfig();
         fundSubscription(vrfCoordinator, subscriptionId, link, deployerKey);
     }
 
@@ -806,7 +806,7 @@ contract FundSubscription is Script {
 }
 ```
 
-We start with `fundSubscriptionUsingConfig` we add the `deployerKey` variable in the `activeNetworkConfig` call line. We use that newly acquired `deployerKey` inside the `fundSubscription` call, providing it as input. Going to `fundSubscription` we add the 4th input variable `uint256 deployerKey`. We use the new input in both `vm.startBroadcast` places.
+We start with `fundSubscriptionUsingConfig` we add the `deployerKey` variable in the `getConfig()` call line. We use that newly acquired `deployerKey` inside the `fundSubscription` call, providing it as input. Going to `fundSubscription` we add the 4th input variable `uint256 deployerKey`. We use the new input in both `vm.startBroadcast` places.
 
 ```solidity
 contract CreateSubscription is Script {
@@ -822,7 +822,7 @@ contract CreateSubscription is Script {
             ,
             ,
             uint256 deployerKey
-        ) = helperConfig.activeNetworkConfig();
+        ) = helperConfig.getConfig();
 
         return createSubscription(vrfCoordinator, deployerKey);
     }
@@ -878,12 +878,12 @@ Error (6160): Wrong argument count for function call: 3 arguments given but expe
 Error (7407): Type tuple(uint256,uint256,address,bytes32,uint256,uint32,address,uint256) is not implicitly convertible to expected type tuple(uint256,uint256,address,bytes32,uint256,uint32,address).
   --> test/unit/RaffleTest.t.sol:46:13:
    |
-46 |         ) = helperConfig.activeNetworkConfig();
+46 |         ) = helperConfig.getConfig();
    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ```
 
-Let's read it. We modified the 3 functions `createSubscription`, `fundSubscription` and `addConsumer`, we should reflect these changes inside `DeployRaffle.s.sol`. Then we are calling `helperConfig.activeNetworkConfig` in `Raffle.t.sol`, we should adjust that to reflect the changes of the `NetworkConfig` struct.
+Let's read it. We modified the 3 functions `createSubscription`, `fundSubscription` and `addConsumer`, we should reflect these changes inside `DeployRaffle.s.sol`. Then we are calling `helperconfig.getConfig()` in `Raffle.t.sol`, we should adjust that to reflect the changes of the `NetworkConfig` struct.
 
 Open the `DeployRaffle.s.sol` file and modify the 3 functions call to include `deployerKey` as an input parameter.
 
@@ -900,7 +900,7 @@ contract DeployRaffle is Script {
         uint32 callbackGasLimit,
         address link,
         uint256 deployerKey
-        ) = helperConfig.activeNetworkConfig();
+        ) = helperConfig.getConfig();
 
         if (subscriptionId == 0) {
             CreateSubscription createSubscription = new CreateSubscription();
@@ -931,7 +931,7 @@ contract DeployRaffle is Script {
 }
 ```
 
-Open the `RaffleTest.t.sol` and add the `deployerKey` in the variables section and in the `setUp` function where `helperConfig.activeNetworkConfig()` is called:
+Open the `RaffleTest.t.sol` and add the `deployerKey` in the variables section and in the `setUp` function where `helperConfig.getConfig()` is called:
 
 ```solidity
 contract RaffleTest is Test {
@@ -969,7 +969,7 @@ contract RaffleTest is Test {
             link,
             deployerKey
 
-        ) = helperConfig.activeNetworkConfig();
+        ) = helperConfig.getConfig();
     }
 }
 ```
@@ -1024,7 +1024,7 @@ contract RaffleTest is Test {
             link,
             // deployerKey
 
-        ) = helperConfig.activeNetworkConfig();
+        ) = helperConfig.getConfig();
     }
 }
 ```

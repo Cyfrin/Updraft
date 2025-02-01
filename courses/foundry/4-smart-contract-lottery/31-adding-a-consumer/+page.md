@@ -48,7 +48,7 @@ contract AddConsumer is Script {
         console.log("On chain id: ", block.chainid);
 
         vm.startBroadcast();
-        VRFCoordinatorV2Mock(vrfCoordinator).addConsumer(subscriptionId, raffle);
+        VRFCoordinatorV2_5Mock(vrfCoordinator).addConsumer(subscriptionId, raffle);
         vm.stopBroadcast();
     }
 
@@ -61,7 +61,7 @@ contract AddConsumer is Script {
             ,
             uint64 subscriptionId,
             ,
-        ) = helperConfig.activeNetworkConfig();
+        ) = helperConfig.getConfig();
         addConsumer(raffle, vrfCoordinator, subscriptionId);
 
     }
@@ -78,11 +78,11 @@ So... what happened here?
 1. We used `DevOpsTools` to grab the last deployment of the `Raffle` contract inside the `run` function;
 2. We also call `addConsumerUsingConfig` inside the `run` function;
 3. We define `addConsumerUsingConfig` as a public function taking an address as an input;
-4. We deploy a new `HelperConfig` and call `activeNetworkConfig` to grab the `vrfCoordinate` and `subscriptionId` addresses;
+4. We deploy a new `HelperConfig` and call `getConfig()` to grab the `vrfCoordinate` and `subscriptionId` addresses;
 5. We call the `addConsumer` function;
 6. We define `addConsumer` as a public function taking 3 input parameters: address of the `raffle` contract, address of `vrfCoordinator` and `subscriptionId`;
 7. We log some things useful for debugging;
-8. Then, inside a `startBroadcast`- `stopBroadcast` block we call the `addConsumer` function from the `VRFCoordinatorV2Mock` using the right input parameters;
+8. Then, inside a `startBroadcast`- `stopBroadcast` block we call the `addConsumer` function from the `VRFCoordinatorV2_5Mock` using the right input parameters;
 
 Try a nice `forge build` and check if everything is compiling. Perfect!
 
