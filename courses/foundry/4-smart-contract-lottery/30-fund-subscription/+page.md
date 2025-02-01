@@ -121,7 +121,7 @@ function getOrCreateAnvilEthConfig() internal returns (NetworkConfig memory) {
         gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
         subscriptionId: 0,
         callbackGasLimit: 500_000,
-        linkToken: address(linkToken)
+        link: address(linkToken)
     });
 
     return localNetworkConfig;
@@ -182,7 +182,7 @@ function fundSubscriptionUsingConfig() public {
     HelperConfig helperConfig = new HelperConfig();
     address vrfCoordinator = helperConfig.getConfig().vrfCoordinator;
     uint256 subscriptionId = helperConfig.getConfig().subscriptionId;
-    address linkToken = helperConfig.getConfig().linkToken;
+    address linkToken = helperConfig.getConfig().link;
 
     fundSubscription(vrfCoordinator, subscriptionId, linkToken);
 }
@@ -223,7 +223,7 @@ contract FundSubscription is Script, CodeConstants {
         HelperConfig helperConfig = new HelperConfig();
         address vrfCoordinator = helperConfig.getConfig().vrfCoordinator;
         uint256 subscriptionId = helperConfig.getConfig().subscriptionId;
-        address linkToken = helperConfig.getConfig().linkToken;
+        address linkToken = helperConfig.getConfig().link;
 
         if (subscriptionId == 0) {
             CreateSubscription createSub = new CreateSubscription();
