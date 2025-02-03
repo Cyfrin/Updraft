@@ -10,105 +10,77 @@ _Follow along with this video:_
 
 Welcome back! Let's continue testing our `Raffle` contract.
 
-We should test if the check upkeep returns false if the contract has no balance. Open your `RaffleTest.t.sol` and write the following:
+We should test if the Raffle reverts when you don't pay enough money. Open your `RaffleTest.t.sol` and write the following:
 
 ```solidity
-function testCheckUpkeepReturnsFalseIfItHasNoBalance() public {
-    // Arrange
-    vm.warp(block.timestamp + interval + 1);
-    vm.roll(block.number + 1);
+function testRaffleRevertsWhenYouDontPayEnough() public {
+        // Arrange
+        vm.prank(PLAYER);
 
-    // Act
-    (bool upkeepNeeded, ) = raffle.checkUpkeep("");
+        // Act / Accert
+        vm.expectRevert(Raffle.Raffle__NotEnoughEthSent.selector);
+        raffle.enterRaffle();
+    }
 
-    // Assert
-    assert(!upkeepNeeded);
+```
+
+We use `vm.prank(PLAYER);` to mimic our user and to test the revert functionality we use `vm.expectRevert();`. When we go back to Raffle.sol we can see that the error we should get is `Raffle__NotEnoughEthSent`. This we can leverage in our `expectRevert()` function: `vm.expectRevert(Raffle.Raffle__NotEnoughEthSent.selector);`. Like this, we say, we expect a revert due to the `Raffle__NotEnoughEthSent` error. We will teach you about the selector key and what functions selectors are later in detail. 
+
+To test run: `forge test --mt testRaffleRevertsWhenYouDontPayEnough`
+
+It passes! Great!
+
+Besides, we want to test if the Raffle updates or more precisely adds players to the `s_players` array in `Raffle.sol`
+
+```solidity
+    function testRaffleRecordsPlayersWhenTheyEnter() public {
+        // Arrange
+        vm.prank(PLAYER);
+        // Act
+        raffle.enterRaffle{value: entranceFee}();
+        // Assert
+        address playerRecorded = raffle.getPlayer(0);
+        assert(playerRecorded == PLAYER);
+    }
+```
+
+With `vm.prank(PLAYER);` we pretend to be a player and enter the Raffle `raffle.enterRaffle{value: entranceFee}();` with an entrance fee.
+
+Unfortunately, we don't have yet a function to get the players from `Raffle.sol`. So let's do this! Go to `Raffle.sol` and add the following function to your getter functions:
+
+```solidity
+function getPlayer(uint256 indexOfPlayer) external view returns (address) {
+    return s_players[indexOfPlayer];
 }
 ```
 
-We use `warp` and `roll` to set the `block.timestamp` in the future. We call `checkUpkeep` and record its return in memory. We check it returned `false`. 
+Then let's use this function in our test. Since, we only have one user we want to get the first player: `address playerRecorded = raffle.getPlayer(0);`
 
-**Note:** `!upkeepNeeded` means `not upkeepNeeded` meaning if `upkeepNeeded` is `false` that expression would read `not false` and `not false` is `true`.
 
-Run the test using `forge test --mt testCheckUpkeepReturnsFalseIfItHasNoBalance`.
+Run the test using `forge test --mt testRaffleRecordsPlayersWhenTheyEnter`.
+
+Ohhh, it fails. Let's test again with more verbose: `forge test --mt testRaffleRecordsPlayersWhenTheyEnter -vvvv`
+
+Ahhh, we are **OutOfFunds**. Thus, let's add some funds in the `setup()` function: `vm.deal(PLAYER, STARTING_PLAYER_BALANCE);`
+
+```solidity
+function setUp() external {
+        DeployRaffle deployer = new DeployRaffle();
+        (raffle, helperConfig) = deployer.deployContract();
+        HelperConfig.NetworkConfig memory config = helperConfig.getConfig();
+        entranceFee = config.entranceFee;
+        interval = config.interval;
+        vrfCoordinator = config.vrfCoordinator;
+        gasLane = config.gasLane;
+        callbackGasLimit = config.callbackGasLimit;
+        subscriptionId = config.subscriptionId;
+
+        vm.deal(PLAYER, STARTING_PLAYER_BALANCE);
+    }
+```
+
+Let's test once more: `forge test --mt testRaffleRecordsPlayersWhenTheyEnter -vvvv`
 
 It passes, amazing!
-
-What else? We should test if the check upkeep function returns false if the raffle is not Open. Paste the following inside `RaffleTest.t.sol`:
-
-```solidity
-function testCheckUpkeepReturnsFalseIfRaffleIsntOpen() public {
-    // Arrange
-    vm.prank(PLAYER);
-    raffle.enterRaffle{value: entranceFee}();
-    vm.warp(block.timestamp + interval + 1);
-    vm.roll(block.number + 1);
-    raffle.performUpkeep("");
-    Raffle.RaffleState raffleState = raffle.getRaffleState();
-    // Act
-    (bool upkeepNeeded, ) = raffle.checkUpkeep("");
-    // Assert
-    assert(raffleState == Raffle.RaffleState.CALCULATING);
-    assert(upkeepNeeded == false);
-}
-```
-
-We start by pranking the `PLAYER`. Then we enter the `raffle` using the correct `entranceFee`. After that, we use `warp` and `roll` to set `block.timestamp` in the future. We call `performUpkeep`. This will modify the `RaffleState` into `CALCULATING`. We then call `checkUpkeep` and record its return in memory. We check it returned `false`. We also check that the `RaffleState` is indeed `CALCULATING`.
-
-Run the test using: `forge test --mt testCheckUpkeepReturnsFalseIfRaffleIsntOpen`.
-
-It passes, great!
-
-So testing goes amazing, but how do we know what's left to test? Let's run the following command in the CLI:
-
-`forge coverage --report debug > coverage.txt`
-
-We are interested in the `Raffle.sol` file for now. You can search for that and see an output like this:
-
-```
-Uncovered for src/Raffle.sol:
-- Function "" (location: source ID 37, line 53, chars 1729-2253, hits: 0)
-- Line (location: source ID 37, line 54, chars 1913-1940, hits: 0)
-- Statement (location: source ID 37, line 54, chars 1913-1940, hits: 0)
-- Line (location: source ID 37, line 55, chars 1950-1971, hits: 0)
-- Statement (location: source ID 37, line 55, chars 1950-1971, hits: 0)
-- Line (location: source ID 37, line 56, chars 1981-2014, hits: 0)
-- Statement (location: source ID 37, line 56, chars 1981-2014, hits: 0)
-- Line (location: source ID 37, line 57, chars 2024-2056, hits: 0)
-- Statement (location: source ID 37, line 57, chars 2024-2056, hits: 0)
-- Line (location: source ID 37, line 59, chars 2067-2127, hits: 0)
-- Statement (location: source ID 37, line 59, chars 2067-2127, hits: 0)
-- Line (location: source ID 37, line 60, chars 2137-2156, hits: 0)
-- Statement (location: source ID 37, line 60, chars 2137-2156, hits: 0)
-- Line (location: source ID 37, line 61, chars 2166-2199, hits: 0)
-- Statement (location: source ID 37, line 61, chars 2166-2199, hits: 0)
-- Line (location: source ID 37, line 62, chars 2209-2246, hits: 0)
-- Statement (location: source ID 37, line 62, chars 2209-2246, hits: 0)
-- Branch (branch: 2, path: 0) (location: source ID 37, line 97, chars 3717-3918, hits: 0)
-- Branch (branch: 2, path: 1) (location: source ID 37, line 97, chars 3717-3918, hits: 0)
-- Line (location: source ID 37, line 98, chars 3750-3907, hits: 0)
-[...]
-```
-
-You can follow the locations indicated to find the lines not covered by tests. For example, in my `Raffle.sol` the code block starting on line 97 is this:
-
-```solidity
-    function performUpkeep(bytes calldata /* performData */) external override {
-        (bool upkeepNeeded, ) = checkUpkeep("");
-        // require(upkeepNeeded, "Upkeep not needed");
-@>      if (!upkeepNeeded) {
-@>          revert Raffle__UpkeepNotNeeded(
-@>              address(this).balance,
-@>              s_players.length,
-@>              uint256(s_raffleState)
-@>          );
-        }
-```
-
-And the output is right, we never tested this `if + revert` block inside `performUpkeep`.
-
-But beware! This is not entirely accurate. For example, `checkUpkeep` doesn't appear in the report anymore, but we didn't test every single line out of it. We never tested if the upkeep returns false if enough time hasn't passed, we also never checked if the upkeep returns true when everything is alright.
-
-Try writing these two tests yourself and then compare them against what [Patrick wrote](https://github.com/Cyfrin/foundry-smart-contract-lottery-f23/blob/d106fe245e0e44239dae2479b63545351ed1236a/test/unit/RaffleTest.t.sol).
 
 Great job! Let's keep going!
