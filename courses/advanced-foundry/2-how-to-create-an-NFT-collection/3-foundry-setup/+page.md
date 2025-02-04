@@ -107,6 +107,12 @@ constructor() ERC721("Doggie", "DOG"){
 }
 ```
 
+Additionally, we want to add a function to mint NFTs. We will define it later:
+
+```solidity
+function mintNft() public {}
+```
+
 ### TokenURI
 
 It's hard to believe, but once upon a time the tokenUri was once considered an optional parameter, despite being integral to how NFTs are used and consumed today.
