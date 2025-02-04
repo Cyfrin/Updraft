@@ -135,7 +135,7 @@ function testAllowancesWork() public {
     uint256 transferAmount = 500;
 
     vm.prank(alice);
-    ourToken.transferFrom(bob, alice, transferAmount)
+    ourToken.transferFrom(bob, alice, transferAmount);
 }
 ```
 
@@ -149,7 +149,7 @@ We then declare a transfer amount, and prank `Alice` as we call `transferFrom`, 
 All we need now is our assert statements.
 
 ```solidity
-assertEq(outToken.balanceOf(alice), transferAmount);
+assertEq(ourToken.balanceOf(alice), transferAmount);
 assertEq(ourToken.balanceOf(bob), STARTING_BALANCE - transferAmount);
 ```
 
