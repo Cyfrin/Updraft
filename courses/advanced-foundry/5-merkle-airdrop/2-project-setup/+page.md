@@ -22,7 +22,7 @@ remappings = [ '@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/']
 
 And then we are ready to create the contract, which will contain a `constructor` and a `mint` function:
 
-```js
+```solidity
 import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -40,7 +40,7 @@ contract BagelToken is ERC20, Ownable {
 
 We can then create a new file named `MerkleAirdrop.sol`, where we will have a list of addresses and someone from that list who can claim ERC20 tokens.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
@@ -52,13 +52,13 @@ contract MerkleAirdrop {
 
 The contracts will be connected by passing the `BagelToken`, or any ERC20 token to the `MerkleAirdrop` constructor. Then we can add our claimer address into an array of addresses:
 
-```js
+```solidity
 address [] claimers;
 ```
 
 Then we would need a function that checks that the claimer is in this whitelist and allow him to receive tokens.
 
-```js
+```solidity
 function claim(address account) external {
     for (uint256 i=0; i<claimers.length; i++){
         //check if the account is in the claimers array

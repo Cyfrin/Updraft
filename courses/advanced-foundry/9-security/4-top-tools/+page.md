@@ -32,7 +32,7 @@ Manual Review is arguably _the most important_ aspect of an audit. Reading the d
 
 For example:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -94,7 +94,7 @@ Once open in it's own instance of VSCode, we should see a number of contracts co
 
 To start with one the the simpler onces, `CaughtWithManualReview.sol`, this bug is meant to be identified simply by reviewing the code manually.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
@@ -114,7 +114,7 @@ By reading the comments/documentation provided, we can see that this function is
 
 Let's look at `CaughtWithTest.sol`. This is a contract we've seen before.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
@@ -132,7 +132,7 @@ We expect the newNumber passed to this function would be assigned to our number 
 
 Next up, `CaughtWithSlither.sol`. We can use Slither, a static analysis tool to catch the issue here.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
@@ -170,7 +170,7 @@ Look how easy that is. It won't catch everything, but Slither is one of those to
 
 The `CaughtWithFuzz.sol` contract looks insane, but we have a clearly defined invariant, `should never return 0`. The fuzz testing we applied in earlier lessons would be perfect for this.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
@@ -219,7 +219,7 @@ contract CaughtWithFuzz {
 
 A clever fuzz test like this would have no issues catching vulnerabilities in a complex function as above:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
@@ -248,7 +248,7 @@ Our fuzz test identifies the counter-example of 1265!
 
 What about `CaughtWithStatefulFuzz.sol`? Well, in this contract a stateless fuzz test won't cut it. The invariant of `should never return zero` is only breakable through subsequent function calls to the contract, with the first altering contract in state, such that the second call breaks our invariant.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
@@ -272,7 +272,7 @@ contract CaughtWithStatefulFuzz {
 
 In the above, if changeValue is called with 0, and then doMoreMathAgain is also called with 0, our invariant will break. We'll need a stateful fuzz suite to catch this one.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
@@ -305,7 +305,7 @@ We can see here the running our stateful fuzz test `invariant_testMathDoesntRetu
 
 Lastly, we have `CaughtWithSymbolic.sol` where we can actually just use the solidity compiler to try and catch some bugs.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 

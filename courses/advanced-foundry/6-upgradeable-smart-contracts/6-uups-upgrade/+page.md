@@ -10,7 +10,7 @@ _Follow along the course with this video._
 
 Let's keep our momentum from the last lesson and jump right into writing our UpgradeBox.s.sol script. The boilerplate for this will be as expected.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -30,7 +30,7 @@ forge install Cyfrin/foundry-devops --no-commit
 
 We can then import this and leverage the get_most_recent_deployment functionality to acquire our ERC1967Proxy address.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -47,7 +47,7 @@ contract UpgradeBox is Script {
 
 Next, we'll need to import and deploy BoxV2!
 
-```js
+```solidity
 ...
 import {BoxV2} from "../src/BoxV2.sol";
 
@@ -64,7 +64,7 @@ contract UpgradeBox is Script{
 
 In order to modularize things a bit for the tests we'll write in the next lesson, we'll write an `upgradeBox` function in which our proxy is called.
 
-```js
+```solidity
 function upgradeBox(address proxyAddress, address newBox) public returns (address) {
     vm.startBroadcast();
     BoxV1 proxy = BoxV1(proxyAddress);
@@ -80,7 +80,7 @@ function upgradeBox(address proxyAddress, address newBox) public returns (addres
 
 Now, we can add upgradeBox to our scripts run function.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;

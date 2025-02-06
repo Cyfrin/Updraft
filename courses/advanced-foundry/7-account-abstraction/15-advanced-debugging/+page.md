@@ -45,7 +45,7 @@ Let's inspect this line a bit further.
 
 ---
 
-```js
+```solidity
 try IAccount(sender).validateUserOp{gas: verificationGasLimit}(op, opInfo.userOpHash, missingAccountFunds)
 ```
 
@@ -65,7 +65,7 @@ Our updated part of our function will look like this:
 
 ---
 
-```js
+```solidity
 function generateSignedUserOperation(
         bytes memory callData,
         HelperConfig.NetworkConfig memory config,
@@ -95,7 +95,7 @@ Look in **Arrange** of the above test and make your change in `packedUserOp` You
 
 ---
 
-```js
+```solidity
 PackedUserOperation memory packedUserOp = sendPackedUserOp.generateSignedUserOperation(
     executeCallData, helperConfig.getConfig(), address(minimalAccount));
 ```
@@ -114,7 +114,7 @@ This will give us the last successful transaction, rather than the next one in t
 
 ---
 
-```js
+```solidity
 function generateSignedUserOperation(
         bytes memory callData,
         HelperConfig.NetworkConfig memory config,

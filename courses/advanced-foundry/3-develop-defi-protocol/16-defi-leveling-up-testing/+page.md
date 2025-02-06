@@ -21,7 +21,7 @@ These are the _bare minimum_ of testing in Web3 security. Unit test will propose
 
 For example, take the contract below.
 
-```js
+```solidity
 // SPDX-License-Identifier
 pragma solidity ^0.8.13;
 
@@ -36,7 +36,7 @@ contract CaughtWithTest {
 
 In a situation like this, if the expectation was that `number` is being set to `newNumber`, a unit test would catch this. In our unit test, we would assert our expected outcome and pass a test value to our function:
 
-```js
+```solidity
 function testSetNumber() public {
     uint256 myNumber = 55;
     caughtWithTest.setNumber(myNumber);
@@ -58,7 +58,7 @@ An invariant is a property of a protocol which much always hold true. Fuzz testi
 
 Consider a slightly more complex contract such as below.
 
-```js
+```solidity
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -78,7 +78,7 @@ In this simple example, we can easily see that if we pass `2` as an argument to 
 
 Here's an example of a fuzz test we could perform:
 
-```js
+```solidity
     ...
     function testIAlwaysGetZeroFuzz(uint256 data) public {
         myContract.doStuff(data);
@@ -96,7 +96,7 @@ Unit testing and fuzz testing as examples of **_dynamic tests_**, this is when c
 
 Alternatively to this, we have static analysis as a tool available to us. In static analysis testing, a tool such as [**Slither**](https://github.com/crytic/slither) or [**Aderyn**](https://github.com/Cyfrin/aderyn), will review the code and identify vulnerabilities based on things like layout, ordering and syntax.
 
-```js
+```solidity
 function withdraw() external {
     uint256 balance = balances[msg.sender];
     require(balance > 0);
@@ -124,7 +124,7 @@ We'll only really cover Symbolic Execution in this course. If you want to dive d
 
 At a high-level, Symbolic Execution models each path in the code mathematically to identify if any path results in the breaking of an asserted property of the system.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
 

@@ -15,7 +15,7 @@ To deposit collateral, users are going to need the address for the type of colla
 > ❗ **NOTE**
 > Don't forget the NATSPEC!
 
-```js
+```solidity
 ///////////////////
 //   Functions   //
 ///////////////////
@@ -39,7 +39,7 @@ It's likely that many functions in a protocol will require this kind of sanitati
 
 Our function layout reference says modifiers should come before our functions, so let's adhere to that. We'll need a new error is well.
 
-```js
+```solidity
 
 contract DSCEngine {
 
@@ -66,7 +66,7 @@ contract DSCEngine {
 
 This looks great! This should assure that the amount of collateral passed to our depositCollateral function is greater than zero. The other parameter of this function is the tokenCollateralAddress. Since we're only meaning to support wETH and wBTC, we should make a second modifier to assure only these allowed tokens are deposited as collateral.
 
-```js
+```solidity
 modifier isAllowedToken(address token){
 
 }
@@ -76,7 +76,7 @@ Currently, we don't have any reference to use in our conditional for this modifi
 
 We know we're going to be using chainlink pricefeeds, so what we can do is have this mapping be a token address, to it's associated pricefeed. In our modifier, if a pricefeed isn't found for the passed token address, it'll revert!
 
-```js
+```solidity
 /////////////////////////
 //   State Variables   //
 /////////////////////////
@@ -86,7 +86,7 @@ mapping(address token => address priceFeed) private s_priceFeeds;
 
 We'll probably want to initialize this mapping in our contract's constructor. To do this, we'll have our constructor take a list of token addresses and a list of priceFeed addresses, each index of one list will be mapped to the respective index of the other on deployment. We also know that the DSCEngine is going to need to know about the DecentralizeStablecoin contract. With all this in mind, let's set up our constructor.
 
-```js
+```solidity
 ///////////////////
 //   Functions   //
 ///////////////////
@@ -95,7 +95,7 @@ constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses
 
 Here's where we should definitely perform a sanity check, since a contract is only constructed once. If the indexes of our lists are meant to be mapped to each other, we should assure the lengths of the lists match, and if they don't we can revert with another custom error.
 
-```js
+```solidity
 ///////////////////
 //     Errors    //
 ///////////////////
@@ -117,7 +117,7 @@ constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses
 
 Now we can add our for loop which will map our two lists of addresses to each other.
 
-```js
+```solidity
 ///////////////////
 //   Functions   //
 ///////////////////
@@ -137,7 +137,7 @@ We're going to be doing lots with our `dscEngine`. We should declare this as an 
 > ❗ **NOTE**
 > Don't forget to import `DecentralizedStableCoin.sol`!
 
-```js
+```solidity
 import {DecentralizedStableCoin} from "DecentralizedStableCoin.sol";
 
 ...
@@ -168,7 +168,7 @@ constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses
 
 Remember, we were doing all this because we need a new modifier that checks our token addresses! Now that things are established in our constructor, we can write this modifier.
 
-```js
+```solidity
 
 contract DSCEngine {
 
@@ -204,7 +204,7 @@ contract DSCEngine {
 
 Great! Now, coming all the way back to our functions (told you we'd be moving fast!), we can add these newly created modifiers to `depositCollateral`.
 
-```js
+```solidity
 ///////////////////////////
 //   External Functions  //
 ///////////////////////////
@@ -225,7 +225,7 @@ Let's add the import to our contract.
 > in a different location. Edit the filepath from `/security/` to `/utils/` will
 > work.
 
-```js
+```solidity
 pragma solidity ^0.8.18;
 
 import {DecentralizedStableCoin} from "DecentralizedStableCoin.sol";
@@ -240,7 +240,7 @@ contract DSCEngine is ReentrancyGuard {
 
 Whew, all this and we haven't even started the function body yet! Let's start working with the deposited collateral. We'll need a way to keep track of the collateral deposited by each user. This sounds like a mapping to me.
 
-```js
+```solidity
 /////////////////////////
 //   State Variables   //
 /////////////////////////
@@ -252,7 +252,7 @@ mapping(address user => mapping(address token => uint256 amount)) private s_coll
 
 Now we can finally add the deposited collateral to our user's balance within our depositCollateral function.
 
-```js
+```solidity
 ///////////////////////////
 //   External Functions  //
 ///////////////////////////
@@ -268,7 +268,7 @@ function depositCollateral(address tokenCollateralAddress, uint256 amountCollate
 
 When we're changing the balance of our user's deposited collateral, what are we doing? We're updating our contract state! Any time state is changed, we should absolutely emit an event. Our contract layout tells us that events should be declared beneath our state variables. So, let's go ahead and declare this event and emit it in our depositCollateral function.
 
-```js
+```solidity
 ////////////////
 //   Events   //
 ////////////////
@@ -295,7 +295,7 @@ Our function so far is doing a great job adhering to CEI (Checks, Effects, Inter
 
 Let's add our interactions to the function now, we'll need to call transferFrom on wBTC or wETH. These are ERC20s remember, so let's import an interface to use.
 
-```js
+```solidity
 pragma solidity ^0.8.18;
 
 import {DecentralizedStableCoin} from "DecentralizedStableCoin.sol";
@@ -322,7 +322,7 @@ function depositCollateral(address tokenCollateralAddress, uint256 amountCollate
 
 One last thing to note in this function - our transferFrom call actually returns a boolean. We want to assure this transfer is successful, otherwise revert this function call. One last conditional to add...
 
-```js
+```solidity
 bool success = IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);
 
 if(!success){
@@ -332,7 +332,7 @@ if(!success){
 
 ...and one last custom error:
 
-```js
+```solidity
 
 contract DSCEngine {
 
@@ -362,7 +362,7 @@ See you in the next lesson!
 
 DSCEngine.sol
 
-```js
+```solidity
 // Layout of Contract:
 // version
 // imports

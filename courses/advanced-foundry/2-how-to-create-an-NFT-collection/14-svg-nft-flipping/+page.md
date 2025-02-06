@@ -14,7 +14,7 @@ Because our SVGs are on-chain, this affords us the ability to easily swap betwee
 
 Our first consideration should be that _only the owner_ of an NFT should be able to flip its mood. We can use the \_isApprovedOrOwner function, included within the ERC721 standard to verify this before our flipMood function execution.
 
-```js
+```solidity
 function flipMood(uint256 tokenId) public {
     if(!_isApprovedOrOwner(msg.sender, tokenId)){
         revert MoodNFT__CantFlipMoodIfNotOwner();
@@ -26,7 +26,7 @@ Remember to create our new custom error at the start of the contract! `error Moo
 
 From here, we'll just check if it NFT is happy, and if so, make it sad, otherwise we'll make it happy. This will flip the NFT's mood regardless of it's current mood.
 
-```js
+```solidity
 function flipMood(uint256 tokenId) public {
     if(!_isApprovedOrOwner(msg.sender, tokenId)){
         revert MoodNFT__CantFlipMoodIfNotOwner();

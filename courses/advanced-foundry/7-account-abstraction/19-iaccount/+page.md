@@ -8,7 +8,7 @@ Now that we've got our functions, let's take a look at them to understand what t
 
 ---
 
-```js
+```solidity
 function validateTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction memory _transaction)
     external
     payable
@@ -26,7 +26,7 @@ You may have noticed that it is similar to the validateUserOp function in our Mi
 
 **<summary><span style="color:red">MemoryTransactionHelper.sol</span></summary>**
 
-```js
+```solidity
 /// @notice Structure used to represent a ZKsync transaction.
 struct Transaction {
     // The type of the transaction.
@@ -89,7 +89,7 @@ For now, let's consider `returns (bytes4 magic)` as a bool. For example, if we w
 
 ---
 
-```js
+```solidity
 returns (bytes4 magic)
 {
     return IAccount.validateTransaction.selector;
@@ -100,7 +100,7 @@ returns (bytes4 magic)
 
 ### Execute Transaction
 
-```js
+```solidity
 function executeTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction memory _transaction)
     external
     payable
@@ -113,7 +113,7 @@ I know what you're thinking. "This is similar to the `execute` function from `Mi
 
 ---
 
-```js
+```solidity
 function executeTransactionFromOutside(Transaction memory _transaction) external payable
 {}
 ```
@@ -134,7 +134,7 @@ The `payForTransaction` is similar to `_payPreFund`. This is where we state who 
 
 ---
 
-```js
+```solidity
 function payForTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction memory _transaction)
         external
         payable

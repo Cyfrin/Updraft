@@ -12,7 +12,7 @@ Welcome to our next lesson on **account abstraction**! We are going to get into 
 
 You may recall that we copied this function from `IAccount.sol` in lesson three.
 
-```js
+```solidity
     function validateUserOp(
         PackedUserOperation calldata userOp,
         bytes32 userOpHash,
@@ -22,7 +22,7 @@ You may recall that we copied this function from `IAccount.sol` in lesson three.
 
 The first thing we want to do is validate the signature. To do so, we need to create custom function inside `validateUserOp`. We will pass `userOp` and `userOpHash` as arguments. The `userOp` is the data from the `PackedUserOperation` , and the `userOpHash` is the hash of it.
 
-```js
+```solidity
 {
   _validateSignature(userOp, userOpHash);
 }
@@ -30,7 +30,7 @@ The first thing we want to do is validate the signature. To do so, we need to cr
 
 The goal here is to validate the signature against the data from the `PackedUserOperation  `. If you remember, you can view this by clicking on it in the imports at the top of the code. I'll place it here for your convenience.
 
-```js
+```solidity
 struct PackedUserOperation {
     address sender;
     uint256 nonce;
@@ -50,7 +50,7 @@ We know that account abstraction allows us to be really creative in how we want 
 
 > ❗ **NOTE** You can place the following comment above your `validateUserOp` function.
 
-```js
+```solidity
 //A signature is valid if it's the MinimalAccount owner.
 ```
 
@@ -68,13 +68,13 @@ remappings = ["@openzeppelin/contracts=lib/openzeppelin-contracts/contracts"]
 
 Now we can head back to our `MinimalAccount` contract and import it.
 
-```js
+```solidity
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 ```
 
 Now that we have `Ownable`, we can inherit it into our contract and create our `constructor`. Let's place it above our functions.
 
-```js
+```solidity
 contract MinimalAccount is IAccount, Ownable {
     constructor() Ownable(msg.sender) {}
 }
@@ -84,7 +84,7 @@ contract MinimalAccount is IAccount, Ownable {
 
 Now that this is done, we have an owner to sign the transaction, then it will be validated in our `_validateSignature` function. However, you may have noticed that we have called this function, but haven't created it yet. Let's do that now.
 
-```js
+```solidity
 function _validateSignature(PackedUserOperation calldata userOp, bytes32 userOpHash)
         internal
         view
@@ -103,13 +103,13 @@ function _validateSignature(PackedUserOperation calldata userOp, bytes32 userOpH
 
 Next, we need to convert the `userOpHash` back into a normal hash. No worries though, we can do this with a tool called `MessageHashUtils` from OpenZeppelin. Let's import it now.
 
-```js
+```solidity
 import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 ```
 
 Click on it so we can have a look at a key function called `toEthSignedMessageHash` Give it a read to become more familiar with what it does.
 
-```js
+```solidity
     /**
      * @dev Returns the keccak256 digest of an ERC-191 signed data with version
      * `0x45` (`personal_sign` messages).
@@ -136,13 +136,13 @@ Click on it so we can have a look at a key function called `toEthSignedMessageHa
 
 Essentially, this function reformats our hash and allows us to do an `ECDSA` recover. Then, the `ECDSA` recover will tell us who actually signed the hash. To do this, we need to add some code to our `_validateSignature` function. But first, let's import the `ECDSA` from OpenZeppelin.
 
-```js
+```solidity
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 ```
 
 Now we are ready to implement it into our `_validateSignature` function, along with `ethSignedMessageHash`.
 
-```js
+```solidity
 {
     bytes32 ethSignedMessageHash = MessageHashUtils.toEthSignedMessageHash(userOpHash);
     address signer = ECDSA.recover(ethSignedMessageHash, userOp.signature);
@@ -155,7 +155,7 @@ Now we are ready to implement it into our `_validateSignature` function, along w
 
 If the signer is not the owner, our function will return `SIG_VALIDATION_FAILED`. Otherwise, return `SIG_VALIDATION_SUCCESS`. These two concepts are defined in a helper contract. Let's import them now.
 
-```js
+```solidity
 import {
   SIG_VALIDATION_FAILED,
   SIG_VALIDATION_SUCCESS,
@@ -164,7 +164,7 @@ import {
 
 Here's what the whole function looks like.
 
-```js
+```solidity
 //EIP-191 version of the signed hash
 function _validateSignature(PackedUserOperation calldata userOp, bytes32 userOpHash)
         internal
@@ -186,7 +186,7 @@ In a nut shell, our function `_validateSignature` verifies the signature of a `P
 
 Now that we have a proper `_validateSignature` function, Let's head back to the `validateUserOp`. Set `validationData` to equal the `_validateSignature()` as such.
 
-```js
+```solidity
 {
   validationData = _validateSignature(userOp, userOpHash);
 }
@@ -194,7 +194,7 @@ Now that we have a proper `_validateSignature` function, Let's head back to the 
 
 In the IAccount.sol we can see what `validationData` does.
 
-```js
+```solidity
 /**
  * @return validationData
  * - Packaged ValidationData structure. use `_packValidationData` and
@@ -214,7 +214,7 @@ In the IAccount.sol we can see what `validationData` does.
 
 We've covered a lot of ground, but we aren't quite there yet. Here are some things we need to consider.
 
-```js
+```solidity
     function validateUserOp
     (
         PackedUserOperation calldata userOp,
@@ -230,7 +230,7 @@ We've covered a lot of ground, but we aren't quite there yet. Here are some thin
 
 As you can see, we have commented out \_validateNonce for now as it will be handled by the `EntryPoint`. Next, we will set up a way to pay the EntryPoint what is owed. We have mentioned a Paymaster briefly, but we are going to create our own function for this, `__payPrefund` and implement it into our `validateUserOp`. It takes in `missingAccountFunds` as an argument. Let's go ahead and create this function.
 
-```js
+```solidity
  function _payPrefund(uint256 missingAccountFunds) internal {
         if (missingAccountFunds != 0) {
             (bool success,) = payable(msg.sender).call{value: missingAccountFunds, gas: type(uint256).max}("");

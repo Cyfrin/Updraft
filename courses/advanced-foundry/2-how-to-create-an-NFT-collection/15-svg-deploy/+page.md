@@ -12,7 +12,7 @@ In this lesson, we'll jump right into creating the script to deploy our MoodNFT 
 
 To begin, we'll need to create the file `script/DeployMoodNft.s.sol` and fill it with our script boilerplate.
 
-```js
+```solidity
 // SPDX-License-Identifier:MIT
 pragma solidity ^0.8.18;
 
@@ -28,7 +28,7 @@ Looks great! Now we should consider how we're mention to deploy MoodNft.sol. We 
 
 Let's start with creating this encoding function.
 
-```js
+```solidity
 function svgToImageURI(string memory svg) public purse returns (string memory){
     string memory baseURL = "data:image/svg+xml;base64,";
 }
@@ -36,7 +36,7 @@ function svgToImageURI(string memory svg) public purse returns (string memory){
 
 Set up like this, we can now use the Base64 offering from OpenZeppelin to encode the data passed to this function, and then concatenate it with our baseURI. We'll need to import Base64.
 
-```js
+```solidity
 // SPDX-License-Identifier:MIT
 pragma solidity ^0.8.18;
 
@@ -67,7 +67,7 @@ Before moving on, we should write a quick test to verify this is encoding things
 
 Let's test the function we just wrote. To keep things clean, create a new file `test/DeployMoodNftTest.t.sol`. The setup for this file is going to be the same as always.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -95,7 +95,7 @@ data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIH
 
 In our test now, we can assign an expectedUri variable to this string. We'll need to also define the svg which we'll pass to the function.
 
-```js
+```solidity
 function testConvertSvgToUri() public view {
     string memory expectedUri = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj4KPHRleHQgeD0iMjAwIiB5PSIyNTAiIGZpbGw9ImJsYWNrIj5IaSEgWW91IGRlY29kZWQgdGhpcyEgPC90ZXh0Pgo8L3N2Zz4="
     string memory svg = '<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><text x="200" y="250" fill="black">Hi! You decoded this! </text></svg>'
@@ -106,7 +106,7 @@ function testConvertSvgToUri() public view {
 
 Great! Now we'll need to assert that our expectedUri is equal to our actualUri. Remember, we can't compare strings directly since they're effectively bytes arrays. We need to hash these for easy comparison.
 
-```js
+```solidity
 assert(
   keccak256(abi.encodePacked(expectedUri)) ==
     keccak256(abi.encodePacked(actualUri))
@@ -136,7 +136,7 @@ fs_permissions = [{access = "read", path = "./img/"}]
 
 With this in place, we can now use the readFile cheatcode to access these SVG files in our deploy script.
 
-```js
+```solidity
 // SPDX-License-Identifier:MIT
 pragma solidity ^0.8.18;
 
@@ -161,7 +161,7 @@ contract DeployMoodNft is Script {
 
 Now we can deploy our MoodNft.sol contract in our run function, passing it the data read in from these files.
 
-```js
+```solidity
 function run () external returns (MoodNft) {
     string memory sadSvg = vm.readFile("./img/sadSvg.svg");
     string memory happySvg = vm.readFile("./img/happySvg.svg");
@@ -189,7 +189,7 @@ We'll adjust `MoodNftIntegrationsTest.t.sol` to use our deployer next.
 
 The changes to be made in this file are fairly small, but impactful. Instead of deploying with:
 
-```js
+```solidity
 moodNft = new MoodNft(SAD_SVG_URI, HAPPY_SVG_URI);
 ```
 
@@ -198,7 +198,7 @@ We can use our newly written deployer. It'll need to be imported.
 <details>
 <summary>MoodNftIntegrationsTest.t.sol</summary>
 
-```js
+```solidity
 //SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -240,7 +240,7 @@ With these adjustments, our tests should function identically to before.
 
 One thing we definitely haven't tested yet, and we should do quickly, is our flipMood function. Lets assure this properly swaps between happy and sad when called.
 
-```js
+```solidity
 function testFlipMoodIntegration() public {
     vm.prank(USER);
     moodNFT.mintNft();

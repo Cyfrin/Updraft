@@ -30,13 +30,13 @@ We will need to do a few things first.
 
 **Import Utils**
 
-```js
+```solidity
 import { Utils } from "lib/foundry-era-contracts/src/system-contracts/contracts/libraries/Utils.sol";
 ```
 
 **Our Execute Transaction Function**
 
-```js
+```solidity
 function executeTransaction(bytes32 /*_txHash*/, bytes32 /*_suggestedSignedHash*/, Transaction memory _transaction)
     external
     payable
@@ -59,7 +59,7 @@ Essentially, this code will perform a low-level call to an external contract usi
 
 Plug the following assembly snippet into your function.
 
-```js
+```solidity
 bool success;
 assembly {
     success := call(gas(), to, value, add(data, 0x20), mload(data), 0, 0)
@@ -71,7 +71,7 @@ if (!success) {
 
 Place our new custom errors with the others in our code.
 
-```js
+```solidity
 error ZkMinimalAccount__ExecutionFailed();
 ```
 
@@ -83,7 +83,7 @@ We've got some nice things going on with our code, but we need to make some adju
 
 **What we did in `validateTransaction`.**
 
-```js
+```solidity
 SystemContractsCaller.systemCallWithPropagatedRevert(
   uint32(gasleft()),
   address(NONCE_HOLDER_SYSTEM_CONTRACT),
@@ -96,7 +96,7 @@ SystemContractsCaller.systemCallWithPropagatedRevert(
 
 Let's add this snippet in our execution function between `bool success;` and `bytes memory data = _transaction.data;`. Wrap `bool success` and `assembly` in an else statement.
 
-```js
+```solidity
 if (to == address(DEPLOYER_SYSTEM_CONTRACT)) {
     uint32 gas = Utils.safeCastToU32(gasleft());
     SystemContractsCaller.systemCallWithPropagatedRevert(gas, to, value, data);
@@ -128,7 +128,7 @@ Just as with our `validateTransaction`, we don't want anyone to be able to call 
 - `&& msg.sender != owner()`
 - new custom revert error
 
-```js
+```solidity
 modifier requireFromBootLoaderOrOwner() {
     if (msg.sender != BOOTLOADER_FORMAL_ADDRESS && msg.sender != owner()) {
         revert ZkMinimalAccount__NotFromBootLoaderOrOwner();
@@ -139,13 +139,13 @@ modifier requireFromBootLoaderOrOwner() {
 
 Paste custom error with the others.
 
-```js
+```solidity
 error ZkMinimalAccount__NotFromBootLoaderOrOwner();
 ```
 
 Add modifier to our `execute` function.
 
-```js
+```solidity
 function executeTransaction(bytes32 /*_txHash*/, bytes32 /*_suggestedSignedHash*/, Transaction memory _transaction)
     external
     payable

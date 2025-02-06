@@ -17,7 +17,7 @@ Let's start by setting up our `testEntryPointCanExecuteCommands` function with *
 
 **<span style="color:red">MinimalAccountTest.t.sol</span>**
 
-```js
+```solidity
 function testEntryPointCanExecuteCommands() public {
     // Arrange
 
@@ -31,7 +31,7 @@ function testEntryPointCanExecuteCommands() public {
 
 For starters, we can simply grab all of **Assert** from `testValidationOfUserOps`, except for the last line - `uint256 missingAccountFunds = 1e18;`.
 
-```js
+```solidity
 // Arrange
 assertEq(usdc.balanceOf(address(minimalAccount)), 0);
 address dest = address(usdc);
@@ -48,7 +48,7 @@ bytes32 userOperationHash = IEntryPoint(helperConfig.getConfig().entryPoint).get
 
 In the previous lesson, we added `missingAccountfunds` to simulate the amount of funds that are missing from the account. We know that the alt-mempool initially covers these costs. Now we need to pay them back. To do this, we will use `vm.deal(address(minimalAccount), 1e18);`.
 
-```js
+```solidity
 // Arrange
 assertEq(usdc.balanceOf(address(minimalAccount)), 0);
 address dest = address(usdc);
@@ -68,7 +68,7 @@ vm.deal(address(minimalAccount), 1e18);
 
 In our **Act**, we will use vm.prank to be a random user. This means that anyone can send our transaction as long as we sign it.
 
-```js
+```solidity
 // Act
 vm.prank(randomuser);
 ```
@@ -79,7 +79,7 @@ Additionally, if you go into `handleOps` or the `EntryPoint` you'll see that it 
 
 **<span style="color:red">EntryPoint.sol</span>**
 
-```js
+```solidity
 /// @inheritdoc IEntryPoint
 function handleOps(
     PackedUserOperation[] calldata ops,
@@ -93,7 +93,7 @@ In our case, the beneficiary will be the `randomuser`. This means that we will b
 
 **<span style="color:red">MinimalAccountTest.t.sol</span>**
 
-```js
+```solidity
 PackedUserOperation[] memory ops = new PackedUserOperation[](1);
 ops[0] = packedUserOp;
 
@@ -108,7 +108,7 @@ IEntryPoint(helperConfig.getConfig().entryPoint).handleOps(ops, payable(randomus
 
 Now we can move on to our Assert, which is exactly the same as in `testOwnerCanExecuteCommands`. Just copy and paste it.
 
-```js
+```solidity
 assertEq(usdc.balanceOf(address(minimalAccount)), AMOUNT);
 ```
 
@@ -116,7 +116,7 @@ assertEq(usdc.balanceOf(address(minimalAccount)), AMOUNT);
 
 **Our completed code should look like this: **
 
-```js
+```solidity
 function testEntryPointCanExecuteCommands() public {
     // Arrange
     assertEq(usdc.balanceOf(address(minimalAccount)), 0);

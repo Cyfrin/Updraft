@@ -14,7 +14,7 @@ We're going to build this a little differently than usual, as we'll likely be wr
 
 Begin with creating a new file, `src/DSCEngine.sol`. I'll bring over my contract and function layout reference and we can se up our boilerplate.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 // This is considered an Exogenous, Decentralized, Anchored (pegged), Crypto Collateralized low volatility coin
@@ -47,7 +47,7 @@ contract DSCEngine {}
 
 Time for NATSPEC, remember, we want to be as verbose and clear in presenting what our code is meant to do.
 
-```js
+```solidity
 /*
  * @title DSCEngine
  * @author Patrick Collins
@@ -101,7 +101,7 @@ Users will deposit collateral greater in value than the `DSC` they mint. If thei
 
 In addition to what's outlined above, we'll need some basic functions like `mint/deposit` etc to give users more granular control over their position and account `healthFactor`.
 
-```js
+```solidity
 contract DSCEngine {
 
 ///////////////////
