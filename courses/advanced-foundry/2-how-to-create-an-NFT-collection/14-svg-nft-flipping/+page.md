@@ -26,15 +26,16 @@ Remember to create our new custom error at the start of the contract! `error Moo
 
 From here, we'll just check if it NFT is happy, and if so, make it sad, otherwise we'll make it happy. This will flip the NFT's mood regardless of it's current mood.
 
-With openzeppelin version 5.0.0 _isApprovedOrOwner was removed in favor of a new `_isAuthorized` function.
+With openzeppelin version 5.0.0 `_isApprovedOrOwner` was removed in favor of a new `_isAuthorized` function. However, this function has a downside. 
 
+_WARNING: This function assumes that `owner` is the actual owner of `tokenId` and does not verify this assumption._
 
-_In this logic of removing hidden SLOADs, the `_isApprovedOrOwner` function was removed in favor of a new `_isAuthorized` function. Overrides that used to target the `_isApprovedOrOwner` should now be performed on the `_isAuthorized` function. Calls to `_isApprovedOrOwner` that preceded a call to `_transfer`, `_burn` or `_approve` should be removed in favor of using the `auth` argument in `_update` and `_approve`. This is showcased in `ERC721Burnable.burn` and in `ERC721Wrapper.withdrawTo`._
+A more elegant solution is to check for approval and for the owner of the token separately. Therfore, we can use `getApproved()` and `ownerOf()` from openzeppelin contract in `ERC721.sol`.
 
 
 ```js
 function flipMood(uint256 tokenId) public view {
-    if(!_isAuthorized(_ownerOf(tokenId), msg.sender, tokenId)){
+    if(getApproved(tokenId) != msg.sender && ownerOf(tokenId) != msg.sender){
         revert MoodNFT__CantFlipMoodIfNotOwner();
     }
 
