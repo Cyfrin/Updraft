@@ -14,7 +14,7 @@ When you're ready we've got much more for you to dive into to sharpen your skill
 
 Navigate to [**sc-exploits-minimized**](https://github.com/Cyfrin/sc-exploits-minimized) repo.
 
-In the same area of this repo where we'd reference our simplified Remix examples, we've additional sections available to you, including `Ethernaut`, `Damn Vulnerable DeFi` and `Case Studies`. These are invaluable resources to challenge yourself and learn more about the security eco-system in Web3.
+In the same area of this repo where we'd reference our simplified Remix examples, we've additional sections available to you, including `Ethernaut`, `Damn Vulnerable DeFi` and `Case Studies`. These are invaluable resources to challenge yourself and learn more about the security ecosystem in Web3.
 
 ### Ethernaut
 
