@@ -189,7 +189,7 @@ function statefulFuzz_TestInvariantBreaks() public {
 }
 ```
 
-In this function, we're assuring the the fuzz tests will end with our `user` withdrawing both types of tokens from the protocol. We're then asserting a number of things
+In this function, we're assuring the fuzz tests will end with our `user` withdrawing both types of tokens from the protocol. We're then asserting a number of things
 
 1. `user`'s deposit balance of MockUSDC is reset to 0
 2. `user`'s deposit balance of YieldERC20 is reset to 0
