@@ -26,7 +26,7 @@ function run() external returns (Raffle, HelperConfig) {
         uint256 interval;
         address vrfCoordinator;
         bytes32 gasLane;
-        uint64 subscriptionId;
+        uint256 subscriptionId;
         uint32 callbackGasLimit;
 
     ) = helperConfig.activeNetworkConfig();
@@ -90,7 +90,7 @@ function run() external returns (Raffle, HelperConfig) {
         uint256 interval,
         address vrfCoordinator,
         bytes32 gasLane,
-        uint64 subscriptionId,
+        uint256 subscriptionId,
         uint32 callbackGasLimit
     ) = helperConfig.activeNetworkConfig();
 
@@ -122,7 +122,7 @@ contract RaffleTest is Test {
     uint256 interval;
     address vrfCoordinator;
     bytes32 gasLane;
-    uint64 subscriptionId;
+    uint256 subscriptionId;
     uint32 callbackGasLimit;
 
     address public PLAYER = makeAddr("player");
