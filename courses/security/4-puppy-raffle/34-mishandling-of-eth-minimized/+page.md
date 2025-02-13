@@ -1,16 +1,16 @@
 ---
-title: Mishandling of Eth - Minimized
+title: Mishandling of ETH - Minimized
 ---
 
 _Follow along with this video:_
 
 ---
 
-### Mishandling of Eth
+### Mishandling of ETH
 
 To see this vulnerability in action we're going to again reference our [**sc-exploits-minimized**](https://github.com/Cyfrin/sc-exploits-minimized) repo!
 
-There are two situational examples available for `Mishandling of Eth` for this lesson we want [**Remix (Vulnerable to selfdestruct)**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/mishandling-of-eth/SelfDestructMe.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js).
+There are two situational examples available for `Mishandling of ETH` for this lesson we want [**Remix (Vulnerable to selfdestruct)**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/mishandling-of-eth/SelfDestructMe.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js).
 
 > Remember: The codebase is available on the [**sc-exploits-minimized**](https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/mishandling-of-eth/SelfDestructMe.sol) repo as well, if you want to test things locally.
 

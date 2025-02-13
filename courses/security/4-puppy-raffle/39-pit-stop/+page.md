@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Pitstop
 
-At this point we're nearly done. We've two outstanding things to cover.
+At this point, we're nearly done. We've two outstanding things to cover.
 
 The first will be running through the `Slither` and `Aderyn` reports for Puppy Raffle and finally we'll check the code quality/tests for this repo.
 

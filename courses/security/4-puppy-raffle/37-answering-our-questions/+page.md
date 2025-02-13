@@ -55,23 +55,23 @@ previousWinner = winner;
 
 ...
 function enterRaffle(address[] memory newPlayers) public payable {
-        require(msg.value == entranceFee * newPlayers.length, "PuppyRaffle: Must send enough to enter raffle");
-        ...
-        emit RaffleEnter(newPlayers);
-    }
+    require(msg.value == entranceFee * newPlayers.length, "PuppyRaffle: Must send enough to enter raffle");
+    ...
+    emit RaffleEnter(newPlayers);
+}
 ...
 
 // A3: A player at index zero, may believe they are not active in a raffle, as this function returns zero if a player is not found. This will also go in our report for sure.
 
 ...
 function getActivePlayerIndex(address player) external view returns (uint256) {
-        for (uint256 i = 0; i < players.length; i++) {
-            if (players[i] == player) {
-                return i;
-            }
+    for (uint256 i = 0; i < players.length; i++) {
+        if (players[i] == player) {
+            return i;
         }
-        return 0;
     }
+    return 0;
+}
 ...
 
 // A4: No, the selectWinner function doesn't follow CEI and we would recommend to the protocol that it does. However, I happen to know this isn't an issue in this function, so we might flag this as informational.
