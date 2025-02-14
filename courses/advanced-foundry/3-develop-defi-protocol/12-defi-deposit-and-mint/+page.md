@@ -13,7 +13,7 @@ Our current DSCEngine.sol for reference:
 <details>
 <summary>DSCEngine.sol</summary>
 
-```js
+```solidity
 // Layout of Contract:
 // version
 // imports
@@ -244,7 +244,7 @@ The next thing I want to tackle is sort of the main function we'd expect in this
 
 The parameters for our depositCollateralAndMintDsc function are going to be similar to what we've seen in depositCollateral.
 
-```js
+```solidity
 function depositCollateralAndMintDsc(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountDscToMint){}
 ```
 
@@ -255,7 +255,7 @@ All we really need to do, in this function, is call our depositCollateral and mi
 
 Because this is one of our main functions, we're absolutely going to add some NATSPEC.
 
-```js
+```solidity
 /*
  * @param tokenCollateralAddress: the address of the token to deposit as collateral
  * @param amountCollateral: The amount of collateral to deposit

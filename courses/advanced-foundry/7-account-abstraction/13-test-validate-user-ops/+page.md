@@ -14,7 +14,7 @@ Let's get started!
 In our test function, we can simply copy and paste the Arrange from `testRecoverSignedOp`. 
 
 **<span style="color:red">MinimalAccountTest.t.sol</span>**
-```js
+```solidity
 function testValidationOfUserOps() public {
     // Arrange
     assertEq(usdc.balanceOf(address(minimalAccount)), 0);
@@ -35,7 +35,7 @@ In our **Act**, we want to make sure that `validateUserOp` returns correctly. If
 
 You will also notice that it takes a  `userOp`, `userOpHash`, and `missingAccountFunds`. We'll need to set this to our `validationData`. We already have `packedUserOp` and `userOperationHash` in our **Arrange**. We will need to add `missingAccountFunds` there as well. Let's make it a `uint256` and set it to 1e18 **(to simulate the amount of funds that are missing from the account)**. Lastly, we remember that our `SIG_VALIDATION_SUCCESS` = 0. So, we'll assume this will be the case in this test. 
 
-```js
+```solidity
 uint256 missingAccountFunds = 1e18;
 
 // Act
@@ -46,7 +46,7 @@ assertEq(validationData, 0);
 
 With that, our function should now look like this.
 
-```js
+```solidity
 function testValidationOfUserOps() public {
     // Arrange
     assertEq(usdc.balanceOf(address(minimalAccount)), 0);

@@ -8,7 +8,7 @@ Taking tests may not be much fun, but making them sure can be. Let's make some t
 - create a variable for our `ZkMinimalAccount` contract
   - to initialize a new instance of `ZkMinimalAccount` in the setUp function
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
@@ -28,7 +28,7 @@ contract ZkMinimalAccountTest is Test {
 
 Essentially, our test will be very similar to what we did in for `MinimalAccount` on Ethereum. Let's start with the `executeTransaction` function. Will start with our usual set up of **Arrange**, **Act**, and **Assert**.
 
-```js
+```solidity
 function testZkOwnerCanExecuteCommands() public {
     // Arrange
     // Act
@@ -45,27 +45,27 @@ For **Arrange** we will need:
 
 Let's start by importing ERC20Mock.
 
-```js
+```solidity
 import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
 ```
 
 Next, we can create the usdc token in the variable section, and initialize a new instance of the mock in the `setUp` function. We will also need a constant `AMOUNT` variable set to 1e18.
 
 Place these with other state variables. 
-```js
+```solidity
 ERC20Mock usdc;
 
 uint256 constant AMOUNT = 1e18;
 ```
 Place this inside the `setUp` function
-```js
+```solidity
 usdc = new ERC20Mock();
 ```
 ---
 
 Our **Arrange** should look like this now. 
 
-```js
+```solidity
 // Arrange
 address dest = address(usdc);
 uint256 value = 0;
@@ -78,7 +78,7 @@ Transaction memory transaction =
 Our entire code should look like this. 
 
 ---
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 

@@ -23,7 +23,7 @@ So that we're all on the same page, I suggest taking a look at the GitHub Repo f
 
 One example of an addition made is the internal \_calculateHealthFactor function and the public equivalent calculateHealthFactor. These functions allow us to access expected Health Factors in our tests.
 
-```js
+```solidity
 uint256 expectedHealthFactor =
 dsce.calculateHealthFactor(amountToMint, dsce.getUsdValue(weth, amountCollateral));
 vm.expectRevert(abi.encodeWithSelector(DSCEngine.DSCEngine__BreaksHealthFactor.selector, expectedHealthFactor));
@@ -37,7 +37,7 @@ Did you find it?
 
 The issue was found in how we calculated our Health Factor originally.
 
-```js
+```solidity
 function _healthFactor(address user) private view returns(uint256){
     (uint256 totalDscMinted, uint256 collateralValueInUsd) = _getAccountInformation(user);
 
@@ -49,7 +49,7 @@ function _healthFactor(address user) private view returns(uint256){
 
 In the above, we need to account for when a user has deposited collateral, but hasn't minted DSC. In this circumstance our return value is going to be dividing by zero! Obviously not good, so what we do is account for this with a conditional, if a user's minted DSC == 0, we just set their Health Factor to a massive positive number and return that.
 
-```js
+```solidity
 function _calculateHealthFactor(uint256 totalDscMinted, uint256 collateralValueInUsd)
     internal
     pure
@@ -68,7 +68,7 @@ The last major change in the repo since our last lesson is the addition to a num
 <details>
 <summary>View Functions</summary>
 
-```js
+```solidity
 function getPrecision() external pure returns (uint256) {
     return PRECISION;
 }
@@ -126,7 +126,7 @@ Let's detail Fuzz Testing at a high-level before diving into it's application.
 
 Fuzz Testing is when you supply random data to a system in an attempt to break it. If you recall the example used in a previous lesson:
 
-```js
+```solidity
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -146,7 +146,7 @@ In the above `shouldAlwaysBeZero` == 0 is our `invariant`, the property of our s
 
 Simple unit test for the above might look something like:
 
-```js
+```solidity
 function testIAlwaysGetZero() public {
     uint256 data = 0;
     myContract.doStuff(data);
@@ -158,7 +158,7 @@ The limitation of the above should be clear, we would have the assign data to ev
 
 Instead we invoke fuzz testing by making a few small changes to the test syntax.
 
-```js
+```solidity
 function testIAlwaysGetZero(uint256 data) public {
     myContract.doStuff(data);
     assert(myContract.shouldAlwaysBeZero() == 0);
@@ -188,7 +188,7 @@ runs = 1000
 
 Now, if we adjust our example function...
 
-```js
+```solidity
 function doStuff(uint256 data) public {
     // if (data == 2){
     //     shouldAlwaysBeZero = 1;
@@ -208,7 +208,7 @@ Let's look at an example where the fuzz testing we've discussed so far will fail
 
 Take the following contract for example:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
@@ -238,7 +238,7 @@ Stateful Fuzzing allows us to configure tests wherein the ending state of one ru
 
 In order to run stateful fuzz testing in Foundry, it requires a little bit of setup. First, we need to import StdInvariant.sol and have our contract inherit this.
 
-```js
+```solidity
 // SPDX-License-Identifier: None
 pragma solidity ^0.8.13;
 
@@ -257,7 +257,7 @@ contract MyContractTest is StdInvariant, Test {
 
 The next step is, we need to set a target contract. This will be the contract Foundry calls random functions on. We can do this by calling targetContract in our setUp function.
 
-```js
+```solidity
 contract NFT721Test is StdInvariant, Test {
     CaughtWithTest myContract;
 
@@ -270,7 +270,7 @@ contract NFT721Test is StdInvariant, Test {
 
 Finally, we just need to write our invariant, we must use the keywords invariant, or fuzz to begin this function name, but otherwise, we only need to declare our assertion, super simple.
 
-```js
+```solidity
 function invariant_testAlwaysReturnsZero() public view {
     assert(myContract.shouldAlwaysBeZero() == 0);
 }

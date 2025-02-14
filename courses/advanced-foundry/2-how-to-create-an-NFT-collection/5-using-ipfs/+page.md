@@ -86,7 +86,7 @@ If you view this in your browser or through the IPFS Desktop App, you should see
 
 Now, we could just paste the about tokenURI as a return value of our tokenUri function, but this would mint every Doggie identical to each other. Let's spice things up a little bit and allow the user to choose what their NFT looks like. We'll do this by allowing the user to pass a tokenUri to the mint function and mapping this URI to their minted tokenId.
 
-```js
+```solidity
 contract BasicNFT is ERC721 {
     uint256 private s_tokenCounter;
     mapping(uint256 => string) private s_tokenIdToUri;
@@ -109,7 +109,7 @@ contract BasicNFT is ERC721 {
 
 Great! All that's missing is to mint the NFT and increment our token counter. We can mint the token by calling the inherited \_safeMint function.
 
-```js
+```solidity
 contract BasicNFT is ERC721 {
     uint256 private s_tokenCounter;
     mapping(uint256 => string) private s_tokenIdToUri;

@@ -20,7 +20,7 @@ Now that we've got all the things we need to generate data for our `PackedUserOp
 
 **<span style="color:red">SendPackedUserOp.s.sol</span>**
 
-```js
+```solidity
 function generateSignedUserOperation(bytes memory callData, address sender)
     public view returns (PackedUserOperation memory) {
         // Step 1. Generate the unsigned data
@@ -35,7 +35,7 @@ We must be sure to sign the contract that aligns with what the `EntryPoint` cont
 
 **<span style="color:red">EntryPoint.sol</span>**
 
-```js
+```solidity
 /// @inheritdoc IEntryPoint
 function getUserOpHash(PackedUserOperation calldata userOp)
     public returns (bytes32) {
@@ -52,14 +52,14 @@ To make all of this happen, we are going to need to do some more work in our scr
 
 **<span style="color:red">HelperConfig.s.sol</span>**
 
-```js
+```solidity
 import { Script, console2 } from "forge-std/Script.sol";
 import { EntryPoint } from "lib/account-abstraction/contracts/core/EntryPoint.sol";
 ```
 
 Now we can finally get into deploying mocks. Add the following code in the `getOrCreateAnvilEthConfig` function.
 
-```js
+```solidity
 // deploy mocks
 console2.log("Deploying mocks...");
 vm.startBroadcast(FOUNDRY_DEFAULT_ACCOUNT);
@@ -71,7 +71,7 @@ Now that we have the EntryPoint, we can use it to call `getUserOpHash` over in o
 
 **<span style="color:red">SendPackedUserOp.s.sol</span>**
 
-```js
+```solidity
 function generateSignedUserOperation(bytes memory callData, address sender)
     public view returns (PackedUserOperation memory) {
         // Step 1. Generate the unsigned data
@@ -88,7 +88,7 @@ Let's get the userOpHash. To do this we will need to import a few items and make
 
 For imports, we need `HelperConfig`, `IEntryPoint`, and `MessageHashUtils`.
 
-```js
+```solidity
 import { HelperConfig } from "script/HelperConfig.s.sol";
 import { IEntryPoint } from "lib/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
@@ -99,7 +99,7 @@ Let's also update our parameters and finish coding the next two steps in our fun
 - Replace `address sender` with `HelperConfig.NetworkConfig`.
 - Replace `sender` with `config.account` in `vm.getNonce` and in `_generateUnsignedUserOperation`.
 
-```js
+```solidity
 function generateSignedUserOperation(bytes memory callData, HelperConfig.NetworkConfig)
     public view returns (PackedUserOperation memory) {
     // Step 1. Generate the unsigned data
@@ -116,7 +116,7 @@ In step 2 we will call the `getUserOpHash` on the `entryPoint` and pass in `user
 
 **<summary><span style="color:red">Click Here</span></summary>**
 
-```js
+```solidity
    library MessageHashUtils {
     /**
      * @dev Returns the keccak256 digest of an EIP-191 signed data with version
@@ -148,13 +148,13 @@ In step 2 we will call the `getUserOpHash` on the `entryPoint` and pass in `user
 
 Now that we have this imported, we need to be sure to add the following line to in our contract, just above the `run` function.
 
-```js
+```solidity
 using MessageHashUtils for bytes32;
 ```
 
 **As it stands our function should look like this.**
 
-```js
+```solidity
 function generateSignedUserOperation(bytes memory callData, HelperConfig.NetworkConfig)
     public view returns (PackedUserOperation memory) {
     // Step 1. Generate the unsigned data
@@ -171,7 +171,7 @@ function generateSignedUserOperation(bytes memory callData, HelperConfig.Network
 
 We've got everything we need now, just need to sign it. Let's do that in step 3.
 
-```js
+```solidity
 // 3. Sign it
 (uint8 v, bytes32 r, bytes32 s) = vm.sign(config.account, digest);
 userOp.signature = abi.encodePacked(r, s, v); // Note the order
@@ -180,7 +180,7 @@ return userOp;
 
 For clarity, let's change `unsignedUserOp` to just `userOp` in our function. After the changes, it should look like this:
 
-```js
+```solidity
 function generateSignedUserOperation(bytes memory callData, HelperConfig.NetworkConfig)
     public view returns (PackedUserOperation memory) {
     // Step 1. Generate the unsigned data
@@ -208,7 +208,7 @@ Back over in our test contract, `MinimalAccountTest.t.sol`, we need to make some
 
 **<span style="color:red">MinimalAccountTest.t.sol</span>**
 
-```js
+```solidity
 import {SendPackedUserOp} from "script/SendPackedUserOp.s.sol";
 
 contract MinimalAccountTest is Test, ZkSyncChainChecker {
@@ -228,7 +228,7 @@ contract MinimalAccountTest is Test, ZkSyncChainChecker {
 
 Let's go ahead and test that our contract is signing things correctly. Create the following function - `testRecoverSignedOp`. For **Arrange**, we can simply copy it from `testNonOwnerCannotExecuteCommands`.
 
-```js
+```solidity
 function testRecoverSignedOp() public {
     // Arrange
     assertEq(usdc.balanceOf(address(minimalAccount)), 0);
@@ -248,14 +248,14 @@ Additionally, we will need to wrap it with `callData` in order to call `execute`
 - and three arguments from the `execute` function
   - dest, value, and functionData
 
-```js
+```solidity
 bytes memory executeCallData =
     abi.encodeWithSelector(MinimalAccount.execute.selector, dest, value, functionData);
 ```
 
 Essentially, the `executeCallData` is signaling the `EntryPoint` contract to call our contract. Then, our contract will call USDC. Now that we have this, we also need our `PackedUserOperation`. This is where our `SendPackedUserOp` script comes in. Let's create an instance for this in the `setUp` function - `sendPackedUserOp = new SendPackedUserOp();`. It will look like this inside the function.
 
-```js
+```solidity
  function setUp() public {
     DeployMinimal deployMinimal = new DeployMinimal();
     (helperConfig, minimalAccount) = deployMinimal.deployMinimalAccount();
@@ -266,7 +266,7 @@ Essentially, the `executeCallData` is signaling the `EntryPoint` contract to cal
 
 And before we forget, let's import `PackedUserOperation`. Let's also do `IEntryPoint` as we will need it later on. We simply need to add them to the `SendPackedUserOp` import.
 
-```js
+```solidity
 import {
   SendPackedUserOp,
   PackedUserOperation,
@@ -276,20 +276,20 @@ import {
 
 From here, go back to the `testRecoverSignedOp` function place the following below the other code under the **Arrange** comment.
 
-```js
+```solidity
 PackedUserOperation memory packedUserOp = sendPackedUserOp.generateSignedUserOperation(
     executeCallData, helperConfig.getConfig());
 ```
 
 And, last but not least, we need to hash the `PackedUserOperation`.
 
-```js
+```solidity
 bytes32 userOperationHash = IEntryPoint(helperConfig.getConfig().entryPoint).getUserOpHash(packedUserOp);
 ```
 
 With that, our **Arrange** should look like this.
 
-```js
+```solidity
 // Arrange
 assertEq(usdc.balanceOf(address(minimalAccount)), 0);
 address dest = address(usdc);
@@ -310,13 +310,13 @@ Phew! We've done a lot, but we aren't done yet. Take a moment to reflect on what
 
 In this section of our test, we are going to find out if the person signing the transaction is valid. First, we need to import ECDSA.
 
-```js
+```solidity
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 ```
 
 Now we can code `ECDSA.recover` into our function. If you go into the `recover` function in `ECDSA.sol`, you will notice that it takes a hash and a signature. For hashing, we will need to import `MessageHashUtils` so that we can use `toEthSignedMessageHash`. Additionally, we need to add `using MessageHashUtils for bytes32` in our contract.
 
-```js
+```solidity
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
 contract MinimalAccountTest is Test {
@@ -328,7 +328,7 @@ contract MinimalAccountTest is Test {
 
 As mentioned above, our `ECDSA.recover` takes a hash and a signature. Once we have that, we need to set it to `actualSigner`, which is an address.
 
-```js
+```solidity
 // Act
 address actualSigner = ECDSA.recover(userOperationHash.toEthSignedMessageHash(), packedUserOp.signature);
 ```
@@ -337,7 +337,7 @@ Essentially, the `ECDSA.recover` will verify the digital signature of the `packe
 
 Now, we can finally do **Assert**! We want to make sure that the `actualSigner` is the owner. Which in our case is the `minimalAccount`.
 
-```js
+```solidity
 // Assert
 assertEq(actualSigner, minimalAccount.owner());
 ```
@@ -346,7 +346,7 @@ Our function should look like this now.
 
 **<span style="color:red">MinimalAccountTest.t.sol</span>**
 
-```js
+```solidity
 function testRecoverSignedOp() public {
     // Arrange
     assertEq(usdc.balanceOf(address(minimalAccount)), 0);
@@ -377,7 +377,7 @@ And ..... , we get an error 😟 **_<span style="color:red">[Failed. Reason: no 
 
 **<span style="color:red">SendPackedUserOp.s.sol</span>**
 
-```js
+```solidity
 // 3. Sign it
 (uint8 v, bytes32 r, bytes32 s) = vm.sign(config.account, digest);
 ```

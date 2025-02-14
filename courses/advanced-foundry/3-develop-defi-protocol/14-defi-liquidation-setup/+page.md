@@ -11,7 +11,7 @@ Our current DSCEngine.sol for reference:
 <details>
 <summary>DSCEngine.sol</summary>
 
-```js
+```solidity
 // Layout of Contract:
 // version
 // imports
@@ -281,7 +281,7 @@ contract DSCEngine is ReentrancyGuard {
 
 Our `DSCEngine` is almost done! We've got a couple more functions to flesh out still.
 
-```js
+```solidity
 function liquidate() external {}
 
 function getHealthFactor() external view {}
@@ -303,7 +303,7 @@ To illustrate:
 
 Let's write this out.
 
-```js
+```solidity
 /*
 * @param collateral: The ERC20 token address of the collateral you're using to make the protocol solvent again.
 * This is collateral that you're going to take from the user who is insolvent.
@@ -326,7 +326,7 @@ As such an important function to the protocol we've made every effort to be as c
 
 Alright, let's keep going. The first thing we'll want to do in `liquidate` is verify that the passed user is eligible for liquidation. Someone being liquidated should have a `Health Factor` below `1`, otherwise this function should revert.
 
-```js
+```solidity
 function liquidate(address collateral, address user, uint256 debtToCover) external moreThanZero(debtToCover) nonReentrant {
     uint256 startingUserHealthFactor = _healthFactor(user);
     if(startingUserHealthFactor > MIN_HEALTH_FACTOR){
@@ -337,7 +337,7 @@ function liquidate(address collateral, address user, uint256 debtToCover) extern
 
 Of course, we'll add our error to the errors section at the top of our contract.
 
-```js
+```solidity
 ///////////////////
 //     Errors    //
 ///////////////////
@@ -360,7 +360,7 @@ Our next step in the `liquidate` function is to remove the unhealthy position fr
 
 We'll need a new function to calculate this token amount, but we'll get to that next.
 
-```js
+```solidity
 function liquidate(address collateral, address user, uint256 debtToCover) external moreThanZero(debtToCover) nonReentrant {
     uint256 startingUserHealthFactor = _healthFactor(user);
     if(startingUserHealthFactor > MIN_HEALTH_FACTOR){
@@ -373,7 +373,7 @@ function liquidate(address collateral, address user, uint256 debtToCover) extern
 
 We're passing the `getTokenAmountFromUsd` function the type of collateral, and the amount of debt we're covering. From this we'll be able to use price feeds to determine how much of the given collateral should be redeemed. This will be another public/external view function.
 
-```js
+```solidity
 //////////////////////////////////////////
 //   Public & External View Functions   //
 //////////////////////////////////////////
@@ -390,7 +390,7 @@ Remember, we multiply by `PRECISION(1e18)` and `ADDITIONAL_FEED_PRECISION (1e10)
 
 Next, let's ensure the `liquidator` is being incentivized for securing the protocol, we'll configure a `10%` bonus to the collateral awarded to the `liquidator`.
 
-```js
+```solidity
 function liquidate(address collateral, address user, uint256 debtToCover) external moreThanZero(debtToCover) nonReentrant {
     uint256 startingUserHealthFactor = _healthFactor(user);
     if(startingUserHealthFactor > MIN_HEALTH_FACTOR){
@@ -405,7 +405,7 @@ function liquidate(address collateral, address user, uint256 debtToCover) extern
 
 Be sure to declare our new constant state variable, `LIQUIDATION_BONUS`. By setting this to `10` and dividing by our `LIQUIDATION_PRECISION` of `100`, we're setting a `10%` collateral bonus.
 
-```js
+```solidity
 /////////////////////////
 //   State Variables   //
 /////////////////////////
@@ -415,7 +415,7 @@ uint256 private constant LIQUIDATION_BONUS = 10;
 
 We then of course add this bonus to our current `tokenAmountFromDebtCovered`, to acquire the total collateral being redeemed.
 
-```js
+```solidity
 function liquidate(address collateral, address user, uint256 debtToCover) external moreThanZero(debtToCover) nonReentrant {
     uint256 startingUserHealthFactor = _healthFactor(user);
     if(startingUserHealthFactor > MIN_HEALTH_FACTOR){

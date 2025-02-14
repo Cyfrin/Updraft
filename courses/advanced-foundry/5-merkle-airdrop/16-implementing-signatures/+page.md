@@ -14,7 +14,7 @@ In this lesson, we will implement signature verification in our [`MerkleAirdrop:
 
 Before verifying the signature, we need to check if the claim has already been made to avoid redundant verification. If the claim is new, we proceed to validate the signature by calling the internal `_isValidSignature` function. If the signature is invalid, the function will revert with a custom error `MerkleAirdrop__InvalidSignature()`.
 
-```js
+```solidity
 function claim(
     address account,
     uint256 amount,
@@ -41,7 +41,7 @@ To verify the signature, we'll implement `_isValidSignature`. This function requ
 
 The **message digest** is created using the `getMessage` function, which takes the account and the claimed amount as parameters and returns a specific hash type from OpenZeppelin's EIP 712 contract.
 
-```js
+```solidity
 function getMessage(address account, uint256 amount) public view returns (bytes32) {
     return _hashTypedDataV4(keccak256(abi.encode(
         MESSAGE_TYPEHASH,
@@ -53,7 +53,7 @@ function getMessage(address account, uint256 amount) public view returns (bytes3
 
 To use this function correctly, our contract must inherit from the EIP712 contract by adding the `is` keyword to the contract declaration and updating the constructor:
 
-```js
+```solidity
 import { EIP712 } from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 
 contract MerkleAirdrop is EIP712 {
@@ -65,7 +65,7 @@ contract MerkleAirdrop is EIP712 {
 
 Next, define a struct for the message type and use it in the `MESSAGE_TYPEHASH` variable declaration and the `getMessage` function:
 
-```js
+```solidity
 struct AirdropClaim {
     address account;
     uint256 amount;
@@ -87,7 +87,7 @@ With this setup, we can correctly encode and hash the `MESSAGE_TYPEHASH`, accoun
 
 Finally, implement the `_isValidSignature` function:
 
-```js
+```solidity
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 function _isValidSignature(

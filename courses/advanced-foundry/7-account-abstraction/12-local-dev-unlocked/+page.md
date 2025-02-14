@@ -10,7 +10,7 @@ Picking up where we left off from lesson 11, we are going to have to do a work a
 
 **<span style="color:red">SendPackedUserOp.s.sol</span>**
 
-```js
+```solidity
 // 3. Sign it
 (uint8 v, bytes32 r, bytes32 s) = vm.sign(config.account, digest);
 userOp.signature = abi.encodePacked(r, s, v); // Note the order
@@ -29,7 +29,7 @@ Here's what we need to do in our refactored code.
 
 This is what our refactored code should look like.
 
-```js
+```solidity
 // 3. Sign it
 uint8 v;
 bytes32 r;
@@ -54,7 +54,7 @@ Since we are using a local chain, we need to do some refactoring over in HelperC
 
 **<span style="color:red">HelperConfig.s.sol</span>**
 
-```js
+```solidity
 address constant ANVIL_DEFAULT_ACCOUNT = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
 
 
@@ -87,7 +87,7 @@ We need to do a bit more work in `getOrCreateAnvilEthConfig`. At the bottom of t
 - set `localNetworkConfig` to `NetworkConfig`
 - return `localNetworkConfig`
 
-```js
+```solidity
 localNetworkConfig = NetworkConfig({
   entryPoint: address(entryPoint),
   usdc: address(erc20Mock),
@@ -105,7 +105,7 @@ Now that we have Anvil set, we need to make a minor change over in our `DeployMi
 
 **<span style="color:red">DeployMinimal.s.sol</span>**
 
-```js
+```solidity
 vm.startBroadcast(config.account);
 MinimalAccount minimalAccount = new MinimalAccount(config.entryPoint);
 minimalAccount.transferOwnership(config.account);

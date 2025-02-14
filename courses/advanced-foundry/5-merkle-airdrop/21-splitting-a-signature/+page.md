@@ -8,7 +8,7 @@ _Follow along with the video_
 
 In this lesson we are going to split the signature into its _v,r,s_, component starting by saving this byte signature as a variable:
 
-```js
+```solidity
 bytes private SIGNATURE = hex"fbda..c11c";
 ```
 
@@ -20,7 +20,7 @@ In this `SIGNATURE` variable, the _r,s,v_ values are concatenated together in th
 
 To isolate each component, we'll create a function called `splitSignature` . This function will verify that the signature is 65 bytes long. If it is, we can proceed to split it into its components, otherwise we will revert with a custom error.
 
-```js
+```solidity
   function splitSignature(bytes memory sig) public pure returns (uint8 v, bytes32 r, bytes32 s) {
         if (sig.length != 65) {
             revert __ClaimAirdropScript__InvalidSignatureLength();

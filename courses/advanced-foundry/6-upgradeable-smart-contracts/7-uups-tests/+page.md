@@ -12,7 +12,7 @@ In this lesson we're going to be writing our test suite which will enable us to 
 
 Begin by creating the file `test/DeployAndUpgradeTest.t.sol`. We know the drill in setting this up by now!
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -42,7 +42,7 @@ This is a little more than boilerplate, but I trust your skills to be improving 
 
 Now we can write our test, we'll need to deploy BoxV2.
 
-```js
+```solidity
 function testUpgrades() public {
     BoxV2 box2 = new BoxV2();
 
@@ -52,7 +52,7 @@ function testUpgrades() public {
 
 Recall what our upgradeBox function is going within UpgradeBox.s.sol:
 
-```js
+```solidity
 function upgradeBox(address proxyAddress, address newBox) public returns (address) {
     vm.startBroadcast();
     BoxV1 proxy = BoxV1(proxyAddress);
@@ -67,7 +67,7 @@ This function is taking the proxy address and our new implementation address as 
 
 Now, in our test, we can set an expected value and compare it against what version a call to the `version` function on our proxy will return.
 
-```js
+```solidity
 function testUpgrades() public {
     BoxV2 box2 = new BoxV2();
 
@@ -80,7 +80,7 @@ function testUpgrades() public {
 
 It's best practice to split tests up as best one can, but let's check more here while we're at it. We added new function to BoxV2, let's ensure they work after our upgrade.
 
-```js
+```solidity
 function testUpgrades() public {
     BoxV2 box2 = new BoxV2();
 
@@ -96,7 +96,7 @@ function testUpgrades() public {
 
 You know what, I changed my mind, let's add one more simple test to verify the implementation we begin with.
 
-```js
+```solidity
 function testProxyStartAsBoxV1() public {
     vm.expectRevert();
     BoxV2(proxy).setNumber(7);

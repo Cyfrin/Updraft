@@ -10,7 +10,7 @@ _Follow along the course with this video._
 
 Ok, where were we!? We went down several rabbit holes all in effort of determining if a user should be able to call `mintDsc`. Let's get back to that function now and finish it off.
 
-```js
+```solidity
 function mintDsc(uint256 amountDscToMint) external moreThanZero(amountDscToMint) nonReentrant {
     s_DSCMinted[msg.sender] += amountDscToMint;
     _revertIfHealthFactorIsBroken(msg.sender);
@@ -19,7 +19,7 @@ function mintDsc(uint256 amountDscToMint) external moreThanZero(amountDscToMint)
 
 To this point, our function is adding the amount requested to mint to the user's balance. We're then checking if this new balance is breaking the user's `Health Factor`, and if so, we're reverting. If this function _doesn't_ revert - it's time to mint!
 
-```js
+```solidity
 function mintDsc(uint256 amountDscToMint) external moreThanZero(amountDscToMint) nonReentrant {
     s_DSCMinted[msg.sender] += amountDscToMint;
     _revertIfHealthFactorIsBroken(msg.sender);
@@ -29,7 +29,7 @@ function mintDsc(uint256 amountDscToMint) external moreThanZero(amountDscToMint)
 
 Our `mint` function returns a bool and takes `_to` and `_amount` parameters. We can use this bool to revert if minting our DSC fails for some reason.
 
-```js
+```solidity
 function mintDsc(uint256 amountDscToMint) external moreThanZero(amountDscToMint) nonReentrant {
     s_DSCMinted[msg.sender] += amountDscToMint;
     _revertIfHealthFactorIsBroken(msg.sender);
@@ -43,7 +43,7 @@ function mintDsc(uint256 amountDscToMint) external moreThanZero(amountDscToMint)
 
 Lastly, add our new custom error to the appropriate section at the top of the contract:
 
-```js
+```solidity
 ///////////////////
 //     Errors    //
 ///////////////////
@@ -67,7 +67,7 @@ See you soon!
 <details>
 <summary>DSCEngine.sol</summary>
 
-```js
+```solidity
 // Layout of Contract:
 // version
 // imports

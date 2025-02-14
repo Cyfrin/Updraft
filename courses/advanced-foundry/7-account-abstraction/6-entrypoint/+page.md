@@ -8,13 +8,13 @@ In this lesson, our main objective is to make sure that our contract can only be
 
 First, let's make sure that `validateUserOp` is only callable by the `EntryPoint` Contract. Let's import the `IEntryPoint` Interface. This will help us understand how the `EntryPoint` works and give us some valuable getter functions.
 
-```js
+```solidity
 import { IEntryPoint } from "lib/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 ```
 
 Next, add `address entryPoint` as a parameter to our constructor. Then, create a state variable and set it to private immutable.
 
-```js
+```solidity
 IEntryPoint private immutable i_entryPoint;
 
 constructor(address entryPoint) Ownable(msg.sender) {
@@ -26,7 +26,7 @@ If we click into the contract we can see all of the functions that the `EntryPoi
 
 As previously mentioned, `IEntryPoint` will give us some getters. Copy and paste this header at the bottom of your code. Then, we will add some getter functions under it.
 
-```js
+```solidity
 /*//////////////////////////////////////////////////////////////
                                 GETTERS
 //////////////////////////////////////////////////////////////*/
@@ -37,7 +37,7 @@ As previously mentioned, `IEntryPoint` will give us some getters. Copy and paste
 
 Here is the getter function.
 
-```js
+```solidity
 function getEntryPoint() external view returns (address) {
         return address(i_entryPoint);
     }
@@ -45,7 +45,7 @@ function getEntryPoint() external view returns (address) {
 
 Next, we want to create a modifier called `requireFromEntryPoint`. Place it above your constructor.
 
-```js
+```solidity
 modifier requireFromEntryPoint() {
         if (msg.sender != address(i_entryPoint)) {
             revert MinimalAccount__NotFromEntryPoint();
@@ -56,13 +56,13 @@ modifier requireFromEntryPoint() {
 
 Here, if the caller of the contract is not `EntryPoint` it will revert. You may have also noticed that our modifier has a custom error. Let's place it above our state variable.
 
-```js
+```solidity
 error MinimalAccount__NotFromEntryPoint();
 ```
 
 Now we can use our modifier to make our `validateUserOp` callable exclusively from the `EntryPoint`. Let's place `requireFromEntryPoint` in our function.
 
-```js
+```solidity
 function validateUserOp(PackedUserOperation calldata userOp, bytes32 userOpHash, uint256 missingAccountFunds)
         external
         requireFromEntryPoint
@@ -76,7 +76,7 @@ function validateUserOp(PackedUserOperation calldata userOp, bytes32 userOpHash,
 
 And now we are all set for the next steps. Before we move on, let's take a look at what our code looks like so far. Take a moment to reflect on what we have gained to this point in the course. When you are ready, move on to the next lesson.
 
-```js
+```solidity
 contract MinimalAccount is IAccount, Ownable {
      /*//////////////////////////////////////////////////////////////
                                  ERRORS

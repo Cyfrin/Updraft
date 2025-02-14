@@ -4,7 +4,7 @@ In this short lesson we are going to cover the `PackedUserOperation`, which was 
 
 > ❗ **NOTE** The lines of code dealing with gas fees, limits, and verification - as well as `bytes initCode` - are to be ignored for now.
 
-```js
+```solidity
 struct PackedUserOperation {
     address sender;
     uint256 nonce;

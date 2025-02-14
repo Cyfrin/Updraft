@@ -21,7 +21,7 @@ First, we are going to write a script that will help us generate the data for th
 
 **<span style="color:red">SendPackedUserOp.s.sol</span>**
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
@@ -41,7 +41,7 @@ contract SendPackedUserOp is Script {
 
 For step 1, we are going to create a separate function called `_generateUnsignedUserOperation`. It will take `bytes memory calldata`, `address sender`, and `uint256 nonce`. It will populate all the fields of the `PackedUserOperation` except for the signature. We will also need some variables for gas limits.
 
-```js
+```solidity
 function _generateUnsignedUserOperation(bytes memory callData)
     internal pure returns (PackedUserOperation memory) {
 
@@ -68,7 +68,7 @@ function _generateUnsignedUserOperation(bytes memory callData)
 
 Now we can use our `_generateUnsignedUserOperation` function for step 1 of our `generateSignedUserOperation` function.
 
-```js
+```solidity
 function generateSignedUserOperation(bytes memory callData, address sender)
     public view returns (PackedUserOperation memory) {
         // Step 1. Generate the unsigned data

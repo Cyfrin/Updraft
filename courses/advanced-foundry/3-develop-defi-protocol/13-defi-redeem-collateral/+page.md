@@ -11,7 +11,7 @@ Our current DSCEngine.sol for reference:
 <details>
 <summary>DSCEngine.sol</summary>
 
-```js
+```solidity
 // Layout of Contract:
 // version
 // imports
@@ -252,7 +252,7 @@ So far we've afforded our users a way to put money _into_ the protocol, they'll 
 1. Check that withdrawing the requested amount doesn't cause the account's `Health Factor` to break (fall below 1)
 2. transfer the requested tokens from the protocol to the user
 
-```js
+```solidity
 function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral) public moreThanZero(amountCollateral) nonReentrant{}
 ```
 
@@ -263,7 +263,7 @@ We append the `moreThanZero` and `nonReentrant` modifiers to our function to pre
 
 With checks in place, we'll want to update the internal accounting of the contract to reflect the withdrawal. This updates contract state, so of course we'll want to emit a new event.
 
-```js
+```solidity
 function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral) public moreThanZero(amountCollateral) nonReentrant{
     s_collateralDeposited[msg.sender][tokenCollateralAddress] -= amountCollateral;
     emit CollateralRedeemed(msg.sender, tokenCollateralAddress, amountCollateral);
@@ -275,7 +275,7 @@ function redeemCollateral(address tokenCollateralAddress, uint256 amountCollater
 
 Don't forget to add your event to the top of your contract as well.
 
-```js
+```solidity
 ////////////////
 //   Events   //
 ////////////////
@@ -286,7 +286,7 @@ event CollateralRedeemed(address indexed user, address indexed token, uint256 in
 
 At this point in our function, we'll want to transfer the redeemed tokens to the user, but we're caught in a trap of sorts. Part of our requirements for this function is that the user's `Health Factor` mustn't be broken after the transfer as occurred. In situations like these, you may see the `CEI (Checks, Effects, Interactions)` pattern broken sometimes. A protocol _could_ call a function prior to the transfer to calculate changes and determine if the `Health Factor` is broken, before a transfer occurs, but this is often quite gas intensive. For this reason protocols will often sacrifice `CEI` for efficiency.
 
-```js
+```solidity
 function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral) public moreThanZero(amountCollateral) nonReentrant{
     s_collateralDeposited[msg.sender][tokenCollateralAddress] -= amountCollateral;
     emit CollateralRedeemed(msg.sender, tokenCollateralAddress, amountCollateral);
@@ -306,7 +306,7 @@ This looks great. What does a user do when they want to exit the protocol entire
 
 In order for a user to burn their `DSC`, the tokens will need to be transferred to `address(0)`, and their balance within our `s_DSCMinted` mapping will need to be updated. Rather than transferring to `address(0)` ourselves, our function will take the tokens from the user and then call the inherent burn function on the token. We'll apply the `moreThanZero` modifier for our usual reasons (non-zero transactions only!).
 
-```js
+```solidity
 function burnDsc(uint256 amount) external moreThanZero(amount){
     s_DSCMinted[msg.sender] -= amount;
     bool success = i_dsc.transferFrom(msg.sender, address(this), amount);
@@ -320,7 +320,7 @@ The conditional above, should technically never hit, since transferFrom will rev
 
 We'll need to call burn on our `DSC` now.
 
-```js
+```solidity
 function burnDsc(uint256 amount) public moreThanZero(amount){
     s_DSCMinted[msg.sender] -= amount;
     bool success = i_dsc.transferFrom(msg.sender, address(this), amount);
@@ -339,7 +339,7 @@ function burnDsc(uint256 amount) public moreThanZero(amount){
 
 With both `redeemCollateral` and `burnDsc` written, we can now combine the functionality into one transaction.
 
-```js
+```solidity
 /*
  * @param tokenCollateralAddress: the collateral address to redeem
  * @param amountCollateral: amount of collateral to redeem

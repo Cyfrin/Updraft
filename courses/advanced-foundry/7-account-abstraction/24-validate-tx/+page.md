@@ -14,7 +14,7 @@ Let's get started!
 
 Let's set up some comments to act as a roadmap in our function first.
 
-```js
+```solidity
 function validateTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction memory _transaction)
     external
     payable
@@ -37,7 +37,7 @@ function validateTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Tran
 
 We already have a tool that will calculate fees for us called `MemoryTransactionHelper`. Let's add this to our `Transaction` import and set it up in our contract.
 
-```js
+```solidity
 import {
   Transaction,
   MemoryTransactionHelper,
@@ -46,7 +46,7 @@ import {
 
 Place the following inside our contract above the external functions
 
-```js
+```solidity
 using MemoryTransactionHelper for Transaction;
 ```
 
@@ -54,7 +54,7 @@ using MemoryTransactionHelper for Transaction;
 
 From this library, we will use a function called `totalRequiredBalance`. Set the following in our `validateTransaction` function.
 
-```js
+```solidity
 // Check for fee to pay
 uint256 totalRequiredBalance = _transaction.totalRequiredBalance();
 if (totalRequiredBalance > address(this).balance) {
@@ -67,7 +67,7 @@ if (totalRequiredBalance > address(this).balance) {
 
 Since we have a revert, let's go ahead and set our custom error under `using MemoryTransactionHelper for Transaction;`.
 
-```js
+```solidity
 error ZkMinimalAccount__NotEnoughBalance();
 ```
 
@@ -83,7 +83,7 @@ Now we can check for the signature. We will need the `encodeHash` function from 
 
 **<summary><span style="color:red">Encode Hash Function</span></summary>**
 
-```js
+```solidity
 /// @notice Calculate the suggested signed hash of the transaction,
 /// i.e. the hash that is signed by EOAs and is recommended to be signed by other accounts.
 function encodeHash(Transaction memory _transaction) internal view returns (bytes32 resultHash) {
@@ -108,7 +108,7 @@ function encodeHash(Transaction memory _transaction) internal view returns (byte
 
 Then we will need to validate the signature on the `Transaction` struct (similar to `PackedUserOperation` from our Ethereum contract.). We will need a few imports.
 
-```js
+```solidity
 import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
@@ -124,7 +124,7 @@ And with this we will also need to set contract to inherit `Ownable` and create 
 
 - `contract ZkMinimalAccount is IAccount, Ownable`
 
-```js
+```solidity
 constructor() Ownable(msg.sender) {}
 ```
 
@@ -140,7 +140,7 @@ Back in our function, we can now set the following variables to check the signat
 
 > ❗ **IMPORTANT** This section varies slightly from the video as there was an error that will be corrected later on.
 
-```js
+```solidity
  // Check the signature
 bytes32 txHash = _transaction.encodeHash();
 address signer = ECDSA.recover(txHash, _transaction.signature);
@@ -157,7 +157,7 @@ bool isValidSigner = signer == owner();
 
 Let's take a look at what our function looks like now. You will note that \_txHash and \_suggestedSignedHash are commented out. No need to worry about these at the moment.
 
-```js
+```solidity
 function validateTransaction(bytes32 /*_txHash*/, bytes32 /*_suggestedSignedHash*/, Transaction memory _transaction)
     external
     payable
@@ -197,7 +197,7 @@ function validateTransaction(bytes32 /*_txHash*/, bytes32 /*_suggestedSignedHash
 
 Our function is almost complete. However, we need to make sure that only the bootloader can call it. To do this, we will need to create a modifier and place it into our function. Place it below our errors in the contract.
 
-```js
+```solidity
 /*//////////////////////////////////////////////////////////////
                                MODIFIERS
 //////////////////////////////////////////////////////////////*/
@@ -216,19 +216,19 @@ Basically, this modifier is saying that if the sender is not from the `BOOTLOADE
 
 Simply paste this in the `NONCE_HOLDER_SYSTEM_CONTRACT` import that we have already added.
 
-```js
+```solidity
 BOOTLOADER_FORMAL_ADDRESS;
 ```
 
 Place this custom error with our other one at towards the top of the contract
 
-```js
+```solidity
 error ZkMinimalAccount__NotFromBootLoader();
 ```
 
 Now add `requireFromBootloader` in our function between `payable` and `returns (bytes4 magic)`. It will look like this.
 
-```js
+```solidity
 function validateTransaction(bytes32 /*_txHash*/, bytes32 /*_suggestedSignedHash*/, Transaction memory _transaction)
     external
     payable

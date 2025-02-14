@@ -12,7 +12,7 @@ Now that we've a way to deposit collateral, the next logical step would be to mi
 
 The `mintDsc` function is likely going to be surprisingly complex. There are a number of things we'll need to accomplish when minting our stablecoin. Primarily we'll need to check if the account's collateral value supports the amount of `DSC` being minted. To do this we'll need to engage `Chainlink` price feeds, do value conversions and more. Let's get started.
 
-```js
+```solidity
 ///////////////////////////
 //   External Functions  //
 ///////////////////////////
@@ -28,7 +28,7 @@ function mintDsc(uint256 amountDscToMint) public moreThanZero(amountDscToMint) n
 
 We've added our modifiers to protect against reentrancy and constrain the `amountDscToMint` to being above zero. Much like we track the collateral a user has deposited, we'll also have to track the `DSC` which has been minted. Sounds like another mapping!
 
-```js
+```solidity
 /////////////////////////
 //   State Variables   //
 /////////////////////////
@@ -41,7 +41,7 @@ mapping(address user => uint256 amountDscMinted) private s_DSCMinted;
 
 And now, in following `CEI (Checks, Effects, Interactions)`, we'll want to update the user's mapped balance to reflect the amount being minted in our function.
 
-```js
+```solidity
 /*
     * @param amountDscToMint: The amount of DSC you want to mint
     * You can only mint DSC if you hav enough collateral
@@ -55,7 +55,7 @@ Our next step is something that will warrant it's own function, this is going to
 
 We'll need a new section for this function, according to our contract layout guideline, so let's jump to it.
 
-```js
+```solidity
 ///////////////////////////////////////////
 //   Private & Internal View Functions   //
 ///////////////////////////////////////////
@@ -69,7 +69,7 @@ function _revertIfHealthFactorIsBroken(address user){}
 
 In addition to the above, we'll need a function which checks an account's `Health Factor`. Let's write that now.
 
-```js
+```solidity
 ///////////////////////////////////////////
 //   Private & Internal View Functions   //
 ///////////////////////////////////////////
@@ -90,7 +90,7 @@ So, how are we going to determine an account's `Health Factor`? What will we nee
 
 In order to do this, we're actually going to create _another_ function, stick with me here. Our next function will return some basic details of the user's account including their `DSC` minted and the collateral value.
 
-```js
+```solidity
 /*
  * Returns how close to liquidation a user is
  * If a user goes below 1, then they can be liquidated.
@@ -107,7 +107,7 @@ function _getAccountInformation(address user) private view returns(uint256 total
 
 A user's total minted `DSC` is easy enough to acquire by referencing our protocol's mapping of this, but a user's collateral value is going to take some math and a price feed. This logic will be held by a new function, `getAccountCollateralValue`. This function we'll make public, so anyone can call it. Private and view functions are the very last thing in our contract layout, so we'll add our new function to the bottom!
 
-```js
+```solidity
 //////////////////////////////////////////
 //   Public & External View Functions   //
 //////////////////////////////////////////
@@ -119,7 +119,7 @@ So, how do we determine the total USD value of a user's collateral? Since the us
 
 Since we're only using wETH and wBTC in our protocol, we _could_ hardcode these tokens into the contract, but let's make the protocol a little more agnostic. This will allow someone to deploy their own fork, which accepts their own types of collateral. We'll accomplish this by declaring a new state variable:
 
-```js
+```solidity
 /////////////////////////
 //   State Variables   //
 /////////////////////////
@@ -133,7 +133,7 @@ address[] private s_collateralTokens;
 
 We'll assign an array of compatible token addresses in our constructor:
 
-```js
+```solidity
 ///////////////////
 //   Functions   //
 ///////////////////
@@ -152,7 +152,7 @@ constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses
 
 With this array set up, we can now loop through this in our `getAccountCollateral` function to calculate it's total value in USD.
 
-```js
+```solidity
 //////////////////////////////////////////
 //   Public & External View Functions   //
 //////////////////////////////////////////
@@ -169,13 +169,13 @@ function getAccountCollateralValue(address user) public view returns (uint256 to
 
 Hmm... We've hit the point where we need to know the USD value of our collateral tokens in order to calculate our totals. This is probably _another_ function we're going to want.
 
-```js
+```solidity
 function getUsdValue(address token, uint256 amount) public view returns(uint256){}
 ```
 
 This is where our `Chainlink` price feeds come into play. We're going to need to import the `AggregatorV3Interface`, like we did in previous sections.
 
-```js
+```solidity
 import { ReentrancyGuard } from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { DecentralizedStableCoin } from "./DecentralizedStableCoin.sol";
@@ -202,7 +202,7 @@ remappings = [
 
 Alright, back to our `getUsdValue` function.
 
-```js
+```solidity
 function getUsdValue(address token, uint256 amount) public view returns(uint256){
     AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
     (,int256 price,,,) = priceFeed.latestRoundData();
@@ -213,7 +213,7 @@ This should return the latest price of our token, to 8 decimal places. We can ve
 
 Now, we're unable to simply take this returned price and multiply it by our amount, the precision of both these values is going to be different, the amount passed to this function is expected to have 18 decimal places where as our price has only 8. To resolve this we'll need to multiple our price by `1e10`. Once our precision matches, we can multiple this by our amount, then divide by `1e18` to return a reasonably formatted number for USD units.
 
-```js
+```solidity
 function getUsdValue(address token, uint256 amount) public view returns(uint256){
     AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
     (,int256 price,,,) = priceFeed.latestRoundData();
@@ -224,7 +224,7 @@ function getUsdValue(address token, uint256 amount) public view returns(uint256)
 
 This looks good.. but I hate magic numbers. Let's declare constants for `1e10` and `1e18` and replace these in our function.
 
-```js
+```solidity
 /////////////////////////
 //   State Variables   //
 /////////////////////////
@@ -252,7 +252,7 @@ Much better.
 
 The last thing we need to return to, to finish up, is our `getAccountCollateralValue` function. We can now call `getUsdValue` in our loop to calculate a user's `totalCollateralValue`.
 
-```js
+```solidity
 //////////////////////////////////////////
 //   Public & External View Functions   //
 //////////////////////////////////////////
@@ -271,7 +271,7 @@ function getAccountCollateralValue(address user) public view returns (uint256 to
 
 Whew, this long chain of functions all started with...
 
-```js
+```solidity
 function _getAccountInformation(address user) private view returns(uint256 totalDscMinted,uint256 collateralValueInUsd){
     totalDscMinted = s_DSCMinted[user];
     collateralValueInUsd = getAccountCollateralValue(user);
@@ -287,7 +287,7 @@ This is the point where I would absolutely be screaming to write some tests, we'
 <details>
 <summary>DSCEngine.sol</summary>
 
-```js
+```solidity
 // Layout of Contract:
 // version
 // imports

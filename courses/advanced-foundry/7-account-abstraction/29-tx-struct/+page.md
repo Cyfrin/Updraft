@@ -13,7 +13,7 @@ Let's get to it!
 
 Picking up where we left off, we still need to complete **ACT** and **Assert** in our `testZkOwnerCanExecuteCommands` function.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
@@ -49,7 +49,7 @@ contract ZkMinimalAccountTest is Test {
 
 Since we don't have any scripts, we'll have to make some **helper** functions. Let's add a header for them at the bottom of our code.
 
-```js
+```solidity
 /*//////////////////////////////////////////////////////////////
                                 HELPERS
 //////////////////////////////////////////////////////////////*/
@@ -63,7 +63,7 @@ The first helper function that we need to create is for unsigned transactions. L
 - a value
 - data
 
-```js
+```solidity
 /*//////////////////////////////////////////////////////////////
                                 HELPERS
 //////////////////////////////////////////////////////////////*/
@@ -80,7 +80,7 @@ function _createUnsignedTransaction(
 
 Our function returns Transaction memory. We are actually going to create this. If you've guessed that we'll need to import the `Transaction` struct, you are correct. Let's do that now. 
 
-```js
+```solidity
 import {
     Transaction
 } from "lib/foundry-era-contracts/src/system-contracts/contracts/libraries/MemoryTransactionHelper.sol";
@@ -107,12 +107,12 @@ If you go through [the struct, you'll notice that we need:](https://github.com/C
 
 As mentioned above, we need to set a couple of variables in our function. We'll place them above our `Transaction` struct that we are creating.
 
-```js
+```solidity
 uint256 nonce = vm.getNonce(address(minimalAccount));
 bytes32[] memory factoryDeps = new bytes32[](0);
 ```
 And now we can return our `Transaction`. 
-```js
+```solidity
 return Transaction({
     txType: transactionType, // type 113 (0x71).
     from: uint256(uint160(from)),
@@ -143,14 +143,14 @@ With this helper function, we can now finish **Assert** in our test function, `t
 - value is the value being passed
 - data is functionData
 
-```js
+```solidity
 Transaction memory transaction =
     _createUnsignedTransaction(minimalAccount.owner(), 113, dest, value, functionData);
 ```
 
 Here is what both of our functions should look like as of now. 
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
@@ -183,7 +183,7 @@ contract ZkMinimalAccountTest is Test {
 }
 ```
 ---
-```js
+```solidity
 /*//////////////////////////////////////////////////////////////
                                 HELPERS
 //////////////////////////////////////////////////////////////*/
@@ -222,7 +222,7 @@ function _createUnsignedTransaction(
 
 Now, all we need to do in **Act** is prank the owner. We will also need to call `executeTransaction` from our contract. Remember that it takes three arguments - `_txHash`, `_suggestedSignedHash`, and `_transaction`. Since we have commented out the first two, we'll just pass empty bytes. 
 
-```js
+```solidity
 // Act
 vm.prank(minimalAccount.owner());
 minimalAccount.executeTransaction(EMPTY_BYTES32, EMPTY_BYTES32, transaction);
@@ -230,14 +230,14 @@ minimalAccount.executeTransaction(EMPTY_BYTES32, EMPTY_BYTES32, transaction);
 
 Let's also create a constant for `EMPTY_BYTES32`. 
 
-```js
+```solidity
 bytes32 constant EMPTY_BYTES32 = bytes32(0);
 ```
 ---
 
 And finally we can complete **Assert** by checking if the balance of usdc at our address is equal to `AMOUNT`.
 
-```js
+```solidity
 // Assert
 assertEq(usdc.balanceOf(address(minimalAccount)), AMOUNT);
 ```

@@ -18,7 +18,7 @@ As a bonus piece of content, Harrison with Gaslight shares his advice on increas
 
 To showcase a common waste of gas in smart contract development, we reference a simple air drop contract:
 
-```js
+```solidity
 contract BadAirdrop {
     address token;
     uint256 public transfers;
@@ -50,7 +50,7 @@ We're then iterating through the array again to transfer from the contract to th
 
 There are lots of improvements possible here. Let's look at a more ideal example.
 
-```js
+```solidity
 contract GoodAirdrop {
     address public immutable token;
     uint256 public transfers;

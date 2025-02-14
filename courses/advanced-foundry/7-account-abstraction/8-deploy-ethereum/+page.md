@@ -8,7 +8,7 @@ Let's start by naming our first script in the `script` folder. Name it `DeployMi
 
 **<span style="color:red">DeployMinimal.s.sol</span>**
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
@@ -26,7 +26,7 @@ If you remember(or go back) to our MinimalAccount, the constructor passes `addre
 
 **<span style="color:red">MinimalAccount.sol</span>**
 
-```js
+```solidity
 constructor(address entrypoint)
 ```
 
@@ -36,7 +36,7 @@ Let's set this up in our `HelperConfig.s.sol`.
 
 **<span style="color:red">HelperConfig.s.sol</span>**
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
@@ -103,13 +103,13 @@ Now that we have our `HelperConfig`, let's import it in `DeployMinimal.s.sol`.
 
 **<span style="color:red">DeployMinimal.s.sol</span>**
 
-```js
+```solidity
 import { HelperConfig } from "script/HelperConfig.s.sol";
 ```
 
 Then we need to add it to our `deployMinimalAccount` function.
 
-```js
+```solidity
 function deployMinimalAccount() public returns (HelperConfig, MinimalAccount) {
     HelperConfig helperConfig = new HelperConfig();
     HelperConfig.NetworkConfig memory config = helperConfig.getConfig();

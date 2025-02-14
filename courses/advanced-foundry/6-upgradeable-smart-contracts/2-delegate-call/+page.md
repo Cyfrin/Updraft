@@ -18,7 +18,7 @@ Let's consider the two simple contracts provided as examples:
 
 Contract B is very simple, it contains 3 storage variables which are set by the setVars function.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
@@ -43,7 +43,7 @@ If we recall, storage acts _kind of_ like an array and each storage variable is 
 
 Now consider Contract A:
 
-```js
+```solidity
 contract A {
     uint256 public num;
     address public sender;

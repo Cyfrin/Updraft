@@ -10,7 +10,7 @@ _Follow along the course with this video._
 
 The muscle memory should be kicking in for some of these deploy scripts by now. Let's not waste any time setting this one up! Create a new file `script/DeployBasicNft.s.sol`.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;

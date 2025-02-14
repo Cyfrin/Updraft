@@ -68,7 +68,7 @@ Go into zksync folder in your src. Create a new file and call it `ZkMinimalAccou
 
 ---
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 

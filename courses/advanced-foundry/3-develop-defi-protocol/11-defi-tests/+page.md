@@ -14,7 +14,7 @@ In the last lesson, we set up a deploy script as well as a `HelperConfig` to ass
 
 Create `test/unit/DSCEngine.t.sol` and begin with the boilerplate we're used to. We know we'll have to import our deploy script as well as `Test`, `DecentralizedStableCoin.sol`, and `DSCEngine.sol`.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -31,7 +31,7 @@ contract DSCEngineTest is Test {
 
 Declare our contract/script variables, then in our `setUp` function, we're going to need to deploy our contracts using our `DeployDSC` script.
 
-```js
+```solidity
 contract DSCEngineTest is Test {
     DeployDSC deployer;
     DecentralizedStableCoin dsc;
@@ -46,7 +46,7 @@ contract DSCEngineTest is Test {
 
 I think a good place to start will be checking some of our math in `DSCEngine`. We should verify that we're pulling data from our price feeds properly and that our USD calculations are correct.
 
-```js
+```solidity
 /////////////////
 // Price Tests //
 /////////////////
@@ -56,7 +56,7 @@ function testGetUsdValue() public {}
 
 The `getUsdValue` function takes a token address and an amount as a parameter. We could import our mocks for reference here, but instead, let's adjust our `DeployDSC` script to also return our `HelperConfig`. We can acquire these token addresses from this in our test.
 
-```js
+```solidity
 contract DeployDSC is Script {
     ...
 
@@ -85,7 +85,7 @@ Now, back to our test. We'll need to do a few things in `DSCEngineTest.t.sol`.
 - Acquire the imported config from our `deployer.run` call
 - Acquire `ethUsdPriceFeed` and weth from our `config`'s `activeNetworkConfig`
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -114,7 +114,7 @@ contract DSCEngineTest is Test {
 
 We're now ready to use some of these values in our test function. For our unit test, we'll be requesting the value of `15ETH`, or `15e18`. Our HelperConfig has the ETH/USD price configured at `$2000`. Thus we should expect `30000e18` as a return value from our getUsdValue function. Let's see if that's true.
 
-```js
+```solidity
 /////////////////
 // Price Tests //
 /////////////////
@@ -140,7 +140,7 @@ It works! We're clearly still on track. This is great. It's good practice to tes
 
 Before moving on, we should write a test for our `depositCollateral` function as well. We'll need to import our `ERC20Mock` in order to test deposits, so let's do that now. We'll also need to declare a `USER` to call these functions with and amount for them to deposit.
 
-```js
+```solidity
 import {ERC20Mock} from "@openzeppelin/contracts/mocks/ERC20Mock.sol";
 
 ...
@@ -164,7 +164,7 @@ contract DSCEngineTest is Test {
 
 Let's make sure our `USER` has some tokens minted to them in our `setUp`, they'll need them for several tests in our future.
 
-```js
+```solidity
 address public USER = makeAddr("user");
 uint256 public constant AMOUNT_COLLATERAL = 10 ether;
 uint256 public constant STARTING_ERC20_BALANCE = 10 ether;
@@ -180,7 +180,7 @@ function setUp public {
 
 Our user is going to need to approve the `DSCEngine` contract to call `depositCollateral`. Despite this, we're going to deposit `0`. This _should_ cause our function call to revert with our custom error `DSCEngine__NeedsMoreThanZero`, which we'll account for with `vm.expectRevert`.
 
-```js
+```solidity
  /////////////////////////////
 // depositCollateral Tests //
 /////////////////////////////

@@ -14,7 +14,7 @@ In this lesson we are going to build a script to handle the **signing** and **cl
 
 We can begin by navigating into the `/script` folder and creating a `Interact.s.sol` file. To get the*most recently deployed airdrop contract*, we will use DevOps tools from Cyfrin foundry-devops, which should be already installed in this project.
 
-```js
+```solidity
 import { Script, console } from "forge-std/Script.sol";
 import { DevOpsTools } from "foundry-devops/src/DevOpsTools.sol";
 import { MerkleAirdrop } from "../src/MerkleAirdrop.sol";
@@ -28,7 +28,7 @@ contract ClaimAirdrop is Script {
 
 Within the `run` function, we'll retrieve the most recently deployed `MerkleAirdrop` contract address and pass this contract address to a function `claimAirdrop`:
 
-```js
+```solidity
 function run() external {
         address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment("MerkleAirdrop", block.chainid);
         claimAirdrop(mostRecentlyDeployed);
@@ -52,7 +52,7 @@ Next, we invoke the `MerkleAirdrop::claim` function, passing the following requi
 
 Here is the function:
 
-```js
+```solidity
 function claimAirdrop(address airdrop) public {
     vm.startBroadcast();
     // v, r, s are retrieved in the following lesson

@@ -10,7 +10,7 @@ _Follow along the course with this video._
 
 Alright, with our tests passing we're going to want a way to interact with our contract programmatically. We could use `cast` commands, but let's write an interactions script instead. Create the file `script/Interactions.s.sol`. You know the drill for our boilerplate by now.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -33,7 +33,7 @@ Now, we can import `DevOpsTools` and use this to acquire our most recent deploym
 > ❗ **NOTE**
 > I've copied over my `PUG tokenUri` for use in our `mint` function, remember to copy your own over too!
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;

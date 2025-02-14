@@ -21,7 +21,7 @@ We've come a long way, but we aren't quite done yet. We still need to enable our
 
 In order for us to make all this happen, we need a new external function called `execute`. It will pass an address for the destination, uint256 for eth, and bytes calldata for ABI encoded function data. If not successful, it will revert. Be sure to add `MinimalAccount__CallFailed(result)` to the errors section of your code.
 
-```js
+```solidity
 /*//////////////////////////////////////////////////////////////
                            EXTERNAL FUNCTIONS
 //////////////////////////////////////////////////////////////*/
@@ -39,7 +39,7 @@ In order for us to make all this happen, we need a new external function called 
 
 Now, we want to allow users to call directly from their wallet to the account contract. We will need to create a modifier for this.
 
-```js
+```solidity
  modifier requireFromEntryPointOrOwner() {
         if (msg.sender != address(i_entryPoint) && msg.sender != owner()) {
             revert MinimalAccount__NotFromEntryPointOrOwner();
@@ -50,7 +50,7 @@ Now, we want to allow users to call directly from their wallet to the account co
 
 The modifier is set up in a way that will allow the **owner** or the **EntryPoint** can call our account. If not the address of either one, it will revert and give us a custom error, `MinimalAccount__NotFromEntryPointOrOwner`. Let's place it with the other errors.
 
-```js
+```solidity
 /*//////////////////////////////////////////////////////////////
                                  ERRORS
 //////////////////////////////////////////////////////////////*/
@@ -65,7 +65,7 @@ The modifier is set up in a way that will allow the **owner** or the **EntryPoin
 
 The last thing we need to do now is add a `receive` function. We will make it `external payable` so that the contract can accept funds from our `_payPrefund` function to pay for transactions. Place `receive() external payable {}` just below our constructor, like so:
 
-```js
+```solidity
 constructor(address entryPoint) Ownable(msg.sender) {
         i_entryPoint = IEntryPoint(entryPoint);
     }

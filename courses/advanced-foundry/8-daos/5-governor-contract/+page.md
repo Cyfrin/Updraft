@@ -34,7 +34,7 @@ Upgradeability - Our bells from last lesson should be going off! This includes p
 
 We'll keep everything default for this exercise, let's just copy the provided Governor contract into our own file `src/MyGovernor.sol`.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 // Compatible with OpenZeppelin Contracts ^5.0.0
 pragma solidity ^0.8.20;
@@ -155,7 +155,7 @@ This is the core of the governance system. The governor tracks proposals via the
 
 Proposals exist as fairly simple structs:
 
-```js
+```solidity
 struct ProposalCore {
     // --- start retyped from Timers.BlockNumber at offset 0x00 ---
     uint64 voteStart;
@@ -172,7 +172,7 @@ struct ProposalCore {
 
 Each proposal's state is tracked through the `state` function. This references the aforementioned proposal mapping and displays various properties including if it was executed, if quorum was reached etc. This is the function that many front ends will call to display proposal details.
 
-```js
+```solidity
 function state(uint256 proposalId) public view virtual override returns (ProposalState) {
     ProposalCore storage proposal = _proposals[proposalId];
 
@@ -212,7 +212,7 @@ function state(uint256 proposalId) public view virtual override returns (Proposa
 
 One of the most important functions in Governor.sol is going to be `propose`, this is the function DAO members will call to submit a proposal for voting, the parameters passed here are very specific.
 
-```js
+```solidity
 function propose(
     address[] memory targets,
     uint256[] memory values,
@@ -233,7 +233,7 @@ The proposal function takes these inputs and will hash them, generating a unique
 
 Another integral function within this contract is `execute` which we see takes largely the same parameters as `propose`. Within execute, these passed parameters are hashed to determine the valid proposalId to execute. Some checks are performed before the internal \_execute is called and we can see the same low-level functionality we used to call arbitrary functions, in previous lessons.
 
-```js
+```solidity
 /**
  * @dev Internal execution mechanism. Can be overridden to implement different execution mechanism
  */
@@ -254,7 +254,7 @@ function _execute(
 
 The last major function I'll detail is \_castVote. There are a number of derivated such as castVoteWithReason, castVoteBySig etc, but ultimately they boil down to this \_castVote logic.
 
-```js
+```solidity
  /**
  * @dev Internal vote casting mechanism: Check that the vote is pending, that it has not been cast yet, retrieve
  * voting weight using {IGovernor-getVotes} and call the {_countVote} internal function.
@@ -300,7 +300,7 @@ An extension contract that allows configuration of things like voting delay, vot
 
 This extension implements a simplified vote counting mechanism by which each proposal is assigned a ProposalVote struct in which forVotes, againstVotes and abstainVotes are tallied.
 
-```js
+```solidity
 struct ProposalVotes {
     uint256 againstVotes;
     uint256 forVotes;
@@ -326,7 +326,7 @@ This functionality is important for a number of reasons, two major ones that com
 
 So, with a better understanding of all the functionality our DAO has under-the-hood, the constructor we copied over from the Contract Wizard should make a lot of sense to us.
 
-```js
+```solidity
 constructor(IVotes _token, TimelockController _timelock)
     Governor("MyGovernor")
     GovernorSettings(7200, /* 1 day */ 50400, /* 1 week */ 0)
@@ -344,7 +344,7 @@ The TimelockController is going to be the last contract we need to write, actual
 
 We don't get a Contract Wizard shortcut this time, but it won't be too difficult to build this one out ourselves, we _can_ still leverage the OpenZeppelin governance library.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;

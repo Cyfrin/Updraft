@@ -16,7 +16,7 @@ At the core of the NFT we'll build is a `flipMood` function which allows the own
 
 Start with creating the file `src/MoodNft.sol` and filling out the usual boilerplate. We're definitely getting good at this by now.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -30,13 +30,13 @@ contract MoodNft is ERC721 {
 
 Looking good! We want to store the `SVG` art on chain, we're actually going to pass these to our `constructor` on deployment.
 
-```js
+```solidity
 constructor(string memory sadSvg, string memory happySvg) ERC721("Mood NFT", "MN"){}
 ```
 
 We know we'll need a `tokenCounter`, along with this let's declare our `sadSvg` and `happySvg` as storage variables as well. All together, before getting into our functions, things should look like this:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -58,7 +58,7 @@ contract MoodNft is ERC721 {
 
 Now we need a `mint` function, anyone should be able to call it, so it should definitely be `public`. This shouldn't be anything especially new to us so far.
 
-```js
+```solidity
 function mintNft() public {
     _safeMint(msg.sender, s_tokenCounter);
     s_tokenCounter++;
@@ -67,7 +67,7 @@ function mintNft() public {
 
 And now the moment of truth! As we write the `tokenURI` function, we know this is what defines what our NFT looks like and the metadata associated with it. Remember that we'll need to `override` this `virtual` function of the `ERC721` standard.
 
-```js
+```solidity
 function tokenURI(uint256 tokenId) public view override returns (string memory){}
 ```
 

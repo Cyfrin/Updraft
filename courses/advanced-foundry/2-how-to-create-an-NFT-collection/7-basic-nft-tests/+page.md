@@ -12,7 +12,7 @@ Once the setup is complete, it's time to jump into tests. Writing an array of te
 
 Start with the usual boilerplate for our test contract. Create the file `test/BasicNftTest.t.sol`. Our test contract will need to import BasicNft, and our deploy script as well as import and inherit Foundry's `Test.sol`.
 
-```js
+```solidity
 //SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -34,7 +34,7 @@ contract BasicNFTTest is Test {
 
 To confirm that the Name of your NFT is correct, declare a function `testNameIsCorrect` and specify it as public view.
 
-```js
+```solidity
 function testNameIsCorrect() public view {
   string memory expected = "Doggie";
   string memory actual = basicNft.name();
@@ -82,7 +82,7 @@ We'll leverage abi.encodePacked to convert this to bytes, then finally we can us
 
 If we apply this encoding and hashing methodology to our BasicNft test, we should come out with something that looks like this:
 
-```js
+```solidity
 function testNameIsCorrect() public view {
   string memory expectedName = "Doggie";
   string memory actualName = basicNft.name();
@@ -101,7 +101,7 @@ Great work! Let's write a couple more tests together.
 
 The next test we write will assure a user can mint the NFT and then change the user's balance. We'll need to create a user to prank in our test. Additionally, we'll need to provide our mint function a tokenUri, I've provided one below for convenience. If you've one prepared from the previous lesson, feel free to use it!
 
-```js
+```solidity
 contract BasicNftTest is Test {
   ...
   address public USER = makeAddr("user");

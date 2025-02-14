@@ -12,7 +12,7 @@ Ok! In this lesson we're going to adjust the code in our Invariants.t.sol such t
 
 We'll start by creating the Handler.t.sol contract.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.18;
@@ -26,7 +26,7 @@ So, what's one of the first things we want to ensure in our handler? How about w
 
 Because our test function calls are being routed through our Handler, the first thing we should do is make sure our Handler has access to the contracts it'll need to call functions on. Let's import DSCEngine and DecentralizedStableCoin then set these up in our Handler's constructor
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.18;
@@ -48,7 +48,7 @@ contract Handler is Test {
 
 We know that before `redeemCollateral` is a valid function call, collateral would need to be deposited, so let's begin with writing a `depositCollateral` function. This will work a little differently from our previous fuzz tests, but we're still able to pass arguments to this function which will be randomized by the fuzzer.
 
-```js
+```solidity
 function depositCollateral(uint256 collateral, uint256 amountCollateral) public {
     dsce.depositCollateral(collateral, amountCollateral);
 }
@@ -63,7 +63,7 @@ Within Invariants.t.sol, import our new Handler contract, declare it, and then s
 <details>
 <summary>Invariants.t.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.18;
@@ -117,7 +117,7 @@ We can see this fails for the expected reasons below.
 
 Let's use our Handler to ensure that only _valid_ collateral is deposited. Begin by importing ERC20Mock as we'll need this for our collateral types. In our constructor, we can leverage the getCollateralTokens function added to DSCEngine.sol.
 
-```js
+```solidity
 ...
 import {ERC20Mock} from "@openzeppelin/contracts/mocks/ERC20Mock.sol";
 
@@ -140,7 +140,7 @@ contract Handler is Test {
 
 With these, instead of passing any address as collateral to our depositCollateral functional, we can instead pass a uint256 collateralSeed. We'll next write a function which picks a collateral to deposit from our valid options based on the seed our framework supplies.
 
-```js
+```solidity
 // Helper Functions
 function _getCollateralFromSeed(uint256 collateralSeed) private view returns (ERC20Mock){
     if(collateralSeed % 2 == 0){
@@ -152,7 +152,7 @@ function _getCollateralFromSeed(uint256 collateralSeed) private view returns (ER
 
 Now, in our depositCollateral function, we can derive which collateral token should be used by calling this function and passing the random seed our framework supplies the test.
 
-```js
+```solidity
 function depositCollateral (uint256 collateralSeed, uint256 amountCollateral) public {
     ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);
     dsce.depositCollateral(address(collateral), amountCollateral);
@@ -178,7 +178,7 @@ Let's keep narrowing the focus of our tests and the validity of our data.
 
 In the same way we narrowed our test to provide a valid collateral type, we can bind the `amountCollateral` being passed to our function in order to ensure this is greater than 0 and avoid this error. StdUtils has a function we can use called `bound`.
 
-```js
+```solidity
 function depositCollateral (uint256 collateralSeed, uint256 amountCollateral) public {
     amountCollateral = bound(amountCollateral, 1, MAX_DEPOSIT_SIZE);
     ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);
@@ -188,7 +188,7 @@ function depositCollateral (uint256 collateralSeed, uint256 amountCollateral) pu
 
 We can declare a MAX_DEPOSIT_SIZE constant at the top of our contract. I like to set this to something like type(uint96).max. This will provide a huge number without risking the overflow possible with uint256.
 
-```js
+```solidity
 uint256 MAX_DEPOSIT_SIZE = type(uint96).max;
 ```
 
@@ -200,7 +200,7 @@ Not a massive change, but we _have_ made progress on the number of reverts our f
 
 Well, of course this is going to revert! We haven't set an allowance on our tokens! Let's remedy this by leveraging vm.prank in our Handler to ensure appropriate addresses are approved for our deposit function.
 
-```js
+```solidity
 function depositCollateral(uint256 collateralSeed, uint256 amountCollateral) public {
     amountCollateral = bound(amountCollateral, 1, MAX_DEPOSIT_SIZE);
     ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);

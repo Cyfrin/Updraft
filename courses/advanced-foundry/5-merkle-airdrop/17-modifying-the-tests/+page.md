@@ -14,13 +14,13 @@ In this lesson, we'll explore how to empower a third party address, the `gasPaye
 
 First, in the `setup()` function, we'll create a new address, `gasPayer`, which will have permission to call the claim function:
 
-```js
+```solidity
 gasPayer = makeAddr("gasPayer");
 ```
 
 Next, the `user` address will sign a message with their private key, authorizing the `gasPayer` address to perform the claim:
 
-```js
+```solidity
 vm.startPrank(user);
 (uint8 v, bytes32 r, bytes32 s) = signMessage(userPrivKey, user);
 vm.stopPrank();
@@ -30,7 +30,7 @@ vm.stopPrank();
 
 The `signMessage` function will calculate the **message digest**, which will be signed using the user's private key. The `vm.sign` cheatcode will generate the v, r, and s values necessary for the signature:
 
-```js
+```solidity
 function signMessage(uint256 privKey, address account) public view returns (uint8 v, bytes32 r, bytes32 s) {
         bytes32 hashedMessage = airdrop.getMessageHash(account, AMOUNT_TO_CLAIM);
     (v, r, s) = vm.sign(privKey, hashedMessage);
@@ -41,7 +41,7 @@ function signMessage(uint256 privKey, address account) public view returns (uint
 
 Finally, the `gasPayer` address can call the `MerkleAirdrop::claim` function on behalf of the `user`, passing the user's signature (v, r, s) into the function:
 
-```js
+```solidity
 vm.prank(gasPayer);
 airdrop.claim(user, AMOUNT_TO_CLAIM, PROOF, v, r, s);
 ```

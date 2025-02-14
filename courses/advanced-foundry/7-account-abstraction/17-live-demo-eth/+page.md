@@ -24,7 +24,7 @@ We forgot to complete the `run` function in our `SendPackedUserOp` script. Let's
 
 **<span style="color:red">SendPackedUserOp.s.sol</span>**
 
-```js
+```solidity
 // Add these imports
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {MinimalAccount} from "src/ethereum/MinimalAccount.sol";
