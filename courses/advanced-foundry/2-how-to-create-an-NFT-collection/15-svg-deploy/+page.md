@@ -29,7 +29,7 @@ Looks great! Now we should consider how we're mention to deploy MoodNft.sol. We 
 Let's start with creating this encoding function.
 
 ```solidity
-function svgToImageURI(string memory svg) public purse returns (string memory){
+function svgToImageURI(string memory svg) public pure returns (string memory){
     string memory baseURL = "data:image/svg+xml;base64,";
 }
 ```
@@ -47,7 +47,7 @@ import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
 contract DeployMoodNft is Script {
     function run() external returns (MoodNft) {}
 
-    function svgToImageURI(string memory svg) public purse returns (string memory){
+    function svgToImageURI(string memory svg) public pure returns (string memory){
     string memory baseURL = "data:image/svg+xml;base64,";
     string memory svgBase64Encoded = Base64.encode(bytes(svg));
 
@@ -97,8 +97,8 @@ In our test now, we can assign an expectedUri variable to this string. We'll nee
 
 ```solidity
 function testConvertSvgToUri() public view {
-    string memory expectedUri = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj4KPHRleHQgeD0iMjAwIiB5PSIyNTAiIGZpbGw9ImJsYWNrIj5IaSEgWW91IGRlY29kZWQgdGhpcyEgPC90ZXh0Pgo8L3N2Zz4="
-    string memory svg = '<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><text x="200" y="250" fill="black">Hi! You decoded this! </text></svg>'
+    string memory expectedUri = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj4KPHRleHQgeD0iMjAwIiB5PSIyNTAiIGZpbGw9ImJsYWNrIj5IaSEgWW91IGRlY29kZWQgdGhpcyEgPC90ZXh0Pgo8L3N2Zz4=";
+    string memory svg = '<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><text x="200" y="250" fill="black">Hi! You decoded this! </text></svg>';
 
     string memory actualUri = deployer.svgToImageURI(svg);
 }
@@ -150,7 +150,7 @@ contract DeployMoodNft is Script {
         string memory happySvg = vm.readFile("./img/happySvg.svg");
     }
 
-    function svgToImageURI(string memory svg) public purse returns (string memory){
+    function svgToImageURI(string memory svg) public pure returns (string memory){
     string memory baseURL = "data:image/svg+xml;base64,";
     string memory svgBase64Encoded = Base64.encode(bytes(svg));
 

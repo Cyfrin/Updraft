@@ -42,7 +42,7 @@ And right about now, everything should feel extremely familiar. Let's define `ad
 ```solidity
 contract AddConsumer is Script {
 
-    function addConsumer(address raffle, address vrfCoordinator, uint64 subscriptionId) public {
+    function addConsumer(address raffle, address vrfCoordinator, uint256 subscriptionId) public {
         console.log("Adding consumer contract: ", raffle);
         console.log("Using VRFCoordinator: ", vrfCoordinator);
         console.log("On chain id: ", block.chainid);
@@ -59,7 +59,7 @@ contract AddConsumer is Script {
             ,
             address vrfCoordinator,
             ,
-            uint64 subscriptionId,
+            uint256 subscriptionId,
             ,
         ) = helperConfig.activeNetworkConfig();
         addConsumer(raffle, vrfCoordinator, subscriptionId);

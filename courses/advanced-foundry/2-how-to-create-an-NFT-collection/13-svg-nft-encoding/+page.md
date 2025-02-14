@@ -33,7 +33,7 @@ contract MoodNft is ERC721 {
 
     constructor(string memory sadSvgImageUri, string memory happySvgImageUri) ERC721("Mood NFT", "MN"){
         s_sadSvgImageUri = sadSvgImageUri;
-        s_happySvgImageUri = happySvgImageUri
+        s_happySvgImageUri = happySvgImageUri;
     }
 }
 ```
@@ -61,7 +61,7 @@ string memory tokenMetadata = abi.encodePacked(
     name(),
     '", description: "An NFT that reflects your mood!", "attributes": [{"trait_type": "Mood", "value": 100}], "image": ',
     imageURI,
-    '"}'
+    '"}';
 )
 ```
 
@@ -97,23 +97,24 @@ function mintNft() public {
 Now, back in our tokenURI function, we can define a conditional statement which will derive what our imageURI should be.
 
 ```solidity
-function tokenURI(uint256 tokenId) public view override returns (string memory){
-    string memory imageURI;
-    if (s_tokenIfToMood[tokenId] == HAPPY) {
-        imageURI = s_happySvgImageUri;
-    }
-    else {
-        imageURI = s_sadSvgImageUri;
-    }
+function tokenURI(
+        uint256 tokenId
+    ) public view override returns (string memory) {
+        string memory imageURI;
+        if (s_tokenIdToMood[tokenId] == Mood.HAPPY) {
+            imageURI = s_happySvgImageUri;
+        } else {
+            imageURI = s_sadSvgImageUri;
+        }
 
-    string memory tokenMetadata = abi.encodePacked(
-    '{"name: "',
-    name(),
-    '", description: "An NFT that reflects your mood!", "attributes": [{"trait_type": "Mood", "value": 100}], "image": ',
-    imageURI,
-    '"}'
-)
-}
+        string memory tokenMetadata = string.concat(
+            '{"name: "',
+            name(),
+            '", description: "An NFT that reflects your mood!", "attributes": [{"trait_type": "Mood", "value": 100}], "image": ',
+            imageURI,
+            '"}'
+        );
+    }
 ```
 
 Alright, this looks good, but we're not done yet. We'll add a way to flip our NFTs mood soon. For now, we just have our metadata as a string in our contract, we need to convert this to the hashed syntax that our browser understands.
@@ -153,8 +154,8 @@ Base64.encode(
 At this point, our tokenURI data is formatting like our imageUris were. If you recall, we needed to prepend our data type prefix(`data:image/svg+xml;base64,`) to our Base64 hash in order for a browser to understand. A similar methodology applies to our tokenURI JSON but with a different prefix. Let's define a method to return this string for us. Fortunately the ERC721 standard has a \_baseURI function that we can override.
 
 ```solidity
-function _baseURI() internal pure override returns(string memory){
-    return "data:application/json;base64,"
+function _baseURI() internal pure override returns (string memory) {
+    return "data:application/json;base64,";
 }
 ```
 

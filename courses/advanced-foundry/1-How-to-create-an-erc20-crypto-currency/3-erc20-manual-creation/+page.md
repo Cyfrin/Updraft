@@ -107,8 +107,8 @@ mapping(address => uint256) private s_balances;
 So now our `balanceOf` function can return this mapped value based on the address parameter being passed.
 
 ```solidity
-function balanceOf(address _owner) public pure returns (uint256) {
-   return balances[_owner];
+function balanceOf(address _owner) public view returns (uint256) {
+    return s_balances[_owner];
 }
 ```
 
@@ -122,10 +122,10 @@ Our next required function is transfer:
 ```solidity
 function transfer(address _to, uint256 _amount) public {
     uint256 previousBalance = balanceOf(msg.sender) + balanceOf(_to);
-    s_balance[msg.sender] -= _amount;
-    s_balance[_to] += _amount;
+    s_balances[msg.sender] -= _amount;
+    s_balances[_to] += _amount;
 
-    require(s_balance(msg.sender) + s_balance(_to) == previousBalance);
+    require(balanceOf(msg.sender) + balanceOf(_to) == previousBalance);
 }
 
 ```

@@ -26,9 +26,16 @@ Remember to create our new custom error at the start of the contract! `error Moo
 
 From here, we'll just check if it NFT is happy, and if so, make it sad, otherwise we'll make it happy. This will flip the NFT's mood regardless of it's current mood.
 
+With openzeppelin version 5.0.0 `_isApprovedOrOwner` was removed in favor of a new `_isAuthorized` function. However, this function has a downside. 
+
+_WARNING: This function assumes that `owner` is the actual owner of `tokenId` and does not verify this assumption._
+
+A more elegant solution is to check for approval and for the owner of the token separately. Therfore, we can use `getApproved()` and `ownerOf()` from openzeppelin contract in `ERC721.sol`.
+
+
 ```solidity
-function flipMood(uint256 tokenId) public {
-    if(!_isApprovedOrOwner(msg.sender, tokenId)){
+function flipMood(uint256 tokenId) public view {
+    if(getApproved(tokenId) != msg.sender && ownerOf(tokenId) != msg.sender){
         revert MoodNFT__CantFlipMoodIfNotOwner();
     }
 

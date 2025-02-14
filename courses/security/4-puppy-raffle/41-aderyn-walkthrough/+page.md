@@ -78,7 +78,7 @@ We can start by running `aderyn .`. This should generate an already formatted ma
               feeAddress = newFeeAddress;
       ```
 
-  We got this one! `zero address checks` wil be a common topic in security reviews you do. Familiarize yourself with spotting them!
+  We got this one! `zero address checks` will be a common topic in security reviews you do. Familiarize yourself with spotting them!
 
 **2. Functions not used internally could be marked external**
 

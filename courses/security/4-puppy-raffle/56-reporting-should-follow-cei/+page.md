@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### selectWinner Should Follow CEI
 
-Taking a look at our next `@Audit` tag, this finding should be another quick one. We'd identified that the `selectWinner` function was another instance where PuppyRaffle isn't following CEI (Checks, Effects, Interactions). However, unlike our `reentrancy` situation, there doesn't seem to be a way to exploit it in `selectWinner`. Resultingly, this is going to be our 4th `informational`.
+Taking a look at our next `@Audit` tag, this finding should be another quick one. We'd identified that the `selectWinner` function was another instance where PuppyRaffle isn't following CEI (Checks, Effects, Interactions). However, unlike our `reentrancy` situation, there doesn't seem to be a way to exploit it in `selectWinner`. As a result, this is going to be our 4th `informational`.
 
 ````
 **Title:** [I-4] does not follow CEI, which is not a best practice

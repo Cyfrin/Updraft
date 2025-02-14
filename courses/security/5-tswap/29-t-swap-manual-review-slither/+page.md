@@ -32,7 +32,7 @@ mapping(address token => address pool) private s_pools;
 mapping(address pool => address token) private s_tokens;
 ```
 
-It looks like these variables are mappings which are unintialized. This could be a concern, but the only function they're being used in is performing expected checks, so despite being a red warning in `Slither`, these are very likely fine.
+It looks like these variables are mappings which are uninitialized. This could be a concern, but the only function they're being used in is performing expected checks, so despite being a red warning in `Slither`, these are very likely fine.
 
 ### Green Detectors
 
@@ -70,4 +70,4 @@ Finally, the last thing pointed out by `Slither` is that our protocol is using a
 
 This was a quick review of what `Slither` brought to our process in TSwap. Not a lot of juicy findings from `Slither`, but this is a good habit to get into.
 
-Next we'll run Aderyn.
+Next, we'll run Aderyn.

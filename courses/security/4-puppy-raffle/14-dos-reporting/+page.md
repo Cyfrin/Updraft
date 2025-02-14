@@ -12,7 +12,7 @@ Maybe you're the type of security reviewer who likes to save all the write ups t
 
 In future lessons, we may not go through writing things up together, but for now - let's report this uncovered DoS vulnerability
 
-We of course start with our template, create a `findings.md` file and paste this within:
+We, of course, start with our template, create a `findings.md` file and paste this within:
 
 ---
 

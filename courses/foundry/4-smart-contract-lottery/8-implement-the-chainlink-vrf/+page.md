@@ -176,7 +176,7 @@ Let's add the above-mentioned variables inside the VRF state variables block:
 // Chainlink VRF related variables
 VRFCoordinatorV2Interface private immutable i_vrfCoordinator;
 bytes32 private immutable i_gasLane;
-uint64 private immutable i_subscriptionId;
+uint256 private immutable i_subscriptionId;
 uint16 private constant REQUEST_CONFIRMATIONS = 3;
 uint32 private immutable i_callbackGasLimit;
 uint32 private constant NUM_WORDS = 1;
@@ -188,7 +188,7 @@ For simplicity we request only 1 word, thus we make that variable constant. The 
 The next step is to attribute values inside the constructor:
 
 ```solidity
-constructor(uint256 entranceFee, uint256 interval, address vrfCoordinator, bytes32 gasLane, uint64 subscriptionId, uint32 callbackGasLimit) VRFConsumerBaseV2(vrfCoordinator) {
+constructor(uint256 entranceFee, uint256 interval, address vrfCoordinator, bytes32 gasLane, uint256 subscriptionId, uint32 callbackGasLimit) VRFConsumerBaseV2(vrfCoordinator) {
     i_entranceFee = entranceFee;
     i_interval = interval;
     s_lastTimeStamp = block.timestamp;

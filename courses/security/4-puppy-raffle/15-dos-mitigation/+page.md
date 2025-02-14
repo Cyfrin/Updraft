@@ -51,7 +51,7 @@ With that said, here are some potential suggestions we could make.
         require(block.timestamp >= raffleStartTime + raffleDuration, "PuppyRaffle: Raffle not over");
 ```
 
-3. Alternatively, you could use [**OpenZeppelin's EnumerableSet library**](https://docs.openzeppelin.com/contracts/4.x/api/utils#EnumerableSet).
+3. Alternatively, you could use [**OpenZeppelin's EnumerableSet library**](https://docs.openzeppelin.com/contracts/5.x/api/utils#EnumerableSet).
 
 ### Wrap Up
 
@@ -166,6 +166,6 @@ function testDenialOfService() public {
         require(block.timestamp >= raffleStartTime + raffleDuration, "PuppyRaffle: Raffle not over");
 ```
 
-3. Alternatively, you could use [**OpenZeppelin's EnumerableSet library**](https://docs.openzeppelin.com/contracts/4.x/api/utils#EnumerableSet).
+3. Alternatively, you could use [**OpenZeppelin's EnumerableSet library**](https://docs.openzeppelin.com/contracts/5.x/api/utils#EnumerableSet).
 
 </details>
