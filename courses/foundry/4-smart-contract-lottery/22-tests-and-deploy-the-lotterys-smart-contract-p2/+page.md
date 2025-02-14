@@ -73,7 +73,7 @@ We start with the `SPDX `and `pragma solidity` declarations. Then, we import `Sc
 
 We created a new struct called `NetworkConfig` and we matched its contents with the Raffle's constructor input.
 
-Great! Now let's design a function that returns the proper config for Sepolia:
+Great! Now let's design a function that returns the proper localNetworkConfig for Sepolia:
 
 ```solidity
 function getSepoliaEthConfig()
@@ -94,15 +94,15 @@ function getSepoliaEthConfig()
 
 The function above returns a `NetworkConfig` struct with data taken from [here](https://docs.chain.link/vrf/v2-5/supported-networks#sepolia-testnet). The `interval`, `entranceFee` and `callbackGasLimit` were selected by Patrick.
 
-Ok, we need a couple more things. We need a constructor that checks what blockchain we are on and attributes a state variable, let's call it `activeNetworkConfig`, the proper config for the chain used.
+Ok, we need a couple more things. We need a constructor that checks what blockchain we are on and attributes a state variable, let's call it `localNetworkConfig`, the proper localNetworkConfig for the chain used.
 
 ```solidity
-NetworkConfig public activeNetworkConfig;
+NetworkConfig public localNetworkConfig;
 constructor() {
     if (block.chainid == 11155111) {
-        activeNetworkConfig = getSepoliaEthConfig();
+        localNetworkConfig = getSepoliaEthConfig();
     } else {
-        activeNetworkConfig = getOrCreateAnvilEthConfig();
+        localNetworkConfig = getOrCreateAnvilEthConfig();
     }
 }
 ```
@@ -116,10 +116,10 @@ function getOrCreateAnvilEthConfig()
     public
     returns (NetworkConfig memory anvilNetworkConfig)
 {
-    // Check to see if we set an active network config
-    if (activeNetworkConfig.vrfCoordinator != address(0)) {
-        return activeNetworkConfig;
+    // Check to see if we set an active network localNetworkConfig
+    if (localNetworkConfig.vrfCoordinator != address(0)) {
+        return config;
     }
 }
 ```
-We check if the `activeNetworkConfig` is populated, and if is we return it. If not we need to deploy some mocks. But more on that in the next lesson.
+We check if the `localNetworkConfig` is populated, and if is we return it. If not we need to deploy some mocks. But more on that in the next lesson.

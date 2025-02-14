@@ -17,14 +17,14 @@ function getOrCreateAnvilEthConfig()
     public
     returns (NetworkConfig memory anvilNetworkConfig)
 {
-    // Check to see if we set an active network config
-    if (activeNetworkConfig.vrfCoordinator != address(0)) {
-        return activeNetworkConfig;
+    // Check to see if we set an active network localNetworkConfig
+    if (localNetworkConfig.vrfCoordinator != address(0)) {
+        return localNetworkConfig;
     }
 }
 ```
 
-We need to treat the other side of the `(activeNetworkConfig.vrfCoordinatorV2 != address(0))` condition. What happens if that is false?
+We need to treat the other side of the `(localNetworkConfig.vrfCoordinatorV2 != address(0))` condition. What happens if that is false?
 
 If that is false we need to deploy a mock vrfCoordinatorV2_5 and pass its address inside a `NetworkConfig` that will be used on Anvil. 
 
@@ -40,7 +40,7 @@ Add the following line in the imports section of `HelperConfig.s.sol`:
 import {VRFCoordinatorV2_5Mock} from "chainlink/src/v0.8/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
 ```
 
-Amazing! Now let's keep on working on the `getOrCreateAnvilEthConfig` function. We need to deploy the `vrfCoordinatorV2Mock`, but if we open it we'll see that its constructor requires some parameters:
+Amazing! Now let's keep on working on the `getOrCreateAnvilEthConfig` function. We need to deploy the `vrfCoordinatorV2_5Mock`, but if we open it we'll see that its constructor requires some parameters:
 
 ```solidity
 contract VRFCoordinatorV2_5Mock is SubscriptionAPI, IVRFCoordinatorV2Plus {

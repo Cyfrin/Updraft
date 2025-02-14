@@ -45,7 +45,7 @@ function performUpkeep(bytes calldata /* performData */) external override {
 
 At this point in the video, Patrick asks the audience if this event is redundant. This is an amazing question to ask yourself every time you do something in Solidity because as you know, everything costs gas. Another absolute truth about this environment is that no one wants to pay gas. So we, as developers, need to write efficient code.
 
-To answer Patrick's question: Yes it's redundant, inside the `VRFCoordinatorV2Mock` you'll find that the `requestRandomWords` emits a giant event called `RandomWordsRequested` that contains the `requestId` we are also emitting in our new event. You'll see this a lot in smart contracts that involve transfers. But more on that in future sections.
+To answer Patrick's question: Yes it's redundant, inside the `VRFCoordinatorV2_5Mock` you'll find that the `requestRandomWords` emits a giant event called `RandomWordsRequested` that contains the `requestId` we are also emitting in our new event. You'll see this a lot in smart contracts that involve transfers. But more on that in future sections.
 
 We will keep the event for now for testing purposes. 
 

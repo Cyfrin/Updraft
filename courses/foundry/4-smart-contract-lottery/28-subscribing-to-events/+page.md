@@ -16,7 +16,7 @@ At the end, we see this:
 
 ```
     ├─ [31556] Raffle::performUpkeep(0x)
-    │   ├─ [5271] VRFCoordinatorV2Mock::requestRandomWords(0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c, 0, 3, 500000 [5e5], 1)
+    │   ├─ [5271] VRFCoordinatorV2_5Mock::requestRandomWords(0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c, 0, 3, 500000 [5e5], 1)
     │   │   └─ ← [Revert] InvalidConsumer()
     │   └─ ← [Revert] InvalidConsumer()
     └─ ← [Revert] InvalidConsumer()
@@ -24,7 +24,7 @@ At the end, we see this:
 
 It looks like when we call `performUpkeep` it internally calls `requestRandomWords`, and somewhere inside we hit an error.
 
-Go to `HelperConfig.s.sol` and try to follow the path of the `VRFCoordinatorV2Mock`. Inside we can see why our function failed:
+Go to `HelperConfig.s.sol` and try to follow the path of the `VRFCoordinatorV2_5Mock`. Inside we can see why our function failed:
 
 ```solidity
 modifier onlyValidConsumer(uint64 _subId, address _consumer) {
@@ -72,7 +72,7 @@ function run() external returns (uint64) {
 }
 ```
 
-Let's pause and talk about what we are doing and what we need to make things happen. Thinking back about what we did in Lesson 6. We created a subscription, we added a consumer and we funded the subscription. Open the `VRFCoordinatorV2Mock` and let's look for functions that we need to do it programmatically:
+Let's pause and talk about what we are doing and what we need to make things happen. Thinking back about what we did in Lesson 6. We created a subscription, we added a consumer and we funded the subscription. Open the `VRFCoordinatorV2_5Mock` and let's look for functions that we need to do it programmatically:
 
 ```solidity
 function createSubscription() external override returns (uint64 _subId) {
@@ -129,7 +129,7 @@ contract CreateSubscription is Script {
             ,
             ,
             ,
-        ) = helperConfig.activeNetworkConfig();
+        ) = helperConfig.getConfig();
 
         return createSubscription(vrfCoordinator);
     }
@@ -147,12 +147,12 @@ contract CreateSubscription is Script {
 
 As we said above, we created a `run` function that calls `createSubscriptionUsingConfig`. This function deploys the `HelperConfig` to grab the `vrfCoordinator` and inside the return statement, we call the `createSubscription` function. For that to work, we need to define the `createSubscription` function, which takes the `vrfCoordinator` address as an input. This is where we create the actual subscription.
 
-Amazing! Let's work on the `createSubscription` function. We need to import some things to make it work. First, let's update the contract in order to import `console`, to log a message every time we create a subscription. Second, let's import the `VRFCoordinatorV2Mock` to be able to call the functions we specified above.
+Amazing! Let's work on the `createSubscription` function. We need to import some things to make it work. First, let's update the contract in order to import `console`, to log a message every time we create a subscription. Second, let's import the `VRFCoordinatorV2_5Mock` to be able to call the functions we specified above.
 
 ```solidity
 import {Script, console} from "forge-std/Script.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
-import {VRFCoordinatorV2Mock} from "chainlink/src/v0.8/vrf/mocks/VRFCoordinatorV2Mock.sol";
+import {VRFCoordinatorV2_5Mock} from "chainlink/src/v0.8/vrf/mocks/VRFCoordinatorV2_5Mock.sol";
 ```
 
 Perfect, not let's finish the `createSubscription`:
@@ -163,7 +163,7 @@ function createSubscription(
 ) public returns (uint64) {
     console.log("Creating subscription on ChainID: ", block.chainid);
     vm.startBroadcast();
-    uint64 subId = VRFCoordinatorV2Mock(vrfCoordinator).createSubscription();
+    uint64 subId = VRFCoordinatorV2_5Mock(vrfCoordinator).createSubscription();
     vm.stopBroadcast();
     console.log("Your sub Id is: ", subId);
     console.log("Please update subscriptionId in HelperConfig!");
@@ -171,7 +171,7 @@ function createSubscription(
 }
 ```
 
-First, we log the `Creating subscription` message. Then, we encapsulate the `VRFCoordinatorV2Mock(vrfCoordinator).createSubscription();` call inside the `vm.startBroadcast` and `vm.stopBroadcast` block. We assign the return of the `VRFCoordinatorV2Mock(vrfCoordinator).createSubscription` call to `uint64 subId` variable. Then we log the `subId` and return it to end the function.
+First, we log the `Creating subscription` message. Then, we encapsulate the `VRFCoordinatorV2_5Mock(vrfCoordinator).createSubscription();` call inside the `vm.startBroadcast` and `vm.stopBroadcast` block. We assign the return of the `VRFCoordinatorV2_5Mock(vrfCoordinator).createSubscription` call to `uint64 subId` variable. Then we log the `subId` and return it to end the function.
 
 Amazing work! Coming back to `DeployRaffle.s.sol`, we should create a subscription if we don't have one, like this:
 
@@ -191,7 +191,7 @@ contract DeployRaffle is Script {
         bytes32 gasLane,
         uint256 subscriptionId,
         uint32 callbackGasLimit
-        ) = helperConfig.activeNetworkConfig();
+        ) = helperConfig.getConfig();
 
         if (subscriptionId == 0) {
             CreateSubscription createSubscription = new CreateSubscription();
