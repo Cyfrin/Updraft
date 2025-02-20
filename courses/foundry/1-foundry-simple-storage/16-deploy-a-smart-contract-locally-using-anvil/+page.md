@@ -20,7 +20,7 @@ Please create a new file called `DeploySimpleStorage.s.sol`.
 
 Using `.s.sol` as a suffix is a naming convention for Foundry scripts, in future lessons, when we'll write Foundry tests, these will bear the suffix of `.t.sol`.
 
-For more best practice info regarding Foundry scripts please click [here](https://book.getfoundry.sh/tutorials/best-practices#scripts).
+For more best practice info regarding Foundry scripts please click [here](https://book.getfoundry.sh/guides/best-practices#scripts).
 
 Open the newly created file. Here we'll write a solidity script for deploying our SimpleStorage contract.
 
@@ -104,7 +104,7 @@ forge script script/DeploySimpleStorage.s.sol
 
 This should go through without any errors, but if you hit some errors related to `incompatible solidity versions in various files` please ensure that both the `SimpleStorage.sol` and `DeploySimpleStorage.s.sol` use `pragma solidity 0.8.19;`
 
-If you want to further extend your knowledge about scripting please go [here](https://book.getfoundry.sh/tutorials/solidity-scripting?highlight=scr#solidity-scripting)
+If you want to further extend your knowledge about scripting please go [here](https://book.getfoundry.sh/guides/scripting-with-solidity)
 
 You should get the following output:
 
