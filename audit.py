@@ -33,13 +33,13 @@ def audit(courses):
                     with open("audit.txt", "a") as file:
                         file.write(count_line + "\n")
                     missing.append(dirpath)
-                    print(dirpath, " Captions: ", caption_count)
+                    print(f"{dirpath} Captions: {caption_count}")
                 if lesson_count < 1:
                     count_line = f"{dirpath} Lessons: {lesson_count}"
                     with open("audit.txt", "a") as file:
                         file.write(count_line + "\n")
                     missing.append(dirpath)
-                    print(dirpath, " Lessons: ", lesson_count)
+                    print(f"{dirpath} Lessons: {lesson_count}")
                 
         if len(missing) == 0:
             with open("audit.txt", "a") as file:
@@ -52,16 +52,16 @@ def audit(courses):
                     missing_descriptions = file.read()
                     if len(missing_descriptions) > 0:
                         audit_file.write(f"\nMISSING DESCRIPTIONS:\n{missing_descriptions}\n\n")
-                    else :
+                    else:
                         audit_file.write("No missing descriptions found.\n\n")
                 print(file.read())
-        except:
+        except FileNotFoundError:
             print("\nNo missing descriptions found.\n\n")
         
 
 courses = ["advanced-foundry", "blockchain-basics", "foundry", "solidity", "uniswap-v2", "security", "formal-verification"]
 
-## formal-verification and security are fucked
+# NOTE: formal-verification and security modules need review
 # courses = ["security", "formal-verification"]
 
 audit(courses)
