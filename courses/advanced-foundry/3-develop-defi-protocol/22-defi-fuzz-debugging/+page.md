@@ -17,7 +17,7 @@ Ghost variables are declared in our handler and essentially function like state 
 ```js
 contract Handler is Test {
     ...
-    uint256 timesMintCalled;
+    uint256 public timesMintIsCalled;
     ...
     function mintDsc(uint256 amount) public {
         (uint256 totalDscMinted, uint256 collateralValueInUsd) = engine.getAccountInformation(msg.sender);
@@ -55,7 +55,7 @@ function invariant_ProtocolTotalSupplyLessThanCollateralValue() external view re
     console.log("totalSupply: ", totalSupply);
     console.log("wethValue: ", wethValue);
     console.log("wbtcValue: ", wbtcValue);
-    console.log("Times Mint Called: ", handler.timesMintCalled());
+    console.log("Times Mint Called: ", handler.timesMintIsCalled());
 
     assert(totalSupply <= wethValue + wbtcValue);
 }
@@ -88,7 +88,7 @@ In order to mitigate this issue, we'll need to track the address which deposit c
 ```js
 contract Handler is Test {
     ...
-    uint256 timesMintIsCalled;
+    uint256 public timesMintIsCalled;
     address[] usersWithCollateralDeposited;
     ...
     function depositCollateral(uint256 collateralSeed, uint256 amountCollateral) public {
@@ -101,7 +101,7 @@ contract Handler is Test {
         dsce.depositCollateral(address(collateral), amountCollateral);
         vm.stopPrank();
 
-        usersWithCollateral.push(msg.sender);
+        usersWithCollateralDeposited.push(msg.sender);
     }
 }
 ```
