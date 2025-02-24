@@ -52,7 +52,7 @@ As expected, our user's Health Factor is breaking. This is because we haven't co
 function mintDsc(uint256 amount) public {
     (uint256 totalDscMinted, uint256 collateralValueInUsd) = dsce.getAccountInformation(msg.sender);
 
-    uint256 maxDscToMint = (collateralValueInUsd / 2) - totalDscMinted
+    uint256 maxDscToMint = (collateralValueInUsd / 2) - totalDscMinted;
     if(maxDscToMint < 0){
         return;
     }
@@ -63,7 +63,7 @@ function mintDsc(uint256 amount) public {
     }
 
     vm.startPrank(msg.sender);
-    dcse.mintDsc(amount);
+    dsce.mintDsc(amount);
     vm.stopPrank();
 }
 ```
