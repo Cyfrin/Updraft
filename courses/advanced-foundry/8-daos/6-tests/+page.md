@@ -86,7 +86,7 @@ contract MyGovernorTest is Test {
     address public USER = makeAddr("user");
     uint256 public constant INITIAL_SUPPLY = 100 ether;
 
-    uint256 public constant MIN_DELAY = 3600 // 1 hour after a vote passes
+    uint256 public constant MIN_DELAY = 3600; // 1 hour after a vote passes
     address[] proposers;
     address[] executors;
 
@@ -107,7 +107,16 @@ contract MyGovernorTest is Test {
 
 Now's the point where we want to tighten up who is able to control what aspects of the DAO protocol. The Timelock contract we're using contains a number of roles which we can set on deployment. For example, we only want our governor to be able to submit proposals to the timelock, so this is something we want want to configure explicitly after deployment. Similarly the `admin` role is defaulted to the address which deployed our timelock, we absolutely want this to be our governor to avoid centralization.
 
+> ❗ **NOTE**
+> For version 5 of OpenZeppelin's TimelockController contract, we need to use another admin role. 
+> TimelockController: Changed the role architecture to use DEFAULT_ADMIN_ROLE as the admin for all roles, instead of the bespoke TIMELOCK_ADMIN_ROLE that was used previously. This aligns with the general recommendation for AccessControl and makes the addition of new roles easier. Accordingly, the admin parameter and timelock will now be granted DEFAULT_ADMIN_ROLE instead of TIMELOCK_ADMIN_ROLE
+> PR: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/3799 
+> We have to modify our code to account for this when
+> running `forge test` so that our project will not error. Like this:
+> `bytes32 adminRole = timelock.DEFAULT_ADMIN_ROLE();`
+
 ```solidity
+
 function setUp() public {
     govToken = new GovToken();
     govToken.mint(USER, INITIAL_SUPPLY);

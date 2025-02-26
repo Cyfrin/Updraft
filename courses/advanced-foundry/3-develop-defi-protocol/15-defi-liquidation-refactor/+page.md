@@ -379,7 +379,7 @@ Now, back in our public `redeemCollateral` function, we can simply call this int
 
 ```solidity
 function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral) public moreThanZero(amountCollateral) nonReentrant{
-    _redeemCollateral(msg.sender, msg.sender, tokenCollateralAddress, amountCollateral);
+    _redeemCollateral(tokenCollateralAddress, amountCollateral, msg.sender, msg.sender);
     _revertIfHealthFactorIsBroken(msg.sender);
 }
 ```
@@ -400,7 +400,7 @@ function liquidate(address collateral, address user, uint256 debtToCover) extern
 
     uint256 totalCollateralRedeemed = tokenAmountFromDebtCovered + bonusCollateral;
 
-    _redeemCollateral(user, msg.sender, collateral, totalCollateralToRedeem);
+    _redeemCollateral(collateral, totalCollateralRedeemed, user, msg.sender);
 }
 ```
 
@@ -408,19 +408,21 @@ With the refactoring we've just done, we can be sure that the `liquidator` will 
 
 ```solidity
 function burnDsc(uint256 amount) public moreThanZero(amount){
-    _burnDsc(amount, msg.sender, msg.sender)
+    _burnDsc(amount, msg.sender, msg.sender);
     _revertIfHealthFactorIsBroken(msg.sender);
 }
 
 ...
 
-function _burnDsc(uint256 amountDscToBurn, address onBehalfOf, address dscFrom) private moreThanZero(amount){
-    s_DSCMinted[onBehalfOf] -= amount;
-    bool success = i_dsc.transferFrom(dscFrom, address(this), amount);
-    if(!success){
+function _burnDsc(uint256 amountDscToBurn, address onBehalfOf, address dscFrom) private {
+    s_DSCMinted[onBehalfOf] -= amountDscToBurn;
+
+    bool success = i_dsc.transferFrom(dscFrom, address(this), amountDscToBurn);
+    // This conditional is hypothetically unreachable
+    if (!success) {
         revert DSCEngine__TransferFailed();
     }
-    i_dsc.burn(amount);
+    i_dsc.burn(amountDscToBurn);
 }
 ```
 
@@ -438,7 +440,7 @@ function liquidate(address collateral, address user, uint256 debtToCover) extern
 
     uint256 totalCollateralRedeemed = tokenAmountFromDebtCovered + bonusCollateral;
 
-    _redeemCollateral(user, msg.sender, collateral, totalCollateralToRedeem);
+    _redeemCollateral(collateral, totalCollateralRedeemed, user, msg.sender);
 
     _burnDsc(debtToCover, user, msg.sender);
 }
@@ -479,7 +481,7 @@ function liquidate(address collateral, address user, uint256 debtToCover) extern
 
     uint256 totalCollateralRedeemed = tokenAmountFromDebtCovered + bonusCollateral;
 
-    _redeemCollateral(user, msg.sender, collateral, totalCollateralToRedeem);
+    _redeemCollateral(collateral, totalCollateralRedeemed, user, msg.sender);
 
     _burnDsc(debtToCover, user, msg.sender);
 

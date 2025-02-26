@@ -37,7 +37,7 @@ contract DSCEngineTest is Test {
     DecentralizedStableCoin dsc;
     DSCEngine dsce;
 
-    function setUp public {
+    function setUp() public {
         deployer = new DeployDSC();
         (dsc, dsce) = deployer.run();
     }
@@ -104,7 +104,7 @@ contract DSCEngineTest is Test {
     address weth;
     address ethUsdPriceFeed;
 
-    function setUp public {
+    function setUp() public {
         deployer = new DeployDSC();
         (dsc, dsce, config) = deployer.run();
         (ethUsdPriceFeed, , weth, , ) = config.activeNetworkConfig();
