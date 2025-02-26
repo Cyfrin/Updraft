@@ -351,7 +351,7 @@ pragma solidity ^0.8.18;
 
 import {TimelockController} from "@openzeppelin/contracts/governance/TimelockController.sol";
 
-contract Timelock {
+contract Timelock is TimelockController {
     /**
      * @notice Create a new Timelock controller
      * @param minDelay Minimum delay for timelock executions
