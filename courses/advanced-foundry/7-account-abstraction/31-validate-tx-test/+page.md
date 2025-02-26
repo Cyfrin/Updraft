@@ -12,7 +12,7 @@ In this lesson, we are going to test our `_validateTransaction` function. Along 
 
 One of the key components to our `_validateTransaction` function is that it returns a 'magic' value if successful. This happens if there is a valid signer.
 
-```js
+```solidity
 address signer = ECDSA.recover(txHash, _transaction.signature);
 bool isValidSigner = signer == owner();
 if (isValidSigner) {
@@ -27,7 +27,7 @@ return magic;
 
 Let's make a test for this and call it `testZkValidateTransaction`.
 
-```js
+```solidity
 function testZkValidateTransaction() public {
     // Arrange
 
@@ -39,7 +39,7 @@ function testZkValidateTransaction() public {
 
 For **Arrange** we can copy a lot of what we have from `testZkOwnerCanExecuteCommands`.
 
-```js
+```solidity
 // Arrange
 address dest = address(usdc);
 uint256 value = 0;
@@ -61,7 +61,7 @@ The big difference is that now we need to create a signed transaction. We can do
 
 Additionally, we will need to encode hash the transaction, similar to what we did in `_validateTransaction`. For this, make sure you have `MemoryTransactionHelper` in your imports. You can place it with the `Transaction` import. It will look like this.
 
-```js
+```solidity
 import {
   Transaction,
   MemoryTransactionHelper,
@@ -70,7 +70,7 @@ import {
 
 Since we will be using a default anvil key, let's go ahead and place an account with the other constant variables.
 
-```js
+```solidity
 address constant ANVIL_DEFAULT_ACCOUNT = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
 ```
 
@@ -83,7 +83,7 @@ Let's fill out our helper function now. Essentially, we will need to:
 3. attach the signature (r, s, v combined) to the transaction.
 4. return the signed transaction.
 
-```js
+```solidity
 function _signTransaction(Transaction memory transaction) internal view returns (Transaction memory) {
     bytes32 unsignedTransactionHash = MemoryTransactionHelper.encodeHash(transaction);
     uint8 v;
@@ -101,19 +101,19 @@ function _signTransaction(Transaction memory transaction) internal view returns 
 
 When we deploy our minimal account, we'll need to initialize a new instance of our default anvil account. This will allow us to sign the transaction with the anvil default key. Let's do this with the other instances in our `setUp` function.
 
-```js
+```solidity
 minimalAccount.transferOwnership(ANVIL_DEFAULT_ACCOUNT);
 ```
 
 Now that we have a signed transaction, we can use it in our **Arrange** back in our `testZkValidateTransaction` function. Place this at the bottom or **Arrange**.
 
-```js
+```solidity
 transaction = _signTransaction(transaction);
 ```
 
 Now our test function should look like this.
 
-```js
+```solidity
 function testZkValidateTransaction() public {
     // Arrange
     address dest = address(usdc);
@@ -135,13 +135,13 @@ function testZkValidateTransaction() public {
 
 We know that the caller of our validateTransaction must be the bootloader. So, we can create a vm.prank in our **Act** for this. We will of course need to import `BOOTLOADER_FORMAL_ADDRESS`.
 
-```js
+```solidity
 import { BOOTLOADER_FORMAL_ADDRESS } from "lib/foundry-era-contracts/src/system-contracts/contracts/Constants.sol";
 ```
 
 We will also need to call `validateTransaction` and pass the same arguments as we did in the **Act** for `testZkOwnerCanExecuteCommands`. The difference is that we will be setting it to `bytes4 magic`, as this is what the function returns.
 
-```js
+```solidity
 // Act
 vm.prank(BOOTLOADER_FORMAL_ADDRESS);
 bytes4 magic = minimalAccount.validateTransaction(EMPTY_BYTES32, EMPTY_BYTES32, transaction);
@@ -153,13 +153,13 @@ bytes4 magic = minimalAccount.validateTransaction(EMPTY_BYTES32, EMPTY_BYTES32, 
 
 We know from our `_validateTransaction` function that `magic = ACCOUNT_VALIDATION_SUCCESS_MAGIC`. Let's go ahead and import this from `IAccount`.
 
-```js
+```solidity
 import { ACCOUNT_VALIDATION_SUCCESS_MAGIC } from "lib/foundry-era-contracts/src/system-contracts/contracts/interfaces/IAccount.sol";
 ```
 
 Now we can simply place this in our **Assert**.
 
-```js
+```solidity
 assertEq(magic, ACCOUNT_VALIDATION_SUCCESS_MAGIC);
 ```
 
@@ -169,7 +169,7 @@ assertEq(magic, ACCOUNT_VALIDATION_SUCCESS_MAGIC);
 
 We need to do a couple of things before we run our test. First, let's add a vm.deal in our `setUp` to ensure that we have a balance.
 
-```js
+```solidity
 vm.deal(address(minimalAccount), AMOUNT);
 ```
 

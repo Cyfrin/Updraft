@@ -20,7 +20,7 @@ Larger protocols will have so many functions available to them that it's importa
 
 In the example provided by the Foundry Docs, we can see how the functionality of the deposit function can be fine tuned to assure that approvals and mints always occur before deposit is actually called.
 
-```js
+```solidity
 function deposit(uint256 assets) public virtual {
     asset.mint(address(this), assets);
 
@@ -73,7 +73,7 @@ I challenge you to think of more, but these are going to be the two simple invar
 
 This file will be setup like any other test file to start, we've lots of practice here.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.18;
@@ -88,7 +88,7 @@ StdInvariant is quite important for our purposes, this is where we derive the ab
 
 Again, just like the tests we've written so far, we're going to begin with a `setUp` function. In this setUp we'll perform our usual deployments of our needed contracts via our deployment script. We'll import our `HelperConfig` as well.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.18;
@@ -117,7 +117,7 @@ From this point, it's very easy for us to wrap this up quickly with an Open Test
 
 In order to test the invariant that our collateral value must always be more than our total supply, we can leverage our `HelperConfig` to acquire the collateral addresses, and check the total balance of each collateral type within the protocol. That would look something like this (don't forget to import your `IERC20 interface` for these tokens):
 
-```js
+```solidity
 ...
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 ...
@@ -146,7 +146,7 @@ contract InvariantsTest is StdInvariant, Test {
 
 To this point our test function is only acquiring the balanced of our collateral tokens, we'll need to convert this to it's USD value for a sound comparison to our DSC total supply. We can do this with our `getUsdValue` function!
 
-```js
+```solidity
 function invariant_protocolMustHaveMoreValueThanTotalSupply() public view {
     uint256 totalSupply = dsc.totalSupply();
     uint256 totalWethDeposited = IERC20(weth).balanceOf(address(dsce));
@@ -159,7 +159,7 @@ function invariant_protocolMustHaveMoreValueThanTotalSupply() public view {
 
 And now, all we would need to do is add our assertion.
 
-```js
+```solidity
 assert(wethValue + wbtcValue > totalSupply);
 ```
 
@@ -176,7 +176,7 @@ forge test --mt invariant_protocolMustHaveMoreValueThanTotalSupply -vvvv
 
 Our test identified a break in our assertion immediately.. but it's because we have no tokens or collateral. We can adjust our assertion to be `>=`, but it's a little bit cheaty.
 
-```js
+```solidity
 assert(wethValue + wbtcValue >= totalSupply);
 ```
 

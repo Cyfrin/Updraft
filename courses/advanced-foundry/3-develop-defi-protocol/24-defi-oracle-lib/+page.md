@@ -18,7 +18,7 @@ Taking a look at the [**Chainlink price feeds**](https://docs.chain.link/data-fe
 
 In our `OracleLib`, let's write some checks to ensure the prices `DSCEngine` are using aren't `stale`. If prices being received by our protocol become stale, we hope to pause the functionality of our contract.
 
-```js
+```solidity
 //SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -38,7 +38,7 @@ library OracleLib {
 
 With our _beautiful_ `NATSPEC` in place detailing the `library` and its purposes, our main function here is going to be `stalePriceCheck`. Since we'll be checking `Chainlink's price feeds`, we know we'll need the `AggregatorV3Interface`, lets be sure to import that. The return types of our function are going to be those of the `latestRoundData` function within `AggregatorV3Interface`. Let's start by getting those values.
 
-```js
+```solidity
 ...
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 ...
@@ -55,7 +55,7 @@ Now, we just need to calculate the time since the last update, and if it's over 
 >
 > `3 hours` == `3 * 60 * 60` == `10800 seconds`.
 
-```js
+```solidity
 ...
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 ...
@@ -79,7 +79,7 @@ We should now be able to use this `library` for `AggregatorV3Interfaces` to auto
 
 In `DSCEngine.sol`, we can import `OracleLib`, as our using statement under a new types header, and then replace all our calls to `latestRoundData` with `staleCheckLatestRoundData`.
 
-```js
+```solidity
 ...
 import {OracleLib} from "./libraries/OracleLib.sol";
 ...

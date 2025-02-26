@@ -52,7 +52,7 @@ For collateral, the protocol will accept wrapped Bitcoin and wrapped Ether, the 
 
 Alright, with things scoped out a bit, let's dive into writing some code. Start by creating the file `src/DecentralizedStableCoin.sol`. I'm hoping to make this as professional as possible, so I'm actually going to paste my contract and function layouts as a reference to the top of this file.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 // This is considered an Exogenous, Decentralized, Anchored (pegged), Crypto Collateralized low volatility coin
@@ -83,7 +83,7 @@ When I wrote this codebase, I intended to get it audited, and I did! You can act
 
 With that said, our contract boilerplate is going to be set up similarly to everything we've been doing so far. Let's add some NATSPEC to outline the contracts purpose.
 
-```js
+```solidity
 pragma solidity ^0.8.18;
 
 /*
@@ -117,7 +117,7 @@ remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts"]
 
 Rather than importing a standard ERC20 contract, we'll be leveraging the ERC20Burnable extension of this standard. ERC20Burnable includes `burn` functionality for our tokens which will be important when we need to take the asset out of circulation to support stability.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -151,7 +151,7 @@ In order to accomplish this, we're going to also inherit `Ownable` with Decentra
 > `constructor(address initialOwner) ERC20("DecentralizedStableCoin", "DSC")
 Ownable(initialOwner) {}`
 
-```js
+```solidity
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 ...
@@ -167,7 +167,7 @@ The two major functions we're going to want the DSCEngine to control are of cour
 
 We can start by writing our burn function.
 
-```js
+```solidity
 function burn(uint256 _amount) external override onlyOwner{}
 ```
 
@@ -178,7 +178,7 @@ We're going to want to check for two things when this function is called.
 
 We'll configure two custom errors for when these checks fail.
 
-```js
+```solidity
 contract DecentralizedStableCoin is ERC20Burnable, Ownable {
     error DecentralizedStableCoin__MustBeMoreThanZero();
     error DecentralizedStableCoin__BurnAmountExceedsBalance();
@@ -199,7 +199,7 @@ contract DecentralizedStableCoin is ERC20Burnable, Ownable {
 
 The last thing we're going to do, assuming these checks pass, is burn the passed amount of tokens. We're going to do this by using the `super` keyword. This tells solidity to use the burn function of the parent class.
 
-```js
+```solidity
 function burn(uint256 _amount) external override onlyOwner{
     uint256 balance = balanceOf(msg.sender);
     if(_amount <= 0){
@@ -216,7 +216,7 @@ function burn(uint256 _amount) external override onlyOwner{
 
 The second function we'll need to override to configure access control on is going to be our mint function.
 
-```js
+```solidity
 function mint(address _to, uint256 _amount) external overrides onlyOwner returns(bool){
 }
 ```
@@ -225,7 +225,7 @@ So, in this function we want to configure a boolean return value which is going 
 
 We'll of course want to revert with custom errors if these conditional checks fail.
 
-```js
+```solidity
 contract DecentralizedStableCoin is ERC20Burnable, Ownable {
     error DecentralizedStableCoin__MustBeMoreThanZero();
     error DecentralizedStableCoin__BurnAmountExceedsBalance();

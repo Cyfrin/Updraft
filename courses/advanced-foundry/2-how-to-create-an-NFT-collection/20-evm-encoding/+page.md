@@ -85,7 +85,7 @@ We're going to answer these by leveraging additional low-level keywords offered 
 
 We've used call previously... if this code rings a bell:
 
-```js
+```solidity
 function withdraw(address recentWinner) public {
     (bool success, ) = recentWinner.call{value: address(this).balance}("");
     require(success, "Transfer Failed");

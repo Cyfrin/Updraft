@@ -17,7 +17,7 @@ Since we are beginning to use code from the bodies of `validateTransaction` and 
 
 Take the following from `validateTransaction`.
 
-```js
+```solidity
 // Call nonceholder
 // increment nonce
 // call(x, y, z) -> system contract call
@@ -50,7 +50,7 @@ return magic;
 
 Then place it in our first internal function called `_validateTransaction`. Since we are ignoring `_txHash` and `_suggestedSignedHash`, we only need to pass `_transaction` and return `bytes4 magic`.
 
-```js
+```solidity
 /*//////////////////////////////////////////////////////////////
                            INTERNAL FUNCTIONS
 //////////////////////////////////////////////////////////////*/
@@ -89,7 +89,7 @@ function _validateTransaction(Transaction memory _transaction) internal returns 
 Now, we can simply pass our new function into the body of other functions. Let's do that now in `validateTransaction`. Pass in `return _validateTransaction(_transaction);`. Now our `validateTransaction` should look like this:
 
 
-```js
+```solidity
 function validateTransaction(bytes32, /*_txHash*/ bytes32, /*_suggestedSignedHash*/ Transaction memory _transaction)
     external
     payable
@@ -105,7 +105,7 @@ function validateTransaction(bytes32, /*_txHash*/ bytes32, /*_suggestedSignedHas
 
 Let's do the same for the `executeTransaction` function. Copy the following from `executeTransaction`.
 
-```js
+```solidity
 address to = address(uint160(_transaction.to));
 uint128 value = Utils.safeCastToU128(_transaction.value);
 bytes memory data = _transaction.data;
@@ -127,7 +127,7 @@ if (to == address(DEPLOYER_SYSTEM_CONTRACT)) {
 
 Then place it in our first internal function called `_executeTransaction`. Since we are ignoring `_txHash` and `_suggestedSignedHash`, we only need to pass `_transaction`.
 
-```js
+```solidity
 function _executeTransaction(Transaction memory _transaction) internal {
     address to = address(uint160(_transaction.to));
     uint128 value = Utils.safeCastToU128(_transaction.value);
@@ -151,7 +151,7 @@ function _executeTransaction(Transaction memory _transaction) internal {
 
 Now we can pass `_executeTransaction(_transaction) ` into `executeTransaction`.
 
-```js
+```solidity
 function executeTransaction(bytes32, /*_txHash*/ bytes32, /*_suggestedSignedHash*/ Transaction memory _transaction)
     external
     payable
@@ -165,7 +165,7 @@ function executeTransaction(bytes32, /*_txHash*/ bytes32, /*_suggestedSignedHash
 
 Now that we've got that done, we can call both of our new contracts in `executeTransactionFromOutside`.
 
-```js
+```solidity
 function executeTransactionFromOutside(Transaction memory _transaction) external payable {
    _validateTransaction(_transaction);    
    _executeTransaction(_transaction);
@@ -175,7 +175,7 @@ function executeTransactionFromOutside(Transaction memory _transaction) external
 
 Now that we've got our functions just about sorted, let's go ahead and make sure our contract can receive funds. Place the following `receive` function just under the constructor. 
 
-```js
+```solidity
 receive() external payable {}
 ```
 Now our code should compile successfully with some yellow warnings. 

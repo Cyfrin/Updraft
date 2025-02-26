@@ -14,7 +14,7 @@ As mentioned in the previous closing remarks, I suspect this will mostly be revi
 
 Copying this into our contract and we're already almost set (I've adjusted below to utilize named imports).
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 // Compatible with OpenZeppelin Contracts ^5.0.0
 pragma solidity ^0.8.20;
@@ -53,7 +53,7 @@ Let's go over how this differs from a standard ERC20. Primarily it's the same ba
 
 From the documentation:
 
-```js
+```solidity
 /* @dev Implementation of the ERC20 Permit extension allowing approvals to be made via signatures, as defined in
  * https://eips.ethereum.org/EIPS/eip-2612[EIP-2612].
 ```
