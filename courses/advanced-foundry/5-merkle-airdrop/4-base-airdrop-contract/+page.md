@@ -69,12 +69,24 @@ After successful verification and prior to transferring tokens, it is recommende
 
 ```solidity
 event Claim(address indexed account, uint256 indexed amount);
+i_airdropToken.transfer(account, amount);
 ```
 
-We can then use `safeTransfer` from the `SafeERC20` library to handle token transfers securely:
+We can then use `safeTransfer` from the `SafeERC20` library to handle token transfers securely. Therefore, we need to change the import as well as the function call and we need to use `using SafeERC20 for IERC20;` as follows:
 
 ```solidity
-i_airdropToken.safeTransfer(account, amount);
+import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+...
+
+contract MerkleAirdrop {
+    using SafeERC20 for IERC20;
+    ...
+
+    function claim(address account, uint256 amount, bytes32[] calldata merkleProof) external {
+      ...
+      i_airdropToken.safeTransfer(account, amount);
+    }
+}
 ```
 
 > 👮‍♂️ **BEST PRACTICE**:br
