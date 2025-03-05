@@ -1,5 +1,3 @@
+## Token Contracts on Other Chains
 
-           ---
-           title: L2 Tokens
-           ---
-        
+You might think that rETH only exists on the Ethereum mainnet. Since Ethereum staking is something that can only be done on the mainnet, you might also think that the staking token, like rETH, only exists on the mainnet. However, rETH also exists on other chains, such as Arbitrum and Optimism. To check out the address of these tokens, head over to the official documentation. These rETH token addresses might interest you if you want to write an integration contract with rETH, but not on the mainnet. For example, maybe you want an integration on the Arbitrum or Optimism chain. Look for the token addresses from the official documentation.
