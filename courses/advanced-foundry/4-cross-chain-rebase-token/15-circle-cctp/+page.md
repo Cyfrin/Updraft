@@ -1,45 +1,46 @@
-# Circle's Cross Chain Transfer Protocol (CCTP)
+## Circle's Cross-Chain Transfer Protocol (CCTP)
 
-CCTP is Circle’s solution for moving USDC across different chains. For example, suppose we want to move USDC from Ethereum to Base, Optimism, or Arbitrum. With traditional crosschain transfers, we have the following problems that CCTP solves:
+CCTP is a protocol that facilitates the transfer of USDC across different blockchains. It uses a burn and mint mechanism instead of a traditional lock and unlock mechanism. 
 
-- Wrapped tokens:
-  - Adding an additional IOU layer of risk
-  - If bridges are compromised, IOUs are rendered worthless
-- Liquidity problems:
-  - Liquidity becomes fragmented since original tokens are locked, which is inefficient
+Here are the steps involved in a standard CCTP transfer:
 
-CCTP solves the issues in the previous model with a burn and mint method. The protocol burns the USDC, thus taking it out of circulation on the source chain, and mints fresh tokens on the destination chain.
+1. **Initiation:** A user initiates a transfer using a CCTP enabled app and specifies their recipient address on the destination chain.
+2. **Burn the Tokens:** The specified USDC amount is burned on the source chain.
+3. **Instant Attestation:** Circle's attestation service attests to the burn event (after soft finality) and issues a signed attestation.
+4. **Fast Transfer Allowance Backing:**  The burned USDC amount is backed by Circle's Fast Transfer allowance until hard finality is reached. This acts as a buffer to protect against reorgs. The Fast Transfer allowance is temporarily debited by the burn amount.
+5. **Mint the Tokens:** The app fetches the signed attestation from Circle and uses it to trigger the minting of USDC on the destination chain. An on-chain fee is collected during this process.
+6. **Fast Transfer Allowance Replenishment:** Once hard finality is reached, the amount is credited back to Circle's Fast Transfer allowance.
+7. **Completion:**  The recipient wallet receives the newly minted USDC on the destination chain and the transfer is complete.
 
-CCTP is also permissionless and includes sophisticated message passing between chains, which ensures every transfer is secure.
+**CCTP V2 (Fast Transfer)**
 
-Now, here is how CCTP works on a deeper level. CCTP currently has two different methods for bridging USDC:
+CCTP V2 offers a faster transfer option that's currently available on testnet. Here are the steps involved:
 
-- Standard transfer
-- Fast transfer
-  The Standard transfer is available in both CCTP V1 and V2, and is the default method for transferring USDC across different blockchains. The protocol operates on the finality of transactions on the source chain. It uses Circle’s attestation service to enable “hard finality” transfers. The steps are as follows:
-- Initiation
-- Burning event
-- Attestation
-- Minting event
-- Completion
+1. **Initiation:**  A user initiates a transfer using a CCTP V2 enabled app and specifies their recipient address on the destination chain. 
+2. **Burn the Tokens:** The specified USDC amount is burned on the source chain. 
+3. **Instant Attestation:** Circle's attestation service issues a signed attestation after "soft finality." 
+4. **Fast Transfer Allowance Backing:** While waiting for hard finality, the burned USDC amount is backed by Circle's Fast Transfer allowance.
+5. **Mint the Tokens:** The signed attestation is fetched. USDC is minted to the recipient. An on-chain fee is collected.
+6. **Fast Transfer Allowance Replenishment:** Once hard finality is reached, the amount is credited back to the Fast Transfer Allowance.
+7. **Completion:** The recipient wallet receives the newly minted USDC on the destination chain.
 
-The Fast transfer is available in CCTP V2 and is only available on testnet. For use cases where speed is a priority, it uses Circle’s attestation service as well as the “fast transfer allowance” enabling faster than finality or “soft finality” transfers.
+**Code Example**
 
-Now, let's look at some code written in ethers to transfer USDC cross chain with CCTP:
+Here's a code example demonstrating the process using ethers.js:
 
 ```javascript
-const { ethers } = require("ethers");
+const ethers = require("ethers");
 const dotenv = require("dotenv");
-const tokenMessengerAbi = require("./abis/cctp/TokenMessenger.json");
-const messageAbi = require("./abis/cctp/Message.json");
-const usdcAbi = require("./abis/Usdc.json");
-const messageTransmitterAbi = require("./abis/cctp/MessageTransmitter.json");
+const tokenMessengerAbi = require("../abis/cctp/TokenMessenger.json");
+const messageAbi = require("../abis/cctp/Message.json");
+const usdcAbi = require("../abis/usdc.json");
+const messageTransmitterAbi = require("../abis/cctp/MessageTransmitter.json");
 
 dotenv.config();
 
 const main = async () => {
   const ethProvider = new ethers.providers.JsonRpcProvider(
-    process.env.ETH_TESTNET_RPC
+    process.env.TESTNET_ETH_RPC
   );
   const baseProvider = new ethers.providers.JsonRpcProvider(
     process.env.BASE_TESTNET_RPC
@@ -54,13 +55,13 @@ const main = async () => {
 
   // Testnet Contract Addresses
   const ETH_TOKEN_MESSENGER_CONTRACT_ADDRESS =
-    "0x9f3B8679c73C2Fef8b59B4f3444d4e156fb70AA5";
+    "0x9f886793C72Fef59B4F889444E4156f7b70AA5";
   const USDC_ETH_CONTRACT_ADDRESS =
-    "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238";
+    "0x1c7D4B196C68b014743fBc611692397987238";
   const ETH_MESSAGE_CONTRACT_ADDRESS =
-    "0x80537e4e8bAb73D21096baa3a8c813b45CA0b7c9";
+    "0x80537e4de8AD72D819bba3a81B45ACa087C9";
   const BASE_MESSAGE_TRANSMITTER_CONTRACT_ADDRESS =
-    "0x7865fAfC2db2093669d92c0F33AeEF291086BEFD";
+    "0x78657A51FC2D6b369d2C0f932eF7AEe91088BEFD";
 
   // Initialize contracts
   const ethTokenMessenger = new ethers.Contract(
@@ -84,13 +85,15 @@ const main = async () => {
     baseWallet
   );
 
-  const mintRecipient = process.env.RECIPIENT_ADDRESS;
-  const BASE_DESTINATION_DOMAIN = 6;
+  const baseDestinationDomain = 6;
+  const destinationAddressInBytes32 = await ethMessage.addressToBytes32(
+    process.env.RECIPIENT_ADDRESS
+  );
   const amount = process.env.AMOUNT;
 
   // Convert recipient address to bytes32
-  const destinationAddressInBytes32 = await ethMessage.addressToBytes32(
-    mintRecipient
+  const mintRecipient = await ethMessage.addressToBytes32(
+    process.env.RECIPIENT_ADDRESS
   );
 
   // Approve
@@ -98,30 +101,36 @@ const main = async () => {
     ETH_TOKEN_MESSENGER_CONTRACT_ADDRESS,
     amount
   );
+
   await approveTx.wait();
+
   console.log("ApproveTxReceipt:", approveTx.hash);
 
   // Burn USDC
   const burnTx = await ethTokenMessenger.depositForBurn(
     amount,
-    BASE_DESTINATION_DOMAIN,
+    baseDestinationDomain,
     destinationAddressInBytes32,
     USDC_ETH_CONTRACT_ADDRESS
   );
+
   await burnTx.wait();
   console.log("BurnTxReceipt:", burnTx.hash);
 
   // Retrieve message bytes
   const receipt = await ethProvider.getTransactionReceipt(burnTx.hash);
   const eventTopic = ethers.utils.id("MessageSent(bytes)");
-  const log = receipt.logs.find((l) => l.topics[0] === eventTopic);
+  const log = receipt.logs.find(
+    (l) => l.topics[0] === eventTopic
+  );
+
   const messageBytes = ethers.utils.defaultAbiCoder.decode(
     ["bytes"],
     log.data
   )[0];
-  const messageHash = ethers.utils.keccak256(messageBytes);
 
   console.log("MessageBytes:", messageBytes);
+  const messageHash = ethers.utils.keccak256(messageBytes);
   console.log("MessageHash:", messageHash);
 
   // Fetch attestation signature
@@ -142,18 +151,31 @@ const main = async () => {
     messageBytes,
     attestationSignature
   );
+
   await receiveTx.wait();
+
   console.log("ReceiveTxReceipt:", receiveTx.hash);
 };
 
 main().catch(console.error);
 ```
 
-To better understand how ethers works, we encourage visiting their documentation. With CCTP, there are limits for burning and minting.
-Circle itself has this “minter allowance”, which specifies a limit for the amount of USDC that can be minted. There is also a message burn limit. All the code above can be found in this github repo: https://github.com/ciaranightingale/cctp-v1-ethers, where more information can be found!
+**Security Features**
 
-CCTP enables the following use cases:
+CCTP incorporates several security features to enhance reliability:
 
-- Fast crosschain rebalancing
-- Enables composable cross-chain swaps
-- Programmable purchases
+1. **Attestation Verification:** Every transaction is verified through the attestation process, ensuring the minted USDC is genuine.
+2. **Minter Allowance Limits:** CCTP imposes limits for burning and minting. Circle sets a minter allowance, which specifies the maximum amount of USDC that can be minted. This limit can only be increased by Circle, preventing the burning of USDC on the source chain that cannot be minted on the destination chain. This limit can be queried from the TokenMinter smart contract.
+3. **Public Burn Limit Per Message:** CCTP provides a public burn limit per message mapping that can be queried to determine the allowed burn limit for each message.
+
+**Use Cases**
+
+CCTP enables a number of use cases:
+
+* **Fast and Secure Cross-Chain Rebalancing:** Market makers and exchanges can move USDC across chains to optimize liquidity, reduce costs, and react to market shifts.
+* **Composable Cross-Chain Swaps:**  Users can swap assets across blockchains by routing through USDC. 
+* **Programmable Cross-Chain Purchases:** CCTP V2 includes hooks for post-transfer actions after minting occurs, such as purchasing an NFT or staking tokens.
+
+**Further Information**
+
+For more information on CCTP, please refer to their documentation. 
