@@ -4,7 +4,7 @@ We're going to learn about types in Vyper, and to get started we're going to nee
 
 If we scroll down the left side here, we can see all the different types that we can create in a smart contract. And to store different values like our favorite number or different people, we'll have to assign each value to a type and then assign it to a variable.
 
-So, we have a lot of different types in Vyper, and some of the main ones are Booleans, signed integers, unsigned integers, decimals, addresses, byte arrays and then a number of other ones as well.
+So, we have a lot of different types in Vyper, and some of the main ones are booleans, signed integers, unsigned integers, decimals, addresses, byte arrays and then a number of other ones as well.
 
 For example, if we were to type in here:
 
@@ -32,7 +32,7 @@ my_address: address
 
 An address is going to be an address in the blockchain space. For example, in our Metamask, we can click this little copy button, go back to Remix, and type `my_address: address` and then set it equal to the value that we copied.
 
-So we have Booleans, signed integers, unsigned integers and we can also do decimals. Which decimals are a more advanced value that we won't be using for quite some time, but you could say `my_decimal: decimal` and you also have to add `enable decimals` to the compiler.
+So we have booleans, signed integers, unsigned integers and we can also do decimals. Which decimals are a more advanced value that we won't be using for quite some time, but you could say `my_decimal: decimal` and you also have to add `enable decimals` to the compiler.
 
 You can also have an M byte wide fixed size byte array, which we can do something like `my_bytes: byte32` .
 

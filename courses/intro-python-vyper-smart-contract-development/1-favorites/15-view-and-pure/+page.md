@@ -92,10 +92,10 @@ Next, we will make the retrieve function an external function, so that we can ca
 def store(new_number: uint256):
     self.my_favorite_number = new_number
 
-self.retrieve()
-self.retrieve()
-self.retrieve()
-self.retrieve()
+    self.retrieve()
+    self.retrieve()
+    self.retrieve()
+    self.retrieve()
 
 @internal
 @view
