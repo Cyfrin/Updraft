@@ -5,7 +5,7 @@ The final step is to deploy and send a transaction. As of the creation of this l
 First, we do need to make some updates to our `ZkMinimalAccount` contract. You may remember that our `_validateTransaction` function `returns (bytes4 magic)`. However, we forgot to do this when calling it in the `executeTransactionFromOutside` function. Let's make this update now. 
 
 **Before**
-```js
+```solidity
 function executeTransactionFromOutside(Transaction memory _transaction) external payable {
     _validateTransaction(_transaction);    
     _executeTransaction(_transaction);
@@ -13,7 +13,7 @@ function executeTransactionFromOutside(Transaction memory _transaction) external
 ```
 
 **After**
-```js
+```solidity
 function executeTransactionFromOutside(Transaction memory _transaction) external payable {
     bytes4 magic = _validateTransaction(_transaction);
     if (magic != ACCOUNT_VALIDATION_SUCCESS_MAGIC) {
@@ -25,7 +25,7 @@ function executeTransactionFromOutside(Transaction memory _transaction) external
 
 Now add the custom error with the others.
 
-```js
+```solidity
 error ZkMinimalAccount__InvalidSignature();
 ```
 ---

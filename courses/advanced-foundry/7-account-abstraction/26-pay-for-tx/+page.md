@@ -2,7 +2,7 @@
 
 We are very close to having our ZKsync account abstraction finished. We still need to pay for the transaction. In the `validateTransaction` function we check to see if we can pay, but now we need to actually do it. We have two possible candidates for this - `payForTransaction` and `prepareForPaymaster`. Since we aren't using a paymaster, we'll be using `payForTransaction`. 
 
-```js
+```solidity
  function payForTransaction(bytes32, /*_txHash*/ bytes32, /*_suggestedSignedHash*/ Transaction memory _transaction)
     external
     payable
@@ -20,7 +20,7 @@ Back in the `MemoryTransactionHelper` contract, there is a `payToBootloader` fun
 **<span style="color:red">MemoryTransactionHelper.sol</span>**
 
 **Pay to Bootloader Function**
-```js
+```solidity
 /// @notice Pays the required fee for the transaction to the bootloader.
 /// @dev Currently it pays the maximum amount "_transaction.maxFeePerGas * _transaction.gasLimit",
 /// it will change in the future.
@@ -38,7 +38,7 @@ function payToTheBootloader(Transaction memory _transaction) internal returns (b
 Let's use this function inside our function and set it to `bool success`. If not successful, revert.
 
 **<span style="color:red">ZkMinimalAccount.sol</span>**
-```js
+```solidity
  function payForTransaction(bytes32, /*_txHash*/ bytes32, /*_suggestedSignedHash*/ Transaction memory _transaction)
     external
     payable
@@ -52,7 +52,7 @@ Let's use this function inside our function and set it to `bool success`. If not
 
 Place the new custom errors with the others. 
 
-```js
+```solidity
 error ZkMinimalAccount__FailedToPay();
 ```
 ---

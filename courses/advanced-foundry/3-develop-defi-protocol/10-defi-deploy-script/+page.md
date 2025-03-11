@@ -14,7 +14,7 @@ _I have no idea if what I'm doing makes any sort of sense. I want to make sure I
 
 Testing is crucial to ensure that our code is functioning as intended. Start by creating a new folder, `test/unit`. The tests we write are going to be integration tests, so lets prepare a deploy script. Create the file `script/DeployDSC.s.sol` as well. We should be well versed in setting up a deploy script at this point!
 
-```js
+```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.19;
 
@@ -34,7 +34,7 @@ Beautiful, clean setup. In our run function we'll need to deploy both Decentrali
 
 Create a new file `script/HelperConfig.s.sol`. The boilerplate here is pretty standard.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 import { Script } from "forge-std/Script.sol";
@@ -46,7 +46,7 @@ contract HelperConfig is Script {}
 
 Just like we did in previous lessons, we'll declare a NetworkConfig struct which contains a number of properties which will be determined by the network the transaction is placed on.
 
-```js
+```solidity
 contract HelperConfig is Script {
 
     struct NetworkConfig{
@@ -65,7 +65,7 @@ contract HelperConfig is Script {
 
 We can now start by writing the configuration for Sepolia, feel free to copy and paste the contract addresses I've compiled.
 
-```js
+```solidity
 function getSepoliaEthConfig() public view returns (NetworkConfig memory sepoliaNetworkConfig) {
     sepoliaNetworkConfig = NetworkConfig({
         wethUsdPriceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306, // ETH / USD
@@ -81,7 +81,7 @@ This is simple enough since most of the tokens we'll be working with have their 
 
 What we can do, is start this function by checking if the activeNetworkConfig has one of our token price feeds, and if not, we'll assume we're on anvil and deploy our mocks.
 
-```js
+```solidity
 function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory anvilNetworkConfig) {
     // Check to see if we set an active network config
     if (activeNetworkConfig.wethUsdPriceFeed != address(0)) {
@@ -100,7 +100,7 @@ function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory anvilN
 
 Be sure to declare your constants at the top of your script.
 
-```js
+```solidity
 uint8 public constant DECIMALS = 8;
 int256 public constant ETH_USD_PRICE = 2000e8;
 int256 public constant BTC_USD_PRICE = 1000e8;
@@ -108,7 +108,7 @@ int256 public constant BTC_USD_PRICE = 1000e8;
 
 Additionally, notice that we're employing the `MockV3Aggregator` as well as some `ERC20Mock`s in this function. Be sure to create the file `test/mocks/MockV3Aggregator.sol` and import it and the ERC20Mock library from OpenZeppelin into our deploy script. You can copy the version of this mock I've provided below, into your file.
 
-```js
+```solidity
 import { MockV3Aggregator } from "../test/mocks/MockV3Aggregator.sol";
 import { ERC20Mock } from "@openzeppelin/contracts/mocks/ERC20Mock.sol";
 ```
@@ -116,7 +116,7 @@ import { ERC20Mock } from "@openzeppelin/contracts/mocks/ERC20Mock.sol";
 <details>
 <summary>MockV3Aggregator.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -196,7 +196,7 @@ contract MockV3Aggregator {
 
 Once mocks are deployed, we can configure the anvilNetworkConfig with those deployed addresses, and return this struct.
 
-```js
+```solidity
 anvilNetworkConfig = NetworkConfig({
   wethUsdPriceFeed: address(ethUsdPriceFeed), // ETH / USD
   weth: address(wethMock),
@@ -208,7 +208,7 @@ anvilNetworkConfig = NetworkConfig({
 
 Assure you add the `DEFAULT_ANVIL_PRIVATE_KEY` to our growing list of constant state variables.
 
-```js
+```solidity
 uint8 public constant DECIMALS = 8;
 int256 public constant ETH_USD_PRICE = 2000e8;
 int256 public constant BTC_USD_PRICE = 1000e8;
@@ -217,7 +217,7 @@ uint256 public constant DEFAULT_ANVIL_PRIVATE_KEY = 0xac0974bec39a17e36ba4a6b4d2
 
 Great! With both of these functions written we can update our constructor to determine which function to call based on the block.chainid of our deployment.
 
-```js
+```solidity
 constructor() {
     if(block.chainid == 11155111){
         activeNetworkConfig = getSepoliaEthConfig();
@@ -233,7 +233,7 @@ With the HelperConfig complete, we can return to DeployDSC.s.sol. Please referen
 
 Returning to `DeployDSC.s.sol`, we can now import our HelperConfig and use it to acquire the the parameters for our deployments.
 
-```js
+```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.19;
 
@@ -254,7 +254,7 @@ contract DeployDSC is Script {
 
 With these values, we can now declare and assign our tokenAddresses and priceFeedAddresses arrays, and finally pass them to our deployments.
 
-```js
+```solidity
 ...
 
 address[] public tokenAddresses;
@@ -277,7 +277,7 @@ function run() external returns (DecentralizedStableCoin, DSCEngine) {
 
 Things look amazing so far, but there's one last thing we haven't really talked about. I'd mentioned in earlier lessons that we intend the DSCEngine to own and manage the DecentralizedStableCoin assets. DecentralizedStableCoin.sol is Ownable, and by deploying it this way, our msg.sender is going to be the owner by default. Fortunately, the Ownable library comes with the function `transferOwnership`. We'll just need to assure this is called in our deploy script.
 
-```js
+```solidity
 function run() external returns (DecentralizedStableCoin, DSCEngine) {
     HelperConfig config = new HelperConfig();
 

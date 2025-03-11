@@ -29,7 +29,7 @@ Go ahead and delete the placeholder/example contracts in our new Foundry project
 
 We'll begin with creating a minimalistic contract that we're going to upgrade. Create `src/BoxV1.sol` and start with our boilerplate.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -41,7 +41,7 @@ Again, because we're going to be employing UUPS, all of the upgradeability logic
 
 Our BoxV1 is going to be very simple, we'll have two functions, one which returns a number, and another which returns our protocol version.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -61,7 +61,7 @@ contract BoxV1 {
 
 Looks great, except...oh no! We didn't include a function to _set_ our number. Let's create a BoxV2.sol which addresses this and updated our version number.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -99,7 +99,7 @@ remappings = [
 
 And now, we can import UUPSUpgradeable into BoxV1.sol and break down how it's applied.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -139,7 +139,7 @@ Abstract contracts have some of their functions defined, and others undefined. T
 
 An example of an undefined function within UUPSUpgradeable would be \_authorizeUpgrade.
 
-````js
+````solidity
 /**
  * @dev Function that should revert when `msg.sender` is not authorized to upgrade the contract. Called by
  * {upgradeToAndCall}.
@@ -155,7 +155,7 @@ function _authorizeUpgrade(address newImplementation) internal virtual;
 
 This is a function we'll need to define within our protocol with the logic to denote how an upgrade is authorized, perhaps limitations on who can upgrade with a check on msg.sender, for example. Let's go ahead and implement this override function in BoxV1.sol now.
 
-```js
+```solidity
 function _authorizeUpgrade(address newImplementation) internal override {}
 ```
 
@@ -165,7 +165,7 @@ This line is actually all that's needed. For our example, we're not going to imp
 
 In older implementations of UUPSUpgradeable, you may see a line that I wanted to draw special attention to.
 
-```js
+```solidity
 /*
  * @dev This empty reserved space is put in place to allow future versions to add new variables without shifting down storage in the inheritance chain.
  * See https://docs.openzeppelin.com/contracts/4.x/upgradeable#storage_gaps
@@ -181,7 +181,7 @@ Storage gaps are an effort to get ahead of this problem by pre-allocating an arr
 
 ### Initializer
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -205,7 +205,7 @@ contract BoxV1 is UUPSUpgradeable {
 
 BoxV1 as written above is deployable and could be upgraded, BoxV2 can't be upgraded, but we'll cross that bridge later. If you look at the examples of OpenZeppelin UUPS contract on their Contract Wizard, you'll see that they are importing far more than we are however. One of which is the Initializable.sol library. Let's import this into BoxV1 and discuss it's importance here.
 
-```js
+```solidity
 import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 ```
 
@@ -219,7 +219,7 @@ Because storage for a proxied protocol is stored in the proxy, any initial set u
 
 This is such a concern that common practice is to include a constructor within an implementation contract which _explicitly_ disables initialization functions, assuring that this needs to be done through the proxy.
 
-```js
+```solidity
 
 constructor() {
     _disableInitializers();
@@ -228,13 +228,13 @@ constructor() {
 
 If we add this to our BoxV1, we'll then need to add initialization logic to it as well.
 
-```js
+```solidity
 function initialize() public initializer {}
 ```
 
 It's within this initialize function that we would include the logic that we would normally have within a constructor. If we wanted our BoxV1 protocol to be ownable, for example, we would import OwnableUpgradeable and Initializable and then define the above functions like so:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -277,7 +277,7 @@ Common convention is to prepend initializer functions with a double-underscore `
 
 We can give BoxV2 the same treatment.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;

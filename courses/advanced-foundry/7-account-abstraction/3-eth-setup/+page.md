@@ -52,7 +52,7 @@ Now that we are all set up, we can create our Ethereum contract. We will do this
 
 As always, we will set up or code with the license, pragma, and contract.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
@@ -105,7 +105,7 @@ Furthermore, we can [view the contract code directly in our browser here.](https
 
 Click on the magnifying glass icon in the top left of the screen. Type **function handleops** in the search box. You will see that it takes a `PackedUserOperation` and an `address payable`. When we send our information to the alt-mempool nodes, we need to send it so that the nodes can then send the `PackedUserOperation`, which is essentially a struct and is a standalone contract - `PackedUserOperation.sol`.
 
-```js
+```solidity
 struct PackedUserOperation {
     address sender;
     uint256 nonce;
@@ -136,19 +136,19 @@ We are going to import this interface from [eth-infinitism/account-abstraction](
 
 Head back to your terminal and run the following to install it.
 
-```js
+```bash
 forge install eth-infinitism/account-abstraction@v0.7.0 --no-commit
 ```
 
 Since eth-infinitism already has **IAccount Interface** we can simply import it into our contract.
 
-```js
+```solidity
 import { IAccount } from "lib/account-abstraction/contracts/interfaces/IAccount.sol";
 ```
 
 Next, we need to inherit it. Simply add `is IAccount` to our contract.
 
-```js
+```solidity
 contract MinimalAccount is IAccount {
     // entrypoint will eventually call this contract
 
@@ -157,7 +157,7 @@ contract MinimalAccount is IAccount {
 
 Next, click on `IAccount` to go to the contract. Scroll down until you see the `validateUserOp` function. Let's add the function to our code.
 
-```js
+```solidity
     function validateUserOp(
         PackedUserOperation calldata userOp,
         bytes32 userOpHash,
@@ -167,7 +167,7 @@ Next, click on `IAccount` to go to the contract. Scroll down until you see the `
 
 Now we need to import the `PackedUserOperation`.
 
-```js
+```solidity
 import { PackedUserOperation } from "lib/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
 ```
 

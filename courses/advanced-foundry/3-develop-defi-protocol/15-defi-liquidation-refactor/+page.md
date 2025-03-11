@@ -11,7 +11,7 @@ Our current DSCEngine.sol for reference:
 <details>
 <summary>DSCEngine.sol</summary>
 
-```js
+```solidity
 // Layout of Contract:
 // version
 // imports
@@ -315,7 +315,7 @@ contract DSCEngine is ReentrancyGuard {
 
 In the last lesson we left off with our `liquidate` function still needing to redeem the unhealthy position's collateral, and burn the `liquidator`'s `DSC`. If we look at the `redeemCollateral` function, we can see why achieving our goal won't be as simple as calling `redeemCollateral` and `burnDsc`.
 
-```js
+```solidity
 function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral) public moreThanZero(amountCollateral) nonReentrant{
     s_collateralDeposited[msg.sender][tokenCollateralAddress] -= amountCollateral;
     emit CollateralRedeemed(msg.sender, tokenCollateralAddress, amountCollateral);
@@ -335,7 +335,7 @@ What we'll do is refactor the contract to include an _internal_ `_redeemCollater
 
 We'll add this new internal function under our `Private & Internal View Functions` header.
 
-```js
+```solidity
 ///////////////////////////////////////////
 //   Private & Internal View Functions   //
 ///////////////////////////////////////////
@@ -355,7 +355,7 @@ The above internal version of `redeemCollateral` contains the same logic as our 
 
 At this point let's adjust our `CollateralRedeemed` event. We're going to adjust the emission and the declaration of the event to handle this new from/to structure. We'll adjust this in our public `redeemCollateral` function soon.
 
-```js
+```solidity
 ////////////////
 //   Events   //
 ////////////////
@@ -377,9 +377,9 @@ function _redeemCollateral(address tokenCollateralAddress, uint256 amountCollate
 
 Now, back in our public `redeemCollateral` function, we can simply call this internal version and hardcode the appropriate `msg.sender` values.
 
-```js
+```solidity
 function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral) public moreThanZero(amountCollateral) nonReentrant{
-    _redeemCollateral(msg.sender, msg.sender, tokenCollateralAddress, amountCollateral);
+    _redeemCollateral(tokenCollateralAddress, amountCollateral, msg.sender, msg.sender);
     _revertIfHealthFactorIsBroken(msg.sender);
 }
 ```
@@ -388,7 +388,7 @@ function redeemCollateral(address tokenCollateralAddress, uint256 amountCollater
 
 Now that we've written this internal `_redeemCollateral` function, we can leverage this within our `liquidate` function.
 
-```js
+```solidity
 function liquidate(address collateral, address user, uint256 debtToCover) external moreThanZero(debtToCover) nonReentrant {
     uint256 startingUserHealthFactor = _healthFactor(user);
     if(startingUserHealthFactor > MIN_HEALTH_FACTOR){
@@ -400,33 +400,35 @@ function liquidate(address collateral, address user, uint256 debtToCover) extern
 
     uint256 totalCollateralRedeemed = tokenAmountFromDebtCovered + bonusCollateral;
 
-    _redeemCollateral(user, msg.sender, collateral, totalCollateralToRedeem);
+    _redeemCollateral(collateral, totalCollateralRedeemed, user, msg.sender);
 }
 ```
 
 With the refactoring we've just done, we can be sure that the `liquidator` will be awarded the collateral (after some testing of course). We're going to need to do the same thing with our `burnDsc` function, which is currently public and hardcoded with `msg.sender` as well.
 
-```js
+```solidity
 function burnDsc(uint256 amount) public moreThanZero(amount){
-    _burnDsc(amount, msg.sender, msg.sender)
+    _burnDsc(amount, msg.sender, msg.sender);
     _revertIfHealthFactorIsBroken(msg.sender);
 }
 
 ...
 
-function _burnDsc(uint256 amountDscToBurn, address onBehalfOf, address dscFrom) private moreThanZero(amount){
-    s_DSCMinted[onBehalfOf] -= amount;
-    bool success = i_dsc.transferFrom(dscFrom, address(this), amount);
-    if(!success){
+function _burnDsc(uint256 amountDscToBurn, address onBehalfOf, address dscFrom) private {
+    s_DSCMinted[onBehalfOf] -= amountDscToBurn;
+
+    bool success = i_dsc.transferFrom(dscFrom, address(this), amountDscToBurn);
+    // This conditional is hypothetically unreachable
+    if (!success) {
         revert DSCEngine__TransferFailed();
     }
-    i_dsc.burn(amount);
+    i_dsc.burn(amountDscToBurn);
 }
 ```
 
 And, just like before, we can go back to our `liquidate` function and leverage this internal `_burnDsc`.
 
-```js
+```solidity
 function liquidate(address collateral, address user, uint256 debtToCover) external moreThanZero(debtToCover) nonReentrant {
     uint256 startingUserHealthFactor = _healthFactor(user);
     if(startingUserHealthFactor > MIN_HEALTH_FACTOR){
@@ -438,7 +440,7 @@ function liquidate(address collateral, address user, uint256 debtToCover) extern
 
     uint256 totalCollateralRedeemed = tokenAmountFromDebtCovered + bonusCollateral;
 
-    _redeemCollateral(user, msg.sender, collateral, totalCollateralToRedeem);
+    _redeemCollateral(collateral, totalCollateralRedeemed, user, msg.sender);
 
     _burnDsc(debtToCover, user, msg.sender);
 }
@@ -446,7 +448,7 @@ function liquidate(address collateral, address user, uint256 debtToCover) extern
 
 Importantly, we're calling these low level internal calls, so we've going to want to check some `Health Factors` here. If the `liquidation` somehow doesn't result in the user's `Health Factor` improving, we should revert. This will come with a new custom error.
 
-```js
+```solidity
 uint256 endingUserHealthFactor = _healthFactor(user);
 if(endingUserHealthFactor <= startingUserHealthFactor){
     revert DSCEngine__HealthFactorNotImproved();
@@ -455,7 +457,7 @@ if(endingUserHealthFactor <= startingUserHealthFactor){
 
 Be sure to declare the custom error where appropriate.
 
-```js
+```solidity
 ///////////////////
 //     Errors    //
 ///////////////////
@@ -467,7 +469,7 @@ error DSCEngine__HealthFactorNotImproved();
 
 The last thing we'll want to do is also ensure that our `liquidator`'s `Health Factor` hasn't been broken. Our final `liquidate` function should look like this:
 
-```js
+```solidity
 function liquidate(address collateral, address user, uint256 debtToCover) external moreThanZero(debtToCover) nonReentrant {
     uint256 startingUserHealthFactor = _healthFactor(user);
     if(startingUserHealthFactor > MIN_HEALTH_FACTOR){
@@ -479,7 +481,7 @@ function liquidate(address collateral, address user, uint256 debtToCover) extern
 
     uint256 totalCollateralRedeemed = tokenAmountFromDebtCovered + bonusCollateral;
 
-    _redeemCollateral(user, msg.sender, collateral, totalCollateralToRedeem);
+    _redeemCollateral(collateral, totalCollateralRedeemed, user, msg.sender);
 
     _burnDsc(debtToCover, user, msg.sender);
 

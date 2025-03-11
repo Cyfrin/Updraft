@@ -16,7 +16,7 @@ In this lesson we'll apply what we've learnt and get our hands dirty with a smal
 <details>
 <summary>SmallProxy.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.19;
@@ -51,7 +51,7 @@ Now, within `SmallProxy` we're importing Proxy.sol from our good friends OpenZep
 <details>
 <summary>Proxy.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v5.0.0) (proxy/Proxy.sol)
 
@@ -139,14 +139,14 @@ The need to regularly utilize storage to reference things in implementation (spe
 
 In our minimalistic example, we're assigning our \_IMPLEMENTATION_SLOT to a constant value for this purpose.
 
-```js
+```solidity
 // This is the keccak-256 hash of "eip1967.proxy.implementation" subtracted by 1
 bytes32 private constant _IMPLEMENTATION_SLOT = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
 ```
 
 To illustrate this, let's write a basic implementation contracts, you can add this directly into SmallProxy.sol in Remix.
 
-```js
+```solidity
 contract ImplementationA{
     uint256 public value;
 
@@ -160,7 +160,7 @@ Great, so any time a call is sent to our proxy contract, we would expect it to b
 
 To make it a little easier to check the data stored in SmallProxy.sol we can add a couple helper functions.
 
-```js
+```solidity
 function getDataToTransact(uint256 numberToUpdate) public pure returns (bytes memory){
     return abi.encodeWithSignature("setValue(uint256)", numberToUpdate)
 }
@@ -168,7 +168,7 @@ function getDataToTransact(uint256 numberToUpdate) public pure returns (bytes me
 
 You should remember this abi encoding from the NFT section, where we learnt how to encode anything! This function will help us encode the call data we need to send to our proxy. In addition to this, let's set up a function to check the storage in our proxy, allowing us to see how it's changing.
 
-```js
+```solidity
 function readStorage() public view returns(uint256 valueAtStorageSlotZero){
     assembly{
         valueAtStorageSlotZero := sload(0)
@@ -195,7 +195,7 @@ To see this in action, we just need to paste our `getDataToTransact` return valu
 
 Now, let's demonstrate how upgrading this protocol would work. Add another contract to SmallProxy.sol:
 
-```js
+```solidity
 contract ImplementationB {
     uint256 public value;
 

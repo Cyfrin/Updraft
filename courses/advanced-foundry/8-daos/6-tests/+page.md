@@ -10,7 +10,7 @@ _Follow along with this video._
 
 Let's jump right into writing our tests. Begin with creating `test/MyGovernorTest.t.sol`. We're going to have one giant test to show this whole process end to end, let's start with the usual boilerplate!
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -35,7 +35,7 @@ contract MyGovernorTest is Test {
 
 We've more of our imported contracts that we'll need to deploy, but at this point we should consider the minting of our GovToken, you can choose to include the minting of your initial supply within the constructor of your GovToken ERC20, but I'm just going to add a mint function to it.
 
-```js
+```solidity
 function mint(address _to, uint256 _amount) public {
     _mint(_to, _amount);
 }
@@ -44,7 +44,7 @@ function mint(address _to, uint256 _amount) public {
 > ❗ **IMPORTANT**
 > You probably **_don't_** want a function that anyone can call in order to mint your governance token, we're just applying this here to make our testing easier.
 
-```js
+```solidity
 contract MyGovernorTest is Test {
     MyGovernor governor;
     Box box;
@@ -63,7 +63,7 @@ contract MyGovernorTest is Test {
 
 Something commonly overlooked when writing tests this way is that, just because our user has minted tokens, doesn't mean they have voting power. It's necessary to call the delegate function to assign this weight to the user who minted.
 
-```js
+```solidity
 function setUp() public {
     govToken = new GovToken();
     govToken.mint(USER, INITIAL_SUPPLY);
@@ -76,7 +76,7 @@ Now we can deploy our Timelock contract, we'll need both the Timelock and the go
 
 Once the Timelock has been deployed, we can finally deploy our governor contract.
 
-```js
+```solidity
 contract MyGovernorTest is Test {
     MyGovernor governor;
     Box box;
@@ -86,7 +86,7 @@ contract MyGovernorTest is Test {
     address public USER = makeAddr("user");
     uint256 public constant INITIAL_SUPPLY = 100 ether;
 
-    uint256 public constant MIN_DELAY = 3600 // 1 hour after a vote passes
+    uint256 public constant MIN_DELAY = 3600; // 1 hour after a vote passes
     address[] proposers;
     address[] executors;
 
@@ -107,7 +107,16 @@ contract MyGovernorTest is Test {
 
 Now's the point where we want to tighten up who is able to control what aspects of the DAO protocol. The Timelock contract we're using contains a number of roles which we can set on deployment. For example, we only want our governor to be able to submit proposals to the timelock, so this is something we want want to configure explicitly after deployment. Similarly the `admin` role is defaulted to the address which deployed our timelock, we absolutely want this to be our governor to avoid centralization.
 
-```js
+> ❗ **NOTE**
+> For version 5 of OpenZeppelin's TimelockController contract, we need to use another admin role. 
+> TimelockController: Changed the role architecture to use DEFAULT_ADMIN_ROLE as the admin for all roles, instead of the bespoke TIMELOCK_ADMIN_ROLE that was used previously. This aligns with the general recommendation for AccessControl and makes the addition of new roles easier. Accordingly, the admin parameter and timelock will now be granted DEFAULT_ADMIN_ROLE instead of TIMELOCK_ADMIN_ROLE
+> PR: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/3799 
+> We have to modify our code to account for this when
+> running `forge test` so that our project will not error. Like this:
+> `bytes32 adminRole = timelock.DEFAULT_ADMIN_ROLE();`
+
+```solidity
+
 function setUp() public {
     govToken = new GovToken();
     govToken.mint(USER, INITIAL_SUPPLY);
@@ -130,14 +139,14 @@ function setUp() public {
 
 The last thing we need to consider in our setUp is our little Box contract! Once deployed, we need to assure that the `timelock` is set as the owner of this protocol. If you recall, the store function of our Box contract is access controlled. This is meant to be called by only our DAO. But, because our DAO (the governor contract) must always check with the timelock before executing anything, the timelock is what must be set as the address able to call functions on our protocol.
 
-```js
+```solidity
 box = new Box();
 box.transferOwnership(address(timelock));
 ```
 
 Amazing! At this point we can jump right into our first simple test. Let's assure that only our timelock can call the `store` function.
 
-```js
+```solidity
 function testCantUpdateBoxWithoutGovernance() public{
     vm.expectRevert();
     box.store(1);
@@ -156,19 +165,19 @@ Beautiful!
 
 Alright, the next one will be a giant test function. This should demonstrate from a coding standing point how a DAO function from start to end. Let's go!
 
-```js
+```solidity
 function testGovernanceUpdatesBox() public {}
 ```
 
 The function we're going to call is store, of course, so we'll declare the value we expect to pass. Beyond this, the first thing we'll need to do to kick off a vote is submit a proposal.
 
-```js
+```solidity
 function propose(addresses[] memory targets, uint256[] memory values, bytes[] memory calldatas, string memory description) public virtual override returns (uint256){...}
 ```
 
 Many of these parameters we should already know. The target of our proposed function call is going to be our Box contract address, the value we're passing with the function call is zero, and the calldata is going to be our function signature encoded with our data. All things we've done before!
 
-```js
+```solidity
 function testGovernanceUpdatesBox() public {
     uint256 valueToStore = 420;
     string memory description = "Update box value to 420 for clout";
@@ -185,7 +194,7 @@ function testGovernanceUpdatesBox() public {
 
 From this point we can call our propose function! propose returns a uint256 proposalId, which will be important for the next stages of our test.
 
-```js
+```solidity
 function testGovernanceUpdatesBox() public {
     uint256 valueToStore = 420;
     string memory description = "Update box value to 420 for clout";
@@ -202,7 +211,7 @@ function testGovernanceUpdatesBox() public {
 
 It might be a good idea for our test to check the state of the proposal that's been submitted! We can do this by calling the `state` function with our proposalId. This call will return a uint256 which pertains to an index of the ProposalState enum.
 
-```js
+```solidity
 abstract contract IGovernor is IERC165 {
     enum ProposalState {
         Pending,
@@ -220,14 +229,14 @@ abstract contract IGovernor is IERC165 {
 
 We can check the state with the following:
 
-```js
+```solidity
 // View the State
 console.log("Proposal State 1: ", uint256(governor.state(proposalId)));
 ```
 
 We would expect this to return `0`, which indicates that the proposal is pending, this is because the Timelock Controller is enforcing a delay before voting on a proposal. We'll need to simulate the passage of time using the vm.warp and vm.roll cheatcodes Foundry offers before we can see our state change. We'll also need to declare a VOTING_DELAY constant and assign this to 1. This will represent 1 block delay before voting is authorized.
 
-```js
+```solidity
 contract MyGovernorTest is Test {
     ...
     uint256 public constant VOTING_DELAY = 1 // # of blocks until vote is active
@@ -247,7 +256,7 @@ With this, we can finally cast a vote on the proposal! I'm going to leverage the
 
 From the GovernorCountingSimple extension, the voting types are defined as:
 
-```js
+```solidity
 enum VoteType{
     Against, // 0
     For,     // 1
@@ -257,7 +266,7 @@ enum VoteType{
 
 So, in order for our test to vote _in favour_ of a proposal, we need to pass `1` as our vote parameter in the function we're calling.
 
-```js
+```solidity
 // 2. Vote
 string memory reason = "420 is cool number. Cool number for cool people.";
 
@@ -267,7 +276,7 @@ governor.castVoteWithReason(proposalId, 1, reason);
 
 Now that the votes are cast, we'll need to advance time again. Our voting period has been defaulted to 1 week (50400 blocks), let's create this constant and move time forward accordingly.
 
-```js
+```solidity
 contract MyGovernorTest is Test {
     ...
     uint256 public constant VOTING_PERIOD = 50400;
@@ -284,7 +293,7 @@ Once the VOTING_PERIOD has elapsed, a successful proposal needs to be queued bef
 
 After a proposal is queued, we'll of course need to advance time again to account for our Timelock's configured MIN_DELAY. This is the opportunity for stakeholders to exit their position if they don't agree with the DAOs decision!
 
-```js
+```solidity
 // 3. Queue the Proposal
 bytes32 descriptionHash = keccak256(abi.encodePacked(description));
 governor.queue(targets, values, calldatas, descriptionHash);
@@ -295,14 +304,14 @@ vm.roll(block.number + MIN_DELAY + 1);
 
 FINALLY, after much anxiety and bated breath, our proposal hits the execute phase. Much like the queue function, the execute function requires the same parameters to verify the state of our proposalId before execution.
 
-```js
+```solidity
 // 4. Execute the Proposal
 governor.execute(targets, values, calldatas, descriptionHash);
 ```
 
 Once executed, we have to verify that our proposed change _actually_ happened! We can now call the `retrieve` function on our Box and assert that the returned value is what we expect it to be!
 
-```js
+```solidity
 console.log("Box Value: ", box.retrieve());
 assert(box.retrieve() == valueToStore);
 ```
@@ -312,7 +321,7 @@ I know this written portion has been long and broken up (this test function is h
 <details>
 <summary>testGovernanceUpdatesBox</summary>
 
-```js
+```solidity
 function testGovernanceUpdatesBox() public {
     uint256 valueToStore = 420;
     string memory description = "Update box value to 420 for clout";
