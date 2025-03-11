@@ -58,10 +58,6 @@ def if_else(x: uint256) -> uint256:
 
 We'll now compile the contract. Click on the Vyper icon, Compile `ifElse.vy`.
 
-```bash
-commands
-```
-
 We'll now call this function. We'll put 1 for `x` and call the function. We get a 1 back.
 
 We'll now put 20 for `x` and call the function. We get a 2 back.
