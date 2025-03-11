@@ -28,7 +28,7 @@ Now that we've got some scripts written, we need to do some testing. Let's creat
 
 **<span style="color:red">MinimalAccountTest.t.sol</span>**
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
@@ -71,7 +71,7 @@ In a nutshell, we are going to simulate being the alt-mempool. To get started, w
 
 **<span style="color:red">MinimalAccount.sol</span>**
 
-```js
+```solidity
 function execute(address dest, uint256 value, bytes calldata functionData) external requireFromEntryPointOrOwner {
     (bool success, bytes memory result) = dest.call{value: value}(functionData);
     if (!success) {
@@ -91,7 +91,7 @@ The owner should be able to call this function and send a transaction.
 
 Let's write our test and call it `testOwnerCanExecuteCommands`. Set it up with **Arrange**, **Act**, and **Assert** comments.
 
-```js
+```solidity
 function testOwnerCanExecuteCommands() public {
     //Arrange
 
@@ -103,13 +103,13 @@ function testOwnerCanExecuteCommands() public {
 
 The first thing we will need now is a mock ERC20. Let's import this from **OpenZeppelin**.
 
-```js
+```solidity
 import { ERC20Mock } from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
 ```
 
 Next, create another state variable `ERC20Mock usdc` , and assign `new ERC20Mock()` to usdc in the `setUp` function.
 
-```js
+```solidity
 contract MinimalAccountTest is Test {
     HelperConfig helperConfig;
     MinimalAccount minimalAccount;
@@ -127,7 +127,7 @@ With that, we can move back to our test and do a **USDC Mint**. If you go into E
 
 **<span style="color:red">ERC20Mock.sol</span>**
 
-```js
+```solidity
 function mint(address account, uint256 amount) external {
     _mint(account, amount);
 }
@@ -141,7 +141,7 @@ Let's add what we need from our `execute` function and `ERC20Mock mint` to **Ass
 
 **<span style="color:red">MinimalAccountTest.t.sol</span>**
 
-```js
+```solidity
 //Assert
 assertEq(usdc.balanceOf(address(minimalAccount)), 0);
     address dest = address(usdc);
@@ -151,7 +151,7 @@ assertEq(usdc.balanceOf(address(minimalAccount)), 0);
 
 Next, in **Act**, we will prank the owner.
 
-```js
+```solidity
 // Act
 vm.prank(minimalAccount.owner());
 minimalAccount.execute(dest, value, functionData);
@@ -159,14 +159,14 @@ minimalAccount.execute(dest, value, functionData);
 
 So far, our test function should mint some mock ERC20 to our `minimalAccount`. Before we go any further, be sure to set a constant state variable for AMOUNT - `uint256 constant AMOUNT = 1e18;`.
 
-```js
+```solidity
 // Assert
 assertEq(usdc.balanceOf(address(minimalAccount)), AMOUNT);
 ```
 
 Let's go back and pass the following in abi.encodeWithSelector(ERC20Mock.mint.selector) of the **Assert** section - `address(minimalAccount), AMOUNT `. Our completed function should now look like this:
 
-```js
+```solidity
 function testOwnerCanExecuteCommands() public skipZkSync {
     // Arrange
     assertEq(usdc.balanceOf(address(minimalAccount)), 0);
@@ -184,7 +184,7 @@ function testOwnerCanExecuteCommands() public skipZkSync {
 
 **Drum Roll!** Let's run our test now. Run the following command in your terminal.
 
-```js
+```bash
 forge test --mt testOwnerCanExecuteCommands -vvv
 ```
 
@@ -194,7 +194,7 @@ forge test --mt testOwnerCanExecuteCommands -vvv
 
 **<span style="color:red">HelperConfig.sol</span>**
 
-```js
+```solidity
 function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
     if (localNetworkConfig.account != address(0)) {
         return localNetworkConfig;
@@ -206,7 +206,7 @@ function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
 
 First, add a new constant variable, `FOUNDRY_DEFAULT_WALLET`, to the state variables.
 
-```js
+```solidity
 address constant FOUNDRY_DEFAULT_WALLET = 0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38;
 ```
 
@@ -216,7 +216,7 @@ address constant FOUNDRY_DEFAULT_WALLET = 0x1804c8AB1F12E6bbf3894d4083f33e07309d
 
 **<span style="color:red">MinimalAccount.sol**
 
-```js
+```solidity
 function execute(address dest, uint256 value, bytes calldata functionData) external requireFromEntryPointOrOwner {
     (bool success, bytes memory result) = dest.call{value: value}(functionData);
     if (!success) {
@@ -229,7 +229,7 @@ Back over in the `HelperConfig`, insert the following code into our function.
 
 **<span style="color:red">HelperConfig.sol</span>**
 
-```js
+```solidity
 // deploy mocks
 
 return NetworkConfig({
@@ -240,7 +240,7 @@ return NetworkConfig({
 
 Let's see where we are now.
 
-```js
+```bash
 forge test --mt testOwnerCanExecuteCommands -vvv
 ```
 
@@ -258,13 +258,13 @@ Let's create a makeAddr() first. Add the following to your state variables in th
 
 <span style="color:red">**MinimalAccountTest.t.sol**</span>
 
-```js
+```solidity
 address randomuser = makeAddr("randomUser");
 ```
 
 Now we are ready to write our next test - `testNonOwnerCannotExecuteCommands`. The **Arrange** will be the same as the previous test, but we won't have an **Assert**. The biggest change will be in our **Act**. Instead of `minimalAccount.owner`, we will use `randomuser` in `vm.prank`. Additionally, we will add `vm.expectRevert` as our contract is expected to revert if not the owner.
 
-```js
+```solidity
 function testNonOwnerCannotExecuteCommands() public {
     // Arrange
     assertEq(usdc.balanceOf(address(minimalAccount)), 0);
@@ -280,7 +280,7 @@ function testNonOwnerCannotExecuteCommands() public {
 
 Run forge test again and it should pass.
 
-```js
+```bash
 forge test --mt testOwnerCanExecuteCommands -vvv
 ```
 

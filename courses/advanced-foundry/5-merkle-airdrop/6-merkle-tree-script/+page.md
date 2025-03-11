@@ -59,7 +59,10 @@ The input file will define the Merkle tree's data structure, and includes four a
 }
 ```
 
-To produce these files, we'll use the [`murky`](https://github.com/cyfrin/murky/tree/5feccd1253d7da820f7cccccdedf64471025455d) library which we can install it with the command `forge install dmfxyz/murky --no-commit`.
+To produce these files, we'll use the [`murky`](https://github.com/cyfrin/murky/tree/5feccd1253d7da820f7cccccdedf64471025455d) library which we can install it with the command: 
+```bash
+forge install dmfxyz/murky --no-commit
+```
 
 ### Merkle tree
 
@@ -78,7 +81,7 @@ script failed: the path script/target/input.json is not allowed to be accessed f
 
 we need to update the `foundry.toml` file permissions
 
-```
+```toml
 fs_permissions = [{ access = "read-write", path = "./" }]
 ```
 

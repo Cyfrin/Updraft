@@ -25,7 +25,7 @@ data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAyNHB4IiBoZWlnaHQ9IjEwMjRweCIgdmlld0
 
 Now, if we're going to be passing _already encoded_ imageURIs to our constructor, it's probably a good idea to adjust the naming of our storage variables for clarity. Let's do this before moving on.
 
-```js
+```solidity
 contract MoodNft is ERC721 {
     uint256 private s_tokenCounter;
     string private s_sadSvgImageUri;
@@ -49,13 +49,13 @@ OpenZeppelin actually offers a [**Utilities**](https://docs.openzeppelin.com/con
 
 We've already got OpenZeppelin contracts installed, so we can just import Base64 into our NFT contract.
 
-```js
+```solidity
 import { Base64 } from "@openzeppelin/contracts/utils/Base64.sol";
 ```
 
 Let's start off our tokenURI function by defining a variable, `string memory tokenMetadata`. We can set this equal to our JSON object in string format like so:
 
-```js
+```solidity
 string memory tokenMetadata = abi.encodePacked(
     '{"name: "',
     name(),
@@ -69,7 +69,7 @@ In the above, we're using `abi.encodePacked` to concatenate our disparate string
 
 In order to determine our imageURI we'll need to derive this from the mood which has been set to our NFT token. As such, we're going to need a way to track the mood of each token. This sounds like a mapping to me. We can even spice it up a little bit and map our choice to an `enum`, which would allow someone to set more moods, if they wanted to expand on things in the future.
 
-```js
+```solidity
 contract MoodNft is ERC721 {
     uint256 private s_tokenCounter;
     string private s_sadSvgImageUri;
@@ -86,7 +86,7 @@ contract MoodNft is ERC721 {
 
 When an NFT is minted, they'll need a default mood, let's default them to happy.
 
-```js
+```solidity
 function mintNft() public {
     _safeMint(msg.sender, s_tokenCounter);
     s_tokenIdToMood[s_tokenCounter] = Mood.HAPPY;
@@ -96,7 +96,7 @@ function mintNft() public {
 
 Now, back in our tokenURI function, we can define a conditional statement which will derive what our imageURI should be.
 
-```js
+```solidity
 function tokenURI(
         uint256 tokenId
     ) public view override returns (string memory) {
@@ -123,7 +123,7 @@ This is where things might get a little wild.
 
 Currently we have a string, in order to acquire the Base64 hash of this data, we need to first convert this string to bytes, we can do this with some typecasting.
 
-```js
+```solidity
 bytes(
   abi.encodePacked(
     '{"name: "',
@@ -137,7 +137,7 @@ bytes(
 
 Now we can apply our Base64 encoding to acquire our hash.
 
-```js
+```solidity
 Base64.encode(
   bytes(
     abi.encodePacked(
@@ -153,7 +153,7 @@ Base64.encode(
 
 At this point, our tokenURI data is formatting like our imageUris were. If you recall, we needed to prepend our data type prefix(`data:image/svg+xml;base64,`) to our Base64 hash in order for a browser to understand. A similar methodology applies to our tokenURI JSON but with a different prefix. Let's define a method to return this string for us. Fortunately the ERC721 standard has a \_baseURI function that we can override.
 
-```js
+```solidity
 function _baseURI() internal pure override returns (string memory) {
     return "data:application/json;base64,";
 }
@@ -161,7 +161,7 @@ function _baseURI() internal pure override returns (string memory) {
 
 Now, in our tokenURI function again, we can concatenate the result of this \_baseURI function with the Base64 encoding of our JSON object... and finally we can type cast all of this as a string to be returned by our tokenURI function.
 
-```js
+```solidity
 return string(
   abi.encodePacked(
     _baseURI(),
@@ -192,7 +192,7 @@ Admittedly, this is a lot at once. Before we add any more functionality, let's c
 
 Given the complexity of our tokenURI function, let's take a moment to write a quick test and assure it's returning what we'd expect it to. Create the file `test/MoodNftTest.t.sol` and set up our usual boilerplate.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -210,7 +210,7 @@ contract MoodNftTest is Test {
 
 We'll need to declare our Happy and Sad SVG URIs as constants in our test, we can use these in the deployment of our MoodNft contract within the setUp function of our Test.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -238,7 +238,7 @@ Finally we can write a test function. All that's required is to mint one of our 
 > import {Test, console} from "forge-std/Test.sol";`
 > ```
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;

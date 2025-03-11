@@ -10,7 +10,7 @@ _Follow along the course with this video._
 
 Now that we've the means to depositCollateral in our tests, let's write the function to do the opposite, redeemCollateral. We're going to set this up similarly to our depositCollateral function within `Handler.t.sol`.
 
-```js
+```solidity
 function redeemCollateral(uint256 collateralSeed, uint256 amountCollateral) public {
     ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);
 }
@@ -18,7 +18,7 @@ function redeemCollateral(uint256 collateralSeed, uint256 amountCollateral) publ
 
 Just like we bound the amountCollateral in our depositCollateral function, we'll need to do so here as well, but this time, the amount needs to be bound to the amount of collateral a user actually has! I added another getter function we can use for this.
 
-```js
+```solidity
 function redeemCollateral(uint256 collateralSeed, uint256 amountCollateral) public {
     ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);
     uint256 maxCollateralToRedeem = dsce.getCollateralBalanceOfUser(address(collateral), msg.sender);
@@ -41,7 +41,7 @@ Uh oh, it looks like we're running into an issue when the maxCollateralToRedeem 
 
 We'll set the lower bounds of our `bound` function to `0`, additionally we'll add a conditional which will return if the `maxCollateralToRedeem == 0`.
 
-```js
+```solidity
 function redeemCollateral(uint256 collateralSeed, uint256 amountCollateral) public {
     ERC20Mock collateral = _getCollateralFromSeed(collateralSeed);
     uint256 maxCollateralToRedeem = dsce.getCollateralBalanceOfUser(address(collateral), msg.sender);

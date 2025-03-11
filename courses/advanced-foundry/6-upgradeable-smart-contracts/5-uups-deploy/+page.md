@@ -24,7 +24,7 @@ Our deployment script should be very familiar to us by now!
 > ❗ **PROTIP**
 > Repetition is the mother of skill.
 
-```js
+```solidity
 //SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -54,13 +54,13 @@ In order to access OpenZeppelin's ERC1967 implementation, we'll need to install 
 forge install OpenZeppelin/openzeppelin-contracts --no-commit
 ```
 
-```js
+```solidity
 import { ERC1967Proxy } from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 ```
 
 We'll also need to add this remapping to our `foundry.toml`.
 
-```js
+```solidity
 remappings = [
   "@openzeppelin/contracts=lib/openzeppelin-contracts/contracts",
   "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts",
@@ -69,7 +69,7 @@ remappings = [
 
 Finally, we can add the deployment of our proxy to our deploy script. The ERC1967Proxy contract _does_ have a constructor we need to consider.
 
-```js
+```solidity
 constructor(address implementation, bytes memory _data) payable {
     ERC1967Utils.upgradeToAndCall(implementation, _data);
 }
@@ -77,7 +77,7 @@ constructor(address implementation, bytes memory _data) payable {
 
 This constructor is expecting two arguments to be passed, the first is our implementation contract, as to be expected. The second is `_data`. This data parameter can be used to pass function call data to be executed after deployment ie - calling an initializer function. We won't be employing this functionality, so our data parameter is going to be empty.
 
-```js
+```solidity
 //SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;

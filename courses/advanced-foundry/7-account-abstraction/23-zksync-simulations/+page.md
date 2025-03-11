@@ -39,7 +39,7 @@ Paste this above your `validateTransactions` function.
 
 ---
 
-```js
+```solidity
 /*//////////////////////////////////////////////////////////////
                            EXTERNAL FUNCTIONS
 //////////////////////////////////////////////////////////////*/
@@ -53,7 +53,7 @@ Paste this below your `prepareForPaymaster` function.
 
 ---
 
-```js
+```solidity
 /*//////////////////////////////////////////////////////////////
                            INTERNAL FUNCTIONS
 //////////////////////////////////////////////////////////////*/
@@ -65,7 +65,7 @@ Paste this below your `prepareForPaymaster` function.
 
 Let's get started with our `validateTransaction` function. Step 2 of the validation phase requires this function to update the nonce and validate the transaction. Additionally, we will use this function to check if we have enough money in our account.
 
-```js
+```solidity
 /*//////////////////////////////////////////////////////////////
                            EXTERNAL FUNCTIONS
 //////////////////////////////////////////////////////////////*/
@@ -92,7 +92,7 @@ In order for us to make this work, we'll have to make a systems contract call. I
 
 **<span style="color:red">NonceHolder.sol</span>**
 
-```js
+```solidity
 /// @notice A convenience method to increment the minimal nonce if it is equal
 /// to the `_expectedNonce`.
 /// @param _expectedNonce The expected minimal nonce for the account.
@@ -135,7 +135,7 @@ To make things a bit easier for us we are going to import the [SystemsContractCa
 
 ---
 
-```js
+```solidity
 import { SystemContractsCaller } from "lib/foundry-era-contracts/src/system-contracts/contracts/libraries/SystemContractsCaller.sol";
 ```
 
@@ -145,7 +145,7 @@ Around line 142 you will see the `systemCallWithPropagatedRevert` function. This
 
 **<span style="color:red">SystemContractsCaller.sol</span>**
 
-```js
+```solidity
 /// @notice Makes a call with the `isSystem` flag.
 /// @param gasLimit The gas limit for the call.
 /// @param to The address to call.
@@ -192,14 +192,14 @@ Now that we've got this, let's add it to our `validateTransaction` function back
 
 We'll need a couple of imports first.
 
-```js
+```solidity
 import { NONCE_HOLDER_SYSTEM_CONTRACT } from "lib/foundry-era-contracts/src/system-contracts/contracts/Constants.sol";
 import { INonceHolder } from "lib/foundry-era-contracts/src/system-contracts/contracts/interfaces/INonceHolder.sol";
 ```
 
 **Inside `validateTransaction` function**
 
-```js
+```solidity
 {
   // Call NonceHolder
   // increment nonce by 1

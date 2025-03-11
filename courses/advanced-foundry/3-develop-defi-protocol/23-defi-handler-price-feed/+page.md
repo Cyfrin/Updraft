@@ -14,13 +14,13 @@ Take price feeds for example. These are external references that our protocol de
 
 Our project should already contain a MockV3Aggregator within the mocks folder, so let's begin by importing it into Handler.t.sol. This file mimics the behaviour of a price feed.
 
-```js
+```solidity
 import { MockV3Aggregator } from "../mocks/MockV3Aggregator.sol";
 ```
 
 Then, we can declare a state variable, and in our constructor, we can employ another getter function to acquire the price feed for that token.
 
-```js
+```solidity
 contract Handler is Test {
     ...
     MockV3Aggregator public ethUsdPriceFeed;
@@ -41,7 +41,7 @@ contract Handler is Test {
 
 With this price feed, we can not write a new function which, when called, will update the collateral price, making the calls to our protocol much more dynamic.
 
-```js
+```solidity
 function updateCollateralPrice(uint96 newPrice) public {
     int256 newPriceInt = int256(uint256(newPrice));
     ethUsdPriceFeed.updateAnswer(newPriceInt);
@@ -74,7 +74,7 @@ These are the types of scenarios that invariant tests are incredible at spotting
 
 For now, I'm going to comment out our updateCollateralPrice function. So that it won't affect our future tests.
 
-```js
+```solidity
 // THIS BREAKS OUR INVARIANT TEST SUITE!!!
 // function updateCollateralPrice(uint96 newPrice) public {
 //     int256 newPriceInt = int256(uint256(newPrice));

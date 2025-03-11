@@ -14,7 +14,7 @@ In this lesson, we are going to implement Merkle proofs and Merkle trees in our 
 
 The constructor should take an ERC-20 token and a Merkle root as parameters, to store them for later use:
 
-```js
+```solidity
 constructor(bytes32 merkleRoot, IERC20 airdropToken) {
     i_merkleRoot = merkleRoot;
     i_airdropToken = airdropToken;
@@ -54,7 +54,7 @@ To allow users on the allowed list to claim tokens, we can create a `claim` func
 
 To verify the proof, we utilize OpenZeppelin's `MerkleProof::verify` function, which processes the proof, the merkle root and the encoded data. If the function will not succeed, we will revert with the `MerkleAirdrop__InvalidProof` custom error.
 
-```js
+```solidity
 function claim(address account, uint256 amount, bytes32[] calldata merkleProof) external {
     bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(account, amount))));
     if (!MerkleProof.verify(merkleProof, i_merkleRoot, leaf)) {
@@ -67,14 +67,26 @@ function claim(address account, uint256 amount, bytes32[] calldata merkleProof) 
 
 After successful verification and prior to transferring tokens, it is recommended to emit an event:
 
-```js
+```solidity
 event Claim(address indexed account, uint256 indexed amount);
+i_airdropToken.transfer(account, amount);
 ```
 
-We can then use `safeTransfer` from the `SafeERC20` library to handle token transfers securely:
+We can then use `safeTransfer` from the `SafeERC20` library to handle token transfers securely. Therefore, we need to change the import as well as the function call and we need to use `using SafeERC20 for IERC20;` as follows:
 
-```js
-i_airdropToken.safeTransfer(account, amount);
+```solidity
+import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+...
+
+contract MerkleAirdrop {
+    using SafeERC20 for IERC20;
+    ...
+
+    function claim(address account, uint256 amount, bytes32[] calldata merkleProof) external {
+      ...
+      i_airdropToken.safeTransfer(account, amount);
+    }
+}
 ```
 
 > 👮‍♂️ **BEST PRACTICE**:br

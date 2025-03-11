@@ -14,10 +14,10 @@ Let's start by debugging this issue. One way we attempt to figure out what's hap
 
 Ghost variables are declared in our handler and essentially function like state variables for our tests. Something we can do then, is declare `timesMintIsCalled` and have this increment within our mintDsc function.
 
-```js
+```solidity
 contract Handler is Test {
     ...
-    uint256 timesMintCalled;
+    uint256 public timesMintIsCalled;
     ...
     function mintDsc(uint256 amount) public {
         (uint256 totalDscMinted, uint256 collateralValueInUsd) = engine.getAccountInformation(msg.sender);
@@ -43,7 +43,7 @@ contract Handler is Test {
 
 With our ghost variable in place, we can now access this in our invariant test and console it out to glean some insight.
 
-```js
+```solidity
 function invariant_ProtocolTotalSupplyLessThanCollateralValue() external view returns (bool) {
     uint256 totalSupply = dsc.totalSupply();
     uint256 totalWethDeposited = IERC20(weth).balanceOf(address(dsce));
@@ -55,7 +55,7 @@ function invariant_ProtocolTotalSupplyLessThanCollateralValue() external view re
     console.log("totalSupply: ", totalSupply);
     console.log("wethValue: ", wethValue);
     console.log("wbtcValue: ", wbtcValue);
-    console.log("Times Mint Called: ", handler.timesMintCalled());
+    console.log("Times Mint Called: ", handler.timesMintIsCalled());
 
     assert(totalSupply <= wethValue + wbtcValue);
 }
@@ -85,10 +85,10 @@ When our fuzzer is running, it's going to make random function calls, but it als
 
 In order to mitigate this issue, we'll need to track the address which deposit collateral, and then have the address calling mintDsc derived from those tracked addresses. Let's declare an address array to which addresses that have deposited collateral can be added.
 
-```js
+```solidity
 contract Handler is Test {
     ...
-    uint256 timesMintIsCalled;
+    uint256 public timesMintIsCalled;
     address[] usersWithCollateralDeposited;
     ...
     function depositCollateral(uint256 collateralSeed, uint256 amountCollateral) public {
@@ -101,14 +101,14 @@ contract Handler is Test {
         dsce.depositCollateral(address(collateral), amountCollateral);
         vm.stopPrank();
 
-        usersWithCollateral.push(msg.sender);
+        usersWithCollateralDeposited.push(msg.sender);
     }
 }
 ```
 
 This new array of addresses with collateral can now be used as a seed within our mintDsc function, much like the collateralSeed in depositCollateral.
 
-```js
+```solidity
 function mintDsc(uint256 amount, uint256 addressSeed) public {
     address sender = usersWithCollateralDeposited[addressSeed % usersWithCollateralDeposited.length]
     (uint256 totalDscMinted, uint256 collateralValueInUsd) = engine.getAccountInformation(sender);
@@ -141,7 +141,7 @@ forge test --mt invariant_ProtocolTotalSupplyLessThanCollateralValue -vvvv
 
 A new error! New errors mean progress. It seems as though our mintDsc function is causing a `division or modulo by 0`. Ah, this is because our new array of usersWithCollateralDeposited may be empty. Let's account for this with a conditional.
 
-```js
+```solidity
 function mintDsc(uint256 amount, uint256 addressSeed) public {
 
     if(usersWithCollateralDeposited.length == 0){

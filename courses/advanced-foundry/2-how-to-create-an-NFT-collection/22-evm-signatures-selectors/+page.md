@@ -28,7 +28,7 @@ When we send a call to an address, the EVM determines how to respond based on th
 
 One way we can acquire the function selector is to encode the entire function signature, and grab the first 4 bytes of the result. Let's see what this looks like in our contract.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -56,7 +56,7 @@ This is great when we already know a function selector, but..
 
 The answer is - we can write a function! There are actually a few different ways we can approach this, let's go through them.
 
-```js
+```solidity
 function getSelectorOne() public pure returns(bytes4 selector){
     selector = bytes4(keccak256(bytes("transfer(address,uint256)")));
 }
@@ -74,7 +74,7 @@ Much like abi.encode and abi.encodePacked, the EVM offers us a way to encode our
 
 We can write another function to compile this data for our function call for us.
 
-```js
+```solidity
 function getDataToCallTransfer(address someAddress, uint256 amount) public pure returns(bytes memory){
     return abi.encodeWithSelector(getSelectorOne(), someAddress, amount);
 }
@@ -88,7 +88,7 @@ If we compile CallAnything.sol and redeploy in Remix, we can call this function 
 
 This is the data we would need to pass a low-level `call` in order to call the transfer function with our given parameters. We can now write a function that uses this data to make the function call.
 
-```js
+```solidity
 function callTransferWithBinary(address someAddress, uint256 amount) public returns(bytes4, bool){
     (bool success, bytes memory returnData) = address(this).call(abi.encodeWithSelector(getSelectorOne(), someAddress, amount));
 }
@@ -105,7 +105,7 @@ In the above we're sending our function call to the contract's own address, but 
 
 Typically we'd see something requiring success to be true, but for our example we'll just have our function return these values.
 
-```js
+```solidity
 function callTransferWithBinary(address someAddress, uint256 amount) public returns(bytes4, bool){
     (bool success, bytes memory returnData) = address(this).call(abi.encodeWithSelector(getSelectorOne(), someAddress, amount));
 
@@ -136,7 +136,7 @@ With this transaction complete, we should be able to repoll the storage variable
 
 ...and they are! Amazing! Another option Solidity affords us is the ability to encode with a signature. This effectively saves us a step since we don't have to determine the function selector first.
 
-```js
+```solidity
 function callTransferWithBinarySignature(address someAddress, uint256 amount) public returns(bytes4, bool){
     (bool success, bytes memory returnData) = address(this).call(abi.encodeWithSignature("transfer(address,uint256)", someAddress, amount));
 
@@ -154,7 +154,7 @@ We wont walk through all the different methods here, but I've provided some of t
 
 CallAnything.sol
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 // So why do we care about all this encoding stuff?
@@ -251,7 +251,7 @@ One last thing I want to point out is that we're not limited to this kind of int
 
 CallFunctionWithoutContract
 
-```js
+```solidity
 contract CallFunctionWithoutContract {
     address public s_selectorsAndSignaturesAddress;
 

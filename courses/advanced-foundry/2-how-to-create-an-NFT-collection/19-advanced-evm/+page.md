@@ -21,7 +21,7 @@ Until now, we've been using abi.encode and abi.encodePacked effectively as a mea
 
 When ready, in [**Remix**](https://remix.ethereum.org), create a new file named `Encoding.sol`. We can set this contract up with some boilerplate before writing the functions we'll use to explore encoding and decoding.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -31,7 +31,7 @@ contract Encoding {}
 
 Within this contract, let's now right a simple function to concatenate two strings using `abi.encodePacked`.
 
-```js
+```solidity
 function combineStrings() public pure returns(string memory){
     return string(abi.encodePacked("Hi Mom! ", "Miss you!"));
 }
@@ -106,7 +106,7 @@ Strictly speaking, we can use abi encoding to encode anything we want into the b
 
 Lets write a function to explore this. In our Encoding.sol file, in Remix add:
 
-```js
+```solidity
 function encodeNumber() public pure returns(bytes memory){
     bytes memory number = abi.encode(1);
     return number;
@@ -124,7 +124,7 @@ This hex format, this encoding, is how a computer understands the number `1`.
 
 Now, as mentioned, this can be used to encode basically anything, we can write a function to encode a string and see what it's output would be just the same.
 
-```js
+```solidity
 function encodeString() public pure returns(string memory){
     byte memory someString = abi.encode("some string");
     return someString;
@@ -155,7 +155,7 @@ You can kind of think of encodePacked as a compressor which removed unnecessary 
 
 We can demonstrate this in Remix by adding this function, redeploying our Encoding.sol contract and calling it.
 
-```js
+```solidity
 function encodeStringPacked() public pure returns(bytes memory){
     bytes memory someString = abi.encodePacked("some string");
     return someString;
@@ -168,7 +168,7 @@ We can clearly see how much smaller the encodePacked output is, if we were tryin
 
 Encoding in this way is very similar to something else we've done before, typecasting. Add this function to Encoding.sol, and redeploy to see how these compare in practice:
 
-```js
+```solidity
 function encodeStringBytes() public pure returns(bytes memory) {
     bytes memory someString = bytes("some string");
     return someString;
@@ -187,7 +187,7 @@ From the docs we can see the decode function takes the encoded data and a tuple 
 
 ::image{src='/foundry-nfts/19-advanced-evm/advanced-evm11.png' style='width: 100%; height: auto;'}
 
-```js
+```solidity
 function decodeString() public pure returns(string memory) {
     string memory someString = abi.decode(encodeString(), (string));
     return someString;
@@ -202,7 +202,7 @@ Once again, we can add this function to our Encoding.sol contract and redeploy i
 
 To take all this one step further, this encoding functionality affords us the ability to encode as much as we want. We can demonstrate this with the following functions:
 
-```js
+```solidity
 function multiEncode() public pure returns(bytes memory){
     bytes memory someString = abi.encode("some string", "it's bigger!");
     return someString;
@@ -220,7 +220,7 @@ When we multiEncode, you can see that our output is an _even bigger_ bytes objec
 
 You probably guessed, we can **also** multiEncodePacked. Try it out with:
 
-```js
+```solidity
 function multiEncodePacked() public pure returns (bytes memory){
     bytes memory someString = abi.encodePacked("some string", "it's bigger!");
     return someString;
@@ -231,7 +231,7 @@ function multiEncodePacked() public pure returns (bytes memory){
 
 This is actually where our fun stops a little bit. Because we're packing the encoding of multiple strings, the decoding function is unable to properly split these up. It's not possible to multiDecode a multiEncodePacked object 😦. If you try something like:
 
-```js
+```solidity
 function multiDecodePacked() public pure returns (string memory, string memory){
     string memory someString = abi.decode(multiEncodePacked(), (string));
     return someString;
@@ -240,7 +240,7 @@ function multiDecodePacked() public pure returns (string memory, string memory){
 
 ... this will actually error. We do have an alternative method though.
 
-```js
+```solidity
 function multiStringCastPacked() public pure returns (string memory){
     string memory someString = string(multiEncodePacked());
     return someString;

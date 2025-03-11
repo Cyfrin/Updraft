@@ -12,7 +12,7 @@ To deploy the `BagelToken` and `MerkleAirdrop` contracts, we can follow a struct
 
 Inside the `script` directory, we can start coding the deployment contract by importing the required libraries:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
@@ -24,7 +24,7 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 Next, create the deployment function to deploy the contracts, mint tokens, and transfer them to the airdrop contract:
 
-```js
+```solidity
 function deployMerkleAirdrop() public returns (MerkleAirdrop, BagelToken) {
     vm.startBroadcast();
     BagelToken bagelToken = new BagelToken();
@@ -46,7 +46,7 @@ forge install cyfrin/foundry-devops --no-commit
 
 Then, in the `setUp` function, add a check to determine if the current chain is ZKsync:
 
-```js
+```solidity
 //..
 import {ZkSyncChainChecker} from "foundry-devops/src/ZkSyncChainChecker.sol";
 

@@ -14,7 +14,7 @@ So far, our `_healthFactor` function is only acquiring the user's `totalDscMinte
 
 An account's `Health Factor` will be a bit more complex to consider than simply `collateralValueInUsd / totalDscMinted`. Remember, we want to assure the protocol is always `over-collateralized`, and to do this, there needs to be a threshold determined that this ratio needs to adhere to, 200% for example. We can set this threshold via a constant state variable.
 
-```js
+```solidity
 /////////////////////////
 //   State Variables   //
 /////////////////////////
@@ -33,7 +33,7 @@ uint256 private constant LIQUIDATION_PRECISION = 100;
 
 The threshold above, set at `50`, will assure a user's position is `200%` `over-collateralized`. We've also declared a `LIQUIDATION_PRECISION` constant for use in our calculation. We can apply this to our function's calculation now.
 
-```js
+```solidity
 /*
 * Returns how close to liquidation a user is
 * If a user goes below 1, then they can be liquidated.
@@ -65,7 +65,7 @@ In the above example, a user who has deposited $150 worth of ETH would not be ab
 
 With a `LIQUIDATION_THRESHOLD` of 50, a user requires 200% over-collateralization of their position, or the risk liquidation. Now that we've adjusted our collateral amount to account for a position's `LIQUIDATION_THRESHOLD`, we can use this adjust value to calculate a user's true `Health Factor`.
 
-```js
+```solidity
 /*
 * Returns how close to liquidation a user is
 * If a user goes below 1, then they can be liquidated.
@@ -89,7 +89,7 @@ return (0.75)
 
 Alright! Now, we've been talking about `Health Factors` which are `< 1` as being at risk of liquidation. We should set this constant officially with a state variable before moving on. We'll need it in our `_revertIfHealthFactorIsBroken` function.
 
-```js
+```solidity
 /////////////////////////
 //   State Variables   //
 /////////////////////////
@@ -109,7 +109,7 @@ uint256 private constant MIN_HEALTH_FACTOR = 1e18;
 
 We're ready to put our `_healthFactor` function and our `MIN_HEALTH_FACTOR` constant to work. We can use these to declare a conditional statement within `_revertIfHealthFactorIsBroken`, which will revert with a custom error if the conditional fails to pass.
 
-```js
+```solidity
 function _revertIfHealthFactorIsBroken(address user) internal view {
     uint256 userHealthFactor = _healthFactor(user);
     if(userHealthFactor < MIN_HEALTH_FACTOR){
@@ -120,7 +120,7 @@ function _revertIfHealthFactorIsBroken(address user) internal view {
 
 Don't forget to add the custom error to the top of our contract with the others.
 
-```js
+```solidity
 ///////////////////
 //     Errors    //
 ///////////////////
@@ -141,7 +141,7 @@ In the next lesson, we finish the `mintDsc` function! See you there!
 <details>
 <summary>DSCEngine.sol</summary>
 
-```js
+```solidity
 // Layout of Contract:
 // version
 // imports

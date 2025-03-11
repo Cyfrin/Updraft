@@ -12,13 +12,13 @@ In the last lesson our stateful fuzz tests were looking great, _but_ the validit
 
 Let's change that now by writing a mintDsc function for our Handler.
 
-```js
+```solidity
 function mintDsc(uint256 amount) public {}
 ```
 
 To constrain our tests, there are a couple things to consider. Namely, we know the `amount` argument needs to be greater than zero or this function will revert with `DSCEngine__NeedsMoreThanZero`. So let's account for that by binding this value.
 
-```js
+```solidity
 function mintDsc(uint256 amount) public {
     amount = bound(amount, 1, MAX_DEPOSIT_SIZE);
     vm.startPrank(msg.sender);
@@ -48,11 +48,11 @@ Ok, so things work when we have `fail_on_revert` set to `false`. We want our tes
 
 As expected, our user's Health Factor is breaking. This is because we haven't considered _who_ is minting our DSC with respect to who has deposited collateral. We can account for this in our test by ensuring that the user doesn't attempt to mint more than the collateral they have deposited, otherwise we'll return out of the function. We'll determine the user's amount to mint by calling our `getAccountInformation` function.
 
-```js
+```solidity
 function mintDsc(uint256 amount) public {
     (uint256 totalDscMinted, uint256 collateralValueInUsd) = dsce.getAccountInformation(msg.sender);
 
-    uint256 maxDscToMint = (collateralValueInUsd / 2) - totalDscMinted
+    uint256 maxDscToMint = (collateralValueInUsd / 2) - totalDscMinted;
     if(maxDscToMint < 0){
         return;
     }
@@ -63,7 +63,7 @@ function mintDsc(uint256 amount) public {
     }
 
     vm.startPrank(msg.sender);
-    dcse.mintDsc(amount);
+    dsce.mintDsc(amount);
     vm.stopPrank();
 }
 ```

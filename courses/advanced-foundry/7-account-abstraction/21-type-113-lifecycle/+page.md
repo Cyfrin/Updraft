@@ -43,7 +43,7 @@ In our `ZkMinimalAccount`, `validateTransaction` will be called. If successful, 
 
 ---
 
-```js
+```solidity
 function validateTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction memory _transaction)
     external
     payable
@@ -69,7 +69,7 @@ Essentially, if `validateTransaction` does not update the nonce, the entire tran
 
 Once the validation phase is successful, it is sent to the main node and `executeTransaction` can be called in our `ZkMinimalAccount`. If a paymaster was used, the `postTransaction` is called.
 
-```js
+```solidity
 function executeTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction memory _transaction)
     external
     payable
