@@ -9,6 +9,7 @@ We are getting closer to being ready to fully test our contract. However, we've 
 Let's get to it!
 
 ---
+
 ### Where We Left Off
 
 Picking up where we left off, we still need to complete **ACT** and **Assert** in our `testZkOwnerCanExecuteCommands` function.
@@ -18,7 +19,7 @@ Picking up where we left off, we still need to complete **ACT** and **Assert** i
 pragma solidity 0.8.24;
 
 import {Test} from "forge-std/Test.sol";
-import {ZkMinimalAccount} from "src/zksync/ZkMinimalAccount.sol";
+import {ZkMinimalAccount} from "src/ZKsync/ZkMinimalAccount.sol";
 import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
 
 contract ZkMinimalAccountTest is Test {
@@ -37,7 +38,7 @@ contract ZkMinimalAccountTest is Test {
     address dest = address(usdc);
     uint256 value = 0;
     bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, address(minimalAccount), AMOUNT);
-    
+
         // Act
         // Assert
     }
@@ -45,6 +46,7 @@ contract ZkMinimalAccountTest is Test {
 ```
 
 ---
+
 ### Create a Helper Function
 
 Since we don't have any scripts, we'll have to make some **helper** functions. Let's add a header for them at the bottom of our code.
@@ -75,10 +77,12 @@ function _createUnsignedTransaction(
     bytes memory data
 ) internal view returns(Transaction memory) {}
 ```
+
 ---
+
 ### Build Transaction Struct
 
-Our function returns Transaction memory. We are actually going to create this. If you've guessed that we'll need to import the `Transaction` struct, you are correct. Let's do that now. 
+Our function returns Transaction memory. We are actually going to create this. If you've guessed that we'll need to import the `Transaction` struct, you are correct. Let's do that now.
 
 ```solidity
 import {
@@ -88,7 +92,7 @@ import {
 
 If you go through [the struct, you'll notice that we need:](https://github.com/Cyfrin/foundry-era-contracts/blob/3f99de4a37b126c5cb0466067f37be0c932167b2/src/system-contracts/contracts/libraries/MemoryTransactionHelper.sol)
 
-- `uint256 txType` we know this is 113 for zksync
+- `uint256 txType` we know this is 113 for ZKsync
 - `uint256 from` will have to convert this from an address
 - `uint256 to` will have to convert this from an address
 - `uint256 gasLimit` choose same value from our test on Ethereum MinimalAccount, 16777216
@@ -99,7 +103,7 @@ If you go through [the struct, you'll notice that we need:](https://github.com/C
 - `uint256 nonce` need to set nonce variable
 - `uint256 value` whatever value is passed
 - `uint256[4] reserved` set an array of 4 uint256[0]
-- `bytes data` data that is passed 
+- `bytes data` data that is passed
 - `bytes signature` can be blank hex as we are getting an unsigned transaction
 - `bytes[] factoryDeps` factoryDeps, set to create new instance of an empty array
 - `bytes paymasterInput` blank hex
@@ -111,7 +115,9 @@ As mentioned above, we need to set a couple of variables in our function. We'll 
 uint256 nonce = vm.getNonce(address(minimalAccount));
 bytes32[] memory factoryDeps = new bytes32[](0);
 ```
-And now we can return our `Transaction`. 
+
+And now we can return our `Transaction`.
+
 ```solidity
 return Transaction({
     txType: transactionType, // type 113 (0x71).
@@ -132,10 +138,12 @@ return Transaction({
     reservedDynamic: hex""
 });
 ```
+
 ---
+
 ### Finally Finish Assert in `testZkOwnerCanExecuteCommands`
 
-With this helper function, we can now finish **Assert** in our test function, `testZkOwnerCanExecuteCommands`. Let's call `_createUnsignedTransaction` in the test function. Remember that it takes `address from`, `uint8 transactionType`, `address to`, `uint256 value`, and `bytes memory data`. In our test function, we'll set them as follows. 
+With this helper function, we can now finish **Assert** in our test function, `testZkOwnerCanExecuteCommands`. Let's call `_createUnsignedTransaction` in the test function. Remember that it takes `address from`, `uint8 transactionType`, `address to`, `uint256 value`, and `bytes memory data`. In our test function, we'll set them as follows.
 
 - from the minimal account owner
 - we already know tx type is 113
@@ -148,14 +156,14 @@ Transaction memory transaction =
     _createUnsignedTransaction(minimalAccount.owner(), 113, dest, value, functionData);
 ```
 
-Here is what both of our functions should look like as of now. 
+Here is what both of our functions should look like as of now.
 
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
 import {Test} from "forge-std/Test.sol";
-import {ZkMinimalAccount} from "src/zksync/ZkMinimalAccount.sol";
+import {ZkMinimalAccount} from "src/ZKsync/ZkMinimalAccount.sol";
 import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
 
 contract ZkMinimalAccountTest is Test {
@@ -176,13 +184,15 @@ contract ZkMinimalAccountTest is Test {
     bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, address(minimalAccount), AMOUNT);
     Transaction memory transaction =
     _createUnsignedTransaction(minimalAccount.owner(), 113, dest, value, functionData);
-    
+
         // Act
         // Assert
     }
 }
 ```
+
 ---
+
 ```solidity
 /*//////////////////////////////////////////////////////////////
                                 HELPERS
@@ -218,9 +228,10 @@ function _createUnsignedTransaction(
 ```
 
 ---
+
 ### Prank the Owner
 
-Now, all we need to do in **Act** is prank the owner. We will also need to call `executeTransaction` from our contract. Remember that it takes three arguments - `_txHash`, `_suggestedSignedHash`, and `_transaction`. Since we have commented out the first two, we'll just pass empty bytes. 
+Now, all we need to do in **Act** is prank the owner. We will also need to call `executeTransaction` from our contract. Remember that it takes three arguments - `_txHash`, `_suggestedSignedHash`, and `_transaction`. Since we have commented out the first two, we'll just pass empty bytes.
 
 ```solidity
 // Act
@@ -228,11 +239,12 @@ vm.prank(minimalAccount.owner());
 minimalAccount.executeTransaction(EMPTY_BYTES32, EMPTY_BYTES32, transaction);
 ```
 
-Let's also create a constant for `EMPTY_BYTES32`. 
+Let's also create a constant for `EMPTY_BYTES32`.
 
 ```solidity
 bytes32 constant EMPTY_BYTES32 = bytes32(0);
 ```
+
 ---
 
 And finally we can complete **Assert** by checking if the balance of usdc at our address is equal to `AMOUNT`.
@@ -242,5 +254,4 @@ And finally we can complete **Assert** by checking if the balance of usdc at our
 assertEq(usdc.balanceOf(address(minimalAccount)), AMOUNT);
 ```
 
-Phew! That was a lot. Take a look back over your code to review and reflect on what we've done. When you are ready, move on to the next lesson. 
-
+Phew! That was a lot. Take a look back over your code to review and reflect on what we've done. When you are ready, move on to the next lesson.

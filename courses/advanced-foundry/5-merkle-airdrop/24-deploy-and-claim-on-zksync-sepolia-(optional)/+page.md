@@ -20,15 +20,15 @@ As usual, we will deploy the contracts `BagelToken` and `MerkleAirdrop`, generat
 To deploy both contracts, specify the contract path and the necessary environment variables, then save the contract address as an environment variable:
 
 ```bash
-export ZKSYNC_SEPOLIA_RPC_URL=https://sepolia.era.zksync.dev
-forge create source/BagelToken --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL} --account updraft --legacy --zksync
+export ZKSYNC_SEPOLIA_RPC_URL=https://sepolia.era.ZKsync.dev
+forge create source/BagelToken --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL} --account updraft --legacy --ZKsync
 export TOKEN_ADDRESS=0x7B66C3E36d026232408a655cF7cFdEeFA099D6d0
 ```
 
 Next, deploy the `MerkleAirdrop` contract and save its address:
 
 ```bash
-forge create source/MerkleAirdrop --constructor-args ${TOKEN_ADDRESS} ${ROOT_HASH} --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL} --account updraft --legacy --zksync
+forge create source/MerkleAirdrop --constructor-args ${TOKEN_ADDRESS} ${ROOT_HASH} --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL} --account updraft --legacy --ZKsync
 export AIRDROP_ADDRESS=<deployed_airdrop_address>
 ```
 

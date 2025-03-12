@@ -1,5 +1,5 @@
 ---
-title: Why zkSync is our recommended chain
+title: Why ZKsync is our recommended chain
 ---
 
 _Follow along with the video_

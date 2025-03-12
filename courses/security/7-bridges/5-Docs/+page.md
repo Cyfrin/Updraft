@@ -26,7 +26,7 @@ To ensure user safety, this first version of the bridge has a few security mecha
 - Because deposits are permissionless, there's an strict limit of tokens that can be deposited.
 - Withdrawals must be approved by a bridge operator.
 
-We plan on launching `L1BossBridge` on both Ethereum Mainnet and ZKSync.
+We plan on launching `L1BossBridge` on both Ethereum Mainnet and ZKsync.
 
 ### Token Compatibility
 
@@ -37,7 +37,6 @@ For the moment, assume _only_ the `L1Token.sol` or copies of it will be used as 
 The bridge operator is in charge of signing withdrawal requests submitted by users. These will be submitted on the L2 component of the bridge, not included here. Our service will validate the payloads submitted by users, checking that the account submitting the withdrawal has first originated a successful deposit in the L1 part of the bridge.
 
 </details>
-
 
 The docs seem thorough, but unless we have experience with bridges, or similar protocols this is pretty confusing. This would be the point in a private audit that I would ask for some `protocol diagrams`.
 

@@ -13,17 +13,19 @@ Taking tests may not be much fun, but making them sure can be. Let's make some t
 pragma solidity 0.8.24;
 
 import {Test} from "forge-std/Test.sol";
-import {ZkMinimalAccount} from "src/zksync/ZkMinimalAccount.sol";
+import {ZkMinimalAccount} from "src/ZKsync/ZkMinimalAccount.sol";
 
 contract ZkMinimalAccountTest is Test {
-    ZkMinimalAccount minimalAccount;    
+    ZkMinimalAccount minimalAccount;
 
     function setUp() public {
-        minimalAccount = new ZkMinimalAccount();        
+        minimalAccount = new ZkMinimalAccount();
     }
 }
 ```
+
 ---
+
 ### Test if Zk Owner Can Execute Commands
 
 Essentially, our test will be very similar to what we did in for `MinimalAccount` on Ethereum. Let's start with the `executeTransaction` function. Will start with our usual set up of **Arrange**, **Act**, and **Assert**.
@@ -51,19 +53,23 @@ import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
 
 Next, we can create the usdc token in the variable section, and initialize a new instance of the mock in the `setUp` function. We will also need a constant `AMOUNT` variable set to 1e18.
 
-Place these with other state variables. 
+Place these with other state variables.
+
 ```solidity
 ERC20Mock usdc;
 
 uint256 constant AMOUNT = 1e18;
 ```
+
 Place this inside the `setUp` function
+
 ```solidity
 usdc = new ERC20Mock();
 ```
+
 ---
 
-Our **Arrange** should look like this now. 
+Our **Arrange** should look like this now.
 
 ```solidity
 // Arrange
@@ -75,15 +81,16 @@ Transaction memory transaction =
     _createUnsignedTransaction(minimalAccount.owner(), 113, dest, value, functionData);
 ```
 
-Our entire code should look like this. 
+Our entire code should look like this.
 
 ---
+
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
 import {Test} from "forge-std/Test.sol";
-import {ZkMinimalAccount} from "src/zksync/ZkMinimalAccount.sol";
+import {ZkMinimalAccount} from "src/ZKsync/ZkMinimalAccount.sol";
 import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
 
 contract ZkMinimalAccountTest is Test {
@@ -102,12 +109,13 @@ contract ZkMinimalAccountTest is Test {
     address dest = address(usdc);
     uint256 value = 0;
     bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, address(minimalAccount), AMOUNT);
-    
+
         // Act
         // Assert
     }
 }
 ```
+
 ---
 
 I know that we are not finished with this function yet, but this is where the video lecture stops. We will complete this test function in the next lesson. Take a moment to review and reflect. Move on to the next lesson when you are ready.

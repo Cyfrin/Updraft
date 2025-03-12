@@ -10,7 +10,7 @@ Welcome to the third lesson in our Account Abstraction course! In this lesson, w
 To get started, make sure you have foundry installed and up-to-date. To do this, run the following command in your terminal.
 
 ```js
-foundryup
+foundryup;
 ```
 
 Once this process is complete, you'll need to initialize your project.
@@ -32,7 +32,7 @@ Delete all three of these, as we will be making our own files.
 In the `src` folder, create two new folders
 
 - **ethereum**
-- **zksync**
+- **ZKsync**
 
 Now head over to your `README.md` and type the following:
 
@@ -43,7 +43,7 @@ Now head over to your `README.md` and type the following:
 2. Create minimal Account Abstraction on ZKsync
 3. Deploy and send a userOp/transaction through them
     1. Not going to send an AA to Ethereum
-    2. But we will send an AA tx to zksync
+    2. But we will send an AA tx to ZKsync
 ```
 
 > ❗ **NOTE**tx = transaction
@@ -84,15 +84,13 @@ Next, we need to know what to put in our contract. Well, we know that we are wor
 
 </details>
 
-
 From this information, we know that we will need some specific functions to make this happen. [Let's head over to the EIP](https://eips.ethereum.org/EIPS/eip-4337) and see what we need.
 
 > ❗ **NOTE**EIP = Ethereum Improvement Proposal
 
 ---
 
-::image{src='/foundry-account-abstraction/3-eth-setup/eip-4337.png' style='width: 100%; height: auto;'}
----
+## ::image{src='/foundry-account-abstraction/3-eth-setup/eip-4337.png' style='width: 100%; height: auto;'}
 
 Here we will find the `UserOperation` containing all of the data that needs to go to the alt-mempools. When passed to on-chain contracts, a packed version of this called **EntryPoint definition** is used. You can have a [look at the contract on Etherscan here](https://etherscan.io/address/0x0000000071727de22e5e9d8baf0edac6f37da032).
 
@@ -100,8 +98,7 @@ Furthermore, we can [view the contract code directly in our browser here.](https
 
 ---
 
-::image{src='/foundry-account-abstraction/3-eth-setup/etherscan-deth.png' style='width: 100%; height: auto;'}
----
+## ::image{src='/foundry-account-abstraction/3-eth-setup/etherscan-deth.png' style='width: 100%; height: auto;'}
 
 Click on the magnifying glass icon in the top left of the screen. Type **function handleops** in the search box. You will see that it takes a `PackedUserOperation` and an `address payable`. When we send our information to the alt-mempool nodes, we need to send it so that the nodes can then send the `PackedUserOperation`, which is essentially a struct and is a standalone contract - `PackedUserOperation.sol`.
 
@@ -125,8 +122,7 @@ Scroll down until you see the **Account Contract Interface**.
 
 ---
 
-::image{src='/foundry-account-abstraction/3-eth-setup/account-interface.png' style='width: 100%; height: auto;'}
----
+## ::image{src='/foundry-account-abstraction/3-eth-setup/account-interface.png' style='width: 100%; height: auto;'}
 
 The function takes a userOp, userOpHas, and missingAccountFunds to determine whether or not the user operation is valid. If not valid, it will revert and the alt-mempool nodes won't be able to send the transaction.
 

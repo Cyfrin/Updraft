@@ -95,9 +95,9 @@ We can definitely see it popping up, if we search our bytecode for this.. don't 
 
 ::image{src='/security-section-7/10-unsupported-opcodes/unsupported-opcodes4.png' style='width: 100%; height: auto;'}
 
-This opcode is of course compatible with the `Ethereum` chain, but Boss Bridge is meant to work on `zkSync Era`! I wonder if the `create` opcode is supported, we should check [**their docs**](https://docs.zksync.io/).
+This opcode is of course compatible with the `Ethereum` chain, but Boss Bridge is meant to work on `ZKsync Era`! I wonder if the `create` opcode is supported, we should check [**their docs**](https://docs.ZKsync.io/).
 
-Their docs have a tonne of valuable information that I recommend you read, but we're most interested in `EVM compatibility`. From [**this section**](https://docs.zksync.io/build/support/faq.html#evm-compatibility) of the docs zkSync details:
+Their docs have a tonne of valuable information that I recommend you read, but we're most interested in `EVM compatibility`. From [**this section**](https://docs.ZKsync.io/build/support/faq.html#evm-compatibility) of the docs ZKsync details:
 
     EVM Compatibility
 
@@ -106,28 +106,28 @@ Their docs have a tonne of valuable information that I recommend you read, but w
     - EVM Equivalent means that a given protocol supports every opcode of Ethereum’s EVM down to the bytecode. Thus, any EVM smart contract works with 100% assurance out of the box.
     - EVM Compatible means that a percentage of the opcodes of Ethereum’s EVM are supported; thus, a percentage of smart contracts work out of the box.
 
-    zkSync is optimized to be EVM compatible not EVM equivalent for three primary reasons:
+    ZKsync is optimized to be EVM compatible not EVM equivalent for three primary reasons:
 
     1. Creating a generalized circuit for EVM equivalence down to the bytecode would be prohibitively expensive and time-consuming.
-    2. Building on what we learned with zkSync Lite, we were able to design a system optimized for performance and provability in ZK.
-    3. The opcodes we’ve chosen NOT to support are deprecated by Ethereum itself, or rarely used. In the case a project needs them, modifications to work with zkSync are minimal and do not generate a need for a new security audit.
+    2. Building on what we learned with ZKsync Lite, we were able to design a system optimized for performance and provability in ZK.
+    3. The opcodes we’ve chosen NOT to support are deprecated by Ethereum itself, or rarely used. In the case a project needs them, modifications to work with ZKsync are minimal and do not generate a need for a new security audit.
 
-Alright, all good to know, but not exactly what we're looking for. It _does_ seem like things are handled somewhat differently on zkSync Era. [**This page**](https://docs.zksync.io/build/developer-reference/differences-with-ethereum.html) has more specific information on how `create` is handled.
+Alright, all good to know, but not exactly what we're looking for. It _does_ seem like things are handled somewhat differently on ZKsync Era. [**This page**](https://docs.ZKsync.io/build/developer-reference/differences-with-ethereum.html) has more specific information on how `create` is handled.
 
-    "On zkSync Era, contract deployment is performed using the hash of the bytecode, and the factoryDeps field of EIP712 transactions contains the bytecode. The actual deployment occurs by providing the contract's hash to the ContractDeployer system contract.
+    "On ZKsync Era, contract deployment is performed using the hash of the bytecode, and the factoryDeps field of EIP712 transactions contains the bytecode. The actual deployment occurs by providing the contract's hash to the ContractDeployer system contract.
 
     To guarantee that create/create2 functions operate correctly, the compiler must be aware of the bytecode of the deployed contract in advance. "
 
 ::image{src='/security-section-7/10-unsupported-opcodes/unsupported-opcodes5.png' style='width: 100%; height: auto;'}
 
-Uh oh. The third example we're given by the zkSync docs looks suspiciously like our `Boss Bridge` execution of `create`!
+Uh oh. The third example we're given by the ZKsync docs looks suspiciously like our `Boss Bridge` execution of `create`!
 
 This is clearly going to be an issue.
 
 ```js
 assembly {
-    // @Audit-High: This won't work on zkSync Era!
-    // Docs Reference: https://docs.zksync.io/build/developer-reference/differences-with-ethereum.html#create-create2
+    // @Audit-High: This won't work on ZKsync Era!
+    // Docs Reference: https://docs.ZKsync.io/build/developer-reference/differences-with-ethereum.html#create-create2
     addr := create(0, add(contractBytecode, 0x20), mload(contractBytecode))
 }
 ```
@@ -136,6 +136,6 @@ assembly {
 
 We found a `High`! This really demonstrates the potential power of The Hans Checklist. The Checklist is huge, no doubt, but if it's run through at the end of an audit, you'll find lots of the strange intricacies as you check things off.
 
-This may seem like a silly bug to some, an obvious thing to overlook, but I assure you these things happen. There's a famous casestudy in which 921 ETH were locked because the transfer function would fail at the time on zkSync.
+This may seem like a silly bug to some, an obvious thing to overlook, but I assure you these things happen. There's a famous casestudy in which 921 ETH were locked because the transfer function would fail at the time on ZKsync.
 
-Read more about it [**here**](https://medium.com/coinmonks/gemstoneido-contract-stuck-with-921-eth-an-analysis-of-why-transfer-does-not-work-on-zksync-era-d5a01807227d). When you're done, I'll see you in the next one!
+Read more about it [**here**](https://medium.com/coinmonks/gemstoneido-contract-stuck-with-921-eth-an-analysis-of-why-transfer-does-not-work-on-ZKsync-era-d5a01807227d). When you're done, I'll see you in the next one!

@@ -18,13 +18,13 @@ A Layer 2 (L2) chain's maturity is evaluated based on specific properties and ca
 
 3. **Stage 2**: In this final stage, the rollup achieves full decentralization with governance entirely managed by smart contracts, removing the need for operators or council interventions in everyday operations. The proof system at this stage is permissionless and the exit mechanism is also fully decentralized. The security council's role is now strictly limited to addressing any errors that occur on-chain, ensuring that the system remains fair without being overly reliant on centralized entities.
 
-### ZKSync Risk Analysis
+### ZKsync Risk Analysis
 
 In the [L2Beat summary](https://l2beat.com/scaling/summary) it's possible to see the actual stage of each rollup:
 
 ::image{src='/blockchain-basics/17-rollup-stages/l2beat-summary.png' style='width: 100%; height: auto;'}
 
-Currently, [Zksync Era](https://l2beat.com/scaling/projects/zksync-era) is operating as a `Stage 0` rollup. In the dedicated page on L2, we can find a risk analysis:
+Currently, [ZKsync Era](https://l2beat.com/scaling/projects/ZKsync-era) is operating as a `Stage 0` rollup. In the dedicated page on L2, we can find a risk analysis:
 
 - **Data Availability**: refers to the ability to reconstruct the L2 state from L1 data, ensuring that anyone can verify and rebuild the L2 state if necessary.
 - **State Validation**: involves verifying the legitimacy of a set of bundled transactions. For ZK Sync, this is done using zero-knowledge proofs through an algorithm known as PLONK (Permutations over Lagrange-bases for Oecumenical Noninteractive arguments of Knowledge).

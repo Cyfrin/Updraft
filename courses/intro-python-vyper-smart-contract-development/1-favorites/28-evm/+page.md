@@ -10,15 +10,15 @@ Any blockchain that follows these rules is considered EVM-compatible. Examples o
 - Arbitrum
 - Optimism
 - Polygon
-- zkSync
+- ZKsync
 
 We should be mindful of the chain that we are deploying to. A common mistake is to deploy to a chain that does not support the smart contract language we are using. We will discuss this in more detail later.
 
-We will be using zkSync in this lesson. Here is the code we will be working with:
+We will be using ZKsync in this lesson. Here is the code we will be working with:
 
 ```python
 # EVM: Ethereum Virtual Machine
-# Ethereum, Arbitrum, Optimism, Polygon, zkSync
+# Ethereum, Arbitrum, Optimism, Polygon, ZKsync
 
 # pragma version 0.4.0
 # @license MIT
@@ -47,4 +47,4 @@ def store(new_number: uint256):
     self.my_favorite_number = new_number
 ```
 
-This code works correctly with the zkSync compiler, but as we progress through this lesson, we will start to see how certain keywords, for example zkSync, do not work correctly.
+This code works correctly with the ZKsync compiler, but as we progress through this lesson, we will start to see how certain keywords, for example ZKsync, do not work correctly.

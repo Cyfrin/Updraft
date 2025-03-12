@@ -176,7 +176,7 @@ vm.deal(address(minimalAccount), AMOUNT);
 > ❗ **IMPORTANT** We can no longer rely on `is-system = true` in our `foundry.toml`. We will have to pass `--system-mode=true` in the command line when we run forge test. Please be aware that this is likely to change again in the future.
 
 ```js
-forge test --mt testZkValidateTransaction --zksync --system-mode=true
+forge test --mt testZkValidateTransaction --ZKsync --system-mode=true
 ```
 
 Our test should pass and now we know that we can validate and execute transactions.
