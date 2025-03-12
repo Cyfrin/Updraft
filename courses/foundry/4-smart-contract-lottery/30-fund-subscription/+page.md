@@ -98,7 +98,7 @@ And now, with this new import, we can deploy the token in case we use Anvil like
 
 ```solidity
 function getOrCreateAnvilEthConfig() internal returns (NetworkConfig memory) {
-    // Check to see if we set an active network config
+    // Check to see if we set an active network localNetworkConfig
     if (localNetworkConfig.vrfCoordinator != address(0)) {
         return localNetworkConfig;
     }
@@ -121,7 +121,7 @@ function getOrCreateAnvilEthConfig() internal returns (NetworkConfig memory) {
         gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
         subscriptionId: 0,
         callbackGasLimit: 500_000,
-        linkToken: address(linkToken)
+        link: address(linkToken)
     });
 
     return localNetworkConfig;
@@ -149,7 +149,7 @@ Error (7364): Different number of components on the left hand side (6) than on t
 Error (7407): Type tuple(uint256,uint256,address,bytes32,uint64,uint32,address) is not implicitly convertible to expected type tuple(uint256,uint256,address,bytes32,uint64,uint32).
   --> test/unit/RaffleTest.t.sol:42:13:
    |
-42 |         ) = helperConfig.localNetworkConfig();
+42 |         ) = helperConfig.getConfig();
    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
 
@@ -182,7 +182,7 @@ function fundSubscriptionUsingConfig() public {
     HelperConfig helperConfig = new HelperConfig();
     address vrfCoordinator = helperConfig.getConfig().vrfCoordinator;
     uint256 subscriptionId = helperConfig.getConfig().subscriptionId;
-    address linkToken = helperConfig.getConfig().linkToken;
+    address linkToken = helperConfig.getConfig().link;
 
     fundSubscription(vrfCoordinator, subscriptionId, linkToken);
 }
@@ -223,7 +223,7 @@ contract FundSubscription is Script, CodeConstants {
         HelperConfig helperConfig = new HelperConfig();
         address vrfCoordinator = helperConfig.getConfig().vrfCoordinator;
         uint256 subscriptionId = helperConfig.getConfig().subscriptionId;
-        address linkToken = helperConfig.getConfig().linkToken;
+        address linkToken = helperConfig.getConfig().link;
 
         if (subscriptionId == 0) {
             CreateSubscription createSub = new CreateSubscription();
@@ -266,7 +266,7 @@ This seems like a lot, but it isn't, let's go through it step by step:
 
 - Like any other Script our's has a `run` function that gets executed
 - Inside we call the `fundSubscriptionUsingConfig` function
-- Inside the `fundSubscriptionUsingConfig` function we get the `activeNetworkConfig` that provides the chain-appropriate `vrfCoordinator`, `subscriptionId` and `link` token address
+- Inside the `fundSubscriptionUsingConfig` function we get the `config` that provides the chain-appropriate `vrfCoordinator`, `subscriptionId` and `link` token address
 - At the end of `fundSubscriptionUsingConfig` we call the `fundSubscription`, a function that we are going to define
 - We define `fundSubscription` as a public function that takes the 3 parameters as input
 - We console log some details, this will help us debug down the road

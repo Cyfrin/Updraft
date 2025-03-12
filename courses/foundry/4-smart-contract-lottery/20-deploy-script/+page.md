@@ -116,7 +116,7 @@ In case we are on a local chain but the VRF coordinator has already been set, we
 
 ```solidity
 function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
-    // Check to see if we set an active network config
+    // Check to see if we set an active network localNetworkConfig
     if (localNetworkConfig.vrfCoordinator != address(0)) {
         return localNetworkConfig;
 }
