@@ -5,11 +5,11 @@ We're going to compile and deploy a contract. We will then call a function on th
 First, we'll compile our contract.
 
 ```python
-pragma version 0.4.0
+# pragma version 0.4.0
 # @license: MIT
 # @author: You!
 
-external
+@external
 @payable
 def fund():
     """Allows users to send $ to this contract.
@@ -18,7 +18,8 @@ def fund():
     1. How do we send ETH to this contract?
     """
     assert msg.value == as_wei(1, "ether") "You must spend more ETH!"
-external
+
+@external
 def withdraw():
     pass
 ```
@@ -26,11 +27,11 @@ def withdraw():
 Now, we'll deploy this contract.
 
 ```python
-pragma version 0.4.0
+# pragma version 0.4.0
 # @license: MIT
 # @author: You!
 
-external
+@external
 @payable
 def fund():
     """Allows users to send $ to this contract.
@@ -39,7 +40,8 @@ def fund():
     1. How do we send ETH to this contract?
     """
     assert msg.value == as_wei(1, "ether") "You must spend more ETH!"
-external
+
+@external
 def withdraw():
     pass
 ```
