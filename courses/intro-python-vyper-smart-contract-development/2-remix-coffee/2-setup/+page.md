@@ -30,8 +30,8 @@ Now, originally, I said $50, we might make it five. We might make it two because
 # Withdraw funds
 # Set a minimum funding value in USD
 
-pragma version 0.4.0
-@license: MIT
+# pragma version 0.4.0
+# @license: MIT
 ```
 
 And then if you want, you can also do @author and put your name here.
@@ -41,9 +41,9 @@ And then if you want, you can also do @author and put your name here.
 # Withdraw funds
 # Set a minimum funding value in USD
 
-pragma version 0.4.0
-@license: MIT
-@author: You!
+# pragma version 0.4.0
+# @license: MIT
+# @author: You!
 ```
 
 There's a couple other different types of tags that you'll see people use pretty often. And, pretty soon we'll actually learn a nicer way to format this than with these hashtags here, but we'll get to that in a bit.
@@ -55,9 +55,9 @@ Now, let's actually build a little bit of a skeleton for our smart contract here
 # Withdraw funds
 # Set a minimum funding value in USD
 
-pragma version 0.4.0
-@license: MIT
-@author: You!
+# pragma version 0.4.0
+# @license: MIT
+# @author: You!
 
 def fund():
 ```
@@ -69,9 +69,9 @@ And what you can do that's quite nice in Vyper is that if you want to just name 
 # Withdraw funds
 # Set a minimum funding value in USD
 
-pragma version 0.4.0
-@license: MIT
-@author: You!
+# pragma version 0.4.0
+# @license: MIT
+# @author: You!
 
 def fund():
     pass
@@ -86,9 +86,9 @@ So, this pass keyword is valid Vyper here. So, we want def fund. What else? We p
 # Withdraw funds
 # Set a minimum funding value in USD
 
-pragma version 0.4.0
-@license: MIT
-@author: You!
+# pragma version 0.4.0
+# @license: MIT
+# @author: You!
 
 @external
 def fund():

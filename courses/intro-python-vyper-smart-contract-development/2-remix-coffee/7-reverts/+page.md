@@ -1,32 +1,26 @@
-## Reverts in Solidity
+## Reverts in Vyper
 
-Reverts are an incredibly important part of the Solidity language. They allow us to undo any actions that have been done and send the remaining gas back. Let's explore how they work!
+Reverts are an incredibly important part of the Vyper language. They allow us to undo any actions that have been done and send the remaining gas back. Let's explore how they work!
 
 We can see a revert in action with this code:
 
 ```python
-// SPDX-License-Identifier: MIT
-pragma version 0.4.0
+# pragma version 0.4.0
+# @license: MIT
+# @author: You!
 
-contract buy_me_a_coffee {
+my_num: public uint256
 
-    my_num: public uint256;
-
-    @external
-    @payable
-    def fund():
-        """
-        Allows users to send $ to this contract.
-        Have a minimum $ amount send
-        1. How do we send ETH to this contract?
-        """
-        self.my_num = self.my_num + 2;
-        assert msg.value == as_wei_value(1, "ether"), "You must spend more ETH!"
-
-    @external
-    def withdraw():
-        pass
-}
+@external
+@payable
+def fund():
+    """
+    Allows users to send $ to this contract.
+    Have a minimum $ amount send
+    1. How do we send ETH to this contract?
+    """
+    self.my_num = self.my_num + 2
+    assert msg.value == as_wei_value(1, "ether"), "You must spend more ETH!"
 ```
 
 Let's set our state variable to `2` and then call our `fund` function. We'll deploy the contract and then call `my_num`. We'll see that our `my_num` has been set to `2` as expected. This is because the `assert` condition was met.
@@ -37,11 +31,7 @@ This is because the `assert` condition was not met. The transaction was reversed
 
 Reverts are a great way to ensure that transactions are only executed when certain conditions are met. They are particularly useful when working with real networks, where transactions can be expensive.
 
-We will also want to check that our transaction did not revert. We can do this by running the following terminal command:
-
-```bash
-truffle test
-```
+We will also want to check that our transaction did not revert.
 
 If the transaction reverted, the terminal output will tell us why. This can be useful for debugging and understanding why our transaction is failing.
 
