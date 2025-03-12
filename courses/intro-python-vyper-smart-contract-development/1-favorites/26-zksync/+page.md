@@ -1,16 +1,16 @@
-## Deploying ZkSync Contracts
+## Deploying ZKsync Contracts
 
-We will be exploring deploying contracts with ZkSync to a test net.
+We will be exploring deploying contracts with ZKsync to a test net.
 
 First, we'll go to the plugin manager in Remix.
 
-If we look up ZkSync, we'll see there's an inactive module. We can go ahead and activate that.
+If we look up ZKsync, we'll see there's an inactive module. We can go ahead and activate that.
 
-As of recording, the ZkSync plugin only works with Solidity. So, it doesn't work with Vyper at the moment.
+As of recording, the ZKsync plugin only works with Solidity. So, it doesn't work with Vyper at the moment.
 
-We are not going to be deploying this to ZkSync through Remix.
+We are not going to be deploying this to ZKsync through Remix.
 
-However, when we switch over to Python, we will be deploying to ZkSync.
+However, when we switch over to Python, we will be deploying to ZKsync.
 
 First, we'll install `zksync-python`:
 
@@ -138,4 +138,4 @@ print(zksyncContract.get_transactions())
 
 This will print the contract's balance, code, and transactions.
 
-We've now deployed a ZkSync contract and called its functions.
+We've now deployed a ZKsync contract and called its functions.
