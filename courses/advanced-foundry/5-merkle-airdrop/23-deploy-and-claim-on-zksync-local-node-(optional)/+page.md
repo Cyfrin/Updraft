@@ -1,5 +1,5 @@
 ---
-title: Deploy and Claim on zkSync Local Node
+title: Deploy and Claim on ZKsync Local Node
 ---
 
 _Follow along with the video_
@@ -8,7 +8,7 @@ _Follow along with the video_
 
 ### Introduction
 
-In this lesson, we are going to deploy and claim our tokens on a **local ZKsync node**. First, we need to terminate the Anvil node and then run `foundryup --zksync` to switch to the ZKsync foundry environment.
+In this lesson, we are going to deploy and claim our tokens on a **local ZKsync node**. First, we need to terminate the Anvil node and then run `foundryup --ZKsync` to switch to the ZKsync foundry environment.
 
 ⚠️ At the time of this recording, foundry scripts cannot be used on ZKsync. Instead, we will use a bash script that runs the same commands as before. You can copy the [interactZk](https://github.com/Cyfrin/foundry-merkle-airdrop-cu/blob/main/interactZk.sh) script from the GitHub repository and follow along.
 

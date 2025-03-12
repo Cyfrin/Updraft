@@ -17,7 +17,7 @@
 
 ### On ZKsync
 
-- Account Abstraction is natively built in. 
+- Account Abstraction is natively built in.
 - There aren't any alt-mempools.
 - ZKsync has specific transaction types, ours is 113.
 - There are two phases for transactions

@@ -12,7 +12,7 @@ In this lesson, we'll walk through the steps to deploy the `FundMe` contract to 
 
 ### Adjustments for ZKsync
 
-First, we'll need the specific the correct **price feed address** for the ZKsync Sepolia chain, which you can find in the [Chainlink documentation](https://docs.chain.link/data-feeds/price-feeds/addresses?network=zksync&page=1). Each chain has its own unique addresses, and the ETH/USD address for the ZKsync Sepolia testnet will differ from the one on Sepolia.
+First, we'll need the specific the correct **price feed address** for the ZKsync Sepolia chain, which you can find in the [Chainlink documentation](https://docs.chain.link/data-feeds/price-feeds/addresses?network=ZKsync&page=1). Each chain has its own unique addresses, and the ETH/USD address for the ZKsync Sepolia testnet will differ from the one on Sepolia.
 
 Then, copy the ZKsync Sepolia testnet ETH/USD address and replace the existing address in the `FundMe::getVersion` and `PriceConverter::getPrice` functions:
 
@@ -30,4 +30,4 @@ In the Environment tab, you can connect your MetaMask wallet and then **deploy a
 
 ### Conclusion
 
-Deploying the `FundMe` contract to the ZKsync testnet involves a few key steps. First, adjust the price feed addresses and handle the library code correctly and make sure you're using the correct version of the Solidity compiler. Then you are ready to connect the MetaMask wallet to Remix ZKsync module and deploy the contract. Finally, you can verify that everything is working as expected by calling the contract functions in the [ZKsync block explorer](https://sepolia.explorer.zksync.io/).
+Deploying the `FundMe` contract to the ZKsync testnet involves a few key steps. First, adjust the price feed addresses and handle the library code correctly and make sure you're using the correct version of the Solidity compiler. Then you are ready to connect the MetaMask wallet to Remix ZKsync module and deploy the contract. Finally, you can verify that everything is working as expected by calling the contract functions in the [ZKsync block explorer](https://sepolia.explorer.ZKsync.io/).

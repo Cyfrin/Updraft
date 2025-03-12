@@ -1,8 +1,8 @@
-## Setting up ZkSync network configuration
+## Setting up ZKsync network configuration
 
-In this lesson, we will learn how to set up the configuration necessary to deploy a smart contract to the ZkSync Sepolia Testnet. This can be confusing, but we'll walk through this together.
+In this lesson, we will learn how to set up the configuration necessary to deploy a smart contract to the ZKsync Sepolia Testnet. This can be confusing, but we'll walk through this together.
 
-We can start with the `mocassin.toml` file. We need to create a new network configuration below the existing network entries. The new network configuration should be named `sepolia-zkync`. 
+We can start with the `mocassin.toml` file. We need to create a new network configuration below the existing network entries. The new network configuration should be named `sepolia-zkync`.
 
 Here is the basic structure of our network configuration:
 
@@ -40,8 +40,8 @@ is_zkync = true
 
 Now, we need to add our new network to MetaMask. We will do this by going to the network settings and hitting "Add a custom network".
 
-Give the network a name like `ZkSync Era - Sepolia` and then add the RPC URL, chain ID, and currency symbol.  We will use the same block explorer URL as our `explorer_uri` in the `mocassin.toml` file.
+Give the network a name like `ZKsync Era - Sepolia` and then add the RPC URL, chain ID, and currency symbol. We will use the same block explorer URL as our `explorer_uri` in the `mocassin.toml` file.
 
-Finally, hit "save" in MetaMask and our new network is ready! 
+Finally, hit "save" in MetaMask and our new network is ready!
 
-We've now set up our ZkSync Sepolia Testnet and are ready to deploy. 
+We've now set up our ZKsync Sepolia Testnet and are ready to deploy.

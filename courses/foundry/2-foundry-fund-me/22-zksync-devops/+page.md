@@ -8,7 +8,7 @@ _Follow along with the video_
 
 ### Introduction
 
-There are notable differences between the EVM and ZKsync Era VM, as detailed in the [ZKsync documentation](https://docs.zksync.io/build/developer-reference/ethereum-differences/evm-instructions). In this lesson, we will explore some DevOps tools designed to help run tests and functions on both VMs.
+There are notable differences between the EVM and ZKsync Era VM, as detailed in the [ZKsync documentation](https://docs.ZKsync.io/build/developer-reference/ethereum-differences/evm-instructions). In this lesson, we will explore some DevOps tools designed to help run tests and functions on both VMs.
 
 ### `foundry-devops` Tools
 
@@ -46,7 +46,7 @@ The file [`test/unit/ZkSyncDevOps.t.sol`](https://github.com/Cyfrin/foundry-fund
 
 ### VM environments modifiers
 
-You can switch environments between `fundryup` and `fundryup-zksync` to observe different behaviors of the `ZkSyncDevOps.t.sol` tests. For instance, the following command
+You can switch environments between `fundryup` and `fundryup-ZKsync` to observe different behaviors of the `ZkSyncDevOps.t.sol` tests. For instance, the following command
 
 ```bash
 forge test --mt testZkSyncChainFails -vvv
@@ -54,11 +54,11 @@ forge test --mt testZkSyncChainFails -vvv
 
 will pass in both Foundry environments. However, if you remove the `skipZkSync` modifier, the test will fail on ZKsync because the content of the function is not supported on this chain.
 
-For more details on these modifiers, refer to the [foundry-devops repo](https://github.com/Cyfrin/foundry-devops?tab=readme-ov-file#usage---zksync-checker). The `skipzksync` modifier skips tests on the ZKsync chain, while `onlyzksync` runs tests only on a ZKsync-based chain.
+For more details on these modifiers, refer to the [foundry-devops repo](https://github.com/Cyfrin/foundry-devops?tab=readme-ov-file#usage---ZKsync-checker). The `skipzksync` modifier skips tests on the ZKsync chain, while `onlyzksync` runs tests only on a ZKsync-based chain.
 
 ### Foundry version modifiers
 
-Some tests may fail depending on the Foundry version. The `FoundryZkSyncChecker` package assists in executing functions based on the Foundry version. The `onlyFoundryZkSync` modifier allows tests to run only if `foundryup--zksync` is active, while `onlyVanillaFoundry` works only if `foundryup` is active.
+Some tests may fail depending on the Foundry version. The `FoundryZkSyncChecker` package assists in executing functions based on the Foundry version. The `onlyFoundryZkSync` modifier allows tests to run only if `foundryup--ZKsync` is active, while `onlyVanillaFoundry` works only if `foundryup` is active.
 
 > 🗒️ **Note**:br
 > Ensure `ffi = true` is enabled in the `foundry.toml` file.

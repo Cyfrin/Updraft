@@ -21,14 +21,14 @@ The EVM and ZKsync ecosystems support multiple transaction types to accommodate 
 > 👀❗**IMPORTANT**:br
 > This `0x2` type is the current default type for the EVM.
 
-Additionally, ZKsync introduces its [unique transaction type](https://docs.zksync.io/zk-stack/concepts/transaction-lifecycle#eip-712-0x71), the type `113` (`0x71` in hex), which can enable features like [account abstraction](https://docs.zksync.io/build/developer-reference/account-abstraction/).
+Additionally, ZKsync introduces its [unique transaction type](https://docs.ZKsync.io/zk-stack/concepts/transaction-lifecycle#eip-712-0x71), the type `113` (`0x71` in hex), which can enable features like [account abstraction](https://docs.ZKsync.io/build/developer-reference/account-abstraction/).
 
 > 💡 **TIP**:br
 > The `forge script` command will work in some scenarios, but it’s not entirely clear where it might fail. For the purpose of this course, we will assume scripting does not work while working with ZKsync.
 
 ### Resources
 
-- [ZKsync documentation](https://docs.zksync.io/zk-stack/concepts/transaction-lifecycle#transaction-types) about transaction types
+- [ZKsync documentation](https://docs.ZKsync.io/zk-stack/concepts/transaction-lifecycle#transaction-types) about transaction types
 - [Cyfrin Blog on EIP-4844](https://www.cyfrin.io/blog/what-is-eip-4844-proto-danksharding-and-blob-transactions)
 
 ### Conclusion

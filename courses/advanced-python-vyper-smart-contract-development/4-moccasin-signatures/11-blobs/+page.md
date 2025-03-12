@@ -18,21 +18,21 @@ Rollups help scale Ethereum by executing a bunch of transactions on their own ch
 
 ### How do Rollups Use Blob Transactions?
 
-But, before the Dencun upgrade, this compressed batch of transactions needed to be stored permanently on every Ethereum node in the world. 
+But, before the Dencun upgrade, this compressed batch of transactions needed to be stored permanently on every Ethereum node in the world.
 
-This process is problematic because we only need this data for a short period of time, and every single node has to hold it for the entire time. 
+This process is problematic because we only need this data for a short period of time, and every single node has to hold it for the entire time.
 
 Blob transactions eliminate this problem by allowing rollups to submit their compressed transactions as a blob, which doesn�t get stored permanently on every node on chain, but instead a hash of the blob is stored.
 
-This was achieved by introducing a new opcode, `BLOBHASH`, to help Ethereum verify the compressed transaction batches. This new opcode works with a new precompile called `POINT_EVALUATION_PRECOMPILE`, and it�s through these two new tools that Ethereum is able to validate the data. 
+This was achieved by introducing a new opcode, `BLOBHASH`, to help Ethereum verify the compressed transaction batches. This new opcode works with a new precompile called `POINT_EVALUATION_PRECOMPILE`, and it�s through these two new tools that Ethereum is able to validate the data.
 
 ### Example of a Blob Transaction
 
 To illustrate the concept further, let's take a look at a blob transaction on Etherscan:
 
-We can see that a transaction was sent by zkSync Era, and that the transaction was a �Commit EIP-4844 Blob�. By clicking on the �Blobs� section, we can then see the data itself, which is represented as a large sequence of binary numbers. 
+We can see that a transaction was sent by ZKsync Era, and that the transaction was a �Commit EIP-4844 Blob�. By clicking on the �Blobs� section, we can then see the data itself, which is represented as a large sequence of binary numbers.
 
-Next, on Etherscan, we can see the �Blob As Calldata Gas� metric. This metric shows us how much more expensive it would have been if this data was sent as calldata, which is how data was previously sent to Ethereum.  
+Next, on Etherscan, we can see the �Blob As Calldata Gas� metric. This metric shows us how much more expensive it would have been if this data was sent as calldata, which is how data was previously sent to Ethereum.
 
 It is significantly cheaper to send this data as a blob because the data is not being stored permanently on chain.
 
@@ -54,7 +54,7 @@ text = '("<.o.o>")'
 encoded_text = abi_encode(['string'], [text])
 ```
 
-The important thing to keep in mind is that blobs must be at least 4096 words long.  A word is 32 bytes, so we will append a series of zeros to our text to meet the minimum requirement.
+The important thing to keep in mind is that blobs must be at least 4096 words long. A word is 32 bytes, so we will append a series of zeros to our text to meet the minimum requirement.
 
 ```python
 BLOB_DATA = (b'\x00' * 32 * (4096 - len(encoded_text) // 32) + encoded_text)
@@ -99,6 +99,6 @@ We can then see our transaction receipt, and the blob data we sent to the blockc
 
 ### Conclusion
 
-Blob transactions are a key component of Ethereum's scalability roadmap.  They allow rollups to send data more cheaply, and hence achieve cheaper transactions for end users. 
+Blob transactions are a key component of Ethereum's scalability roadmap. They allow rollups to send data more cheaply, and hence achieve cheaper transactions for end users.
 
-Let us know what you think of blob transactions in the comments below. Thanks for getting froggy with us! 
+Let us know what you think of blob transactions in the comments below. Thanks for getting froggy with us!

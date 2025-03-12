@@ -1,3 +1,3 @@
 ---
-ANVIL ZKSYNC UPDATE
+ANVIL ZKsync UPDATE
 ---

@@ -17,16 +17,16 @@ Let's get it!
 Let's start by making two updates to our code.
 
 1. adding some headers to our code
-2. updating foundryup for zksync in our terminal
+2. updating foundryup for ZKsync in our terminal
 
 ---
 
 ```js
-foundryup - zksync;
+foundryup - ZKsync;
 ```
 
 ```js
-forge build-zksync
+forge build-ZKsync
 ```
 
 ---
@@ -244,7 +244,6 @@ It makes a system call to the NonceHolder contract to conditionally increment th
 
 </details>
 
-
 <summary>2.  Which function in NonceHolder.sol is called to increment the nonce?</summary>
 
 ---
@@ -257,7 +256,6 @@ It makes a system call to the NonceHolder contract to conditionally increment th
 
 </details>
 
-
 <summary>3. What library did we import to help with system contract calls?</summary>
 
 ---
@@ -269,4 +267,3 @@ It makes a system call to the NonceHolder contract to conditionally increment th
     SystemContractsCaller
 
 </details>
-

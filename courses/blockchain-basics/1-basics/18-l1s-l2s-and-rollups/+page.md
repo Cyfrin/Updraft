@@ -8,7 +8,7 @@ _Follow along with the video_
 
 ### Introduction
 
-In this course, we've briefly mentioned several key terms: Layer 1 (L1), Layer 2 (L2), and Rollups. Throughout this course, we will deploy and interact with smart contracts on **Sepolia**, a Layer 1 test net, and **zkSync Sepolia**, a Layer 2 Rollup.
+In this course, we've briefly mentioned several key terms: Layer 1 (L1), Layer 2 (L2), and Rollups. Throughout this course, we will deploy and interact with smart contracts on **Sepolia**, a Layer 1 test net, and **ZKsync Sepolia**, a Layer 2 Rollup.
 
 ### Blockchain layers
 
@@ -28,7 +28,7 @@ Rollups help solve the blockchain trilemma, which states that a blockchain can o
 
 #### How Rollups Work
 
-When a user [submits a transaction](https://docs.zksync.io/zk-stack/concepts/transaction-lifecycle) to a rollup, an **operator** (a node or entity responsible for processing transactions) picks it up, bundles it with other transactions, compresses them, and submits the batch back to the L1 blockchain. This process allows for efficient handling of transactions as gas costs associated with the transaction, are split among all the users that submitted the transactions in the batch.
+When a user [submits a transaction](https://docs.ZKsync.io/zk-stack/concepts/transaction-lifecycle) to a rollup, an **operator** (a node or entity responsible for processing transactions) picks it up, bundles it with other transactions, compresses them, and submits the batch back to the L1 blockchain. This process allows for efficient handling of transactions as gas costs associated with the transaction, are split among all the users that submitted the transactions in the batch.
 
 There are two types of rollups, Optimistic and Zero-Knowledge rollups. The main difference between the two lies in how each rollup verifies the validity of the transactions.
 

@@ -6,12 +6,11 @@ Welcome to the beginning of our journey with **account abstraction** on **ZKsync
 
 **ZKsync Account Flow**
 
-::image{src='/foundry-account-abstraction/18-zksync-setup/zksync-account-flow.png' style='width: 100%; height: auto;'}
----
+## ::image{src='/foundry-account-abstraction/18-ZKsync-setup/ZKsync-account-flow.png' style='width: 100%; height: auto;'}
 
 ### Overview of ZK System Contracts
 
-To get started, we are going to install Cyfrin Foundry Era Contracts. This is a mirror of the zksync system contracts. We will be using them for the beginning of our learning journey.
+To get started, we are going to install Cyfrin Foundry Era Contracts. This is a mirror of the ZKsync system contracts. We will be using them for the beginning of our learning journey.
 
 > ❗ **IMPORTANT** Once the era-contracts GitHub repo releases a library edition, we will recommend people to use that instead.
 
@@ -33,7 +32,7 @@ In Ethereum, we have two types of wallets.
 On the other hand, in ZKsync EOAs are smart contracts. Thus, all smart contract accounts in zk are setup as default accounts. Let's take a look.
 
 1. Grab your wallet address from Metamask etc...
-2. [Click here to go to ZKsync Era Block Explorer.](https://sepolia.explorer.zksync.io/)
+2. [Click here to go to ZKsync Era Block Explorer.](https://sepolia.explorer.ZKsync.io/)
 3. Paste your address into the search bar
 4. Follow along with the video from 4:00
 
@@ -41,8 +40,7 @@ On the other hand, in ZKsync EOAs are smart contracts. Thus, all smart contract 
 
 ---
 
-::image{src='/foundry-account-abstraction/18-zksync-setup/zk-era-explorer.png' style='width: 100%; height: auto;'}
----
+## ::image{src='/foundry-account-abstraction/18-ZKsync-setup/zk-era-explorer.png' style='width: 100%; height: auto;'}
 
 ### IAccount Interface
 
@@ -59,7 +57,7 @@ Take a moment to look over the contract to become more familiar with what it doe
 
 ### ZK Minimal Account
 
-Go into zksync folder in your src. Create a new file and call it `ZkMinimalAccount.sol`. First, we need to:
+Go into ZKsync folder in your src. Create a new file and call it `ZkMinimalAccount.sol`. First, we need to:
 
 - import `IAccount.sol`
 - import `Transaction` from `MemoryTransactionHelper.sol`
@@ -121,7 +119,6 @@ Now we have our **ZK Minimal Account** set up. Things are starting to get exciti
 
 </details>
 
-
 <summary>2. How are EOAs different in ZKsync compared to Ethereum?</summary>
 
 ---
@@ -133,7 +130,6 @@ Now we have our **ZK Minimal Account** set up. Things are starting to get exciti
 In ZKsync, EOAs are smart contracts.
 
 </details>
-
 
 <summary>3. What are the 4 functions of the IAccount interface?</summary>
 
@@ -149,4 +145,3 @@ In ZKsync, EOAs are smart contracts.
 - prepareForPaymaster
 
 </details>
-

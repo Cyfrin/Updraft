@@ -1,5 +1,5 @@
 ---
-title: zksync sponsorship
+title: ZKsync sponsorship
 ---
 
 _Follow along with the video_
@@ -17,4 +17,4 @@ We extend our gratitude to Matter Labs and the ZKsync team for being the lead sp
 
 ### Deploying to production
 
-As of recording, deploying professional smart contracts to ZKsync may present some challenges. We recommend consulting our [guide](https://github.com/Cyfrin/foundry-full-course-cu/blob/main/read-before-deploying-serious-projects-to-zksync.md) in the GitHub repository before deploying a production smart contract on ZKsync.
+As of recording, deploying professional smart contracts to ZKsync may present some challenges. We recommend consulting our [guide](https://github.com/Cyfrin/foundry-full-course-cu/blob/main/read-before-deploying-serious-projects-to-ZKsync.md) in the GitHub repository before deploying a production smart contract on ZKsync.

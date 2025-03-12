@@ -53,7 +53,7 @@ function validateTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Tran
 
 ---
 
-This raises a very important question. Who is the `msg.sender` when `validateTransaction` is called? The `msg.sender` will always be the bootloader system contract. The bootloader is essentially a super-admin of the system contracts. In a way, it is similar to EntryPoint on Ethereum. You can **[read more on that here.](https://docs.zksync.io/zk-stack/components/zksync-evm/bootloader)**
+This raises a very important question. Who is the `msg.sender` when `validateTransaction` is called? The `msg.sender` will always be the bootloader system contract. The bootloader is essentially a super-admin of the system contracts. In a way, it is similar to EntryPoint on Ethereum. You can **[read more on that here.](https://docs.ZKsync.io/zk-stack/components/ZKsync-evm/bootloader)**
 
 > ❗ **NOTE** We will eventually create two modifiers to require bootloader or owner to be the sender. This will be similar to what we did in our MinimalAccount in Ethereum.
 
@@ -98,7 +98,6 @@ This is essentially what will happen in our transaction lifecycle through the va
 
 </details>
 
-
 <summary>2.  Who is the msg.sender when validateTransaction is called in ZKsync?</summary>
 
 ---
@@ -110,7 +109,6 @@ This is essentially what will happen in our transaction lifecycle through the va
     The msg.sender when validateTransaction is called in ZKsync is always the bootloader system contract. The bootloader acts as a super-admin of the system contracts, similar to the EntryPoint on Ethereum.
 
 </details>
-
 
 <summary>3.  What happens if validateTransaction does not update the nonce?</summary>
 
@@ -124,7 +122,6 @@ This is essentially what will happen in our transaction lifecycle through the va
 
 </details>
 
-
 <summary>4.  What is the role of the bootloader in ZKsync?</summary>
 
 ---
@@ -136,4 +133,3 @@ This is essentially what will happen in our transaction lifecycle through the va
     It is responsible for validating and executing transactions, ensuring that the nonce is updated, and verifying that the bootloader gets paid. It plays a crucial role in the transaction lifecycle.
 
 </details>
-

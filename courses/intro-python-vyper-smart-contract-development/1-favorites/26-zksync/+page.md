@@ -1,38 +1,38 @@
-## Deploying ZkSync Contracts
+## Deploying ZKsync Contracts
 
-We will be exploring deploying contracts with ZkSync to a test net.
+We will be exploring deploying contracts with ZKsync to a test net.
 
 First, we'll go to the plugin manager in Remix.
 
-If we look up ZkSync, we'll see there's an inactive module. We can go ahead and activate that.
+If we look up ZKsync, we'll see there's an inactive module. We can go ahead and activate that.
 
-As of recording, the ZkSync plugin only works with Solidity. So, it doesn't work with Vyper at the moment.
+As of recording, the ZKsync plugin only works with Solidity. So, it doesn't work with Vyper at the moment.
 
-We are not going to be deploying this to ZkSync through Remix.
+We are not going to be deploying this to ZKsync through Remix.
 
-However, when we switch over to Python, we will be deploying to ZkSync.
+However, when we switch over to Python, we will be deploying to ZKsync.
 
-First, we'll install `zksync-python`:
+First, we'll install `ZKsync-python`:
 
 ```bash
-pip install zksync-python
+pip install ZKsync-python
 ```
 
 Now, we can open a Python script and import the relevant libraries:
 
 ```python
-import zksync
-from zksync import Account
-from zksync.transaction import DeployTransaction
-from zksync.signer import PrivateKeySigner
-from zksync.utils import to_hex
+import ZKsync
+from ZKsync import Account
+from ZKsync.transaction import DeployTransaction
+from ZKsync.signer import PrivateKeySigner
+from ZKsync.utils import to_hex
 
-from zksync.contracts import (
+from ZKsync.contracts import (
   zkSyncContract,
   zkSyncInterface
 )
-from zksync.provider import ZkSyncProvider
-from zksync.wallet import Wallet
+from ZKsync.provider import ZkSyncProvider
+from ZKsync.wallet import Wallet
 ```
 
 We'll then initialize an account, which we'll use to deploy the contract.
@@ -40,7 +40,7 @@ We'll then initialize an account, which we'll use to deploy the contract.
 ```python
 PRIVATE_KEY = "0x..."
 signer = PrivateKeySigner(PRIVATE_KEY)
-wallet = Wallet(signer, ZkSyncProvider(url='https://zksync2-testnet.zksync.io/'))
+wallet = Wallet(signer, ZkSyncProvider(url='https://zksync2-testnet.ZKsync.io/'))
 address = wallet.get_address()
 ```
 
@@ -95,7 +95,7 @@ arguments = [10, 20]
 Now, we can use the `zksyncInterface` class to call the `function_name` method.
 
 ```python
-zkSyncInterface(wallet.get_address(), wallet.get_signer(), ZkSyncProvider(url='https://zksync2-testnet.zksync.io/'))
+zkSyncInterface(wallet.get_address(), wallet.get_signer(), ZkSyncProvider(url='https://zksync2-testnet.ZKsync.io/'))
 ```
 
 We'll then call the `call_function` method to call the contract's function.
@@ -107,7 +107,7 @@ zksyncInterface.call_function(function_name, arguments)
 We'll then call the `zksyncContract` class to call the `get_balance` method.
 
 ```python
-zksyncContract(wallet.get_address(), wallet.get_signer(), ZkSyncProvider(url='https://zksync2-testnet.zksync.io/'))
+zksyncContract(wallet.get_address(), wallet.get_signer(), ZkSyncProvider(url='https://zksync2-testnet.ZKsync.io/'))
 ```
 
 We'll then call the `get_balance` method to get the contract's balance.
@@ -138,4 +138,4 @@ print(zksyncContract.get_transactions())
 
 This will print the contract's balance, code, and transactions.
 
-We've now deployed a ZkSync contract and called its functions.
+We've now deployed a ZKsync contract and called its functions.
