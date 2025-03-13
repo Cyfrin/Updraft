@@ -29,7 +29,7 @@ function run() external returns (Raffle, HelperConfig) {
         uint256 subscriptionId;
         uint32 callbackGasLimit;
 
-    ) = helperConfig.activeNetworkConfig();
+    ) = helperConfig.getConfig();
 
 }
 ```
@@ -92,7 +92,7 @@ function run() external returns (Raffle, HelperConfig) {
         bytes32 gasLane,
         uint256 subscriptionId,
         uint32 callbackGasLimit
-    ) = helperConfig.activeNetworkConfig();
+    ) = helperConfig.getConfig();
 
     vm.startBroadcast();
     Raffle raffle = new Raffle(
@@ -141,7 +141,7 @@ contract RaffleTest is Test {
             subscriptionId,
             callbackGasLimit
 
-        ) = helperConfig.activeNetworkConfig();
+        ) = helperConfig.getConfig();
     }
 }
 ```
@@ -156,7 +156,7 @@ This seems like a lot, but it isn't, let's go through it.
 - Then, we created a new user called `PLAYER` and defined how many tokens they should receive;
 - Inside the `setUp` function, we deploy the `DeployRaffle` contract then we use it to deploy the `Raffle` and `HelperConfig` contracts;
 - We `deal` the `PLAYER` the defined `STARTING_USER_BALANCE`;
-- We call `helperConfig.activeNetworkConfig` to get the Raffle configuration parameters.
+- We call `helperconfig.getConfig()` to get the Raffle configuration parameters.
 
 Amazing! With all these done let's write a small test to ensure our `setUp` is functioning properly.
 

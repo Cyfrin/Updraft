@@ -13,14 +13,14 @@ We will be building a simple smart contract that allows people to send you money
 We will explore the following code:
 
 ```python
-pragma version 0.4.0
-pragma enable-decimals
-
-license: MIT
-title: A sample buy-me-a-coffee contract
-
+# pragma version 0.4.0
+# pragma enable-decimals
+"""
+@license MIT
+@title A sample buy-me-a-coffee contract
 @author You!
 @notice This contract is for creating a sample funding contract
+"""
 
 # We'll learn a new way to do interfaces later...
 interface AggregatorV3Interface:

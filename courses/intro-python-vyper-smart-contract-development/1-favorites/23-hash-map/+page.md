@@ -12,10 +12,6 @@ name_to_favorite_number: public(HashMap[string, uint256])
 
 For example, we can add the name `Mariah` and associate her with the number 30.
 
-```python
-# name_to_favorite_number: public(HashMap[string, uint256])
-```
-
 In the `add_person` function, we are going to add the person to the hashmap.
 
 ```python
