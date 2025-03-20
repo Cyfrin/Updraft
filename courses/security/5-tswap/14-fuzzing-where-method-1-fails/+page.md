@@ -124,27 +124,6 @@ And now, our `setUp` function. A few things to consider here:
 What's this `setUp` function look like?
 
 ```js
-function setUp() public {
-        vm.startPrank(user);
-        mockUSDC = new MockUSDC();
-        yieldERC20 = new YieldERC20();
-        mockUSDC.mint(user, yieldERC20.INITIAL_SUPPLY());
-        vm.stopPrank();
-
-        supportedTokens.push(IERC20(address(yieldERC20)));
-        supportedTokens.push(IERC20(address(mockUSDC)));
-        handlerstatefulFuzzCatches = new HandlerStatefulFuzzCatches(supportedTokens);
-        targetContract(address(handlerstatefulFuzzCatches));
-    }
-```
-
-In the above we're pranking our `user` and then deploying and minting the tokens the `user` needs. `supportedTokens` then has both `mockUSDC` and `yieldERC20` pushed to it and our `HandlerStatefulFuzzCatches.sol` contract is deployed and set as our `targetContract`. Nailed it!
-
-Let's now consider what our invariant might look like. We know _Users must always be able to withdraw the exact balance amount out_.
-
-Sounds like we might need to compare some balance changes of our `user`. Let's create a `startingAmount` variable and set it to the value of each token the `user` begins with (these should be the same for both tokens).
-
-```js
 contract AttemptedBreakTest is StdInvariant, Test {
     ...
     uint256 startingAmount;
@@ -159,6 +138,29 @@ contract AttemptedBreakTest is StdInvariant, Test {
         ...
     }
 ```
+
+In the above we're pranking our `user` and then deploying and minting the tokens the `user` needs. `supportedTokens` then has both `mockUSDC` and `yieldERC20` pushed to it and our `HandlerStatefulFuzzCatches.sol` contract is deployed and set as our `targetContract`. Nailed it!
+
+Let's now consider what our invariant might look like. We know _Users must always be able to withdraw the exact balance amount out_.
+
+Sounds like we might need to compare some balance changes of our `user`. Let's create a `startingAmount` variable and set it to the value of each token the `user` begins with (these should be the same for both tokens).
+
+```js
+function setUp() public {
+        vm.startPrank(user);
+        mockUSDC = new MockUSDC();
+        yieldERC20 = new YieldERC20();
+        mockUSDC.mint(user, yieldERC20.INITIAL_SUPPLY());
+        vm.stopPrank();
+
+        supportedTokens.push(IERC20(address(yieldERC20)));
+        supportedTokens.push(IERC20(address(mockUSDC)));
+        handlerstatefulFuzzCatches = new HandlerStatefulFuzzCatches(supportedTokens);
+        targetContract(address(handlerstatefulFuzzCatches));
+    }
+```
+
+
 
 With a little refactoring we can now reference the `startingAmount` of our `user` in our test. We can even write a little test to assure the `startingAmount` is being set properly.
 
