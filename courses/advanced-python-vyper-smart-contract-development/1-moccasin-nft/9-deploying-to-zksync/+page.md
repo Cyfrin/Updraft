@@ -1,11 +1,11 @@
-## Deploying to ZkSync Era Test Node
+## Deploying to ZKsync Era Test Node
 
-We can deploy our NFT smart contract to the ZkSync Era Test Node using moccasin. 
+We can deploy our NFT smart contract to the ZKsync Era Test Node using moccasin.
 
 We need to:
 
-1. Import a private key from the ZkSync Era Test Node to our moccasin environment.
-2. Add the ZkSync Era Test Node to our moccasin configuration file.
+1. Import a private key from the ZKsync Era Test Node to our moccasin environment.
+2. Add the ZKsync Era Test Node to our moccasin configuration file.
 3. Deploy our smart contract to the Era Test Node.
 4. Add the deployed smart contract to our MetaMask account.
 
@@ -17,11 +17,11 @@ We can import a private key from the Era Test Node into our moccasin environment
 mox wallet import zk-rich1
 ```
 
-This will prompt us to enter the private key and a password to encrypt it. 
+This will prompt us to enter the private key and a password to encrypt it.
 
 **Add the Era Test Node to our Moccasin Configuration File**
 
-We'll add the Era Test Node to our moccasin configuration file, `mocassin.toml`, by copying an existing network configuration and replacing the values with the Era Test Node settings. 
+We'll add the Era Test Node to our moccasin configuration file, `mocassin.toml`, by copying an existing network configuration and replacing the values with the Era Test Node settings.
 
 The Era Test Node URL will be `http://127.0.0.1:8011`.
 
@@ -44,19 +44,19 @@ This will prompt us to enter the password for our keystore.
 
 **Add the Deployed Smart Contract to our MetaMask Account**
 
-We need to add the deployed smart contract to our MetaMask account so that we can interact with it. 
+We need to add the deployed smart contract to our MetaMask account so that we can interact with it.
 
 First, we need to add the Era Test Node to MetaMask as a custom network.
 
-1. Go to MetaMask and click the "Add a custom network" button. 
-2. Enter the network name "Era Test Node", the URL `http://127.0.0.1:8011`, the Chain ID 260, and the currency symbol ETH. 
+1. Go to MetaMask and click the "Add a custom network" button.
+2. Enter the network name "Era Test Node", the URL `http://127.0.0.1:8011`, the Chain ID 260, and the currency symbol ETH.
 3. Save the network.
 
 We can then import the smart contract using the following steps:
 
 1. Go to the NFTs section in MetaMask.
 2. Click the "Import NFT" button.
-3. Enter the smart contract address and the token ID. 
+3. Enter the smart contract address and the token ID.
 4. Click "Import".
 
-We've now deployed our NFT smart contract to the ZkSync Era Test Node and imported it into our MetaMask account.
+We've now deployed our NFT smart contract to the ZKsync Era Test Node and imported it into our MetaMask account.

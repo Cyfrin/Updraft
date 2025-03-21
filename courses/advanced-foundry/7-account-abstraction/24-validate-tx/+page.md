@@ -105,7 +105,6 @@ function encodeHash(Transaction memory _transaction) internal view returns (byte
 
 </details>
 
-
 Then we will need to validate the signature on the `Transaction` struct (similar to `PackedUserOperation` from our Ethereum contract.). We will need a few imports.
 
 ```solidity
@@ -260,7 +259,6 @@ totalRequiredBalance()
 
 </details>
 
-
 <summary>2.  What is the purpose of the requireFromBootLoader modifier? </summary>
 
 ---
@@ -273,7 +271,6 @@ totalRequiredBalance()
 
 </details>
 
-
 <summary>3. What is the purpose of the encodeHash function from MemoryTransactionHelper?</summary>
 
 ---
@@ -285,4 +282,3 @@ totalRequiredBalance()
     It determines the type of transaction and then calls the appropriate encoding function to generate the hash.
 
 </details>
-

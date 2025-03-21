@@ -11,9 +11,10 @@ In this lesson we will be doing a bit of refactoring. We are going to:
 Let's get it!
 
 ---
+
 ### Internal Function `_validateTransaction`
 
-Since we are beginning to use code from the bodies of `validateTransaction` and `executeTransaction` in other functions, let's go ahead and set them as their own separate functions. 
+Since we are beginning to use code from the bodies of `validateTransaction` and `executeTransaction` in other functions, let's go ahead and set them as their own separate functions.
 
 Take the following from `validateTransaction`.
 
@@ -46,6 +47,7 @@ if (isValidSigner) {
 }
 return magic;
 ```
+
 ---
 
 Then place it in our first internal function called `_validateTransaction`. Since we are ignoring `_txHash` and `_suggestedSignedHash`, we only need to pass `_transaction` and return `bytes4 magic`.
@@ -84,10 +86,10 @@ function _validateTransaction(Transaction memory _transaction) internal returns 
     return magic;
 }
 ```
+
 ---
 
 Now, we can simply pass our new function into the body of other functions. Let's do that now in `validateTransaction`. Pass in `return _validateTransaction(_transaction);`. Now our `validateTransaction` should look like this:
-
 
 ```solidity
 function validateTransaction(bytes32, /*_txHash*/ bytes32, /*_suggestedSignedHash*/ Transaction memory _transaction)
@@ -101,6 +103,7 @@ function validateTransaction(bytes32, /*_txHash*/ bytes32, /*_suggestedSignedHas
 ```
 
 ---
+
 ### Internal Function `_executeTransaction`
 
 Let's do the same for the `executeTransaction` function. Copy the following from `executeTransaction`.
@@ -123,7 +126,8 @@ if (to == address(DEPLOYER_SYSTEM_CONTRACT)) {
     }
 }
 ```
---- 
+
+---
 
 Then place it in our first internal function called `_executeTransaction`. Since we are ignoring `_txHash` and `_suggestedSignedHash`, we only need to pass `_transaction`.
 
@@ -147,6 +151,7 @@ function _executeTransaction(Transaction memory _transaction) internal {
     }
 }
 ```
+
 ---
 
 Now we can pass `_executeTransaction(_transaction) ` into `executeTransaction`.
@@ -160,30 +165,34 @@ function executeTransaction(bytes32, /*_txHash*/ bytes32, /*_suggestedSignedHash
     _executeTransaction(_transaction);
 }
 ```
+
 ---
+
 ### `executeTransactionFromOutside`
 
 Now that we've got that done, we can call both of our new contracts in `executeTransactionFromOutside`.
 
 ```solidity
 function executeTransactionFromOutside(Transaction memory _transaction) external payable {
-   _validateTransaction(_transaction);    
+   _validateTransaction(_transaction);
    _executeTransaction(_transaction);
 }
 ```
+
 ---
 
-Now that we've got our functions just about sorted, let's go ahead and make sure our contract can receive funds. Place the following `receive` function just under the constructor. 
+Now that we've got our functions just about sorted, let's go ahead and make sure our contract can receive funds. Place the following `receive` function just under the constructor.
 
 ```solidity
 receive() external payable {}
 ```
-Now our code should compile successfully with some yellow warnings. 
+
+Now our code should compile successfully with some yellow warnings.
 
 ```js
 forge build --zksync
 ```
+
 ---
 
 Congratulations! You've just completed your ZkMinimalAccount.sol for account abstraction. This was simply a bit of refactoring so no review questions at this time. However, take some time to review and reflect. Move on to the next lesson when you are ready.
-

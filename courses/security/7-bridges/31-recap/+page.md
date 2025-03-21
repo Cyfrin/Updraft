@@ -36,7 +36,7 @@ We learnt about precompiles, like `ecrecover` and the part it plays in the signi
 
 In addition to this we dove deep into signatures, how they work and the vulnerabilities possible such as `Signature Replay Attacks`. We learnt the importance of restricting the use of signatures put on chain through a `nonce` or `deadline` to protect against their repeated use.
 
-We learnt that different blockchain are different! Surprising, I know! `EVM Equivalency` is not `EVM Compatibility`. We outlined a [**case study**](https://medium.com/coinmonks/gemstoneido-contract-stuck-with-921-eth-an-analysis-of-why-transfer-does-not-work-on-zksync-era-d5a01807227d) where overlooking this on zkSync resulted in 921 ETH being stuck because `transfer()` wouldn't work!
+We learnt that different blockchain are different! Surprising, I know! `EVM Equivalency` is not `EVM Compatibility`. We outlined a [**case study**](https://medium.com/coinmonks/gemstoneido-contract-stuck-with-921-eth-an-analysis-of-why-transfer-does-not-work-on-ZKsync-era-d5a01807227d) where overlooking this on ZKsync resulted in 921 ETH being stuck because `transfer()` wouldn't work!
 
 And, in the process we identified a bunch of new vulnerabilities like `gas bombs`, `unlimited minting`, `centralization` and the risks of `arbitrary code`. We learnt **a lot**.
 

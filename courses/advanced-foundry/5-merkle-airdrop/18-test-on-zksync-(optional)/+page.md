@@ -1,5 +1,5 @@
 ---
-title: zkSync tests
+title: ZKsync tests
 ---
 
 _Follow along with the video_
@@ -11,7 +11,7 @@ _Follow along with the video_
 
 We can also run our `MerkleAirdrop.t::testUsersCanClaim` test on the ZKsync chain.
 
-To do this, we can start by switching to the ZKsync version by running `foundryup-zksync`. Since the ZKsync compiler operates differently from the standard solc compiler, it's better to verify that everything builds correctly before deploying.
+To do this, we can start by switching to the ZKsync version by running `foundryup-ZKsync`. Since the ZKsync compiler operates differently from the standard solc compiler, it's better to verify that everything builds correctly before deploying.
 
 ```js
 forge build --zksync
@@ -23,5 +23,5 @@ forge build --zksync
 Finally, we can run our tests on ZKsync with the following command:
 
 ```js
-forge test --zksync -vvv
+forge test --ZKsync -vvv
 ```
