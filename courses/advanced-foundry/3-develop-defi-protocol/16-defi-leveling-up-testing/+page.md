@@ -14,7 +14,7 @@ We have some price feed tests, but we should probably set up some constructor te
 ```
 To prevent the code from going crazy, we'll create a test function with:
 ```javascript
-functoin test
+function test
 ```
 From here, we can navigate to the constructor to see that:
 ```javascript
@@ -22,7 +22,7 @@ revert DSCEngine_TokenAddressesAndPriceFeedAddressesMustBeSameLength();
 ```
 This means we should make sure we revert correctly when the lengths aren't the same with:
 ```javascript
-functoin testRevertsIfTokenLengthDoesntMatchPriceFeeds() public {
+function testRevertsIfTokenLengthDoesntMatchPriceFeeds() public {
 ```
 Next, we create some address arrays, and push data to the arrays:
 ```javascript
@@ -62,7 +62,7 @@ You can test this with:
 ```bash
 forge test -m testGetTokenAmountFromUsd
 ```
-Next we create a deposittedCollateral modifier. A modifier allows us to centralize our testing:
+Next we create a depositedCollateral modifier. A modifier allows us to centralize our testing:
 ```javascript
 modifier depositedCollateral() {
 vm.startPrank(USER);
