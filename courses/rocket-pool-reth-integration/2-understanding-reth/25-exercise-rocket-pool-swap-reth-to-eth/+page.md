@@ -1,6 +1,6 @@
 # `SwapRocketPool.swapRethToEth` exercise
 
-Write your code inside the [`SwapRocketPool` contract](../src/exercises/SwapRocketPool.sol)
+Write your code inside the [`SwapRocketPool` contract](https://github.com/Cyfrin/defi-reth/blob/main/foundry/src/exercises/SwapRocketPool.sol)
 
 This exercise is designed to gain experience redeeming ETH from rETH.
 

@@ -1,6 +1,6 @@
 # `FlashLev.getMaxFlashLoanAmountUsd` exercise
 
-Write your code inside the [`FlashLev` contract](../src/exercises/FlashLev.sol)
+Write your code inside the [`FlashLev` contract](https://github.com/Cyfrin/defi-reth/blob/main/foundry/src/exercises/FlashLev.sol)
 
 This exercise is designed to test your understanding of the math for how the max flash loan amount is calculated.
 

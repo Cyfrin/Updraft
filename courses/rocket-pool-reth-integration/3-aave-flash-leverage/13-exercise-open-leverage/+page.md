@@ -1,6 +1,6 @@
 # `FlashLev.open` exercise
 
-Write your code inside the [`FlashLev` contract](../src/exercises/FlashLev.sol).
+Write your code inside the [`FlashLev` contract](https://github.com/Cyfrin/defi-reth/blob/main/foundry/src/exercises/FlashLev.sol).
 
 This exercise is designed to test your understanding of how to structure a smart contract function for initializing a leveraged position using a flash loan.
 

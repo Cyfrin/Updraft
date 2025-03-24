@@ -1,6 +1,6 @@
 # `SwapRocketPool.calcRethToEth` exercise
 
-Write your code inside the [`SwapRocketPool` contract](../src/exercises/SwapRocketPool.sol)
+Write your code inside the [`SwapRocketPool` contract](https://github.com/Cyfrin/defi-reth/blob/main/foundry/src/exercises/SwapRocketPool.sol)
 
 This exercise is design to implement a function that will calculate the exchange rate from rETH to ETH.
 
