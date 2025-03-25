@@ -1,6 +1,6 @@
 # `BalancerLiquidity.exit` exercise
 
-Write your code inside the [`BalancerLiquidity` contract](../src/exercises/BalancerLiquidity.sol)
+Write your code inside the [`BalancerLiquidity` contract](https://github.com/Cyfrin/defi-reth/blob/main/foundry/src/exercises/BalancerLiquidity.sol)
 
 This exercise is design for you to gain experience removing liquidity from Balancer.
 

@@ -1,6 +1,6 @@
 # `SwapBalancerV2.swapWethToReth` exercise
 
-Write your code inside the [`SwapBalancerV2` contract](../src/exercises/SwapBalancerV2.sol)
+Write your code inside the [`SwapBalancerV2` contract](https://github.com/Cyfrin/defi-reth/blob/main/foundry/src/exercises/SwapBalancerV2.sol)
 
 This exercise is designed to swap WETH to rETH on Balancer V2.
 

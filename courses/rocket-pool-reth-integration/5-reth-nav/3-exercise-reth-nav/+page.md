@@ -1,6 +1,6 @@
 # `RethNav.getExchangeRate` exercise
 
-Write your code inside the [`RethNav` contract](../src/exercises/RethNav.sol)
+Write your code inside the [`RethNav` contract](https://github.com/Cyfrin/defi-reth/blob/main/foundry/src/exercises/RethNav.sol)
 
 This exercise is design to implement a function that will calculate the exchange rate of 1 rETH into ETH.
 

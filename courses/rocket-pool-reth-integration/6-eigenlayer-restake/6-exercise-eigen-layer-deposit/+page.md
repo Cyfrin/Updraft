@@ -1,6 +1,6 @@
 # `EigenLayerRestake.deposit` exercise
 
-Write your code inside the [`EigenLayerRestake` contract](../src/exercises/EigenLayerRestake.sol)
+Write your code inside the [`EigenLayerRestake` contract](https://github.com/Cyfrin/defi-reth/blob/main/foundry/src/exercises/EigenLayerRestake.sol)
 
 This exercise is design to implement a function that will deposit rETH into EigenLayer.
 

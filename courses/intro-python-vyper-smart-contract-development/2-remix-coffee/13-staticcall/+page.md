@@ -1,6 +1,6 @@
 ## Calling External Contracts in Vyper
 
-We are going to make sure that we use the proper keyword when we call external contracts. In Solidity, it�s pretty straightforward. We just call an external contract. However, iVyperer, we need to use a specific keyword. If we are calling a view function or don�t want to change any state, we use `staticcall`. Otherwise, we use `extcall`, which stands for external call.
+We are going to make sure that we use the proper keyword when we call external contracts. In Solidity, it's pretty straightforward. We just call an external contract. However, Vyper, we need to use a specific keyword. If we are calling a view function or don't want to change any state, we use `staticcall`. Otherwise, we use `extcall`, which stands for external call.
 
 We will use the following code block to demonstrate how to call an external contract using `staticcall` in Vyper.
 
