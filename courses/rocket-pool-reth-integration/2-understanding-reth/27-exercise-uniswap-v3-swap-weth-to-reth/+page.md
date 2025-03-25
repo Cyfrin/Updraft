@@ -1,6 +1,6 @@
 # `SwapUniswapV3.swapWethToReth` exercise
 
-Write your code inside the [`SwapUniswapV3` contract](../src/exercises/SwapUniswapV3.sol)
+Write your code inside the [`SwapUniswapV3` contract](https://github.com/Cyfrin/defi-reth/blob/main/foundry/src/exercises/SwapUniswapV3.sol)
 
 This exercise is designed to swap WETH to rETH on Uniswap V3.
 

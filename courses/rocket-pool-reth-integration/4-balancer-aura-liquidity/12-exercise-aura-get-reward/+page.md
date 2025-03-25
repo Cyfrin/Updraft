@@ -1,6 +1,6 @@
 # `AuraLiquidity.getReward` exercise
 
-Write your code inside the [`AuraLiquidity` contract](../src/exercises/AuraLiquidity.sol)
+Write your code inside the [`AuraLiquidity` contract](https://github.com/Cyfrin/defi-reth/blob/main/foundry/src/exercises/AuraLiquidity.sol)
 
 This exercise is design for you to gain experience claiming rewards on Aura
 

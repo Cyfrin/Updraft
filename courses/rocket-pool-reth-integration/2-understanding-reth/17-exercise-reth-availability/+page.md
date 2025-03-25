@@ -1,6 +1,6 @@
 # `SwapRocketPool.getAvailability` exercise
 
-Write your code inside the [`SwapRocketPool` contract](../src/exercises/SwapRocketPool.sol)
+Write your code inside the [`SwapRocketPool` contract](https://github.com/Cyfrin/defi-reth/blob/main/foundry/src/exercises/SwapRocketPool.sol)
 
 The goal of this exercise is to learn how to get availability of minting rETH.
 
