@@ -1,8 +1,8 @@
-The code for the Uniswap B2 protocol is split into two repos, B2 core and B2 periphery. B2 periphery contains the router contract, which we'll take a look at later. We'll use the router contract to add and remove liquidity, as well as swap tokens. 
+The code for the Uniswap V2 protocol is split into two repos, V2 core and V2 periphery. V2 periphery contains the router contract, which we'll take a look at later. We'll use the router contract to add and remove liquidity, as well as swap tokens. 
 
-The actual contract that handles liquidity and token swaps is in B2 core. We can open this repo and navigate to contracts, where we'll find the contract `Uniswap V2 Pair`.
+The actual contract that handles liquidity and token swaps is in V2 core. We can open this repo and navigate to contracts, where we'll find the contract `Uniswap V2 Pair`.
 
-You might be wondering why Uniswap B2 is split into two repos rather than having a single contract for the AMM. 
+You might be wondering why Uniswap V2 is split into two repos rather than having a single contract for the AMM. 
 
 One reason is that they have different responsibilities. The main purpose of the `Uniswap V2 Pair` contract is to manage token pairs and swap tokens. 
 
@@ -12,4 +12,4 @@ Another reason we have a router contract is for utility. We can use the `Uniswap
 
 If we directly interacted with the `Uniswap V2 Pair` contract, we could make mistakes and lose tokens. The router contract automates function calls to the `Uniswap V2 Pair` contract, helping us swap tokens without making errors.
 
-These are some of the reasons why the Uniswap B2 protocol is split into two repos. 
+These are some of the reasons why the Uniswap V2 protocol is split into two repos. 
