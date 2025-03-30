@@ -26,4 +26,4 @@ It's best to keep code clean and follow CEI (Checks, Effects, Interactions).
 
 With `informational` findings, you may notice our write ups don't always strictly adhere to outlining things like impact. `Informational` findings are often very subjective in both their impact and their recommended fixes. What defines _clean code_, for example, may vary from developer to developer.
 
-With that said, this write up looks great. Lets move on to `weak randomness` next.
+With that said, this write up looks great. Let's move on to `weak randomness` next.

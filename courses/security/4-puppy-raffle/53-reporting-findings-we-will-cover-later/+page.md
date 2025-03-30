@@ -19,7 +19,7 @@ function refund(uint256 playerIndex) public {
 
     players[playerIndex] = address(0);
     emit RaffleRefunded(playerAddress);
-    }
+}
 ```
 
 We're actually going to skip this one for now. MEV's are something we'll return to later in the course to gain a deeper understanding of how they work.

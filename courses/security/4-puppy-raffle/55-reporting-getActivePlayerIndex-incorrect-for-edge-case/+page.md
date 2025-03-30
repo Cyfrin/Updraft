@@ -12,7 +12,7 @@ Next finding we marked down was regarding `getActivePlayerIndex`. The issue we o
 
 Let's begin the write up with a title. There's some argument to be had that a vulnerability of this nature would be `Medium Severity`. If we consider however, that the impact is really only affecting a single user, `Low` could be appropriate as well, noting that the likelihood is a bit of a toss up - is it high, because it certainly happens if player[0] calls this function, or is it low because _only_ player[0] can call this function?
 
-Ultimately we're going to record this as a low. My title is going to look like so:
+Ultimately, we're going to record this as a low. My title is going to look like so:
 
 ```
 [L-1] `PuppyRaffle::getActivePlayerIndex` returns 0 for non-existent players and players at index 0 causing players to incorrectly think they have not entered the raffle

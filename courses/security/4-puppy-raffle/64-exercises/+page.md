@@ -30,7 +30,8 @@ I also would encourage you to check out [**Damn Vulnerable Defi**](https://www.d
 
 Unfortunately DVD is _also_ written in `Hardhat`, so some JavaScript knowledge goes a long way.
 
-> **Note:** Someone needs to rewrite this in Foundry!!!
+> **Note:** Someone needs to rewrite this in Foundry!!!  
+> **Update:** Damn Vulnerable Defi is rewritten in Foundry as of [v4.0.0](https://github.com/theredguild/damn-vulnerable-defi/tree/master)
 
 What you can do, if you're not comfortable with `Hardhat` would be to copy the contracts that Damn Vulnerable Defi provides you into a Forge project and just try to break it locally. Each challenge in DVD provides you with your objectives.
 
