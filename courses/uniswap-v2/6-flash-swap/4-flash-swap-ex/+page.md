@@ -161,3 +161,9 @@ The testFlashSwap function will test that the balance of die in the UniswapV2Pai
 The user account will call the flashSwap function on the flashSwap contract with the amount of 1 million die. 
 
 The test then compares the balance of die in the UniswapV2Pair contract before and after the flash swap. If the balance after the flash swap is greater, then the test is successful. 
+
+You can run the test by executing the following command in the terminal.
+
+```bash
+forge test --fork-url $FORK_URL --match-path test/uniswap-v2/exercises/UniswapV2FlashSwap.test.sol
+```

@@ -95,7 +95,7 @@ The `uniswapV2Call` function does the following:
 To test this we can run the following command in the terminal.
 
 ```bash
-forge test --fork-url FORK_URL --match-path test/uniswap-v2/exercises/UniswapV2FlashSwap.test.sol:UniswapV2FlashSwapTest
+forge test --fork-url $FORK_URL --match-path test/uniswap-v2/exercises/UniswapV2FlashSwap.test.sol
 ```
 
 In this example, we are borrowing 1 million DAI. The flash swap fee will be approximately 3,009 DAI.

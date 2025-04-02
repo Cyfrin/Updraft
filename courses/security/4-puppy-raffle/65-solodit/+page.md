@@ -14,9 +14,9 @@ The legendary [**Hans Friese**](https://twitter.com/hansfriese?lang=en) Was the 
 
 When asked for advice on how he performs so well, he says one of the most beneficial things he does is reading the reports of other auditors.
 
-Thus [**Solodit**](https://solodit.xyz/) was born. [**Solodit**](https://solodit.xyz/) aggregates publicly available security reports from across the industry into a single convenient avenue to search and sort through.
+Thus, [**Solodit**](https://solodit.xyz/) was born. [**Solodit**](https://solodit.xyz/) aggregates publicly available security reports from across the industry into a single convenient avenue to search and sort through.
 
-Once logged in you should see something like this, a clean UI through which you can search and filter by anything you'd like.
+Once logged in, you should see something like this: a clean UI through which you can search and filter by anything you'd like.
 
 ::image{src='/security-section-4/65-solodit/solodit1.png' style='width: 75%; height: auto;'}
 

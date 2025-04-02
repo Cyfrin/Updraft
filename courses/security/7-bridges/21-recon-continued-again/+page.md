@@ -44,7 +44,7 @@ function sendToL1(uint8 v, bytes32 r, bytes32 s, bytes memory message) public no
 }
 ```
 
-Oh. We haven't gone through the `sendToL1` function yet, so what `Slither` is pointing out may be a little tricky for us to understand. I'm going to make a note to come back to his one a little later.
+Oh. We haven't gone through the `sendToL1` function yet, so what `Slither` is pointing out may be a little tricky for us to understand. I'm going to make a note to come back to this one a little later.
 
 ```js
 // @Audit-Question: Slither detects an issue here, follow up
@@ -144,6 +144,6 @@ IERC20 public token;
 
 With the help of `Slither`, we were able to identify a major bug and ask a few good follow up questions to come back to! Thank you, `Slither`!
 
-It's at this point I want to take a moment to mention - this code base would be _really good_ to perform stateful fuzz testing on. I'm going to go through it, in this section, but I encourage you to take some time before continuing to try and write a fuzz testing suite for this protocol. I cannot emphasized enough how useful and powerful fuzzing can be.
+It's at this point I want to take a moment to mention - this code base would be _really good_ to perform stateful fuzz testing on. I'm going to go through it, in this section, but I encourage you to take some time before continuing to try and write a fuzz testing suite for this protocol. I cannot emphasize enough how useful and powerful fuzzing can be.
 
 See you in the next lesson!
