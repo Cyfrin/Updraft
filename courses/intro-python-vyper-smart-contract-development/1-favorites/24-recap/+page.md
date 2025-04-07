@@ -1,3 +1,5 @@
+## Recap
+
 In this lesson, we will continue to develop our smart contract which stores favorite numbers. Let's take a look at what we have done so far.
 
 We have created a new type called a **struct**, called **Person**, which has two variables:
@@ -21,7 +23,7 @@ We also have two functions, a **store** function to set our favorite number and 
 Here is the code we have written so far:
 
 ```python
-# pragma version ^0.4.0
+# pragma version >=0.4.1
 # @license MIT
 
 struct Person:
