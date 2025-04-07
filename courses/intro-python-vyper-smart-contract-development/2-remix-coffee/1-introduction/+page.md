@@ -13,7 +13,7 @@ We will be building a simple smart contract that allows people to send you money
 We will explore the following code:
 
 ```python
-# pragma version 0.4.0
+# pragma version 0.4.1
 # pragma enable-decimals
 """
 @license MIT
@@ -34,7 +34,7 @@ interface AggregatorV3Interface:
 MINIMUM_USD: public(constant(uint256)) = 50 * (10**18)
 PRECISION: constant(uint256) = 1 * (10**18)
 OWNER: public(immutable(address))
-funders: public(DynArray[address], 100)
+funders: public(DynArray[address, 100])
 address_to_amount_funded: public(HashMap[address, uint256])
 price_feed: public(AggregatorV3Interface)
 
@@ -75,8 +75,8 @@ def get_eth_to_usd_rate(price_feed: AggregatorV3Interface, eth_amount: uint256) 
     (a, b, c, d, e) = staticcall(price_feed.latestRoundData())
     # We know the price has 8 decimals, so we need to add 1 + eth_amount: uint256 = convert(int256, (10**18) * (b * (10**-8)))
     # return eth_amount: uint256 = convert(int256, price * eth_amount)
-    price: int256 = 0
-    return price: int256
+    price: uint256 = 0
+    return price
 ```
 
 We can compile and deploy this smart contract in Remix. Remix allows us to interact with our smart contract to fund it with our test ETH and then withdraw those funds as well.

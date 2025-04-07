@@ -18,11 +18,13 @@ We can use a special docstring format called NatSpec Metadata to add documentati
 To use NatSpec, we add an "at" symbol (@) followed by a tag. We'll add the following NatSpec tags at the top of our contract:
 
 ```python
-pragma version 0.4.0
+#pragma version 0.4.1
+"""
 @license MIT
 @title Buy Me A Coffee!
 @author You!
 @notice This contract is for creating a sample funding contract.
+"""
 ```
 
 - **`pragma version`**: specifies the version of Vyper we are using. It isn't part of NatSpec, but it is convention to put it at the top of our contract.
@@ -36,9 +38,11 @@ The compiler doesn't parse docstrings for internal functions. While we can add N
 We can add other NatSpec tags to document different parts of our contract, like functions and parameters. For example:
 
 ```python
+"""
 @dev Explains to a developer any extra details.
 @param Documents a single parameter.
 @return Documents one or all return value(s).
+"""
 ```
 
 Let's add these NatSpec tags to our code so it looks a little more professional.

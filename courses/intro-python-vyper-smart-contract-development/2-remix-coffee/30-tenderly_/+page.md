@@ -1,3 +1,5 @@
+## Tenderly Virtual Testnet
+
 We are learning to build a smart contract that will allow users to send funds, with the goal of buying a coffee. We will also explore the concept of interfaces, how we can use interfaces to retrieve data and perform actions from our contract, and how to use a price feed.
 
 We will be building our contract in the Remix IDE. Remix IDE is a great tool for developing smart contracts and interacting with them on the blockchain. It provides a user-friendly interface for writing, compiling, deploying, and testing smart contracts.
@@ -8,9 +10,11 @@ First, we will create a new Remix project and write the following code:
 # Get funds from users
 # Withdraw funds
 # Set a minimum funding value in USD
-pragma version ^0.4.0
-@license: MIT
-@author: You!
+# pragma version 0.4.1
+"""
+@license MIT
+@author You!
+"""
 
 # We'll learn a new way to do interfaces later...
 interface AggregatorV3Interface:
@@ -19,13 +23,13 @@ interface AggregatorV3Interface:
     def version() -> uint256: view
     def latestAnswer() -> int256: view
 
-minimum_usd: public uint256
-price_feed: public AggregatorV3Interface # 0x6944A41769357215DE4F4C0881f1f309a0DC325306 sepolia
-owner: public address
-funders: public DynArray[address, 1000]
+minimum_usd: public(uint256)
+price_feed: public(AggregatorV3Interface) # 0x6944A41769357215DE4F4C0881f1f309a0DC325306 sepolia
+owner: public(address)
+funders: public(DynArray[address, 1000])
 
 # funder -> how much they funded
-funder_to_amount_funded: public HashMap[address, uint256]
+funder_to_amount_funded: public(HashMap[address, uint256])
 
 # Keep track of who sent us
 # How much they sent us
@@ -70,9 +74,9 @@ def get_eth_to_usd_rate(eth_amount: uint256) -> uint256:
     Is that more or less than $5?
     """
 
-    price: int256 = staticcall(self.price_feed, latestAnswer())
-    eth_price: uint256 = (convert(price, uint256) * 10**18) / (10**10)
-    eth_amount_in_usd: uint256 = (eth_price * eth_amount) / (1 * 10**18)
+    price: int256 = staticcall self.price_feed.latestAnswer()
+    eth_price: uint256 = (convert(price, uint256)) * (10**10)
+    eth_amount_in_usd: uint256 = (eth_price * eth_amount) // (1 * 10**18)
     return eth_amount_in_usd * 10**18 # 0's, 18 decimal places
 
 # 5 000000000000000000

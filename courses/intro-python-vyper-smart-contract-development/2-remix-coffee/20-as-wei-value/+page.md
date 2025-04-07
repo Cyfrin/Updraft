@@ -1,6 +1,6 @@
 ## As Wei Value
 
-In this lesson, we're going to look at the `as_wei_value()` function within solidity.
+In this lesson, we're going to look at the `as_wei_value()` function within Vyper.
 
 Let's say we have a smart contract that requires a minimum USD value to be sent to it. In this case, that minimum amount is 5 USD.
 

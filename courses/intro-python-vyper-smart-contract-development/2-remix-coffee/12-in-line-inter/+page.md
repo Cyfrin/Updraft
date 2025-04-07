@@ -25,7 +25,7 @@ This code snippet creates a variable called `price_feed` that holds an interface
 
 Now we'll deploy a custom function, just to get and see this price feed here. 
 
-```vyper
+```python
 @external
 def get_price() -> int256:
     price_feed: AggregatorV3Interface = AggregatorV3Interface(0x694A4A17699357215D6F4C081f1f309dDC325306)
@@ -34,7 +34,7 @@ def get_price() -> int256:
 
 Now, we'll go ahead and deploy this. This custom function gets the latest answer from the price feed. It's an integer, but the price feed is using 8 decimals.  We'll want to adjust that.
 
-```vyper
+```python
 @external
 def get_price() -> int256:
     price_feed: AggregatorV3Interface = AggregatorV3Interface(0x694A4A17699357215D6F4C081f1f309dDC325306)
@@ -45,9 +45,9 @@ This is what's going to return that price feed.  We'll go ahead and deploy this 
 
 ## Deploying to Blockchain
 
-To deploy this function to the blockchain, we can use Remix. Remix is an online IDE that allows us to write and deploy Solidity code to the blockchain. We'll also want to adjust the `decimals` value in the `AggregatorV3Interface` contract to 8 for this function to work properly.
+To deploy this function to the blockchain, we can use Remix. Remix is an online IDE that allows us to write and deploy Vyper code to the blockchain. We'll also want to adjust the `decimals` value in the `AggregatorV3Interface` contract to 8 for this function to work properly.
 
-```vyper
+```python
 interface AggregatorV3Interface:
     def decimals(self) -> uint256: view
     def description(self) -> String[1000]: view
@@ -59,7 +59,7 @@ This code snippet is defining the interface for the `AggregatorV3Interface` cont
 
 Now, we'll paste this code into the `AggregatorV3Interface` contract, just so the `decimals` function now returns the correct value.
 
-```vyper
+```python
 interface AggregatorV3Interface:
     def decimals(self) -> uint256: view
     def description(self) -> String[1000]: view
