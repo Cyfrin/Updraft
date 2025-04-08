@@ -5,9 +5,9 @@ We're going to learn about how to convert between Wei and ETH.
 Here's a code snippet:
 
 ```python
-# pragma version 0.4.0
-# @license: MIT
-# @author: You!
+# pragma version 0.4.1
+# @license MIT
+# @author You!
 
 @external
 @payable

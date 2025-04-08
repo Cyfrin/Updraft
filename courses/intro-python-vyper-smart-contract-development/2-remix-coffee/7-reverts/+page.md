@@ -5,9 +5,9 @@ Reverts are an incredibly important part of the Vyper language. They allow us to
 We can see a revert in action with this code:
 
 ```python
-# pragma version 0.4.0
-# @license: MIT
-# @author: You!
+# pragma version 0.4.1
+# @license MIT
+# @author You!
 
 my_num: public uint256
 

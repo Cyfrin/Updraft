@@ -1,3 +1,5 @@
+## Fallback Function in Vyper
+
 We're learning about the default function in Vyper.
 
 Vyper is a smart contract language similar to Solidity, but it has some key differences.

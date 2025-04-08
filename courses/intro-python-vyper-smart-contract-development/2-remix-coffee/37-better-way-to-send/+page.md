@@ -8,7 +8,7 @@ Instead, we're going to use the `raw_call` function. This is a built-in function
 
 Let's look at how to use `raw_call` to send ETH. We'll use the `withdraw` function as an example.
 
-```vyper
+```python
 @external
 def withdraw():
     """Take the money out of the contract, that people sent via the fund function.

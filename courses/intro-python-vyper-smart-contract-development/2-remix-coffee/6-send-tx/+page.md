@@ -5,9 +5,9 @@ We're going to compile and deploy a contract. We will then call a function on th
 First, we'll compile our contract.
 
 ```python
-# pragma version 0.4.0
-# @license: MIT
-# @author: You!
+# pragma version 0.4.1
+# @license MIT
+# @author You!
 
 @external
 @payable
@@ -27,9 +27,9 @@ def withdraw():
 Now, we'll deploy this contract.
 
 ```python
-# pragma version 0.4.0
-# @license: MIT
-# @author: You!
+# pragma version 0.4.1
+# @license MIT
+# @author You!
 
 @external
 @payable

@@ -7,15 +7,17 @@ We'll use an example of a function that takes an amount of ETH in Wei and conver
 First, we create a function to do the calculation.
 
 ```python
-def get_eth_to_usd_rate(eth_amount: uint256) -> uint256:
+@internal
+@view
+def _get_eth_to_usd_rate(eth_amount: uint256) -> uint256:
     """
     Chris sent us 0.01 ETH for us to buy a coffee:
     Is that more or less than $5?
     """
-    eth_price: uint256 = staticcall(self.price_feed, latestAnswer()) * (10 ** 10)
-    price_in_usd: uint256 = (convert(uint256, price) * eth_amount) // (1 * 10 ** 18)
-    eth_amount_in_usd_uint256: uint256 = price_in_usd * eth_amount // (1 * 10 ** 18)
-    return eth_amount_in_usd_uint256 # 18 0's, 18 decimal places
+    price: int256 = staticcall self.price_feed.latestAnswer()
+    eth_price: uint256 = (convert(price, uint256)) * (10**10)
+    eth_amount_in_usd: uint256 = (eth_price * eth_amount) // (1 * 10 ** 18)
+    return eth_amount_in_usd # 18 0's, 18 decimal places
 ```
 
 We can create an external function that runs our internal function.

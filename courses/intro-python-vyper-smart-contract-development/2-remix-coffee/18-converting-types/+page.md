@@ -7,7 +7,7 @@ We will learn about type conversions in Vyper. We'll start with an example of a 
 def get_eth_to_usd_rate(eth_amount: uint256):
     # Chris sent us 0.01 ETH for us to buy a coffee.
     # Is that more or less than $5?
-    price: int256 = staticcall(self.price_feed, "latestAnswer()", [336551000000])
+    price: int256 = staticcall self.price_feed.latestAnswer() # 336551000000
     # 8 decimals
     # $3,021
     eth_amount_in_usd = price * (10 ** 10)
