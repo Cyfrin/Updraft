@@ -40,4 +40,3 @@ assert usd_value_of_eth >= self.minimum_usd, "You must spend more ETH!"
 ```
 
 This `as_wei_value()` function is a great shortcut for adding those 18 decimal places.
-courses\vyper-101\2-remix-coffee\20-as-wei-value\+page.md

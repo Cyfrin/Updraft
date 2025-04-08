@@ -6,8 +6,8 @@ We can see a revert in action with this code:
 
 ```python
 # pragma version 0.4.1
-# @license: MIT
-# @author: You!
+# @license MIT
+# @author You!
 
 my_num: public uint256
 

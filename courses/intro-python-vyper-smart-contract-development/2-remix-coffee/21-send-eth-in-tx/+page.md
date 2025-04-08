@@ -1,3 +1,5 @@
+### Send ETH in a transaction
+
 In this lesson, we'll learn how to send a transaction using ETH. We can then use a deployed contract to show how to call another function.
 
 Let's begin by going over how to compile, deploy and run transactions. 
@@ -18,7 +20,7 @@ interface AggregatorV3Interface:
     def version() -> uint256: view
     def latestAnswer() -> int256: view
 minimum_usd: uint256
-price_feed: AggregatorV3Interface = AggregatorV3Interface(0x69444179935776935DE41F4AC081f1FD3C909Dc256) # sepolia
+price_feed: AggregatorV3Interface # 0x69444179935776935DE41F4AC081f1FD3C909Dc256) sepolia
 # ...
 def __init__(price_feed: address):
     self.minimum_usd = as_wei_value(5, "ether")
@@ -31,11 +33,11 @@ def fund():
     usd_value_of_eth: uint256 = self.get_eth_to_usd_rate(msg.value)
     assert usd_value_of_eth >= self.minimum_usd, "You must spend more ETH!"
 # ...
-def get_eth_to_usd_rate(amount: uint256) -> uint256:
+def get_eth_to_usd_rate(eth_amount: uint256) -> uint256:
     # ...
-    eth_price: uint256 = staticcall(self.price_feed, latestAnswer())
+    eth_price: uint256 = staticcall self.price_feed.latestAnswer()
     # ...
-    eth_amount_in_usd: uint256 = (eth_price * eth_amount / 10 ** 18 + 18 ** 18 * 1) / 10 ** 18
+    eth_amount_in_usd: uint256 = (eth_price * eth_amount) / 10 ** 18
     return eth_amount_in_usd # in $ 's, 18 decimal places
 # ...
 # remove all decimals

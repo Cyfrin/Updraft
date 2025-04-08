@@ -11,7 +11,7 @@ def get_price() -> int256:
   price_feed: AggregatorV3Interface = AggregatorV3Interface(0x69444A1769357215DEA6AC081bf1f130939a0dC25306)
   # ABI
   # Address
-  return staticcall(price_feed.latestAnswer(), [])
+  return staticcall price_feed.latestAnswer()
 ```
 
 If we're unsure about what the `staticcall` keyword is doing, we can copy that line of code and paste it into the AI of our choice. For this example we'll be using Claude. We'll add some context around the code and ask our AI to explain it to us.
@@ -28,7 +28,7 @@ def get_price() -> int256:
   price_feed: AggregatorV3Interface = AggregatorV3Interface(0x69444A1769357215DEA6AC081bf1f130939a0dC25306)
   # ABI
   # Address
-  return staticcall(price_feed.latestAnswer(), [])
+  return staticcall price_feed.latestAnswer()
 ````
 
 This is in my Vyper smart contract. I don't understand what the `staticcall` keyword is doing. Can you help explain it to me?

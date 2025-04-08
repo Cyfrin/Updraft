@@ -6,8 +6,8 @@ Here's a code snippet:
 
 ```python
 # pragma version 0.4.1
-# @license: MIT
-# @author: You!
+# @license MIT
+# @author You!
 
 @external
 @payable

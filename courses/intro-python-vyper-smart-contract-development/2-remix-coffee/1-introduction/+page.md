@@ -72,7 +72,7 @@ def get_eth_to_usd_rate(price_feed: AggregatorV3Interface, eth_amount: uint256) 
     c: uint256 = 0
     d: uint256 = 0
     e: uint80 = 0
-    (a, b, c, d, e) = staticcall(price_feed.latestRoundData())
+    (a, b, c, d, e) = staticcall price_feed.latestRoundData()
     # We know the price has 8 decimals, so we need to add 1 + eth_amount: uint256 = convert(int256, (10**18) * (b * (10**-8)))
     # return eth_amount: uint256 = convert(int256, price * eth_amount)
     price: uint256 = 0

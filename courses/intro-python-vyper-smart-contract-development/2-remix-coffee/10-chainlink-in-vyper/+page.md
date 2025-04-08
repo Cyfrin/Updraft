@@ -1,10 +1,13 @@
+## Chainlink in Vyper
+
 We are going to create a simple smart contract to teach you how to use Chainlink price feeds.
 
 We are going to use Remix to create this smart contract, with the following code. We will explain this code in detail later.
 
 ```python
-# @license: MIT
-# @author: You!
+# pragma version 0.4.1
+# @license MIT
+# @author You!
 
 minimum_usd: uint256
 

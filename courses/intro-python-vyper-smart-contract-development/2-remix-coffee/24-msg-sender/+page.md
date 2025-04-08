@@ -41,11 +41,3 @@ We can see this in action if we redeploy the contract and call the withdraw func
 If we call the withdraw function from the owner account, it will be successful. However, if we call the withdraw function from a different account, it will revert with the error message "Not the contract owner!".
 
 This is an example of how we can use the msg.sender to control access to our smart contract functions. It's a simple but powerful technique that can be used to secure our code.
-
-```bash
-truffle compile
-```
-
-```bash
-truffle migrate
-```

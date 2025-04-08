@@ -6,7 +6,7 @@ In-line interfaces are a way to define the functions and return types of a contr
 
 We can define an in-line interface by using the `interface` keyword followed by the name of the interface and a colon. Inside the interface, we can define functions using the `def` keyword, followed by the function name and a colon. Then, we use a right arrow (`->`) to specify the return type for the function. An example of defining an interface is as follows:
 
-```vyper
+```python
 interface AggregatorV3Interface:
     def decimals(self) -> uint256: view
     def description(self) -> String[1000]: view
@@ -16,7 +16,7 @@ interface AggregatorV3Interface:
 
 We can use this interface to call the functions of the contract without needing to know the logic inside of the contract itself. For example, we could call the `latestAnswer` function using the following code:
 
-```vyper
+```python
 price_feed: AggregatorV3Interface = AggregatorV3Interface(0x694A4A17699357215D6F4C081f1f309dDC325306)
 return price_feed.latestAnswer()
 ```

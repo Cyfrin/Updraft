@@ -6,7 +6,7 @@ Here we're creating a function called `get_eth_to_usd_rate` which returns the pr
 
 ```python
 def get_eth_to_usd_rate():
-  price: int256 = staticcall(self.price_feed.latestAnswer(), [])
+  price: int256 = staticcall self.price_feed.latestAnswer()
 ```
 
 We'll use the `decimals` function to get the number of decimal places in the price.
@@ -30,7 +30,7 @@ We need to calculate the ETH amount in USD.
 The price that we're going to get from Chainlink is going to be a number like this:
 
 ```python
-  price: int256 = staticcall(self.price_feed.latestAnswer(), []) # 33655100000
+  price: int256 = staticcall self.price_feed.latestAnswer() # 33655100000
 ```
 
 We need to convert this to the ETH amount in USD.
@@ -67,19 +67,19 @@ minimum_usd: uint256
 So how do we convert this 0.01 to its dollar amount?
 
 ```python
-  price: int256 = staticcall(self.price_feed.latestAnswer(), []) # 33655100000
+  price: int256 = staticcall self.price_feed.latestAnswer() # 33655100000
 ```
 
 We get the price, which will be something like this.
 
 ```python
-  price: int256 = staticcall(self.price_feed.latestAnswer(), []) # 33655100000
+  price: int256 = staticcall self.price_feed.latestAnswer() # 33655100000
 ```
 
 Now, our ETH amount is going to have how many decimal places?
 
 ```python
-  price: int256 = staticcall(self.price_feed.latestAnswer(), []) # 33655100000
+  price: int256 = staticcall self.price_feed.latestAnswer() # 33655100000
 ```
 
 This is where the math in the blockchain gets a little bit tricky.

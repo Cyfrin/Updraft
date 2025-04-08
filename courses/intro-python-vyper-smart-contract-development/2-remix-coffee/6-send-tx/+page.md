@@ -6,8 +6,8 @@ First, we'll compile our contract.
 
 ```python
 # pragma version 0.4.1
-# @license: MIT
-# @author: You!
+# @license MIT
+# @author You!
 
 @external
 @payable
@@ -28,8 +28,8 @@ Now, we'll deploy this contract.
 
 ```python
 # pragma version 0.4.1
-# @license: MIT
-# @author: You!
+# @license MIT
+# @author You!
 
 @external
 @payable

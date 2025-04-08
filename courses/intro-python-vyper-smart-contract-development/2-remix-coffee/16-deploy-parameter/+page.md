@@ -34,7 +34,7 @@ Now that we have our `price_feed` object, we can scroll down to our `get_eth_to_
 ```python
 @internal
 def get_eth_to_usd_rate():
-    price: int256 = staticcall(self.price_feed.latestAnswer())
+    price: int256 = staticcall self.price_feed.latestAnswer()
 ```
 
 This way, right when we deploy our contract, we can parameterize the address that we want to use.  This is a much cleverer way than hard coding it in. 

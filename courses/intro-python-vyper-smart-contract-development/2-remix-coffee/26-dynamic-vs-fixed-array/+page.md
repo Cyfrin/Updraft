@@ -6,7 +6,7 @@ We're going to create a new Vyper contract to demonstrate the differences betwee
 
 First, let's declare a dynamic array:
 
-```vyper
+```python
 dynamic_array: public DynArray[uint256, 100]
 ```
 
@@ -16,7 +16,7 @@ The array type is `DynArray` and has a maximum size of 100. We set this array to
 
 Now, let's create a fixed-size array:
 
-```vyper
+```python
 fixed_sized_array: public uint256[100]
 ```
 
@@ -26,7 +26,7 @@ The fixed-size array is simply a list of 100 `uint256` values. Note that we can'
 
 We can use the `len` keyword to determine the length of a dynamic array. Let's create a function called `dyn_array_size` that returns the length of our dynamic array:
 
-```vyper
+```python
 @external
 @view
 def dyn_array_size() -> uint256:
@@ -37,7 +37,7 @@ def dyn_array_size() -> uint256:
 
 We can add elements to our arrays with the `append` function. Let's create a function called `add_to_array` that adds an element to both arrays:
 
-```vyper
+```python
 @external
 def add_to_array():
     self.fixed_sized_array[self.index] = 1
@@ -47,7 +47,7 @@ def add_to_array():
 
 We also need to declare an index variable:
 
-```vyper
+```python
 index: uint256
 ```
 
@@ -55,13 +55,13 @@ index: uint256
 
 We can see that the dynamic array length is initially 0 because it's initialized as an empty array:
 
-```vyper
+```python
 #[ ]
 ```
 
 However, after we append an element, the length increases to 1:
 
-```vyper
+```python
 #[1]
 ```
 
@@ -71,7 +71,7 @@ We can append as many elements to the dynamic array as long as the maximum size 
 
 Now, let's try to append an element to our fixed array. We'll create a function called `fixed_array_size` that returns the size of the fixed array:
 
-```vyper
+```python
 @external
 @view
 def fixed_array_size() -> uint256:
@@ -88,7 +88,7 @@ We can now deploy the contract. Let's run the `add_to_array` function to add an 
 
 The dynamic array length now reflects the change to 1.
 
-```vyper
+```python
 #[1]
 ```
 
@@ -96,7 +96,7 @@ Now, let's try to run the `add_to_array` function again.
 
 We can see that the dynamic array length is now 2.
 
-```vyper
+```python
 #[1,1]
 ```
 
@@ -106,7 +106,7 @@ However, the fixed array length is still 1.
 
 We can try to append to the fixed array:
 
-```vyper
+```python
 self.fixed_sized_array.append(1)
 ```
 

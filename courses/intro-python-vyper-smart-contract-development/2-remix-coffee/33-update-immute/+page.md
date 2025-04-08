@@ -7,10 +7,10 @@ Storage variables can be very gas-intensive to work with. Every time we read or 
 Constant and immutable variables mean that they can never be changed. However, they are way more gas efficient for a whole bunch of reasons. And, we can even test this out. So, let's take this minimum USD. Now, minimum USD, we set to $5, and then we never change. So, what we could do is we could set this minimum USD to be a constant. So, we could say:
 
 ```python
-public constant uint256
+MINIMUM_USD = public(constant(uint256)) = as_wei_value(5, "ether")
 ```
 
-And, the convention for constant variables is to have constant variables be all upper case. So, we would do MINIMUM_USD, and then since it's constant, we don't set it in the constructor down here anymore. We would have to set it right up here. So, we would say MINIMUM_USD, public constant uint256 equals as wei value (5, "ether"), and then we would delete this line here.
+And, the convention for constant variables is to have constant variables be all upper case. So, we would do MINIMUM_USD, and then since it's constant, we don't set it in the constructor down here anymore. We would have to set it right up here. So, we would say MINIMUM_USD, public constant uint256 equals as_wei_value (5, "ether"), and then we would delete this line here.
 
 Now, constant variables are not considered storage variables, which is another reason why we have them all updated. Both constants and immutables are not storage variables. Again, we'll learn about storage much later. And, since it's not a storage variable, we scroll down. We no longer have to reference it with self.minimum USD. This self when we do this self.minimum USD, we're usually referring to storage variables or functions. Since MINIMUM_USD is a constant, we can actually just refer to it like this in all caps here.
 
@@ -19,13 +19,13 @@ Is there any other place where we have minimum USD? Nope, that's it. Okay, great
 So, can we set the price feed to be constant? Well, we could if we were always using the same price feed. So, I could do:
 
 ```python
-constant aggregator V interface
+PRICE_FEED = public(constant(AggregatorV3Interface)) = 0x694AA1769357215DE4FAC081bf1f309aDC325306
 ```
 
-equals aggregator V interface, wrapped around this address here. However, this would assume that we're always going to use this address. Now, the price feed for the Ethereum USD price is going to be different on different chains. So, we don't actually want this to be constant. What we want it to be is immutable. So, let me undo everything I just did with command Z or control Z. So, instead of constant here, we could make this immutable. So, to set this as immutable, we would go:
+However, this would assume that we're always going to use this address. Now, the price feed for the Ethereum USD price is going to be different on different chains. So, we don't actually want this to be constant. What we want it to be is immutable. So, let me undo everything I just did with command Z or control Z. So, instead of constant here, we could make this immutable. So, to set this as immutable, we would go:
 
 ```python
-immutable aggregator V interface
+PRICE_FEED = public(immutable(AggregatorV3Interface))
 ```
 
 And then, now, same thing, price feed, we would do from lower case to all upper case. PRICE_FEED.
