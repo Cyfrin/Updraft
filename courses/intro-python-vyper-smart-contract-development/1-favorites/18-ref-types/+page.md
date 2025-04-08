@@ -1,6 +1,6 @@
-We will be going over reference types in Vyper. These are used to store data, but are not copied when assigned as a value. 
-
 ## Reference Data Types
+
+We will be going over reference types in Vyper. These are used to store data, but are not copied when assigned as a value. 
 
 We will be looking at several reference types in Vyper: fixed-sized list, mappings, and structs. 
 
@@ -8,25 +8,25 @@ We will be looking at several reference types in Vyper: fixed-sized list, mappin
 
 We can use a fixed-sized list to store data of a given type. We first declare the type, then put the fixed size in brackets, as follows:
 
-```vyper
+```python
 nums: public(uint256[10])
 ```
 
 We can read and write to this list. To get the value in index 0, we use:
 
-```vyper
+```python
 self.nums[0]
 ```
 
 And to set the value in index 0 to 123:
 
-```vyper
+```python
 self.nums[0] = 123
 ```
 
 We can also set another value in index 1 to 456:
 
-```vyper
+```python
 self.nums[1] = 456
 ```
 
@@ -34,25 +34,25 @@ self.nums[1] = 456
 
 Mappings store data based on a key value.  The first value type will be the key, and the second value type will be the data stored. Let's create a mapping called "myMap":
 
-```vyper
+```python
 myMap: public(HashMap[address, uint256])
 ```
 
 We can access and store data in a mapping. To get the value stored at the address of "msg.sender":
 
-```vyper
+```python
 self.myMap[msg.sender]
 ```
 
 Let's store the value 1 in this mapping:
 
-```vyper
+```python
 self.myMap[msg.sender] = 1
 ```
 
 We can also change the value stored at "msg.sender" to 11:
 
-```vyper
+```python
 self.myMap[msg.sender] = 11
 ```
 
@@ -60,7 +60,7 @@ self.myMap[msg.sender] = 11
 
 Structs are custom data types. Let's declare a struct called "Person".  This struct has a name and an age:
 
-```vyper
+```python
 struct Person:
     name: String[10]
     age: uint256
@@ -68,26 +68,26 @@ struct Person:
 
 We can declare a state variable of type struct:
 
-```vyper
+```python
 person: public(Person)
 ```
 
 Let's store data in this state variable:
 
-```vyper
+```python
 self.person.name = "vyper"
 self.person.age = 33
 ```
 
 Then, we can copy this state variable into memory by declaring a variable of type struct and assigning the state variable:
 
-```vyper
+```python
 p: Person = self.person
 ```
 
 We can then change the name to "solidity" and the age to 22, but this will only update the value stored in memory, not the state variable.  
 
-```vyper
+```python
 p.name = "solidity"
 p.age = 22
 ```

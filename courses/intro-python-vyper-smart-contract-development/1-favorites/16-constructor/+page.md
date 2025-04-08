@@ -39,14 +39,14 @@ Let's look at some examples of passing parameters to a constructor.
 First, we'll add a state variable named `name` that is a public string with a maximum length of 100 characters:
 
 ```python
-name: public(string[100])
+name: public(String[100])
 ```
 
 Now we will pass the parameter `name` to our constructor function:
 
 ```python
 @deploy
-def __init__(name: string[100]):
+def __init__(name: String[100]):
     self.owner = msg.sender
 ```
 
@@ -54,7 +54,7 @@ We will then use the `name` parameter to set the `name` state variable:
 
 ```python
 @deploy
-def __init__(name: string[100]):
+def __init__(name: String[100]):
     self.owner = msg.sender
     self.name = name
 ```
@@ -69,7 +69,7 @@ We will now add a second parameter, `duration`, to our constructor function:
 
 ```python
 @deploy
-def __init__(name: string[100], duration: uint256):
+def __init__(name: String[100], duration: uint256):
     self.owner = msg.sender
     self.name = name
 ```
@@ -78,7 +78,7 @@ Finally, we will set the `expiresAt` variable equal to the current block timesta
 
 ```python
 @deploy
-def __init__(name: string[100], duration: uint256):
+def __init__(name: String[100], duration: uint256):
     self.owner = msg.sender
     self.name = name
     self.expiresAt = block.timestamp + duration

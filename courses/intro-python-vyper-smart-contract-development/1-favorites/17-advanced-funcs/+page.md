@@ -17,7 +17,7 @@ Now, there's another keyword called internal, which I will explain in another vi
 Also, explain this in another video. Here, I just want to show you some syntax for how to write functions in Vyper:
 
 ```python
-def;
+def
 ```
 
 Let's call this function multiply:

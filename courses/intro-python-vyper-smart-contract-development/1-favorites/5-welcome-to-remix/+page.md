@@ -13,11 +13,10 @@ Remix has many features, including a built-in AI assistant that helps us underst
 
 ```python
 # Minimal Contract
-pragma solidity ^0.6.12;
+# pragma version >=0.4.1
 
-contract Minimal:
-    def hello(self) -> str:
-        return "Hello World"
+def hello() -> String[11]:
+    return "Hello World"
 ```
 
 5.  Save the file.

@@ -20,7 +20,7 @@ We will be using ZKsync in this lesson. Here is the code we will be working with
 # EVM: Ethereum Virtual Machine
 # Ethereum, Arbitrum, Optimism, Polygon, ZKsync
 
-# pragma version 0.4.0
+# pragma version 0.4.1
 # @license MIT
 
 struct Person:
