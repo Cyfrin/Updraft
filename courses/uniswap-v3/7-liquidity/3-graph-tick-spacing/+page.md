@@ -1,0 +1,21 @@
+## Uniswap v3 Tick Spacing
+
+When a liquidity provider adds liquidity to a Uniswap V3 pool, they will specify a price range. This price range is defined by a lower tick and an upper tick. These ticks cannot be arbitrary, but they must be a multiple of the tick spacing.  The tick spacing is different for each pool. For example, here, we have a tick space of 10, and the vertical dotted lines represent the ticks that are multiples of this tick space.
+
+When we add liquidity, the lower and upper ticks that define our price range must be a multiple of the tick space. For example, we can set the lower tick to -20 and the upper tick to -10. Both of these are multiples of the tick space of 10, so it is a valid range to add liquidity. However, we would not be able to add liquidity for the price range of tick = -20 and tick = -15, because -15 is not a multiple of the tick space, 10. 
+
+As we mentioned before, different pools have different tick spacing. For example, the USDC DAI pool with 0.01% swap fee has a tick space of 1, while the DAI WETH pool with 0.3% swap fee has a tick space of 60. 
+
+The reason that different pools have different tick spacing is to pick between the concentration of liquidity and the consumption of gas. Lower tick space means the liquidity can be concentrated higher, but at the cost of using more gas during a swap. Higher tick spacing means that liquidity can be concentrated less, and also that during a swap, less gas will be consumed. 
+
+For example, if we had a tick spacing of 4, the smallest price range we can add liquidity to gets smaller. By putting in the same amount of tokens we will have a higher concentration of liquidity.  
+
+During a swap, inside the code of the Uniswap V3 pool contract, it will execute a while loop and inside of this while loop, it will execute a smaller swap between these tick spaces.
+
+Let's say that we have a current price here.  As the swap is executing, on the first iteration, it will execute a swap between these two pink lines, then, in the next iteration, it will swap between the next two pink lines. In the next iteration of the while loop, it will execute a swap in the next multiple of the tick spacing. So, in this case, to swap from here all the way to here, we had to iterate 3 times to move from tick = 0 to tick = -10. This is how pools with a lower tick spacing can consume more gas during a swap.
+
+On the other hand, let's consider what happens when the tick spacing is a larger number. For example, let's set it to 10. We'll start with the current tick as 0 and swing it over to -10.  Let's say that there was a swap and the current tick decreased from tick = 0 to tick = -10. As the tick moves over to -10, we have now entered the first iteration of the while loop. Then, as the tick decreases further, we hit tick = -10. And at this point, we have only iterated once. In the case of tick spacing equal to 4, we iterated three times. In the case of tick spacing equal to 10, we only iterated once. The tick jumped a multiple of tick spacing only once in this case. This is what it means that pools with a higher tick spacing may consume less gas during a swap.
+
+Pools with higher tick spacing also come with a cost of lower concentration of liquidity. This is because the minimum price range that we can add liquidity is larger compared to a pool with lower tick spacing. When we look at a pool with tick spacing, say, equal to 5, the minimum price range we can add liquidity to is this much. However, for a tick spacing equal to 10, the minimum price range we can add liquidity is larger. A larger price range means that we can concentrate our liquidity less.
+
+So, in summary, when we add liquidity, the price range we specify must be a multiple of the tick spacing, which is different for each pool.  Pools with lower tick space can concentrate liquidity higher, but during a swap it may use up more gas.  Pools with higher tick spacing can concentrate liquidity less, but during a swap, it may use less gas. Pools with low tick spacing are suitable for token pairs where price has low volatility, for example, a USDC DAI pair.  Pools with a high tick spacing are suitable for token pairs where the price has a high volatility, for example, a DAI WETH pair.
