@@ -1,3 +1,0 @@
----
-CASE STUDY BYBIT HACK
----
