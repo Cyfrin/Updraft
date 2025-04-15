@@ -1,6 +1,6 @@
 ## Mental Preparation
 
-Mental preparation is key when learning a new skill. Before we start coding, let�s think about why we want to learn, what we want to accomplish and what steps we will take to get there.
+Mental preparation is key when learning a new skill. Before we start coding, let's think about why we want to learn, what we want to accomplish and what steps we will take to get there.
 
 The first question we should ask ourselves is: Why am I learning Vyper and Python?
 
