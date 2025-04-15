@@ -20,7 +20,7 @@ We use the `msg.sender` built-in variable to set the owner of the contract to th
 Then, in the withdraw function, we use the `assert` statement to make sure that the msg.sender is equal to the owner.
 
 ```python
-external
+@external
 def withdraw():
     """Take the money out of the contract, that people sent via the fund function.
     How do we make sure only we can pull the money out?
