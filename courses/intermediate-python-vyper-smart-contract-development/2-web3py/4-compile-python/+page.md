@@ -2,7 +2,7 @@
 
 We'll compile our Vyper code using the Vyper compiler. We can do this in a couple of different ways, but regardless of how we choose to compile our Vyper contract, we first need to download the Vyper compiler. 
 
-The Vyper compiler is available on GitHub at: [https://github.com/vyperlang/vyper](https://github.com/vyperlang/vyper). We can install the Vyper compiler using the following command in our terminal:
+The Vyper compiler is available on GitHub at: [vyper repository](https://github.com/vyperlang/vyper). We can install the Vyper compiler using the following command in our terminal:
 
 ```bash
 uv tool install vyper

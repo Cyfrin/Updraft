@@ -18,13 +18,13 @@ if __name__ == "__main__":
 We learned how to compile our Vyper contract from the command line.
 
 ```bash
-Vyper favorites.vy
+vyper favorites.vy
 ```
 
 We can also use the Vyper package within our Python code.
 
 ```python
-from Vyper import compile_code
+from vyper import compile_code
 ```
 
 We learned how to create a function called `compile_code`, which opens a Vyper file, reads its contents, compiles the code, and returns both the bytecode and the ABI.
@@ -118,7 +118,7 @@ uv add python-dotenv
 We also learned how to use the `uv` tool to install Vyper into its own isolated virtual environment.
 
 ```bash
-uv tool install Vyper
+uv tool install vyper
 ```
 
 We learned how to use the `uv` tool to sync all dependencies to our virtual environment.

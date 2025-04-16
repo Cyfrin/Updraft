@@ -1,3 +1,5 @@
+## Private Key Promise
+
 We learned that we should never place our private keys directly in our scripts or in plaintext. This is a serious risk. We could lose all of our money if someone got their hands on our private keys. 
 
 We need to protect our private keys. The best way to do this is to encrypt them and store them in a secure location. We should never share even our encrypted private keys.

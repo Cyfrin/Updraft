@@ -14,7 +14,7 @@ So, in `geth` you would call this `account_signTransaction`, which would go ahea
 
 You can see the transaction object has the following:
 
-```python
+```json
 {
 "from": "0xEA674fd0e714f0979de3EdF0F56AA9716B889eC8",
 "to": "0xac03bb73bca9e108536aaf14df5677c2b3d481e5a",
@@ -30,7 +30,7 @@ You can see we have things like `gasLimit`, `maxPriorityFeePerGas`, `maxFeePerGa
 
 We will then sign it, which you can see we will get the VR and S components in the signed transaction:
 
-```python
+```json
 {
 "jsonrpc": "2.0",
 "id": 2,

@@ -1,3 +1,5 @@
+## Installing Vyper into an Isolated Environment
+
 We've just installed Vyper using the `uv tool install` command. This might seem a little different if you're used to installing packages using the Python environment.
 
 Traditionally, you might be used to running commands like:
