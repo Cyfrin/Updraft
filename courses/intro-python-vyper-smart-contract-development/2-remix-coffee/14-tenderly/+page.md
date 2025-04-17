@@ -23,7 +23,7 @@ If you're still getting up to speed on this, don't worry. We'll go over these co
 ```python
 def get_price() -> int256:
     price_feed: AggregatorV3Interface = AggregatorV3Interface(0x6944A41769357215DE4FAC081bf1f309aDb)
-    return staticcall(price_feed.latestAnswer())
+    return staticcall price_feed.latestAnswer()
 ```
 
 This code shows how we are getting the latest ETH price from the chainlink price feed. We call the `latestAnswer` function of the price feed, which returns an integer.

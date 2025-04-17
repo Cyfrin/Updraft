@@ -52,7 +52,7 @@ We can see an example of an art contract that uses and reads from one of these C
 
 **Code:**
 
-```python
+```javascript
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
