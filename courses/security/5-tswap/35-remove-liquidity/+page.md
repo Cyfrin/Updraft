@@ -6,17 +6,17 @@ title: Manual Review - TSwapPool.sol - Remove Liquidity
 
 ### Withdraw Function
 
-In the last lesson we walked through a review of _adding_ liquidity to a TSwap Pool. Now we're going to address the logic behind _removing_ liquidity. Let's look at the `withdraw` function.
+In the last lesson, we walked through a review of _adding_ liquidity to a TSwap Pool. Now, we're going to address the logic behind _removing_ liquidity. Let's look at the `withdraw` function.
 
 <details>
 <summary>Withdraw Function</summary>
 
 ```js
-/// @notice Removes liquidity from the pool
-/// @param liquidityTokensToBurn The number of liquidity tokens the user wants to burn
-/// @param minWethToWithdraw The minimum amount of WETH the user wants to withdraw
-/// @param minPoolTokensToWithdraw The minimum amount of pool tokens the user wants to withdraw
-/// @param deadline The deadline for the transaction to be completed by
+// @notice Removes liquidity from the pool
+// @param liquidityTokensToBurn The number of liquidity tokens the user wants to burn
+// @param minWethToWithdraw The minimum amount of WETH the user wants to withdraw
+// @param minPoolTokensToWithdraw The minimum amount of pool tokens the user wants to withdraw
+// @param deadline The deadline for the transaction to be completed by
 function withdraw(
     uint256 liquidityTokensToBurn,
     uint256 minWethToWithdraw,
@@ -69,7 +69,7 @@ uint256 poolTokensToWithdraw =
 Immediately following these calculations we compare these values in a couple conditional statements, reverting with a custom error if either value is too low. The `minWethToWithdraw` and `minPoolTokensToWithdraw` variables may seem confusing at first, but they'll make more sense when we discuss MEV situations later in the course.
 
 ```js
- if (wethToWithdraw < minWethToWithdraw) {
+if (wethToWithdraw < minWethToWithdraw) {
     revert TSwapPool__OutputTooLow(wethToWithdraw, minWethToWithdraw);
 }
 if (poolTokensToWithdraw < minPoolTokensToWithdraw) {
