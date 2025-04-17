@@ -27,7 +27,6 @@ transaction = favorites_contract.constructor().build_transaction(
     {
         "nonce": nonce,
         "from": MY_ADDRESS,
-        "gasPrice": w3.eth.gas_price
     }
 )
 ```
@@ -37,9 +36,8 @@ We can also add the nonce directly to our transaction dictionary:
 ```python
 transaction = favorites_contract.constructor().build_transaction(
     {
-        "nonce": nonce,
+        "nonce": w3.eth.get_transaction_count(MY_ADDRESS),
         "from": MY_ADDRESS,
-        "gasPrice": w3.eth.gas_price
     }
 )
 ```
