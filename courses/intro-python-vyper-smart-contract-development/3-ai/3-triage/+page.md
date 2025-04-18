@@ -22,13 +22,13 @@ TypeError: Exactly one argument expected for explicit type conversion.
     |                                          ^ (Relevant source part starts here and spans across multiple lines.)
 ```
 
-" and then it'll probably give us the answer. And, sure enough, the error message suggests that you need to provide an address when using explicit type conversion to create an `AggregatorV3Interface` instance. You're missing the address of the deployed Chainlink Price Feed contract. To fix the error, provide the contract address as an argument when creating the instance.
+It'll probably give us the answer. And, sure enough, the error message suggests that you need to provide an address when using explicit type conversion to create an `AggregatorV3Interface` instance. You're missing the address of the deployed Chainlink Price Feed contract. To fix the error, provide the contract address as an argument when creating the instance.
 
 2. **Don't be afraid to ask AI, but don't skip learning.** The purpose of this course is for you to be able to learn everything here. AI is going to get things wrong, and it's only the people who actually have learned what's going on under the hood who are going to be able to call out when AI gets something wrong. When AI gets something wrong, it does something called "hallucinate", and we talked a bit about that in that AI video we just watched. So, hallucinations are when the AI makes something up that it thinks is right, but it's completely wrong, and that's something we absolutely need to watch out for when we're coding and when we're learning.
 
 3. **Use the forums!** Web3Education.dev will have a place for you to ask questions, but in the meantime, definitely be sure to use the Foundry full course discussions. Use this to your advantage. And, use this to help other people out who have questions. This is a community project, we're all going to be helping each other out learning.
 
-4. **Google the exact error.** If AI doesn't know, and the forums aren't know, Google the exact error. Maybe somebody else has come across this error previously, asked a question online, and you can just Google it.
+4. **Google the exact error.** If AI doesn't know, and the forums doesn't have the answer, Google the exact error. Maybe somebody else has come across this error previously, asked a question online, and you can just Google it.
 
 5. **Post in Stack Exchange or Peeranha.** And, like we said in that AI video, you want to use Markdown and format your questions as best as possible. So, if you're unfamiliar with how to use Markdown, if you're unfamiliar with how to format your questions, again, please be sure to ask ChatGPT or some other AI how to best format your questions. You can even simply say, "Ask ChatGPT, could you give me an example of a well-formatted Stack Overflow question with code?" And it'll actually give us a really good formatted question. So it gives us the question, it formats the code for us, it's using this with the three backticks that I showed you in order to get this code block here. It's using three backticks and it's being very verbose in giving all the details of the question.
 
