@@ -9,7 +9,7 @@ The smart contract code we will be deploying is:
 ```python
 # I'm a comment!
 # SPDX-License-Identifier: MIT
-# @version ^0.4.0
+# @version ^0.4.1
 
 my_favorite_number: uint256
 
