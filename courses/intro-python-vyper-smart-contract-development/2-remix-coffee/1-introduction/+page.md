@@ -13,7 +13,7 @@ We will be building a simple smart contract that allows people to send you money
 We will explore the following code:
 
 ```python
-# pragma version 0.4.0
+# pragma version 0.4.1
 # pragma enable-decimals
 """
 @license MIT

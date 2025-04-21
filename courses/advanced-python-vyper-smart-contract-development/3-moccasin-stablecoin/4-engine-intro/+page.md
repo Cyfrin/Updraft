@@ -5,7 +5,7 @@ This lesson will introduce the DSC Engine, a component of a decentralized stable
 We'll copy and paste the following code into the new file.
 
 ```python
-# pragma version 0.4.0
+# pragma version 0.4.1
 @license MIT
 @author You
 @title DSC Engine
@@ -138,11 +138,11 @@ def __init__():
 We'll create a new file titled _i_decentralized_stable_coin.vy_. We'll copy and paste the following code into this file.
 
 ```python
-# pragma version 0.4.0
+# pragma version 0.4.1
 @license MIT
 @author You
 @title i_decentralized_stablecoin
-@notice 
+@notice
 #
 @external
 def burn_from(owner: address, amount: uint256):
@@ -156,7 +156,7 @@ def mint(owner: address, amount: uint256):
 Finally, we'll import the _i_decentralized_stable_coin_ interface.
 
 ```python
-# pragma version 0.4.0
+# pragma version 0.4.1
 @license MIT
 @author You
 @title DSC Engine
@@ -196,4 +196,4 @@ Now, we can compile our contract.
 mox compile
 ```
 
-This concludes the DSC Engine Intro lesson. 
+This concludes the DSC Engine Intro lesson.

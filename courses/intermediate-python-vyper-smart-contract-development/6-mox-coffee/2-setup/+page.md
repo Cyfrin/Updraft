@@ -35,7 +35,7 @@ Now, we'll delete the files that were created in this directory so we can start 
 To get our starting code for this project, we'll use the code from the "Buy Me A Coffee" section in the Remix Fundamentals video. We'll go over to our GitHub repository, open `remix-buy-me-a-coffee-cu` and then open the `buy-me-a-coffee.vy` file. We're going to bring this code into our `mox-buy-me-a-coffee-cu` directory. We can copy it and paste it into a new file. We can right-click, select "New File", and name it `buy-me-a-coffee.vy`:
 
 ```python
-# pragma version ^0.4.0
+# pragma version ^0.4.1
 """
 @license MIT
 @title Buy Me A Coffee!

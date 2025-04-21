@@ -8,7 +8,7 @@ First, we will create a new Remix project and write the following code:
 # Get funds from users
 # Withdraw funds
 # Set a minimum funding value in USD
-pragma version ^0.4.0
+pragma version ^0.4.1
 @license: MIT
 @author: You!
 

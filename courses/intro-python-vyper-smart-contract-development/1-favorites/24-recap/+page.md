@@ -21,7 +21,7 @@ We also have two functions, a **store** function to set our favorite number and 
 Here is the code we have written so far:
 
 ```python
-# pragma version ^0.4.0
+# pragma version ^0.4.1
 # @license MIT
 
 struct Person:

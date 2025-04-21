@@ -4,19 +4,19 @@ We will start by setting a version for our Vyper smart contract. This is an impo
 
 The version is set using the `#pragma version` directive.
 
-We will use `0.4.0`, a stable and widely supported version.
+We will use `0.4.1`, a stable and widely supported version.
 
 ```python
-#pragma version 0.4.0
+#pragma version 0.4.1
 ```
 
 We can also use other versions, such as 0.4.1 and above, by using the `^` symbol to indicate a minimum version.
 
 ```python
-#pragma version ^0.4.0
+#pragma version ^0.4.1
 ```
 
-We will stick with `0.4.0` in this lesson.
+We will stick with `0.4.1` in this lesson.
 
 Using this version is recommended because it's widely supported and allows for greater compatibility across different compilers.
 
