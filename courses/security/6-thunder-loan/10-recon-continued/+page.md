@@ -8,7 +8,7 @@ title: Recon (continued)
 
 Alright! We've gained tonnes of additional context by taking the time to better understand concepts like arbitrage and flash loans, which seem to be integral to Thunder Loan's functionality.
 
-As security researchers it's often important for us pro-actively seek out a deeper understanding of protocol features to properly understand how a protocol works.
+As security researchers, it's often important for us pro-actively seek out a deeper understanding of protocol features to properly understand how a protocol works.
 
 If you haven't already, I encourage you to read up on [**Aave**](https://aave.com/) and [**Compound**](https://compound.finance/), on which Thunder Loan is based. I previous also linked this [**Aave explainer video**](https://www.youtube.com/watch?v=dTCwssZ116A) from Whiteboard Crypto that you should definitely check out.
 
@@ -44,4 +44,4 @@ If we look at ThunderLoan.sol we can see that it's inheriting a bunch of upgrade
 
 Now that we have so much context and understanding of Thunder Loan, I think we're ready to dive in and start breaking it.
 
-In the next lesson we'll start with applying some of our tools to weed out some low hanging fruit. See you there!
+In the next lesson, we'll start with applying some of our tools to weed out some low hanging fruit. See you there!
