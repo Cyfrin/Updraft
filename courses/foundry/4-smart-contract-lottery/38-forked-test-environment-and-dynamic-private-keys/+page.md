@@ -28,7 +28,7 @@ import {AutomationCompatibleInterface} from "chainlink/src/v0.8/automation/inter
 /**
  * @title Raffle
  * @author EngrPips
- * @notice This contract if Particpating in a Raffle and standing the chance to win.
+ * @notice This contract if Participating in a Raffle and standing the chance to win.
  * @dev This contract heavily implements the chainlink VRF and Automation
  */
 // 0x9ddfaca8183c41ad55329bdeed9f6a8d53168b1b => VRFCoordinator
