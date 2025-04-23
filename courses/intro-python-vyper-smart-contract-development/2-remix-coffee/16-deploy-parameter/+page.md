@@ -10,7 +10,7 @@ We are going to make the price feed a state variable, up at the top.
 
 Since our structs are the same as in the last lesson, the `AggregatorV3Interface` is a new type.  We can create a variable, a state variable, or a storage variable, called `price_feed` of type `AggregatorV3Interface`. 
 
-In our deploy function we can say `self.price_feed = AggregatorV3Interface()` at address.  We are hardcoding this address into the contract.
+In our deploy function, we can say `self.price_feed = AggregatorV3Interface()` at address.  We are hardcoding this address into the contract.
 
 We can add a comment saying that we are using the Sepolia testnet: 
 

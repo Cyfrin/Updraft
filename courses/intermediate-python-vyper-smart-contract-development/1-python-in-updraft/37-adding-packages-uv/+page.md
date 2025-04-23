@@ -4,7 +4,7 @@ The UV tool helps us manage Python packages and dependencies across different pr
 
 We'll use the **Titanoboa** package in this lesson to showcase how UV can be used to manage dependencies. 
 
-**Titano Boa** is a package that allows us to evaluate code written in Python. 
+**Titanoboa** is a package that allows us to evaluate code written in Python. 
 
 First, let's create a simple Python script that will utilize **Titanoboa**.
 ```python
@@ -15,21 +15,21 @@ print(boa.eval('"empty(uint256())"'))
 print("Hello!")
 ```
 
-If we try to run this script without having **Titano Boa** installed, we'll encounter an error message as **Titanoboa** is not available.  
+If we try to run this script without having **Titanoboa** installed, we'll encounter an error message as **Titanoboa** is not available.  
 
-**Let's install Titano Boa globally using pip** 
+**Let's install Titanoboa globally using pip** 
 ```bash
 python3.11 -m pip install titano Boa
 ```
 
-This will install **Titano Boa** for the global Python 3.11 environment.
+This will install **Titanoboa** for the global Python 3.11 environment.
 
 Now we can run our script and we'll see the output:
 ```bash
 python3.11 basic_python.py
 ```
 
-We get the correct output because **Titano Boa** was installed globally in our Python 3.11 environment.
+We get the correct output because **Titanoboa** was installed globally in our Python 3.11 environment.
 
 **UV's strength lies in its ability to manage dependencies for specific project environments. Let's demonstrate this.**
 
@@ -40,7 +40,7 @@ We get the correct output because **Titano Boa** was installed globally in our P
 uv add titano Boa
 ```
 
-This will create a new folder called `venv`  in our project directory and automatically add **Titano Boa** to the project environment. 
+This will create a new folder called `venv` in our project directory and automatically add **Titanoboa** to the project environment. 
 
 **UV will also generate a `uv.lock` file.**
 
@@ -69,6 +69,6 @@ dependencies = [
 ]
 ```
 
-The `pyproject.toml` file acts as a configuration file for our project, defining dependencies and other project-related details. When we used `uv add titano Boa`, UV updated this file to include **Titano Boa** in our dependency section. 
+The `pyproject.toml` file acts as a configuration file for our project, defining dependencies and other project-related details. When we used `uv add titanoboa`, UV updated this file to include **Titanoboa** in our dependency section. 
 
 UV's flexibility allows us to easily switch between different Python versions and environments without the hassle of managing global packages or manually installing dependencies for each project.

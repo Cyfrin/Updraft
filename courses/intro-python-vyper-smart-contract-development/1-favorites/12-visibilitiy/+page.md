@@ -5,7 +5,9 @@ We've learned about the different types of values that Vyper variables can hold.
 We'll start with a simple smart contract that has a single state variable called `my_favorite_number`. This variable will be a `uint256`, which is an unsigned integer. We'll initialize it to 0.
 
 ```python
-#pragma version 0.4.1
+
+#pragma version >=0.4.1
+
 @license MIT
 my_favorite_number: uint256 = 0
 ```
@@ -31,7 +33,9 @@ Since we haven't added any functionality to our contract yet, we only have low-l
 We can make a variable visible to everyone by adding the keyword `public` before its type.
 
 ```python
-#pragma version 0.4.1
+
+#pragma version >=0.4.1
+
 @license MIT
 my_favorite_number: public(uint256) = 0
 ```

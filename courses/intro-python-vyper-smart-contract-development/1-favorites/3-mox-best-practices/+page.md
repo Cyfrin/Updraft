@@ -1,4 +1,4 @@
-## Welcome to Solidity Fundamentals: Best Practices
+## Welcome to Vyper Fundamentals: Best Practices
 
 Let's start by talking about best practices. We will be looking at some best practices that we cover in our Moccasin course.
 

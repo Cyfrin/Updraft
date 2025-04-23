@@ -32,7 +32,7 @@ It's been a journey, but let's do a quick recap of everything we've covered in t
 
    Core invariants are fundamental properties of a protocol that must always hold true. An example of a core invariant was the constant product formula that we saw in TSwap (and is used in Uniswap) `x * y = k`.
 
-   > **Note:** `x * y = k` effectively says 'the ratio between these two tokens must remain the same
+   > **Note:** `x * y = k` effectively says the ratio between these two tokens must remain the same
 
    We were also introduced to the [**Properties**](https://github.com/crytic/properties) repo by Trail of Bits, which outlines a tonne of core invariants for common tokens and more.
 

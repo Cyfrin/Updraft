@@ -1,3 +1,5 @@
+## View and Pure Functions
+
 In this lesson we will learn how to build a view function.
 
 Firstly, let's go ahead and make a function that returns a value.
