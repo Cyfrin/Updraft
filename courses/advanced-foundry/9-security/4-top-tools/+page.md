@@ -92,7 +92,7 @@ Once open in it's own instance of VSCode, we should see a number of contracts co
 │   └── CaughtWithTest.sol
 ```
 
-To start with one the the simpler onces, `CaughtWithManualReview.sol`, this bug is meant to be identified simply by reviewing the code manually.
+To start with one the simpler onces, `CaughtWithManualReview.sol`, this bug is meant to be identified simply by reviewing the code manually.
 
 ```solidity
 // SPDX-License-Identifier: MIT
