@@ -43,7 +43,7 @@ Something of note by the Thunder Loan protocol:
 
 - Users additionally have to pay a small fee to the protocol depending on how much money they borrow. To calculate the fee, we're using the famous on-chain TSwap price oracle.
 
-This fee must be where the interest for Liquidity Providers is coming from, I'm sure we'll soon confirm. Additionally we see that Thunder Loan is leveraging a price oracle.
+This fee must be where the interest for Liquidity Providers is coming from, I'm sure we'll soon confirm. Additionally, we see that Thunder Loan is leveraging a price oracle.
 
 ### Wrap Up
 

@@ -28,7 +28,7 @@ You can customize your configuration file however you'd like, but this is an exa
 }
 ```
 
-In this config there are just a few settings I prefer that make our `Slither` output a little more meaningful to us.
+In this config, there are just a few settings I prefer that make our `Slither` output a little more meaningful to us.
 
 Detectors for things like naming conventions and solidity versions will be excluded for example. Additionally, I will filter the paths that `Slither` covers to avoid things like tests and mocks being caught by it!
 

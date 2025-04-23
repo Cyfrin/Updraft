@@ -18,7 +18,7 @@ You could buy one Ethereum at DEX A for $5, then head over to DEX B and sell tha
 
 Imagine if this situation were to scale up, and you were able to buy 10, 100 or 1000 ETH. The problem lies in the average person's ability to shoulder the upfront investment.
 
-In contemporary finance opportunities like I've outlined above could only maximally be taken advantage of by `whales` aka the incredibly wealthy.
+In contemporary finance, opportunities like I've outlined above could only maximally be taken advantage of by `whales` aka the incredibly wealthy.
 
 This is where flash loans come in to level the playing field in DeFi by giving any user access to much more liquidity - for a single transaction.
 

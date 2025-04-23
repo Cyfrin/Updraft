@@ -6,7 +6,7 @@ title: Are Flash Loans Bad?
 
 ### Are Flash Loans Bad?
 
-There are some in Web3 who view Flash Loans as being a _negative_ in the space, arguing that they promote exploitative behaviours etc.
+There are some in Web3 who view Flash Loans as being a _negative_ in the space, arguing that they promote exploitative behaviours, etc.
 
 Personally, I don't agree. I see flash loans as a leveler, allowing anyone to be a "whale" for a single transaction.
 

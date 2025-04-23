@@ -40,7 +40,7 @@ Can you spot the issue?
 
 The first parameter being passed to our IThunderLoan function is wrong! The interface is expecting an address, but the function is actually asking for an IERC20 interface!
 
-If the protocol had implemented the IThunderLoan interface in ThunderLoan.sol,they would have caught this right away themselves.
+If the protocol had implemented the IThunderLoan interface in ThunderLoan.sol, they would have caught this right away themselves.
 
 ```js
 interface IThunderLoan {

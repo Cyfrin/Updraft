@@ -16,15 +16,15 @@ So, what happened?
 
 Oasis.app is a system that allows users to lend and borrow assets on the Maker protocol. They touted themselves as decentralized and permissionless - but this wasn't really the case.
 
-In February 2022 the Wormhole bridge experienced a hack resulting in the loss of ~120,000 ETH. As is often the case, these funds are transferred betweens systems and protocols often in an attempt at obscuring their connection to the hacker. At one point the hacker deposited these funds into Oasis.app and left themselves open to counter-exploit.
+In February 2022, the Wormhole bridge experienced a hack resulting in the loss of ~120,000 ETH. As is often the case, these funds are transferred betweens systems and protocols often in an attempt at obscuring their connection to the hacker. At one point, the hacker, deposited these funds into Oasis.app and left themselves open to counter-exploit.
 
-Oasis, importantly functions on a 4 of 12 multisig upgradeable proxy and with 4 signatures, could change the protocol in any way they wanted. In 2023 a UK High Court ordered Oasis to exploit this upgradeability to close the hacker's vaults and reclaim the stolen funds.
+Oasis, importantly functions on a 4 of 12 multisig upgradeable proxy and with 4 signatures, could change the protocol in any way they wanted. In 2023, a UK High Court ordered Oasis to exploit this upgradeability to close the hacker's vaults and reclaim the stolen funds.
 
 In a decentralized, permissionless ecosystem, this shouldn't be possible! Oasis was ordered to exploit itself in order to retrieve stolen crypto!
 
 ### Wrap Up
 
-The above circumstance certainly seems bitter sweet. On the plus side - hacked funds were recovered, this is obviously a good thing. Negatively, however, the lack of decentralization is terrifying. The whole system was still built on trust and Web3 should strive to be trustless!
+The above circumstance certainly seems bittersweet. On the plus side - hacked funds were recovered, this is obviously a good thing. Negatively, however, the lack of decentralization is terrifying. The whole system was still built on trust and Web3 should strive to be trustless!
 
 What would have happened if the Oasis team had been malicious? We don't even need to wonder, because it happens all the time. We've got to stop it.
 
@@ -34,7 +34,7 @@ You have heard before about cyber thefts. But have you heard of one where hacker
 
 ## Oasis and Its Security Meltdown
 
-Oasis is a digital platform that allows users to lend and borrow assets on the maker protocol. The exciting - and somewhat controversial - thing about it was its selling point as a decentralized and permissionless platform. In other words, there was no need for central intermediaries, fuss over permissions, or concerns about third-party interventions.
+Oasis is a digital platform that allows users to lend and borrow assets on the Maker protocol. The exciting - and somewhat controversial - thing about it was its selling point as a decentralized and permissionless platform. In other words, there was no need for central intermediaries, fuss over permissions, or concerns about third-party interventions.
 
 ![](https://cdn.videotap.com/TrlvVL07HW0fU9JmwRSw-26.17.png)
 
