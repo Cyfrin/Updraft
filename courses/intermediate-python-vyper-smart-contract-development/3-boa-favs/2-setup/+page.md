@@ -38,7 +38,7 @@ Next, we'll create a new `favorites.vy` file by right-clicking on the folder and
 
 ```python
 # I'm a comment!
-# pragma version ^0.4.0
+# pragma version ^0.4.1
 # @license MIT
 struct Person:
     favorite_number: uint256

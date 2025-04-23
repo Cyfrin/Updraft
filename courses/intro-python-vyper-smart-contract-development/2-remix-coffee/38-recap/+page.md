@@ -3,7 +3,7 @@ In this lesson we will continue working with our _buy-me-a-coffee_ smart contrac
 Here is the code we are working with so far:
 
 ```python
-#pragma version 0.4.0
+#pragma version 0.4.1
 @license MIT
 @title Buy Me A Coffee!
 @author You!

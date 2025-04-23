@@ -1,13 +1,13 @@
 ## DelegateCall in Action
 
-In this lesson, we'll take a look at the implementation of delegate call, a powerful tool that lets us upgrade our contracts without having to change their addresses. 
+In this lesson, we'll take a look at the implementation of delegate call, a powerful tool that lets us upgrade our contracts without having to change their addresses.
 
 Let's get started. We'll copy and paste these contracts into our project:
 
 ```javascript
 #counter_one.vy
 # SPDX-License-Identifier: MIT
-pragma version 0.4.0
+pragma version 0.4.1
 
 number: public(uint256)
 
@@ -28,7 +28,7 @@ def version() -> uint256:
 ```javascript
 #counter_two.vy
 # SPDX-License-Identifier: MIT
-pragma version 0.4.0
+pragma version 0.4.1
 
 number: public(uint256)
 
@@ -77,9 +77,9 @@ Here's what this script does:
 2.  Then, we deploy the proxy contract with the implementation address and the admin address, which is set to boa.env.eoa.
 3.  We assign the ABI to the proxy contract.
 4.  We call the set_number function on the proxy, setting the number value to 77.
-5.  We print the value of `number` from both the proxy contract and the implementation contract. 
+5.  We print the value of `number` from both the proxy contract and the implementation contract.
 
-You'll notice that the `number` value was updated in the proxy contract but not the implementation contract. 
+You'll notice that the `number` value was updated in the proxy contract but not the implementation contract.
 
 Remember, the delegate call implementation is likely to throw warnings. We'll ignore these warnings by including this snippet in our script:
 
@@ -93,4 +93,4 @@ Finally, we can run our script with this command:
 mox run deploy
 ```
 
-This will run the deploy script, and you'll see that our `set_number` function call was applied to the proxy contract and not the implementation contract. 
+This will run the deploy script, and you'll see that our `set_number` function call was applied to the proxy contract and not the implementation contract.

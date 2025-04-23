@@ -23,14 +23,14 @@ Again, don't need to worry about the Solidity stuff for now, just know that as o
 
 Now, right on the naming convention here, you see we're using underscores for spaces between the names here. This is known as snake case. And, there's a bit of a disagreement in the Vyper community as of recording, if this is better, or something called camel case is better, which looks like this. Where it's like every start of a new word just has a capitalized letter at the beginning. Python by nature is typically what's called snake case with these underscores like this. But, I want to point out that for the names of files, you might see it both ways. In the Python, in the Vyper code itself, we'll definitely be using snake case with the underscores. But, for the names of file it might go either way. Now, before we actually begin coding anything, let's write down what we want to do here. It's usually a good idea to write down what you want your code base to do before you even get started coding so that you have a design spec of what it should be doing. And, this is a really good step for anybody who is building smart contracts or building any type of code. So, what do we want this to do? Well, we want this application to do three things: allow us to get funds from users so that people can buy us coffee. We want to be able to withdraw those funds so that we can actually go off and buy the coffee. And then finally, set a minimum funding value in USD.
 
-Now, originally, I said $50, we might make it five. We might make it two because now that I'm thinking about it, $50 coffee is ridiculous. But, you know, you can set your coffee price to whatever you want it to be. So, let's go ahead and let's get started here, of course, with pragma version 0.4.0. And, we'll say @license MIT.
+Now, originally, I said $50, we might make it five. We might make it two because now that I'm thinking about it, $50 coffee is ridiculous. But, you know, you can set your coffee price to whatever you want it to be. So, let's go ahead and let's get started here, of course, with pragma version 0.4.1. And, we'll say @license MIT.
 
 ```python
 # Get funds from users
 # Withdraw funds
 # Set a minimum funding value in USD
 
-# pragma version 0.4.0
+# pragma version 0.4.1
 # @license: MIT
 ```
 
@@ -41,7 +41,7 @@ And then if you want, you can also do @author and put your name here.
 # Withdraw funds
 # Set a minimum funding value in USD
 
-# pragma version 0.4.0
+# pragma version 0.4.1
 # @license: MIT
 # @author: You!
 ```
@@ -55,7 +55,7 @@ Now, let's actually build a little bit of a skeleton for our smart contract here
 # Withdraw funds
 # Set a minimum funding value in USD
 
-# pragma version 0.4.0
+# pragma version 0.4.1
 # @license: MIT
 # @author: You!
 
@@ -69,7 +69,7 @@ And what you can do that's quite nice in Vyper is that if you want to just name 
 # Withdraw funds
 # Set a minimum funding value in USD
 
-# pragma version 0.4.0
+# pragma version 0.4.1
 # @license: MIT
 # @author: You!
 
@@ -86,7 +86,7 @@ So, this pass keyword is valid Vyper here. So, we want def fund. What else? We p
 # Withdraw funds
 # Set a minimum funding value in USD
 
-# pragma version 0.4.0
+# pragma version 0.4.1
 # @license: MIT
 # @author: You!
 

@@ -18,7 +18,7 @@ We can use a special docstring format called NatSpec Metadata to add documentati
 To use NatSpec, we add an "at" symbol (@) followed by a tag. We'll add the following NatSpec tags at the top of our contract:
 
 ```python
-pragma version 0.4.0
+pragma version 0.4.1
 @license MIT
 @title Buy Me A Coffee!
 @author You!
