@@ -28,7 +28,7 @@ Most of the time we're manipulating data, it's going to be on the stack and we'l
 
 We also learnt that the EVM is effectively comprised of `op codes` which denote the operations we want executed. [**evm.codes**](https://www.evm.codes/?fork=shanghai) has been incredibly useful for us in our learning about the specifics of each `op code`!
 
-When sending data to a smart contract, we we introduced the concept of `calldata`. When Solidity compiles, through it's use op codes it's able to understand the provided `calldata`, and one of the first things it attempts to determine is **_"What am I supposed to do with this data?"_**. The EVM accomplishes this through referencing a `calldata's` `function selector` and a process called `function dispatching` in which case the rest of the `call data` is routed to the function associated with this `function selector`.
+When sending data to a smart contract, we introduced the concept of `calldata`. When Solidity compiles, through it's use op codes it's able to understand the provided `calldata`, and one of the first things it attempts to determine is **_"What am I supposed to do with this data?"_**. The EVM accomplishes this through referencing a `calldata's` `function selector` and a process called `function dispatching` in which case the rest of the `call data` is routed to the function associated with this `function selector`.
 
 ### Huff
 
