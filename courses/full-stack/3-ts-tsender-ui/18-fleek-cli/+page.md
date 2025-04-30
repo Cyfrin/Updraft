@@ -109,13 +109,13 @@ With preparations complete, you can now use the Fleek CLI to deploy your site:
 After deployment, verify that your site is live and functioning correctly:
 
 1.  **Access the Site:** Open the gateway URL provided by the CLI in your web browser. Your application should load.
-2.  **Test Functionality:** If your application includes Web3 interactions (like connecting a wallet or interacting with smart contracts):
-    *   Connect your Web3 wallet (e.g., MetaMask).
+2.  **Test Functionality:** If your application includes web3 interactions (like connecting a wallet or interacting with smart contracts):
+    *   Connect your web3 wallet (e.g., MetaMask).
     *   Perform key actions within your application (e.g., submitting a form, triggering a transaction).
     *   **Troubleshooting:** Be aware that browser security features or extensions (like Brave Shields) might block requests from your deployed HTTPS site to local RPC endpoints (e.g., `http://127.0.0.1:8545` for a local testnet like Anvil or Hardhat). If you encounter connection errors in the browser console during testing with local nodes, try disabling shields or security features specifically for your deployed site's URL.
     *   Confirm that transactions are processed as expected by checking wallet prompts and blockchain state (if applicable).
 
-Successful interaction confirms that your statically deployed site retains its dynamic Web3 capabilities.
+Successful interaction confirms that your statically deployed site retains its dynamic web3 capabilities.
 
 ### Fleek UI Confirmation and Next Steps
 

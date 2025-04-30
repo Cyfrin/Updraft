@@ -1,13 +1,13 @@
-## Javascript Fundamentals Refresher
+## JavaScript Fundamentals Refresher
 
-Before diving into the complexities of web3 development, it's crucial to have a solid grasp of Javascript fundamentals. This lesson provides a quick refresher on core concepts, assuming you have Node.js and npm installed. We'll use Visual Studio Code (VS Code) as our editor and run Javascript directly from the terminal. If you're already comfortable with basic Javascript, feel free to skip this section.
+Before diving into the complexities of web3 development, it's crucial to have a solid grasp of JavaScript fundamentals. This lesson provides a quick refresher on core concepts, assuming you have NodeJS and npm installed. We'll use Visual Studio Code (VS Code) as our editor and run JavaScript directly from the terminal. If you're already comfortable with basic JavaScript, feel free to skip this section.
 
-## Setting Up and Running Your First Javascript File
+## Setting Up and Running Your First JavaScript File
 
 First, ensure you are working within your project directory (e.g., `full-stack-web3-cu`).
 
 1.  **Create the File:** In VS Code, right-click within the file explorer pane in your project folder and select "New File". Name this file `mycode.js`.
-2.  **Run the File:** Open your terminal within VS Code (or a separate terminal navigated to your project directory). To execute your Javascript file using Node.js, use the following command:
+2.  **Run the File:** Open your terminal within VS Code (or a separate terminal navigated to your project directory). To execute your JavaScript file using NodeJS, use the following command:
 
     ```bash
     node mycode.js
@@ -36,9 +36,9 @@ VS Code indicates an unsaved file with a white dot next to the filename in its t
 *   Use `Cmd+S` (Mac) or `Ctrl+S` (Windows/Linux), or go to File -> Save.
 *   If you run `node mycode.js` with unsaved changes, you'll see the output from the *last saved version*. Save the file, then run the command again to see the updated output.
 
-## Understanding Basic Javascript Data Types
+## Understanding Basic JavaScript Data Types
 
-Javascript has several fundamental data types. Here are the key ones we'll cover now:
+JavaScript has several fundamental data types. Here are the key ones we'll cover now:
 
 1.  **String:** Represents textual data. Always enclose strings in single (`'`) or double (`"`) quotes.
     *   Examples: `"hello world"`, `'JavaScript'`, `"123"` (this is a string, not a number).
@@ -67,11 +67,11 @@ const isOneNumber = 1; // Note no quotes
 console.log(typeof(isOneNumber)); // Output: number
 ```
 
-*   **Note:** Javascript is case-sensitive. The operator is `typeof`, not `typeOf`. Typos like this will cause errors.
+*   **Note:** JavaScript is case-sensitive. The operator is `typeof`, not `typeOf`. Typos like this will cause errors.
 
 ## Storing Data with Variables: let vs. const
 
-Variables are used to store data values under a specific name, allowing you to reuse and manipulate data easily. Javascript provides two primary ways to declare variables: `let` and `const`.
+Variables are used to store data values under a specific name, allowing you to reuse and manipulate data easily. JavaScript provides two primary ways to declare variables: `let` and `const`.
 
 1.  **`let`:** Declares a variable whose value *can* be changed (reassigned) later in the code.
 
@@ -97,14 +97,14 @@ Variables are used to store data values under a specific name, allowing you to r
     // myConstant = "goodbye";
     ```
 
-    If you attempt to reassign a `const` variable, Node.js will throw an error similar to this:
+    If you attempt to reassign a `const` variable, NodeJS will throw an error similar to this:
     `TypeError: Assignment to constant variable.`
 
 Choose `const` by default unless you specifically know you'll need to reassign the variable, in which case use `let`. This helps prevent accidental changes to values that should remain constant.
 
 ## Adding Notes with Comments
 
-Comments are lines in your code that the Javascript interpreter ignores. They are used to add explanations, leave notes for yourself or others, or temporarily disable lines of code without deleting them.
+Comments are lines in your code that the JavaScript interpreter ignores. They are used to add explanations, leave notes for yourself or others, or temporarily disable lines of code without deleting them.
 
 *   **Syntax:** Single-line comments start with `//`. Everything after `//` on that line is ignored.
 
@@ -160,13 +160,13 @@ greet();
 // Hello there!
 ```
 
-*   **Note on Hoisting:** Javascript has a feature called "hoisting" which sometimes allows you to call a function *before* its definition appears in the code. While this works for standard function declarations, it's generally considered good practice to define functions before you call them for better readability.
+*   **Note on Hoisting:** JavaScript has a feature called "hoisting" which sometimes allows you to call a function *before* its definition appears in the code. While this works for standard function declarations, it's generally considered good practice to define functions before you call them for better readability.
 
 ## Leveraging AI for Code Generation and Debugging
 
 AI tools like DeepSeek (or others like ChatGPT, Copilot) can be helpful assistants during development.
 
-1.  **Code Generation:** You can ask the AI to generate boilerplate code or simple functions. For example, you might ask for a Javascript function to calculate the square root of a number.
+1.  **Code Generation:** You can ask the AI to generate boilerplate code or simple functions. For example, you might ask for a JavaScript function to calculate the square root of a number.
 2.  **Debugging:** When you encounter an error message in your terminal (like the `TypeError` from reassigning a `const`), copy the entire error message. Paste it into the AI chat tool and ask questions like:
     *   "What does this error mean?"
     *   "How can I fix this error in my code?"
@@ -176,10 +176,10 @@ AI can often quickly explain common errors and suggest fixes, accelerating your 
 
 ## Key Workflow Tips
 
-*   **Prerequisites:** Ensure Node.js and npm are installed.
+*   **Prerequisites:** Ensure NodeJS and npm are installed.
 *   **Run Location:** Always execute `node yourfile.js` from the *same directory* where `yourfile.js` is located.
 *   **SAVE YOUR FILES:** Remember to save (`Cmd+S`/`Ctrl+S`) before running `node`. The white dot in the VS Code tab means unsaved changes.
 *   **Terminal History:** Use the `up` and `down` arrow keys in your terminal to cycle through previous commands, saving you typing.
-*   **Javascript Flexibility:** Be aware that Javascript can sometimes be flexible (e.g., optional semicolons, hoisting), which can occasionally lead to confusion. Sticking to consistent practices helps.
+*   **JavaScript Flexibility:** Be aware that JavaScript can sometimes be flexible (e.g., optional semicolons, hoisting), which can occasionally lead to confusion. Sticking to consistent practices helps.
 
-This refresher covers the essential Javascript concepts needed to get started. As we progress, we'll build upon these fundamentals.
+This refresher covers the essential JavaScript concepts needed to get started. As we progress, we'll build upon these fundamentals.

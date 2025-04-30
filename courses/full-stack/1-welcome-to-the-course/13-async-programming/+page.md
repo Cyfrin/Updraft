@@ -1,4 +1,4 @@
-## Understanding Asynchronous JavaScript for Web3 Development
+## Understanding Asynchronous JavaScript for web3 Development
 
 Welcome! Before we dive deeper into deploying smart contracts and interacting with the blockchain, it's crucial to understand a fundamental concept in JavaScript: asynchronous programming. This concept is essential because many blockchain operations, like sending transactions or waiting for contract deployment, don't happen instantly. JavaScript provides tools to handle these delays gracefully, and we'll explore them here.
 
@@ -112,7 +112,7 @@ setupMovieNight();
 
 In this example, `await cookPopcorn()` pauses `setupMovieNight` until the `cookPopcorn` Promise resolves. Then, `await pourDrinks()` pauses it again (if `pourDrinks` is async and returns a Promise). Only after both preparations are confirmed complete does `startMovie()` execute. The `await` keyword ensures the necessary steps happen in the correct order, respecting the asynchronous nature of the tasks.
 
-### Relevance to Web3 and Contract Deployment
+### Relevance to web3 and Contract Deployment
 
 Deploying a smart contract to a blockchain is inherently asynchronous. You send a transaction to the network, and then you must wait for miners or validators to include it in a block. This waiting period is unpredictable.
 
@@ -144,7 +144,7 @@ Using `async`/`await` ensures we don't try to interact with the contract before 
 
 ### Running Your Main Asynchronous Function
 
-When you have an `async` function like `main` that orchestrates your script, you need a way to call it and handle its final outcome (success or failure) at the top level of your script. Since `async` functions return Promises, a common pattern in Node.js scripts looks like this:
+When you have an `async` function like `main` that orchestrates your script, you need a way to call it and handle its final outcome (success or failure) at the top level of your script. Since `async` functions return Promises, a common pattern in NodeJS scripts looks like this:
 
 ```javascript
 // Define your main async logic
@@ -162,7 +162,7 @@ main()
   });
 ```
 
-This `main().then(...).catch(...)` structure ensures that your Node.js process exits correctly based on whether your asynchronous operations succeeded or failed. While it's good to understand what this does, don't worry if it seems confusing initially. You can often use this boilerplate structure without fully dissecting the Promise chain details right away.
+This `main().then(...).catch(...)` structure ensures that your NodeJS process exits correctly based on whether your asynchronous operations succeeded or failed. While it's good to understand what this does, don't worry if it seems confusing initially. You can often use this boilerplate structure without fully dissecting the Promise chain details right away.
 
 ### Key Takeaways
 
@@ -170,7 +170,7 @@ This `main().then(...).catch(...)` structure ensures that your Node.js process e
 *   **Asynchronous:** Code can start long tasks and continue other work without waiting, preventing blocking (common in JavaScript).
 *   **Promises:** Objects representing the eventual result (success or failure) of an asynchronous operation.
 *   **`async`/`await`:** Modern syntax to work with Promises, allowing you to pause execution inside an `async` function until a Promise settles, making code more readable. `await` requires `async`.
-*   **Web3 Relevance:** Many blockchain interactions (like deployment) are asynchronous and require waiting, making `async`/`await` essential tools.
-*   **Handling Errors:** The `main().then().catch()` pattern is standard for running top-level async functions in Node.js scripts and managing success/failure exits.
+*   **web3 Relevance:** Many blockchain interactions (like deployment) are asynchronous and require waiting, making `async`/`await` essential tools.
+*   **Handling Errors:** The `main().then().catch()` pattern is standard for running top-level async functions in NodeJS scripts and managing success/failure exits.
 
-Asynchronous programming can take a little time to get used to. If it's not immediately clear, don't let it hinder your progress. Follow along with the code examples, and refer back to these concepts as needed. You'll primarily be using `async` and `await` to handle the necessary waiting periods in our Web3 scripts.
+Asynchronous programming can take a little time to get used to. If it's not immediately clear, don't let it hinder your progress. Follow along with the code examples, and refer back to these concepts as needed. You'll primarily be using `async` and `await` to handle the necessary waiting periods in our web3 scripts.

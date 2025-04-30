@@ -28,7 +28,7 @@ What makes it dynamic?
 *   **Server-Side Rendering/Components:** Next.js inherently involves server-side operations for rendering and data fetching.
 *   **Potential Database/Indexer Interaction:** Although not explicitly covered in this recap, interactions with indexers (like GraphQL endpoints) also contribute to its dynamic nature.
 
-Static sites consist solely of pre-built HTML, CSS, and JavaScript files that are simply served to the user. Dynamic applications require a runtime environment on the server to execute their backend code. Therefore, deployment platforms like Fleek need to be configured appropriately to handle Next.js applications with API routes, not just serve static assets. This often involves specifying build commands and ensuring the platform supports the necessary Node.js runtime environment.
+Static sites consist solely of pre-built HTML, CSS, and JavaScript files that are simply served to the user. Dynamic applications require a runtime environment on the server to execute their backend code. Therefore, deployment platforms like Fleek need to be configured appropriately to handle Next.js applications with API routes, not just serve static assets. This often involves specifying build commands and ensuring the platform supports the necessary NodeJS runtime environment.
 
 ## Next Steps: Sharpen Your Skills in Hackathons
 
@@ -43,7 +43,7 @@ Hackathons (like those hosted by ETH Global, ETH India, Chainlink, and others) p
 
 Treat hackathons as intense, focused learning and building sprints. They are one of the best ways to accelerate your growth as a web3 developer.
 
-## Course Conclusion: Building the Future of Web3
+## Course Conclusion: Building the Future of web3
 
 Congratulations on reaching the end of this comprehensive full-stack web3 AI curriculum! You've navigated a wide array of cutting-edge technologies, including:
 

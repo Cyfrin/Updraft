@@ -2,21 +2,21 @@
 
 After building and testing your application, the final crucial step is deployment. Making your application live allows judges (in a hackathon scenario) or users to interact with it. While numerous deployment platforms exist, this lesson focuses on deploying a Next.js application as a static site using the Fleek UI.
 
-## Introducing Fleek: Your Web3 Hosting Platform
+## Introducing Fleek: Your web3 Hosting Platform
 
-Fleek (`fleck.xyz`) is a platform specializing in building and hosting static websites, making it an excellent choice for Web3 applications. Key reasons for using Fleek include:
+Fleek (`fleck.xyz`) is a platform specializing in building and hosting static websites, making it an excellent choice for web3 applications. Key reasons for using Fleek include:
 
 *   **Static Site Focus:** Optimized for deploying front-ends built as static sites.
-*   **Web3 Integrations:** Offers various plugins and integrations tailored for the Web3 ecosystem.
+*   **web3 Integrations:** Offers various plugins and integrations tailored for the web3 ecosystem.
 *   **Fleek Functions:** Provides serverless function capabilities for adding dynamic elements later (though not covered in this specific deployment).
 
 These features make Fleek a preferred choice for hosting decentralized application front-ends.
 
-## Static vs. Dynamic Sites: Why Go Static for Web3?
+## Static vs. Dynamic Sites: Why Go Static for web3?
 
-Understanding the difference between static and dynamic sites is vital for Web3 deployment:
+Understanding the difference between static and dynamic sites is vital for web3 deployment:
 
-*   **Static Site:** Consists of pre-built HTML, CSS, and JavaScript files served directly to the user's browser. All logic runs client-side. There's no server-side computation required after the initial build. This aligns well with Web3 principles like decentralization (the front-end is often open-source, computation happens on the user's machine), reduces infrastructure costs for developers, and simplifies hosting on platforms like IPFS.
+*   **Static Site:** Consists of pre-built HTML, CSS, and JavaScript files served directly to the user's browser. All logic runs client-side. There's no server-side computation required after the initial build. This aligns well with web3 principles like decentralization (the front-end is often open-source, computation happens on the user's machine), reduces infrastructure costs for developers, and simplifies hosting on platforms like IPFS.
 *   **Dynamic Site:** Involves a server that processes requests, potentially interacts with databases, and renders content on the backend before sending it to the user. This adds complexity and ongoing server costs.
 
 For optimal compatibility with Fleek's static hosting and decentralized storage like IPFS, we need to configure our Next.js application to build as a 100% static site.

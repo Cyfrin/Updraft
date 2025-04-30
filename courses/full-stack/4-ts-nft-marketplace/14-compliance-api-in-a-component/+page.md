@@ -1,6 +1,6 @@
 ## Implementing Frontend Wallet Compliance Checks via a Backend API
 
-This lesson demonstrates how to integrate a crucial compliance check into your Web3 frontend application, specifically using Next.js and React. The goal is to verify if a connected user's wallet address is permitted to interact with your application by querying a backend API, which in turn handles communication with a compliance service like Circle. This approach keeps sensitive API keys and complex logic off the client-side.
+This lesson demonstrates how to integrate a crucial compliance check into your web3 frontend application, specifically using Next.js and React. The goal is to verify if a connected user's wallet address is permitted to interact with your application by querying a backend API, which in turn handles communication with a compliance service like Circle. This approach keeps sensitive API keys and complex logic off the client-side.
 
 ### The Core Concept: Secure Compliance Verification
 
@@ -148,4 +148,4 @@ This structure ensures that:
 3.  Connect a wallet (e.g., MetaMask) with an address configured as **compliant** on your backend. Verify that the main application content loads after connection.
 4.  Switch the connected wallet to an address configured as **non-compliant**. Observe that the `useEffect` triggers due to the address change, the `checkCompliance` function runs, the state updates to `false`, and the "Access Denied" message is displayed instead of the application content.
 
-By following these steps, you can effectively integrate frontend compliance checks, enhancing the security and regulatory adherence of your Web3 application while maintaining a clean separation between frontend presentation logic and backend security operations.
+By following these steps, you can effectively integrate frontend compliance checks, enhancing the security and regulatory adherence of your web3 application while maintaining a clean separation between frontend presentation logic and backend security operations.

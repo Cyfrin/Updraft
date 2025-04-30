@@ -1,10 +1,10 @@
-## Welcome to Full-Stack Web3 Development
+## Welcome to Full-Stack web3 Development
 
-Welcome! This course is designed to guide you through building full-stack Web3 decentralized applications, or dApps. Throughout this journey, you'll gain the skills needed to create applications similar in concept and complexity to platforms like Aave (`app.aave.com`) and Uniswap (`app.uniswap.org`).
+Welcome! This course is designed to guide you through building full-stack web3 decentralized applications, or dApps. Throughout this journey, you'll gain the skills needed to create applications similar in concept and complexity to platforms like Aave (`app.aave.com`) and Uniswap (`app.uniswap.org`).
 
 At their core, these dApps consist of two primary components:
 
-1.  **Frontend:** This is the user-facing interface, typically a website built with standard web technologies (HTML, JavaScript, and often frameworks like React/NextJS, which we'll cover later). Users interact directly with the frontend.
+1.  **Frontend:** This is the user-facing interface, typically a website built with standard web technologies (HTML, JavaScript, and often frameworks like React/Next.js, which we'll cover later). Users interact directly with the frontend.
 2.  **Backend:** Instead of traditional servers, the backend relies on smart contracts deployed onto a blockchain (like Ethereum). The frontend communicates with these smart contracts to trigger actions, read data, and manage state in a decentralized manner.
 
 Clicking a button on the frontend website initiates a transaction or data request that interacts with the smart contracts running on the blockchain backend. Our central resource hub, containing all code, discussions, and the course outline, can be found at our GitHub repository: `github.com/Cyfrin/full-stack-web3-cu`.
@@ -13,14 +13,14 @@ Clicking a button on the frontend website initiates a transaction or data reques
 
 We believe in building a strong foundation, which is why this course starts from the absolute basics. Even if you have minimal experience with web development, you're in the right place.
 
-Our approach is progressive. We begin with fundamental web technologies before layering on Web3 concepts.
+Our approach is progressive. We begin with fundamental web technologies before layering on web3 concepts.
 
 **Section 1: HTML/JS - Buy Me A Coffee**
 Our first project will be a simple "Buy Me A Coffee" dApp. Using only raw HTML and JavaScript, we'll build a minimal interface featuring:
 *   Buttons like `Connect`, `getBalance`, `Withdraw`, and `Buy Coffee`.
 *   An input field for specifying an amount (e.g., `ETH Amount`).
 
-This initial project serves as a practical introduction to connecting a basic website to the blockchain, fetching data (like wallet balance), and sending simple transactions. As you progress through the course (visible in the GitHub repository's Table of Contents), we'll tackle more complex projects using tools like React/NextJS, building towards sophisticated dApps.
+This initial project serves as a practical introduction to connecting a basic website to the blockchain, fetching data (like wallet balance), and sending simple transactions. As you progress through the course (visible in the GitHub repository's Table of Contents), we'll tackle more complex projects using tools like React/Next.js, building towards sophisticated dApps.
 
 ## The Power of Thinking: Our Learning Philosophy
 
@@ -39,7 +39,7 @@ Developing the skill to ask precise questions is invaluable, both for learning a
 
 ## Setting Up Your Development Environment
 
-To ensure you can follow along smoothly, it's crucial to set up your development environment correctly. Consistency in tooling minimizes setup friction and lets us focus on learning Web3 concepts.
+To ensure you can follow along smoothly, it's crucial to set up your development environment correctly. Consistency in tooling minimizes setup friction and lets us focus on learning web3 concepts.
 
 **Code Editor:**
 *   **Recommended:** Visual Studio Code (VS Code). As discussed, this is the editor used in the course videos and encourages active problem-solving.

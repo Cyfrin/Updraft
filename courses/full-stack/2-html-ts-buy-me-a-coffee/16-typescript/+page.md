@@ -44,13 +44,13 @@ The solution to this problem is **compilation**. The standard workflow involves:
 
 ## Setting Up Your TypeScript Environment
 
-To compile TypeScript, you first need the TypeScript compiler (`tsc`). This tool runs within a Node.js environment and is typically managed using a package manager. We'll use `pnpm` (Performant NPM) in this guide.
+To compile TypeScript, you first need the TypeScript compiler (`tsc`). This tool runs within a NodeJS environment and is typically managed using a package manager. We'll use `pnpm` (Performant NPM) in this guide.
 
-1.  **Ensure Node.js and pnpm are Installed:**
-    *   You need Node.js installed on your system.
+1.  **Ensure NodeJS and pnpm are Installed:**
+    *   You need NodeJS installed on your system.
     *   Check your `pnpm` version: `pnpm --version`.
     *   If you don't have `pnpm`, follow the official installation guide: `https://pnpm.io/installation`.
-    *   *(Note for Windows Users):* Using WSL (Windows Subsystem for Linux) is generally recommended for a smoother Node.js development experience compared to native Windows.*
+    *   *(Note for Windows Users):* Using WSL (Windows Subsystem for Linux) is generally recommended for a smoother NodeJS development experience compared to native Windows.*
 
 2.  **Install TypeScript:**
     Navigate to your project directory in your terminal and add TypeScript as a development dependency:

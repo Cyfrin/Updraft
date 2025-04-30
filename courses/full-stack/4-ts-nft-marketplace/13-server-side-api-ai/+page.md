@@ -39,7 +39,7 @@ ENABLE_COMPLIANCE_CHECK=true
 
 Before building the route, let's understand a few key pieces:
 
-1.  **Fetch API:** The standard browser and Node.js interface for making HTTP requests. We'll use `fetch` within our server-side route to call the external Circle API.
+1.  **Fetch API:** The standard browser and NodeJS interface for making HTTP requests. We'll use `fetch` within our server-side route to call the external Circle API.
 2.  **UUID (Universally Unique Identifier):** Many APIs, including Circle's, require an `idempotencyKey` for POST requests to prevent accidental duplicate operations. We'll use the `uuid` library to generate these unique keys.
 3.  **Feature Toggling:** The `ENABLE_COMPLIANCE_CHECK` environment variable acts as a feature flag. This allows us to easily disable the actual call to the Circle API during development or testing, preventing unnecessary API usage or reliance on the external service being available.
 

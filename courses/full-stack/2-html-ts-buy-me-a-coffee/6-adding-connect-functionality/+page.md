@@ -1,4 +1,4 @@
-## Connecting Your Dapp: Adding a Web3 Wallet Button with JavaScript and Viem
+## Connecting Your Dapp: Adding a web3 Wallet Button with JavaScript and Viem
 
 This lesson guides you through adding a "Connect Wallet" button to a basic HTML page. We'll start with fundamental JavaScript DOM manipulation and event handling, then check for a browser wallet like MetaMask, and finally use the modern `viem` library to robustly handle the connection process.
 

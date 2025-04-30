@@ -1,6 +1,6 @@
 ## Why Testing on Live Blockchains is Problematic
 
-When developing decentralized applications (DApps), especially the front-end interface, you need to test interactions with your smart contracts. Imagine interacting with a simple "Buy Me a Coffee" DApp. You connect your wallet (like MetaMask), enter an amount (say, 1 ETH), and click "Buy Coffee".
+When developing decentralized applications (DApps), especially the front-end interface, you need to test interactions with your smart contracts. Imagine interacting with a simple "Buy Me a Coffee" dApp. You connect your wallet (like MetaMask), enter an amount (say, 1 ETH), and click "Buy Coffee".
 
 If your wallet is connected to a live network like Ethereum Mainnet, you might immediately encounter an error in your browser's developer console, such as:
 
@@ -58,7 +58,7 @@ This basic instance provides a functional local blockchain, but it starts "empty
 
 ## Connecting MetaMask to Your Local Anvil Network
 
-To interact with your DApp's front-end using the local Anvil blockchain, you need to configure your MetaMask wallet to connect to it.
+To interact with your dApp's front-end using the local Anvil blockchain, you need to configure your MetaMask wallet to connect to it.
 
 1.  **Copy RPC URL:** From the Anvil terminal output, copy the RPC URL (e.g., `127.0.0.1:8545`). Note: You'll need to add the `http://` prefix.
 2.  **Open MetaMask:** Launch the MetaMask browser extension (using the expanded view can be helpful).
@@ -103,8 +103,8 @@ anvil --load-state fundme-anvil.json
 
 This command instructs Anvil to initialize its state using the data from the specified JSON file, rather than starting fresh.
 
-**How does this help?** The `fundme-anvil.json` file contains the deployed `FundMe` contract, its address, and its state. Your DApp's front-end is likely configured (e.g., in a `constants.js` or similar file) to interact with a specific contract address. By using `--load-state`, you ensure that Anvil starts with the required contract already deployed at that exact address.
+**How does this help?** The `fundme-anvil.json` file contains the deployed `FundMe` contract, its address, and its state. Your dApp's front-end is likely configured (e.g., in a `constants.js` or similar file) to interact with a specific contract address. By using `--load-state`, you ensure that Anvil starts with the required contract already deployed at that exact address.
 
 You can verify this: Find the `contractAddress` your front-end uses (e.g., `0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512`). Search for this address within the `fundme-anvil.json` file. You should find entries confirming its existence in the saved state.
 
-**The Benefit:** Running `anvil --load-state your-state-file.json` allows front-end developers to instantly start a local blockchain environment that precisely matches the required setup, including pre-deployed contracts. Connect MetaMask using the imported Anvil account, point your DApp front-end to the local RPC URL (`http://127.0.0.1:8545`), and you can immediately start testing interactions without the cost, delays, or setup overhead of live networks or manual deployments. This is the recommended, cheapest, and fastest way to conduct robust front-end testing for DApps when a saved state is available.
+**The Benefit:** Running `anvil --load-state your-state-file.json` allows front-end developers to instantly start a local blockchain environment that precisely matches the required setup, including pre-deployed contracts. Connect MetaMask using the imported Anvil account, point your dApp front-end to the local RPC URL (`http://127.0.0.1:8545`), and you can immediately start testing interactions without the cost, delays, or setup overhead of live networks or manual deployments. This is the recommended, cheapest, and fastest way to conduct robust front-end testing for DApps when a saved state is available.

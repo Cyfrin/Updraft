@@ -1,4 +1,4 @@
-## Mid-Point Review: Building Your Web3 Frontend
+## Mid-Point Review: Building Your web3 Frontend
 
 We've covered a significant amount of ground quickly in building our simple web frontend to interact with a Solidity smart contract. This lesson serves as a mid-point review to consolidate our understanding of the key concepts and steps we've implemented so far.
 

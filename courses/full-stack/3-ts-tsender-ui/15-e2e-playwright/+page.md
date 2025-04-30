@@ -1,14 +1,14 @@
-## Introduction to End-to-End Testing for Web3 Dapps with Playwright and Synpress
+## Introduction to End-to-End Testing for web3 Dapps with Playwright and Synpress
 
-Following the deployment of our application, we now shift our focus to a critical aspect of development: End-to-End (E2E) testing. This stage is particularly vital in the Web3 space. Given the potentially irreversible and costly nature of blockchain transactions, ensuring your application functions correctly from the user's perspective *before* final deployment is paramount. Mistakes involving incorrect transactions on a live blockchain can have severe consequences.
+Following the deployment of our application, we now shift our focus to a critical aspect of development: End-to-End (E2E) testing. This stage is particularly vital in the web3 space. Given the potentially irreversible and costly nature of blockchain transactions, ensuring your application functions correctly from the user's perspective *before* final deployment is paramount. Mistakes involving incorrect transactions on a live blockchain can have severe consequences.
 
-This lesson aims to introduce the fundamental concepts of E2E testing and demonstrate a basic implementation using Playwright, supplemented by Synpress for Web3-specific interactions. While we won't build an exhaustive test suite, you'll gain a practical understanding to build upon. Think of this as an essential primer before tackling the final deployment.
+This lesson aims to introduce the fundamental concepts of E2E testing and demonstrate a basic implementation using Playwright, supplemented by Synpress for web3-specific interactions. While we won't build an exhaustive test suite, you'll gain a practical understanding to build upon. Think of this as an essential primer before tackling the final deployment.
 
 ### What is End-to-End (E2E) Testing?
 
 End-to-End (E2E) testing is a methodology used to validate the complete workflow of an application from start to finish, mimicking real user scenarios. It tests the application from the user's viewpoint, ensuring all integrated components – frontend, backend, APIs, databases, and crucially for us, blockchain interactions – function together seamlessly.
 
-**Why is E2E Testing Critical in Web3?**
+**Why is E2E Testing Critical in web3?**
 
 The immutable nature of many blockchain operations makes E2E testing indispensable. Smart contracts, once deployed, and transactions, once executed, often cannot be easily altered or reversed. E2E tests act as a crucial safeguard, helping to catch integration bugs and validate entire user journeys (like connecting a wallet, filling a form, signing, and sending a transaction) before they can lead to financial loss or protocol failure in a production environment. An incorrect transaction on the mainnet isn't just a bug; it's often a significant, irreversible problem.
 
@@ -58,8 +58,8 @@ While effective for simple checks, this manual approach quickly becomes ineffici
 
 To overcome the limitations of manual testing, we turn to automated E2E testing tools. For our purposes, we'll use:
 
-*   **Playwright:** (playwright.dev) A powerful Node.js library developed by Microsoft for browser automation and E2E testing. It enables programmatic control over modern browsers like Chromium, Firefox, and WebKit, allowing us to script user interactions.
-*   **Synpress:** (synpress.io / GitHub: Synthetixio/synpress) An E2E testing framework built specifically for Web3 decentralized applications (dapps). Developed by Synthetix, Synpress extends Playwright (and previously Cypress) with essential capabilities for interacting with browser wallet extensions, most notably MetaMask. While it can sometimes be described as "finicky," it provides indispensable functionality for testing Web3 user flows that involve wallet interactions.
+*   **Playwright:** (playwright.dev) A powerful NodeJS library developed by Microsoft for browser automation and E2E testing. It enables programmatic control over modern browsers like Chromium, Firefox, and WebKit, allowing us to script user interactions.
+*   **Synpress:** (synpress.io / GitHub: Synthetixio/synpress) An E2E testing framework built specifically for web3 decentralized applications (dapps). Developed by Synthetix, Synpress extends Playwright (and previously Cypress) with essential capabilities for interacting with browser wallet extensions, most notably MetaMask. While it can sometimes be described as "finicky," it provides indispensable functionality for testing web3 user flows that involve wallet interactions.
 
 ### Adding a Testable Feature: Conditional UI Rendering
 
@@ -221,6 +221,6 @@ Playwright created an example test file (`test/example.spec.ts`). Let's modify i
 
 ### Summary and Next Steps
 
-We've established the critical importance of E2E testing, especially for Web3 applications where errors can be costly. We contrasted E2E testing with unit testing and saw the limitations of manual approaches. By installing and configuring Playwright and Synpress, and running a basic automated test against our application, you've taken the first step towards building a more robust and reliable dapp.
+We've established the critical importance of E2E testing, especially for web3 applications where errors can be costly. We contrasted E2E testing with unit testing and saw the limitations of manual approaches. By installing and configuring Playwright and Synpress, and running a basic automated test against our application, you've taken the first step towards building a more robust and reliable dApp.
 
 Playwright provides powerful browser automation capabilities, and its Test UI significantly aids in debugging. While we haven't yet leveraged Synpress's specific MetaMask interaction features, the foundation is now laid. The next logical steps involve writing more complex E2E tests that simulate core user flows, such as connecting a wallet (using Synpress commands), filling out the airdrop form, interacting with the subsequent MetaMask transaction prompts, and asserting the expected outcomes.

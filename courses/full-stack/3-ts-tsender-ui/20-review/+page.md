@@ -1,14 +1,14 @@
-## Review: Building the TSender Frontend with Next.js and Web3 Tools
+## Review: Building the TSender Frontend with Next.js and web3 Tools
 
-This lesson serves as a comprehensive review of the frontend development phase for our TSender application. We've covered significant ground, integrating modern web technologies with Web3 libraries to build a functional decentralized application (dApp) interface. Let's recap the key technologies, concepts, and philosophies underpinning this section.
+This lesson serves as a comprehensive review of the frontend development phase for our TSender application. We've covered significant ground, integrating modern web technologies with web3 libraries to build a functional decentralized application (dApp) interface. Let's recap the key technologies, concepts, and philosophies underpinning this section.
 
 **Core Philosophy: Practice, Deployment, and Vigilance**
 
 Before diving into the specifics, remember these guiding principles:
 
-1.  **Repetition is the Mother of Skill:** Building and deploying applications repeatedly is the most effective way to master the tools and concepts involved in Web3 development. Don't just follow along; rebuild, experiment, and deploy often.
+1.  **Repetition is the Mother of Skill:** Building and deploying applications repeatedly is the most effective way to master the tools and concepts involved in web3 development. Don't just follow along; rebuild, experiment, and deploy often.
 2.  **Deployment Matters:** Theory is one thing, but practical experience is invaluable. Ensure you have deployed your TSender frontend, perhaps using Fleek as demonstrated. This step solidifies your understanding and prepares you for real-world scenarios.
-3.  **Testing is Non-Negotiable:** Given the potential financial implications of bugs in Web3, rigorous testing is essential. We explored both unit and end-to-end testing to ensure our application behaves as expected.
+3.  **Testing is Non-Negotiable:** Given the potential financial implications of bugs in web3, rigorous testing is essential. We explored both unit and end-to-end testing to ensure our application behaves as expected.
 4.  **AI as a Supervised Tool:** While AI tools like ChatGPT and Copilot significantly accelerated UI development and boilerplate generation, they are not infallible. Treat AI as a helpful but potentially flawed assistant. **You must review, understand, and verify every line of AI-generated code**, especially when dealing with user funds or smart contract interactions. Blind trust can lead to critical security vulnerabilities.
 
 **Technology Stack Deep Dive**
@@ -126,6 +126,6 @@ To make our TSender frontend accessible, we deployed it using Fleek:
 
 **Conclusion: Consolidating Your Frontend Skills**
 
-Congratulations on completing this intensive frontend section! You've integrated React, Next.js, TypeScript, Wagmi, and RainbowKit to build a sophisticated interface for a Web3 application. You've also learned the critical importance of the approve/transfer pattern, implemented robust unit and E2E tests (including wallet interactions via Synpress), and deployed your application to the decentralized web using Fleek.
+Congratulations on completing this intensive frontend section! You've integrated React, Next.js, TypeScript, Wagmi, and RainbowKit to build a sophisticated interface for a web3 application. You've also learned the critical importance of the approve/transfer pattern, implemented robust unit and E2E tests (including wallet interactions via Synpress), and deployed your application to the decentralized web using Fleek.
 
 Remember the power of repetition and the necessity of understanding every line of code, especially when leveraging AI tools. The jump in complexity from basic web development is significant, but by building, testing, and deploying, you are solidifying the skills needed for modern dApp development. Take a moment to appreciate your progress before moving forward.

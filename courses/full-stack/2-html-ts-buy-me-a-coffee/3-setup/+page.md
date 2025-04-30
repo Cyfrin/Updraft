@@ -1,4 +1,4 @@
-## Setting Up Your Web3 Frontend Project
+## Setting Up Your web3 Frontend Project
 
 Welcome! This lesson guides you through setting up the foundational structure for a simple web application designed to interact with a Solidity smart contract. We'll create the necessary files and build the basic HTML layout using standard web development practices.
 

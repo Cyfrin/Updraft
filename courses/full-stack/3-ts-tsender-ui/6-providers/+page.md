@@ -1,4 +1,4 @@
-## Implementing Global Providers in Your Next.js Web3 App
+## Implementing Global Providers in Your Next.js web3 App
 
 When building complex applications, especially in web3 where interactions with wallets and blockchains are common across multiple pages, managing shared configurations and state efficiently is crucial. Repeating setup code on every page leads to redundancy and maintenance headaches. This is where the "Provider" pattern comes into play, offering a clean solution for making functionalities globally accessible. In a Next.js application using the App Router, we can leverage the root `layout.tsx` file combined with a dedicated provider component to achieve this.
 
@@ -36,7 +36,7 @@ import Providers from "./providers"; // Import the custom provider wrapper
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "My Web3 App",
+  title: "My web3 App",
   description: "Application demonstrating provider pattern",
 };
 

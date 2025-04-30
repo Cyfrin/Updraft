@@ -1,6 +1,6 @@
-## Building a NextJS NFT Marketplace: Setup and Core Concepts
+## Building a Next.js NFT Marketplace: Setup and Core Concepts
 
-Welcome to the final section of our full-stack AI-powered vibe coding journey! In this part, we'll tackle a challenging and exciting project: building a **NextJS NFT Marketplace**. This project represents a shift in focus. Unlike previous sections where we might have started from scratch, here we'll dive into an **existing codebase**. Your primary goal will be to understand this pre-built application and enhance it by adding crucial features. This mirrors a common real-world scenario where developers frequently work with, modify, and extend codebases they didn't initially create.
+Welcome to the final section of our full-stack AI-powered vibe coding journey! In this part, we'll tackle a challenging and exciting project: building a **Next.js NFT Marketplace**. This project represents a shift in focus. Unlike previous sections where we might have started from scratch, here we'll dive into an **existing codebase**. Your primary goal will be to understand this pre-built application and enhance it by adding crucial features. This mirrors a common real-world scenario where developers frequently work with, modify, and extend codebases they didn't initially create.
 
 Furthermore, this project marks a transition from the static site we built previously to a more complex **dynamic site**. This means we'll be dealing with server interactions, API calls, and managing data that changes frequently, specifically data originating from the blockchain.
 

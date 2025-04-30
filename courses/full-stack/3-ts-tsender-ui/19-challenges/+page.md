@@ -37,7 +37,7 @@ Completing these challenges, especially this deployment task, is incredibly bene
 *   **Confidence Boost:** Successfully deploying your very first website is a massive confidence builder. It turns abstract concepts into concrete reality.
 *   **Portfolio Value:** Having a live, deployed project (even a simple one) is a valuable addition to your developer portfolio. It demonstrates practical skills.
 *   **Community Engagement:** Tweeting your success connects you with the broader developer community. It lets instructors (@PatrickAlphaC, @cyfrinupdraft) and relevant technology teams (@fleek, @zksyncdevs) see your progress. These teams genuinely love seeing developers building and thriving in the ecosystem. You might even make some new connections along the way.
-*   **Celebrate Your Wins:** Learning to code and navigating Web3 involves many steps. It's important to acknowledge and celebrate milestones like deploying your first site.
+*   **Celebrate Your Wins:** Learning to code and navigating web3 involves many steps. It's important to acknowledge and celebrate milestones like deploying your first site.
 
 So, take this step seriously. Don't just watch or read about it – *actually deploy* a site to Fleek, and *actually tweet* about it using the provided link.
 

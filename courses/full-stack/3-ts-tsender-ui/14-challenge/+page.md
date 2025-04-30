@@ -1,10 +1,10 @@
-## Enhancing Your T-Sender App: Implementation Challenges
+## Enhancing Your dApps App: Implementation Challenges
 
-At this stage, you should have a foundational T-Sender web application. It can accept a token contract address, lists of recipient addresses and corresponding amounts (in wei), and initiate the token transfer process via a smart contract using MetaMask when you click the "Send Tokens" button.
+At this stage, you should have a foundational dApps web application. It can accept a token contract address, lists of recipient addresses and corresponding amounts (in wei), and initiate the token transfer process via a smart contract using MetaMask when you click the "Send Tokens" button.
 
 While functional, this version lacks the polish expected of a user-friendly application. The user experience can feel clunky, especially during asynchronous operations or if the user accidentally refreshes the page.
 
-This lesson presents a series of challenges designed to significantly improve the T-Sender application's usability and provide valuable learning experiences in frontend web3 development. We won't walk through the implementation step-by-step; instead, the goal is for you to tackle these enhancements yourself, utilizing the hints and concepts provided.
+This lesson presents a series of challenges designed to significantly improve the dApps application's usability and provide valuable learning experiences in frontend web3 development. We won't walk through the implementation step-by-step; instead, the goal is for you to tackle these enhancements yourself, utilizing the hints and concepts provided.
 
 **Challenge 1: Implement Loading/Pending Indicators**
 
@@ -149,7 +149,7 @@ const tokenDecimals = tokenDetails?.[1]; // Result of the 'decimals' call
 
 **Guidance and Final Thoughts**
 
-Successfully implementing these features will significantly elevate your T-Sender application. Don't hesitate to:
+Successfully implementing these features will significantly elevate your dApps application. Don't hesitate to:
 
 *   **Use AI Assistants:** Tools like ChatGPT or GitHub Copilot can be excellent aids for generating boilerplate, debugging, or explaining concepts.
 *   **Consult Example Code:** Refer to the completed example codebase provided in the course materials (`github.com/Cyfrin/ts-tsender-ui-cu`) if you get stuck or want to see one possible solution.

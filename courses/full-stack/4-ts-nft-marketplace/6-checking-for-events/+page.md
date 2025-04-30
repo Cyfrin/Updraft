@@ -1,6 +1,6 @@
 ## Checking for Events: Indexing Smart Contract Interactions Locally
 
-This lesson demonstrates how an indexer, specifically Rindexer, detects and processes blockchain events emitted from smart contracts. We'll observe this interaction within a local development environment using a dApp frontend, a local blockchain node (Anvil), and a persistent database managed by Docker. We will also troubleshoot a common state synchronization issue that arises when restarting the local blockchain without resetting the indexer's state.
+This lesson demonstrates how an indexer, specifically rindexer, detects and processes blockchain events emitted from smart contracts. We'll observe this interaction within a local development environment using a dApp frontend, a local blockchain node (Anvil), and a persistent database managed by Docker. We will also troubleshoot a common state synchronization issue that arises when restarting the local blockchain without resetting the indexer's state.
 
 ## Setting the Stage: Local Development Environment
 
@@ -8,7 +8,7 @@ Before we begin interacting with the smart contracts, ensure the following compo
 
 1.  **dApp Frontend:** A Next.js NFT Marketplace website, accessible at `http://localhost:3000`.
 2.  **Blockchain Node:** An Anvil instance serving as our local development blockchain. Terminal logs showing `eth_getBlockByNumber` calls confirm it's active.
-3.  **Indexer:** Rindexer, configured to connect to the Anvil node and the database.
+3.  **Indexer:** rindexer, configured to connect to the Anvil node and the database.
 4.  **Database:** A Postgres database managed via Docker, utilizing a Docker volume named `marketplaceindexer_postgres_data` to persist indexed data and indexer state.
 
 ## Understanding Key Concepts
@@ -17,7 +17,7 @@ Several core concepts underpin this process:
 
 *   **Blockchain Events:** Smart contracts can emit events to signal that specific actions have occurred (e.g., `ItemListed`, `ItemBought`). These events contain data logged immutably on the blockchain.
 *   **Indexing:** An indexer is a service that monitors a blockchain node for specific events emitted by designated smart contracts. Upon detecting relevant events, it processes the associated data and typically stores it in an optimized off-chain database (like Postgres) for efficient querying by applications.
-*   **Local Development Environment:** This setup simulates the entire blockchain interaction lifecycle locally using tools like Anvil (blockchain simulation), Next.js (frontend framework), Rindexer (indexing service), and Docker (containerization for services like the database).
+*   **Local Development Environment:** This setup simulates the entire blockchain interaction lifecycle locally using tools like Anvil (blockchain simulation), Next.js (frontend framework), rindexer (indexing service), and Docker (containerization for services like the database).
 *   **State Synchronization:** The indexer must maintain a consistent state relative to the blockchain it's indexing. It achieves this by tracking the last block number it successfully processed.
 *   **Chain Reorganization (Reorg):** On live blockchains (and occasionally simulated ones), the perceived "latest" block or sequence of blocks can change. This is known as a reorg. To handle this, indexers often wait for a certain number of "confirmation blocks" (a "safe reorg range") before considering data from a block finalized, preventing the processing of events from blocks that might later be orphaned.
 *   **Docker Volumes:** These provide persistent storage for Docker containers. In our setup, a Docker volume ensures that the data stored by the Postgres container (indexed events and the indexer's last processed block state) survives container restarts.
@@ -45,7 +45,7 @@ Let's interact with the dApp to generate some events and see if the indexer pick
 
 ## Diagnosing a Common Indexing Issue: State Synchronization
 
-Now, let's check the Rindexer logs running in the terminal. You might observe repeating messages similar to this:
+Now, let's check the rindexer logs running in the terminal. You might observe repeating messages similar to this:
 
 ```log
 INFO NftMarketplace::ItemListed - LIVE - not in safe reorg block range yet block: 67 > range: 14
@@ -71,7 +71,7 @@ Assuming enough time has passed for the local Anvil node to mine blocks past the
 
 **2. Check Indexer and Verify Success:**
 
-*   Examine the Rindexer logs again. You should now see a message indicating successful indexing:
+*   Examine the rindexer logs again. You should now see a message indicating successful indexing:
     ```log
     INFO NftMarketplace::ItemListed - INDEXED - 1 events - blocks: 90 - 90 - network: anvil
     ```
@@ -96,13 +96,13 @@ To definitively resolve the state mismatch issue caused by restarting the local 
     *   Remove the volume: `docker volume rm <volume_name>` (e.g., `docker volume rm marketplaceindexer_postgres_data`). **Caution:** This permanently deletes the data stored in the volume.
 5.  **Restart the Indexer:**
     *   Run the command to start the indexer again: `rindexer start indexer`.
-    *   Observe the logs. Rindexer will likely attempt to connect to the database, fail (as it was removed), and then automatically use `docker-compose` (or similar mechanism defined in its configuration) to recreate and start the Postgres container and its volume. It will then initialize the database schema (create tables) and begin indexing from block 0. You might see logs indicating it found historical events if any occurred before block 0 on your fresh Anvil instance, or it might simply start processing from block 0 upwards.
+    *   Observe the logs. rindexer will likely attempt to connect to the database, fail (as it was removed), and then automatically use `docker-compose` (or similar mechanism defined in its configuration) to recreate and start the Postgres container and its volume. It will then initialize the database schema (create tables) and begin indexing from block 0. You might see logs indicating it found historical events if any occurred before block 0 on your fresh Anvil instance, or it might simply start processing from block 0 upwards.
 
 This reset procedure ensures that both the local blockchain and the indexer start from a synchronized state (block 0).
 
 ## Key Takeaways
 
-*   Indexers like Rindexer listen for smart contract events on the blockchain and store processed data, often in an external database.
+*   Indexers like rindexer listen for smart contract events on the blockchain and store processed data, often in an external database.
 *   In local development using ephemeral chains like Anvil (which reset on restart), it's crucial to synchronize the state of the indexer with the state of the chain.
 *   Failure to reset the indexer's persistent state (stored in the database volume) after restarting the local chain can lead to the indexer delaying processing of new events due to its "safe reorg range" logic, as it waits for the new chain height to surpass its last recorded height.
-*   The reliable way to reset the Rindexer's state when using Docker is to stop the indexer, stop and remove the database container (`docker kill`, `docker rm`), remove the associated Docker volume (`docker volume rm`), and then restart the indexer.
+*   The reliable way to reset the rindexer's state when using Docker is to stop the indexer, stop and remove the database container (`docker kill`, `docker rm`), remove the associated Docker volume (`docker volume rm`), and then restart the indexer.

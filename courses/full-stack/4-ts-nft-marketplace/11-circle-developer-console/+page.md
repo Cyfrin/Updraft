@@ -1,14 +1,14 @@
-## Understanding the Need for Compliance in Your Web3 DApp
+## Understanding the Need for Compliance in Your web3 dApp
 
 You've successfully built a functional NFT Marketplace where users can list, buy, and cancel NFTs, with a user interface that dynamically reflects blockchain events. However, a critical component is missing: a compliance layer.
 
-While the core principle of Web3 often emphasizes censorship resistance at the smart contract level, the reality is that the *front-end website* of your decentralized application (DApp) typically runs on centralized servers. As the operator of this website, you are potentially subject to regulations and oversight from governmental bodies.
+While the core principle of web3 often emphasizes censorship resistance at the smart contract level, the reality is that the *front-end website* of your decentralized application (dApp) typically runs on centralized servers. As the operator of this website, you are potentially subject to regulations and oversight from governmental bodies.
 
 If your platform inadvertently facilitates transactions involving addresses associated with known illicit activities or sanctioned entities (e.g., those on the OFAC list), regulators could hold *you*, the website operator, accountable. The consequences can be severe. Therefore, implementing a mechanism to screen interacting wallet addresses *at the website level* is crucial for mitigating risk and meeting potential regulatory requirements, even while the underlying smart contract remains open to direct interaction on the blockchain.
 
 ## Introducing the Circle Compliance Engine
 
-To address this compliance need, we will leverage the **Circle Developer Console** and its **Compliance Engine**. Circle, the company behind the widely used USDC stablecoin, offers a suite of developer tools designed for building Web3 applications.
+To address this compliance need, we will leverage the **Circle Developer Console** and its **Compliance Engine**. Circle, the company behind the widely used USDC stablecoin, offers a suite of developer tools designed for building web3 applications.
 
 The Compliance Engine specifically helps applications meet regulatory standards, including aspects of the Travel Rule and sanctions screening. Its core function involves checking wallet addresses against Circle's constantly updated databases of risky or sanctioned addresses.
 

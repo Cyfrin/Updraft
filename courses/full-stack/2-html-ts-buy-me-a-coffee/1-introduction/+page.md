@@ -1,19 +1,19 @@
 ## Introduction to the HTML/JS Buy Me A Coffee dApp
 
-Welcome to the first project section of our full-stack Web3 development journey! Here, we'll dive straight into building a tangible application: a simple "Buy Me A Coffee" dApp (Decentralized Application) using fundamental web technologies – HTML and JavaScript – alongside core blockchain concepts.
+Welcome to the first project section of our full-stack web3 development journey! Here, we'll dive straight into building a tangible application: a simple "Buy Me A Coffee" dApp (Decentralized Application) using fundamental web technologies – HTML and JavaScript – alongside core blockchain concepts.
 
 The goal of this project is to demystify how a standard web frontend can interact with a smart contract deployed on a blockchain. We'll build everything from scratch, providing a clear view of the essential components and their interplay. By the end, you'll have a functional dApp that allows users to connect their crypto wallet and send simulated cryptocurrency ("buy coffee") to a smart contract.
 
-## Project Overview: Building a Minimal Web3 Application
+## Project Overview: Building a Minimal web3 Application
 
-Our "Buy Me A Coffee" application serves as a practical introduction to Web3 interactions. While simple, it encapsulates key actions found in many dApps:
+Our "Buy Me A Coffee" application serves as a practical introduction to web3 interactions. While simple, it encapsulates key actions found in many dApps:
 
 1.  **Connecting a Wallet:** Allowing users to link their browser-based wallet (like MetaMask) to the web application.
 2.  **Sending Transactions:** Enabling users to send cryptocurrency (in our case, test Ether) to a smart contract function. This simulates the "buying coffee" action.
 3.  **Reading Blockchain Data:** Fetching information stored within the smart contract, such as its current Ether balance.
 4.  **Executing State-Changing Functions:** Triggering functions on the smart contract that modify its state, like withdrawing the accumulated funds (typically restricted to the contract owner).
 
-We will focus on the core mechanics, using minimal frontend tooling (plain HTML and JavaScript) to keep the focus squarely on the Web3 integration aspects.
+We will focus on the core mechanics, using minimal frontend tooling (plain HTML and JavaScript) to keep the focus squarely on the web3 integration aspects.
 
 ## Core Components and Their Roles
 
@@ -85,4 +85,4 @@ To build and run this project, we rely on several tools:
 
 This project establishes the foundational pattern for frontend-smart contract interaction. Mastering these steps – connecting, sending transactions, reading data, handling wallet interactions – is essential before moving on to more complex dApps. Pay close attention to how JavaScript uses libraries (like Ethers.js or Viem, which will be introduced later) to communicate with MetaMask, which in turn communicates with the blockchain.
 
-Remember that local development environments like Anvil are invaluable for rapid testing and iteration without incurring real-world costs or delays. Familiarize yourself with using the developer console for logging and debugging. While we build this from scratch, note that AI tools can assist in generating boilerplate code, but understanding the underlying principles remains paramount for building robust and secure Web3 applications.
+Remember that local development environments like Anvil are invaluable for rapid testing and iteration without incurring real-world costs or delays. Familiarize yourself with using the developer console for logging and debugging. While we build this from scratch, note that AI tools can assist in generating boilerplate code, but understanding the underlying principles remains paramount for building robust and secure web3 applications.

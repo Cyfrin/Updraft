@@ -1,10 +1,10 @@
-## End-to-End Testing for Web3 Dapps with Playwright and Synpress
+## End-to-End Testing for web3 Dapps with Playwright and Synpress
 
-End-to-end (E2E) testing is crucial for ensuring the quality and reliability of any web application. For decentralized applications (Dapps), this takes on added complexity due to the need to interact with blockchain wallets like MetaMask. This lesson demonstrates how to use Playwright, a powerful E2E testing framework, extended with Synpress, a specialized tool designed to handle Web3 wallet interactions, to test a Dapp's UI based on wallet connection status.
+End-to-end (E2E) testing is crucial for ensuring the quality and reliability of any web application. For decentralized applications (Dapps), this takes on added complexity due to the need to interact with blockchain wallets like MetaMask. This lesson demonstrates how to use Playwright, a powerful E2E testing framework, extended with Synpress, a specialized tool designed to handle web3 wallet interactions, to test a Dapp's UI based on wallet connection status.
 
 ## Setting Up Your Environment
 
-Before diving into the tests, ensure you have Node.js and a package manager (like pnpm, npm, or yarn) installed. You'll also need Playwright set up in your project. If you haven't already, you can typically add it using:
+Before diving into the tests, ensure you have NodeJS and a package manager (like pnpm, npm, or yarn) installed. You'll also need Playwright set up in your project. If you haven't already, you can typically add it using:
 
 ```bash
 pnpm add -D @playwright/test
@@ -50,13 +50,13 @@ test('has title', async ({ page }) => {
 });
 ```
 
-This confirms Playwright can launch the browser, navigate, and perform basic assertions, but it doesn't interact with any Web3 components yet.
+This confirms Playwright can launch the browser, navigate, and perform basic assertions, but it doesn't interact with any web3 components yet.
 
 ## The Challenge of Automating Wallet Interactions
 
 The primary goal often involves testing UI changes based on wallet connection. For example, displaying a specific form only *after* the user connects their wallet. Automating interactions with browser extensions like MetaMask directly within standard E2E frameworks like Playwright is notoriously difficult due to their isolated nature and complex UI flows (popups, approvals).
 
-## Introducing Synpress for Web3 Testing
+## Introducing Synpress for web3 Testing
 
 This is where Synpress comes in. Synpress is built on top of Playwright (and Cypress) and provides specialized commands and utilities to seamlessly automate interactions with wallets like MetaMask. It handles the complexities of finding and interacting with the wallet extension's UI elements, allowing you to focus on your Dapp's logic.
 
