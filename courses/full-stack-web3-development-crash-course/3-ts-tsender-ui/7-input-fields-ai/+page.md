@@ -124,7 +124,7 @@ Generating form elements is another good use case for AI.
 
 **Prompting Strategy for the Input Field:**
 
-1.  **State the Goal & Tech:** "I'm looking to make an input field react component with tsx."
+1.  **State the Goal & Tech:** "I'm looking to make an input field React component with tsx."
 2.  **Specify Props:** Define the necessary properties (props) the component should accept and their types/purpose:
     *   `label` (string): Text label displayed above the input.
     *   `placeholder` (string): Placeholder text inside the input.
