@@ -48,4 +48,4 @@ for number in range(1000):
   print("Done!")
 ```
 
-I recommend you don't do this, because you're going to get a massive cell that's outputted here. You know what, screw it. Let's try it. `For` number `in` range 1,000. Let's go ahead and hit play. If we scroll down we see just a ton of numbers. Some of this was even truncated and we'd have to scroll for a long time. But you can see it's printing out every single number between 0 and 999. So let's leave this as three so it's a lot more digestible.
+I recommend you don't do this, because you're going to get a massive cell that's outputted here. You know what, screw it. Let's try it. `For` number `in` range 1,000. Let's go ahead and hit play. If we scroll down, we see just a ton of numbers. Some of this was even truncated and we'd have to scroll for a long time. But you can see it's printing out every single number between 0 and 999. So let's leave this as three so it's a lot more digestible.
