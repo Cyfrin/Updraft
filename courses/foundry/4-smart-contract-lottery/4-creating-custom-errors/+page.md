@@ -1,67 +1,116 @@
----
-title: Creating custom errors
----
+Okay, here is a thorough and detailed summary of the video "Custom Reverts" in Solidity:
 
-_Follow along with this video:_
+**Overall Topic:**
 
----
+The video explains the evolution of handling reverts (error conditions) in Solidity, moving from traditional `require` statements with string messages to the more modern and gas-efficient approach of using **custom errors**. It emphasizes why custom errors are preferred and demonstrates their implementation and best practices.
 
-### Implementing the `entranceFee`
+**Detailed Breakdown:**
 
-Great! Let's move on with writing the contract.
+1.  **Initial Problem & Traditional Solution (`require` with String):**
+    *   The video starts by modifying the `enterRaffle` function in a `Raffle.sol` contract.
+    *   The goal is to ensure users send enough ETH to cover the `i_entranceFee`.
+    *   The initial, common approach shown is using a `require` statement with a string message:
+        ```solidity
+        // Inside function enterRaffle() public payable { ... }
+        require(msg.value >= i_entranceFee, "Not enough ETH sent!");
+        ```
+    *   **Explanation:** This code checks if the value sent with the transaction (`msg.value`) is greater than or equal to the `i_entranceFee`. If the condition is `false`, the transaction reverts, and the provided string ("Not enough ETH sent!") is returned as the error reason.
 
-Previously we defined the `i_entranceFee` variable. This is the amount the user has to send to enter the raffle. How do we check this?
+2.  **Drawbacks of `require` with Strings:**
+    *   While functional and common in older code, using strings in `require` (or `revert("string")`) is **gas-inefficient**.
+    *   Storing and returning strings on the blockchain consumes significantly more gas compared to newer methods.
+    *   This inefficiency becomes particularly noticeable regarding deployment costs and runtime execution costs.
 
-```solidity
-function enterRaffle() external payable {
-    require(msg.value >= i_entranceFee, "Not enough ETH sent");
-}
-```
+3.  **Introduction to Custom Errors (Solidity v0.8.4+):**
+    *   Starting from Solidity version `0.8.4`, a more convenient and **gas-efficient** way to handle errors was introduced: **Custom Errors**.
+    *   **Resource Mentioned:** The video references the Solidity blog post announcing custom errors: `https://soliditylang.org/blog/2021/04/21/custom-errors/`
+    *   **Concept:** Instead of strings, you define named errors using the `error` keyword.
 
-First, we changed the visibility from `public` to `external`. `external` is more gas efficient, and we won't call the `enterRaffle` function internally.
+4.  **Syntax and Implementation of Custom Errors:**
+    *   **Definition:** Custom errors are typically defined at the contract level (or file level).
+        ```solidity
+        // Placed inside the contract Raffle { ... }
+        /* Errors */ // Style guide comment
+        error SendMoreToEnterRaffle(); // Example definition
+        ```
+    *   **Usage (Recommended Pattern):** The most gas-efficient way to use custom errors is with an `if` statement and the `revert` keyword (without a string). The condition in the `if` statement is the *opposite* of what you'd put in `require`.
+        ```solidity
+        // Inside function enterRaffle() public payable { ... }
 
-We used a `require` statement to ensure that the `msg.value` is higher than `i_entranceFee`. If that is false, we will yield an error message `"Not enough ETH sent"`.
+        // Comment out the old require:
+        // require(msg.value >= i_entranceFee, "Not enough ETH sent!");
 
-**Note: The `require` statement is used to enforce certain conditions at runtime. If the condition specified in the `require` statement evaluates to `false`, the transaction is reverted, and any changes made to the state within that transaction are undone. This is useful for ensuring that certain prerequisites or validations are met before executing further logic in a smart contract.**
+        // Implement the check using if/revert with the custom error:
+        if (msg.value < i_entranceFee) { // Note: logic is flipped (< instead of >=)
+            revert SendMoreToEnterRaffle();
+        }
+        ```
+    *   **Gas Efficiency:** This `if`/`revert CustomError()` pattern uses significantly less gas than `require(condition, "string")`.
 
-In Solidity 0.8.4 a new and more gas-efficient way has been introduced.
+5.  **Further Evolution (Solidity v0.8.26+): `require` with Custom Errors:**
+    *   A more recent update (Solidity `v0.8.26`) allows using custom errors directly within the `require` statement.
+    *   **Resource Mentioned:** The video references the Solidity 0.8.26 release announcement: `https://soliditylang.org/blog/2024/05/21/solidity-0.8.26-release/`
+    *   **Syntax:**
+        ```solidity
+        // Hypothetical example for v0.8.26+
+        require(msg.value >= i_entranceFee, SendMoreToEnterRaffle());
+        ```
+    *   **Caveats:**
+        *   This feature requires a very recent Solidity version (0.8.26+). The video's code uses `0.8.19`, so this syntax *cannot* be used in the course context.
+        *   Compiling code using this feature might require the `--via-ir` flag in the compiler settings.
+        *   **Crucially:** Even with this new syntax, the video states that `require(condition, CustomError())` is *still slightly less gas-efficient* than the `if (condition_fails) { revert CustomError(); }` pattern.
 
-### Custom errors
+6.  **Final Recommendation on Usage:**
+    *   **Use the `if (condition_fails) { revert CustomError(); }` pattern.**
+    *   This is currently the **most gas-efficient** and **most compatible** way to handle errors using custom errors across various Solidity versions (>=0.8.4).
+    *   Avoid `require` with strings due to high gas costs.
+    *   Avoid `require` with custom errors for now due to version limitations, potential compiler requirements, and slightly lower gas efficiency compared to the `if/revert` pattern.
 
-[Custom errors](https://docs.soliditylang.org/en/v0.8.25/contracts.html#errors-and-the-revert-statement) provide a way to define and use specific error types that can be used to revert transactions with more efficient and gas-saving mechanisms compared to the `require` statements with string messages. If you want to find out more about how custom errors decrease both deploy and runtime gas click [here](https://soliditylang.org/blog/2021/04/21/custom-errors/).
+7.  **Best Practice: Naming Custom Errors:**
+    *   **Problem:** When interacting with multiple contracts, if they use generic error names (e.g., `NotEnoughFunds`), it can be difficult to determine *which* contract actually reverted when looking at transaction traces.
+    *   **Solution:** Prefix custom error names with the name of the contract they belong to, followed by double underscores (`__`).
+    *   **Example Implementation:**
+        ```solidity
+        // Inside contract Raffle { ... }
+        /* Errors */
+        error Raffle__SendMoreToEnterRaffle(); // Prefixed with "Raffle__"
 
-I know we just wrote this using the `require` statement, we did that because `require` is used in a lot of projects, that you might get inspiration from or build on top of and so on. But from now on we will perform checks using the `if` statement combined with custom errors.
+        // Inside function enterRaffle() public payable { ... }
+        if (msg.value < i_entranceFee) {
+           revert Raffle__SendMoreToEnterRaffle();
+        }
+        ```
+    *   **Benefit:** Makes debugging much easier as the error clearly indicates its source contract.
 
-We will refactor `enterRaffle`, but before that let's define our custom error. Be mindful of the layout we talked about in the previous lesson
+8.  **Best Practice: Code Layout (Style Guide):**
+    *   The video refers back to a standard Solidity contract layout structure (shown as comments at the top of the file).
+    *   Custom error definitions (`error ...;`) should be placed in the designated `errors` section of the contract layout, typically appearing after `pragma` and `import` statements but before interfaces, libraries, other contracts, type declarations, and state variables.
 
-```solidity
-error Raffle_NotEnoughEthSent();
-```
-Now the `enterRaffle()` function:
+9.  **Remix Gas Comparison Example:**
+    *   The video shows a simple contract `ExampleRevert.sol` in Remix to demonstrate the gas difference.
+        ```solidity
+        // Example contract shown in Remix (simplified)
+        contract ExampleRevert {
+            error ExampleRevert__Error();
 
-```solidity
-function enterRaffle() external payable {
-    // require(msg.value >= i_entranceFee, "Not enough ETH sent!");
-    if(msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
-}
-```
+            // Uses if/revert with custom error
+            function revertWithError() public pure { // Execution Cost: 142 gas (in video example)
+                if (false) { revert ExampleRevert__Error(); }
+            }
 
-You will see that we named the custom error using the `Raffle__` prefix. This is a very good practice that will save you a ton of time when you need to debug a protocol with 20 smart contracts. You will run your tests and then ask yourself `Ok, it failed with this error ... but where does this come from?`. Because you thought ahead and used prefixes in naming your error you won't have that problem! Awesome!
+            // Uses require with string
+            function revertWithRequire() public pure { // Execution Cost: 161 gas (in video example)
+                require(true, "ExampleRevert_Error");
+            }
+        }
+        ```
+    *   **Result:** Calling `revertWithError` (using the custom error pattern) consumed less gas (142) than `revertWithRequire` (using the string pattern) (161). This empirically supports the claim that custom errors are more gas-efficient.
+    *   **Note:** Even reverted transactions consume gas, but using custom errors makes those reverts cheaper.
 
-**Note:**
+**Key Takeaways & Tips:**
 
-**In Solidity, like in many other programming languages, you can write if statements in a single line for brevity, especially when they are simple and only execute a single statement. This is purely a stylistic choice and does not affect the functionality or performance of the code.**
-
-There is no difference between this:
-
-```solidity
-if(msg.value < i_entranceFee) revert Raffle__NotEnoughEthSent();
-```
-and this:
-```solidity
-if(msg.value < i_entranceFee) {
-    revert Raffle__NotEnoughEthSent();
-}
-```
-
-Amazing work! Let's learn about events!
+*   **Prefer Custom Errors:** Always use custom errors over string reverts (`require(..., "string")` or `revert("string")`) for better gas efficiency.
+*   **Use `if/revert` Pattern:** The most recommended way to use custom errors is `if (condition_fails) { revert CustomErrorName(); }`. It's generally more gas-efficient and compatible than `require(condition, CustomErrorName())`.
+*   **Naming Convention:** Use `ContractName__ErrorName` for custom errors to improve debuggability.
+*   **Code Layout:** Place error definitions in the designated `errors` section according to the Solidity style guide.
+*   Legacy `require`: Understand `require` with strings because you'll encounter it in older codebases, but avoid writing new code this way.
