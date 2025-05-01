@@ -1,246 +1,109 @@
-## Account Abstraction Lesson 29: Transaction Struct
+## Debugging ZkSync 'Stack Too Deep' Errors with the Via-IR Pipeline
 
-We are getting closer to being ready to fully test our contract. However, we've got a few more steps to go. In this lesson we will:
+When developing and testing ZkSync smart contracts using the Foundry framework, you might encounter a `Stack too deep` compiler error, particularly when dealing with complex logic or large data structures within your tests. This lesson explains why this error occurs and demonstrates how to resolve it by enabling the Via-IR compilation pipeline.
 
-- finish `testZkOwnerCanExecuteCommands`
-- create a helper function
-- build out our own `Transaction` struct
+## Encountering the 'Stack Too Deep' Error
 
-Let's get to it!
+Imagine you are running a specific test function within your ZkSync Foundry project, for example:
 
----
-### Where We Left Off
+```bash
+forge test --mt testZkOwnerCanExecuteCommands --zksync
+```
 
-Picking up where we left off, we still need to complete **ACT** and **Assert** in our `testZkOwnerCanExecuteCommands` function.
+Instead of successfully compiling and running the test, the process might fail with an error message similar to this:
+
+```
+Compiler run failed:
+Error: Compiler error (/solidity/libyul/backends/evm/AsmCodeGen.cpp:67):Stack too deep. Try compiling with '--via-ir' (cli) or the equivalent 'viaIR: true' (standard JSON) while enabling the optimizer. Otherwise, try removing local variables...
+```
+
+This indicates that the standard compilation process from Solidity directly to eraVM bytecode is exceeding the allowed stack depth.
+
+## Why Does 'Stack Too Deep' Occur?
+
+This error commonly arises in complex scenarios within Foundry tests for ZkSync, such as:
+
+1.  **Creating Large Memory Structs:** Instantiating and manipulating large structs stored in `memory`, like a detailed `Transaction` struct, can consume significant stack space during compilation.
+2.  **Complex Helper Functions:** Utilizing helper functions that manage these large memory structures or perform intricate logic can also contribute to exceeding stack limits.
+
+For instance, a test function calling a helper to create a transaction object might trigger this:
 
 ```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity 0.8.24;
+// Example potentially causing the error
+function testZkOwnerCanExecuteCommands() public {
+    // ... setup ...
+    Transaction memory transaction = 
+        _createUnsignedTransaction(minimalAccount.owner(), 113, dest, value, functionData); 
+    // ... rest of the test ...
+}
 
-import {Test} from "forge-std/Test.sol";
-import {ZkMinimalAccount} from "src/zksync/ZkMinimalAccount.sol";
-import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
-
-contract ZkMinimalAccountTest is Test {
-    ZkMinimalAccount minimalAccount;
-    ERC20Mock usdc;
-
-    uint256 constant AMOUNT = 1e18;
-
-    function setUp() public {
-        minimalAccount = new ZkMinimalAccount();
-        usdc = new ERC20Mock();
-    }
-
-    function testZkOwnerCanExecuteCommands() public {
-    // Arrange
-    address dest = address(usdc);
-    uint256 value = 0;
-    bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, address(minimalAccount), AMOUNT);
-    
-        // Act
-        // Assert
-    }
+// Helper function definition (simplified concept)
+function _createUnsignedTransaction(...) internal pure returns (Transaction memory) {
+    Transaction memory txn;
+    // ... populate many fields of txn ...
+    return txn;
 }
 ```
 
----
-### Create a Helper Function
+The complexity involved in creating and handling `transaction` in memory within the standard compilation path leads to the "Stack too deep" error.
 
-Since we don't have any scripts, we'll have to make some **helper** functions. Let's add a header for them at the bottom of our code.
+## The Solution: Compiling Via Intermediate Representation (Via-IR)
 
-```solidity
-/*//////////////////////////////////////////////////////////////
-                                HELPERS
-//////////////////////////////////////////////////////////////*/
+The error message itself suggests the solution: using the `--via-ir` flag or its configuration equivalent. "Via-IR" stands for "Via Intermediate Representation".
+
+Enabling this option changes how the Solidity compiler works:
+
+1.  **Standard Path (Fails):** Solidity -> Direct eraVM Bytecode
+2.  **Via-IR Path (Works):** Solidity -> Yul (Intermediate Representation/Assembly) -> eraVM Bytecode
+
+By first compiling the Solidity code to Yul, an intermediate language closer to assembly, and *then* compiling the Yul code to final eraVM bytecode, the compiler can often better optimize and manage complex code structures, thus avoiding the stack limitations encountered in the direct compilation path.
+
+## Implementing the Via-IR Solution in `foundry.toml`
+
+While you could add the `--via-ir` flag to every `forge test` command, a more persistent solution is to enable it in your project's `foundry.toml` configuration file.
+
+Add the `via-ir = true` setting within the relevant profile, typically `[profile.default]`:
+
+```toml
+# foundry.toml
+
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+remappings = ['@openzeppelin/contracts=lib/openzeppelin-contracts/contracts']
+is-system = true
+via-ir = true # <--- Enable Via-IR compilation pipeline
+
+# Other settings like optimizer can also be configured here
+# optimizer = true
+# optimizer_runs = 200
 ```
 
-The first helper function that we need to create is for unsigned transactions. Let's call it `_createUnsignedTransaction`. It will take:
+Save the changes to your `foundry.toml` file.
 
-- an address of the caller
-- a transaction type
-- an address of the callee
-- a value
-- data
+## Important Consideration: Increased Compilation Time
 
-```solidity
-/*//////////////////////////////////////////////////////////////
-                                HELPERS
-//////////////////////////////////////////////////////////////*/
-function _createUnsignedTransaction(
-    address from,
-    uint8 transactionType,
-    address to,
-    uint256 value,
-    bytes memory data
-) internal view returns(Transaction memory) {}
-```
----
-### Build Transaction Struct
+**Warning:** Enabling `via-ir = true` introduces an extra compilation step (Solidity -> Yul -> Bytecode). As a result, **compilation and test execution times will be noticeably longer** compared to the standard compilation path. This is a necessary trade-off to successfully compile and test code that would otherwise fail due to stack depth limitations.
 
-Our function returns Transaction memory. We are actually going to create this. If you've guessed that we'll need to import the `Transaction` struct, you are correct. Let's do that now. 
+## Verifying the Fix
 
-```solidity
-import {
-    Transaction
-} from "lib/foundry-era-contracts/src/system-contracts/contracts/libraries/MemoryTransactionHelper.sol";
+After adding `via-ir = true` to your `foundry.toml` and saving the file, clear your terminal and re-run the exact same test command that previously failed:
+
+```bash
+forge test --mt testZkOwnerCanExecuteCommands --zksync
 ```
 
-If you go through [the struct, you'll notice that we need:](https://github.com/Cyfrin/foundry-era-contracts/blob/3f99de4a37b126c5cb0466067f37be0c932167b2/src/system-contracts/contracts/libraries/MemoryTransactionHelper.sol)
+You will observe that the compilation step takes significantly longer than before. However, the process should now complete successfully, and your test should pass (assuming no other logic errors exist):
 
-- `uint256 txType` we know this is 113 for zksync
-- `uint256 from` will have to convert this from an address
-- `uint256 to` will have to convert this from an address
-- `uint256 gasLimit` choose same value from our test on Ethereum MinimalAccount, 16777216
-- `uint256 gasPerPubdataByteLimit` 16777216
-- `uint256 maxFeePerGas` 16777216
-- `uint256 maxPriorityFeePerGas` 16777216
-- `uint256 paymaster` we aren't using a paymaster, so this is 0
-- `uint256 nonce` need to set nonce variable
-- `uint256 value` whatever value is passed
-- `uint256[4] reserved` set an array of 4 uint256[0]
-- `bytes data` data that is passed 
-- `bytes signature` can be blank hex as we are getting an unsigned transaction
-- `bytes[] factoryDeps` factoryDeps, set to create new instance of an empty array
-- `bytes paymasterInput` blank hex
-- `bytes reservedDynamic` blank hex
-
-As mentioned above, we need to set a couple of variables in our function. We'll place them above our `Transaction` struct that we are creating.
-
-```solidity
-uint256 nonce = vm.getNonce(address(minimalAccount));
-bytes32[] memory factoryDeps = new bytes32[](0);
 ```
-And now we can return our `Transaction`. 
-```solidity
-return Transaction({
-    txType: transactionType, // type 113 (0x71).
-    from: uint256(uint160(from)),
-    to: uint256(uint160(to)),
-    gasLimit: 16777216,
-    gasPerPubdataByteLimit: 16777216,
-    maxFeePerGas: 16777216,
-    maxPriorityFeePerGas: 16777216,
-    paymaster: 0,
-    nonce: nonce,
-    value: value,
-    reserved: [uint256(0), uint256(0), uint256(0), uint256(0)],
-    data: data,
-    signature: hex"",
-    factoryDeps: factoryDeps,
-    paymasterInput: hex"",
-    reservedDynamic: hex""
-});
-```
----
-### Finally Finish Assert in `testZkOwnerCanExecuteCommands`
-
-With this helper function, we can now finish **Assert** in our test function, `testZkOwnerCanExecuteCommands`. Let's call `_createUnsignedTransaction` in the test function. Remember that it takes `address from`, `uint8 transactionType`, `address to`, `uint256 value`, and `bytes memory data`. In our test function, we'll set them as follows. 
-
-- from the minimal account owner
-- we already know tx type is 113
-- to destination
-- value is the value being passed
-- data is functionData
-
-```solidity
-Transaction memory transaction =
-    _createUnsignedTransaction(minimalAccount.owner(), 113, dest, value, functionData);
+Compiler run successful!
+[...]
+Ran 1 test for test/zksync/ZkMinimalAccountTest.t.sol:ZkMinimalAccountTest
+[PASS] testZkOwnerCanExecuteCommands() (gas: 16132)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in [longer duration]
 ```
 
-Here is what both of our functions should look like as of now. 
+(Note: You might still see unrelated warnings, such as those concerning `ecrecover`, which are often expected in the ZkSync testing environment).
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity 0.8.24;
-
-import {Test} from "forge-std/Test.sol";
-import {ZkMinimalAccount} from "src/zksync/ZkMinimalAccount.sol";
-import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
-
-contract ZkMinimalAccountTest is Test {
-    ZkMinimalAccount minimalAccount;
-    ERC20Mock usdc;
-
-    uint256 constant AMOUNT = 1e18;
-
-    function setUp() public {
-        minimalAccount = new ZkMinimalAccount();
-        usdc = new ERC20Mock();
-    }
-
-    function testZkOwnerCanExecuteCommands() public {
-    // Arrange
-    address dest = address(usdc);
-    uint256 value = 0;
-    bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, address(minimalAccount), AMOUNT);
-    Transaction memory transaction =
-    _createUnsignedTransaction(minimalAccount.owner(), 113, dest, value, functionData);
-    
-        // Act
-        // Assert
-    }
-}
-```
----
-```solidity
-/*//////////////////////////////////////////////////////////////
-                                HELPERS
-//////////////////////////////////////////////////////////////*/
-function _createUnsignedTransaction(
-    address from,
-    uint8 transactionType,
-    address to,
-    uint256 value,
-    bytes memory data
-) internal view returns(Transaction memory) {
-    uint256 nonce = vm.getNonce(address(minimalAccount));
-    bytes32[] memory factoryDeps = new bytes32[](0);
-    return Transaction({
-        txType: transactionType, // type 113 (0x71).
-        from: uint256(uint160(from)),
-        to: uint256(uint160(to)),
-        gasLimit: 16777216,
-        gasPerPubdataByteLimit: 16777216,
-        maxFeePerGas: 16777216,
-        maxPriorityFeePerGas: 16777216,
-        paymaster: 0,
-        nonce: nonce,
-        value: value,
-        reserved: [uint256(0), uint256(0), uint256(0), uint256(0)],
-        data: data,
-        signature: hex"",
-        factoryDeps: factoryDeps,
-        paymasterInput: hex"",
-        reservedDynamic: hex""
-    });
-}
-```
-
----
-### Prank the Owner
-
-Now, all we need to do in **Act** is prank the owner. We will also need to call `executeTransaction` from our contract. Remember that it takes three arguments - `_txHash`, `_suggestedSignedHash`, and `_transaction`. Since we have commented out the first two, we'll just pass empty bytes. 
-
-```solidity
-// Act
-vm.prank(minimalAccount.owner());
-minimalAccount.executeTransaction(EMPTY_BYTES32, EMPTY_BYTES32, transaction);
-```
-
-Let's also create a constant for `EMPTY_BYTES32`. 
-
-```solidity
-bytes32 constant EMPTY_BYTES32 = bytes32(0);
-```
----
-
-And finally we can complete **Assert** by checking if the balance of usdc at our address is equal to `AMOUNT`.
-
-```solidity
-// Assert
-assertEq(usdc.balanceOf(address(minimalAccount)), AMOUNT);
-```
-
-Phew! That was a lot. Take a look back over your code to review and reflect on what we've done. When you are ready, move on to the next lesson. 
-
+By enabling the Via-IR compilation pipeline in your `foundry.toml`, you can overcome "Stack too deep" errors encountered during ZkSync testing with Foundry, allowing you to test more complex contract interactions, albeit with an increase in compilation duration.
