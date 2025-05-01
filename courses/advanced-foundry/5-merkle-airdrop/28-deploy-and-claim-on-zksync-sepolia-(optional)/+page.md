@@ -1,74 +1,56 @@
----
-title: Deploy and Claim on ZKsync Sepolia
----
+## Module Recap: Secure Airdrops with Merkle Trees and Signatures
 
-_Follow along with the video_
+This module guided you through building, testing, and deploying a secure and gas-efficient smart contract for token airdrops. We explored advanced cryptographic techniques like Merkle trees and digital signatures (ECDSA), applying them practically using industry-standard tools like Foundry and deploying across various environments, including local networks and the zkSync Layer 2 testnet. This lesson serves as a recap of the core concepts and practical skills covered.
 
----
+## The Challenge: Gas-Efficient Token Distribution
 
-### Introduction
+Airdrops involve distributing tokens to a predefined list of recipients. The naive approach—storing the entire list of addresses and amounts directly within the smart contract—is often prohibitively expensive due to the high gas costs associated with on-chain storage and iteration, especially for large recipient lists. This module focused on overcoming this challenge using cryptographic methods.
 
-In this lesson, we will be **manually deploying on ZKsync Sepolia**. Although scripts are highly recommended in order to avoid mistakes and save funds, we will proceed with typing command directly in the terminal since scripts do not work well on ZKsync at the moment of recording.
+## Merkle Trees: Verifying Claims Efficiently
 
-As usual, we will deploy the contracts `BagelToken` and `MerkleAirdrop`, generate the message hash, sign it, and split our long signature into its _v, r, s_ components. We'll then mint and transfer tokens to the `MerkleAirdrop` contract, claim the tokens from a third party address and finally verify this claim.
+Merkle trees provide an elegant solution for gas-efficient data verification.
 
-> 🗒️ **NOTE**:br
-> In MetaMask, you can create a wallet, for example, "updraft," using keystores where accounts are pre-saved, preventing the need to use the private key directly. For this demonstration, _updraft_ will deploy the contracts while _updraft 2_ will handle token claims.
+**What They Are:** A Merkle tree is a cryptographic structure where data entries (leaves) are hashed, and pairs of hashes are combined and hashed again, moving up the tree until a single "Merkle root" hash represents the entire dataset.
 
-### Deploying Contracts
+**How We Used Them:** Instead of storing the entire airdrop list on-chain, we generated the Merkle tree off-chain based on recipient addresses and amounts. Only the final `merkleRoot` (a single `bytes32` hash) was stored immutably in the smart contract (`MerkleAirdrop.sol`).
 
-To deploy both contracts, specify the contract path and the necessary environment variables, then save the contract address as an environment variable:
+**Merkle Proofs in Action:** To claim their tokens, a user provides their specific data (e.g., `account`, `amount`) along with a "Merkle proof." This proof consists of the necessary sibling hashes from the tree. The smart contract's `claim` function uses this proof and the user's data to recalculate a root hash.
 
-```bash
-export ZKSYNC_SEPOLIA_RPC_URL=https://sepolia.era.zksync.dev
-forge create source/BagelToken --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL} --account updraft --legacy --zksync
-export TOKEN_ADDRESS=0x7B66C3E36d026232408a655cF7cFdEeFA099D6d0
-```
+**On-Chain Verification:** We utilized OpenZeppelin's `MerkleProof.sol` library, specifically the `MerkleProof.verify()` function (likely within an internal `_verify` function). This function performs the recalculation. If the recalculated root matches the `merkleRoot` stored in the contract, the claim is validated, proving the user's data was part of the original dataset used to generate the root. This verification is highly gas-efficient as it avoids iterating through lists. To prevent double-spending, a `mapping(address => bool) s_hasClaimed` tracked successful claims.
 
-Next, deploy the `MerkleAirdrop` contract and save its address:
+## Digital Signatures: Another Layer of Verification
 
-```bash
-forge create source/MerkleAirdrop --constructor-args ${TOKEN_ADDRESS} ${ROOT_HASH} --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL} --account updraft --legacy --zksync
-export AIRDROP_ADDRESS=<deployed_airdrop_address>
-```
+While our primary airdrop mechanism used Merkle proofs, we also explored digital signatures (specifically ECDSA - Elliptic Curve Digital Signature Algorithm) as a fundamental cryptographic technique in blockchain.
 
-### Message and Signature
+**Core Concept:** Signatures allow verification of data authenticity and integrity. A message is signed using a private key, producing a unique signature (v, r, s components). Anyone with the corresponding public key (or the derived address) can verify that the message was indeed signed by the owner of that private key, without revealing the private key itself.
 
-To claim tokens, get the message hash and then sign it using the second wallet:
+**On-Chain Verification with `ecrecover`:** Ethereum provides the `ecrecover` precompile, which recovers the signer's address from a message hash and a signature. We leveraged OpenZeppelin's `ECDSA.sol` library, which provides safer abstractions like `ECDSA.recover(digest, v, r, s)` or `ECDSA.tryRecover(digest, v, r, s)`. Functions like `getMessageHash` (potentially using `abi.encodePacked` or EIP-712 hashing) were used to create the standardized message digest to be signed and verified. An internal function like `isValidSignature` compared the recovered signer address (`actualSigner`) with the expected address (`account`).
 
-```bash
-cast call ${AIRDROP_ADDRESS} "getMessageHash(address,uint256)" 0x2ea3970Ed82D5b30be821FAAD4a731D35964F7dd 25000000000000000000 --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL}
-cast wallet sign --no-hash 0xb37630ae79f68b63ba0240a965dc09dbc188bc082fd2425d70c1885933fd66a1 --account updraft2
-```
+**Off-Chain Signature Generation:** We saw how to generate signatures for testing and scripting using Foundry tools:
+*   `vm.sign(privateKey, digest)`: A cheatcode for generating signatures within tests.
+*   `cast wallet sign <message or digest> --private-key <key>`: A command-line tool for signing messages using a private key.
 
-After saving the signed message into a `signature.txt` file and removing its `0x` prefix, split it into its _v, r, s_ components with the `SplitSignature` script. Save the three environment variables `V`, `R`, and `S` for later use.
+Digital signatures are crucial for many blockchain interactions and can be used independently or in conjunction with other mechanisms for tasks like off-chain message validation or delegated actions.
 
-```bash
-forge script script/SplitSignature.s.sol:SplitSignature
-```
+## Ensuring Security Practices
 
-### Minting and Transferring Tokens
+Security was paramount throughout the module. The Merkle proof mechanism inherently prevents unauthorized claims. When implementing signature verification, careful consideration is needed to prevent vulnerabilities like replay attacks (where a valid signature could be reused maliciously) or signature malleability. Using established libraries like OpenZeppelin's `ECDSA.sol` and potentially incorporating nonces or chain IDs into signed messages (as often done with EIP-712) helps mitigate these risks. The use of the `s_hasClaimed` mapping in the airdrop contract is a crucial security measure against double-claims.
 
-Before claiming tokens, mint and transfer tokens to the airdrop contract:
+## Practical Workflow: From Local Tests to Layer 2 Deployment
 
-```bash
-cast send ${TOKEN_ADDRESS} "mint(address,uint256)" 0x52d64ED1fd0877797e2030fc914259e052F2bD67 25000000000000000000 --account updraft --rpc-url  ${ZKSYNC_SEPOLIA_RPC_URL}
-cast send ${TOKEN_ADDRESS} "transfer(address,uint256)" ${AIRDROP_ADDRESS} 25000000000000000000 --account updraft --rpc-url  ${ZKSYNC_SEPOLIA_RPC_URL}
-```
+This module emphasized a practical development workflow:
 
-### Claiming Tokens
+1.  **Smart Contract Development:** Writing the Solidity code for the airdrop contract (`MerkleAirdrop.sol`) incorporating Merkle proof verification.
+2.  **Testing:** Utilizing Foundry (`forge test`) to write comprehensive unit and integration tests, including generating Merkle trees/proofs off-chain and simulating claims, potentially using cheatcodes like `vm.sign` for signature testing if applicable.
+3.  **Scripting:** Creating deployment and interaction scripts using Foundry scripting (`.s.sol` files executed with `forge script`). These scripts handle tasks like deploying the contract (setting the `merkleRoot` and `airdropToken` in the constructor) and potentially simulating claim interactions.
+4.  **Deployment Environments:**
+    *   **Local:** Rapid iteration using Anvil (Foundry's local node) and potentially a zkSync Local Node for specific Layer 2 testing.
+    *   **Testnet:** Deployment to a public testnet like zkSync Sepolia to verify behavior in a shared, persistent environment mirroring mainnet conditions more closely.
 
-With everything set, perform the claim operation:
+We also briefly touched upon different transaction types, which are relevant for understanding gas costs and network interactions on Ethereum and Layer 2 solutions like zkSync.
 
-```bash
-cast send ${AIRDROP_ADDRESS} "claim(address,uint256,bytes32[],uint8,bytes32,bytes32)" 0x2ea3970Ed82D5b30be821FAAD4a731D35964F7dd 25000000000000000000 <proof> ${V} ${R} ${S} "[0x4fd31fee0e75780cd67704fbc43caee70fddcaa43631e2e1bc9fb233fada2394,0x81f0e530b56872b6fc3e10f8873804230663f8407e21cef901b8aeb06a25e5e2]" --account updraft --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL}
-```
+## Conclusion: Mastering Advanced Techniques
 
-### Verifying the Claim
+This module covered significant ground, integrating cryptographic primitives like Merkle proofs and digital signatures into a practical smart contract application – a gas-efficient token airdrop. You learned the theory behind these techniques, implemented them using Solidity and OpenZeppelin libraries, tested rigorously with Foundry, and deployed across local and Layer 2 testnet environments.
 
-To verify the claim, check the balance of the second account. If the balance reflects the claimed amount (25000000000000000000), the process is successful.
-
-```bash
-cast call ${TOKEN_ADDRESS} "balanceOf(address)" 0x2ea3970Ed82D5b30be821FAAD4a731D35964F7dd --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL}
-cast --to-dec 0x0000000000000000000000000015af1d78b58c40000
-```
+The concepts, particularly the cryptographic aspects, can be dense. Don't hesitate to review the material, explore the referenced libraries (`MerkleProof.sol`, `ECDSA.sol`), and experiment further with the provided code examples. Remember to take breaks to allow the information to solidify. Mastering these techniques provides a powerful toolkit for building secure, efficient, and sophisticated decentralized applications.
