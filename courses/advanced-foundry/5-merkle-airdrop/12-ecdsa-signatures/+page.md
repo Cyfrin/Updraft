@@ -1,63 +1,51 @@
----
-title: ECDSA Signatures
----
+## Understanding zkSync Transaction Types: The Type 113 Signature Request
 
-_Follow along with the video_
+This lesson introduces the concept that not all interactions with a blockchain are the same type of transaction. We'll explore a specific example encountered when deploying smart contracts to zkSync, highlighting how understanding foundational concepts like digital signatures is crucial.
 
----
+Before diving in, it's important to have a grasp of several key concepts, which likely have been covered previously:
 
-### ECDSA
+*   **Digital Signatures:** The fundamental cryptographic method used to prove ownership and authorize actions on a blockchain.
+*   **ECDSA (Elliptic Curve Digital Signature Algorithm):** The specific algorithm used by Ethereum and zkSync for generating and verifying signatures with private/public key pairs.
+*   **EIP-191:** A standard defining how to format messages before signing to prevent them from being misinterpreted as actual transactions.
+*   **EIP-712:** A standard for signing *typed structured data*. This makes signature requests more transparent and human-readable in wallets by presenting data in a clear, labeled format instead of opaque hexadecimal strings.
+*   **Merkle Trees:** Data structures vital for efficiently verifying data integrity, often used in the underlying mechanisms of systems like zkSync.
 
-ECDSA stands for the [Elliptic Curve Digital Signature Algorithm](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm), an algorithm based on [elliptic curve](https://en.wikipedia.org/wiki/Elliptic_curve) cryptography. This form of cryptography leverages the unique properties of elliptic curves to perform secure cryptographic functions.
+Understanding these, especially EIP-712 and the general principle of signing messages, is essential for comprehending the transaction type we will examine.
 
-Elliptic curves possess several key mathematical properties that make them suitable for cryptography:
+### Observing a Unique Transaction Type on zkSync
 
-- They have no singular points.
-- They are smooth curves without sharp corners.
-- They are symmetric about the x-axis.
-- Every point (x, y) on the curve has an inverse point (x, −y) also on the curve.
-- Adding two distinct points (x1, y1) and (x2, y2) on the curve involves drawing a line through them, which intersects the curve at a third point.
+Let's walk through deploying a simple smart contract to zkSync using a common development tool, the Remix IDE, to see this concept in action.
 
-In the context of blockchain technology, ECDSA is used for
+1.  **Setup:** We begin in Remix IDE with the zkSync plugin enabled. We'll use a standard `SimpleStorage.sol` contract.
+2.  **Compilation:** Using the zkSync plugin, we compile the contract. It's important to note that the plugin utilizes its specific compiler, `zksolc`, not the standard Ethereum `solc`.
+3.  **Deployment Configuration:** In the plugin's "Deploy" tab, we set the environment to "Wallet," connecting Remix to a browser wallet like MetaMask, which is configured for the appropriate zkSync network.
+4.  **Initiating Deployment:** We click the "Deploy" button for our compiled `SimpleStorage` contract.
 
-1. Generating key pairs
-2. Create signatures
-3. Verify signatures
+At this point, we might expect MetaMask to pop up with a standard transaction confirmation screen, asking us to approve gas fees and send the transaction. However, something different happens.
 
-### Public Key Cryptography
+### The "Signature Request" - Type 113
 
-Signatures in blockchain provide a means for authentication. In Ethereum, proof of ownership is achieved using **public** and **private key** pairs, which create _digital signatures_ unique to each user. These signatures verify that the sender of a transaction is the owner of the account, a system known as public key cryptography involving _asymmetric encryption_.
+Instead of a transaction confirmation, MetaMask presents a "Signature request." This request explicitly asks the user to "Sign this message." Crucially, within the details of the message presented for signing, we can observe a field: `TxType: 113`.
 
-- **Private Key**: is used to sign messages and derive the public key
-- **Public Key**: is used to verify that the owner knows the private key. It is virtually impossible to derive the private key from the public key, making this system highly secure.
+This indicates we are dealing with a specific transaction type designated as 113 within the zkSync ecosystem (or at least for this interaction method). The data presented in the signature request is not an opaque blob but is structured clearly, resembling the user-friendly format defined by EIP-712:
 
-When a new Ethereum account is created, it generates a pair of cryptographic keys: a public key and a private key. The public key is then processed using the keccak256 hashing algorithm, converting it into a fixed-size string of 32 bytes (256 bits). The Ethereum address is derived from the last 20 bytes of this hashed public key.
+*   `From:` Your wallet address.
+*   `To:` An address relevant to the deployment process.
+*   `GasLimit:` The gas limit for the operation.
+*   `GasPerPubdataByteLimit:` A parameter specific to zkSync's handling of public data costs.
+*   `MaxFeePerGas:` Maximum fee per gas unit.
+*   `MaxPriorityFeePerGas:` The priority fee (tip).
+*   `Paymaster:` Address of a paymaster if used (0 in this case).
+*   `Nonce:` The transaction nonce from your account.
+*   `Value:` ETH value being sent (0 for contract deployment).
+*   `Data:` The contract creation bytecode combined with constructor arguments.
+*   `FactoryDeps:` Any contract bytecodes the deployment depends on (including the contract itself).
+*   `PaymasterInput:` Input data for the paymaster (empty `0x` here).
 
-### The SECP256k1 Curve
+By clicking "Sign" in MetaMask, you are not broadcasting a transaction in the traditional sense directly from your wallet. Instead, you are cryptographically signing this structured data payload representing the deployment request. This signature, along with the data, is then used (likely relayed by the Remix plugin infrastructure) to execute the deployment on zkSync. The Remix terminal typically confirms this by logging the signed transaction object, again showing `"type": 113`.
 
-The specific curve used in ECDSA in Ethereum is called the **secp256k1 curve**.
+### Setting the Stage
 
-For every x-coordinate on the curve, two valid signatures exist, which implies that if a malicious actor knows one signature, they can compute the second one. This vulnerability is known as **signature malleability**, which can lead to replay attacks.
+We've observed a contract deployment on zkSync that resulted in signing a Type 113 message instead of confirming a standard transaction. How is it possible to deploy a contract by merely signing a message? Why does zkSync use this specific transaction type (113) in this scenario?
 
-There are constants associated with the SECP 256k1 curve:
-
-- **Generator Point (G)**: A predefined point on the curve.
-- **n**: A prime number defining the length of the private key.
-
-The public key is an elliptic curve point calculated by multiplying the private key with the generator point `G`.
-
-ECDSA signatures consist of three integers: `v`, `r`, and `s`:
-
-1. The message is hashed
-2. A random number `k` (the nonce) is generated.
-3. **Calculating Signature Components**:
-   - **r**: Represents the x-coordinate on the elliptic curve of the point resulting from multiplying the nonce `k` by the generator point `G`.
-   - **s**: Serves as proof of the signer's knowledge of the private key, calculated using the nonce `k`, the hash of the message, the private key, and the `r` value.
-   - **v**: Indicates the polarity (positive or negative y-axis) of the point on the elliptic curve.
-
-### Verifying Signatures
-
-Verifying ECDSA signatures involves using the signed message, the signature, and the public key to check if the signature is valid. This process essentially reverses the signing algorithm to ensure the provided `r` coordinate matches the calculated one.
-
-> 👮‍♂️ **BEST PRACTICE**:br
-> Using `ecrecover` directly can lead to security issues such as signature malleability. This can be mitigated by restricting the value of `s` to one half of the curve. The use of **OpenZeppelin's ECDSA library** is recommended, which provides protection against signature malleability and prevents invalid signatures from returning a zero address.
+Answering these questions requires a deeper exploration of the different transaction types available on Ethereum and how Layer 2 solutions like zkSync extend or modify them to achieve their goals of scalability and efficiency. This Type 113 transaction is a specific mechanism implemented by zkSync, and understanding its structure and purpose requires examining the broader context of Ethereum and zkSync transaction formats, which will be covered next.
