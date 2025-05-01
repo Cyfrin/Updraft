@@ -1,513 +1,225 @@
----
-title: depositCollateral
----
-
-_Follow along the course with this video._
-
----
-
-### depositCollateral
-
-I think the easiest place to start with filling out the contract is going to be depositCollateral. This makes sense to me since it'll surely be one of the first places a user interacts with our protocol.
-
-To deposit collateral, users are going to need the address for the type of collateral they're depositing (wETH or wBTC), and the amount they want to deposit. Easy enough.
-
-> ❗ **NOTE**
-> Don't forget the NATSPEC!
-
-```solidity
-///////////////////
-//   Functions   //
-///////////////////
-
-///////////////////////////
-//   External Functions  //
-///////////////////////////
-
-/*
- * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
- * @param amountCollateral: The amount of collateral you're depositing
- */
-function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external {
-
-}
-```
-
-Now, the first thing I consider when I see a function passing values like this is sanitization. There are always going to be considerations for the parameters being passed to public functions that we should account for. For example, it's often inappropriate for address(0) to be passed, or negative numbers etc.
-
-It's likely that many functions in a protocol will require this kind of sanitation and rather than rewriting conditionals a dozen times, we should leverage modifiers.
-
-Our function layout reference says modifiers should come before our functions, so let's adhere to that. We'll need a new error is well.
-
-```solidity
-
-contract DSCEngine {
-
-    ///////////////////
-    //     Errors    //
-    ///////////////////
-
-    error DSCEngine__NeedsMoreThanZero();
-
-    ///////////////////
-    //   Modifiers   //
-    ///////////////////
-
-    modifier moreThanZero(uint256 amount){
-        if(amount <=0){
-            revert DSCEngine__NeedsMoreThanZero();
-        }
-    }
-
-...
-
-}
-```
-
-This looks great! This should assure that the amount of collateral passed to our depositCollateral function is greater than zero. The other parameter of this function is the tokenCollateralAddress. Since we're only meaning to support wETH and wBTC, we should make a second modifier to assure only these allowed tokens are deposited as collateral.
-
-```solidity
-modifier isAllowedToken(address token){
-
-}
-```
-
-Currently, we don't have any reference to use in our conditional for this modifier. We'll need to create a mapping as a state variable to track the tokens which are compatible with our protocol.
-
-We know we're going to be using chainlink pricefeeds, so what we can do is have this mapping be a token address, to it's associated pricefeed. In our modifier, if a pricefeed isn't found for the passed token address, it'll revert!
-
-```solidity
-/////////////////////////
-//   State Variables   //
-/////////////////////////
-
-mapping(address token => address priceFeed) private s_priceFeeds;
-```
-
-We'll probably want to initialize this mapping in our contract's constructor. To do this, we'll have our constructor take a list of token addresses and a list of priceFeed addresses, each index of one list will be mapped to the respective index of the other on deployment. We also know that the DSCEngine is going to need to know about the DecentralizeStablecoin contract. With all this in mind, let's set up our constructor.
-
-```solidity
-///////////////////
-//   Functions   //
-///////////////////
-constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){}
-```
-
-Here's where we should definitely perform a sanity check, since a contract is only constructed once. If the indexes of our lists are meant to be mapped to each other, we should assure the lengths of the lists match, and if they don't we can revert with another custom error.
-
-```solidity
-///////////////////
-//     Errors    //
-///////////////////
-
-error DSCEngine__NeedsMoreThanZero();
-error DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
-
-...
-
-///////////////////
-//   Functions   //
-///////////////////
-constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
-    if(tokenAddresses.length != priceFeedAddresses.length){
-        revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
-    }
-}
-```
-
-Now we can add our for loop which will map our two lists of addresses to each other.
-
-```solidity
-///////////////////
-//   Functions   //
-///////////////////
-constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
-    if(tokenAddresses.length != priceFeedAddresses.length){
-        revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
-    }
-
-    for(uint256 i=0; i < tokenAddresses.length; i++){
-        s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
-    }
-}
-```
-
-We're going to be doing lots with our `dscEngine`. We should declare this as an immutable variable and then assign it in our constructor.
-
-> ❗ **NOTE**
-> Don't forget to import `DecentralizedStableCoin.sol`!
-
-
-```solidity
-import {DecentralizedStableCoin} from "DecentralizedStableCoin.sol";
-
-...
-
-/////////////////////////
-//   State Variables   //
-/////////////////////////
-
-mapping(address token => address priceFeed) private s_priceFeeds;
-DecentralizedStableCoin private immutable i_dsc;
-
-...
-
-///////////////////
-//   Functions   //
-///////////////////
-constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
-    if(tokenAddresses.length != priceFeedAddresses.length){
-        revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
-    }
-
-    for(uint256 i=0; i < tokenAddresses.length; i++){
-        s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
-    }
-    i_dsc = DecentralizedStableCoin(dscAddress);
-}
-```
-
-Remember, we were doing all this because we need a new modifier that checks our token addresses! Now that things are established in our constructor, we can write this modifier.
-
-```solidity
-
-contract DSCEngine {
-
-    ///////////////////
-    //     Errors    //
-    ///////////////////
-
-    error DSCEngine__NeedsMoreThanZero();
-    error DSCEngine__TokenNotAllowed(address token);
-
-    ///////////////////
-    //   Modifiers   //
-    ///////////////////
-
-    modifier moreThanZero(uint256 amount){
-        if(amount <=0){
-            revert DSCEngine__NeedsMoreThanZero();
-        }
-        _;
-    }
-
-    modifier isAllowedToken(address token) {
-        if (s_priceFeeds[token] == address(0)) {
-            revert DSCEngine__TokenNotAllowed(token);
-        }
-        _;
-    }
-
-...
-
-}
-```
-
-Great! Now, coming all the way back to our functions (told you we'd be moving fast!), we can add these newly created modifiers to `depositCollateral`.
-
-```solidity
-///////////////////////////
-//   External Functions  //
-///////////////////////////
-
-/*
- * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
- * @param amountCollateral: The amount of collateral you're depositing
- */
-function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{}
-```
-
-I've additionally included the nonReentrant modifier, which we'll need to import from OpenZeppelin. When interacting with external contracts it's often good to consider the implications of reentrancy. Reentrancy is one of the most common and damaging attacks in all of Web3, and sometimes I'll throw this modifier on as a **_better safe than sorry_** methodology. It may not explicitly be required, but we'll find out when this code goes to audit! The trade off to include it is an expense of gas required to perform these extra checks.
-
-Let's add the import to our contract.
-
-> ❗ **NOTE**
-> In version 5 of OpenZeppelin's contracts library, `ReentrancyGuard.sol` is
-> in a different location. Edit the filepath from `/security/` to `/utils/` will
-> work.
-
-```solidity
-pragma solidity ^0.8.18;
-
-import {DecentralizedStableCoin} from "DecentralizedStableCoin.sol";
-import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-
-...
-
-contract DSCEngine is ReentrancyGuard {
-    ...
-}
-```
-
-Whew, all this and we haven't even started the function body yet! Let's start working with the deposited collateral. We'll need a way to keep track of the collateral deposited by each user. This sounds like a mapping to me.
-
-```solidity
-/////////////////////////
-//   State Variables   //
-/////////////////////////
-
-mapping(address token => address priceFeed) private s_priceFeeds;
-DecentralizedStableCoin private immutable i_dsc;
-mapping(address user => mapping(address token => uint256 amount)) private s_collateralDeposited;
-```
-
-Now we can finally add the deposited collateral to our user's balance within our depositCollateral function.
-
-```solidity
-///////////////////////////
-//   External Functions  //
-///////////////////////////
-
-/*
- * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
- * @param amountCollateral: The amount of collateral you're depositing
- */
-function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{
-    s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
-}
-```
-
-When we're changing the balance of our user's deposited collateral, what are we doing? We're updating our contract state! Any time state is changed, we should absolutely emit an event. Our contract layout tells us that events should be declared beneath our state variables. So, let's go ahead and declare this event and emit it in our depositCollateral function.
-
-```solidity
-////////////////
-//   Events   //
-////////////////
-
-event CollateralDeposited(address indexed user, address indexed token, uint256 indexed amount);
-
-...
-
-///////////////////////////
-//   External Functions  //
-///////////////////////////
-
-/*
- * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
- * @param amountCollateral: The amount of collateral you're depositing
- */
-function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{
-    s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
-    emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
-}
-```
-
-Our function so far is doing a great job adhering to CEI (Checks, Effects, Interactions). The checks we're performing are being executed by our modifiers, our effects are any changes to do with internal accounting or state changes, and effects will be our external interacts (transferring the tokens). Following this design pattern is the best way to protect yourself from reentrancy.
-
-Let's add our interactions to the function now, we'll need to call transferFrom on wBTC or wETH. These are ERC20s remember, so let's import an interface to use.
-
-```solidity
-pragma solidity ^0.8.18;
-
-import {DecentralizedStableCoin} from "DecentralizedStableCoin.sol";
-import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
-...
-
-///////////////////////////
-//   External Functions  //
-///////////////////////////
-
-/*
- * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
- * @param amountCollateral: The amount of collateral you're depositing
- */
-function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external moreThanZero(amountCollateral) isAllowedToken(tokenCollateralAddress) nonReentrant{
-    s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
-    emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
-
-    IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);
-}
-```
-
-One last thing to note in this function - our transferFrom call actually returns a boolean. We want to assure this transfer is successful, otherwise revert this function call. One last conditional to add...
-
-```solidity
-bool success = IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);
-
-if(!success){
-    revert DSCEngine__TransferFailed();
-}
-```
-
-...and one last custom error:
-
-```solidity
-
-contract DSCEngine {
-
-    ///////////////////
-    //     Errors    //
-    ///////////////////
-
-    error DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch();
-    error DSCEngine__NeedsMoreThanZero();
-    error DSCEngine__TokenNotAllowed(address token);
-    error DSCEngine__TransferFailed();
-
-    ...
-
-}
-```
-
-### Wrap Up
-
-This function is looking pretty dang great! We've finished writing depositCollateral which allows users to .. deposit collateral .. but it does so much more! We've written modifier to sanitize our function inputs as well as employed best practice design patterns like CEI and events to keep things secure.
-
-This may be a good place to start writing some tests to make sure everything written so far is performing as expected, but let's write a few more functions before getting into that.
-
-I've left our DSCEngine.sol (up to this point in the lesson) below for reference. Over the next few lessons, I'll continue to include this contract in it's entirety for reference.
-
-See you in the next lesson!
-
-DSCEngine.sol
-
-```solidity
-// Layout of Contract:
-// version
-// imports
-// errors
-// interfaces, libraries, contracts
-// Type declarations
-// State variables
-// Events
-// Modifiers
-// Functions
-
-// Layout of Functions:
-// constructor
-// receive function (if exists)
-// fallback function (if exists)
-// external
-// public
-// internal
-// private
-// internal & private view & pure functions
-// external & public view & pure functions
-
-// SPDX-License-Identifier: MIT
-
-pragma solidity 0.8.18;
-
-import { ReentrancyGuard } from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import { DecentralizedStableCoin } from "./DecentralizedStableCoin.sol";
-
-/*
- * @title DSCEngine
- * @author Patrick Collins
- *
- * The system is designed to be as minimal as possible, and have the tokens maintain a 1 token == $1 peg at all times.
- * This is a stablecoin with the properties:
- * - Exogenously Collateralized
- * - Dollar Pegged
- * - Algorithmically Stable
- *
- * It is similar to DAI if DAI had no governance, no fees, and was backed by only WETH and WBTC.
- *
- * Our DSC system should always be "overcollateralized". At no point, should the value of
- * all collateral < the $ backed value of all the DSC.
- *
- * @notice This contract is the core of the Decentralized Stablecoin system. It handles all the logic
- * for minting and redeeming DSC, as well as depositing and withdrawing collateral.
- * @notice This contract is based on the MakerDAO DSS system
- */
-contract DSCEngine is ReentrancyGuard {
-
-    ///////////////////
-    //     Errors    //
-    ///////////////////
-
-    error DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch();
-    error DSCEngine__NeedsMoreThanZero();
-    error DSCEngine__TokenNotAllowed(address token);
-    error DSCEngine__TransferFailed();
-
-    /////////////////////////
-    //   State Variables   //
-    /////////////////////////
-
-    mapping(address token => address priceFeed) private s_priceFeeds;
-    DecentralizedStableCoin private immutable i_dsc;
-    mapping(address user => mapping(address token => uint256 amount)) private s_collateralDeposited;
-
-    ////////////////
-    //   Events   //
-    ////////////////
-
-    event CollateralDeposited(address indexed user, address indexed token, uint256 indexed amount);
-
-    ///////////////////
-    //   Modifiers   //
-    ///////////////////
-
-    modifier moreThanZero(uint256 amount){
-        if(amount <=0){
-            revert DSCEngine__NeedsMoreThanZero();
-        }
-        _;
-    }
-
-    modifier isAllowedToken(address token) {
-        if (s_priceFeeds[token] == address(0)) {
-            revert DSCEngine__TokenNotAllowed(token);
-        }
-        _;
-    }
-
-    ///////////////////
-    //   Functions   //
-    ///////////////////
-    constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
-        if(tokenAddresses.length != priceFeedAddresses.length){
-            revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
-        }
-
-        for(uint256 i=0; i < tokenAddresses.length; i++){
-            s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
-        }
-        i_dsc = DecentralizedStableCoin(dscAddress);
-    }
-
-
-    ///////////////////////////
-    //   External Functions  //
-    ///////////////////////////
-
-    /*
-     * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
-     * @param amountCollateral: The amount of collateral you're depositing
-     */
-    function depositCollateral(
-        address tokenCollateralAddress,
-        uint256 amountCollateral
-    )
-        external
-        moreThanZero(amountCollateral)
+Okay, here is a detailed summary of the video "Mint DSC: Getting the value of our collateral":
+
+**Video Goal:**
+The primary goal of this video segment is to begin implementing the `mintDSC` function within the `DSCEngine` smart contract. This function allows users who have already deposited collateral to mint the Decentralized Stable Coin (DSC), but it requires ensuring that the user remains sufficiently collateralized. This involves calculating the value of their deposited collateral and comparing it to the value of the DSC they wish to mint plus any existing minted DSC (debt).
+
+**Context:**
+This builds upon the previously implemented `depositCollateral` function. The overall system aims to be an overcollateralized stablecoin protocol, similar in concept to MakerDAO's DAI but simpler for this example.
+
+**1. Introduction to `mintDSC` Function:**
+
+*   The speaker explains that after depositing collateral, users need a way to mint DSC tokens against that collateral.
+*   The `mintDSC` function is the core mechanism for this.
+*   It's mentioned that a future function `depositCollateralAndMintDsc` will combine depositing and minting, but first, the standalone `mintDSC` logic needs to be built.
+*   The speaker notes this function will be surprisingly involved because it requires checking collateral value against the requested mint amount.
+
+**2. `mintDSC` Function - Initial Structure & Checks:**
+
+*   The basic function signature is defined:
+    ```solidity
+    // In DSCEngine.sol
+    function mintDsc(uint256 amountDscToMint) external {}
+    ```
+*   **Input Parameter:** `amountDscToMint` (uint256) specifies how much DSC the user wants to mint.
+*   **Modifiers:** Two modifiers are immediately added:
+    *   `moreThanZero(amountDscToMint)`: Ensures the user mints a positive amount of DSC.
+    *   `nonReentrant`: Protects against reentrancy attacks, although the speaker notes it might not be strictly necessary here since the DSC token is controlled by this contract, it's good practice.
+    ```solidity
+    function mintDsc(uint256 amountDscToMint)
+ spezifischemoreThanZero(amountDscToMint)
         nonReentrant
-        isAllowedToken(tokenCollateralAddress)
     {
-        s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
-        emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
-        bool success = IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);
-        if (!success) {
-            revert DSCEngine__TransferFailed();
-        }
+        // ...
+    }
+    ```
+*   **NatSpec Comments:** Basic documentation is added:
+    ```solidity
+    /**
+     * @notice follows CEI
+     * @param amountDscToMint The amount of decentralized stablecoin to mint
+     * @notice they must have more collateral value than the minimum threshold
+     */
+    function mintDsc(uint256 amountDscToMint)
+        external
+        moreThanZero(amountDscToMint)
+        nonReentrant
+    {
+        // ...
+    }
+    ```
+    *   `@notice follows CEI`: Indicates adherence to the Checks-Effects-Interactions pattern.
+    *   `@notice they must have more collateral...`: Hints at the upcoming collateralization checks.
+
+**3. Tracking Minted DSC (Debt):**
+
+*   Minting DSC creates a debt for the user that needs to be repaid later.
+*   A state variable mapping is introduced to track how much DSC each user has minted:
+    ```solidity
+    // State Variables section
+    mapping(address user => uint256 amountDscMinted) private s_dscMinted;
+    ```
+*   Inside `mintDsc`, this mapping is updated immediately (following CEI - this is an effect):
+    ```solidity
+    function mintDsc(uint256 amountDscToMint) /* ... */ {
+        s_dscMinted[msg.sender] += amountDscToMint;
+        // ... rest of function
+    }
+    ```
+
+**4. The Core Problem: Ensuring Overcollateralization & Health Factor:**
+
+*   **Problem:** The system must prevent users from minting more DSC than their collateral allows (based on a specific collateralization ratio). Minting should fail if it makes the user undercollateralized.
+*   **Example:** If a user has $100 worth of ETH collateral and the system requires 150% collateralization, they shouldn't be able to mint $150 worth of DSC. If they try, the transaction should revert.
+*   **Concept: Health Factor:** The video introduces the "Health Factor" concept, borrowed from Aave V3, as a way to represent how well-collateralized a user is.
+    *   A health factor below 1 indicates the user is undercollateralized and eligible for liquidation.
+    *   The `mintDSC` function must check if the mint operation would cause the user's health factor to drop below 1 (or the minimum threshold).
+*   **Aave Documentation:** The speaker briefly shows the Aave V3 Risk Parameters documentation page (`docs.aave.com/risk/asset-risk/risk-parameters#health-factor`) illustrating the health factor formula and liquidation process.
+
+**5. Function Dependency Tree for Health Factor Check:**
+
+To implement the health factor check within `mintDsc`, a cascade of helper functions is required:
+
+*   **`_revertIfHealthFactorIsBroken(address user)` (Internal View):**
+    *   This function will be called inside `mintDsc` *after* tentatively updating the user's minted amount (`s_dscMinted`).
+    *   Purpose: To check the user's resulting health factor and revert the entire `mintDsc` transaction if it's below the minimum threshold (e.g., below 1).
+    *   Its implementation requires calculating the health factor.
+    ```solidity
+    function mintDsc(uint256 amountDscToMint) /* ... */ {
+        s_dscMinted[msg.sender] += amountDscToMint;
+        _revertIfHealthFactorIsBroken(msg.sender); // Check health after update
+        // TODO: Actually mint the tokens if check passes
     }
 
-    function depositCollateralAndMintDsc() external {}
+    // Inside Private & Internal View Functions section
+    function _revertIfHealthFactorIsBroken(address user) internal view {
+        // 1. Check health factor (do they have enough collateral?)
+        // 2. Revert if they don't
+        uint256 healthFactor = _healthFactor(user); // Needs _healthFactor
+        // TODO: Add revert logic based on healthFactor
+    }
+    ```
 
-    function redeemCollateralForDsc() external {}
+*   **`_healthFactor(address user)` (Private View):**
+    *   Purpose: Calculates the user's current health factor, typically a ratio of their collateral value (adjusted by liquidation thresholds) to their total debt (minted DSC).
+    *   Requires: Total value of the user's collateral in USD and their total minted DSC.
+    ```solidity
+    function _healthFactor(address user) private view returns (uint256) {
+        // Needs total DSC minted & total collateral VALUE
+        (uint256 totalDscMinted, uint256 collateralValueInUsd) = _getAccountInformation(user); // Needs _getAccountInformation
+        // TODO: Calculate health factor ratio
+        return 1e18; // Placeholder
+    }
+    ```
 
-    function redeemCollateral() external {}
+*   **`_getAccountInformation(address user)` (Private View):**
+    *   Purpose: Gathers the two key pieces of information needed for the health factor calculation.
+    *   Returns: `totalDscMinted` (from `s_dscMinted` mapping) and `totalCollateralValueInUsd`.
+    *   Requires: A way to calculate the total USD value of *all* collateral deposited by the user.
+    ```solidity
+    function _getAccountInformation(address user)
+        private
+        view
+        returns (uint256 totalDscMinted, uint256 collateralValueInUsd)
+    {
+        totalDscMinted = s_dscMinted[user];
+        collateralValueInUsd = getAccountCollateralValue(user); // Needs getAccountCollateralValue
+    }
+    ```
 
-    function mintDsc() external {}
+*   **`getAccountCollateralValue(address user)` (Public View):**
+    *   Purpose: Calculates the total value, in USD, of all different types of collateral deposited by a specific user.
+    *   Requires:
+        1.  A list of all collateral tokens the user *could* have deposited.
+        2.  The amount of each specific collateral token the user *has* deposited.
+        3.  The current USD price of each collateral token.
+    *   Implementation Idea: Loop through all allowed collateral tokens, get the user's deposited amount for each, get the USD value of that amount, and sum the values.
+    *   **New State Variable:** To loop through tokens, an array storing the addresses of all allowed collateral tokens is needed:
+        ```solidity
+        // State Variables section
+        address[] private s_collateralTokens;
+        ```
+    *   **Constructor Update:** The constructor needs to populate this `s_collateralTokens` array when the contract is deployed:
+        ```solidity
+        constructor(...) {
+            // ... existing code ...
+            for (uint256 i = 0; i < tokenAddresses.length; i++) {
+                s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
+                s_collateralTokens.push(tokenAddresses[i]); // Add token to array
+            }
+            // ... existing code ...
+        }
+        ```
+    *   **Function Implementation:**
+        ```solidity
+        // Inside Public & External View Functions section
+        function getAccountCollateralValue(address user) public view returns (uint256 totalCollateralValueInUsd) {
+            totalCollateralValueInUsd = 0; // Initialize total value
+            // Loop through each collateral token
+            for (uint256 i = 0; i < s_collateralTokens.length; i++) {
+                address token = s_collateralTokens[i];
+                // Get amount deposited by user for this specific token
+                uint256 amount = s_collateralDeposited[user][token];
+                // Get the USD value of that amount and add to total
+                totalCollateralValueInUsd += getUsdValue(token, amount); // Needs getUsdValue
+            }
+            return totalCollateralValueInUsd;
+        }
+        ```
 
-    function burnDsc() external {}
+*   **`getUsdValue(address token, uint256 amount)` (Public View):**
+    *   Purpose: Calculates the USD value of a given `amount` of a specific `token`.
+    *   Requires: Access to the Chainlink price feed for the `token`/USD pair.
+    *   **Dependencies:** Needs `AggregatorV3Interface` from Chainlink.
+        *   **Import:**
+            ```solidity
+            import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+            ```
+        *   **Installation:** The Chainlink contracts need to be installed via Foundry:
+            ```bash
+            forge install smartcontractkit/chainlink-brownie-contracts@0.6.1 --no-commit
+            ```
+            *(Note: The speaker initially typed `chainlink-brownie-contract` then corrected to `chainlink-brownie-contracts`)*
+        *   **Remapping:** Add remapping to `foundry.toml`:
+            ```toml
+            remappings = [
+                # ... other remappings ...
+                "@chainlink/contracts/=lib/chainlink-brownie-contracts/contracts/",
+            ]
+            ```
+    *   **Precision Handling:** This is critical.
+        *   Token amounts (e.g., `amount`) usually have 18 decimals (like ETH).
+        *   Chainlink Price Feeds (ETH/USD, BTC/USD) often return prices with 8 decimals.
+        *   To multiply them correctly, their precision needs to be aligned. The standard is often to bring everything to 18 decimals.
+        *   **Constants:** Introduce constants to handle precision conversions without magic numbers:
+            ```solidity
+            // State Variables section (or Constants section)
+            uint256 private constant ADDITIONAL_FEED_PRECISION = 1e10; // 1 * 10**10 (To convert 8 decimals to 18)
+            uint256 private constant PRECISION = 1e18; // 1 * 10**18
+            ```
+    *   **Function Implementation:**
+        ```solidity
+        // Inside Public & External View Functions section
+        function getUsdValue(address token, uint256 amount) public view returns (uint256) {
+            // Get the price feed address for the token
+            AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
+            // Get the latest price data (we only need the price)
+            (, int256 price, , , ) = priceFeed.latestRoundData();
 
-    function liquidate() external {}
+            // Calculate value: (amount * price * 1e10) / 1e18
+            // Convert price (int256 with 8 decimals) to uint256 with 18 decimals
+            // Multiply amount (18 decimals) by adjusted price (18 decimals)
+            // Divide by PRECISION (1e18) to get final value in USD with 18 decimals
+            return (uint256(price) * ADDITIONAL_FEED_PRECISION * amount) / PRECISION;
+        }
+        ```
 
-    function getHealthFactor() external view {}
-}
-```
+**6. Summary of Changes & Next Steps:**
+
+*   The `mintDSC` function structure is created with basic checks and state updates.
+*   A complex dependency tree of helper functions (`_revertIfHealthFactorIsBroken`, `_healthFactor`, `_getAccountInformation`, `getAccountCollateralValue`, `getUsdValue`) is identified and partially implemented to eventually enforce collateralization rules via a Health Factor.
+*   New state variables `s_dscMinted` and `s_collateralTokens` were added.
+*   The constructor was updated to populate `s_collateralTokens`.
+*   Chainlink dependencies were added and configured.
+*   Precision handling between token amounts and price feed decimals was addressed using constants.
+*   The speaker emphasizes the critical need to write tests for these functions, especially the math-intensive `getUsdValue`, before proceeding further.
+*   The core logic for calculating the health factor ratio and performing the revert check based on it is still pending implementation in subsequent steps.
