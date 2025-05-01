@@ -1,190 +1,159 @@
-## Advanced Foundry Testing for Rebase Tokens
+Okay, here is a thorough and detailed summary of the video "Rebase token tests pt.2":
 
-This lesson continues our exploration of testing a Rebase Token and its associated Vault contract using the Foundry framework. We'll dive deeper into fuzz testing techniques, handling common DeFi challenges like precision errors, testing access control, and aiming for comprehensive code coverage.
+**Video Goal:**
+The video continues the process of writing tests for a Rebase Token and its associated Vault contract using the Foundry testing framework. The main goals are to achieve high test coverage, ensure the core logic (especially interest accrual and transfers) works correctly under various conditions (using fuzz tests), and identify potential issues like precision errors or access control problems.
 
-## Advanced Fuzz Testing Techniques
+**Key Concepts Discussed:**
 
-Foundry's fuzz testing is a powerful tool for uncovering edge cases by automatically generating random inputs for test function parameters (like `amount`, `time`, `newInterestRate`). Each set of random inputs constitutes a "run". To make fuzz tests more effective, we often need to guide the input generation.
+1.  **Fuzz Testing:**
+    *   Foundry's fuzz testing automatically generates random inputs for test function parameters (like `amount`, `time`, `newInterestRate`).
+    *   Each set of random inputs constitutes a "run". The goal is to execute many runs to find edge cases.
 
-**Controlling Fuzz Inputs: `vm.assume` vs. `vm.bound`**
+2.  **`vm.assume` vs. `vm.bound`:**
+    *   **`vm.assume(condition)`:** This cheatcode is used within a fuzz test to filter inputs. If the `condition` is false for a given set of random inputs, that specific test "run" is *discarded* and doesn't count towards the total executed runs. This can be inefficient if many generated inputs don't meet the criteria.
+        ```solidity
+        // Example: Only run test if amount is >= 1e5
+        // vm.assume(amount >= 1e5); // (This line is commented out in the final code)
+        ```
+    *   **`amount = vm.bound(variable, lowerBound, upperBound)`:** This cheatcode *modifies* the `variable` to ensure it falls within the `[lowerBound, upperBound]` range instead of discarding the run. It uses the modulo operator (`%`) internally. This is preferred when you want to test *within* a specific range without losing test runs due to inputs falling outside that range.
+        ```solidity
+        // Ensure 'amount' is between 1e5 and type(uint96).max
+        amount = bound(amount, 1e5, type(uint96).max);
+        ```
+    *   **Why `bound` is used here:** To preserve as many fuzz testing runs as possible while ensuring the inputs are within a meaningful range for the specific test logic (e.g., deposit amount > minimum, time elapsed > 0).
 
-Two primary cheatcodes help manage fuzzed inputs:
+3.  **Linear Interest Accrual:** The core concept of the rebase token is that the balance should increase linearly over time based on an interest rate, *unless* an interaction (like deposit, redeem, transfer) occurs which mints the accrued interest up to that point and potentially updates the user's specific interest rate.
 
-1.  **`vm.assume(condition)`:** This cheatcode filters inputs *after* they are generated. If the `condition` evaluates to false for a given run, Foundry *discards* that run entirely. This means it doesn't count towards the total number of executed fuzz runs. While useful, it can be inefficient if many generated inputs fail the assumption, leading to fewer effective tests being performed.
+4.  **Precision and Truncation:**
+    *   Solidity's integer division truncates (rounds down) any remainder.
+    *   When dealing with fixed-point math (like interest rates or token amounts with decimals represented by large base units, e.g., `PRECISION_FACTOR = 1e18`), this truncation can lead to small discrepancies (e.g., being off by 1 wei).
+    *   This is a common issue in DeFi protocols.
 
-    ```solidity
-    // Example: Only test if amount is significant (might discard many runs)
-    // vm.assume(amount >= 1e5);
-    ```
+5.  **Testing with Tolerance (`assertApproxEqAbs`)**:
+    *   When exact equality (`assertEq`) might fail due to minor precision/truncation errors inherent in the contract logic, `assertApproxEqAbs(value1, value2, tolerance)` can be used.
+    *   It asserts that the absolute difference between `value1` and `value2` is less than or equal to the specified `tolerance`.
 
-2.  **`amount = vm.bound(variable, lowerBound, upperBound)`:** This cheatcode *modifies* the generated `variable` to ensure it falls within the specified `[lowerBound, upperBound]` range. It typically uses the modulo operator (`%`) internally. Unlike `vm.assume`, it doesn't discard the run; it reshapes the input to fit the desired constraints. This is generally preferred when you want to ensure inputs are within a meaningful range (e.g., positive amounts, non-zero time durations) without losing test runs.
+6.  **Access Control (`onlyOwner`, `onlyRole`)**:
+    *   Using modifiers like `onlyOwner` (from OpenZeppelin's `Ownable.sol`) or `onlyRole` (from `AccessControl.sol`) restricts function execution to authorized accounts.
+    *   Testing these requires expecting specific reverts when unauthorized accounts attempt calls.
 
-    ```solidity
-    // Example: Ensure 'amount' is within a valid range for uint96
-    amount = bound(amount, 1e5, type(uint96).max);
-    // Example: Ensure 'time' is positive
-    time = bound(time, 1, type(uint256).max);
-    ```
+7.  **Handling Custom Errors in Tests (`expectRevert` vs. `expectPartialRevert`)**:
+    *   **`vm.expectRevert()`:** Expects the *next* call to revert with *any* error data.
+    *   **`vm.expectRevert(bytes memory revertData)`:** Expects the *next* call to revert with *exactly* the specified `revertData`. This works well for simple string reverts but often fails with custom errors that include arguments (like `OwnableUnauthorizedAccount(address account)` or `AccessControlUnauthorizedAccount(address account, bytes32 role)`), because matching the encoded arguments is difficult/unreliable in tests.
+    *   **`vm.expectPartialRevert(bytes4 selector)`:** Expects the *next* call to revert with an error whose selector (the first 4 bytes of the error data) matches the provided `selector`. This is useful for testing custom errors with arguments, as it ignores the arguments and only checks the error type itself.
+        ```solidity
+        // Import the contract containing the error to get its selector
+        import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+        // ... inside test ...
+        vm.expectPartialRevert(bytes4(Ownable.OwnableUnauthorizedAccount.selector));
+        rebaseToken.setInterestRate(newInterestRate); // Call expected to revert
+        ```
 
-In our rebase token tests, we heavily rely on `vm.bound` to constrain inputs like deposit amounts and time durations, ensuring we test relevant scenarios efficiently while maximizing the number of executed fuzz runs.
+8.  **Code Coverage (`forge coverage`)**: A command to measure how much of the contract code is executed by the test suite. Aiming for high (ideally 100%) coverage increases confidence in the contract's correctness.
 
-## Handling Precision in DeFi Testing
+**Test Cases Developed:**
 
-A core concept of our rebase token is linear interest accrual: a user's balance should increase steadily over time based on the applicable interest rate. However, interactions like deposits, redemptions, or transfers trigger the actual minting of accrued interest up to that point.
+1.  **`testDepositLinear(uint256 amount)`:**
+    *   **Purpose:** Checks if interest accrues linearly over two equal time intervals.
+    *   **Logic:**
+        *   Bounds the fuzzed `amount`.
+        *   Deposits `amount`.
+        *   Checks `startBalance == amount`.
+        *   Warps time forward (e.g., 1 hour).
+        *   Checks `middleBalance > startBalance`.
+        *   Warps time forward by the *same* duration again.
+        *   Checks `endBalance > middleBalance`.
+        *   Checks if the balance increase in the second interval approximately equals the increase in the first interval, allowing for a 1 wei tolerance due to truncation (`assertApproxEqAbs(..., 1)`).
+    *   **Troubleshooting:** Initially failed `assertEq` due to 1 wei truncation error; fixed using `assertApproxEqAbs`.
 
-Solidity performs integer arithmetic, which involves truncation (rounding down) during division. When working with fixed-point numbers (representing decimals using large base units, like `1e18` for tokens), this truncation can lead to tiny discrepancies, often referred to as "off-by-one" errors (usually 1 wei).
+2.  **`testRedeemStraightAway(uint256 amount)`:**
+    *   **Purpose:** Checks if a user can deposit and immediately redeem their full balance.
+    *   **Logic:**
+        *   Bounds `amount`.
+        *   Deposits `amount`.
+        *   Asserts `rebaseToken.balanceOf(user) == amount`.
+        *   Redeems the maximum possible (`vault.redeem(type(uint256).max)`).
+        *   Asserts `rebaseToken.balanceOf(user) == 0`.
+        *   Asserts `address(user).balance == amount` (checks ETH received).
+    *   **Troubleshooting:** Initially failed with `Vault_RedeemFailed` due to incorrect logic in the Vault's `redeem` function sending the token amount as ETH value; corrected test assertions and implied Vault contract logic needed fixing.
 
-**Testing with Tolerance: `assertApproxEqAbs`**
+3.  **`testRedeemAfterTimePassed(uint256 depositAmount, uint256 time)`:**
+    *   **Purpose:** Checks if a user can deposit, wait for interest to accrue, and then redeem the correct (increased) amount in ETH.
+    *   **Logic:**
+        *   Bounds `depositAmount` and `time`.
+        *   Deposits `depositAmount`.
+        *   Warps time forward by `time`.
+        *   Gets `balanceAfterSomeTime`.
+        *   *Crucially:* Adds the accrued rewards (`balanceAfterSomeTime - depositAmount`) to the Vault contract itself (as ETH) so the Vault has funds to pay out. This requires `vm.prank(owner)` and `vm.deal(owner, rewardAmount)`.
+        *   Redeems the maximum possible (`vault.redeem(type(uint256).max)`).
+        *   Gets final `ethBalance`.
+        *   Asserts `ethBalance == balanceAfterSomeTime`.
+        *   Asserts `ethBalance > depositAmount`.
+    *   **Troubleshooting:** Failed due to arithmetic underflow/overflow caused by incorrect bounding of `time` and incorrect reward calculation (`depositAmount - balanceAfterSomeTime`); fixed by correcting bounds and calculation order.
 
-Direct equality checks using `assertEq(value1, value2)` can often fail in DeFi contracts due to these inherent precision limitations. Foundry provides a solution:
+4.  **`testTransfer(uint256 amount, uint256 amountToSend)`:**
+    *   **Purpose:** Checks token transfer logic and interest rate inheritance for new users.
+    *   **Logic:**
+        *   Bounds `amount` and `amountToSend`. Creates `user2`.
+        *   Deposits `amount` for `user`.
+        *   Asserts initial balances.
+        *   Owner *reduces* the global interest rate.
+        *   `user` transfers `amountToSend` to `user2`.
+        *   Asserts final balances reflect the transfer.
+        *   Asserts both `user` and `user2` have the *original* interest rate (`5e10`), not the reduced global rate (`4e10`), demonstrating inheritance.
 
-*   **`assertApproxEqAbs(value1, value2, tolerance)`:** This assertion checks if the absolute difference between `value1` and `value2` is less than or equal to the specified `tolerance`.
+5.  **`testInterestRateCanOnlyDecrease(uint256 newInterestRate)`:**
+    *   **Purpose:** Checks that the owner cannot *increase* the interest rate.
+    *   **Logic:**
+        *   Gets the `initialInterestRate`.
+        *   Bounds `newInterestRate` to be *greater* than `initialInterestRate`.
+        *   Pranks as `owner`.
+        *   Expects a partial revert matching the `RebaseToken__InterestRateCanOnlyDecrease` error selector.
+        *   Attempts to call `rebaseToken.setInterestRate(newInterestRate)`.
+        *   Asserts that the `getInterestRate()` remains unchanged.
+    *   **Troubleshooting:** Initial check in `setInterestRate` was `_newInterestRate >= s_interestRate`, allowing setting the same rate; changed to `>` for correct logic. Bound the `newInterestRate` minimum to `initialInterestRate + 1` to ensure the revert condition is actually met by the fuzzer.
 
-This allows us to verify calculations involving potential truncation are correct within an acceptable margin of error. We often use a tolerance of `1` (representing 1 wei) when comparing token balances after interest accrual.
+6.  **`testCannotSetInterestRate(uint256 newInterestRate)`:**
+    *   **Purpose:** Checks that a non-owner cannot set the interest rate.
+    *   **Logic:**
+        *   Pranks as `user`.
+        *   Expects partial revert for `OwnableUnauthorizedAccount`.
+        *   Attempts `rebaseToken.setInterestRate(newInterestRate)`.
+    *   **Troubleshooting:** Failed due to `expectRevert` not handling custom errors with arguments; fixed using `expectPartialRevert` and importing `Ownable.sol`.
 
-## Testing Core Rebase Logic
+7.  **`testCannotCallMintAndBurn()`:**
+    *   **Purpose:** Checks that only accounts with the `MINT_AND_BURN_ROLE` can call `mint` and `burn`.
+    *   **Logic:**
+        *   Pranks as `user` (no role).
+        *   Expects partial revert for `AccessControlUnauthorizedAccount`.
+        *   Attempts `rebaseToken.mint(user, 100)`.
+        *   Expects partial revert again.
+        *   Attempts `rebaseToken.burn(user, 100)`.
+    *   **Troubleshooting:** Required importing `AccessControl.sol` (or `IAccessControl.sol`) to get the error selector and using `expectPartialRevert`.
 
-We developed several tests to verify the fundamental mechanics of the Rebase Token and Vault.
+8.  **`testGetPrincipleAmount(uint256 amount)`:**
+    *   **Purpose:** Checks if the `principleBalanceOf` function correctly returns the initially deposited amount, even after time passes.
+    *   **Logic:**
+        *   Bounds `amount`.
+        *   Deposits `amount`.
+        *   Asserts `rebaseToken.principleBalanceOf(user) == amount`.
+        *   Warps time forward (1 hour).
+        *   Asserts `rebaseToken.principleBalanceOf(user)` is *still* equal to `amount`.
+    *   **Troubleshooting:** Initially used the wrong function name (`getPrincipleAmount`); corrected to `principleBalanceOf`.
 
-**Linear Interest Accrual (`testDepositLinear`)**
+9.  **`testGetRebaseTokenAddress()`:**
+    *   **Purpose:** Simple check that the Vault returns the correct RebaseToken address.
+    *   **Logic:**
+        *   Asserts `vault.getRebaseTokenAddress() == address(rebaseToken)`.
 
-*   **Goal:** Verify that interest accrues linearly over time, assuming no intervening transactions.
-*   **Method:**
-    1.  Bound the fuzzed `amount` deposit input.
-    2.  Deposit `amount`. Record `startBalance`.
-    3.  Use `vm.warp(block.timestamp + duration)` to advance time by a set `duration`. Record `middleBalance`.
-    4.  Advance time again by the *same* `duration`. Record `endBalance`.
-    5.  Assert that `middleBalance > startBalance` and `endBalance > middleBalance`.
-    6.  Crucially, assert that the interest earned in the second period approximately equals the interest earned in the first, using `assertApproxEqAbs` with a tolerance of 1 wei to account for potential truncation: `assertApproxEqAbs(endBalance - middleBalance, middleBalance - startBalance, 1)`.
+**Code Coverage Results:**
+*   After adding the tests, the coverage was:
+    *   `RebaseToken.sol`: 77.14% lines, 79.17% statements, 40.00% branches, 92.31% funcs.
+    *   `Vault.sol`: 90.91% lines, 91.67% statements, 50.00% branches, 100.00% funcs.
+    *   Total: 80.43% lines.
+*   The speaker encourages viewers to add more tests (e.g., for `transferFrom`, for the `Vault_RedeemFailed` scenario) to reach 100% coverage.
 
-**Immediate Redemption (`testRedeemStraightAway`)**
-
-*   **Goal:** Ensure a user can deposit funds and immediately redeem their entire balance.
-*   **Method:**
-    1.  Bound the fuzzed `amount`.
-    2.  Deposit `amount`. Check the token balance.
-    3.  Call `vault.redeem(type(uint256).max)` to redeem the maximum possible amount.
-    4.  Assert the user's final token balance is 0.
-    5.  Assert the user's final ETH balance has increased by the redeemed `amount`. *(Note: This test initially revealed issues if the Vault contract incorrectly handled the ETH transfer during redemption).*
-
-**Redemption After Interest (`testRedeemAfterTimePassed`)**
-
-*   **Goal:** Verify redemption works correctly after interest has accrued, meaning the user receives more ETH than initially deposited.
-*   **Method:**
-    1.  Bound `depositAmount` and `time`.
-    2.  Deposit `depositAmount`.
-    3.  Use `vm.warp` to advance time by `time`.
-    4.  Calculate the `balanceAfterSomeTime`.
-    5.  **Important:** Simulate rewards accumulating in the Vault. Use `vm.prank(owner)` and `vm.deal(vaultAddress, rewardAmount)` to send the necessary ETH (`balanceAfterSomeTime - depositAmount`) to the Vault contract so it can fulfill the redemption.
-    6.  Call `vault.redeem(type(uint256).max)`.
-    7.  Assert the user's final ETH balance equals `balanceAfterSomeTime`.
-    8.  Assert the final ETH balance is greater than the initial `depositAmount`. *(Note: Careful bounding of inputs is needed to avoid arithmetic overflows/underflows during reward calculation).*
-
-**Token Transfers (`testTransfer`)**
-
-*   **Goal:** Test the `transfer` function and verify how interest rates are handled for recipients.
-*   **Method:**
-    1.  Bound `amount` (initial deposit) and `amountToSend`. Create a second user (`user2`).
-    2.  `user` deposits `amount`.
-    3.  Owner *decreases* the global interest rate (to make the check distinct).
-    4.  `user` transfers `amountToSend` to `user2`.
-    5.  Assert final token balances of `user` and `user2` are correct.
-    6.  Assert that *both* `user` and `user2` still have the *original* interest rate associated with `user`'s initial deposit, demonstrating that the rate is effectively "inherited" on transfer in this design.
-
-**Principle Balance Check (`testGetPrincipleAmount`)**
-
-*   **Goal:** Verify the `principleBalanceOf` function correctly returns the user's initial deposit amount, unaffected by accrued interest.
-*   **Method:**
-    1.  Bound `amount`.
-    2.  Deposit `amount`.
-    3.  Assert `rebaseToken.principleBalanceOf(user) == amount`.
-    4.  Use `vm.warp` to advance time.
-    5.  Assert `rebaseToken.principleBalanceOf(user)` *still* equals the original `amount`.
-
-## Verifying Access Control and Error Handling
-
-Testing that only authorized actors can perform sensitive actions and that contracts revert correctly is crucial.
-
-**Handling Custom Errors in Foundry Tests**
-
-Solidity uses custom errors (e.g., `OwnableUnauthorizedAccount(address account)`, `AccessControlUnauthorizedAccount(address account, bytes32 role)`). Testing reverts involving these requires care:
-
-*   `vm.expectRevert()`: Expects *any* revert. Too broad.
-*   `vm.expectRevert(bytes memory revertData)`: Expects an *exact* match of the revert data. This often fails for custom errors with arguments because constructing the precise encoded byte string in the test is difficult and brittle.
-*   **`vm.expectPartialRevert(bytes4 selector)`:** Expects a revert whose error selector (the first 4 bytes, identifying the error type) matches the provided `selector`. This is the **preferred method** for testing custom errors with arguments, as it ignores the argument values.
-
-To use `expectPartialRevert`, you typically need to import the contract defining the error (e.g., `Ownable.sol`, `IAccessControl.sol`) to access its selector:
-
-```solidity
-import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
-import { IAccessControl } from "@openzeppelin/contracts/access/IAccessControl.sol"; // Or AccessControl.sol
-
-// ... inside test ...
-
-// Expecting an Ownable error
-vm.expectPartialRevert(bytes4(Ownable.OwnableUnauthorizedAccount.selector));
-// Call expected to revert...
-
-// Expecting an AccessControl error
-vm.expectPartialRevert(bytes4(IAccessControl.AccessControlUnauthorizedAccount.selector));
-// Call expected to revert...
-```
-
-**Access Control Test Cases**
-
-1.  **`testInterestRateCanOnlyDecrease`:**
-    *   **Goal:** Enforce a custom rule: the owner can only decrease the interest rate, not increase it.
-    *   **Method:**
-        *   Get the `initialInterestRate`.
-        *   Bound `newInterestRate` to be strictly greater than `initialInterestRate` (`bound(..., initialInterestRate + 1, ...)`).
-        *   Use `vm.prank(owner)`.
-        *   Use `vm.expectPartialRevert` with the selector of the custom error `RebaseToken__InterestRateCanOnlyDecrease`.
-        *   Attempt `rebaseToken.setInterestRate(newInterestRate)`.
-        *   Assert the rate remains unchanged.
-
-2.  **`testCannotSetInterestRate`:**
-    *   **Goal:** Verify only the owner can call `setInterestRate`.
-    *   **Method:**
-        *   Use `vm.prank(user)`.
-        *   Use `vm.expectPartialRevert` with `Ownable.OwnableUnauthorizedAccount.selector`.
-        *   Attempt `rebaseToken.setInterestRate(...)`.
-
-3.  **`testCannotCallMintAndBurn`:**
-    *   **Goal:** Verify only accounts with `MINT_AND_BURN_ROLE` can call `mint` and `burn`.
-    *   **Method:**
-        *   Use `vm.prank(user)` (who doesn't have the role).
-        *   Use `vm.expectPartialRevert` with `IAccessControl.AccessControlUnauthorizedAccount.selector`.
-        *   Attempt `rebaseToken.mint(user, 100)`.
-        *   Use `vm.expectPartialRevert` again.
-        *   Attempt `rebaseToken.burn(user, 100)`.
-
-## Measuring Test Effectiveness with Code Coverage
-
-Code coverage measures the percentage of your contract's code (lines, statements, branches, functions) executed by your test suite. High coverage provides greater confidence that your code behaves as expected under various conditions.
-
-Run coverage analysis using: `forge coverage`
-
-After implementing the tests described above, the approximate coverage achieved was:
-
-*   `RebaseToken.sol`: ~77% lines, ~79% statements, ~40% branches, ~92% funcs.
-*   `Vault.sol`: ~91% lines, ~92% statements, ~50% branches, 100% funcs.
-*   **Total:** ~80% line coverage.
-
-While good, this indicates areas for improvement. Aiming for close to 100% coverage, especially on critical contracts, is recommended. Missing coverage often points to untested edge cases or conditions (e.g., specific revert scenarios like `Vault_RedeemFailed`, or testing `transferFrom`).
-
-## Additional Contract Checks
-
-Simple getter functions should also have basic tests:
-
-**Vault's Token Address (`testGetRebaseTokenAddress`)**
-
-*   **Goal:** Ensure the Vault returns the correct address of its associated RebaseToken.
-*   **Method:** Assert `vault.getRebaseTokenAddress() == address(rebaseToken)`.
-
-## Conclusion and Next Steps
-
-Through advanced fuzz testing, careful handling of precision issues using `assertApproxEqAbs`, and robust testing of access control using `expectPartialRevert`, we have significantly increased the quality and reliability of our Rebase Token and Vault contracts. Achieving high code coverage is a key indicator of test suite thoroughness.
-
-While these tests verify the implemented logic, remember that testing doesn't validate the economic design itself (e.g., the implications of interest rate inheritance on transfer).
-
-The next logical step in developing this token ecosystem could involve exploring cross-chain functionality, potentially using bridging protocols like Chainlink CCIP. You are encouraged to expand this test suite to reach higher coverage and address any potential design considerations.
+**Final Notes & Next Steps:**
+*   The speaker acknowledges some "design flaws" or economic considerations in the implemented contracts (like interest rate inheritance on transfer) but focuses on the testing aspect for this video.
+*   The next step mentioned is to move on to "bridging" the token, implying using a cross-chain protocol like CCIP.
+*   Viewers are encouraged to improve the tests/contracts and share their results on Twitter (@ciaranightingal).
