@@ -1,36 +1,109 @@
----
-title: Transaction Types
----
+Okay, here is a thorough and detailed summary of the video segment on Transaction Types Introduction:
 
-_Follow along with the video_
+**Overall Goal:**
+The video aims to introduce the concept that different types of transactions exist within EVM-compatible blockchains, including Ethereum (and its local Anvil simulation) and zkSync. It emphasizes that while the details are complex and will be covered later, the key takeaway for this lesson is simply *awareness* that these different types exist.
 
----
+**Disclaimer:**
+A prominent note at the beginning states: "It's not important that everything is clearly understood for this lesson." The speaker reiterates this point, mentioning that deeper dives into these concepts will happen in more advanced sections.
 
-### Introduction
+**Forge Script Compatibility with zkSync:**
+*   The speaker initially mentions that `forge script` (Foundry's scripting tool) works for zkSync "in some scenarios" but notes its behavior isn't always predictable or clear where it might fail.
+*   **Note/Tip:** For the duration of this course, the speaker advises assuming `forge script` *doesn't* work reliably with zkSync to avoid confusion, even though he used it off-screen for demonstration purposes in this lesson.
 
-In this lesson, we will explore the different transaction types within the ZKsync VM and EVM ecosystems.
+**Demonstration Setup (Off-screen):**
+*   The speaker deployed a simple storage contract using `forge script` to both a local Anvil node (simulating standard Ethereum) and a local zkSync node he set up previously (though setting up the zkSync node was optional for viewers).
+*   This deployment generated files within the `broadcast` directory in the project structure.
 
-### `/broadcast` Folder
+**Exploring the `broadcast` Folder:**
+*   When `forge script` runs with the `--broadcast` flag, it saves transaction details in the `broadcast` folder.
+*   Inside `broadcast`, there's a folder for the script that was run (e.g., `DeploySimpleStorage.s.sol`).
+*   Inside the script folder, there are subfolders named after the **Chain ID** of the network the script was broadcast to.
+    *   `31337`: Corresponds to the default Anvil local chain.
+    *   `260`: Corresponds to the local zkSync node the speaker set up (Chain ID 260).
+*   Each Chain ID folder contains `.json` files (like `run-[timestamp].json` and `run-latest.json`) detailing the transactions executed during the script run.
 
-When deploying to a ZKsync local node, a `/broadcast` folder will be created and it will contain detailed information about the **deployment transactions**. Inside this folder, you will find subfolders named after specific deployment chain IDs, such as **`260`** for ZKsync and **`31337`** for Anvil. These subfolders store the data of the transactions executed during the deployment process.
+**Transaction Types on Anvil (Standard EVM):**
+1.  **Default (Type 2 / EIP-1559):**
+    *   The speaker examines the `run-latest.json` file inside the `31337` folder.
+    *   He points to the `receipts` array within the JSON structure.
+    *   Inside a receipt object, he highlights the `type` field:
+        ```json
+        // Inside broadcast/DeploySimpleStorage.s.sol/31337/run-latest.json (receipts array element)
+        {
+          // ... other fields
+          "type": "0x2",
+          // ... other fields
+        }
+        ```
+    *   **Concept:** This `0x2` indicates a Type 2 transaction, also known as an EIP-1559 transaction. This is the *default* transaction type used by Foundry when deploying to standard EVM chains like Anvil or Ethereum mainnet unless specified otherwise.
 
-By examining both the `run-latest.json` file in these folders, we can observe different **transaction types** for each transaction within a chain. For instance, transactions on the Anvil chain might be labeled as type **`0x2`**, while those on the ZKsync chain will be of type **`0x0`**. Deploying a smart contract on the EVM without the `--legacy` flag results in a default transaction type of `0x2`. Adding the `--legacy` flag changes it to type `0x0`.
+2.  **Legacy (Type 0):**
+    *   The speaker then runs the `forge script` command again, targeting the Anvil node, but adds the `--legacy` flag:
+        ```bash
+        forge script script/DeploySimpleStorage.s.sol --rpc-url http://127.0.0.1:8545 --private-key <YOUR_PRIVATE_KEY> --legacy --broadcast
+        ```
+    *   **Concept:** The `--legacy` flag explicitly tells Foundry to send the transaction using the older, original Ethereum transaction format.
+    *   He then examines the *new* `run-latest.json` file generated in the `31337` folder.
+    *   Inside the `receipts` array, the `type` field now shows:
+        ```json
+        // Inside the NEW broadcast/DeploySimpleStorage.s.sol/31337/run-latest.json (receipts array element)
+        {
+          // ... other fields
+          "type": "0x0",
+          // ... other fields
+        }
+        ```
+    *   **Concept:** This `0x0` indicates a Type 0 or "Legacy" transaction.
 
-The EVM and ZKsync ecosystems support multiple transaction types to accommodate various Ethereum Improvement Proposals (EIPs). Initially, Ethereum had only one transaction type (`0x0` legacy), but as the ecosystem evolved, multiple types were introduced through various EIPs. Subsequent types include type 1, which introduces an _access list_ of addresses and keys, and type 2, also known as [EIP 1559](https://eips.ethereum.org/EIPS/eip-1559) transactions.
+**Transaction Types on zkSync (as shown by Forge Script):**
+*   The speaker examines the `run-latest.json` file inside the `260` (local zkSync node) folder.
+*   He notes the JSON structure is slightly different here, and the `type` field appears within the `transaction` object itself (nested within the `transactions` array):
+    ```json
+    // Inside broadcast/DeploySimpleStorage.s.sol/260/run-latest.json (transaction object inside transactions array)
+    {
+      // ... other fields
+      "transaction": {
+        "type": "0x00",
+        // ... other fields
+      },
+      // ... other fields
+    }
+    ```
+*   **Observation:** The type shown here is `0x00` (Legacy). The speaker notes Foundry/zkSync report types differently in this context. *This specific observation pertains to the output of `forge script` when interacting with the zkSync node in this manner.*
 
-> 👀❗**IMPORTANT**:br
-> This `0x2` type is the current default type for the EVM.
+**Transaction Types on zkSync (as shown by Remix/MetaMask):**
+*   The speaker contrasts the Forge Script output with the experience of deploying via Remix to a zkSync network (like the Sepolia testnet shown).
+*   When hitting "Deploy" in Remix for zkSync, MetaMask doesn't show a standard transaction confirmation but a "Signature request".
+*   **Observation:** Within this signature request, the transaction details show:
+    ```
+    Transaction
+    TxType: 113
+    From: <address>
+    To: <address>
+    GasLimit: <value>
+    GasPerPubdataByteLimit: <value>
+    ```
+*   **Concept:** This `TxType: 113` (decimal) corresponds to `0x71` (hex). This is an **EIP-712** transaction type, which is specific to zkSync (and potentially other L2s/systems adopting similar patterns).
+*   **Use Case:** EIP-712 transactions on zkSync enable advanced features like native **Account Abstraction** and **Paymasters**.
 
-Additionally, ZKsync introduces its [unique transaction type](https://docs.zksync.io/zk-stack/concepts/transaction-lifecycle#eip-712-0x71), the type `113` (`0x71` in hex), which can enable features like [account abstraction](https://docs.zksync.io/build/developer-reference/account-abstraction/).
+**Summary of Transaction Types Discussed:**
+*   **Type 0 (Legacy):** The original Ethereum transaction format. Hex: `0x0`. Activated in Foundry via `--legacy`.
+*   **Type 1 (EIP-2930):** Introduced optional access lists. Hex: `0x1`.
+*   **Type 2 (EIP-1559):** Introduced base fee and priority fee mechanism for better gas price estimation. Hex: `0x2`. *Default on Ethereum/Foundry*.
+*   **Type 113 (EIP-712 on zkSync):** zkSync-specific type for structured data hashing/signing, enabling Account Abstraction. Hex: `0x71`. Seen in MetaMask when interacting with zkSync via Remix.
 
-> 💡 **TIP**:br
-> The `forge script` command will work in some scenarios, but it’s not entirely clear where it might fail. For the purpose of this course, we will assume scripting does not work while working with ZKsync.
+**Important Concepts & Relationships:**
+*   **Transaction Types:** Blockchains can support multiple ways to structure and process transactions. These different structures are "types."
+*   **EIPs (Ethereum Improvement Proposals):** Many transaction types (like 1 and 2) were introduced via EIPs to improve the Ethereum protocol.
+*   **Foundry Flags:** Tools like Foundry allow specifying transaction types (e.g., `--legacy` for Type 0).
+*   **Defaults:** Without specific flags, tools often use a default type (Type 2 for Foundry on EVM).
+*   **Chain Specificity:** Some transaction types (like zkSync's Type 113/0x71) are specific to certain chains or L2s to enable unique features.
+*   **Account Abstraction:** A concept (prominently featured in zkSync) allowing smart contract wallets with custom logic, often utilizing specific transaction types like EIP-712.
 
-### Resources
+**Links & Resources Mentioned:**
+1.  **Cyfrin Blog:** `cyfrin.io/blog/what-is-eip-4844-proto-danksharding-and-blob-transactions` (Used to show the section listing Type 0, 1, and 2 transactions).
+2.  **zkSync Documentation:** `docs.zksync.io/zk-stack/concepts/transaction-lifecycle.html#transaction-types` (Shows Legacy, EIP-2930, EIP-1559, EIP-712 types relevant to zkSync).
+3.  **Ethereum Improvement Proposals (EIPs):** `eips.ethereum.org/EIPS/eip-2718` (Specifically EIP-2718 which defined the "Typed Transaction Envelope" standard allowing multiple transaction types).
 
-- [ZKsync documentation](https://docs.zksync.io/zk-stack/concepts/transaction-lifecycle#transaction-types) about transaction types
-- [Cyfrin Blog on EIP-4844](https://www.cyfrin.io/blog/what-is-eip-4844-proto-danksharding-and-blob-transactions)
-
-### Conclusion
-
-The ZKsync VM and EVM ecosystems support various transaction types to meet different EIP requirements. By examining deployment folders and understanding the use of flags like `--legacy`, we can effectively distinguish between these transaction types.
+**Final Takeaway:**
+The primary message is that different transaction types exist (Legacy, EIP-1559, zkSync's EIP-712, etc.), they have different underlying structures and purposes, and tools/wallets interact with them accordingly. Understanding the exact details of each type isn't necessary *at this stage*, but knowing they *exist* is the foundation for later lessons.
