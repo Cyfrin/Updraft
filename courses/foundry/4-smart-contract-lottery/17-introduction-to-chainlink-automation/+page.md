@@ -1,106 +1,206 @@
----
-title: Introduction to Chainlink Automation
----
+Okay, here is a thorough and detailed summary of the video "Chainlink Automation Introduction," covering the key points, code, concepts, resources, and examples discussed by both speakers.
 
-_Follow along with this video:_
+**Video Overview:**
 
----
+The video introduces Chainlink Automation (formerly known as Chainlink Keepers) and demonstrates its utility in automating smart contract functions. It starts by highlighting a limitation in a sample Raffle smart contract where the winner selection needs manual triggering. It then explains how Chainlink Automation solves this by providing decentralized, reliable, and configurable ways to trigger contract functions automatically. A significant portion focuses on a recent update (Keepers v1.2 at the time of recording) that simplifies setting up Time-based triggers via the Chainlink Automation UI, contrasting it with the previous method and demonstrating the code simplification it enables.
 
-### Chainlink Automation
+**Part 1: Introduction & Problem Statement (Patrick Collins)**
 
-Amazing work! Our project starts looking good!
-
-Looking through it we can see that there's an obvious problem. For the winner to be picked we need someone to call `pickWinner`. Manually calling this day after day is not optimal, and we, as engineers, need to come up with a better solution! Let's discuss Chainlink Automation!
-
-**Chainlink Automation** is a decentralized service designed to automate key functions and DevOps tasks within smart contracts in a highly reliable, trust-minimized, and cost-efficient manner. It allows smart contracts to automatically execute transactions based on predefined conditions or schedules.
-
-This lesson will be centered on creating a time-based automation using Chainlink's UI. The relevant section in the documentation starts [here](https://docs.chain.link/chainlink-automation/guides/compatible-contracts) and [here](https://docs.chain.link/chainlink-automation/guides/job-scheduler).
-
-In this video, Richard provides a walkthrough on Chainlink’s Keepers, starting with how to connect a wallet from the Chainlink Keepers UI, registering a new upkeep, and implementing time-based trigger mechanisms.
-
-Let's open the contract available [here](https://docs.chain.link/chainlink-automation/guides/compatible-contracts#example-automation-compatible-contract-using-custom-logic-trigger) in Remix by pressing the `Open in Remix` button.
-
-Following Richard's tutorial let's delete the `is AutomationCompatibleInterface` inheritance, both the `interval` and `lastTimeStamp` variables, adjust the constructor and delete both available functions. Create a new function called `count` which increments the `counter` state variable. It should look like this:
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
-
-
-contract Counter {
-
-    uint256 public counter;
-
-    constructor() {
-        counter = 0;
+1.  **Context:** Patrick reviews a Solidity smart contract for a Raffle (`Raffle.sol` within a Foundry project `foundry-smart-contract-lottery-f23`).
+2.  **Functionality Review:** The contract successfully implements:
+    *   Getting a random number (using Chainlink VRF).
+    *   Using that random number to pick a player (winner).
+3.  **The Problem:** The third requirement, "Be automatically called," is missing. The `pickWinner` function needs to be called manually by someone after a certain time interval (`i_interval`) has passed since the last timestamp (`s_lastTimeStamp`). This relies on a centralized entity or a "good samaritan," which is not ideal for decentralized applications.
+    ```solidity
+    // In Raffle.sol
+    // ...
+    // 3. Be automatically called
+    function pickWinner() external {
+        // check to see if enough time has passed
+        if ((block.timestamp - s_lastTimeStamp) < i_interval) {
+            revert(); // Not enough time has passed
+        }
+        s_raffleState = RaffleState.CALCULATING;
+        // Request the random number from VRF Coordinator
+        uint256 requestId = s_vrfCoordinator.requestRandomWords(request);
+        // ... (emit event, etc.)
     }
 
-    function count() external {
-        counter = counter + 1;
+    function fulfillRandomWords(uint256 /*requestId*/, uint256[] memory randomWords) internal override {
+        // ... Checks ...
+        // Effect (Internal Contract State)
+        uint256 indexOfWinner = randomWords[0] % s_players.length;
+        address payable recentWinner = s_players[indexOfWinner];
+        s_recentWinner = recentWinner;
+        s_raffleState = RaffleState.OPEN;
+        s_players = new address payable[](0);
+        s_lastTimeStamp = block.timestamp;
+        emit WinnerPicked(s_recentWinner);
+
+        // Interactions (External Contract Interactions)
+        (bool success, ) = recentWinner.call{value: address(this).balance}("");
+        if (!success) {
+            revert Raffle__TransferFailed();
+        }
     }
+    ```
+    *Discussion:* Patrick emphasizes the need for the `pickWinner` function to be triggered automatically without relying on manual intervention, ensuring the lottery runs programmatically and reliably.
 
-}
-```
+4.  **The Solution: Chainlink Automation:** He introduces Chainlink Automation as the service to achieve this automatic, decentralized function execution.
+5.  **Navigating Documentation (`docs.chain.link`):**
+    *   He shows how to find the Automation section in the Chainlink documentation.
+    *   **Trigger Types:** He points out the main trigger types available:
+        *   **Time-based trigger:** Execute based on a time schedule (uses CRON).
+        *   **Custom logic trigger:** Execute based on the output of a `checkUpkeep` function in the smart contract (evaluates arbitrary on-chain conditions).
+        *   **Log trigger:** Execute based on logs emitted on-chain.
+    *   **Focus:** Mentions they will use a form of "Custom Logic" which incorporates time-based checking within the contract (though the second part of the video focuses on the *new* pure Time-based UI trigger).
+6.  **UI vs. Scripting:** Notes that while there's a user interface (`automation.chain.link` or `keepers.chain.link`) to help set up Automation, the course will focus on writing scripts (using Foundry) for a more professional and programmatic setup.
+7.  **Example Contracts:** Shows that the documentation provides example "Automation-compatible contracts." He clicks the "Open in Remix" button for an example `AutomationCounter.sol`.
+    ```solidity
+    // Example AutomationCounter.sol (as shown from docs link)
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.7; // Or ^0.8.19 in Patrick's Remix view
 
-Wow! This is all we need!
+    import "@chainlink/contracts/src/v0.8/KeeperCompatible.sol"; // Or interfaces/.../AutomationCompatibleInterface.sol in Remix view
 
-Let's deploy this contract on Sepolia. If you are brave enough follow Richard and deploy it to Fuji Avalanche.
+    // contract Counter is KeeperCompatibleInterface { // In Docs example
+    contract Counter is AutomationCompatibleInterface { // In Patrick's Remix view
+        // ... (Includes public counter, interval, lastTimeStamp) ...
 
-Amazing! Check if the counter is 0 by clicking on it! Also check if the `count` function works by clicking it, signing the transaction and then clicking `counter` again.
+        constructor(uint updateInterval) { /* ... sets interval, lastTimeStamp, counter ... */ }
 
-Open up the [Chainlink Automation link](https://automation.chain.link/) and press the blue button saying `Register new Upkeep`. Connect your wallet. Now we are asked to select a trigger for the automation. Please select `Time-based`. At the next step, we are asked to provide a `Target contract address` and copy-paste the address of the contract we just deployed on Sepolia.
+        function checkUpkeep(...) external view override returns (bool upkeepNeeded, ...) {
+             upkeepNeeded = (block.timestamp - lastTimeStamp) > interval;
+             // ...
+        }
 
-Given that we didn't verify the contract we need to provide an ABI. Return to the Remix tab and on the menu on the left select the `SOLIDITY COMPILER` (It has the Solidity language logo). Ensure the proper contract is selected. Click on `ABI`, this will copy the ABI in your clipboard. Paste it inside the field Chainlink asks for it and press `Next`.
+        function performUpkeep(...) external override {
+             if ((block.timestamp - lastTimeStamp) > interval) {
+                 lastTimeStamp = block.timestamp;
+                 counter = counter + 1;
+             }
+             // ...
+        }
+    }
+    ```
+    *Discussion:* This contract demonstrates the standard structure for a Keeper/Automation compatible contract using Custom Logic, including implementing the `checkUpkeep` and `performUpkeep` functions from the required interface.
 
-At this point, you will have access to a dropdown list containing all the callable functions. Select `count` ... the only function our contract has. Again press `Next`.
+8.  **Name Change Clarification:** Explicitly states that **Chainlink Automation was previously known as Chainlink Keepers**. Users might encounter both terms.
+9.  **Transition:** Hands over to Richard Gottleber to discuss updates to Keepers/Automation.
 
-We need to specify our time schedule, i.e. the amount of time Chainlink Automation needs to wait between function calls. This takes the form of a `Cron expression`.
+**Part 2: Chainlink Keepers v1.2 Update & Time-based Trigger Demo (Richard Gottleber)**
 
-Chainlink provides a small but super intuitive tutorial that helps you to craft your Cron expression:
+1.  **Introduction:** Richard introduces himself as a Developer Advocate at Chainlink Labs.
+2.  **Keepers v1.2 Release:** States the goal is to look at an update to Keepers (v1.2).
+3.  **Browsing Documentation:** Shows the "Chainlink Keepers Release Notes" page in the docs.
+4.  **Keepers UI (`keepers.chain.link`):** Navigates to the Keepers web application.
+5.  **Connecting Wallet:** Connects his MetaMask wallet to the UI (connected to Avalanche Fuji testnet).
+6.  **Registering New Upkeep:** Clicks "Register new Upkeep".
+7.  **New Feature: Trigger Selection:** Highlights the crucial new option presented:
+    *   **Time-based:** Uses a CRON schedule set in the UI. The Keepers network checks the time off-chain.
+    *   **Custom logic:** Uses the `checkUpkeep` function within the deployed contract.
+8.  **Time-based Trigger Simplification:** Explains the *major* benefit: For the **Time-based** trigger selected via the UI, the smart contract *no longer needs* to implement the `KeeperCompatibleInterface` or the `checkUpkeep` / `performUpkeep` functions. The time check logic is handled by the Chainlink network itself based on the CRON configuration.
+9.  **Demonstration Contract (`KeepersCounter.sol` in Remix):**
+    *   He uses the example contract previously opened in Remix.
+    *   **Modification:** He *modifies* the contract to demonstrate the simplification allowed by the new Time-based UI trigger:
+        *   Removes `is KeeperCompatibleInterface`.
+        *   Removes the `checkUpkeep` function entirely.
+        *   Removes the `performUpkeep` function entirely.
+        *   Removes the `interval` and `lastTimeStamp` state variables.
+        *   Removes the `updateInterval` parameter from the `constructor`.
+        *   Adds a simple `count()` function that just increments the counter.
+    ```solidity
+    // Modified KeepersCounter.sol (Simplified by Richard for Time-based UI Trigger)
+    // SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.7; // Using version from Remix example
 
-```
-What is a CRON expression?
-The CRON expression is a shorthand way to create a time schedule. Use the provided example buttons to experiment with different schedules and then create your own.
+    contract Counter { // Interface removed
+        uint public counter;
 
-Cron schedules are interpreted according to this format:
+        // interval & lastTimeStamp removed
 
-┌───────── minute (0 - 59)
-│ ┌─────── hour (0 - 23)
-│ │ ┌───── day of the month (1 - 31)
-│ │ │ ┌─── month (1 - 12)
-│ │ │ │ ┌─ day of the week (0 - 6) (Sunday to Saturday)
-│ │ │ │ │
-│ │ │ │ │
-│ │ │ │ │
-* * * * *
-All times are in UTC
+        constructor() { // updateInterval parameter removed
+            counter = 0;
+        }
 
-- can be used for range e.g. "0 8-16 * * *"
-/ can be used for interval e.g. "0 */2 * * *"
-, can be used for list e.g. "0 17 * * 0,2,4"
+        // checkUpkeep removed
+        // performUpkeep removed
 
-Special limitations:
-no special characters: ? L W #
-lists can have a max length of 26
-no words
-```
+        function count() external { // The function Keepers will call
+            counter = counter + 1;
+        }
+    }
+    ```
+    *Discussion:* Emphasizes how clean and simple the contract becomes because the time-checking logic is externalized to the Keepers network for this specific trigger type.
 
-You can find out more about how to properly craft these by playing around with [crontab.guru](https://crontab.guru/) or using your favorite AI chatbot. Even better, you could ask the AI chatbot to craft it for you!
+10. **Deploying the Simplified Contract:**
+    *   Selects the `Counter` contract in Remix.
+    *   Uses "Injected Provider - Metamask" connected to Avalanche Fuji Testnet.
+    *   Deploys the contract.
+    *   Calls the `count()` function once manually to verify deployment and establish a baseline (`counter` becomes 1).
+11. **Configuring the Time-based Upkeep in UI:**
+    *   Returns to the `keepers.chain.link` UI.
+    *   Selects "Time-based" trigger.
+    *   Pastes the deployed `Counter` contract address.
+    *   **ABI:** Since the contract isn't verified on Fuji's explorer, the UI can't fetch the ABI automatically. He goes back to Remix, ensures the `Counter` contract is selected in the Compiler tab, and copies the ABI. He pastes this ABI into the Keepers UI.
+    *   **Target Function:** The UI uses the ABI to find callable functions. He selects the `count` function.
+    *   **CRON Schedule:**
+        *   Explains the need to specify the time schedule.
+        *   Introduces **Crontab Guru (`crontab.guru`)** as a helpful tool to understand CRON syntax.
+        *   Explains the 5 fields: `minute(0-59)`, `hour(0-23)`, `day of month(1-31)`, `month(1-12)`, `day of week(0-6)`.
+        *   Explains `*` means "every" (e.g., `* * * * *` runs every minute).
+        *   Demonstrates `*/1 * * * *` also means every 1 minute.
+        *   Sets the schedule to run every minute: `*/1 * * * *`.
+    *   **Upkeep Details:**
+        *   Upkeep name: "Make every minute count"
+        *   Gas limit: 150,000 (notes this needs to cover the function's execution cost + Keeper overhead).
+        *   Starting balance (LINK): 5 (mentions the faucet link if needed).
+        *   Email address: Enters his email for notifications.
+        *   Project name (Optional).
+12. **Registering and Funding:**
+    *   Clicks "Register Upkeep".
+    *   Approves the transactions in MetaMask (deploying CRON contract, requesting registration, funding with LINK).
+13. **Viewing the Upkeep:**
+    *   Shows the details page for the newly created Upkeep.
+    *   Status: Active.
+    *   Trigger: Time-based, with the configured CRON expression.
+    *   Target: The deployed contract address and the `count` function.
+    *   History: Shows the initial "Fund Upkeep" transaction. Shortly after, a "Perform Upkeep" transaction appears, executed by a Keeper node.
+14. **Verification:**
+    *   Goes back to the deployed contract in Remix.
+    *   Calls the `counter` view function again.
+    *   The value is now `2`, confirming the Keeper network automatically called the `count` function based on the CRON schedule.
+15. **Conclusion (Richard):** Reiterates the simplicity achieved for time-based automation use cases with the Keepers v1.2 update and the UI trigger, encouraging users to try it out.
 
-I've configured mine to work every two minutes: `*/2 * * * *`.
+**Key Concepts & Relationships Summary:**
 
-After you provide the Cron expression press `Next`.
+*   **Smart Contract Automation:** The core problem is that smart contracts cannot trigger themselves; they need an external EOA or another contract to call their functions.
+*   **Chainlink Automation (Keepers):** A decentralized oracle network service that reliably triggers smart contract functions based on predefined conditions (triggers).
+*   **Upkeep:** A registered job on the Chainlink Automation network that defines which contract function to call, under what conditions (trigger), and how much gas it can use. Requires LINK funding.
+*   **Triggers:** Conditions that cause an Upkeep to execute.
+    *   **Time-based (UI Configured):** Uses CRON schedule set in the UI. Simplest contract code, as time checks are off-chain.
+    *   **Custom Logic:** Uses `checkUpkeep` function in the contract. Most flexible, allows any on-chain condition check. Requires implementing `AutomationCompatibleInterface` (or `KeeperCompatibleInterface`).
+    *   **Log Trigger:** Based on events/logs emitted by contracts.
+*   **CRON Expression:** Standard syntax for defining time schedules (minute, hour, day(month), month, day(week)). Used by Time-based triggers.
+*   **ABI (Application Binary Interface):** Defines how to interact with a smart contract's functions (names, parameters, return types). Needed by the Keepers UI/network if the contract isn't verified.
+*   **Gas Limit & LINK Funding:** Upkeeps need sufficient gas limits for execution and must be funded with LINK tokens to pay the Keeper nodes performing the work.
 
-Now we got to the `Upkeep details` section. Give it a name. The `Admin Address` should be defaulted to the address you used to deploy the contract. You should have some test LINK there. If you don't have any pick some up from [here](https://faucets.chain.link/sepolia). You have the option of specifying a `Gas limit`. Specify a `Starting balance`, I've used 10 LINK. You don't need to provide a project name or email address.
+**Resources Mentioned:**
 
-Click on `Register Upkeep` and sign the transactions that pop up.
+*   Chainlink Docs: `docs.chain.link`
+*   Chainlink Automation/Keepers UI: `keepers.chain.link`
+*   Remix IDE: `remix.ethereum.org`
+*   Crontab Guru: `crontab.guru`
+*   Chainlink Faucets: `faucets.chain.link` (or specific network faucet link in UI)
+*   GitHub Project (Patrick's): `foundry-smart-contract-lottery-f23`
 
-I had to sign 3 transactions, after that let's click on `View Upkeep`.
+**Important Notes/Tips:**
 
-In the `History` section, you can see the exact date and tx hash of the automated call. Make sure you fund the upkeep to always be above the `Minimum Balance`. You can fund your upkeep using the blue `Actions` button. Use the same button to edit your upkeep, change the frequency, or the gas limit, pause the upkeep or cancel it.
-
-From time to time go back to Remix and check the `counter` value. You'll see it incremented with a number corresponding to the number of calls visible in the `History` we talked about earlier.
-
-Ok, this was fun, let's pause/cancel the upkeep to save some of that sweet testnet LINK.
-
-Amazing work!
+*   Chainlink Automation is the new name for Chainlink Keepers.
+*   The Time-based trigger via the UI greatly simplifies contract code for purely time-scheduled tasks.
+*   Custom Logic triggers are still necessary for condition-based automation beyond simple time schedules.
+*   Ensure the Gas Limit set for the Upkeep is high enough.
+*   Fund Upkeeps with sufficient LINK.
+*   Use `crontab.guru` to help formulate CRON expressions.
+*   Provide an email for important notifications.
+*   Contract verification on a block explorer allows the Keepers UI to fetch the ABI automatically.
