@@ -1,35 +1,108 @@
----
-title:
----
+## Building a Custom Merkle Airdrop Contract
 
-_Follow along with the video_
+Welcome! In this lesson, we'll dive into building a custom Airdrop smart contract, leveraging the power of Merkle Trees and cryptographic signatures. This project provides a practical application of these advanced concepts in a common web3 scenario.
 
----
+### What is an Airdrop?
 
-> Welcome back! I'm Ciara, and I'll be guiding you through the Merkle Airdrop section of this course. In this project, we'll delve into **Merkle Trees** and **Signatures** to create our very own _ERC20 airdrop contract_.
+In the blockchain world, an **airdrop** is a distribution method where a project sends tokens to numerous wallet addresses simultaneously. While sometimes tokens are pushed directly, a more common approach allows eligible users to "claim" their allotted tokens from a contract.
 
-### Airdrop
+**Key Characteristics:**
 
-An airdrop occurs when a token development team distributes tokens or allows people to claim them. These tokens can be of various types, including ERC-20, ERC-1155, or ERC-721.
+*   **Cost:** Tokens are typically distributed free of charge as perceived by the recipient, although users claiming tokens might need to pay network gas fees for the claim transaction.
+*   **Purpose:** Airdrops serve as powerful marketing and community-building tools. They help **bootstrap** a project's ecosystem by rewarding early adopters, developers, community members, or other targeted groups.
+*   **Eligibility:** Projects define specific criteria for eligibility. This could involve interacting with a protocol, holding a particular NFT, contributing to a GitHub repository, or being an active community member. This necessitates maintaining an **allowlist** of eligible addresses.
+*   **Token Types:** Airdrops can distribute various token standards, including fungible tokens (ERC20) and non-fungible tokens (ERC721, ERC1155).
+*   **Our Focus:** This lesson focuses on creating an airdrop mechanism for an **ERC20 token**.
 
-::image{src='/foundry-merkle-airdrop/01-introduction/airdrop.png' style='width: 75%; height: auto;'}
+Imagine a central contract holding "my new token" and distributing portions to "wallet 1", "wallet 2", and "wallet 3" – that's the basic distribution concept.
 
-Tokens are typically given for free, with eligibility criteria such as contributing to the project's GitHub repository or participating in the community. This process helps to _bootstrap the project_ by distributing tokens to a **list of eligible addresses**.
+### Project Codebase Overview
 
-### Walkthrough
+Our project utilizes two primary smart contracts and several helper scripts.
 
-Let's quickly walk through the [code base](https://github.com/Cyfrin/foundry-merkle-airdrop-cu). In the source directory, you'll find the [Bagel token](https://github.com/Cyfrin/foundry-merkle-airdrop-cu/blob/main/src/BagelToken.sol), a minimal ERC-20 token that we will distribute.
+**1. `src/BagelToken.sol` - The Airdropped Token**
 
-The [`MerkleAirdrop`](https://github.com/Cyfrin/foundry-merkle-airdrop-cu/blob/main/src/MerkleAirdrop.sol) contract is the cornerstone of this project, and it uses **Merkle Proofs** to verify address eligibility. It includes a `claim` function that allows addresses to receive the airdrop without paying gas fees. Furthermore, it implements _signatures_ to ensure that only intended recipients can claim the tokens.
+This contract defines the ERC20 token we will be distributing. It's a standard, minimal implementation inheriting from OpenZeppelin's widely-used `ERC20` and `Ownable` contracts.
 
-We will generate **scripts** to create Merkle Trees, Proofs, and Root Hash, as well as deploy and interact with the contract.
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
 
-In this course, we will cover several topics besides Merkle Trees and Merkle Proofs, such as signatures, the ECDSA (Elliptical Curve Digital Signature) Algorithm, and transaction types.
+import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
-- After initializing a ZKsync local node with Docker, we'll deploy the `Bagel` token and `MerkleAirdrop` contracts on it
-- We'll then **sign a message** to allow someone else to call `claim` on your behalf so you can receive the token while not paying for gas fees
-- The initial supply of tokens is created and sent to the airdrop contract
-- Finally, we can claim tokens on behalf of the claiming address (so they do not have to pay gas) using a signature
-- The address will now hold a balance of the airdropped tokens
+contract BagelToken is ERC20, Ownable {
+    constructor() ERC20("BAGEL Token", "BT") Ownable(msg.sender) {}
 
-Let's get started!
+    function mint(address account, uint256 amount) external onlyOwner {
+        _mint(account, amount);
+    }
+}
+```
+
+*   The `constructor` sets the token's name ("BAGEL Token") and symbol ("BT") and establishes the deployer as the owner.
+*   The `mint` function allows only the owner (the `Ownable` contract enforces this) to create new tokens and assign them to a specific `account`. This function will be used to fund the airdrop contract.
+
+**2. `src/MerkleAirdrop.sol` - The Core Airdrop Logic**
+
+This is the heart of our project. It manages the airdrop process using sophisticated techniques for efficiency and security. It imports necessary libraries like `MerkleProof`, `SafeERC20`, `EIP712`, `SignatureChecker`, `ECDSA`, and `MessageHashUtils`.
+
+**Key Mechanisms:**
+
+*   **Merkle Proofs:** Instead of storing the entire (potentially massive) list of eligible addresses and amounts on-chain (which would be very expensive), we store only a single **Merkle Root**. An eligible user provides a **Merkle Proof** alongside their claim request. The contract uses the `MerkleProof.verify` function to check if the user's address and amount hash correctly up to the stored root, proving their eligibility without needing the full list on-chain.
+*   **Signatures (ECDSA):** To ensure only the rightful owner can claim their tokens (or authorize someone else to claim on their behalf), we use cryptographic signatures. An eligible user signs a message (off-chain) containing their claim details. This generates a unique signature consisting of `v`, `r`, and `s` components.
+*   **`claim` Function:** This public function is called to initiate the token claim. It accepts parameters including the claimant's address, the amount, the `merkleProof`, and the signature components (`v`, `r`, `s`).
+*   **Gas Abstraction (Third-Party Claims):** A powerful feature of this design is that *anyone* can call the `claim` function *for* an eligible address. The `msg.sender` of the claim transaction doesn't have to be the eligible recipient. This allows a third party (like the project team or a dedicated "relayer" service) to pay the gas fees for the claim transaction on behalf of the user.
+*   **User Consent via Signatures:** How do we prevent unwanted claims if anyone can trigger the transaction? The **signature** acts as explicit consent. Even if a relayer pays the gas, they *must* provide the valid signature (`v, r, s`) generated by the *actual eligible user*. The `claim` function first verifies this signature using ECDSA logic (e.g., using `ECDSA.recover` and checking against the intended claimant address, potentially via helper functions like `_isValidSignature`). Only if the signature is valid, proving the owner's consent, does the process continue.
+
+**Claim Logic Flow:**
+
+Inside the `claim` function, the contract executes the following steps:
+
+1.  Checks if the address has already claimed tokens.
+2.  Verifies the provided signature (`v, r, s`) corresponds to the eligible claimant and the claim details.
+3.  Verifies the provided `merkleProof` against the stored Merkle root.
+4.  Marks the address as having claimed to prevent double-spending.
+5.  Transfers the specified amount of `BagelToken` from the airdrop contract to the claimant's address using `SafeERC20`.
+
+**3. `script` Folder - Deployment and Interaction**
+
+This folder contains Foundry scripts (`.s.sol`) to manage the project:
+
+*   `DeployMerkleAirdrop.s.sol`: Deploys the `BagelToken` and `MerkleAirdrop` contracts.
+*   `GenerateInput.s.sol`: Prepares the list of eligible addresses and amounts for Merkle tree generation.
+*   `Interact.s.sol`: Provides functions to interact with the deployed contracts, primarily calling the `claim` function.
+*   `MakeMerkle.s.sol`: Takes the eligibility data, constructs the Merkle tree, calculates the root hash (to be stored in the `MerkleAirdrop` contract), and generates the individual proofs needed for each claim.
+*   `SplitSignature.s.sol`: A utility potentially used to handle and format the `v, r, s` components of signatures correctly.
+
+### Key Concepts You Will Learn
+
+This project will give you hands-on experience with:
+
+*   **Merkle Trees:** Understanding their structure and purpose in data verification.
+*   **Merkle Proofs:** How they efficiently prove membership in a large dataset without revealing the whole set.
+*   **Cryptographic Signatures (ECDSA):** How public-key cryptography is used to verify authenticity and consent.
+*   **Signature Components (`v`, `r`, `s`):** Understanding the parts of an ECDSA signature.
+*   **Transaction/Message Signing:** How users sign messages off-chain (potentially following standards like EIP-712) to authorize on-chain actions.
+
+### How It Works in Practice (Demo Explanation)
+
+Imagine the following sequence, demonstrating the signature-based claim mechanism:
+
+1.  **Deployment:** The `BagelToken` and `MerkleAirdrop` contracts are deployed. The Merkle root representing all eligible addresses/amounts is set in the `MerkleAirdrop` contract.
+2.  **Funding:** The owner mints `BagelToken`s and transfers them to the `MerkleAirdrop` contract, ensuring it has enough tokens for distribution.
+3.  **Off-Chain Signing:** An eligible user (`CLAIMING_ADDRESS`) wants to claim their 25 tokens. They use their private key to sign a message containing their address and the amount (25 tokens). This produces a unique signature (`v, r, s`).
+4.  **Merkle Proof Generation:** The user (or a provided service) generates the specific Merkle proof corresponding to their entry in the eligibility list.
+5.  **Third-Party Claim Transaction:** Now, *another address* (e.g., a relayer service or the deployer account) calls the `claim` function on the `MerkleAirdrop` contract. They provide:
+    *   The `CLAIMING_ADDRESS`.
+    *   The amount (25 tokens).
+    *   The user's generated `merkleProof`.
+    *   The user's signature (`v`, `r`, `s`).
+6.  **On-Chain Verification & Transfer:** The `MerkleAirdrop` contract:
+    *   Verifies the signature (`v, r, s`) belongs to `CLAIMING_ADDRESS` and matches the claim details (consent confirmed).
+    *   Verifies the `merkleProof` is valid against the stored Merkle root (eligibility confirmed).
+    *   Transfers 25 `BagelToken`s to `CLAIMING_ADDRESS`.
+
+The key takeaway is that the transaction sender (who paid the gas) is different from the recipient, but the recipient's off-chain signature was essential for the transaction to succeed.
+
+These concepts might seem complex initially, but walking through the code and implementation details will clarify how Merkle proofs and signatures combine to create a secure, efficient, and flexible airdrop system. Let's get started!
