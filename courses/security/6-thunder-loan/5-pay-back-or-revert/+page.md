@@ -10,7 +10,7 @@ So, how does a `flash loan` allow the average user to take advantage of larger s
 
 This is a really powerful function of the blockchain and smart contract ecosystem.
 
-In contemporary finance typically collateral is required to take a loan, some assurance must be made that a loan will be repaid. In Web3 a protocol is able to programmatically assure a loan is repaid.
+In contemporary finance, typically collateral is required to take a loan, some assurance must be made that a loan will be repaid. In Web3, a protocol is able to programmatically assure a loan is repaid.
 
 **_How does this work?_**
 

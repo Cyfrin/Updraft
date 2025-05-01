@@ -229,10 +229,10 @@ Leaving regular notes in the code base as you go will make report writing much e
 ```js
 // @Audit - Review Complete - follow up
 function deposit(
-uint256 wethToDeposit,
-uint256 minimumLiquidityTokensToMint,
-uint256 maximumPoolTokensToDeposit,
-uint64 deadline
+    uint256 wethToDeposit,
+    uint256 minimumLiquidityTokensToMint,
+    uint256 maximumPoolTokensToDeposit,
+    uint64 deadline
 )
 ```
 

@@ -20,7 +20,7 @@ We use the `msg.sender` built-in variable to set the owner of the contract to th
 Then, in the withdraw function, we use the `assert` statement to make sure that the msg.sender is equal to the owner.
 
 ```python
-external
+@external
 def withdraw():
     """Take the money out of the contract, that people sent via the fund function.
     How do we make sure only we can pull the money out?
@@ -41,11 +41,3 @@ We can see this in action if we redeploy the contract and call the withdraw func
 If we call the withdraw function from the owner account, it will be successful. However, if we call the withdraw function from a different account, it will revert with the error message "Not the contract owner!".
 
 This is an example of how we can use the msg.sender to control access to our smart contract functions. It's a simple but powerful technique that can be used to secure our code.
-
-```bash
-truffle compile
-```
-
-```bash
-truffle migrate
-```

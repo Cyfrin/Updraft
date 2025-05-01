@@ -89,7 +89,7 @@ assert(bool(uint8(map_1[v1])) == bool(1));
 
 The first line is where the mint function is being called by the attacking contract.
 
-The second line is where an assertion is made that the minted NFT has the desired rare traits. If this assersion fails, the whole transaction is reverted.
+The second line is where an assertion is made that the minted NFT has the desired rare traits. If this assertion fails, the whole transaction is reverted.
 
 **Attacker Receives Rare NFT:**
 

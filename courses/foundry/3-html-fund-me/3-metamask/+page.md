@@ -90,7 +90,7 @@ Let's try calling `getBalance` and see how it works - if you're chain is current
 
 ::image{src='/html-fundme/2-metamask/metamask4.png' style='width: 75%; height: auto;'}
 
-When the `getBalance` buttons is clicked, this is the function we're calling on our front-end.
+When the `getBalance` button is clicked, this is the function we're calling on our front-end.
 
 ```js
 async function getBalance() {

@@ -10,7 +10,7 @@ After setting our initial context and utilizing our suite of auditing tools, it'
 
 ::image{src='/security-section-6/15-recon-ipoolfactory/recon-ipoolfactory3.png' style='width: 100%; height: auto;'}
 
-This time we're going to dive right into manual review however.
+This time, we're going to dive right into manual review however.
 
 We're also going to be apply The Tincho method a little more seriously this time around.
 
@@ -41,7 +41,7 @@ interface IPoolFactory {
 
 That's it, that's the whole interface. Talk about starting small.
 
-From our context gathering we can infer that `PoolFactory` is likely referencing TSwap's `PoolFactory` and this must be an interface for it.
+From our context gathering, we can infer that `PoolFactory` is likely referencing TSwap's `PoolFactory` and this must be an interface for it.
 
 This can be confirmed by checking `PoolFactory` for the `getPool` function, which exists!
 

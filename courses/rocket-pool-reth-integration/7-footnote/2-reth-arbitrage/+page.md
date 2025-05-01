@@ -18,4 +18,4 @@ The test passed and it was possible to pull off a hypothetical arbitrage opportu
 
 Here are some limitations to consider. This is currently a hypothetical arbitrage opportunity. In a real environment, gas costs might make this strategy unprofitable. Also, before executing this strategy, we have to make sure that the rETH contract has enough ETH in the contract.
 
-To recognize arbitrage oppurtunities, it is useful to be able to find tokens paired together that are similar where one of the tokens is yield bearing and the other is not. Then you also need to find an AMM where that yield bearing token is sold at a fixed price or some price range.
+To recognize arbitrage opportunities, it is useful to be able to find tokens paired together that are similar where one of the tokens is yield bearing and the other is not. Then you also need to find an AMM where that yield bearing token is sold at a fixed price or some price range.

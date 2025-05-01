@@ -1,4 +1,4 @@
-## Welcome to Remix - Favorite's List
+## Workshop Challenge Part 2
 
 Congratulations on finishing the "Welcome to Remix - Favorite's List" section! Before we jump off and wrap up this section, we have a workshop for you. On every single section moving forward, at the end, we're going to have a little workshop for you to practice and drill in some of the things that we taught you.
 

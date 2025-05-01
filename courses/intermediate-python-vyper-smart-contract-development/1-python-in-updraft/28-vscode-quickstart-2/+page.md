@@ -1,3 +1,5 @@
+## VS Code Quickstart
+
 We are ready to get started with VS Code for this course! Let's open up VS Code. If you are on a Mac or Linux, you should see a shortcut to open a "remote window" in the bottom left of the screen. If you are on a Windows machine, it will likely display WSL or Ubuntu or some combination of the two. 
 
 Let's open up a terminal using the command `Command ~` on Mac and `Control ~` on Windows or Linux. 
