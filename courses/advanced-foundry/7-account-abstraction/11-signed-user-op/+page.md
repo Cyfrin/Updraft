@@ -1,101 +1,443 @@
-Okay, here is a thorough and detailed summary of the video segment "Using unlocked accounts For local development":
+## Account Abstraction Lesson 11: Unsigned `PackedUserOperation` Test
 
-**Overall Summary**
+Welcome to lesson 11. This lesson is structured around completing and testing the `SendPackedUserOp` script. We will:
 
-The video focuses on refactoring Solidity code within a Foundry project to correctly handle the signing of User Operations (part of ERC-4337 Account Abstraction) specifically for *local development environments* (like Anvil). The primary goal is to differentiate the signing process: using a known, predictable Anvil default private key locally versus using a configured deployer key (like a burner wallet) on testnets or mainnets. This involves modifying both the script that generates the signed User Operation (`SendPackedUserOp.s.sol`) and the configuration helper contract (`HelperConfig.s.sol`) to manage these different keys and accounts based on the `block.chainId`. The refactoring ensures that local tests using Foundry's `vm.sign` cheatcode work correctly with Anvil's default unlocked accounts.
+- complete our `SendPackedUserOp` script
+- generate a signed user operation
+- create a test for it.
+- become more familiar with message hashing
+- deploy a mock
+- verify a digital signature using ECDSA
+- answer some review questions
 
-**Key Concepts Covered**
+We are going to learn a lot in this one. Let's get it!
 
-1.  **Local Development Environment (Anvil/Foundry):** The context is developing and testing smart contracts locally using Foundry and its built-in Anvil node. Anvil provides default accounts with known private keys.
-2.  **Chain ID Differentiation:** The code uses `block.chainId` to distinguish between the local development chain (ID `31337`) and other chains (like Sepolia). This allows conditional logic for network-specific configurations.
-3.  **Signing User Operations (ERC-4337):** The core task is to sign an ERC-4337 `UserOperation` struct. This involves generating a hash (`userOpHash`) and signing it to produce `v`, `r`, and `s` components, which are then packed into the `signature` field of the `UserOperation`.
-4.  **Foundry Cheatcodes (`vm.sign`):** Foundry's `vm.sign` cheatcode is used to sign a digest (the `userOpHash` converted to an Ethereum signed message hash) using a specified private key. This simulates the signing process that would normally happen off-chain.
-5.  **Helper Configuration (`HelperConfig.s.sol`):** A common pattern is demonstrated where a `HelperConfig` contract manages network-specific details like chain IDs, entry point addresses, and deployer/signer accounts. This promotes cleaner and more maintainable deployment/testing scripts.
-6.  **Anvil Default Keys/Accounts:** Anvil starts with a set of pre-funded accounts. The video specifically uses the *first* default private key and its corresponding account address for local signing and configuration.
-7.  **Constants vs. Hardcoding:** The video uses constants (`ANVIL_DEFAULT_KEY`, `ANVIL_DEFAULT_ACCOUNT`) for the Anvil key and address, improving readability over hardcoding them directly in the logic. It also acknowledges that a more robust pattern might involve a dedicated `Constants.sol` file.
-8.  **Caching Configuration:** The `HelperConfig` uses a state variable (`localNetworkConfig`) to cache the generated configuration for the local network, preventing redundant deployments (like mocks) on subsequent calls within the same test run.
+---
 
-**Code Blocks and Discussion**
+### Completing the `SendPackedUserOp` Script
 
-1.  **`SendPackedUserOp.s.sol` - Signing Logic Refactoring:**
-    *   **Initial Problem:** The original code likely signed using `vm.sign(config.account, digest)`, assuming `config.account` held the private key, which isn't suitable for local Anvil testing where we want to use the default Anvil key.
-    *   **Refactoring:**
-        *   Variables `v`, `r`, `s` are declared outside the conditional block.
-        *   A constant `ANVIL_DEFAULT_KEY` (a `uint256`) is added, holding the first private key obtained by running `anvil` in the terminal.
-        *   An `if/else` block is introduced based on `block.chainId == 31337`:
-            *   **`if (block.chainId == 31337)` (Local):**
-                ```solidity
-                // uint256 constant ANVIL_DEFAULT_KEY = 0xac0974bec39a17e36ba46cd4d238ff94f0483acba78d560d6f4ac4f3b; // Example key shown
-                uint8 v;
-                bytes32 r;
-                bytes32 s;
-                // ... other steps ...
-                bytes32 digest = userOpHash.toEthSignedMessageHash();
+Now that we've got all the things we need to generate data for our `PackedUserOperation`, we need to send it.
 
-                if (block.chainId == 31337) {
-                    (v, r, s) = vm.sign(ANVIL_DEFAULT_KEY, digest); // Use Anvil key
-                } else {
-                    (v, r, s) = vm.sign(config.account, digest); // Use configured key (e.g., burner)
-                }
-                userOp.signature = abi.encodePacked(r, s, v); // Note the order
-                ```
-                *Discussion:* This block now specifically uses the hardcoded `ANVIL_DEFAULT_KEY` with `vm.sign` when running on the local Anvil chain (ID 31337).
-            *   **`else` (Testnet/Mainnet):**
-                *Discussion:* This block retains the original logic, using `config.account` (which should represent the deployer/burner private key fetched from `HelperConfig` for that specific network) to sign the digest.
+**<span style="color:red">SendPackedUserOp.s.sol</span>**
 
-2.  **`HelperConfig.s.sol` - Local Configuration Update:**
-    *   **Initial Problem:** The `HelperConfig` previously returned a configuration for the local network using `FOUNDRY_DEFAULT_WALLET` (an address likely derived from a different key) and didn't properly cache the updated local config.
-    *   **Refactoring:**
-        *   The `FOUNDRY_DEFAULT_WALLET` constant is commented out or removed.
-        *   A new `address constant ANVIL_DEFAULT_ACCOUNT` is added, holding the address corresponding to `ANVIL_DEFAULT_KEY` (obtained by running `anvil`).
-        *   Inside the `getOrCreateAnvilEthConfig` function:
-            ```solidity
-            // address constant ANVIL_DEFAULT_ACCOUNT = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266; // Example address shown
+```solidity
+function generateSignedUserOperation(bytes memory callData, address sender)
+    public view returns (PackedUserOperation memory) {
+        // Step 1. Generate the unsigned data
+        uint256 nonce = vm.getNonce(sender);
+        PackedUserOperation memory unsignedUserOp = _generateUnsignedUserOperation(callData, sender, nonce);
 
-            function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
-                if (localNetworkConfig.account != address(0)) {
-                    return localNetworkConfig; // Return cached config if already created
-                }
-                // deploy mocks
-                console2.log("Deploying mocks...");
-                vm.startBroadcast(ANVIL_DEFAULT_ACCOUNT); // Use Anvil account for broadcast
-                EntryPoint entryPoint = new EntryPoint();
-                vm.stopBroadcast();
+        // Step 2. Sign and return it
+}
+```
 
-                // Create the config using the Anvil account
-                localNetworkConfig = NetworkConfig({
-                    entryPoint: address(entryPoint),
-                    account: ANVIL_DEFAULT_ACCOUNT // Use Anvil account address
-                });
-                return localNetworkConfig; // Return the newly created and cached config
-            }
-            ```
-        *Discussion:* This ensures that when `getConfig()` is called on the local chain (31337), it returns a `NetworkConfig` struct where the `account` field is the correct `ANVIL_DEFAULT_ACCOUNT`. It also correctly updates the `localNetworkConfig` state variable *after* deployment/creation to enable caching and prevent re-deployment of mocks. The `vm.startBroadcast` also uses this account.
+We must be sure to sign the contract that aligns with what the `EntryPoint` contract expects. If you go into `EntryPoint.sol` that we imported earlier, you'll find a function called `getUserOpHash`.
 
-3.  **`DeployMinimal.s.sol` - Ownership Transfer:**
-    *   **Refactoring:**
-        ```solidity
-        // Inside deployMinimalAccount function
-        HelperConfig.NetworkConfig memory config = helperConfig.getConfig();
-        vm.startBroadcast(config.account); // Broadcast using the account from config
-        MinimalAccount minimalAccount = new MinimalAccount(config.entryPoint);
-        // Transfer ownership *to* the account specified in the config
-        minimalAccount.transferOwnership(config.account);
-        vm.stopBroadcast();
-        return (helperConfig, minimalAccount);
-        ```
-    *   **Discussion:** The script now explicitly transfers ownership of the newly deployed `MinimalAccount` to `config.account`. Because `HelperConfig` was refactored, `config.account` will correctly resolve to `ANVIL_DEFAULT_ACCOUNT` when running locally, ensuring the test setup is consistent with the signing key being used.
+**<span style="color:red">EntryPoint.sol</span>**
 
-**Important Notes & Tips**
+```solidity
+/// @inheritdoc IEntryPoint
+function getUserOpHash(PackedUserOperation calldata userOp)
+    public returns (bytes32) {
+    return
+        keccak256(abi.encode(userOp.hash(), address(this), block.chainid));
+}
+```
 
-*   **Code Quality:** While functional, the speaker notes the "hacky" approach of putting constants directly in the files. A better practice for larger projects is to use a separate `Constants.sol` file and inheritance.
-*   **Caching Importance:** Updating the `localNetworkConfig` *after* its creation within `getOrCreateAnvilEthConfig` is crucial. Forgetting this step would cause the `if (localNetworkConfig.account != address(0))` check to always fail on subsequent calls in the same test run, leading to repeated mock deployments.
-*   **Signature Packing Order:** The comment `// Note the order` next to `abi.encodePacked(r, s, v)` highlights that the order matters for constructing the signature bytes.
-*   **Anvil Key/Account Consistency:** Ensure the `ANVIL_DEFAULT_KEY` (private key, `uint256`) and `ANVIL_DEFAULT_ACCOUNT` (address) correspond to the *same* Anvil default account (usually the first one listed when running `anvil`).
+From this function, you can see that the EntryPoint is expecting a **hashed userOp, contract address, and chainid**.
 
-**Test Execution**
+> ❗ **IMPORTANT** In order to avoid cross-chain replay attacks, the chainid will be part of the userOpHash.
 
-*   The video demonstrates running the specific test `testRecoverSignedOp` using `forge test -mt testRecoverSignedOp -vvv`.
-*   After the refactoring, the test passes, indicated by the `[PASS]` status in the terminal output. This confirms that the `UserOperation` is being signed correctly using the Anvil default key locally, and the `ecrecover` mechanism (implicit in the test's assertion `assertEq(actualSigner, minimalAccount.owner())`) successfully validates the signature against the expected account owner.
+To make all of this happen, we are going to need to do some more work in our scripts. Let's get started in the **HelperConfig** by importing `EntryPoint`. Also, go ahead and add `console2` to the `Script` import.
 
-In essence, the video provides a practical guide to adapting ERC-4337 signing logic for seamless local testing in a Foundry environment by leveraging Anvil's default accounts and conditional logic based on chain ID.
+**<span style="color:red">HelperConfig.s.sol</span>**
+
+```solidity
+import { Script, console2 } from "forge-std/Script.sol";
+import { EntryPoint } from "lib/account-abstraction/contracts/core/EntryPoint.sol";
+```
+
+Now we can finally get into deploying mocks. Add the following code in the `getOrCreateAnvilEthConfig` function.
+
+```solidity
+// deploy mocks
+console2.log("Deploying mocks...");
+vm.startBroadcast(FOUNDRY_DEFAULT_ACCOUNT);
+EntryPoint entryPoint = new EntryPoint();
+vm.stopBroadcast();
+```
+
+Now that we have the EntryPoint, we can use it to call `getUserOpHash` over in our `SendPackedUserOp` script. Let's first update our comments to reflect this.
+
+**<span style="color:red">SendPackedUserOp.s.sol</span>**
+
+```solidity
+function generateSignedUserOperation(bytes memory callData, address sender)
+    public view returns (PackedUserOperation memory) {
+        // Step 1. Generate the unsigned data
+        uint256 nonce = vm.getNonce(sender);
+        PackedUserOperation memory unsignedUserOp = _generateUnsignedUserOperation(callData, sender, nonce);
+
+        // Step 2. Get userOp Hash
+
+        // Step 3. Sign it
+}
+```
+
+Let's get the userOpHash. To do this we will need to import a few items and make some adjustments to the parameters of the `generateSignedUserOperation` function.
+
+For imports, we need `HelperConfig`, `IEntryPoint`, and `MessageHashUtils`.
+
+```solidity
+import { HelperConfig } from "script/HelperConfig.s.sol";
+import { IEntryPoint } from "lib/account-abstraction/contracts/interfaces/IEntryPoint.sol";
+import { MessageHashUtils } from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
+```
+
+Let's also update our parameters and finish coding the next two steps in our function. First, we need to:
+
+- Replace `address sender` with `HelperConfig.NetworkConfig`.
+- Replace `sender` with `config.account` in `vm.getNonce` and in `_generateUnsignedUserOperation`.
+
+```solidity
+function generateSignedUserOperation(bytes memory callData, HelperConfig.NetworkConfig)
+    public view returns (PackedUserOperation memory) {
+    // Step 1. Generate the unsigned data
+    uint256 nonce = vm.getNonce(config.account);
+    PackedUserOperation memory unsignedUserOp = _generateUnsignedUserOperation(callData, config.account, nonce);
+}
+```
+
+In step 2 we will call the `getUserOpHash` on the `entryPoint` and pass in `userOp`. Then, we will convert the hash to `toEthSignedMessageHash` from `MessageHashUtils.sol`. You can read more about these two below, but in a nutshell we will need the `bytes32 digest`.
+
+---
+
+<details>
+
+**<summary><span style="color:red">Click Here</span></summary>**
+
+```solidity
+   library MessageHashUtils {
+    /**
+     * @dev Returns the keccak256 digest of an EIP-191 signed data with version
+     * `0x45` (`personal_sign` messages).
+     *
+     * The digest is calculated by prefixing a bytes32 `messageHash` with
+     * `"\x19Ethereum Signed Message:\n32"` and hashing the result. It corresponds with the
+     * hash signed when using the https://eth.wiki/json-rpc/API#eth_sign[`eth_sign`] JSON-RPC method.
+     *
+     * NOTE: The `messageHash` parameter is intended to be the result of hashing a raw message with
+     * keccak256, although any bytes32 value can be safely used because the final digest will
+     * be re-hashed.
+     *
+     * See {ECDSA-recover}.
+     */
+    function toEthSignedMessageHash(bytes32 messageHash) internal pure returns (bytes32 digest) {
+        /// @solidity memory-safe-assembly
+        assembly {
+            mstore(0x00, "\x19Ethereum Signed Message:\n32") // 32 is the bytes-length of messageHash
+            mstore(0x1c, messageHash) // 0x1c (28) is the length of the prefix
+            digest := keccak256(0x00, 0x3c) // 0x3c is the length of the prefix (0x1c) + messageHash (0x20)
+        }
+    }
+}
+```
+
+</details>
+
+
+Now that we have this imported, we need to be sure to add the following line to in our contract, just above the `run` function.
+
+```solidity
+using MessageHashUtils for bytes32;
+```
+
+**As it stands our function should look like this.**
+
+```solidity
+function generateSignedUserOperation(bytes memory callData, HelperConfig.NetworkConfig)
+    public view returns (PackedUserOperation memory) {
+    // Step 1. Generate the unsigned data
+    uint256 nonce = vm.getNonce(config.account);
+    PackedUserOperation memory unsignedUserOp = _generateUnsignedUserOperation(callData, config.account, nonce);
+
+    // Step 2. Get userOp Hash
+    bytes32 userOpHash = IEntryPoint(config.entryPoint).getUserOpHash(userOp);
+    bytes32 digest = userOpHash.toEthSignedMessageHash();
+
+    // Step 3. Sign it
+}
+```
+
+We've got everything we need now, just need to sign it. Let's do that in step 3.
+
+```solidity
+// 3. Sign it
+(uint8 v, bytes32 r, bytes32 s) = vm.sign(config.account, digest);
+userOp.signature = abi.encodePacked(r, s, v); // Note the order
+return userOp;
+```
+
+For clarity, let's change `unsignedUserOp` to just `userOp` in our function. After the changes, it should look like this:
+
+```solidity
+function generateSignedUserOperation(bytes memory callData, HelperConfig.NetworkConfig)
+    public view returns (PackedUserOperation memory) {
+    // Step 1. Generate the unsigned data
+    uint256 nonce = vm.getNonce(config.account);
+    PackedUserOperation memory userOp = _generateUnsignedUserOperation(callData, config.account, nonce);
+
+    // Step 2. Get userOp Hash
+    bytes32 userOpHash = IEntryPoint(config.entryPoint).getUserOpHash(userOp);
+    bytes32 digest = userOpHash.toEthSignedMessageHash();
+
+    // Step 3. Sign it
+    (uint8 v, bytes32 r, bytes32 s) = vm.sign(config.account, digest);
+    userOp.signature = abi.encodePacked(r, s, v); // Note the order
+    return userOp;
+}
+```
+
+Alright! Now that we've got our two functions `generateSignedUserOperation` and `_generateUnsignedUserOperation`, we can use them in our tests.
+
+---
+
+### Improving on Our Tests
+
+Back over in our test contract, `MinimalAccountTest.t.sol`, we need to make some additions and adjustments to our code. First, let's create a state variable for `SendPackedUserOp` and import it.
+
+**<span style="color:red">MinimalAccountTest.t.sol</span>**
+
+```solidity
+import {SendPackedUserOp} from "script/SendPackedUserOp.s.sol";
+
+contract MinimalAccountTest is Test, ZkSyncChainChecker {
+    using MessageHashUtils for bytes32;
+
+    HelperConfig helperConfig;
+    MinimalAccount minimalAccount;
+    ERC20Mock usdc;
+    SendPackedUserOp sendPackedUserOp;
+
+}
+```
+
+---
+
+### Arrange
+
+Let's go ahead and test that our contract is signing things correctly. Create the following function - `testRecoverSignedOp`. For **Arrange**, we can simply copy it from `testNonOwnerCannotExecuteCommands`.
+
+```solidity
+function testRecoverSignedOp() public {
+    // Arrange
+    assertEq(usdc.balanceOf(address(minimalAccount)), 0);
+    address dest = address(usdc);
+    uint256 value = 0;
+    bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, address(minimalAccount), AMOUNT);
+
+    // Act
+
+    // Assert
+}
+```
+
+Additionally, we will need to wrap it with `callData` in order to call `execute`. Like `functionData`, this `executeCallData` will be set to `abi.encodeWithSelector`. It will take:
+
+- MinimalAccount execute selector
+- and three arguments from the `execute` function
+  - dest, value, and functionData
+
+```solidity
+bytes memory executeCallData =
+    abi.encodeWithSelector(MinimalAccount.execute.selector, dest, value, functionData);
+```
+
+Essentially, the `executeCallData` is signaling the `EntryPoint` contract to call our contract. Then, our contract will call USDC. Now that we have this, we also need our `PackedUserOperation`. This is where our `SendPackedUserOp` script comes in. Let's create an instance for this in the `setUp` function - `sendPackedUserOp = new SendPackedUserOp();`. It will look like this inside the function.
+
+```solidity
+ function setUp() public {
+    DeployMinimal deployMinimal = new DeployMinimal();
+    (helperConfig, minimalAccount) = deployMinimal.deployMinimalAccount();
+    usdc = new ERC20Mock();
+    sendPackedUserOp = new SendPackedUserOp();
+}
+```
+
+And before we forget, let's import `PackedUserOperation`. Let's also do `IEntryPoint` as we will need it later on. We simply need to add them to the `SendPackedUserOp` import.
+
+```solidity
+import {
+  SendPackedUserOp,
+  PackedUserOperation,
+  IEntryPoint,
+} from "script/SendPackedUserOp.s.sol";
+```
+
+From here, go back to the `testRecoverSignedOp` function place the following below the other code under the **Arrange** comment.
+
+```solidity
+PackedUserOperation memory packedUserOp = sendPackedUserOp.generateSignedUserOperation(
+    executeCallData, helperConfig.getConfig());
+```
+
+And, last but not least, we need to hash the `PackedUserOperation`.
+
+```solidity
+bytes32 userOperationHash = IEntryPoint(helperConfig.getConfig().entryPoint).getUserOpHash(packedUserOp);
+```
+
+With that, our **Arrange** should look like this.
+
+```solidity
+// Arrange
+assertEq(usdc.balanceOf(address(minimalAccount)), 0);
+address dest = address(usdc);
+uint256 value = 0;
+bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, address(minimalAccount), AMOUNT);
+bytes memory executeCallData =
+    abi.encodeWithSelector(MinimalAccount.execute.selector, dest, value, functionData);
+PackedUserOperation memory packedUserOp = sendPackedUserOp.generateSignedUserOperation(
+    executeCallData, helperConfig.getConfig());
+bytes32 userOperationHash = IEntryPoint(helperConfig.getConfig().entryPoint).getUserOpHash(packedUserOp);
+```
+
+Phew! We've done a lot, but we aren't done yet. Take a moment to reflect on what we've done so far. When you are ready, let's dive into the **Act** part of our test.
+
+---
+
+### Act & Assert
+
+In this section of our test, we are going to find out if the person signing the transaction is valid. First, we need to import ECDSA.
+
+```solidity
+import { ECDSA } from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+```
+
+Now we can code `ECDSA.recover` into our function. If you go into the `recover` function in `ECDSA.sol`, you will notice that it takes a hash and a signature. For hashing, we will need to import `MessageHashUtils` so that we can use `toEthSignedMessageHash`. Additionally, we need to add `using MessageHashUtils for bytes32` in our contract.
+
+```solidity
+import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
+
+contract MinimalAccountTest is Test {
+    using MessageHashUtils for bytes32;
+
+
+}
+```
+
+As mentioned above, our `ECDSA.recover` takes a hash and a signature. Once we have that, we need to set it to `actualSigner`, which is an address.
+
+```solidity
+// Act
+address actualSigner = ECDSA.recover(userOperationHash.toEthSignedMessageHash(), packedUserOp.signature);
+```
+
+Essentially, the `ECDSA.recover` will verify the digital signature of the `packedUserOp` by converting the `userOperationHash` to an message hash. Then it will use the signature to recover the signer's address, ensuring that the signature is valid.
+
+Now, we can finally do **Assert**! We want to make sure that the `actualSigner` is the owner. Which in our case is the `minimalAccount`.
+
+```solidity
+// Assert
+assertEq(actualSigner, minimalAccount.owner());
+```
+
+Our function should look like this now.
+
+**<span style="color:red">MinimalAccountTest.t.sol</span>**
+
+```solidity
+function testRecoverSignedOp() public {
+    // Arrange
+    assertEq(usdc.balanceOf(address(minimalAccount)), 0);
+    address dest = address(usdc);
+    uint256 value = 0;
+    bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, address(minimalAccount), AMOUNT);
+    bytes memory executeCallData =
+        abi.encodeWithSelector(MinimalAccount.execute.selector, dest, value, functionData);
+    PackedUserOperation memory packedUserOp = sendPackedUserOp.generateSignedUserOperation(
+        executeCallData, helperConfig.getConfig());
+    bytes32 userOperationHash = IEntryPoint(helperConfig.getConfig().entryPoint).getUserOpHash(packedUserOp);
+
+    // Act
+    address actualSigner = ECDSA.recover(userOperationHash.toEthSignedMessageHash(), packedUserOp.signature);
+
+    // Assert
+    assertEq(actualSigner, minimalAccount.owner());
+}
+```
+
+Ok, it's time to run our test. Fingers crossed. Let's do it!
+
+```js
+forge test --mt testRecoverSignedOp -vvv
+```
+
+And ..... , we get an error 😟 **_<span style="color:red">[Failed. Reason: no wallets are available]</span>_** Do you remember this code from our `SendPackedUserOp` script?
+
+**<span style="color:red">SendPackedUserOp.s.sol</span>**
+
+```solidity
+// 3. Sign it
+(uint8 v, bytes32 r, bytes32 s) = vm.sign(config.account, digest);
+```
+
+Just for the purpose of testing or working on a local chain, we are going to have to do a work around for it to work correctly. But not right now, we've reached the end of this lesson. It was a beast. Take some time to reflect and go over some review questions. Move on to the next lesson when you are ready.
+
+---
+
+### Questions for Review
+
+> ❗ **NOTE** These questions may be a bit challenging. Take your time and don't stress too much. We learn one brick at a time.
+
+<summary>1. In the testRecoverSignedOp function, what is the significance of using ECDSA.recover and what is being verified?</summary>
+
+---
+
+<details>
+
+**<summary><span style="color:red">Click for Answers</span></summary>**
+
+    ECDSA.recover is used to verify the digital signature of the PackedUserOperation. It does this by recovering the signer's address from the `userOperationHash` and the provided signature. This step ensures that the signature is valid and that the operation was signed by the expected account.
+
+</details>
+
+
+<summary>2. Why is `using MessageHashUtils for bytes32` necessary? What does it do?</summary>
+
+---
+
+<details>
+
+**<summary><span style="color:red">Click for Answers</span></summary>**
+
+It allows the function to call `toEthSignedMessageHash` directly on a bytes32 value. It converts a hash to the format expected by Ethereum for verifying signatures.
+
+</details>
+
+
+<summary>3. What is the purpose of the generateSignedUserOperation function in the SendPackedUserOp script?</summary>
+
+---
+
+<details>
+
+**<summary><span style="color:red">Click for Answers</span></summary>**
+
+It generates a signed `PackedUserOperation` by creating an unsigned user operation, obtaining its hash, converting the hash to an Ethereum signed message hash, and then signing it using the account's private key. The function returns the signed `PackedUserOperation`.
+
+</details>
+
+
+<summary>4. What is included in the `userOpHash` to prevent cross-chain replay attacks?</summary>
+
+---
+
+<details>
+
+**<summary><span style="color:red">Click for Answers</span></summary>**
+
+`chainid`. It ensures that the `userOpHash` is unique to a specific blockchain network, preventing the same operation from being executed on different networks.
+
+</details>
+
