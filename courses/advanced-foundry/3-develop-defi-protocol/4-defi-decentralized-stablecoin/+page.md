@@ -1,139 +1,256 @@
-Okay, here is a thorough and detailed summary of the provided video transcript about the `DSCEngine.sol` setup.
+---
+title: DecentralizedStableCoin.sol
+---
 
-**Video Summary: DSCEngine.sol Setup**
+_Follow along the course with this video._
 
-The video transitions from completing the `DecentralizedStableCoin.sol` contract (the ERC20 token) to starting the core logic contract, `DSCEngine.sol`. This engine contract will handle the main functionalities of the decentralized stablecoin system.
+---
 
-**1. Introduction and Motivation (0:00 - 0:21)**
+### DecentralizedStableCoin.sol
 
-*   The goal is to build the `DSCEngine.sol`, described as the "engine to the car" – the main component governing the stablecoin system.
-*   The speaker encourages viewers to take breaks and feel proud of their progress after completing the `DecentralizedStableCoin.sol` contract.
-*   He suggests that viewers could even pause and try writing their own tests or deploy scripts for the previous contract before moving on.
+We've just learnt a tonne about DeFi, and hopefully you caught that there's a lot more to learn. For now, we're going to finally jump into creating our own stablecoin from scratch.
 
-**2. Building Approach (0:21 - 0:32)**
+All the code we discuss/write will of course be available on this section's [**GitHub Repo**](https://github.com/Cyfrin/foundry-defi-stablecoin-f23) for you to reference.
 
-*   The speaker mentions this project might be built slightly differently, potentially incorporating testing along the way to ensure correctness.
+> ❗ **NOTE**
+> We're going to be moving a little faster, in this lesson. We have a few new concepts to cover, but much of this will be practice and repetition of things you already know.
 
-**3. File Creation and Boilerplate (0:32 - 1:05)**
+Let's start by making our project directory.
 
-*   A new file is created in the `src` directory: `DSCEngine.sol`.
-    ```
-    // Action: Create file src/DSCEngine.sol (0:35)
-    ```
-*   The speaker copies the initial boilerplate code (SPDX License Identifier, contract layout comments, pragma solidity version) from `DecentralizedStableCoin.sol` into the new `DSCEngine.sol` file.
-    ```solidity
-    // SPDX-License-Identifier: MIT
+```bash
+mkdir foundry-defi-stablecoin
+cd foundry-defi-stablecoin
+code .
+```
 
-    // Layout of Contract:
-    // version
-    // imports
-    // errors
-    // interfaces, libraries, contracts
-    // Type declarations
-    // State variables
-    // Events
-    // Modifiers
-    // Functions
+With the directory open in VSCode, we can initialize a new Foundry project.
 
-    // Layout of Functions:
-    // constructor
-    // receive function (if exists)
-    // fallback function (if exists)
-    // external
-    // public
-    // internal
-    // private
-    // view & pure functions
+```bash
+forge init
+```
 
-    pragma solidity ^0.8.18; // Copied from previous contract (0:56)
-    ```
-*   The basic contract structure is defined:
-    ```solidity
-    contract DSCEngine { // (0:58 - 1:03)
-        // ... contract body ...
+Finally, remove the placeholder example contracts `src/Counter.sol`, `script/Counter.s.sol`, and `test/Counter.t.sol`.
+
+In our README.md, let's start taking some notes about our project and outlining its design.
+
+Our stablecoin is going to be:
+
+1. Relative Stability: Anchored or Pegged to the US Dollar
+   1. Chainlink Pricefeed
+   2. Function to convert ETH & BTC to USD
+2. Stability Mechanism (Minting/Burning): Algorithmicly Decentralized
+   1. Users may only mint the stablecoin with enough collateral
+3. Collateral: Exogenous (Crypto)
+   1. wETH
+   2. wBTC
+
+To add some context to the above, we hope to create our stablecoin in such a way that it is pegged to the US Dollar. We'll achieve this by leveraging chainlink pricefeeds to determine the USD value of deposited collateral when calculating the value of collateral underlying minted tokens.
+
+The token should be kept stable through this collateralization stability mechanism.
+
+For collateral, the protocol will accept wrapped Bitcoin and wrapped Ether, the ERC20 equivalents of these tokens.
+
+Alright, with things scoped out a bit, let's dive into writing some code. Start by creating the file `src/DecentralizedStableCoin.sol`. I'm hoping to make this as professional as possible, so I'm actually going to paste my contract and function layouts as a reference to the top of this file.
+
+```solidity
+// SPDX-License-Identifier: MIT
+
+// This is considered an Exogenous, Decentralized, Anchored (pegged), Crypto Collateralized low volatility coin
+
+// Layout of Contract:
+// version
+// imports
+// interfaces, libraries, contracts
+// errors
+// Type declarations
+// State variables
+// Events
+// Modifiers
+// Functions
+
+// Layout of Functions:
+// constructor
+// receive function (if exists)
+// fallback function (if exists)
+// external
+// public
+// internal
+// private
+// view & pure functions
+```
+
+When I wrote this codebase, I intended to get it audited, and I did! You can actually see the audit results [**here**](https://www.codehawks.com/contests/cljx3b9390009liqwuedkn0m0). For this reason, something different you may notice about this codebase is how _verbose_ we're going to be. When it comes to security and having auditors review our code, the clearer we are in explaining the code and added context to our goals, the easier their lives are going to be keeping us secure.
+
+With that said, our contract boilerplate is going to be set up similarly to everything we've been doing so far. Let's add some NATSPEC to outline the contracts purpose.
+
+```solidity
+pragma solidity ^0.8.18;
+
+/*
+ * @title: DecentralizedStableCoin
+ * @author: Patrick "Long Course" Collins
+ * Collateral: Exogenous (ETH & BTC)
+ * Minting: Algorithmic
+ * Relative Stability: Pegged to USD
+ *
+ * This is the contract meant to be governed by DSCEngine. This contract is just the ERC20 implementation of our stablecoin system.
+ */
+contract DecentralizedStableCoin {}
+```
+
+This contract is effectively just going to be a fairly standard ERC20 to function as the asset for our stablecoin protocol. All of the logic for the protocol will be handled by DSCEngine.sol. We'll need OpenZeppelin to get started.
+
+```bash
+forge install openzeppelin/openzeppelin-contracts --no-commit
+```
+
+And of course, we can add our remappings to our
+`foundry.toml`.
+
+```toml
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts"]
+```
+
+Rather than importing a standard ERC20 contract, we'll be leveraging the ERC20Burnable extension of this standard. ERC20Burnable includes `burn` functionality for our tokens which will be important when we need to take the asset out of circulation to support stability.
+
+```solidity
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.18;
+
+import {ERC20Burnable, ERC20} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+
+/*
+ * @title: DecentralizedStableCoin
+ * @author: Patrick "Long Course" Collins
+ * Collateral: Exogenous (ETH & BTC)
+ * Minting: Algorithmic
+ * Relative Stability: Pegged to USD
+ *
+ * This is the contract meant to be governed by DSCEngine. This contract is just the ERC20 implementation of our stablecoin system.
+ */
+contract DecentralizedStableCoin is ERC20Burnable {
+    constructor() ERC20("DecentralizedStableCoin", "DSC"){}
+}
+```
+
+Because we're inheriting ERC20Burnable, and it inherits ERC20, we need to satisfy the standard ERC20 constructor parameters within our contracts constructor. We've set the name `DecentralizedStableCoin` and the symbol `DSC`.
+
+All of the properties of our protocol are going to be governed ultimately by the DSCEngine.sol contract. Functionality like the stability mechanism, including minting and burning, need to be controlled by the DSCEngine to maintain the integrity of the stablecoin.
+
+In order to accomplish this, we're going to also inherit `Ownable` with DecentralizedStableCoin.sol. This will allow us to configure access control, assuring only our DSCEngine contract is authorized to call these functions.
+
+> ❗ **NOTE**
+> For version 5 of OpenZeppelin's Ownable contract, we need to pass an address
+> in the constructor. We have to modify our code to account for this when
+> running `forge build` so that our project will not error. Like this:
+> `constructor(address initialOwner) ERC20("DecentralizedStableCoin", "DSC")
+Ownable(initialOwner) {}`
+
+```solidity
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+
+...
+
+contract DecentralizedStableCoin is ERC20Burnable, Ownable {
+    constructor() ERC20("DecentralizedStableCoin", "DSC"){}
+}
+```
+
+The two major functions we're going to want the DSCEngine to control are of course the mint and burn functions. We can override the standard ERC20 functions with our own to assure this access control is in place.
+
+### Burn
+
+We can start by writing our burn function.
+
+```solidity
+function burn(uint256 _amount) external override onlyOwner{}
+```
+
+We're going to want to check for two things when this function is called.
+
+1. The amount burnt must not be less than zero
+2. The amount burnt must not be more than the user's balance
+
+We'll configure two custom errors for when these checks fail.
+
+```solidity
+contract DecentralizedStableCoin is ERC20Burnable, Ownable {
+    error DecentralizedStableCoin__MustBeMoreThanZero();
+    error DecentralizedStableCoin__BurnAmountExceedsBalance();
+
+    constructor() ERC20("DecentralizedStableCoin", "DSC"){}
+
+    function burn(uint256 _amount) external override onlyOwner{
+        uint256 balance = balanceOf(msg.sender);
+        if(_amount <= 0){
+            revert DecentralizedStableCoin__MustBeMoreThanZero();
+        }
+        if(balance < _amount){
+            revert DecentralizedStableCoin__BurnAmountExceedsBalance();
+        }
     }
-    ```
+}
+```
 
-**4. Natspec Documentation and Core Concepts (1:05 - 3:04)**
+The last thing we're going to do, assuming these checks pass, is burn the passed amount of tokens. We're going to do this by using the `super` keyword. This tells solidity to use the burn function of the parent class.
 
-*   Significant emphasis is placed on adding detailed Natspec documentation for clarity and maintainability. The speaker stresses that code is "written once, read hundreds of thousands of times" (2:45).
-*   The initial Natspec block for the `DSCEngine` contract is added:
-    ```solidity
-    /**
-     * @title DSCEngine
-     * @author Patrick Collins
-     * The system is designed to be as minimal as possible, and have the tokens maintain a 1 token == $1 peg.
-     * This stablecoin has the properties:
-     * - Exogenous Collateral
-     * - Dollar Pegged
-     * - Algorithmically Stable
-     * It is similar to DAI if DAI had no governance, no fees, and was only backed by WETH and WBTC.
-     * @notice This contract is the core of the DSC System. It handles all the logic for mining
-     * and redeeming DSC, as well as depositing & withdrawing collateral.
-     * @notice This contract is VERY loosely based on the MakerDAO DSS (DAI) system.
-     */
-    contract DSCEngine {
-        // ...
-    } // Natspec added between (1:07 - 2:32)
-    ```
-*   **Key Concepts Introduced via Natspec:**
-    *   **Minimalism:** The system aims for simplicity.
-    *   **$1 Peg:** The Decentralized Stablecoin (DSC) should maintain a value of $1.
-    *   **Properties:**
-        *   *Exogenous Collateral:* Uses external assets like WETH and WBTC as backing.
-        *   *Dollar Pegged:* Aims for a $1 value.
-        *   *Algorithmically Stable:* Stability is maintained through code logic, not just direct backing (though it relies heavily on collateralization here).
-    *   **Inspiration:** Loosely based on MakerDAO's DAI system (specifically the Dai Stablecoin System - DSS), but simplified (no governance, no fees initially, only WETH/WBTC collateral).
-    *   **Core Logic:** The `DSCEngine` handles minting/redeeming DSC and depositing/withdrawing collateral.
+```solidity
+function burn(uint256 _amount) external override onlyOwner{
+    uint256 balance = balanceOf(msg.sender);
+    if(_amount <= 0){
+        revert DecentralizedStableCoin__MustBeMoreThanZero();
+    }
+    if(balance < _amount){
+        revert DecentralizedStableCoin__BurnAmountExceedsBalance();
+    }
+    super.burn(_amount);
+}
+```
 
-**5. Overcollateralization Concept (4:20 - 4:51)**
+### Mint
 
-*   A crucial Natspec comment is added explaining a core invariant of the system:
-    ```solidity
-     * Our DSC system should always be "overcollateralized". At no point, should the value of
-     * all collateral <= the $ backed value of all the DSC. // (4:31 - 4:46)
-    ```
-*   **Concept:** The total value (in USD) of all collateral locked in the system must *always* be greater than the total value (in USD) of all the DSC tokens that have been minted against that collateral. This is the primary safety mechanism preventing the stablecoin from becoming worthless.
+The second function we'll need to override to configure access control on is going to be our mint function.
 
-**6. Function Scaffolding and Functionality Overview (3:04 - 9:42)**
+```solidity
+function mint(address _to, uint256 _amount) external overrides onlyOwner returns(bool){
+}
+```
 
-*   The speaker starts outlining the main functions the engine needs by defining their signatures (initially without implementation).
-*   **Initial Combined Functions:**
-    ```solidity
-    function depositCollateralAndMintDsc() external {} // (3:36 - 3:39)
-    function redeemCollateralForDsc() external {} // (3:45 - 3:50) // Burn DSC to get collateral back
-    ```
-*   **Additional Core Functions:**
-    ```solidity
-    function burnDsc() external {} // (4:04 - 4:06) // To burn DSC, potentially to improve health factor
-    function liquidate() external {} // (5:01 - 5:04) // To handle undercollateralized positions
-    function getHealthFactor() external view {} // (6:09 - 6:16) // To check the health of a user's position
-    ```
-*   **Functionality Discussion & Liquidation Example:**
-    *   `depositCollateralAndMintDsc`: Allows users to deposit collateral (like WETH, WBTC) and mint DSC stablecoins against it.
-    *   `redeemCollateralForDsc`: Allows users to burn their DSC and withdraw their original collateral.
-    *   `burnDsc`: Allows users to simply burn DSC, which might be necessary to improve their collateralization ratio (Health Factor) if their collateral value drops.
-    *   `liquidate`: This is a critical function for system stability.
-        *   **Use Case/Example:** If a user deposits $100 ETH and mints $50 DSC, they are initially overcollateralized (200%). If the ETH price drops significantly, say to $40 (5:26), the position is now *undercollateralized* ($40 collateral backing $50 debt). This is dangerous for the protocol.
-        *   **Threshold:** To prevent reaching full undercollateralization, a threshold is set (e.g., 150% collateralization required). If the $100 ETH drops to, say, $74 (6:47), it falls below the $75 threshold (150% of $50 DSC).
-        *   **Liquidation Incentive:** At this point, the `liquidate` function can be called by *anyone*. A liquidator can repay the user's $50 DSC debt. In return, they receive the user's $74 worth of ETH collateral. The liquidator makes a profit ($74 ETH - $50 DSC cost = $24 profit) (7:02 - 7:29, 8:11 - 8:52). This incentivizes maintaining the system's health. The original user loses their collateral but their debt is cleared.
-    *   `getHealthFactor`: Will calculate a user's collateral value relative to their minted DSC value to determine if they are close to the liquidation threshold.
+So, in this function we want to configure a boolean return value which is going to represent if the mint/transfer was successful. Something we'll want to check is if the \_to argument being passed is address(0), in addition to assuring the amount minted is greater than zero.
 
-*   **Function Refinement (Breaking Down Combined Functions):** The speaker realizes the combined functions might be too complex and suggests breaking them down:
-    ```solidity
-    function depositCollateral() external {} // (9:18 - 9:23)
-    function redeemCollateral() external {} // (9:24 - 9:30)
-    function mintDsc() external {} // (9:32 - 9:37)
-    // The `burnDsc` function was already separate.
-    ```
-    These more granular functions handle the individual steps of depositing, withdrawing, minting, and burning.
+We'll of course want to revert with custom errors if these conditional checks fail.
 
-**7. Workflow and Next Steps (9:42 - 10:04)**
+```solidity
+contract DecentralizedStableCoin is ERC20Burnable, Ownable {
+    error DecentralizedStableCoin__MustBeMoreThanZero();
+    error DecentralizedStableCoin__BurnAmountExceedsBalance();
+    error DecentralizedStableCoin__NotZeroAddress();
 
-*   The speaker notes that often developers write tests concurrently with function stubs (or even define an Interface first).
-*   He mentions his preference for writing deploy scripts early, which helps in writing tests using the deployment setup.
-*   The video ends here, having set up the basic structure and Natspec for `DSCEngine.sol` and outlining its core functions and the critical concepts of overcollateralization and liquidation.
+    ...
 
-**Resources Mentioned:**
+    function mint(address _to, uint256 _amount) external onlyOwner returns(bool){
+        if(_to == address(0)){
+            revert DecentralizedStableCoin__NotZeroAddress();
+        }
+        if(_amount <= 0){
+            revert DecentralizedStableCoin__MustBeMoreThanZero();
+        }
+        _mint(_to, amount)
+        return true;
+    }
+}
+```
 
-*   Course GitHub Repository (for discussions): Implied reference when mentioning "use the discussions" (9:06-9:14).
+> ❗ **NOTE**
+> We don't need to override the mint function, we're just calling the \_mint function within DecentralizedStableCoin.sol.
+
+### Wrap Up
+
+Guess what? That's literally all there is to this contract, we're not going to do anything more here until we need to write some tests.
+
+Let's move on to the heart of this protocol, DSCEngine.sol, in the next lesson!
