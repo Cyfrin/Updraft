@@ -1,76 +1,85 @@
-Okay, here is a thorough and detailed summary of the video segment (00:00 - 02:18) on Price Impact calculation:
+## Understanding Price Impact Calculation
 
-**Overall Purpose:**
-The video segment aims to explain the formula used to calculate "Price Impact" within the system. It starts by defining two crucial preliminary concepts, "Same side" and "Cross over," which determine how the price impact is calculated.
+Price impact is a crucial factor in decentralized finance (DeFi), representing the effect an individual trade or position change has on the market price within a liquidity pool or trading venue. Accurately calculating this impact is essential for users to understand the true cost of their actions. The calculation method depends fundamentally on how an action affects the balance between long and short sides within the system.
 
-**1. Prerequisite Concepts:**
+To determine the price impact, we first need to understand two key states: "Same Side" and "Cross Over".
 
-*   **Same Side (0:05 - 0:47):**
-    *   **Definition:** This condition occurs when the *direction* of the imbalance (which side, long or short, is larger) remains the same *before* and *after* an action (like a swap or position change).
-    *   **Conditions:**
-        *   `same side = long < short AND next long < next short`
-        *   **OR**
-        *   `same side = long >= short AND next long >= next short`
-    *   **Context for "long" and "short":**
-        *   For **Swaps (0:20):** "long" refers to the USD value of the long tokens, and "short" refers to the USD value of the short tokens.
-        *   For **Positions (0:25):** "long" refers to the long open interest, and "short" refers to the short open interest.
-    *   **Example 1:** If initially longs are less than shorts, and after the action, the new value of longs is still less than the new value of shorts, it's "Same side".
-    *   **Example 2:** If initially longs are greater than or equal to shorts, and after the action, the new value of longs is still greater than or equal to the new value of shorts, it's "Same side".
+### Prerequisite Concepts: Same Side vs. Cross Over
 
-*   **Cross Over (0:47 - 0:50):**
-    *   **Definition:** This is simply the opposite of "Same side." It occurs when the action causes the direction of the imbalance to flip (e.g., longs were smaller than shorts, but become larger after the action, or vice-versa).
-    *   **Formula:** `cross over = not same side`
+These concepts describe whether the direction of the market imbalance (i.e., whether longs or shorts are dominant) remains consistent or flips after a user action like a swap or adjusting a position.
 
-**2. Price Impact Formula (0:51 - 2:11):**
+**1. Same Side**
 
-The calculation method for price impact differs based on whether the situation is "Same side" or "Cross over."
+The "Same Side" condition occurs when the directional imbalance *before* an action is the same as the directional imbalance *after* the action.
 
-*   **Variables Defined (0:54 - 1:00, 1:24, 2:04):**
-    *   `d0`: Initial imbalance in USD (before the action).
-    *   `d1`: Next imbalance in USD (after the action).
-    *   `e`: Exponent factor (used in the power calculation).
-    *   `f`: Impact factor (used in the "Same side" calculation). This factor's value depends on whether the imbalance increased or decreased (sign of `d0 - d1`).
-    *   `p`: Positive impact factor (used in the "Cross over" calculation).
-    *   `n`: Negative impact factor (used in the "Cross over" calculation).
+*   **Definition:** The larger side (long or short) remains the larger side after the transaction completes.
+*   **Conditions:**
+    *   The initial long value is less than the initial short value, **AND** the next long value is less than the next short value.
+    *   **OR**
+    *   The initial long value is greater than or equal to the initial short value, **AND** the next long value is greater than or equal to the next short value.
+*   **Context:**
+    *   **For Swaps:** "long" and "short" refer to the total USD value of the long and short tokens in the pool, respectively.
+    *   **For Positions:** "long" and "short" refer to the total long open interest and short open interest in USD, respectively.
 
-*   **Calculation Logic (1:01 - 1:05):** The calculation method depends on the "Same side" vs. "Cross over" condition.
+**Example:** If a pool initially has $1M in long tokens and $1.2M in short tokens (imbalance towards shorts), and after a swap, it has $1.1M in longs and $1.3M in shorts, the imbalance remains towards shorts. This is a "Same Side" scenario.
 
-*   **"Same Side" Price Impact Calculation (1:06 - 1:48):**
-    *   **Condition:** Applies when the imbalance remains on the same side (as defined previously).
-    *   **Impact Factor (`f`) Determination (1:24 - 1:27):** The specific value of `f` (positive or negative impact factor) depends on whether the *magnitude* of the imbalance increased or decreased.
-        *   If `d0 - d1 > 0` (imbalance decreased), a certain `f` is used. (1:07 - 1:12)
-        *   If `d0 - d1 < 0` (imbalance increased), a different `f` might be implied, though the formula shown uses a single `f`. (1:13 - 1:18) *Note: The video says `f` depends on positive or negative impact, implying two potential values, but writes the formula with a single `f`.*
-    *   **Formula Shown (1:30 - 1:48):**
-        ```markdown
-        same side price impact = d0 ^ e * f - d1 ^ e * f
-        ```
-        This formula calculates the difference between the initial imbalance and the next imbalance, each raised to the power of the exponent factor `e` and multiplied by the relevant impact factor `f`.
+**2. Cross Over**
 
-*   **"Cross Over" Price Impact Calculation (1:49 - 2:11):**
-    *   **Condition:** Applies when the imbalance flips sides (not "Same side").
-    *   **Impact Factor Determination:** Instead of a single factor `f`, it uses two distinct factors: `p` (positive impact factor) and `n` (negative impact factor). (2:03 - 2:10)
-    *   **Formula Shown (1:55 - 2:11):**
-        ```markdown
-        cross over price impact = d0 ^ e * p - d1 ^ e * n
-        ```
-        This formula is similar in structure to the "Same side" one, but crucially uses potentially different impact factors (`p` and `n`) for the initial (`d0`) and next (`d1`) imbalance terms. It effectively replaces the first `f` from the same-side formula with `p` and the second `f` with `n`.
+The "Cross Over" condition is the opposite of "Same Side". It occurs when an action causes the direction of the imbalance to flip.
 
-**3. Code References (2:11 - 2:14):**
+*   **Definition:** The side that was initially smaller becomes the larger side after the transaction, or vice-versa.
+*   **Formula:** `cross over = NOT same side`
 
-The video mentions that the code implementing these formulas can be found in specific utility functions, highlighting these links/names in the markdown:
+**Example:** If a pool initially has $1M longs and $1.2M shorts (imbalance towards shorts), and a large swap results in the pool having $1.5M longs and $1.3M shorts, the imbalance has flipped to favor longs. This is a "Cross Over" scenario.
+
+### Calculating Price Impact: The Formulas
+
+The specific formula used to calculate the price impact depends on whether the action resulted in a "Same Side" or "Cross Over" state change.
+
+**Variables Used:**
+
+*   `d0`: The initial absolute imbalance in USD before the action (`abs(long_value - short_value)`).
+*   `d1`: The next absolute imbalance in USD after the action (`abs(next_long_value - next_short_value)`).
+*   `e`: An exponent factor applied to the imbalance values.
+*   `f`: An impact factor used in the "Same Side" calculation. The specific value of `f` depends on whether the *magnitude* of the imbalance increased or decreased (determined by the sign of `d0 - d1`).
+*   `p`: The positive impact factor used in the "Cross Over" calculation.
+*   `n`: The negative impact factor used in the "Cross Over" calculation.
+
+**Calculation Logic:**
+
+The system first determines if the state change is "Same Side" or "Cross Over" and then applies the corresponding formula.
+
+**1. "Same Side" Price Impact Calculation**
+
+This formula applies when the imbalance remains on the same side (longs dominant vs. shorts dominant) before and after the action.
+
+*   **Condition:** `same side = true`
+*   **Impact Factor (`f`):** The value of `f` used is determined by whether the action *decreased* the imbalance (`d0 - d1 > 0`) or *increased* the imbalance (`d0 - d1 < 0`). While potentially representing different underlying parameters (positive or negative impact factors), the formula structure uses a single variable `f` whose value is context-dependent.
+*   **Formula:**
+    ```
+    same side price impact = (d0 ^ e * f) - (d1 ^ e * f)
+    ```
+    This calculates the difference between the impact contribution of the initial imbalance and the final imbalance, using the appropriate impact factor `f` based on the change.
+
+**2. "Cross Over" Price Impact Calculation**
+
+This formula applies when the action causes the imbalance to flip sides.
+
+*   **Condition:** `cross over = true` (or `same side = false`)
+*   **Impact Factors:** This calculation uses two distinct factors: `p` (positive impact factor) and `n` (negative impact factor).
+*   **Formula:**
+    ```
+    cross over price impact = (d0 ^ e * p) - (d1 ^ e * n)
+    ```
+    Here, the initial imbalance term (`d0`) is multiplied by the positive impact factor `p`, and the next imbalance term (`d1`) is multiplied by the negative impact factor `n`. This reflects the different dynamics involved when the imbalance direction flips.
+
+### Code Implementation References
+
+The logic described above is implemented within specific utility functions in the codebase. Developers looking to understand the precise implementation can refer to:
 
 *   `SwapPricingUtils.getPriceImpactUsd`
 *   `PositionPricingUtils.getPriceImpactUsd`
 *   `PricingUtils.getPriceImpactUsdForSameSideRebalance`
 *   `PricingUtils.getPriceImpactUsdForCrossoverRebalance`
 
-**4. Notes/Tips:**
-
-*   Understanding "Same side" vs. "Cross over" is fundamental to applying the correct price impact formula.
-*   The meaning of "long" and "short" depends on whether you are dealing with swaps (USD value) or positions (open interest).
-*   The impact factor `f` in the "Same side" calculation depends on whether the action increased or decreased the magnitude of the imbalance.
-*   The "Cross over" calculation uses distinct positive (`p`) and negative (`n`) impact factors.
-
-**5. Omission (2:14 - 2:18):**
-
-The presenter states that the code itself is straightforward and therefore omits a detailed explanation of the code implementation.
+By understanding the distinction between "Same Side" and "Cross Over" scenarios and applying the correct corresponding formula, the system accurately calculates the price impact of user actions, providing crucial information for traders and liquidity providers.
