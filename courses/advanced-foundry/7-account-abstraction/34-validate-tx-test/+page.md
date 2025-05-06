@@ -1,184 +1,58 @@
-## Account Abstraction Lesson 31: Validate Transaction Test
+## Validating Your zkSync Minimal AA Contract
 
-In this lesson, we are going to test our `_validateTransaction` function. Along the way, we will:
+Congratulations! We've successfully built and tested the core components of our zkSync minimal account abstraction smart contract using Foundry. The primary functions, `validateTransaction` and the owner-initiated `executeCommands` (which utilizes `executeTransaction` internally), have passed their tests within the zkSync environment, confirming they behave as expected.
 
-- write a test function to validate transactions.
-- write a helper function to create a signed transaction.
-- make adjustments for `is-system = true`.
+Specifically, our tests `testZkValidateTransaction()` and `testZkOwnerCanExecuteCommands()` within `ZkMinimalAccountTest.t.sol` have verified this crucial functionality.
 
----
+## Understanding the zkSync AA Transaction Lifecycle
 
-### Validate Transaction
+Let's revisit the `ZkMinimalAccount.sol` contract and review the fundamental flow of a zkSync Type 113 (0x71) transaction, as detailed in the code comments. This lifecycle consists of two primary phases:
 
-One of the key components to our `_validateTransaction` function is that it returns a 'magic' value if successful. This happens if there is a valid signer.
+1.  **Validation Phase:** Initiated by the zkSync API client, this phase involves calling the account's `validateTransaction` function. This step checks transaction nonces, potentially handles payment via `payForTransaction` (if implemented and called), and verifies sufficient funds for the bootloader. Our tests explicitly covered Step 3, the call to `validateTransaction`.
+2.  **Execution Phase:** Following successful validation, the node or sequencer executes the transaction by calling the account's `executeTransaction` function. Our `testZkOwnerCanExecuteCommands` test implicitly validated this step (Step 8 in the lifecycle comments) by ensuring the owner could execute commands through the account.
+
+**Important Note on Testing:** For the sake of brevity in this demonstration, we intentionally skipped writing dedicated tests for the `payForTransaction` and `executeTransactionFromOutside` functions. However, in any production-ready account abstraction contract, thoroughly testing *all* external functions, especially those involving payments like `payForTransaction`, is absolutely essential.
+
+With the core validation and execution paths tested, we have built a functional foundation for a zkSync minimal account abstraction contract.
+
+## Foundry Testing: zkSync Environment vs. Standard EVM
+
+Now, let's consider what happens when we try to run our entire test suite using the standard Foundry command: `forge test`.
+
+Running this command without specific zkSync flags reveals an important distinction. You'll observe that the test suite partially fails, specifically the `testZkValidateTransaction()` test, likely throwing an `EVMError: Revert`.
+
+Why does this happen? The standard `forge test` command executes tests within a regular Ethereum Virtual Machine (EVM) environment. However, certain zkSync account abstraction functions, like `validateTransaction`, expect to be called under specific conditions inherent to the zkSync environment. These conditions include being called by a designated address (like the bootloader address) and potentially requiring the `--is-system` flag to simulate system-level operations during testing. Without the zkSync context provided by flags like `-zksync` and environment variables simulating system calls, the test reverts because the necessary zkSync-specific conditions aren't met in the standard EVM simulation.
+
+## Handling Test Environments with Conditional Logic
+
+To address the differences between standard EVM and zkSync testing environments, the code provided in the accompanying GitHub repository (`Cyfrin/minimal-account-abstraction` or similar) includes conditional logic within the test files (e.g., `test/ZkMinimalAccountTest.t.sol`).
+
+You might see code similar to this, often within the `setUp` function:
 
 ```solidity
-address signer = ECDSA.recover(txHash, _transaction.signature);
-bool isValidSigner = signer == owner();
-if (isValidSigner) {
-    magic = ACCOUNT_VALIDATION_SUCCESS_MAGIC;
+// Example conditional logic for deployment
+if (isZkSyncChain()) { // or a similar check
+    // Deploy using zkSync specific methods/flags if needed
+    vm.prank(user);
+    minimalAccount = deployer.deploy(); // Assumes deployer handles zkSync
 } else {
-    magic = bytes4(0);
-}
-return magic;
-```
-
----
-
-Let's make a test for this and call it `testZkValidateTransaction`.
-
-```solidity
-function testZkValidateTransaction() public {
-    // Arrange
-
-    // Act
-
-    // Assert
+    // Deploy using standard methods
+    vm.prank(user);
+    minimalAccount = new ZkMinimalAccount();
 }
 ```
 
-For **Arrange** we can copy a lot of what we have from `testZkOwnerCanExecuteCommands`.
+This type of logic checks if the tests are being run within a zkSync context (e.g., using `forge test --zksync`). If so, it proceeds with zkSync-specific setup or tests. If not, it might use standard deployment methods or even skip zkSync-only tests entirely.
 
-```solidity
-// Arrange
-address dest = address(usdc);
-uint256 value = 0;
-bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, address(minimalAccount), AMOUNT);
+While you don't strictly need to implement this conditional logic yourself just to follow along with this specific part of the lesson, understanding its purpose is key. If you want your local setup to behave identically to the final repository code (allowing `forge test` to pass in *both* standard and zkSync modes by skipping incompatible tests), you can incorporate this conditional logic from the repository into your local test files.
 
-Transaction memory transaction =
-    _createUnsignedTransaction(minimalAccount.owner(), 113, dest, value, functionData);
-```
+## Streamlining Workflows with the Makefile
 
----
+To simplify the process of building, testing, and interacting with zkSync contracts using Foundry, the provided GitHub repository includes a `Makefile`. This file contains pre-configured commands that automatically include the necessary flags and settings for zkSync development.
 
-### Create Signed Transaction
+Instead of manually typing `forge test --zksync` and other commands with required flags, you can use simpler make commands like:
 
-The big difference is that now we need to create a signed transaction. We can do this with another helper function. We will need to do something similar to what we did in the `generateSignedUserOperation` from [SendPackedUserOp.s.sol](https://github.com/Cyfrin/minimal-account-abstraction/blob/main/script/SendPackedUserOp.s.sol). We will use:
+*   `make zkbuild`: Builds the contracts specifically for zkSync (likely runs `forge build --zksync`).
+*   `make zktest`: Runs the test suite within the zkSync environment (likely runs `forge test --zksync`).
 
-- `(v, r, s)`
-- `vm.sign()`
-- an anvil default key
-
-Additionally, we will need to encode hash the transaction, similar to what we did in `_validateTransaction`. For this, make sure you have `MemoryTransactionHelper` in your imports. You can place it with the `Transaction` import. It will look like this.
-
-```solidity
-import {
-  Transaction,
-  MemoryTransactionHelper,
-} from "lib/foundry-era-contracts/src/system-contracts/contracts/libraries/MemoryTransactionHelper.sol";
-```
-
-Since we will be using a default anvil key, let's go ahead and place an account with the other constant variables.
-
-```solidity
-address constant ANVIL_DEFAULT_ACCOUNT = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
-```
-
----
-
-Let's fill out our helper function now. Essentially, we will need to:
-
-1. calculate the transaction hash using `MemoryTransactionHelper.encodeHash`.
-2. sign the hash with a hardcoded private key, resulting in v, r, and s.
-3. attach the signature (r, s, v combined) to the transaction.
-4. return the signed transaction.
-
-```solidity
-function _signTransaction(Transaction memory transaction) internal view returns (Transaction memory) {
-    bytes32 unsignedTransactionHash = MemoryTransactionHelper.encodeHash(transaction);
-    uint8 v;
-    bytes32 r;
-    bytes32 s;
-    uint256 ANVIL_DEFAULT_KEY = 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
-    (v, r, s) = vm.sign(ANVIL_DEFAULT_KEY, unsignedTransactionHash);
-    Transaction memory signedTransaction = transaction;
-    signedTransaction.signature = abi.encodePacked(r, s, v);
-    return signedTransaction;
-}
-```
-
----
-
-When we deploy our minimal account, we'll need to initialize a new instance of our default anvil account. This will allow us to sign the transaction with the anvil default key. Let's do this with the other instances in our `setUp` function.
-
-```solidity
-minimalAccount.transferOwnership(ANVIL_DEFAULT_ACCOUNT);
-```
-
-Now that we have a signed transaction, we can use it in our **Arrange** back in our `testZkValidateTransaction` function. Place this at the bottom or **Arrange**.
-
-```solidity
-transaction = _signTransaction(transaction);
-```
-
-Now our test function should look like this.
-
-```solidity
-function testZkValidateTransaction() public {
-    // Arrange
-    address dest = address(usdc);
-    uint256 value = 0;
-    bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, address(minimalAccount), AMOUNT);
-    Transaction memory transaction =
-        _createUnsignedTransaction(minimalAccount.owner(), 113, dest, value, functionData);
-    transaction = _signTransaction(transaction);
-
-    // Act
-
-    // Assert
-}
-```
-
----
-
-### Prank the Bootloader
-
-We know that the caller of our validateTransaction must be the bootloader. So, we can create a vm.prank in our **Act** for this. We will of course need to import `BOOTLOADER_FORMAL_ADDRESS`.
-
-```solidity
-import { BOOTLOADER_FORMAL_ADDRESS } from "lib/foundry-era-contracts/src/system-contracts/contracts/Constants.sol";
-```
-
-We will also need to call `validateTransaction` and pass the same arguments as we did in the **Act** for `testZkOwnerCanExecuteCommands`. The difference is that we will be setting it to `bytes4 magic`, as this is what the function returns.
-
-```solidity
-// Act
-vm.prank(BOOTLOADER_FORMAL_ADDRESS);
-bytes4 magic = minimalAccount.validateTransaction(EMPTY_BYTES32, EMPTY_BYTES32, transaction);
-```
-
----
-
-### Assert
-
-We know from our `_validateTransaction` function that `magic = ACCOUNT_VALIDATION_SUCCESS_MAGIC`. Let's go ahead and import this from `IAccount`.
-
-```solidity
-import { ACCOUNT_VALIDATION_SUCCESS_MAGIC } from "lib/foundry-era-contracts/src/system-contracts/contracts/interfaces/IAccount.sol";
-```
-
-Now we can simply place this in our **Assert**.
-
-```solidity
-assertEq(magic, ACCOUNT_VALIDATION_SUCCESS_MAGIC);
-```
-
----
-
-### Test It!
-
-We need to do a couple of things before we run our test. First, let's add a vm.deal in our `setUp` to ensure that we have a balance.
-
-```solidity
-vm.deal(address(minimalAccount), AMOUNT);
-```
-
-> ❗ **IMPORTANT** We can no longer rely on `is-system = true` in our `foundry.toml`. We will have to pass `--system-mode=true` in the command line when we run forge test. Please be aware that this is likely to change again in the future.
-
-```js
-forge test --mt testZkValidateTransaction --zksync --system-mode=true
-```
-
-Our test should pass and now we know that we can validate and execute transactions.
-
-We've done a lot with this test. We now have an account abstraction contract on ZKsync. Take a moment to review and reflect. Move on to the next lesson when you are ready.
+The `Makefile` may also contain other helpful commands for deployment (`make deploy`), sending transactions (`make sendTx`), and more. Using these commands is highly recommended when working with the repository, as they ensure you are consistently using the correct environment settings for zkSync development, saving time and preventing environment-related errors.
