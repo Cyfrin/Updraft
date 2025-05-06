@@ -1,36 +1,57 @@
----
-title: Blob Transactions
----
+## Understanding zkSync Type 113 Transactions and Native Account Abstraction
 
-_Follow along with the video_
+Have you ever interacted with an application like Remix IDE on zkSync, simply signed a message, and then observed a transaction appearing in the console seemingly initiated *by* Remix itself? If you noticed this transaction marked with `"type": 113`, you might wonder how this occurred without you explicitly sending a transaction via your wallet in the traditional sense. This lesson unravels the mechanism behind these Type 113 transactions, introducing the powerful concept of native Account Abstraction on zkSync.
 
----
+The core observation in the Remix console is the transaction detail:
 
-### Introduction
+```json
+"type": 113,
+```
 
-In a default transaction, data is stored and visible on-chain permanently. Blob transactions (binary large objects), classified as transaction type 3, allow data to be stored temporarily on-chain and then deleted after a short period, ranging from 20 to 90 days.
+This specific type signifies a transaction format unique to zkSync Era, differing from standard Ethereum transaction types like Legacy (Type 0) or EIP-1559 (Type 2). The key to understanding Type 113 lies in **Account Abstraction (AA)**.
 
-### EIP4844
+### What is Account Abstraction?
 
-These transactions originate from EIP4844, also known as "Proto-Danksharding", introduced in the Dencun upgrade in March 2024. The purpose of this transaction type is to address Ethereum's high transaction costs.
+Traditionally on Ethereum, accounts fall into two categories:
 
-Roll-ups help scale Ethereum by executing multiple transactions on their own chains, compressing them into batches, and submitting these batches back to Ethereum. Prior to the upgrade, all compressed transaction data had to be permanently stored on Ethereum nodes, which was inefficient and costly. With EIP4844, the data can be submitted **temporarily** for validation, avoiding permanent storage.
+1.  **Externally Owned Accounts (EOAs):** These are controlled by private keys (like the accounts you manage in MetaMask). Only EOAs can initiate transactions and pay for gas directly.
+2.  **Smart Contract Accounts:** These are pieces of code deployed to the blockchain. They contain logic but cannot initiate transactions independently; they can only react to transactions sent *to* them.
 
-### Blobs and Transactions
+Account Abstraction aims to bridge this gap, enabling **smart contracts to act as user accounts**. It allows accounts defined by code logic, rather than just private keys, to initiate transactions and possess more sophisticated features.
 
-Blobs are temporary data attached to a transaction, which is then validated and deleted. For example, ZKsync can send its batch of compressed transactions to Ethereum using blobs.
+### zkSync's Native Account Abstraction
 
-You can check [this transaction](https://etherscan.io/tx/0x291351476ef62e83ed33fb385f998232b8577bd1af60eb3463ce5a9e77fc8666) on Etherscan, which contains two [Blobs](https://etherscan.io/tx/0x291351476ef62e83ed33fb385f998232b8577bd1af60eb3463ce5a9e77fc8666#blobs). Clicking on one of them will reveal its massive data, which was not stored on-chain.
+A crucial distinction is that **zkSync Era implements Account Abstraction *natively***. This isn't an add-on layer; it's fundamental to how the zkSync protocol operates.
 
-### Validation
+The most significant implication of native AA is that **on zkSync Era, *all* accounts are smart contract accounts**. When you use a standard Ethereum address (like one from your MetaMask) on zkSync, it functions under the hood as a smart contract account.
 
-Validating these blobs involves using the [`BLOBHASH`](https://www.evm.codes/#49?fork=cancun) opcode and a [point evaluation precompile](https://www.evm.codes/precompiled#0x0a?fork=cancun), which execute cryptographic processes to verify the correctness of the blob without requiring on-chain storage.
+These zkSync smart contract accounts possess enhanced capabilities compared to traditional EOAs:
 
-1. A transaction is submitted with a blob and cryptographic proof data
-2. The contract on-chain does not directly access the blob. Instead, it uses the `BLOBHASH` opcode to generate a hash of the blob
-3. The _blob hash_ and the _proof data_, is passed to the **point evaluation opcode** to verify the transaction batch
+*   They can **initiate transactions**.
+*   They can contain **custom logic** for transaction validation, authorization rules, recovery mechanisms, and more.
 
-### Resources
+### Connecting Native AA to the Remix Scenario (Type 113)
 
-- [What is EIP-4844?](https://www.cyfrin.io/blog/what-is-eip-4844-proto-danksharding-and-blob-transactions)
-- [send_blob](https://github.com/PatrickAlphaC/send_blob) GitHub repository
+Now, let's connect this back to the transaction observed in Remix:
+
+1.  **Your Account is a Smart Contract:** Because you're interacting with zkSync, your standard Ethereum address *is* treated as a smart contract account by the network, thanks to native AA.
+2.  **Signing an EIP-712 Message:** When prompted by Remix, you didn't sign a raw transaction. Instead, you signed a structured message following the **EIP-712 standard**. This standard provides a user-friendly way to sign data, making it clear *what* action or data you are authorizing. In this context, the signed EIP-712 message represented your intent and authorization for the underlying transaction.
+3.  **Smart Contract Validation Logic:** The smart contract account corresponding to your address on zkSync possesses built-in logic (inherent due to native AA) capable of verifying EIP-712 signatures.
+4.  **Type 113 Transaction Execution:** Remix (or the infrastructure interacting with it) took the details of the intended action (e.g., calling a contract function) and bundled it together with your EIP-712 signature into a `Type 113` transaction. This transaction was then submitted to the zkSync network.
+5.  **Verification and Execution:** When the zkSync network processed the Type 113 transaction, it triggered the logic within *your* smart contract account. This logic verified the embedded EIP-712 signature. Upon successful verification, your account authorized the execution of the transaction's payload (the intended action).
+
+This entire process **abstracts** the need for you to manually handle the low-level transaction signing associated with EOAs. You simply sign a clear message (EIP-712), and the native Account Abstraction mechanism, utilising the Type 113 transaction format, handles the validation and execution via your smart contract account's inherent capabilities.
+
+### Benefits of Account Abstraction
+
+This native AA approach unlocks numerous benefits and potential customizations for user accounts on zkSync, including:
+
+*   **Flexible Signature Schemes:** Accounts aren't restricted to the ECDSA signatures used by EOAs.
+*   **Native Multi-sig:** Easily implement setups requiring multiple signatures for transactions.
+*   **Spending Controls:** Define custom rules like daily limits or recipient whitelists directly in the account logic.
+*   **Gas Fee Flexibility:** Enable "paymasters" – third parties who can sponsor gas fees for users.
+*   **Enhanced Security & Recovery:** Implement social recovery or other mechanisms beyond simple seed phrases.
+
+In summary, Type 113 transactions are a specific feature of zkSync enabled by its native Account Abstraction. This system treats every address as a smart contract account, allowing users to authorize transactions by signing user-friendly EIP-712 messages. The network then uses the Type 113 format to package this signature and the intended action, leveraging the account's own logic to validate and execute the transaction, simplifying the user experience and enabling powerful account features.
+
+*(Note: The intricacies of Account Abstraction are vast. This lesson provides an introduction specifically related to the Type 113 transaction observed; further details on AA will likely be explored elsewhere.)*
