@@ -1,57 +1,131 @@
----
-title: Merkle Proofs
----
+## Implementing a Gas-Efficient ERC20 Merkle Airdrop Contract
 
-_Follow along with the video_
+This lesson details the process of creating a Solidity smart contract, `MerkleAirdrop.sol`, designed for distributing ERC20 tokens efficiently to a large number of recipients. This method leverages Merkle proofs to significantly reduce the gas costs associated with traditional airdrop approaches, where each recipient might require an individual transaction or storage slot. We assume a foundational understanding of Merkle trees and how proofs are generated.
 
----
+The core idea is to store only a single `bytes32` value, the Merkle root, on-chain. This root cryptographically represents the entire list of eligible addresses and their corresponding claimable token amounts. Users then provide proof off-chain to demonstrate their inclusion in the airdrop list, allowing them to claim their tokens via the smart contract.
 
-### Introduction
+**Contract Setup and Dependencies**
 
-Merkle Trees, Merkle Proofs, and Root Hashes are very important concepts in the realm of IT and blockchain technology. Invented by Ralph Merkle in 1979, a Merkle tree is a hierarchical structure where its base consists of **leaf nodes** representing data that has been hashed. The top of the tree is the **root hash**, created by hashing together pairs of adjacent nodes. This process continues up the tree, resulting in a single **root hash** that will represents all the data in the tree.
-
-::image{src='/foundry-merkle-airdrop/03-merkle-proof/merkle-tree.png' style='width: 100%; height: auto;'}
-
-### Merkle Proofs
-
-Merkle proofs will verify that a specific piece of data is part of a Merkle Tree and consist of the hashes of **sibling nodes** present at each level of the tree.
-
-For example, to prove that `Hash B` is part of the Merkle Tree, you would provide _Hash A_ (sibling 1) at the first level, and the _combined hash of Hash C and Hash D_ (sibling 2) at the second level as proofs.
-
-This allows the Merkle Tree **verifier** to reconstruct a root hash and compare it to the expected root hash. If they match, the original data is confirmed to be part of the Merkle tree.
-
-> 👀❗**IMPORTANT**:br
-> Secure hashing functions, such as `keccak256`, are designed to prevent hash collisions
-
-### Applications
-
-Merkle trees are used in **rollups** to verify state changes and transaction order and in **airdropping**, enabling specific addresses to claim tokens by being included as **leaf nodes** in the tree. As discussed in lesson 1, using Merkle proofs for airdrops is safer and more efficient than relying on a simple array of addresses to prove that a piece of data (e.g. an address) is part of a group.
-
-### OpenZeppelin
-
-OpenZeppelin provides a library for [MerkleProofs](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/dbb6104ce834628e473d2173bbc9d47f81a9eec3/contracts/utils/cryptography/MerkleProof.sol), and we will use it in our smart contract. Its [`verify`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/dbb6104ce834628e473d2173bbc9d47f81a9eec3/contracts/utils/cryptography/MerkleProof.sol#L32) function takes the proof, the Merkle root, and the leaf to be verified as inputs.
+We begin by defining the Solidity version, license, and importing necessary components from the OpenZeppelin Contracts library.
 
 ```solidity
-function verify(bytes32[] memory proof, bytes32 root, bytes32 leaf) internal pure returns (bool) {
-    return processProof(proof, leaf) == root;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24; // Ensure compatibility with OZ 0.8.20+
+
+import { IERC20, SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+
+contract MerkleAirdrop {
+    // Contract logic will go here
 }
 ```
 
-> 🗒️ **NOTE**:br
-> The **root** is typically stored _on-chain_, while the **proof** is generated _off-chain_.
+*   `IERC20`: An interface standard for interacting with any ERC20 token contract.
+*   `SafeERC20`: A wrapper library providing safer versions of ERC20 functions (like `safeTransfer`) that revert on failure, preventing potential issues like tokens being sent to non-compatible addresses.
+*   `MerkleProof`: A library providing helper functions, specifically `verify`, to validate Merkle proofs on-chain.
 
-The [`processProof`](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/dbb6104ce834628e473d2173bbc9d47f81a9eec3/contracts/utils/cryptography/MerkleProof.sol#L49) function iterates through the proof array, updating the computed hash by hashing it with the next proof element. This process ultimately returns a computed hash, which is compared to the expected root to verify the leaf's presence in the Merkle Tree.
+**State Variables: Storing the Essentials**
+
+The contract needs to store two critical pieces of information, set only once during deployment: the Merkle root representing the allowlist and the address of the ERC20 token being airdropped.
 
 ```solidity
-function processProof(bytes32[] memory proof, bytes32 leaf) internal pure returns (bytes32) {
-    bytes32 computedHash = leaf;
-    for (uint256 i = 0; i < proof.length; i++) {
-        computedHash = _hashPair(computedHash, proof[i]);
+contract MerkleAirdrop {
+    using SafeERC20 for IERC20; // Attach SafeERC20 functions to IERC20 type
+
+    bytes32 public immutable i_merkleRoot;
+    IERC20 public immutable i_airdropToken;
+
+    // ... rest of the contract
+}
+```
+
+*   `using SafeERC20 for IERC20;`: This directive allows us to call `SafeERC20` functions directly on variables of type `IERC20` (e.g., `i_airdropToken.safeTransfer(...)`).
+*   `i_merkleRoot`: A `bytes32` value storing the root hash of the off-chain generated Merkle tree.
+*   `i_airdropToken`: An `IERC20` variable holding the contract address of the token to be distributed.
+*   `immutable`: This keyword is crucial for gas optimization. Immutable variables are set in the constructor and their values are embedded directly into the contract's deployed bytecode, making reads much cheaper than reading from storage slots.
+*   `public`: Makes these variables easily readable via automatically generated getter functions. While `private` could be used, `public` allows easy off-chain verification of the contract's configuration.
+*   `i_` Prefix: A common convention indicating immutable or constant variables.
+
+**Events and Custom Errors**
+
+To provide transparency and efficient error handling, we define an event and a custom error.
+
+```solidity
+contract MerkleAirdrop {
+    // ... state variables ...
+
+    event Claim(address indexed account, uint256 amount);
+
+    error MerkleAirdrop__InvalidProof();
+
+    // ... rest of the contract
+}
+```
+
+*   `Claim` Event: Emitted whenever a user successfully claims their tokens. Indexing the `account` allows for efficient filtering and searching of these events off-chain.
+*   `MerkleAirdrop__InvalidProof` Error: A custom error type. Using custom errors is more gas-efficient than reverting with string messages, saving gas during failed transactions.
+
+**Constructor: Initializing Immutable State**
+
+The constructor is executed only once when the contract is deployed. It initializes the immutable state variables.
+
+```solidity
+contract MerkleAirdrop {
+    // ... state variables, event, error ...
+
+    constructor(bytes32 merkleRoot, IERC20 airdropToken) {
+        i_merkleRoot = merkleRoot;
+        i_airdropToken = airdropToken;
     }
-    return computedHash;
+
+    // ... rest of the contract
 }
 ```
 
-### Conclusion
+*   Parameters: Takes the pre-calculated `merkleRoot` and the `airdropToken` contract address as input during deployment.
+*   Logic: Assigns the provided values to the corresponding `immutable` state variables.
 
-Merkle proofs will help verifying that a specific piece of data is part of the Merkle tree. By providing hashes of sibling nodes at each level of the tree, a verifier can reconstruct the root hash and confirm data integrity.
+**The `claim` Function: Verifying and Distributing Tokens**
+
+This is the core function users interact with to receive their airdropped tokens. It takes the user's details and their Merkle proof, verifies the proof against the stored root, and if valid, transfers the tokens.
+
+```solidity
+contract MerkleAirdrop {
+    // ... state variables, event, error, constructor ...
+
+    function claim(address account, uint256 amount, bytes32[] calldata merkleProof) external {
+        // 1. Calculate the leaf node hash
+        bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(account, amount))));
+
+        // 2. Verify the Merkle Proof against the stored root
+        if (!MerkleProof.verify(merkleProof, i_merkleRoot, leaf)) {
+            revert MerkleAirdrop__InvalidProof();
+        }
+
+        // 3. Emit event to log the successful claim
+        emit Claim(account, amount);
+
+        // 4. Transfer the tokens safely
+        i_airdropToken.safeTransfer(account, amount);
+    }
+}
+
+```
+
+*   **Parameters:**
+    *   `account`: The address eligible for the airdrop. This allows claiming *for* an address, not necessarily requiring `msg.sender` to be the recipient.
+    *   `amount`: The specific amount the `account` is eligible to claim, according to the off-chain Merkle tree data.
+    *   `merkleProof`: An array of `bytes32` hashes provided by the user. These are the sibling nodes required to reconstruct the path from the user's leaf node up to the Merkle root. Using `calldata` for this parameter avoids copying the array into memory, saving gas.
+*   **Visibility:** `external`, as this function is intended to be called by users outside the contract.
+*   **Logic Breakdown:**
+    1.  **Calculate Leaf Hash:** The contract recalculates the leaf hash corresponding to the claimant's data (`account` and `amount`). It's critical to use the *exact* same hashing mechanism used off-chain to generate the tree. Standard practice involves double hashing:
+        *   `abi.encode(account, amount)`: Packs the account and amount data into a `bytes` string.
+        *   `keccak256(...)`: The first hash of the encoded data.
+        *   `bytes.concat(...)`: Concatenates the result of the first hash (needed before the second hash).
+        *   `keccak256(...)`: The second hash. This double hashing (`keccak256(bytes.concat(keccak256(abi.encode(...))))`) is a defense-in-depth measure against potential second pre-image attacks, even though `keccak256` is generally resistant.
+    2.  **Verify Merkle Proof:** The `MerkleProof.verify` function from the OpenZeppelin library is used. It takes the user-provided `merkleProof`, the contract's stored `i_merkleRoot`, and the freshly calculated `leaf` hash. It performs the cryptographic verification, hashing pairs of nodes up the tree. If the calculated root matches `i_merkleRoot`, it returns `true`. Otherwise, it returns `false`.
+    3.  **Revert on Invalid Proof:** If `MerkleProof.verify` returns `false`, the proof is invalid. The transaction reverts with the custom `MerkleAirdrop__InvalidProof` error.
+    4.  **Emit Event:** If the proof is valid, the `Claim` event is emitted *before* the token transfer. This follows good practice (often related to the Checks-Effects-Interactions pattern) and ensures the claim attempt is logged even if the subsequent transfer somehow fails unexpectedly (though `safeTransfer` mitigates many transfer risks).
+    5.  **Transfer Tokens:** Finally, `i_airdropToken.safeTransfer(account, amount)` is called. This uses the `SafeERC20` library's wrapper function to securely transfer the specified `amount` of the `i_airdropToken` to the recipient `account`. `safeTransfer` includes checks to ensure the transfer is successful and reverts if the recipient contract cannot receive tokens or if the token contract indicates a failure, preventing tokens from being lost or locked.
+
+This `MerkleAirdrop.sol` contract provides a robust and gas-efficient mechanism for distributing ERC20 tokens based on an off-chain generated allowlist, secured by Merkle proofs and enhanced with safety features from OpenZeppelin libraries.
