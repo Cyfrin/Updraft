@@ -1,191 +1,46 @@
-## Account Abstraction Lesson 19: IAccount
+## Understanding zkSync Era System Contracts
 
-Now that we've got our functions, let's take a look at them to understand what they do.
+Welcome to this lesson on System Contracts in zkSync Era. If you're coming from an Ethereum background, you'll find that zkSync Era handles some core protocol functionalities quite differently. A key part of this difference lies in the concept of "System Contracts." Let's dive into what they are and how they impact development.
 
-> ❗ **NOTE** From this point, we will be updating `Transaction calldata _transaction` to `Transaction memory _transaction` when it is passed into our function as a parameter.
+### What are System Contracts?
 
-### Validate Transaction
+In zkSync Era, System Contracts are special smart contracts deployed by default at specific, reserved addresses within the network. Unlike standard smart contracts deployed by users, these contracts form part of the core zkSync protocol itself.
 
----
+This represents a fundamental architectural shift compared to Ethereum. On Ethereum, functionalities like managing nonces or the logic for creating new contracts are typically embedded directly within the node client software (like Geth or Erigon). In zkSync Era, these responsibilities are delegated to on-chain System Contracts. These contracts govern crucial operations, making them essential to understand for anyone building on zkSync.
 
-```solidity
-function validateTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction memory _transaction)
-    external
-    payable
-    returns (bytes4 magic)
-{}
-```
+### Transaction Phases and Nonce Management
 
----
+To grasp how System Contracts function, it's helpful to know that zkSync Era processes transactions involving account abstraction in two main phases:
 
-You may have noticed that it is similar to the validateUserOp function in our MinimalAccount.sol that we built for Ethereum. On Ethereum, there are user operations, but ZKsync just has transactions. Just like we had a `PackedUserOp` struct before, now we have a `Transaction` struct. This can be found in `MemoryTransactionHelper.sol` For your convenience, I've added it below. Click to open it and read through it.
+1.  **Phase 1: Validation:** This phase checks the basic validity of a transaction *before* execution. Key checks include verifying signatures and ensuring the nonce is correct.
+2.  **Phase 2: Execution:** If validation passes, this phase runs the actual transaction logic.
 
----
+Nonce management is a prime example of a System Contract in action. On Ethereum, the node client typically checks if a transaction's nonce is valid (i.e., the next sequential number) for the sending account.
 
-<details>
+In zkSync Era, this check happens during **Phase 1 (Validation)**, but it's handled differently. The zkSync node component responsible for processing incoming transactions queries a specific System Contract called the `NonceHolder`. This contract (`NonceHolder.sol`) is deployed by default and contains the logic and storage required to manage nonces for all accounts, ensuring that the combination of sender address and nonce is unique for every transaction.
 
-**<summary><span style="color:red">MemoryTransactionHelper.sol</span></summary>**
+### Contract Deployment: A Major Difference
 
-```solidity
-/// @notice Structure used to represent a ZKsync transaction.
-struct Transaction {
-    // The type of the transaction.
-    uint256 txType;
-    // The caller.
-    uint256 from;
-    // The callee.
-    uint256 to;
-    // The gasLimit to pass with the transaction.
-    // It has the same meaning as Ethereum's gasLimit.
-    uint256 gasLimit;
-    // The maximum amount of gas the user is willing to pay for a byte of pubdata.
-    uint256 gasPerPubdataByteLimit;
-    // The maximum fee per gas that the user is willing to pay.
-    // It is akin to EIP1559's maxFeePerGas.
-    uint256 maxFeePerGas;
-    // The maximum priority fee per gas that the user is willing to pay.
-    // It is akin to EIP1559's maxPriorityFeePerGas.
-    uint256 maxPriorityFeePerGas;
-    // The transaction's paymaster. If there is no paymaster, it is equal to 0.
-    uint256 paymaster;
-    // The nonce of the transaction.
-    uint256 nonce;
-    // The value to pass with the transaction.
-    uint256 value;
-    // In the future, we might want to add some
-    // new fields to the struct. The `txData` struct
-    // is to be passed to account and any changes to its structure
-    // would mean a breaking change to these accounts. In order to prevent this,
-    // we should keep some fields as "reserved".
-    // It is also recommended that their length is fixed, since
-    // it would allow easier proof integration (in case we will need
-    // some special circuit for preprocessing transactions).
-    uint256[4] reserved;
-    // The transaction's calldata.
-    bytes data;
-    // The signature of the transaction.
-    bytes signature;
-    // The properly formatted hashes of bytecodes that must be published on L1
-    // with the inclusion of this transaction. Note, that a bytecode has been published
-    // before, the user won't pay fees for its republishing.
-    bytes32[] factoryDeps;
-    // The input to the paymaster.
-    bytes paymasterInput;
-    // Reserved dynamic type for the future use-case. Using it should be avoided,
-    // But it is still here, just in case we want to enable some additional functionality.
-    bytes reservedDynamic;
-}
-```
+Contract deployment is perhaps the area where the difference between Ethereum and zkSync Era is most apparent, directly impacting developer workflows.
 
-</details>
+**On Ethereum:** Contracts are deployed by sending a transaction *to the zero address* (or more accurately, with no recipient specified). The transaction's data field contains the compiled bytecode of the contract to be deployed. Ethereum nodes recognize this special transaction format and execute the contract creation logic built into the client software.
 
+**On zkSync Era:** Contract deployment is an explicit interaction with a System Contract. There's a dedicated contract called the `ContractDeployer`, located at a reserved address (e.g., `0x000...008006`). To deploy a new smart contract on zkSync Era, you don't send a transaction to the null address; instead, you **call specific functions** on the `ContractDeployer` System Contract. These functions include `create`, `create2`, `createAccount`, and `create2Account`. This single contract governs the deployment of *all other* smart contracts on the network.
 
-When we send an Account Abstraction transaction through ZKsync, the `Transaction` struct will essentially be populated. This will be our focus for now. The following parameters we won't worry about, for now. But here is the gist of what they do.
+### Implications for Developer Tooling (e.g., Foundry)
 
-- `_txHash` = The hash of the transaction to be used in the explorer
-- `_suggestedSignedHash` = The hash of the transaction is signed by EOAs
+This difference in deployment mechanisms has direct consequences for standard Ethereum development tools. Tools like Foundry, specifically the `forge create` command, are built around the Ethereum deployment model (sending bytecode to the null address).
 
-For now, let's consider `returns (bytes4 magic)` as a bool. For example, if we wanted it to return true we could just add the following into our function.
+Therefore, running a standard `forge create ...` command aimed at a zkSync Era network will typically fail out-of-the-box. It's attempting an operation (null address deployment) that isn't the standard way contracts are created on zkSync.
 
----
+To deploy contracts using Foundry on zkSync Era, you often need to use specific flags provided by zkSync-aware tooling forks or plugins (like `foundry-zksync`). For example, you might use a command like:
 
-```solidity
-returns (bytes4 magic)
-{
-    return IAccount.validateTransaction.selector;
-}
-```
+`forge create --zksync --legacy YourContract ...`
 
----
+In this context, the `--zksync` flag signals the intent to deploy to zkSync, and the `--legacy` flag (perhaps counterintuitively) often instructs the tool to *use the zkSync deployment mechanism* – specifically, to interact with the `ContractDeployer` System Contract (likely calling its `create` function) instead of attempting the Ethereum-style null-address deployment. Always consult the documentation for your specific zkSync tooling version for the correct flags.
 
-### Execute Transaction
+### Potential Benefits of the System Contract Approach
 
-```solidity
-function executeTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction memory _transaction)
-    external
-    payable
-{}
-```
+While different, the System Contract approach isn't without potential advantages. Handling core operations via explicit contract calls can sometimes be seen as more transparent and straightforward than implicit, client-level logic. For instance, deploying a contract involves a clear transaction targeting the `ContractDeployer` and calling a function like `create`, which is easily observable on-chain.
 
----
-
-I know what you're thinking. "This is similar to the `execute` function from `MinimalAccount`." And it is. Quite similar except no `EntryPoint`.
-
----
-
-```solidity
-function executeTransactionFromOutside(Transaction memory _transaction) external payable
-{}
-```
-
----
-
-Essentially, this would be called if someone else wanted to execute a transaction. It will need to be validated.
-
-1. You sign a transaction.
-2. You send the signed transaction to a friend.
-3. Friend can send it by calling `executeTransactionFromOutside`.
-
----
-
-### Pay For Transaction and Prepare For Paymaster
-
-The `payForTransaction` is similar to `_payPreFund`. This is where we state who will be paying for the transactions.
-
----
-
-```solidity
-function payForTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction memory _transaction)
-        external
-        payable
-{}
-```
-
-`prepareForPaymaster` will be called before `payForTransaction` if you have a paymaster, another person or entity who will be paying for the transactions.
-
-This lesson gave us a gist of what our IAccount interface will do. Take a moment to review and reflect. Move on to the next lesson when you are ready.
-
----
-
-### Questions for Review
-
----
-
-<summary>1. How is the validateTransaction function in ZKsync similar to the validateUserOp function in Ethereum?</summary>
-
----
-
-<details>
-
-**<summary><span style="color:red">Click for Answers</span></summary>**
-
-    Both functions are used to validate transactions or user operations. In ZKsync, the Transaction struct is used instead of the PackedUserOp struct in Ethereum.
-
-</details>
-
-
-<summary>2.  What is the role of the executeTransactionFromOutside function?</summary>
-
----
-
-<details>
-
-**<summary><span style="color:red">Click for Answers</span></summary>**
-
-    This function allows someone else to execute a transaction that has been signed by the original sender.
-
-</details>
-
-
-<summary>3. When is the prepareForPaymaster function called?</summary>
-
----
-
-<details>
-
-**<summary><span style="color:red">Click for Answers</span></summary>**
-
-    It is called before the payForTransaction function if there is a paymaster involved. A paymaster is another person or entity who will be paying for the transactions.
-
-</details>
-
+Understanding System Contracts like `NonceHolder` and `ContractDeployer` is crucial for effective development and debugging on zkSync Era. They represent a core part of the protocol's architecture and influence how you interact with the network and use familiar development tools. For a comprehensive list and details on all System Contracts, refer to the official zkSync Era documentation.
