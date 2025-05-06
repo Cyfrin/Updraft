@@ -1,152 +1,86 @@
-## Account Abstraction Lesson 18: ZKsync Setup
+## Understanding Minimal Account Abstraction Implementations
 
-Welcome to the beginning of our journey with **account abstraction** on **ZKsync**. One of the main differences that you'll immediately notice is that we won't need to worry about alt-mempools, as ZKsync has native account abstraction. Additionally, there isn't an EntryPoint.sol. Transactions go directly to your contract. Here is a description:
+Welcome to this code overview where we'll explore minimal implementations of Account Abstraction (AA). Our goal is to walk through the process of building these foundational smart contract accounts, setting the stage for more complex functionalities.
 
----
+## Ethereum vs. zkSync: Two Paths to Account Abstraction
 
-**ZKsync Account Flow**
+This project demonstrates two distinct approaches to building Account Abstraction accounts:
 
-::image{src='/foundry-account-abstraction/18-zksync-setup/zksync-account-flow.png' style='width: 100%; height: auto;'}
----
+1.  **Ethereum (ERC-4337 Style):** This implementation follows the principles outlined in ERC-4337, making it suitable for Ethereum and other EVM-compatible chains adopting this standard.
+2.  **zkSync Native:** This implementation leverages zkSync's built-in, protocol-level Account Abstraction features.
 
-### Overview of ZK System Contracts
+We examine both because their underlying mechanisms and transaction flows differ significantly. Understanding these differences is crucial for developers working across various EVM environments.
 
-To get started, we are going to install Cyfrin Foundry Era Contracts. This is a mirror of the zksync system contracts. We will be using them for the beginning of our learning journey.
+## The Ethereum ERC-4337 Approach
 
-> ❗ **IMPORTANT** Once the era-contracts GitHub repo releases a library edition, we will recommend people to use that instead.
+When a user initiates a transaction using an ERC-4337 style account, the process deviates from standard Ethereum transactions.
 
-```js
-forge install Cyfrin/foundry-era-contracts@v0.0.3 --no-commit
-```
+1.  **UserOperation and the Alt-Mempool:** Instead of sending a traditional transaction to the main mempool, the user signs a data package called a `UserOperation` (UserOp). This UserOp is sent to a separate, alternative mempool (alt-mempool).
+2.  **Bundlers:** Specialized nodes, known as "Bundlers," monitor the alt-mempool. They collect multiple UserOps, bundle them together, and submit them as a single, standard Ethereum transaction to a global singleton contract called the `EntryPoint.sol`.
+3.  **EntryPoint Execution:** The `EntryPoint` contract acts as the central orchestrator. It verifies the bundled UserOps (including signatures and gas payments) and then makes calls to the respective target smart contract accounts (like your `MinimalAccount.sol`) to execute the actions defined within each UserOp. The smart contract account then interacts with the target Dapp or performs the desired on-chain operation. Optional components like Paymasters (for gas sponsorship) and Signature Aggregators can integrate with this flow via the EntryPoint.
 
-Go ahead and open `IAccount.sol` and `DefaultAccount.sol`. Be sure that you are in **_foundry-era-contracts_** and not **_account-abstraction_**.
+## zkSync's Native Account Abstraction
 
----
+zkSync implements Account Abstraction directly at the protocol layer, leading to a more streamlined flow compared to ERC-4337.
 
-### Default Accounts
+1.  **No Alt-Mempool or Bundlers:** Because AA is native, there's no requirement for a separate alt-mempool or the specific Bundler infrastructure seen in ERC-4337.
+2.  **Special Transaction Type (TxType 113):** AA transactions on zkSync are submitted through the standard transaction pool but must be designated as a specific type: `EIP712_TX_TYPE` (represented numerically as `113` or `0x71` in hexadecimal).
+3.  **Direct Protocol Handling:** The zkSync protocol itself recognizes these `TxType 113` transactions. It natively handles the validation (checking signatures, nonces, paying fees) and execution logic defined within the smart contract account. Crucially, the `from` address of such a transaction *is the address of the smart contract account itself*. The account directly initiates the on-chain interaction with the target Dapp (e.g., `Dapp.sol`). Optional Paymasters and Signature Aggregators interact directly with the account contract as part of its validation logic.
 
-In Ethereum, we have two types of wallets.
+## Code Repository and Structure
 
-- **EOA** like Metamask
-- **Smart Contract** like our account contract that we built
+You can find the complete code for these minimal implementations on GitHub:
 
-On the other hand, in ZKsync EOAs are smart contracts. Thus, all smart contract accounts in zk are setup as default accounts. Let's take a look.
+`github.com/Cyfrin/minimal-account-abstraction`
 
-1. Grab your wallet address from Metamask etc...
-2. [Click here to go to ZKsync Era Block Explorer.](https://sepolia.explorer.zksync.io/)
-3. Paste your address into the search bar
-4. Follow along with the video from 4:00
+The core smart contracts reside within the `src` directory, organized by chain type:
 
-**Should look something like this.**
+*   `src/ethereum/MinimalAccount.sol`: Contains the AA implementation for the Ethereum/ERC-4337 style.
+*   `src/zkSync/ZkMinimalAccount.sol`: Contains the AA implementation leveraging zkSync's native features.
 
----
+Both `MinimalAccount.sol` and `ZkMinimalAccount.sol` are intentionally kept **minimal**. They include only the essential functions required for Account Abstraction, such as validation and execution logic, deliberately omitting complex, application-specific features.
 
-::image{src='/foundry-account-abstraction/18-zksync-setup/zk-era-explorer.png' style='width: 100%; height: auto;'}
----
+## Extensibility: Building on the Minimal Base
 
-### IAccount Interface
+This minimalist design serves as a robust foundation. Developers can readily extend these base contracts to incorporate sophisticated features by adding custom logic within specific functions (primarily validation and execution). This allows for the implementation of:
 
-In IAccount we can see the interface that all wallets/EOAs follow.
+*   **Paymasters:** Enabling gas sponsorship or payment in ERC-20 tokens.
+*   **Signature Aggregators:** Facilitating multi-signature schemes.
+*   **Spending Limits:** Enforcing rules on transaction values or frequencies.
+*   **Session Keys:** Granting temporary, scoped permissions (e.g., linking to a Web2 login like Google for a limited time).
+*   **Custom Multi-Sig:** Designing unique multi-signature rules beyond simple M-of-N schemes.
 
-- `validateTransaction`
-- `executeTransaction`
-- `executeTransactionFromOutside`
-- `prepareForPaymaster`
+## Illustrating the Differences: Testnet Examples
 
-Take a moment to look over the contract to become more familiar with what it does. Don't worry if you don't completely understand everything, as we will be learning it together.
+The repository's README file includes links to live contract examples deployed on testnets, which clearly demonstrate the distinct behaviors.
 
----
+**zkSync Example (Sepolia Testnet):**
 
-### ZK Minimal Account
+*   **Contract:** `ZkMinimalAccount`
+*   **Action:** An `approve` call on a USDC token contract.
+*   **Key Observation:** Examining the transaction on a block explorer reveals that the **`from` address is the smart contract account's address** (e.g., `0xCB38...`). This directly showcases zkSync's native AA, where the smart contract account itself is the originator of the on-chain transaction.
 
-Go into zksync folder in your src. Create a new file and call it `ZkMinimalAccount.sol`. First, we need to:
+**Ethereum Example (Arbitrum Sepolia Testnet):**
 
-- import `IAccount.sol`
-- import `Transaction` from `MemoryTransactionHelper.sol`
-- set up our contract to inherit `IAccount`
-- Copy and paste functions from `IAccount` into our contract
+*   **Contract:** `MinimalAccount` (interacting via the EntryPoint)
+*   **Action:** An `approve` call on a USDC token contract.
+*   **Key Observation:** In this case, the **`from` address is an Externally Owned Account (EOA)** (e.g., `0x9EA9...`). This EOA belongs to the **Bundler** that submitted the UserOperation to the `EntryPoint` contract. The smart contract account's address does *not* appear as the transaction originator (`from` field) on the block explorer.
+*   **Internal Execution:** While the Bundler initiates the transaction, the execution logic occurs *within* the context of the `EntryPoint` and the `MinimalAccount`. During the internal execution phase where the USDC `approve` happens, the effective `msg.sender` *is* the `MinimalAccount` smart contract address, ensuring the action is performed by the intended account.
 
----
+Understanding this difference in the `from` address is fundamental to distinguishing between native AA (like zkSync's) and standard-based AA (like ERC-4337).
 
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity 0.8.24;
+## Empowering Developers with Custom Logic
 
-import {IAccount} from "lib/foundry-era-contracts/src/system-contracts/contracts/interfaces/IAccount.sol";
-import {Transaction} from "lib/foundry-era-contracts/src/system-contracts/contracts/libraries/MemoryTransactionHelper.sol";
+Grasping these AA patterns empowers developers to move beyond standard EOA limitations and craft highly customized user experiences and security models. You can build wallets with unique rules, such as:
 
-contract ZkMinimalAccount is IAccount {
-    function validateTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction calldata _transaction)
-        external
-        payable
-        returns (bytes4 magic)
-    {}
+*   Session keys that grant specific Dapps permission to act on your behalf for a limited duration.
+*   Complex multi-signature wallets requiring approvals from multiple friends *plus* a hardware key or a specific passcode for high-value transactions.
 
-    function executeTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction calldata _transaction)
-        external
-        payable
-    {}
+## What's Next in This Tutorial
 
-    function executeTransactionFromOutside(Transaction calldata _transaction) external payable;
+In the upcoming sections, we will dive deeper into the code:
 
-    function payForTransaction(bytes32 _txHash, bytes32 _suggestedSignedHash, Transaction calldata _transaction)
-        external
-        payable
-    {}
+1.  First, we will build the **Ethereum `MinimalAccount.sol`** contract, exploring the ERC-4337 interaction patterns.
+2.  Second, we will build the **zkSync `ZkMinimalAccount.sol`** contract, highlighting its native AA features and how they differ from the ERC-4337 approach.
 
-    function prepareForPaymaster(bytes32 _txHash, bytes32 _possibleSignedHash, Transaction calldata _transaction)
-        external
-        payable
-    {}
-}
-```
-
----
-
-Now we have our **ZK Minimal Account** set up. Things are starting to get exciting! Let's take a moment to review. When you are ready, move on to the next lesson.
-
----
-
-### Questions for Review
-
-<summary>1. What is the main difference between ZKsync and Ethereum regarding account abstraction?</summary>
-
----
-
-<details>
-
-**<summary><span style="color:red">Click for Answers</span></summary>**
-
-    ZKsync has native account abstraction, which means there is no need for alt-mempools or an EntryPoint.sol. Transactions go directly to your contract.
-
-</details>
-
-
-<summary>2. How are EOAs different in ZKsync compared to Ethereum?</summary>
-
----
-
-<details>
-
-**<summary><span style="color:red">Click for Answers</span></summary>**
-
-In ZKsync, EOAs are smart contracts.
-
-</details>
-
-
-<summary>3. What are the 4 functions of the IAccount interface?</summary>
-
----
-
-<details>
-
-**<summary><span style="color:red">Click for Answers</span></summary>**
-
-- validateTransaction
-- executeTransaction
-- executeTransactionFromOutside
-- prepareForPaymaster
-
-</details>
-
+This sequence will solidify your understanding of both methods and showcase the unique capabilities offered by zkSync's native implementation.
