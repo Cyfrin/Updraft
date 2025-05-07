@@ -1,137 +1,216 @@
-Okay, here is a thorough and detailed summary of the video segment "Optional deploying on testnet":
+## Deploying Your Cross-Chain Application to Testnets
 
-**Overall Goal:**
-The video segment demonstrates how to deploy the cross-chain rebase token project onto the Sepolia (Ethereum L1 testnet) and ZkSync Sepolia (L2 testnet) networks. It covers obtaining necessary testnet tokens, setting up environment variables, and executing deployment steps, highlighting specific challenges and workarounds related to ZkSync deployment with Foundry.
+This lesson guides you through deploying smart contracts to Ethereum Sepolia and ZKsync Sepolia testnets. We'll cover obtaining necessary testnet tokens, addressing specific challenges with ZKsync deployment using Foundry, and configuring your cross-chain setup. This process offers a more realistic testing environment compared to local fork testing.
 
-**1. Initial Setup & Prerequisites:**
+## Preparing for Testnet Deployment: Acquiring Testnet Funds
 
-*   **Assumed Knowledge:** The viewer is expected to already know how to get basic testnet ETH for Sepolia and ZkSync Sepolia (covered in previous lessons).
-*   **Required Testnet Tokens:**
-    *   Sepolia ETH
-    *   ZkSync Sepolia ETH
-    *   **Chainlink (LINK) Tokens:** Crucially, testnet LINK tokens are needed on *both* Sepolia and ZkSync Sepolia to pay for CCIP (Chainlink Cross-Chain Interoperability Protocol) fees.
-*   **Getting Testnet LINK:**
-    *   Go to the Chainlink Faucet: `faucets.chain.link`
-    *   Navigate to the "Link" tab (not "Native" or "All").
-    *   Select "Ethereum Sepolia" and request tokens (e.g., 250 LINK).
-    *   Select "ZkSync Sepolia" and request tokens (e.g., 25 LINK).
-    *   This process requires connecting your wallet and signing a message to prove ownership.
-*   **Environment Variables (`.env` file):**
-    *   A `.env` file is required in the project's root directory.
-    *   It needs to contain the RPC URLs for both testnets:
-        ```bash
-        # .env
-        ZKSYNC_SEPOLIA_RPC_URL="https://sepolia.era.zksync.dev"
-        SEPOLIA_RPC_URL="<your_sepolia_rpc_url>" # e.g., from Alchemy
-        ```
-    *   **Tip:** The presenter specifically recommends using the official ZkSync RPC URL (`https://sepolia.era.zksync.dev`) as they encountered issues with the Alchemy one for ZkSync Sepolia at the time of recording.
-*   **Foundry Keystore Account:**
-    *   Instead of using private keys directly in scripts or environment variables (which is insecure), the deployment uses a Foundry keystore account.
-    *   The presenter uses an account named `updraft`.
-    *   You need to set this up beforehand using a command like: `cast wallet import --interactive updraft` (This will prompt you to paste your private key and set a password).
+Before deploying, ensure you have testnet Ether (ETH) on both Ethereum Sepolia and ZKsync Sepolia. This process is assumed to have been covered previously.
 
-**2. The Challenge: Deploying to ZkSync with Foundry Scripts:**
+A critical requirement for Chainlink CCIP (Cross-Chain Interoperability Protocol) is testnet LINK tokens to pay for transaction fees. You can acquire these from the Chainlink Faucet:
 
-*   **Problem:** As of the recording, standard Foundry *scripts* (which typically use `vm.startBroadcast()` and `vm.stopBroadcast()`) do not work reliably with ZkSync testnets.
-*   **Reason:** This is due to limitations in the cheat codes supported by the `foundry-zksync` toolchain. The `vm.broadcast` cheat code, essential for sending transactions from scripts, is not fully functional. This is the same underlying reason why fork testing ZkSync directly in Foundry is also problematic.
-*   **Workaround:** Instead of using a Foundry script (`.s.sol`) for ZkSync deployments and interactions, the video uses a **Bash script (`bridgeToZkSync.sh`)**. This script orchestrates the deployment by calling `forge` and `cast` commands directly from the terminal. Foundry scripts are still used for deployments on the Sepolia (L1) side where they work correctly.
+1.  Navigate to `faucets.chain.link`.
+2.  Select the "Link" tab (as opposed to "Native" or "All").
+3.  Choose "Ethereum Sepolia" from the network options and request LINK tokens (e.g., the faucet might offer "Drips 250 LINK").
+4.  Next, choose "ZKsync Sepolia" and request LINK tokens (e.g., "Drips 25 LINK").
+5.  Click "Continue" after making your selections.
+6.  Confirm the wallet address(es) to which the tokens will be sent.
+7.  Click "Get tokens."
+8.  Your wallet (e.g., MetaMask) will prompt you to sign a message. This signature proves ownership of your address and does not initiate a transaction. Sign the request.
+9.  Wait for the faucet to process your request and send the LINK tokens to your wallet on both testnets.
 
-**3. The `bridgeToZkSync.sh` Bash Script Explained:**
+## Navigating Testnet Deployment: Strategies and ZKsync Workarounds
 
-The video introduces and explains a bash script (`bridgeToZkSync.sh`) created to handle the entire deployment and bridging process across both chains. Key steps within the script:
+Deploying to public testnets provides invaluable insights into how your application will behave in a live, decentralized environment. However, tooling support can vary between networks, especially for newer Layer 2 solutions.
 
-*   **Initialization:**
-    *   `#!/bin/bash` : Shebang indicating it's a bash script.
-    *   `source .env` : Loads the RPC URLs from the `.env` file.
-    *   `foundryup -zksync`: (Added during execution) Ensures the ZkSync-compatible version of Foundry is installed and active.
-    *   `forge build --zksync`: Compiles the contracts specifically for the ZkSync environment.
-*   **ZkSync Deployments (using `forge create`):**
-    *   Deploy `RebaseToken` on ZkSync Sepolia. Note the flags:
-        ```bash
-        ZKSYNC_REBASE_TOKEN_ADDRESS=$(forge create src/RebaseToken.sol:RebaseToken \
-            --rpc-url $ZKSYNC_SEPOLIA_RPC_URL \
-            --account updraft \
-            --legacy \
-            --zksync \
-            | awk '/Deployed to:/ { print $3 }')
-        echo "ZkSync rebase token address: $ZKSYNC_REBASE_TOKEN_ADDRESS"
-        ```
-        *   `--rpc-url`: Specifies the ZkSync Sepolia testnet.
-        *   `--account updraft`: Uses the pre-configured keystore account.
-        *   `--legacy`: **Important:** Required for ZkSync deployments currently.
-        *   `--zksync`: Specifies the target is ZkSync.
-        *   `awk`: Parses the output to extract the deployed contract address.
-    *   Deploy `RebaseTokenPool` on ZkSync Sepolia (similar command, includes `--constructor-args`).
-*   **ZkSync Configuration (using `cast send`):**
-    *   Since Foundry scripts (`vm.broadcast`) don't work, `cast send` is used to call configuration functions directly on the deployed ZkSync contracts.
-    *   Grant Mint/Burn Role:
-        ```bash
-        cast send $ZKSYNC_REBASE_TOKEN_ADDRESS --rpc-url $ZKSYNC_SEPOLIA_RPC_URL --account updraft "grantMintAndBurnRole(address)" $ZKSYNC_POOL_ADDRESS
-        ```
-    *   Set CCIP Roles & Permissions: Multiple `cast send` calls to `registerAdminViaOwner`, `acceptAdminRole`, and `setPool` on the ZkSync `TokenAdminRegistry`.
-*   **Sepolia Deployments & Configuration (using `forge script`):**
-    *   Run `Deployer.s.sol`: Deploys `RebaseToken` and `RebaseTokenPool` on Sepolia using a standard Foundry script.
-        ```bash
-        output=$(forge script ./script/Deployer.s.sol:TokenAndPoolDeployer --rpc-url $SEPOLIA_RPC_URL --account updraft --broadcast)
-        ```
-    *   Extract Sepolia Addresses: Parses the `$output` variable using `grep` and `awk` to get the deployed token and pool addresses on Sepolia.
-    *   Run `SetPermissions.s.sol`: Calls the necessary permission-setting functions (`setAdmin`, `grantRole`) on Sepolia using another Foundry script. **(See Note below on Script Splitting)**
-    *   Run `VaultDeployer.s.sol`: Deploys the `Vault` contract on Sepolia.
-    *   Run `ConfigurePoolScript.s.sol`: Configures the Sepolia pool (e.g., setting remote chain details).
-*   **Deposit & Bridge:**
-    *   Deposit ETH into Vault: Uses `cast send` to call the `deposit` function on the Sepolia Vault.
-        ```bash
-        cast send $VAULT_ADDRESS --value $AMOUNT --rpc-url $SEPOLIA_RPC_URL --account updraft "deposit()"
-        ```
-    *   Configure ZkSync Pool: Uses `cast send` to call `applyChainUpdates` on the ZkSync Pool, linking it to the Sepolia deployment.
-    *   Bridge Tokens (Sepolia -> ZkSync): Uses `forge script` to run `BridgeTokensScript.s.sol`, initiating the CCIP transfer from Sepolia.
-        ```bash
-        forge script ./script/BridgeTokens.s.sol:BridgeTokensScript --rpc-url $SEPOLIA_RPC_URL --account updraft --broadcast --sig "run(...)" <arguments...>
-        ```
-*   **Verification:**
-    *   Checks token balances before and after bridging using `cast balance` and `erc20` calls.
+**The Challenge with ZKsync Sepolia and Foundry Scripts:**
+At the time of this lesson, Foundry scripts (`forge script`) and their associated cheatcodes (e.g., `vm.startBroadcast()`, `vm.stopBroadcast()`) do not function reliably on ZKsync Sepolia. This is due to incomplete cheatcode implementation within the Foundry ZKsync integration. Fork testing ZKsync also faces similar limitations.
 
-**4. Execution and Observation:**
+**The Workaround: Bash Scripting with `forge create` and `cast send`:**
+To overcome these limitations for ZKsync Sepolia, we will employ a Bash script (`bridgeToZksync.sh`). This script will utilize lower-level Foundry commands for deployment and contract interaction:
+*   `forge create`: Used to deploy smart contracts.
+*   `cast send`: Used to call functions on already deployed contracts (e.g., for setting permissions or configurations).
 
-*   **Making Script Executable:** `chmod +x ./bridgeToZkSync.sh`
-*   **Running the Script:** `./bridgeToZkSync.sh`
-*   **Password Prompts:** The terminal prompts for the keystore password (`updraft`) multiple times throughout the script's execution whenever a transaction needs to be signed (`forge create`, `cast send`, `forge script --broadcast`).
-*   **Deployment Output:** The script echoes status messages and deployed contract addresses to the terminal.
-*   **Error Encountered & Fix (Transaction Ordering):**
-    *   The presenter encounters an error on Sepolia: `Error: failed to send transaction: server returned an error response: error code -32000: future transaction tries to replace pending`.
-    *   **Hypothesis:** Sepolia testnet is processing transactions slightly out of the intended order within a single script broadcast, or nonce management is causing issues when multiple transactions are bundled.
-    *   **Fix Demonstrated Conceptually:** The presenter explains they modified the original `Deployer.s.sol` script. The permission-setting calls (`setAdmin`, `grantRole`) were moved *out* of `Deployer.s.sol` and into a *new, separate* script, `SetPermissions.s.sol`. The bash script (`bridgeToZkSync.sh`) was updated to call `forge script` for `Deployer.s.sol` first, and *then* call `forge script` for `SetPermissions.s.sol`, ensuring deployment happens before permissions are set.
-*   **Importing Token to MetaMask:**
-    *   The deployed `RebaseToken` address on Sepolia is copied from the script's output.
-    *   In MetaMask (connected to Sepolia), go to Tokens -> Import tokens -> Custom token.
-    *   Paste the address. MetaMask auto-detects the symbol (RBT) and decimals (18).
-    *   The balance shows a tiny amount due to the deposit into the vault accruing interest via rebasing.
-*   **Tracking CCIP Transaction:**
-    *   The transaction hash from the *bridging step* (the `forge script BridgeTokensScript...` call on Sepolia) is copied from the terminal output.
-    *   Go to the Chainlink CCIP Explorer: `ccip.chain.link`
-    *   Paste the transaction hash into the search bar.
-    *   The explorer shows the message details:
-        *   Source Chain: Ethereum Sepolia
-        *   Destination Chain: ZkSync Sepolia
-        *   Status: Initially "Waiting for finality".
-        *   Expected Total Time: ~20 minutes 6 seconds.
-        *   Fees: Shows the amount of LINK paid.
+**Crucial Flags for ZKsync Interaction:** When using `forge create` and `cast send` with ZKsync Sepolia, you must include the `--legacy` and `--zksync` flags.
+*   `--zksync`: Informs Foundry to use ZKsync-specific compilation and transaction formats.
+*   `--legacy`: Indicates that legacy transaction types should be used. *Note: The ZKsync team may phase out the necessity of the `--legacy` flag in the future. Always consult the official ZKsync documentation for the latest recommendations.*
 
-**5. Key Concepts Recap:**
+**Ethereum Sepolia Deployment:**
+Fortunately, Ethereum Sepolia fully supports Foundry scripts. Therefore, our Bash script will leverage standard `forge script` commands for deploying and configuring contracts on the Sepolia testnet.
 
-*   **Testnet Deployment:** Essential for testing before mainnet.
-*   **Toolchain Compatibility:** Foundry's full feature set (like scripts with `vm.broadcast`) isn't always 1:1 compatible with all L2s like ZkSync yet.
-*   **Workarounds:** Using lower-level tools (`forge create`, `cast send`) in bash scripts can overcome toolchain limitations.
-*   **Chainlink CCIP:** A protocol enabling cross-chain messages and token transfers, requiring fees (often paid in LINK).
-*   **CCIP Explorer:** A vital tool for debugging and monitoring cross-chain interactions.
-*   **Transaction Finality:** The time delay needed for cross-chain protocols to ensure the source transaction is irreversible before executing the destination action.
-*   **Keystore Management:** Securely handling private keys during deployment.
-*   **Script Granularity:** Splitting deployment/configuration steps into smaller scripts can help manage transaction ordering issues on congested or slower testnets.
+## Setting Up Your Deployment Environment
 
-**Important Notes/Tips:**
+Proper environment configuration is essential for smooth deployment. This involves setting up a `.env` file for sensitive information and using Foundry's keystore for private key management.
 
-*   Always use testnet LINK from the official faucet (`faucets.chain.link`) for CCIP fees on testnet.
-*   Use keystore accounts (`--account`) instead of raw private keys (`--private-key`) for better security.
-*   Be aware of ZkSync specific flags (`--zksync`, `--legacy`) when using Foundry commands. Check documentation as these might change.
-*   If encountering transaction replacement or ordering errors on testnets like Sepolia, try splitting complex Foundry scripts into multiple, smaller scripts executed sequentially via a bash script.
-*   The CCIP bridging process has significant latency (~20 mins Sepolia <-> ZkSync Sepolia) due to finality requirements.
+**Environment Variables (`.env` file):**
+The `bridgeToZksync.sh` script will source its configuration from a `.env` file located in your project root. This file should contain:
+
+*   `ZKSYNC_SEPOLIA_RPC_URL`: The RPC endpoint for the ZKsync Sepolia testnet.
+    *   **Pro Tip:** If you encounter issues with third-party RPC providers like Alchemy for ZKsync Sepolia, consider using the official RPC URL: `https://sepolia.era.zksync.dev`.
+*   `SEPOLIA_RPC_URL`: The RPC endpoint for the Ethereum Sepolia testnet (e.g., obtained from Alchemy or Infura).
+
+**Secure Private Key Handling (Foundry Keystore):**
+**Critical Security Note:** Never paste your private keys directly into your `.env` file, scripts, or commit them to version control.
+
+The recommended method for managing private keys with Foundry is to use a keystore. This lesson assumes you have already imported an account into Foundry (e.g., named `updraft`) using a command similar to `cast wallet import --interactive updraft`. The Bash script will then reference this account using the `--account updraft` flag in `forge create`, `cast send`, and `forge script` commands. When the script executes, Foundry will prompt you for the password associated with this keystore account, ensuring your private key remains secure.
+
+## Executing the Deployment: A Step-by-Step Guide to the `bridgeToZksync.sh` Script
+
+The `bridgeToZksync.sh` script automates the deployment and configuration process across both ZKsync Sepolia and Ethereum Sepolia, culminating in a cross-chain token bridge.
+
+**Script Structure and Key Steps:**
+
+1.  **Load Environment Variables:**
+    ```bash
+    source .env
+    ```
+    This command loads the `ZKSYNC_SEPOLIA_RPC_URL` and `SEPOLIA_RPC_URL` from your `.env` file.
+
+2.  **Update Foundry for ZKsync:**
+    ```bash
+    foundryup -zksync
+    ```
+    Ensures your Foundry toolchain is updated with the latest ZKsync compatibility.
+
+3.  **Compile Contracts for ZKsync:**
+    ```bash
+    forge build --zksync
+    ```
+    Compiles your smart contracts specifically for the ZKsync environment.
+
+4.  **Deploy Contracts on ZKsync Sepolia:**
+    Using `forge create ... --legacy --zksync --account updraft`:
+    *   Deploy `RebaseToken.sol`.
+    *   Deploy `RebaseTokenPool.sol`, passing the deployed `RebaseToken` address as a constructor argument.
+    *   *Note: The script will capture the deployed contract addresses for subsequent steps.*
+
+5.  **Set Permissions on ZKsync Sepolia Contracts:**
+    Using `cast send <CONTRACT_ADDRESS> "<FUNCTION_SIGNATURE>(<ARGS>)" ... --account updraft --legacy --zksync`:
+    *   Call `grantMintAndBurnRole` on the deployed ZKsync RebaseToken, granting the minting and burning role to the ZKsync RebaseTokenPool contract.
+    *   Call `registerAdminViaOwner` on the ZKsync Registry Module.
+    *   Call `acceptAdminRole` on the ZKsync Token Admin Registry.
+    *   Call `setPool` on the ZKsync Token Admin Registry, linking the ZKsync RebaseToken and RebaseTokenPool addresses.
+
+6.  **Deploy Contracts on Ethereum Sepolia:**
+    Using `forge script ./script/Deployer.s.sol:<ScriptName> --rpc-url $SEPOLIA_RPC_URL --account updraft --broadcast`:
+    *   Execute the `TokenAndPoolDeployer` script (e.g., `script/Deployer.s.sol:TokenAndPoolDeployer`) to deploy the RebaseToken and RebaseTokenPool contracts on Sepolia. The script will output the deployed addresses.
+    *   Execute the `VaultDeployer` script (e.g., `script/Deployer.s.sol:VaultDeployer`) to deploy the Vault contract on Sepolia.
+
+7.  **Set Permissions on Ethereum Sepolia Contracts:**
+    Using `forge script ./script/Deployer.s.sol:<ScriptName> --rpc-url $SEPOLIA_RPC_URL --account updraft --broadcast --sig "<FUNCTION_SIGNATURE>(<ARGS>)" <ARG_VALUES>`:
+    *   This step involves calling specific functions within a permission-setting script (e.g., `SetPermissions` in `Deployer.s.sol`) to grant roles and set CCIP admin configurations. *Details on potential script modifications for this step are covered in the "Troubleshooting Deployment" section.*
+
+8.  **Configure Pool on Ethereum Sepolia:**
+    Using `forge script ./script/ConfigurePools.sol:ConfigurePoolScript --rpc-url $SEPOLIA_RPC_URL --account updraft --broadcast`:
+    *   Run a script (e.g., `ConfigurePoolScript`) to configure the deployed Sepolia RebaseTokenPool for cross-chain interaction with the ZKsync deployment. This typically involves setting the destination chain selector and target contract addresses.
+
+9.  **Deposit Funds into Sepolia Vault:**
+    Using `cast send $SEPOLIA_VAULT_ADDRESS "deposit()" --value $AMOUNT --rpc-url $SEPOLIA_RPC_URL --account updraft`:
+    *   Send a specified amount of ETH (defined by an `$AMOUNT` variable in the script) to the `deposit()` function of the deployed Vault contract on Sepolia.
+
+10. **Configure Pool on ZKsync Sepolia:**
+    Using `cast send $ZKSYNC_POOL_ADDRESS "applyChainUpdates((address,address,uint64,bool)[])" "[[$SEPOLIA_REBASE_TOKEN_ADDRESS, $SEPOLIA_POOL_ADDRESS, $ETHEREUM_SEPOLIA_CHAIN_SELECTOR, true]]" --rpc-url $ZKSYNC_SEPOLIA_RPC_URL --account updraft --legacy --zksync`:
+    *   Call `applyChainUpdates` on the ZKsync RebaseTokenPool. This function takes an array of structs containing configuration data for each supported source chain. Here, it's configured with the Sepolia RebaseToken address, Sepolia Pool address, and the Ethereum Sepolia chain selector.
+
+11. **Bridge Funds from Sepolia to ZKsync:**
+    Using `forge script ./script/BridgeTokens.s.sol:BridgeTokensScript --rpc-url $SEPOLIA_RPC_URL --account updraft --broadcast`:
+    *   Execute a script (e.g., `BridgeTokensScript`) to initiate the CCIP transfer of tokens from the Sepolia Vault to the ZKsync RebaseTokenPool. This script will interact with the CCIP Router contract.
+
+## Troubleshooting Deployment: Handling Errors and Script Refinements
+
+Testnet deployments can sometimes encounter issues due to network congestion, gas price fluctuations, or nonce management complexities.
+
+**Error Encountered: "future transaction tries to replace pending"**
+During an initial execution of the Bash script, you might encounter an error like `Context: server returned an error response: error code -32000: future transaction tries to replace pending`. This typically occurs when deploying to Sepolia using `forge script`.
+
+**Reasoning:**
+This error often points to nonce management issues. When a Foundry script executes multiple transactions within a single `vm.startBroadcast()` / `vm.stopBroadcast()` block, or if multiple script executions happen in rapid succession, the underlying transaction nonces might conflict, especially on a busy testnet like Sepolia. High gas fees or general network congestion can exacerbate this.
+
+**Solution: Splitting Script Logic for Robustness:**
+To mitigate nonce-related issues on Sepolia, it's advisable to break down complex Foundry scripts that perform multiple state-changing operations into smaller, more granular script calls.
+
+1.  **Refactor Solidity Script (`Deployer.s.sol`):**
+    Instead of having a single function in your `SetPermissions` script contract that performs multiple permissioning calls, split it into distinct public functions. For example:
+
+    ```solidity
+    // In script/Deployer.s.sol
+    // SPDX-License-Identifier: UNLICENSED
+    pragma solidity ^0.8.13;
+
+    import "forge-std/Script.sol";
+    import {IRelayToken} from "../src/token/RelayToken.sol"; // Adjust path as needed
+    // ... other necessary imports ...
+
+    contract SetPermissions is Script {
+        // ... (Helper functions to get network details, private key, etc.) ...
+
+        function grantRole(address token, address pool) public {
+            // ... (Get network details for Sepolia) ...
+            uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY"); // Or use keystore logic
+            vm.startBroadcast(deployerPrivateKey);
+
+            IRelayToken(token).grantMintAndBurnRole(address(pool));
+
+            vm.stopBroadcast();
+        }
+
+        function setAdminAndPool(address token, address pool) public { // Renamed for clarity
+            // ... (Get network details for Sepolia) ...
+            uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY"); // Or use keystore logic
+            vm.startBroadcast(deployerPrivateKey);
+
+            // Example: Replace with your actual CCIP admin and pool setting logic
+            // IRegistryModuleOwnerCustom(REGISTRY_MODULE_OWNER_CUSTOM_ADDRESS).registerAdminViaOwner(TOKEN_ADMIN_REGISTRY_ADDRESS);
+            // ITokenAdminRegistry(TOKEN_ADMIN_REGISTRY_ADDRESS).acceptAdminRole();
+            // ITokenAdminRegistry(TOKEN_ADMIN_REGISTRY_ADDRESS).setPool(token, pool);
+
+            vm.stopBroadcast();
+        }
+    }
+    ```
+
+2.  **Modify Bash Script (`bridgeToZksync.sh`):**
+    Update the Bash script to call these new, specific functions individually using the `--sig` flag in `forge script`. This ensures each logical permissioning step is a separate on-chain transaction, reducing the chance of nonce conflicts.
+
+    ```bash
+    # Example modification for Sepolia permission setting in bridgeToZksync.sh
+    # (Assuming SEPOLIA_REBASE_TOKEN_ADDRESS and SEPOLIA_POOL_ADDRESS are set)
+
+    echo "Granting MintAndBurn role on Sepolia RebaseToken to Pool..."
+    forge script ./script/Deployer.s.sol:SetPermissions \
+        --rpc-url $SEPOLIA_RPC_URL \
+        --account updraft \
+        --broadcast \
+        --sig "grantRole(address,address)" \
+        $SEPOLIA_REBASE_TOKEN_ADDRESS $SEPOLIA_POOL_ADDRESS
+
+    echo "Setting Admin and Pool on Sepolia TokenAdminRegistry..."
+    forge script ./script/Deployer.s.sol:SetPermissions \
+        --rpc-url $SEPOLIA_RPC_URL \
+        --account updraft \
+        --broadcast \
+        --sig "setAdminAndPool(address,address)" \
+        $SEPOLIA_REBASE_TOKEN_ADDRESS $SEPOLIA_POOL_ADDRESS
+    ```
+    This approach provides more control and makes troubleshooting easier if one specific step fails.
+
+## Verifying Your Deployment: Monitoring Contracts and Cross-Chain Transactions
+
+After the `bridgeToZksync.sh` script completes, it's important to verify the deployment and monitor the cross-chain transaction.
+
+**MetaMask Token Import:**
+1.  Open MetaMask and ensure you are connected to the Ethereum Sepolia network.
+2.  Find the deployed `RebaseToken` contract address on Sepolia (this should be output by your deployment script or can be found in the transaction history).
+3.  In MetaMask, click "Import tokens," paste the contract address. The token symbol (e.g., RBT) and decimals (typically 18) should auto-populate.
+4.  After the `deposit()` function call to the Vault, you should see a small balance of your RebaseToken in your wallet on Sepolia.
+
+**CCIP Explorer for Cross-Chain Monitoring:**
+The `BridgeTokensScript` initiates a CCIP message. You can track its progress using the CCIP Explorer:
+
+1.  **Resource:** Navigate to `ccip.chain.link`.
+2.  **Find Transaction Hash:** When the `BridgeTokensScript` executes on Sepolia, `forge script` will output the transaction hash for the CCIP `sendMessage` call (or similar CCIP interaction). Copy this source transaction hash.
+3.  **Search in Explorer:** Paste the source transaction hash into the search bar on the CCIP Explorer.
+4.  **Monitor Status:** The explorer will display the details of your CCIP message, showing the source chain (Ethereum Sepolia) and destination chain (ZKsync Sepolia).
+    *   Initially, the status will likely be "Waiting for finality" on the source chain.
+    *   **Finality Time:** Be patient. The entire cross-chain transfer process, including source chain finality, message relay, and execution on the destination chain, can take approximately 20 minutes or more, depending on network conditions.
+
+By following these steps, you can successfully deploy your smart contracts to testnets, manage environment-specific challenges, and verify the functionality of your cross-chain application. This hands-on experience is crucial for preparing your application for a mainnet launch.
