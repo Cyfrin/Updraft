@@ -1,118 +1,79 @@
-Okay, here is a thorough and detailed summary of the video "EIP-4844: Blob Transactions":
+Welcome to this comprehensive guide on Ethereum and zkSync transaction types. A clear understanding of these different formats is essential for any developer working in the Web3 space, whether you're deploying smart contracts, interacting with decentralized applications, or analyzing on-chain data. You may have already encountered these types when using development tools like Remix with zkSync, Foundry zkSync, or when inspecting transactions on block explorers. This lesson will break down each type, covering its origin, purpose, and key characteristics.
 
-**Overall Summary**
+## Shared Transaction Types: Ethereum and zkSync
 
-The video explains Ethereum Improvement Proposal (EIP) 4844, also known as "Proto-Danksharding," which introduced Blob Transactions (Type 3 transactions) to Ethereum as part of the Dencun upgrade on March 13, 2024. The primary goal of EIP-4844 is to significantly reduce the cost for Layer 2 (L2) rollups to post their transaction batch data onto the Ethereum Layer 1 (L1) blockchain, thereby lowering transaction fees for end-users on L2s. It achieves this by creating a new, temporary data storage space ("blobs") separate from permanent L1 state (calldata), along with a new fee market for this blob space. While the EVM cannot directly access blob data, cryptographic techniques allow L1 contracts to verify the integrity of the data submitted in blobs.
+Ethereum and zkSync share several fundamental transaction types. These form the bedrock of how interactions are structured on both L1 and L2.
 
-**Key Concepts and How They Relate**
+### Transaction Type 0 (Legacy Transactions / 0x0)
 
-1.  **Normal Transactions vs. Blob Transactions:**
-    *   **Normal (Type 2 / EIP-1559):** All transaction data is stored *permanently* on the L1 blockchain as "calldata". This is expensive, especially for large amounts of data, and contributes to state bloat. (0:02-0:09)
-    *   **Blob (Type 3 / EIP-4844):** Includes the standard transaction data (stored permanently) *plus* attached "blobs" of data. This blob data is *not* stored permanently on L1 state, is *not* accessible by the EVM, and is pruned (deleted) by L1 nodes after a relatively short period (suggested ~18-90 days). (0:10-0:26)
+Type 0, also known as Legacy Transactions or identified by the prefix `0x0`, represents the original transaction format used on Ethereum. This was the standard before the formal introduction of distinct, typed transactions. It embodies the initial method for structuring and processing transactions on the network.
 
-2.  **Blob (Binary Large Object):** A large chunk of data (~128 KB) attached to a Type 3 transaction. It lives in a separate space from L1 calldata and is designed for temporary data availability. (0:27-0:32)
+A practical example for developers using Foundry zkSync is the explicit specification of this transaction type during smart contract deployment. By including the `--legacy` flag in your deployment command, you instruct the tool to use this original format. For instance:
+`forge create src/MyContract.sol:MyContract --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast --legacy --zksync`
+The `--legacy` flag highlighted here directly indicates the use of a Type 0 transaction.
 
-3.  **EIP-4844 (Proto-Danksharding):** The specific EIP that introduces blob transactions. It's considered a preliminary step ("Proto") towards full "Danksharding," which is a more advanced scaling solution on Ethereum's roadmap. It was named after researchers Protolambda and Dankrad Feist. (0:49-0:58, 9:25-9:39)
+### Transaction Type 1 (Optional Access Lists / 0x01 / EIP-2930)
 
-4.  **Dencun Upgrade:** The Ethereum network upgrade (occurred March 13, 2024) that included EIP-4844, activating blob transactions on the mainnet. (0:41-0:46)
+Transaction Type 1, denoted as `0x01`, was introduced by EIP-2930, titled "Optional Access Lists." Its primary purpose was to mitigate potential contract breakage risks associated with EIP-2929, an earlier proposal that repriced certain storage-accessing opcodes (SLOAD and EXT\*).
 
-5.  **L2 Rollups (e.g., zkSync, Arbitrum, Optimism):** Scaling solutions that execute transactions off-chain (on L2) and then post compressed batches of these transactions and state proofs back to L1 for security and finality. (1:15-1:43)
+Type 1 transactions maintain the same fields as legacy (Type 0) transactions but introduce a significant addition: an `accessList` parameter. This parameter is an array containing addresses and storage keys that the transaction plans to access during its execution. The main benefit of including an access list is the potential for gas savings on cross-contract calls. By pre-declaring the intended contracts and storage slots, users can offset some of the gas cost increases introduced by EIP-2929, leading to more efficient transactions.
 
-6.  **The Problem EIP-4844 Solves:** Rollups need to post their transaction batches to L1 for data availability (so anyone can verify the L2 state). Before EIP-4844, they had to post this data as expensive L1 *calldata*, which is stored permanently, even though rollups only need the data to be available temporarily. This made L2 transactions more expensive than necessary. (1:52-3:11)
+### Transaction Type 2 (EIP-1559 Transactions / 0x02)
 
-7.  **The Solution:** Blobs provide a cheaper, temporary data market specifically for rollup batch data. L1 nodes make the blob data available for a short period (long enough for verification), then discard it, reducing storage burden and cost. (3:11-3:41)
+Transaction Type 2, or `0x02`, was introduced by EIP-1559 as part of Ethereum's "London" hard fork. This EIP was a major overhaul of Ethereum's fee market, aiming to tackle issues like high network fees, improve the user experience around gas payments, and reduce network congestion.
 
-8.  **Blob Verification (The Challenge & Solution):**
-    *   **Challenge:** L1 EVM/smart contracts *cannot* read the data inside a blob directly. (4:40-4:45)
-    *   **Solution:** Cryptography! EIP-4844 introduces:
-        *   **`BLOBHASH` Opcode:** Allows an L1 smart contract to get a cryptographic commitment (a special type of hash, specifically a KZG commitment versioned hash) of a blob associated with the transaction. (5:14-5:16, 5:27-5:37)
-        *   **Point Evaluation Precompile:** A new precompiled contract on L1 that can efficiently verify a KZG proof. The rollup submits the blob hash (obtained via the opcode), cryptographic proofs (related to the blob data), and evaluation points to this precompile. The precompile confirms if the proofs match the commitment (blob hash), effectively verifying the integrity of the blob data without the EVM needing to access the data itself. (5:17-5:19, 6:11-6:19)
+The key change introduced by EIP-1559 was the replacement of the simple `gasPrice` (used in Type 0 and Type 1 transactions) with two new components:
+*   A `baseFee`: This fee is algorithmically determined per block based on network demand and is burned, reducing ETH supply.
+*   A `maxPriorityFeePerGas`: This is an optional tip paid directly to the validator (formerly miner) to incentivize transaction inclusion.
 
-9.  **Blob Gas Market / Multidimensional Gas Pricing:** EIP-4844 introduces a separate fee market just for blob data, distinct from the regular L1 gas market for computation/calldata. This creates "multidimensional" pricing, where the cost of L1 computation and the cost of L1 blob data availability can fluctuate independently based on their respective demand. (8:36-8:44)
+Consequently, Type 2 transactions include new parameters:
+*   `maxPriorityFeePerGas`: The maximum tip the sender is willing to pay per unit of gas.
+*   `maxFeePerGas`: The absolute maximum total fee (baseFee + priorityFee) the sender is willing to pay per unit of gas.
 
-**Important Code Blocks & Discussion**
+Block explorers like Etherscan often display these as "Txn Type: 2 (EIP-1559)".
 
-1.  **Etherscan/Tenderly Walkthrough (Conceptual):**
-    *   The video shows an Etherscan page for a ZK Sync Era L1 transaction (Type 3). It highlights the "Total Blobs" field. (3:59)
-    *   It demonstrates clicking into the blob details, showing the `Blob Versioned Hash` and `Commitment`. (4:04)
-    *   It emphasizes the cost difference displayed on Etherscan: "Blob Gas Used" vs. the much higher hypothetical "Blob As Calldata Gas". (4:20-4:32)
-    *   It uses Tenderly to trace the ZK Sync contract execution, showing the `verifyBlobInformation` function call. (5:43-5:51)
+**zkSync Note:** While zkSync supports Type 2 transactions, its handling of the fee parameters differs from Ethereum L1. Currently, zkSync *does not* actively use the `maxPriorityFeePerGas` and `maxFeePerGas` parameters to prioritize or price transactions in the same way as Ethereum, due to its distinct gas mechanism and fee structure.
 
-2.  **Solidity Snippet (`Executor.sol` from ZK Sync):**
-    *   `function _verifyBlobInformation(bytes calldata _pubdataCommitments, bytes32[] memory _blobHashes)`: Shows the function signature receiving proof data (`_pubdataCommitments`) and the blob hashes (`_blobHashes`). (5:56-6:08)
-    *   `bytes32 blobVersionedHash = _getBlobVersionedHash(versionedHashIndex);`: Shows getting the hash using an internal function which implicitly uses the `BLOBHASH` opcode. (6:08-6:10)
-    *   `_pointEvaluationPrecompile(blobVersionedHash, openingPoint, _pubdataCommitments[...]);`: Shows the call to the precompile, passing the hash and proof data for verification. (6:11-6:19)
+### Transaction Type 3 (Blob Transactions / 0x03 / EIP-4844 / Proto-Danksharding)
 
-3.  **Python (`send_blob.py` using `web3.py`):**
-    *   **Blob Padding:** Blobs must have a fixed size (4096 fields * 32 bytes/field). The code shows padding the actual data with leading zero bytes to meet this requirement:
-        ```python
-        # Blob data must be comprised of 4096 32-byte field elements
-        BLOB_DATA = (b'\x00' * 32 * (4096 - len(encoded_text) // 32)) + encoded_text
-        ```
-        (7:56-8:10)
-    *   **Transaction Dictionary Setup:**
-        ```python
-        tx = {
-            "type": 3, # Key difference: Specify Type 3
-            "chainId": 31337, # Example Chain ID
-            "from": acct.address,
-            "to": "0x0...", # Target address
-            "value": 0,
-            "maxFeePerGas": 10**12,
-            "maxPriorityFeePerGas": 10**12,
-            # Key difference: Add blob gas fields
-            "maxFeePerBlobGas": to_hex(10**12),
-            "nonce": w3.eth.get_transaction_count(acct.address),
-            # Note: Gas estimation needs to be added separately
-            # Note: Blob Versioned Hashes are added automatically upon signing
-        }
-        tx["gas"] = gas_estimate # Add gas estimate
-        ```
-        Key points emphasized: `type: 3` and the new `maxFeePerBlobGas` parameter. (8:14-8:35)
-    *   **Signing the Transaction:** The crucial step where the blob data itself is included:
-        ```python
-        signed = acct.sign_transaction(tx, blobs=[BLOB_DATA])
-        ```
-        The `blobs` parameter is the new addition for `sign_transaction`. The library handles generating the versioned hashes and proofs needed for the transaction structure. (8:50-8:57)
+Transaction Type 3, also `0x03`, was introduced by EIP-4844, commonly known as "Proto-Danksharding," and implemented during Ethereum's "Dencun" hard fork. This EIP represents an initial, significant step towards scaling Ethereum, particularly for rollups like zkSync. It introduces a new, more cost-effective way for Layer 2 solutions to submit data to Layer 1 via "blobs."
 
-**Important Concepts Relationships**
+Key features of Type 3 transactions include:
+*   A separate fee market specifically for blob data, distinct from regular transaction gas fees.
+*   Additional fields on top of those found in Type 2 transactions:
+    *   `max_fee_per_blob_gas`: The maximum fee the sender is willing to pay per unit of gas for the blob data.
+    *   `blob_versioned_hashes`: A list of versioned hashes corresponding to the data blobs carried by the transaction.
 
-*   L2 Rollups need L1 Data Availability -> L1 Calldata is expensive/permanent -> EIP-4844 introduces Blobs for cheap/temporary data availability.
-*   Blobs are temporary & EVM-inaccessible -> Verification needs cryptography -> `BLOBHASH` opcode provides blob commitment -> Point Evaluation Precompile verifies proofs against the commitment.
-*   Demand for blob space is different from demand for L1 computation -> EIP-4844 creates a separate Blob Gas Market -> Leads to Multidimensional Gas Pricing.
-*   EIP-4844 (Proto-Danksharding) is a stepping stone -> Full Danksharding is the longer-term goal with more features.
+A crucial aspect of the blob fee mechanism is that this fee is deducted from the sender's account and burned *before* the transaction itself is executed. This means that if the transaction fails for any reason during execution, the blob fee is **non-refundable**. For a more in-depth exploration of EIP-4844, Proto-Danksharding, and the mechanics of blobs, a subsequent lesson from Patrick Collins will provide further details.
 
-**Links & Resources Mentioned**
+## zkSync-Specific Transaction Types
 
-*   Blockchain Trilemma video (implicitly referenced via link in description) (1:14)
-*   ZK Sync, Arbitrum, Optimism (Examples of L2s) (1:21)
-*   Etherscan (Used for L1 transaction example) (3:47)
-*   Tenderly (Used for contract execution trace) (5:45)
-*   Vitalik Buterin's post/tweet on Multidimensional Gas Pricing (8:39)
-*   Ethereum.org documentation on Danksharding & KZG (9:47-9:53)
-*   GitHub Repository with `send_blob.py` demo code (Link mentioned to be in description) (7:39, 9:57)
+Beyond the shared types, zkSync introduces its own transaction types to enable unique functionalities and optimizations specific to its Layer 2 environment.
 
-**Notes & Tips**
+### Type 113 (EIP-712 Transactions / 0x71)
 
-*   Blob data is deleted after approx. 18-90 days (the video mentions ~18 days based on epoch count at time of writing, but also suggests 20-90 days earlier). (0:22, 9:48 shows 18 days from docs)
-*   The term "Blob" is loosely based on "Binary Large Object". (0:29)
-*   Proto-Danksharding was named after researchers Protolambda and Dankrad Feist. (0:57)
-*   Rollups are the community-accepted way to scale Ethereum for the next few/several years. (1:28-1:34)
-*   The gas cost was the main driver for EIP-4844, more so than pure state bloat concerns, although related. (2:41)
-*   Blobs *must* be padded to the exact required size (4096 * 32 bytes). You cannot send a small blob. (7:56-8:12)
-*   When sending a blob transaction via libraries like `web3.py`, you need to specify `type: 3`, add blob-specific gas parameters (`maxFeePerBlobGas`), and pass the actual blob data to the `sign_transaction` function. (8:14-8:57)
+Type 113, or `0x71`, transactions on zkSync utilize the EIP-712 standard, "Ethereum typed structured data hashing and signing." EIP-712 standardizes the way structured data is hashed and signed, making messages more human-readable and verifiable within wallets like MetaMask.
 
-**Questions & Answers (Implicit)**
+On zkSync, Type 113 transactions are pivotal for accessing advanced, zkSync-specific features such as native Account Abstraction (AA) and Paymasters.
+*   **Account Abstraction:** Allows accounts to have custom validation logic, effectively turning user accounts into smart contracts.
+*   **Paymasters:** Smart contracts that can sponsor transaction fees for users, enabling gasless transactions or payment in custom tokens.
 
-*   **Q:** Why not just store rollup data permanently? **A:** It's very expensive in terms of gas fees paid by rollups (and ultimately users) and causes L1 state bloat, while the data is only needed temporarily. (1:52-3:11)
-*   **Q:** How can L1 verify blobs if the EVM can't read them? **A:** Using cryptographic commitments (hashes obtained via `BLOBHASH` opcode) and proofs (like KZG proofs) verified by a specialized precompile (Point Evaluation Precompile). (4:40-6:19)
-*   **Q:** Is it safe to delete blob data? **A:** Yes, because the system is designed so verification happens within the availability window. Once verified, the L1 only needs the commitment/proof, not the full data long-term. (Implicit from the design, 9:48 references docs)
+A critical requirement for developers is that smart contracts **must** be deployed on zkSync using a Type 113 (0x71) transaction. For example, when deploying a smart contract to zkSync via Remix, the signature request presented by your wallet (e.g., MetaMask) will typically indicate "TxType: 113".
 
-**Examples & Use Cases**
+In addition to standard Ethereum transaction fields, Type 113 transactions on zkSync include several custom fields:
+*   `gasPerPubData`: The maximum gas the sender is willing to pay for each byte of "pubdata." Pubdata refers to L2 state data that needs to be published to L1 for data availability.
+*   `customSignature`: This field is used when the transaction signer is not a standard Externally Owned Account (EOA), such as a smart contract wallet leveraging account abstraction. It allows for custom signature validation logic.
+*   `paymasterParams`: Parameters for configuring a custom Paymaster smart contract, detailing how it will cover the transaction fees.
+*   `factory_deps`: An array of bytecodes for contracts that the deployed contract might, in turn, deploy. This is crucial for deploying contracts that have dependencies on other contracts or create new contract instances.
 
-*   **Primary Use Case:** L2 Rollups (like ZK Sync shown) submitting their compressed transaction batches to L1 much more cheaply than using calldata. (1:15, 3:47, 5:43)
-*   **Analogy 1:** Blob is like a temporary box of data attached to a transaction, which gets burned after use. (0:14-0:26)
-*   **Analogy 2:** Blob is like a motorcycle sidecar that carries extra stuff (data) temporarily but is eventually detached and burned. (0:32-0:41)
-*   **Analogy 3:** Storing unnecessary data permanently is like being forced to carry every exam paper you ever passed with you forever. (2:36-2:41)
-*   **Cost Example:** Sending $1 on L1 might cost $2 in fees, while on L2 (using blobs) it might cost $0.01. (1:06, 1:24)
-*   **Code Example:** Sending a simple text string `"<( o.o )>"` within a blob using Python and `web3.py`. (7:38 onwards)
+### Type 255 (Priority Transactions / 0xff)
+
+Type 255, or `0xff`, transactions on zkSync are known as "Priority Transactions." Their primary purpose is to enable the sending of transactions directly from Ethereum L1 to the zkSync L2 network.
+
+These transactions are essential for facilitating communication and operations that originate on L1 but need to be executed on L2. Common use cases include:
+*   Depositing assets from Ethereum L1 to zkSync L2.
+*   Triggering L2 smart contract calls or functions from an L1 transaction.
+
+Priority transactions bridge the two layers, ensuring that L1-initiated actions can be reliably processed and reflected on the zkSync rollup.
+
+Understanding these diverse transaction types is fundamental for developers navigating the Ethereum and zkSync ecosystems. Whether you're optimizing for gas costs, deploying complex smart contract systems, or leveraging advanced features like account abstraction and paymasters on zkSync, a solid grasp of each transaction type's purpose and structure will empower you to build more efficient, robust, and innovative Web3 applications.
