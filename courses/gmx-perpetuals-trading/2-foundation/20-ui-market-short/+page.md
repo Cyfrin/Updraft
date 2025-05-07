@@ -1,80 +1,57 @@
-Okay, here is a detailed summary of the video segment explaining how to create a short position on the GMX platform.
+## How to Open a Short Position on GMX
 
-**Objective:**
-The user aims to create a short position on ETH/USD using the GMX platform, betting that the price of ETH will decrease. This follows a previous video where they created a long position and incurred a loss.
+This guide walks you through the process of initiating a short position on the GMX decentralized perpetual exchange, specifically targeting the ETH/USD market. Opening a short position means you are betting that the price of the underlying asset (in this case, ETH) will decrease relative to the quote asset (USD). We will use a Market order for immediate execution.
 
-**Platform Interface:** GMX Trading Interface
+**1. Selecting the Order Type**
 
-**Steps and Explanations:**
+Navigate to the trading panel, typically located on the right side of the GMX interface.
 
-1.  **Selecting the Order Type:**
-    *   The user navigates to the trading panel on the right side of the screen.
-    *   They click the **"Short"** tab to initiate a short order.
-    *   They focus on the **"Market"** order type, meaning the short position will be opened immediately at the current available market price. Other options like Limit, TP/SL (Take Profit / Stop Loss), and Stop Market are visible but not used in this example.
+*   Ensure the **"Short"** tab is selected. This indicates your intention to profit from a price decrease.
+*   Verify that the order type is set to **"Market"**. A market order executes your trade immediately at the best currently available price on the platform. While other order types like Limit, Take Profit/Stop Loss (TP/SL), and Stop Market are available, we will focus on the Market order for this example.
 
-2.  **Setting Up the Trade:**
-    *   **Pay (Collateral):** The user decides to use `0.01 ETH` as collateral for the short position. This value is entered into the "Pay" field. The approximate USD value of this collateral (`$19.15` at the time) is displayed below the input.
-    *   **Collateral In:** The user emphasizes the importance of the **"Collateral in"** setting.
-        *   They select **"WETH"** (Wrapped ETH) because they are paying with ETH and want to use that ETH directly as collateral.
-        *   They explain that if **"USDC"** were selected here, the `0.01 ETH` they are paying would first be *swapped* into USDC, and that USDC would then be used as collateral. Since they want to use ETH collateral, WETH is the correct choice.
-    *   **Leverage and Position Size:**
-        *   The user selects **2.00x leverage** using the slider.
-        *   The platform automatically calculates the **Short Position Size** based on the collateral's value and the selected leverage.
-        *   **Concept:** Position Size = (USD Value of Collateral) * Leverage.
-        *   **Example:** $19.15 (approx. value of 0.01 ETH) * 2x Leverage = $38.27 (displayed as the "Short" amount in USD).
+**2. Configuring Your Trade Parameters**
 
-3.  **Understanding Key Metrics:**
-    *   **Liquidation Price (`$3,730.67` initially):**
-        *   The user explains that the liquidation price behaves differently for short positions compared to long positions.
-        *   **For Long Positions (Recap):** Increasing leverage causes the liquidation price to *rise* from below the entry price, getting closer to it.
-        *   **For Short Positions (Explanation):** The liquidation price starts *high* (far above the current price). As leverage is *increased*, the liquidation price *decreases*, moving closer to the entry price from above. If the market price *rises* to this level, the position is automatically closed (liquidated) to prevent further losses beyond the collateral. The user demonstrates this by briefly increasing the leverage slider, showing the liquidation price dropping.
-    *   **Positive Price Impact / Fees (`+0.036% / -0.040%`):**
-        *   The user notes that the "Price Impact" component is positive in this case (`+0.036%`).
-        *   **Concept:** GMX incentivizes trades that help balance the overall open interest (OI) between long and short positions.
-        *   **Explanation:** Currently, the Long Open Interest ($18.5m) is higher than the Short Open Interest ($17.8m), indicating an imbalance. By opening a *short* position, the user helps to balance this OI.
-        *   **Result:** Because they are helping balance the OI, they receive a small **rebate** (positive price impact), effectively reducing their entry cost slightly. Conversely, if opening the position *increased* the imbalance, they would pay a fee (negative price impact).
-    *   **Fees:**
-        *   **Open Fee (`-$0.01`):** A fee charged for opening the position, calculated as a percentage (`0.040%` shown in the tooltip) of the position size.
-        *   **Network Fee (`-$0.07` initially):** This is the estimated gas fee required to execute the transaction on the underlying blockchain (Arbitrum One is implied by the Metamask popup later). GMX executes the trade, and the user pays the associated gas cost. It's noted that this fee is often overestimated, and any excess is refunded.
+Next, define the specifics of your short position:
 
-4.  **Executing the Short Position:**
-    *   The user clicks the **"Short ETH"** button.
-    *   A **Metamask notification** pops up, asking the user to confirm the transaction, detailing the estimated gas fee. The user confirms the transaction in Metamask.
-    *   A confirmation message appears on GMX: "Increasing ETH Short: +$38.27", "Order request sent", "Order executed".
+*   **Pay (Collateral Amount):** In the "Pay" field, enter the amount of cryptocurrency you wish to use as collateral for this position. For this example, we will use `0.01 ETH`. The interface will display the approximate USD value of this collateral (e.g., `$19.15`).
+*   **Collateral In (Collateral Asset):** This setting is crucial. It determines which asset backs your position.
+    *   Since we are paying with ETH and want to use that ETH directly as collateral, select **"WETH"** (Wrapped ETH).
+    *   *Important Note:* If you were to select "USDC" here while paying with ETH, GMX would first automatically swap your `0.01 ETH` into USDC, and that USDC would then serve as your collateral. Choose the asset that matches what you intend to use for collateralization.
+*   **Leverage:** Use the leverage slider to choose your desired magnification level. For this example, select **2.00x leverage**.
+*   **Position Size Calculation:** GMX automatically calculates the total size of your short position based on your collateral and chosen leverage. The formula is:
+    *   `Position Size = (USD Value of Collateral) * Leverage`
+    *   Using our example: `$19.15 * 2.00x = $38.30`. This calculated value will be displayed, indicating the total USD value of the short position you are opening.
 
-5.  **Viewing the Open Position:**
-    *   The newly opened short position appears in the **"Positions"** tab at the bottom of the screen.
-    *   Key details are displayed:
-        *   Pool: ETH/USD [WETH-USDC]
-        *   Size: $38.27
-        *   Net Value: $19.14 (Collateral value fluctuates slightly)
-        *   PnL After Fees: +$0.01 (+0.06%) (Starts slightly positive due to the price impact rebate)
-        *   Collateral: $19.13 (0.0099920 WETH)
-        *   Entry Price: $1,915.78
-        *   Mark Price: $1,915.20 (Current market price)
-        *   Liq. Price: $3,730.56
+**3. Understanding Key Pre-Trade Metrics**
 
-**Key Concepts Covered:**
+Before executing, review the important metrics displayed:
 
-*   **Short Selling:** Betting on an asset's price decrease.
-*   **Leverage:** Magnifying potential profits and losses using borrowed funds (implicitly provided by the GMX liquidity pool).
-*   **Collateral:** The user's funds deposited to open and maintain the leveraged position.
-*   **Position Size:** The total value of the trade, determined by collateral and leverage.
-*   **Market Order:** An order to buy or sell immediately at the best available current price.
-*   **Liquidation Price:** The price at which the position is automatically closed by the platform to prevent losses exceeding the collateral. Its behavior differs significantly between long and short positions based on leverage.
-*   **Open Interest (OI):** The total value of all outstanding long and short contracts for an asset on the platform.
-*   **Price Impact (Slippage/Rebate):** An adjustment to the execution price based on the trade's size and its effect on the balance of open interest. Trades balancing OI may receive a rebate; trades increasing imbalance pay a fee.
-*   **Trading Fees:** Costs associated with trading, including open/close fees (based on position size) and network/gas fees (for blockchain execution).
+*   **Liquidation Price:** This is the price threshold at which your position will be automatically closed by GMX to prevent losses exceeding your deposited collateral.
+    *   *Behavior for Short Positions:* Unlike long positions where the liquidation price starts below entry and moves up with leverage, for short positions, the liquidation price starts *significantly above* the current market price. As you *increase* leverage on a short position, the liquidation price *decreases*, moving closer to your entry price from above. If the market price rises and hits this liquidation price, your position is liquidated. You can observe this effect by temporarily adjusting the leverage slider.
+*   **Price Impact / Fees:** This section shows potential adjustments to your entry price and the fees associated with opening the position.
+    *   *Price Impact:* You might see a positive percentage here (e.g., `+0.036%`). This occurs when the total value of open long positions (Long Open Interest or OI) is higher than the total value of open short positions (Short OI). By opening a short position, you help balance this OI. GMX incentivizes balancing trades by offering a slight price improvement (a rebate), effectively lowering your entry cost. Conversely, if your trade were to increase the imbalance, you would incur a small fee (negative price impact or slippage).
+    *   *Open Fee:* This is a standard fee charged for opening any position, calculated as a percentage of your total position size (e.g., `-0.040%`, resulting in a fee like `-$0.01`).
+    *   *Network Fee:* This is the estimated cost (gas fee) to execute the transaction on the underlying blockchain (e.g., Arbitrum One). GMX submits your trade request to the blockchain, and you pay the associated gas. This estimate is often slightly higher than the actual cost, and any unused portion is typically refunded to your wallet.
 
-**Notes/Tips:**
+**4. Executing the Short Position**
 
-*   Carefully select the correct asset under "Collateral in" based on how you are paying and what you want to use as collateral.
-*   Understand that higher leverage increases potential profit/loss *and* brings the liquidation price closer to the entry price, increasing risk.
-*   Be aware of how open interest imbalances can affect your entry price via the price impact mechanism.
+Once you have reviewed and confirmed all parameters:
 
-**Examples/Use Cases:**
+*   Click the **"Short ETH"** button.
+*   Your connected wallet (e.g., Metamask) will prompt you to confirm the transaction. Review the details, including the estimated network fee, and approve the transaction.
+*   GMX will display confirmation messages on the interface, such as "Increasing ETH Short: +$38.30", "Order request sent", and finally, "Order executed".
 
-*   The entire video demonstrates the use case of opening a 2x leveraged short position on ETH/USD using 0.01 ETH as collateral on GMX.
-*   The calculation `Position Size = Collateral Value * Leverage` is explicitly shown with values: `$19.15 * 2 = $38.27`.
-*   The difference in liquidation price movement with leverage for shorts (starts high, moves down) vs. longs (starts low, moves up) is explained.
-*   The concept of receiving a rebate for balancing open interest is demonstrated.
+**5. Viewing Your Open Position**
+
+After successful execution, your new short position will appear in the **"Positions"** tab, usually located at the bottom of the GMX interface. Here you can monitor its status, including:
+
+*   **Pool:** The market pair (e.g., ETH/USD [WETH-USDC]).
+*   **Size:** The total leveraged size of your position (e.g., $38.30).
+*   **Net Value:** The current value of your collateral, considering profits or losses.
+*   **PnL After Fees:** Your current profit or loss, accounting for fees and funding rates. It might start slightly positive due to a price impact rebate.
+*   **Collateral:** The amount and type of collateral backing the position (e.g., $19.13 / 0.00999 WETH).
+*   **Entry Price:** The price at which your short position was opened.
+*   **Mark Price:** The current real-time market price used for PnL and liquidation calculations.
+*   **Liq. Price:** The calculated liquidation price for your specific position.
+
+You have now successfully opened a leveraged short position on GMX. Remember that leveraged trading involves significant risk, including the potential loss of your entire collateral if the market moves against your position and reaches the liquidation price.
