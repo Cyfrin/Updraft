@@ -1,149 +1,166 @@
-Okay, here is a thorough and detailed summary of the video "zkSync Native Account Abstraction - Setup":
+## Deploying an ERC-4337 Smart Account and Sending a UserOperation on Arbitrum
 
-**Overall Summary**
+This lesson walks you through the practical steps of deploying a basic ERC-4337 smart contract account, specifically `MinimalAccount`, onto the Arbitrum mainnet. We'll then proceed to send a `UserOperation` (UserOp) through this newly deployed smart account. This exercise serves as a foundational example before we explore zkSync's native account abstraction capabilities. While the ultimate goal involves zkSync, understanding the process on an EVM-compatible chain like Arbitrum provides valuable context.
 
-The video introduces the concept of Native Account Abstraction (AA) on zkSync Era and contrasts it with the ERC-4337 standard used on Ethereum. It explains the simplified architecture of zkSync's AA, demonstrates how transactions are signed differently, and guides the viewer through the initial setup process using Foundry. This involves installing a specific version of the `foundry-era-contracts` repository (a modified version maintained by Cyfrin for the course) and setting up the basic structure for a minimal zkSync account contract by implementing the core `IAccount` interface. The key takeaway is that zkSync treats all accounts (including EOAs) as smart contracts under the hood, simplifying the AA model by eliminating the need for separate EntryPoint contracts and alt-mempools.
+Our primary objectives are:
+1.  Deploy a basic ERC-4337 smart contract account (`MinimalAccount`) to Arbitrum.
+2.  Construct and send a `UserOperation` through this account to interact with another contract.
 
-**Key Concepts & Explanations**
+We'll be working within a VS Code environment and executing commands directly in the terminal. The associated GitHub repository contains all necessary scripts and `make` commands, but for this demonstration, we'll run them explicitly.
 
-1.  **zkSync Native Account Abstraction:**
-    *   Unlike Ethereum's ERC-4337 which is built *on top* of the existing EOA/Contract distinction, zkSync's AA is built *natively* into the protocol layer.
-    *   **Simplified Flow:** Transactions intended for account abstraction don't go through a separate "alt-mempool" or a global `EntryPoint.sol` contract. They are sent to the standard zkSync mempool and interact directly with the target account contract.
-    *   **Diagram:** User (e.g., Metamask) signs a specific transaction type -> zkSync Mempool -> Target Account Contract (`Your Account`) -> Dapp Contract (`Dapp.sol`). Optional components like Signature Aggregators and Paymasters can interact with `Your Account`.
+## Deploying the `MinimalAccount` to Arbitrum Mainnet
 
-2.  **Contrast with ERC-4337 (Ethereum AA):**
-    *   ERC-4337 requires a "weird middle step" involving Bundlers, an alt-mempool for `UserOperations`, and a global `EntryPoint.sol` contract that orchestrates validation and execution.
-    *   zkSync eliminates the need for the explicit `EntryPoint.sol` and the alt-mempool, making the developer experience potentially simpler for basic AA.
+First, we need to deploy our `MinimalAccount` smart contract. This contract will act as our smart account, capable of receiving and executing UserOperations.
 
-3.  **Transaction Type 113:**
-    *   When interacting with zkSync AA (demonstrated via deploying a contract in Remix), Metamask prompts for a "Signature request" rather than a typical transaction confirmation.
-    *   The transaction details show `TxType: 113`, which is specific to zkSync's AA mechanism.
-    *   The user *signs* the transaction data, but doesn't initially pay gas. The zkSync node (or bootloader/operator) processes this signed data.
+We'll use a Foundry script for this deployment. Open your terminal within VS Code and ensure you have sourced your `.env` file, which should contain your `ARBITRUM_RPC_URL`.
 
-4.  **Gas Payment Model (Implicit):**
-    *   The user signs the transaction (TxType 113).
-    *   The transaction is processed by the network/node.
-    *   Gas fees are charged to the user's account *after* processing, "automagically" handled by the native AA system. This differs from standard Ethereum transactions where the sender pays gas upfront.
+The command to deploy is as follows:
 
-5.  **Unified Account Model (zkSync):**
-    *   **Core Idea:** On zkSync Era, *all* accounts, including Externally Owned Accounts (EOAs like Metamask wallets), are fundamentally smart contract wallets under the hood.
-    *   **EOAs as `DefaultAccount.sol`:** What appears as an EOA is actually an instance of a system contract, likely `DefaultAccount.sol` (or similar bytecode). This contract mimics EOA behavior.
-    *   **Benefit:** This removes the strict EOA vs. Smart Contract distinction found on Ethereum L1, simplifying interactions and ensuring all accounts adhere to a common interface (`IAccount`).
-    *   **Explorer Behavior:** The zkSync Block Explorer is smart enough to recognize addresses using the `DefaultAccount` bytecode and presents them in the familiar EOA style (without a "Contract" tab) for user-friendliness, even though they are contracts.
+```bash
+forge script script/DeployMinimal.s.sol --rpc-url $ARBITRUM_RPC_URL --account smallmoney --broadcast --verify
+```
 
-6.  **System Contracts (zkSync):**
-    *   Special contracts deployed at reserved addresses within the zkSync system.
-    *   They provide core functionalities, including parts of the AA mechanism and the implementation of EOAs (`DefaultAccount.sol`).
-    *   The `foundry-era-contracts` repo provides interfaces and implementations for these system contracts for development and testing.
+Let's break down this command:
+*   `forge script script/DeployMinimal.s.sol`: This tells Foundry to execute the deployment script located at `script/DeployMinimal.s.sol`.
+*   `--rpc-url $ARBITRUM_RPC_URL`: This specifies the Arbitrum RPC endpoint. The `$ARBITRUM_RPC_URL` variable should be set in your environment.
+*   `--account smallmoney`: This designates the deployer account alias. In this context, "smallmoney" refers to a **burner account**.
+    *   **Critical Safety Tip:** When deploying to mainnet environments like Arbitrum, always use a burner account. This is an account with a limited amount of funds, minimizing potential losses if mistakes occur during deployment or if the private key is compromised.
+*   `--broadcast`: This flag instructs Foundry to actually send the transaction to the network.
+*   `--verify`: After successful deployment, this flag attempts to automatically verify the contract's source code on the relevant block explorer (Arbiscan for Arbitrum).
 
-7.  **`IAccount` Interface:**
-    *   The central interface that *all* zkSync accounts (including the `DefaultAccount` representing EOAs) must implement.
-    *   Defines the standard functions required for an account to operate within the zkSync AA framework.
-    *   Key functions include:
-        *   `validateTransaction(...)`: Validates a transaction intended for the account.
-        *   `executeTransaction(...)`: Executes a transaction internally.
-        *   `executeTransactionFromOutside(...)`: Handles transactions initiated externally.
-        *   `payForTransaction(...)`: Logic for paying transaction fees.
-        *   `prepareForPaymaster(...)`: Logic for interacting with Paymasters.
+Once the command executes successfully, you can verify the deployment on Arbiscan. For this demonstration, the `MinimalAccount` contract was previously deployed and verified at the address: `0x03Ad95a54f02A40180D45D76789C448024145aaF`. On its Arbiscan page, you would see the verified source code (`MinimalAccount.sol`). This version might include additional NatSpec comments compared to earlier development versions but is fundamentally based on account abstraction principles. You might also notice a small amount of ETH in the contract, often sent for initial gas or testing.
 
-**Resources & Links Mentioned**
+## Preparing and Sending a UserOperation via `MinimalAccount`
 
-1.  **Cyfrin Foundry Era Contracts Repository:**
-    *   URL: `https://github.com/Cyfrin/foundry-era-contracts`
-    *   Purpose: A modified mirror of zkSync system contracts, tweaked for easier use within the course curriculum. This is the primary dependency installed.
-    *   Note: The speaker mentions that for the duration of the course, this repo should be used instead of the official Matter Labs/zkSync `era-contracts` repo, but a disclaimer might be added later to switch to the official one.
+With our `MinimalAccount` deployed, the next step is to send a `UserOperation` through it. This UserOp will instruct our smart account to interact with another contract on Arbitrum. We'll use another Foundry script, `SendPackedUserOp.s.sol`, for this purpose.
 
-2.  **zkSync Era Block Explorer:**
-    *   Mentioned for checking account details (e.g., Sepolia testnet explorer: `https://sepolia.explorer.zksync.io/`). Used to show that a Metamask EOA address on zkSync doesn't explicitly show a "Contract" tab, despite being a contract underneath.
+The core logic resides within the `run()` function of this script, which we need to populate.
 
-**Setup Steps & Code Blocks**
+**Coding the `run()` function in `SendPackedUserOp.s.sol`:**
 
-1.  **Install `foundry-era-contracts`:**
-    *   Command executed in the terminal within the Foundry project:
-        ```bash
-        forge install Cyfrin/foundry-era-contracts@0.0.3 --no-commit
-        ```
-    *   Note: Specific version `0.0.3` is used. The `--no-commit` flag prevents changes from being automatically added to git staging.
-
-2.  **Locate Key Files within `lib/foundry-era-contracts`:**
-    *   `IAccount.sol`: Path: `lib/foundry-era-contracts/src/system-contracts/contracts/interfaces/IAccount.sol`
-    *   `DefaultAccount.sol`: Path: `lib/foundry-era-contracts/src/system-contracts/contracts/DefaultAccount.sol`
-    *   `MemoryTransactionHelper.sol`: Path: `lib/foundry-era-contracts/src/system-contracts/contracts/libraries/MemoryTransactionHelper.sol` (This contains the `Transaction` struct needed by `IAccount`).
-
-3.  **Create `ZkMinimalAccount.sol`:**
-    *   New file created at `src/zksync/ZkMinimalAccount.sol`.
-
-4.  **Initial Code for `ZkMinimalAccount.sol`:**
+1.  **Initialize `HelperConfig`**: This utility contract helps manage network-specific configurations.
     ```solidity
-    // SPDX-License-Identifier: MIT
-    pragma solidity 0.8.24; // Or the version used in the video, e.g., 0.8.20
-
-    // Import the core interface
-    import {IAccount} from "lib/foundry-era-contracts/src/system-contracts/contracts/interfaces/IAccount.sol";
-    // Import the Transaction struct dependency
-    import {Transaction} from "lib/foundry-era-contracts/src/system-contracts/contracts/libraries/MemoryTransactionHelper.sol";
-
-    contract ZkMinimalAccount is IAccount {
-
-        // Function stubs copied from IAccount.sol interface
-        function validateTransaction(
-            bytes32 _txHash, // Renamed from txHash in video for clarity
-            bytes32 _suggestedSignedHash, // Renamed from suggestedSignedHash
-            Transaction calldata _transaction // Renamed from transaction
-        ) external payable returns (bytes4 magic) {
-            // Implementation pending
-        }
-
-        function executeTransaction(
-            bytes32 _txHash, // Renamed
-            bytes32 _suggestedSignedHash, // Renamed
-            Transaction calldata _transaction // Renamed
-        ) external payable {
-            // Implementation pending
-        }
-
-        function executeTransactionFromOutside(
-            Transaction calldata _transaction // Renamed
-        ) external payable {
-            // Implementation pending
-        }
-
-        function payForTransaction(
-            bytes32 _txHash, // Renamed
-            bytes32 _suggestedSignedHash, // Renamed
-            Transaction calldata _transaction // Renamed
-        ) external payable {
-            // Implementation pending
-        }
-
-        function prepareForPaymaster(
-            bytes32 _txHash, // Renamed
-            bytes32 _possibleSignedHash, // Renamed from possibleSignedHash
-            Transaction calldata _transaction // Renamed
-        ) external payable {
-            // Implementation pending
-        }
-    }
+    HelperConfig helperConfig = new HelperConfig();
     ```
-    *   Discussion: The video shows importing `IAccount`, setting up the contract to inherit from it, adding the necessary `Transaction` struct import, and pasting the function signatures from the `IAccount` interface with empty bodies to satisfy the compiler initially.
 
-**Important Notes & Tips**
+2.  **Define Target Contract Address (`dest`)**: This is the address of the contract our UserOp will ultimately call. For this example, we'll target the Arbitrum mainnet USDC contract.
+    ```solidity
+    address dest = 0xaf88d065e77c8cC2239327C5EDb3A432268e5831; // Arbitrum Mainnet USDC
+    ```
 
-*   The `cyfrin/foundry-era-contracts` repository is specifically recommended for this course due to modifications made by the instructor.
-*   Pay attention to the specific version (`0.0.3`) when installing the dependency.
-*   Understanding that all zkSync accounts are contracts implementing `IAccount` simplifies the mental model compared to Ethereum L1.
-*   The zkSync explorer UI choice to hide the contract nature of EOAs is a deliberate design decision for user experience.
+3.  **Define Call Value (`value`)**: Since our interaction (an `approve` call) doesn't involve sending ETH, this is `0`.
+    ```solidity
+    uint256 value = 0;
+    ```
 
-**Questions & Answers (Implicit)**
+4.  **Define `functionData`**: This is the calldata for the internal call our `MinimalAccount` will make. We'll call the `approve` function on the USDC contract.
+    *   First, import `IERC20` if not already present:
+        ```solidity
+        import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+        ```
+    *   Then, encode the `approve` call:
+        ```solidity
+        bytes memory functionData = abi.encodeWithSelector(
+            IERC20.approve.selector,
+            0x9EA9b0cc1919def1A3CfAEF4F7A66eE3c36F86fC, // Spender address (another EOA)
+            1e18 // Amount to approve (Note: USDC has 6 decimals, so 1e18 is a very large USDC amount)
+        );
+        ```
+        *(The large approval amount is for demonstration; in a real scenario, use appropriate values and consider USDC's decimal precision.)*
 
-*   **Q:** Why does Metamask show a "Signature request" (TxType 113) instead of a normal transaction send on zkSync?
-    *   **A:** Because zkSync's native AA uses a different transaction flow where the user first signs the data, and the network handles execution and gas payment subsequently, rather than the user paying gas upfront.
-*   **Q:** Why doesn't my EOA show up as a contract on the zkSync explorer?
-    *   **A:** It *is* a contract (`DefaultAccount.sol` or similar), but the explorer recognizes its bytecode and presents it like a standard EOA for familiarity and simplicity.
-*   **Q:** Do I need an `EntryPoint.sol` contract for zkSync AA?
-    *   **A:** No, zkSync's native AA does not use or require the ERC-4337 `EntryPoint.sol` contract. Interactions happen directly with the account contract.
+5.  **Define `executeCallData`**: This is the calldata for the `MinimalAccount`'s `execute` function. This function, when called by the EntryPoint, will perform the internal `approve` call defined above.
+    *   Import `MinimalAccount` if not already present (path may vary):
+        ```solidity
+        import {MinimalAccount} from "src/ethereum/MinimalAccount.sol";
+        ```
+    *   Encode the `execute` call:
+        ```solidity
+        bytes memory executeCallData = abi.encodeWithSelector(
+            MinimalAccount.execute.selector,
+            dest,
+            value,
+            functionData
+        );
+        ```
 
-**Examples & Use Cases**
+6.  **Generate Signed UserOperation (`userOp`)**: We'll use a helper function, `generateSignedUserOperation` (assumed to be defined elsewhere in the script or an imported library), which handles creating the `PackedUserOperation` struct, fetching the nonce, calculating the UserOp hash, and signing it with the appropriate key.
+    ```solidity
+    // The MinimalAccount address deployed earlier
+    address minimalAccountAddress = address(0x03Ad95a54f02A40180D45D76789C448024145aaF);
+    PackedUserOperation memory userOp = generateSignedUserOperation(
+        executeCallData,
+        helperConfig.getConfig(), // Contains network config like EntryPoint address
+        minimalAccountAddress
+    );
+    ```
 
-*   The primary example is the process of setting up the development environment and creating the skeleton `ZkMinimalAccount.sol` contract, preparing it to implement the `IAccount` interface functions.
-*   A past example (deploying via Remix) is referenced to illustrate the TxType 113 signature request flow in Metamask when interacting with zkSync AA.
+7.  **Prepare UserOp Array (`ops`)**: The EntryPoint's `handleOps` function expects an array of UserOperations.
+    ```solidity
+    PackedUserOperation[] memory ops = new PackedUserOperation[](1);
+    ops[0] = userOp;
+    ```
+
+8.  **Broadcast Transaction to EntryPoint**: Using Foundry's cheatcodes, we simulate broadcasting the transaction. The `handleOps` function is called on the ERC-4337 EntryPoint contract.
+    ```solidity
+    vm.startBroadcast();
+    // The beneficiary address receives gas refunds
+    address payable beneficiary = payable(helperConfig.getConfig().account); // Typically the burner account
+    IEntryPoint(helperConfig.getConfig().entryPoint).handleOps(ops, beneficiary);
+    vm.stopBroadcast();
+    ```
+
+**Important Off-Screen Setup:**
+Before running this script, some off-screen configuration is necessary:
+*   **`HelperConfig.s.sol` Update**: This file must be updated with Arbitrum-specific configurations, such as the official EntryPoint contract address and the "account" address (your burner/smallmoney account used for broadcasting and as beneficiary).
+*   **Wallet/Private Keys**: Ensure your Foundry environment is correctly configured with the private keys, especially for the "smallmoney" account that will sign and broadcast the transaction to the EntryPoint.
+
+**A Note on Testing Account Abstraction:**
+Testing ERC-4337 account abstraction can be challenging. Ideally, one would use dedicated testnets fully supporting the ERC-4337 infrastructure (Bundlers, EntryPoint, Paymasters). In the absence of readily available, fully-fledged ERC-4337 testnets at the time of demonstration, deploying and testing directly on a mainnet like Arbitrum (using a burner account and minimal funds) was chosen, despite the inherent costs and risks.
+
+**Executing the UserOperation Script:**
+With the script prepared and configurations in place, we can run the command to send the UserOperation.
+```bash
+forge script script/SendPackedUserOp.s.sol --rpc-url $ARBITRUM_RPC_URL --account smallmoney --broadcast -vvv
+```
+This command is similar to the deployment command:
+*   It targets the `SendPackedUserOp.s.sol` script.
+*   It uses the same Arbitrum RPC URL and the `smallmoney` burner account (which pays for the gas to submit the UserOp to the EntryPoint).
+*   `--broadcast` sends the transaction.
+*   `-vvv` increases verbosity for more detailed logs during execution.
+
+*Disclaimer: For this lesson, these commands were executed prior to recording to avoid live mainnet gas expenditures. The results shown on Arbiscan reflect these pre-executed transactions.*
+
+## Verifying the UserOperation on Arbiscan
+
+After the script execution (or by looking up the pre-executed transaction), we can verify the outcome on Arbiscan. Navigate to the transaction hash generated by the `handleOps` call.
+
+**Transaction Details on Arbiscan:**
+*   **Status:** Should be "Success".
+*   **Timestamp:** Will reflect when the transaction was mined (e.g., "54 days 20 hrs ago" if checking a past transaction).
+*   **From:** The address of your "smallmoney" burner account (the EOA that submitted the UserOp to the EntryPoint).
+*   **To (Interacted With):** The ERC-4337 EntryPoint contract address on Arbitrum.
+*   **Input Data:** Decoded, this will show the call to the `handleOps` function. You'll see the `ops` array containing your `PackedUserOperation` (including the `sender` as your `MinimalAccount` address, `nonce`, the `callData` which is `executeCallData`, `signature`, etc.) and the `beneficiary` address.
+
+**Internal Transactions and Event Logs:**
+The crucial part is to inspect the event logs generated by this transaction:
+1.  **`Approval` Event (from USDC Token Contract):** You should see an `Approval` event emitted by the USDC Token contract (`0xaf88...`). This confirms that the internal call within your UserOperation successfully executed the `approve` function on the USDC contract. The log details will show:
+    *   `owner`: The address of your `MinimalAccount` (`0x03Ad...`).
+    *   `spender`: The address you specified in `functionData` (`0x9EA9...`).
+    *   `value`: The amount approved (Arbiscan might display this based on 6 decimals for USDC, e.g., `1000000` if `1e6` was the effective amount after decimal conversion, or a larger number if `1e18` was directly interpreted, though USDC uses 6 decimals). The key is that an approval occurred.
+
+2.  **`UserOperationEvent` (from EntryPoint Contract):** The EntryPoint contract itself will emit a `UserOperationEvent`. This event signals the successful processing of your UserOp and includes vital information:
+    *   `userOpHash`: The unique hash of your UserOperation.
+    *   `sender`: The address of your `MinimalAccount`.
+    *   `paymaster`: Address of the paymaster if one was used (likely `address(0)` if not).
+    *   `nonce`: The nonce used for this UserOp from your `MinimalAccount`.
+    *   `success`: A boolean indicating if the UserOp execution was successful (should be `true`).
+    *   `actualGasCost`: The actual gas cost paid for the UserOp.
+    *   `actualGasUsed`: The gas used by the UserOp execution.
+
+Seeing these events, particularly the `Approval` from USDC and a successful `UserOperationEvent`, confirms that your UserOperation was correctly processed by the EntryPoint. The EntryPoint, in turn, called the `execute` function on your `MinimalAccount`, which then successfully performed the intended internal transaction (the USDC approval).
+
+## Next Steps
+
+You've now seen a demonstration of how to deploy an ERC-4337 smart account and send a UserOperation through it on an EVM Layer 2 like Arbitrum, which does not have native account abstraction built into its core protocol. This approach can be applied to Ethereum or any EVM-compatible chain.
+
+However, some chains, like zkSync, offer native account abstraction. This often simplifies the process as some AA components might be integrated more deeply into the protocol. In the next part of this series, we will explore how account abstraction works on zkSync and how it differs from the ERC-4337 implementation we've just covered.
