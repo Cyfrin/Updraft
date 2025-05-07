@@ -1,72 +1,20 @@
-Okay, here is a detailed summary of the video clip:
+## Understanding GMX vs. GLP Tokens on the Earn Page
 
-**Overall Summary**
+When navigating the GMX platform, particularly the "Earn" page, you'll encounter options related to both GMX and GLP tokens. Understanding the distinction between these two assets is crucial for interacting effectively with the GMX ecosystem.
 
-The video clip provides a brief overview of the "Earn" page on the GMX platform, focusing specifically on explaining the difference between the GMX token and the GLP token. The narrator navigates the user interface, highlights key sections related to both tokens, poses the question of their difference, and then uses the GMX documentation to provide the answer, establishing GLP as the V1 liquidity provider token and GMX as the governance token (associated with V2 in the explanation). The narrator concludes by stating they will not cover GLP further as it relates to the older V1.
+The "Earn" page clearly presents sections for both tokens. The top section typically focuses on **GMX**, displaying its current price, your wallet balance, and any GMX you have staked. Staking GMX allows you to earn rewards (often paid in GMX and Escrowed GMX, or esGMX) and grants you **Voting Power** in the GMX DAO (Decentralized Autonomous Organization), reflecting its role in platform governance. You'll find options here to Buy, Stake, Unstake, Delegate voting power, or Transfer your staked position. Key metrics like the Annual Percentage Rate (APR) for staking, total GMX staked across the platform, and total supply are also visible.
 
-**Detailed Breakdown**
+Scrolling down on the "Earn" page reveals a similar section dedicated to **GLP**. This area shows the GLP price, your wallet and staked balances (if any), the APR for holding/staking GLP, and total supply/staked figures. Buttons to "Buy GLP" and "Sell GLP" are prominent. The interface indicates that staking GLP is also an option.
 
-1.  **Initial View (0:00 - 0:02):**
-    *   The video starts on the GMX "Earn" page.
-    *   The header indicates the purpose: "Stake GMX and buy GMX or GLP to earn rewards."
-    *   A sub-header mentions the user is currently earning rewards with "0.23 Tokens: 0.23 GMX".
-    *   The main section highlighted initially is "GMX & Voting Power".
-        *   Shows: Price ($14.51), Wallet balance (0.20000 GMX), Staked balance (0.23411 GMX), Voting Power (0.23411 GMX DAO).
-        *   Shows: APR (11.56%), Rewards ($0.00).
-        *   Shows: Total Staked (6.23m GMX), Total Supply (10.03m GMX).
-        *   Buttons available: Buy GMX, Stake, Unstake, Delegate, Transfer Account.
-    *   To the right, a "Total Rewards" section shows claimable GMX (0.0000444) and Escrowed GMX (0.0000).
+This naturally leads to the question: What is the fundamental difference between the GMX token and the GLP token?
 
-2.  **Introducing GLP (0:02 - 0:09):**
-    *   The narrator scrolls down slightly to focus on the "GLP" section.
-    *   Key information shown for GLP: Price ($1.3008), Wallet (0.0000 GLP), Staked (0.0000 GLP), APR (10.28%), Rewards ($0.00), Total Staked (37.58m GLP), Total Supply (37.58m GLP).
-    *   The narrator points out the "Buy GLP" and "Sell GLP" buttons.
-    *   The narrator then highlights the "Staked" field within the GLP section, stating "There's also an option to stake this GLP."
+To clarify this, we turn to the official GMX documentation. The documentation explicitly defines **GLP** as the **liquidity provider (LP) token for GMX V1**. When users provided liquidity to the first version of the GMX protocol (V1), they received GLP tokens. These tokens represented a share in the V1 liquidity pool (an index of assets used for swaps and leverage trading), and holders earned fees generated from V1 platform activity like leverage trading, borrowing, and swaps.
 
-3.  **Posing the Key Question (0:09 - 0:13):**
-    *   The narrator explicitly asks: "So, what is the difference between GMX and the GLP token?"
+In contrast, the **GMX token** serves as the primary **utility and governance token** for the platform, with its governance functions being particularly emphasized in the context of GMX **V2**. Staking GMX grants users a share of protocol revenue and the ability to participate in governance decisions via voting.
 
-4.  **Explaining the Difference via Docs (0:13 - 0:24):**
-    *   The view switches to the official GMX Documentation page.
-    *   **Resource Mentioned:** GMX Docs.
-    *   The specific page shown is titled "Liquidity on V1" under the "Providing Liquidity" section.
-    *   **Concept Introduced:** The documentation states: "GLP is the liquidity provider token for V1. Liquidity providers earn fees from leverage trading, borrowing fees and swaps."
-    *   The narrator summarizes the difference based on this:
-        *   **Answer:** GLP is the liquidity provider token specifically for GMX **V1**.
-        *   **Answer:** GMX is described as the **governance token** for GMX **V2**.
+Therefore, the core distinction lies in their roles and the protocol versions they are primarily associated with:
 
-5.  **Conclusion on GLP (0:24 - 0:31):**
-    *   The view switches back to the GMX platform's "Earn" page, focusing on the GLP section again.
-    *   The narrator reiterates that GLP is the liquidity provider token for GMX V1.
-    *   **Narrator's Note/Intent:** Because GLP is associated with V1, the narrator states, "I won't be covering anything further for this token."
+*   **GLP:** The liquidity provider token for GMX **V1**.
+*   **GMX:** The utility and governance token, central to GMX **V2**.
 
-**Key Concepts & Relationships**
-
-*   **GMX Token:** Presented as the primary utility and governance token for the platform (specifically mentioned in the context of GMX V2 by the narrator). It can be staked to earn rewards (shown as GMX and Escrowed GMX in the UI) and provides voting power.
-*   **GLP Token:** Defined as the *liquidity provider (LP)* token specifically for GMX **V1**. It represents an index of assets used for swaps and leverage trading on V1. Holders earn fees generated by V1 platform activity. It can be bought and sold directly on the platform. The UI suggests it can also be staked, although the user has 0 staked.
-*   **GMX V1 vs. V2 Distinction:** This is the core reason for the difference between the two tokens highlighted. GLP is tied to the older V1 mechanism for providing liquidity, while GMX serves as the governance token, particularly emphasized for V2.
-*   **Staking:** A mechanism applicable to GMX (actively shown with user balance) and mentioned as an option for GLP (though not demonstrated or elaborated upon). Staking typically involves locking tokens to earn rewards and/or participate in platform functions (like governance via voting power for GMX).
-
-**Important Notes/Tips Mentioned**
-
-*   The focus of future discussion (implicitly) will be on GMX and V2 features, not GLP/V1.
-*   The GMX platform UI shown (likely V2) still includes sections for managing the V1 GLP token.
-
-**Questions & Answers Mentioned**
-
-*   **Question:** What is the difference between GMX and the GLP token?
-*   **Answer:** GLP is the liquidity provider token for GMX V1, while GMX is the governance token (associated with V2 by the narrator).
-
-**Examples/Use Cases Mentioned**
-
-*   **GMX:** Staking for rewards and voting power (governance).
-*   **GLP:** Buying/Selling, potentially staking, and acting as a liquidity provider on GMX V1 to earn fees from trading/swaps/borrowing.
-
-**Code Blocks Mentioned**
-
-*   None.
-
-**Links/Resources Mentioned**
-
-*   GMX Platform UI (specifically the "Earn" tab).
-*   GMX Documentation (specifically the "Providing Liquidity" -> "Liquidity on V1" page).
+Since GLP is tied specifically to the legacy GMX V1 system for providing liquidity, further exploration will typically focus on the GMX token and the mechanisms associated with the current version of the protocol (V2).
