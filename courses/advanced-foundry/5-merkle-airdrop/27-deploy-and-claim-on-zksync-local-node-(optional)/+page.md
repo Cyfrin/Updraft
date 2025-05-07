@@ -1,205 +1,264 @@
-Okay, here is a very thorough and detailed summary of the video "Deploying to a testnet", focusing on deploying a Merkle Airdrop contract to zkSync Sepolia using Foundry's command-line tools (`forge` and `cast`).
+## Deploying and Interacting with a Merkle Airdrop on zkSync Local Node
 
-**Overall Summary**
+This lesson provides an optional, hands-on guide to deploying a Merkle Airdrop smart contract, along with its associated token contract, to a zkSync local development node. We'll also walk through the process of an eligible address claiming its tokens. Due to certain limitations with full Foundry script support on zkSync local nodes at the time of this guide's creation, we will utilize a bash script (`interactZK.sh`) to orchestrate a series of `cast` and `forge script` commands. This approach effectively automates the entire workflow from deployment to claiming.
 
-The video demonstrates the manual process of deploying and interacting with a Merkle Airdrop smart contract system onto the zkSync Sepolia testnet using Foundry's command-line tools (`forge create`, `cast send`, `cast call`, `cast wallet sign`). The speaker explicitly chooses this manual method because, at the time of recording, Foundry's scripting capabilities (`forge script`) were not fully compatible with zkSync. The process involves deploying two contracts (an ERC20 token and the airdrop contract), generating and signing a claim message off-chain for a specific user, and finally executing the claim transaction on-chain using a different account to pay for gas, showcasing a form of meta-transaction or gas relaying pattern facilitated by signature verification. The speaker emphasizes security practices like using keystores instead of raw private keys and highlights zkSync-specific considerations like transaction types and potential `ecrecover` issues related to account abstraction.
+## Initial Setup for zkSync Environment
 
-**Target Testnet & Tooling**
+Before diving into the deployment, let's prepare our local environment for zkSync development. This section is primarily for users who wish to follow along with zkSync-specific interactions.
 
-*   **Testnet:** zkSync Sepolia Era Testnet
-*   **Framework:** Foundry
-*   **Tools:**
-    *   `forge create`: Used to deploy smart contracts.
-    *   `cast send`: Used to send transactions that modify state (e.g., mint, transfer, claim).
-    *   `cast call`: Used to read data from contracts without sending a transaction (e.g., getMessageHash, balanceOf).
-    *   `cast wallet sign`: Used to sign messages using a local keystore.
-    *   `forge script`: Mentioned but *not used* for deployment/interaction due to zkSync incompatibility at the time. A script (`SplitSignature.s.sol`) *is* used locally to process a signature.
-*   **Contracts:**
-    *   `BagelToken.sol`: A simple ERC20 token contract.
-    *   `MerkleAirdrop.sol`: The contract managing the Merkle proof verification and token distribution.
-*   **Configuration:**
-    *   `.env` file: Stores the zkSync Sepolia RPC URL. Needs to be sourced using `source .env`.
-    *   `output.json`: Contains the Merkle tree root, leaf data, and proofs (presumably generated beforehand, e.g., using `make merkle`).
-    *   `input.json`: Contains the list of addresses and amounts for the airdrop.
+1.  **Stop Existing Anvil Node:** If you have an Anvil node running from previous lessons or other development work, ensure it is stopped to prevent port conflicts and confusion. You can typically stop it by pressing `Ctrl+C` in the terminal where it's running.
 
-**Key Concepts**
+2.  **Install or Update zkSync-Compatible Foundry:**
+    The zkSync team maintains a fork of Foundry that includes compatibility for their network. To install or update to this version, run the following command in your terminal:
+    ```bash
+    foundryup -zksync
+    ```
+    This command ensures your `forge` and `cast` tools are equipped to interact with zkSync nodes.
 
-1.  **Merkle Airdrops:** A gas-efficient way to distribute tokens to many users. Instead of storing all recipients on-chain, only the Merkle Root (a hash representing the entire list) is stored. Users provide their own data (address, amount) and a Merkle Proof off-chain, which the contract verifies against the stored root before distributing tokens.
-2.  **Off-Chain Signing (EIP-712 style):** To authorize a claim, the recipient signs a message containing their details (account, amount) combined with contract-specific data (like domain separator, message typehash). The `getMessageHash` function prepares this hash on-chain, which is then signed off-chain by the user.
-3.  **Signature Verification (`ecrecover`):** The `claim` function uses the provided signature (V, R, S components) and the message hash to recover the signer's address using `ecrecover`. If the recovered address matches the claimant's address provided in the claim parameters, the signature is valid.
-4.  **Foundry CLI Interaction:** Demonstrates using `forge` and `cast` for the entire lifecycle: deployment, state reads, state writes, and off-chain signing via keystores.
-5.  **Keystore Management:** Emphasizes using Foundry's keystore feature (`--account <name>`) for managing private keys securely, rather than exposing them directly via `--private-key` or in environment variables. The speaker uses two accounts named `updraft` and `updraft-2`.
-6.  **zkSync Deployment Considerations:**
-    *   `--zksync` flag: Required when using `forge`/`cast` with zkSync Era.
-    *   `--legacy` flag: Used with `forge create` to force Type 0 transactions, which was necessary for Foundry/zkSync compatibility at the time.
-    *   RPC URL: Specific public RPC endpoint for zkSync Sepolia is used (`https://sepolia.era.zksync.dev`). Issues with Alchemy's endpoint were noted.
-7.  **Gas Relaying / Meta-Transactions (Implicit):** The claim is initiated by the `updraft` account, paying the gas, but it acts on behalf of `updraft-2` (the claimant), authorized by the signature provided by `updraft-2`.
-8.  **Account Abstraction (zkSync):** A warning is displayed regarding `ecrecover`'s limitations on zkSync due to native account abstraction support. It's noted that `ecrecover` might not work reliably if the signing account is a smart contract wallet (not an EOA) or uses a different signature scheme than standard ECDSA.
+## Introducing the `interactZK.sh` Automation Script
 
-**Step-by-Step Process & Code Blocks**
+Given the current state of Foundry scripting on zkSync local nodes, a bash script provides a robust way to manage the multi-step process of contract deployment and interaction. This script, `interactZK.sh`, will automate calls to `forge`, `cast`, and the zkSync CLI.
 
-1.  **Introduction & Setup:**
-    *   Goal: Deploy to zkSync Sepolia manually.
-    *   Recommendation: Use scripts (like `DeployMerkleAirdrop.s.sol`, `Interact.s.sol`) on compatible chains.
-    *   Keystore setup: Two accounts (`updraft` for deploying/calling, `updraft-2` for signing/claiming) are assumed to be set up in Foundry's keystore.
-    *   Environment setup: Ensure `.env` has `ZKSYNC_SEPOLIA_RPC_URL` and run `source .env`.
+You will need to obtain this script. The recommended way is to copy its contents from the official GitHub repository associated with this course.
+1.  Create a new file named `interactZK.sh` in the root directory of your project.
+2.  Paste the content from the repository's `interactZK.sh` file into your newly created local file.
 
-2.  **Deploy `BagelToken` Contract:**
-    *   Command:
-        ```bash
-        forge create src/BagelToken.sol:BagelToken \
-          --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL} \
-          --account updraft \
-          --legacy \
-          --zksync
-        ```
-    *   Requires password for `updraft` keystore.
-    *   Outputs the deployed `BagelToken` contract address.
+## Dissecting the `interactZK.sh` Bash Script
 
-3.  **Save Token Address:**
-    *   Command:
-        ```bash
-        export TOKEN_ADDRESS=<deployed_token_address>
-        ```
+The `interactZK.sh` script is designed to execute the entire workflow sequentially. Let's break down its components:
 
-4.  **Deploy `MerkleAirdrop` Contract:**
-    *   Get Merkle Root from `output.json`.
-    *   Constructor Args: `_merkleRoot` (bytes32), `_token` (address). **Order matters!** Root first, then token.
-    *   *Note:* The speaker initially pastes an incorrect root hash in the video; the overlay text corrects this and advises checking `output.json`.
-    *   Command (using correct root from speaker's `output.json` example):
-        ```bash
-        # Note: The root hash used here comes from the speaker's specific output.json example for updraft-2
-        export ROOT_HASH=0xad581231e596618465a6aa0f5870ca8e20785fd436d5b86b2cc662cc7c4 
-        # (This root seems different from the one pasted later - always verify from your output.json!)
-        
-        # The speaker actually pastes this root hash in the command around 3:39, which seems incorrect based on later steps. Let's assume the root for account `0x2ea...` is needed. The `output.json` snippet shows a root hash. Let's use one conceptually:
-        # export ROOT_HASH=<correct_root_hash_from_output.json> 
-        
-        forge create src/MerkleAirdrop.sol:MerkleAirdrop \
-          --constructor-args ${ROOT_HASH} ${TOKEN_ADDRESS} \
-          --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL} \
-          --account updraft \
-          --legacy \
-          --zksync
-        ```
-    *   Requires password for `updraft` keystore.
-    *   Outputs the deployed `MerkleAirdrop` contract address.
+### Defining Essential Constants
 
-5.  **Save Airdrop Address:**
-    *   Command:
-        ```bash
-        export AIRDROP_ADDRESS=<deployed_airdrop_address>
-        ```
+The script begins by defining several constants crucial for its operation:
 
-6.  **Get Message Hash to Sign:**
-    *   Identify claimant address (`0x2ea...` for `updraft-2`) and amount (`25 * 10^18`) from `input.json`.
-    *   Command:
-        ```bash
-        cast call ${AIRDROP_ADDRESS} "getMessageHash(address,uint256)" 0x2ea3970E82D5b30e821FAaD4A731D35964F7dd 25000000000000000000 \
-          --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL}
-        ```
-    *   Outputs the `bytes32` message hash.
+*   `DEFAULT_ZKSYNC_LOCAL_KEY`: This is the private key for the default rich account provided by the zkSync local development node. This account will act as the deployer for our smart contracts and will also pay the gas fees for transactions like the token claim.
+    *   *Example (value will differ)*: `0x7726827caac94a7f9e1b160f7e80984ea8b0c5b371a87e8bf873508ae043d0`
+*   `DEFAULT_ZKSYNC_ADDRESS`: The Ethereum address corresponding to the `DEFAULT_ZKSYNC_LOCAL_KEY`.
+*   `DEFAULT_ANVIL_KEY`: This private key belongs to an account (presumably from a previous Anvil setup or a pre-determined list) that is eligible for the airdrop. This key will be used to sign a message, proving the account's eligibility.
+    *   *Example*: `0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80`
+*   `DEFAULT_ANVIL_ADDRESS`: The Ethereum address corresponding to `DEFAULT_ANVIL_KEY`. This is the address that will ultimately receive the airdropped tokens.
+    *   *Example*: `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`
+*   `ROOT`: The pre-calculated Merkle root for the airdrop. This root represents the cryptographic commitment to the set of all eligible addresses and their token amounts.
+*   `PROOF_1`, `PROOF_2`: These are the Merkle proofs specific to `DEFAULT_ANVIL_ADDRESS`. The proofs, along with the `ROOT`, allow the smart contract to verify that `DEFAULT_ANVIL_ADDRESS` is indeed part of the airdrop distribution.
 
-7.  **Sign the Message:**
-    *   Use the claimant's account (`updraft-2`).
-    *   **Crucial Tip:** Use `--no-hash` because `getMessageHash` already performs the EIP-712 compatible hashing.
-    *   Command:
-        ```bash
-        export MESSAGE_HASH=<output_from_previous_step>
-        cast wallet sign --no-hash ${MESSAGE_HASH} --account updraft-2
-        ```
-    *   Requires password for `updraft-2` keystore.
-    *   Outputs the 65-byte signature (including `0x` prefix).
+### Starting the zkSync Local Node
 
-8.  **Split the Signature (V, R, S):**
-    *   Create `signature.txt` file.
-    *   Paste the signature from the previous step into `signature.txt`, **removing the `0x` prefix**.
-    *   Run the helper script:
-        ```bash
-        forge script script/SplitSignature.s.sol:SplitSignature
-        ```
-    *   Outputs V (uint8, likely 27 or 28), R (bytes32), S (bytes32).
+The script first ensures a zkSync local development node is running. It uses the `zksync-cli` for this purpose.
+**Important:** Docker must be installed and running on your machine for this step to succeed.
+```bash
+echo "Creating zkSync local node..."
+npx zksync-cli dev start
+```
 
-9.  **Save V, R, S Components:**
-    *   Commands:
-        ```bash
-        export V=<v_value>
-        export R=<r_value_with_0x>
-        export S=<s_value_with_0x>
-        ```
+### Deploying the `BagelToken` Contract
 
-10. **Mint Initial Token Supply:**
-    *   Mint tokens to the deployer (`updraft`) account first. Amount should cover the total airdrop (100 tokens in this example).
-    *   Command:
-        ```bash
-        export DEPLOYER_ADDRESS=$(cast wallet address updraft) # Get deployer address if needed
-        cast send ${TOKEN_ADDRESS} "mint(address,uint256)" ${DEPLOYER_ADDRESS} 100000000000000000000 \
-          --account updraft \
-          --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL}
-        ```
-    *   Requires password for `updraft`.
+Next, the script deploys the `BagelToken.sol` ERC20 token contract to the zkSync local node.
+*   The deployment is performed using `forge create`.
+*   The `--rpc-url http://127.0.0.1:8011` flag points to the default RPC endpoint for the zkSync local node.
+*   The `--private-key $DEFAULT_ZKSYNC_LOCAL_KEY` specifies the deployer account.
+*   The `--legacy` flag is used for compatibility, and `--zksync` enables zkSync-specific deployment features.
+*   The deployed contract address is captured using `awk` and stored in the `TOKEN_ADDRESS` variable.
 
-11. **Transfer Tokens to Airdrop Contract:**
-    *   Send the required total amount from the deployer (`updraft`) to the `MerkleAirdrop` contract.
-    *   Command:
-        ```bash
-        cast send ${TOKEN_ADDRESS} "transfer(address,uint256)" ${AIRDROP_ADDRESS} 100000000000000000000 \
-          --account updraft \
-          --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL}
-        ```
-    *   Requires password for `updraft`.
+```bash
+echo "Deploying token contract..."
+TOKEN_ADDRESS=$(forge create src/BagelToken.sol:BagelToken --rpc-url http://127.0.0.1:8011 --private-key $DEFAULT_ZKSYNC_LOCAL_KEY --legacy --zksync | awk '/Deployed to:/{print $3}')
+echo "Token contract deployed at: $TOKEN_ADDRESS"
+```
 
-12. **Call `claim` Function:**
-    *   Gather all parameters: claimant address, amount, Merkle proof array (from `output.json` for the specific claimant), V, R, S.
-    *   The transaction sender (`updraft`) pays the gas.
-    *   Command (using example values for `updraft-2` / `0x2ea...`):
-        ```bash
-        export CLAIMANT_ADDRESS=0x2ea3970E82D5b30e821FAaD4A731D35964F7dd
-        export CLAIM_AMOUNT=25000000000000000000
-        # Proof elements from output.json for the claimant 0x2ea...
-        export PROOF_ELEMENT_1=0x4fd31feee0e75780cd67704fbc43cae70fddcaa43631e2e1bc9fb233fada2394 
-        export PROOF_ELEMENT_2=0x81f8e530b5687f2d6fc3e10f887380423063f0407e21cef901b8aeb0a25e5e2
+### Deploying the `MerkleAirdrop` Contract
 
-        cast send ${AIRDROP_ADDRESS} "claim(address,uint256,bytes32[],uint8,bytes32,bytes32)" \
-          ${CLAIMANT_ADDRESS} \
-          ${CLAIM_AMOUNT} \
-          "[${PROOF_ELEMENT_1},${PROOF_ELEMENT_2}]" \
-          ${V} \
-          ${R} \
-          ${S} \
-          --account updraft \
-          --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL}
-        ```
-    *   Requires password for `updraft`.
+With the token contract deployed, the script deploys the `MerkleAirdrop.sol` contract.
+*   This deployment also uses `forge create` with similar flags.
+*   Crucially, it passes the `ROOT` (Merkle root) and `TOKEN_ADDRESS` (address of the deployed BagelToken contract) as constructor arguments using `--constructor-args`.
+*   The deployer is again `DEFAULT_ZKSYNC_LOCAL_KEY`.
+*   The deployed airdrop contract address is extracted and stored in `AIRDROP_ADDRESS`.
 
-13. **Verify Claim:**
-    *   Check the claimant's token balance.
-    *   Commands:
-        ```bash
-        cast call ${TOKEN_ADDRESS} "balanceOf(address)" ${CLAIMANT_ADDRESS} \
-          --rpc-url ${ZKSYNC_SEPOLIA_RPC_URL}
-        # Copy the hex output
-        cast --to-dec <hex_balance_output>
-        ```
-    *   Should show `25000000000000000000`.
-    *   Verify on zkSync Sepolia Block Explorer (`https://sepolia.explorer.zksync.io/`). Check the `claim` transaction details and token transfer logs.
+```bash
+echo "Deploying MerkleAirdrop contract..."
+AIRDROP_ADDRESS=$(forge create src/MerkleAirdrop.sol:MerkleAirdrop --rpc-url http://127.0.0.1:8011 --private-key $DEFAULT_ZKSYNC_LOCAL_KEY --constructor-args $ROOT $TOKEN_ADDRESS --legacy --zksync | awk '/Deployed to:/{print $3}')
+echo "MerkleAirdrop contract deployed at: $AIRDROP_ADDRESS"
+```
 
-**Important Notes & Tips Recap**
+### Retrieving the Message Hash for Signing
 
-*   **Use Scripts:** Recommended for reliability, especially on mainnet, but manual CLI is shown due to zkSync limitations at the time.
-*   **Keystores (`--account`):** Strongly preferred over exposing private keys (`--private-key`).
-*   **zkSync Flags:** `--zksync` is essential. `--legacy` might be needed for `forge create` depending on Foundry/zkSync version compatibility.
-*   **RPC URL:** Use the official zkSync RPC URL; third-party ones might have issues.
-*   **`ecrecover` on zkSync:** Be aware of potential issues with non-EOA accounts or non-ECDSA signature schemes due to native Account Abstraction.
-*   **`cast wallet sign --no-hash`:** Use this when the message provided is already the final hash to be signed (as is common with EIP-712).
-*   **Merkle Data (`output.json`):** Ensure the root hash used in deployment and the proofs used in claims are correct and correspond to the `input.json` data. Regenerate (`make merkle` or similar) if inputs change.
-*   **Constructor/Function Arguments:** Pay close attention to the order and types of arguments for `forge create` and `cast send/call`.
-*   **`signature.txt`:** Must contain the raw signature bytes *without* the `0x` prefix for the `SplitSignature.s.sol` script to parse correctly.
+To authorize the claim, our airdrop contract requires a signed message. The script first fetches the specific message hash that needs to be signed. This is done by calling the `getMessageHash` view function on the `MerkleAirdrop` contract.
+*   `cast call` is used to invoke this read-only function.
+*   Arguments passed to `getMessageHash` are the claimant's address (`DEFAULT_ANVIL_ADDRESS`) and the amount they are eligible for (e.g., `2500000000000000000000`).
 
-**Links & Resources Mentioned**
+```bash
+echo "Get message hash"
+MESSAGE_HASH=$(cast call $AIRDROP_ADDRESS "getMessageHash(address,uint256)" $DEFAULT_ANVIL_ADDRESS 2500000000000000000000 --rpc-url http://127.0.0.1:8011)
+```
 
-*   zkSync Sepolia RPC URL: `https://sepolia.era.zksync.dev`
-*   zkSync Account Abstraction Docs: `https://v2-docs.zksync.io/dev/developer-guides/aa.html`
-*   zkSync Sepolia Block Explorer: `https://sepolia.explorer.zksync.io/`
+### Signing the Message
 
-This detailed summary covers the core steps, commands, concepts, and nuances presented in the video for deploying and interacting with the Merkle Airdrop contract on zkSync Sepolia using Foundry's CLI tools.
+The `DEFAULT_ANVIL_KEY` (the private key of the airdrop recipient) is used to sign the `MESSAGE_HASH` obtained in the previous step.
+*   `cast wallet sign` performs the signing operation.
+*   The `--no-hash` flag is important here because `getMessageHash` on the contract already returns a hash ready for signing (as per EIP-712 or similar personal_sign conventions where the message is pre-hashed).
+
+```bash
+echo "Signing message..."
+SIGNATURE=$(cast wallet sign --private-key $DEFAULT_ANVIL_KEY --no-hash $MESSAGE_HASH)
+```
+
+### Cleaning the Signature
+
+The signature obtained from `cast wallet sign` typically includes a "0x" prefix. This prefix needs to be removed before further processing.
+*   `sed 's/^0x//'` removes the leading "0x".
+*   The cleaned signature is then saved to a temporary file named `signature.txt`. This file will be accessed by a Foundry script in the next step.
+
+```bash
+CLEAN_SIGNATURE=$(echo "$SIGNATURE" | sed 's/^0x//')
+echo -n "$CLEAN_SIGNATURE" > signature.txt
+```
+
+### Splitting the Signature using `SplitSignature.s.sol`
+
+The `claim` function in the `MerkleAirdrop` contract expects the signature to be provided as three separate components: `v`, `r`, and `s`. To achieve this, we use a small Foundry script named `SplitSignature.s.sol`.
+
+First, the bash script executes this Foundry script:
+```bash
+SIGN_OUTPUT=$(forge script script/SplitSignature.s.sol:SplitSignature --rpc-url http://127.0.0.1:8011)
+```
+
+The `SplitSignature.s.sol` script (which you should create in `script/SplitSignature.s.sol`) contains the following Solidity code:
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.24;
+
+import { Script, console } from "forge-std/Script.sol";
+
+contract SplitSignature is Script {
+    error SplitSignatureScript_InvalidSignatureLength();
+
+    function splitSignature(bytes memory sig)
+        internal
+        pure
+        returns (uint8 v, bytes32 r, bytes32 s)
+    {
+        // Signatures are 65 bytes long (32 bytes for r, 32 bytes for s, 1 byte for v)
+        if (sig.length != 65) {
+            revert SplitSignatureScript_InvalidSignatureLength();
+        }
+        assembly {
+            r := mload(add(sig, 32)) // First 32 bytes from the start of sig data
+            s := mload(add(sig, 64)) // Next 32 bytes
+            v := byte(0, mload(add(sig, 96))) // Final byte (the 65th byte)
+        }
+    }
+
+    function run() external {
+        // Read the cleaned signature from the temporary file
+        string memory sigString = vm.readFile("signature.txt");
+        bytes memory sigBytes = vm.parseBytes(sigString); // Convert hex string to bytes
+
+        (uint8 v, bytes32 r, bytes32 s) = splitSignature(sigBytes);
+
+        // Log v, r, and s to standard output for the bash script to capture
+        console.log("v value:");
+        console.log(v);
+        console.log("r value:");
+        console.logBytes32(r);
+        console.log("s value:");
+        console.logBytes32(s);
+    }
+}
+```
+This Solidity script reads the signature from `signature.txt`, uses assembly to split it into `v`, `r`, and `s`, and then prints these values to the console.
+
+The bash script then parses the `SIGN_OUTPUT` (the standard output from the `forge script` command) to extract the `v`, `r`, and `s` values using `grep`, `tail`, and `xargs`:
+```bash
+V=$(echo "$SIGN_OUTPUT" | grep -A 1 "v value:" | tail -n 1 | xargs)
+R=$(echo "$SIGN_OUTPUT" | grep -A 1 "r value:" | tail -n 1 | xargs)
+S=$(echo "$SIGN_OUTPUT" | grep -A 1 "s value:" | tail -n 1 | xargs)
+```
+
+### Funding the Airdrop Contract
+
+Before tokens can be claimed, the `MerkleAirdrop` contract must possess enough `BagelToken`s to distribute. This involves two steps:
+
+1.  **Minting tokens to the deployer:** The `DEFAULT_ZKSYNC_ADDRESS` (our contract deployer) first mints a supply of `BagelToken`s to itself.
+    ```bash
+    echo "Sending tokens to the token contract owner..."
+    cast send $TOKEN_ADDRESS "mint(address,uint256)" $DEFAULT_ZKSYNC_ADDRESS 1000000000000000000000 --private-key $DEFAULT_ZKSYNC_LOCAL_KEY --rpc-url http://127.0.0.1:8011 > /dev/null
+    ```
+    *(Note: `> /dev/null` suppresses the transaction hash output for brevity.)*
+
+2.  **Transferring tokens to the Airdrop contract:** The deployer then transfers the required amount of `BagelToken`s to the `AIRDROP_ADDRESS` (the MerkleAirdrop contract).
+    ```bash
+    echo "Sending tokens to the airdrop contract..."
+    cast send $TOKEN_ADDRESS "transfer(address,uint256)" $AIRDROP_ADDRESS 1000000000000000000000 --private-key $DEFAULT_ZKSYNC_LOCAL_KEY --rpc-url http://127.0.0.1:8011 > /dev/null
+    ```
+
+### Claiming the Airdrop
+
+Now, the eligible address (`DEFAULT_ANVIL_ADDRESS`) can claim its tokens.
+*   The `claim` function on the `MerkleAirdrop` contract is called using `cast send`.
+*   The transaction is sent by `DEFAULT_ZKSYNC_LOCAL_KEY`, which pays for the gas.
+*   The arguments to the `claim` function are:
+    *   `DEFAULT_ANVIL_ADDRESS`: The address for whom the claim is being made.
+    *   `2500000000000000000000`: The amount of tokens being claimed.
+    *   `[\"$PROOF_1\",\"$PROOF_2\"]`: The array of Merkle proofs for `DEFAULT_ANVIL_ADDRESS`.
+    *   `"$V"`, `"$R"`, `"$S"`: The split signature components.
+
+```bash
+echo "Claiming tokens on behalf of $DEFAULT_ANVIL_ADDRESS..."
+cast send $AIRDROP_ADDRESS "claim(address,uint256,bytes32[],uint8,bytes32,bytes32)" $DEFAULT_ANVIL_ADDRESS 2500000000000000000000 "[\"$PROOF_1\",\"$PROOF_2\"]" "$V" "$R" "$S" --private-key $DEFAULT_ZKSYNC_LOCAL_KEY --rpc-url http://127.0.0.1:8011
+```
+
+### Verifying the Token Balance
+
+To confirm the airdrop was successful, the script checks the `BagelToken` balance of the `DEFAULT_ANVIL_ADDRESS`.
+*   `cast call` is used to invoke the `balanceOf` function on the `BagelToken` contract.
+*   `cast --to-dec` converts the returned hexadecimal balance to a decimal representation for easier reading.
+
+```bash
+HEX_BALANCE=$(cast call $TOKEN_ADDRESS "balanceOf(address)" $DEFAULT_ANVIL_ADDRESS --rpc-url http://127.0.0.1:8011)
+echo "Balance of the claiming address ($DEFAULT_ANVIL_ADDRESS): $(cast --to-dec $HEX_BALANCE)"
+```
+
+### Cleaning Up
+
+Finally, the script removes the temporary `signature.txt` file.
+```bash
+echo "Clean up"
+rm signature.txt
+```
+
+## Executing the `interactZK.sh` Script
+
+To run the entire automated process:
+
+1.  Make the script executable:
+    ```bash
+    chmod +x interactZK.sh
+    ```
+2.  Execute the script:
+    ```bash
+    ./interactZK.sh
+    ```
+
+You should observe output in your terminal corresponding to each step defined in the script:
+*   Messages indicating the start of the zkSync local node (you might see Docker-related logs).
+*   Deployment confirmation for the `BagelToken` contract, including its address.
+*   Deployment confirmation for the `MerkleAirdrop` contract, including its address.
+*   Logs from the `SplitSignature.s.sol` script, showing the derived `v`, `r`, and `s` values.
+*   Messages about tokens being sent (minted and transferred).
+*   A transaction hash for the claim operation.
+*   Finally, the script will display the `BagelToken` balance of the `DEFAULT_ANVIL_ADDRESS`, which should reflect the successfully claimed amount (e.g., `2500000000000000000000`).
+
+## Key Takeaways and Resources
+
+This lesson demonstrated a comprehensive workflow for interacting with smart contracts on a zkSync local node using a combination of shell scripting and Foundry tools.
+
+*   **zkSync Local Development:** We saw how to use `zksync-cli` (with Docker) to spin up a local zkSync environment.
+*   **Foundry for zkSync:** The zkSync-compatible version of Foundry (`foundryup -zksync`) allows using `forge create --zksync` for deployments and `cast` commands targeting the zkSync local RPC (`http://127.0.0.1:8011`).
+*   **Signature Splitting in Solidity:** The `SplitSignature.s.sol` script provided a practical example of how to read a signature (e.g., from a file via `vm.readFile`) and split it into its `v`, `r`, and `s` components using inline assembly. This is a common pattern when working with signatures in smart contracts.
+*   **Bash Scripting for Automation:** Bash scripts are invaluable for orchestrating complex sequences of command-line operations, especially when native scripting support in a specific framework or environment has limitations.
+*   **GitHub Repository:** The `interactZK.sh` and `SplitSignature.s.sol` scripts are available in the course's GitHub repository, serving as a direct reference.
+
+## Outcome and Next Steps
+
+By following this lesson and successfully running the `interactZK.sh` script, you will have deployed both the `BagelToken` and `MerkleAirdrop` contracts to your zkSync local node. Furthermore, an eligible address will have successfully claimed its airdropped tokens, with the final balance check confirming the operation's success.
+
+This local demonstration sets the stage for deploying and interacting with these contracts on a live testnet, such as zkSync Sepolia, which will be covered in subsequent lessons.
