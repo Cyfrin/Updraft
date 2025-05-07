@@ -1,83 +1,56 @@
-Okay, here is a thorough and detailed summary of the provided video clip focusing on adding liquidity to a GMX V2 GLV Vault.
+## Adding Liquidity to GMX V2 GLV Vaults: A Step-by-Step Guide
 
-**Video Summary:**
+This lesson details the process of adding liquidity to a GMX V2 GMX Liquidity Vault (GLV), specifically using a single token like USDC. We will contrast GLV Vaults with GM Pools and explain the mechanics involved.
 
-The video demonstrates the process of adding liquidity to a GMX V2 GLV (GMX Liquidity Vault) Vault, specifically using USDC to buy into the GLV (BTC-USDC) Vault. It contrasts GLV Vaults with GM Pools and explains the mechanics of depositing single tokens into a GLV Vault.
+**Understanding GM Pools vs. GLV Vaults**
 
-**Detailed Breakdown:**
+Before proceeding, it's crucial to understand the distinction between GM Pools and GLV Vaults within the GMX V2 ecosystem:
 
-1.  **Introduction & Context (0:00 - 0:27):**
-    *   The video starts by referencing previous examples of depositing/withdrawing from GM Pools.
-    *   It introduces the task: performing the same actions (depositing liquidity) for GLV Vaults.
-    *   **Key Concept - GM Pools vs. GLV Vaults:**
-        *   **GM Pools:** Pools enabling trading for a *single* market (e.g., ETH/USD, BTC/USD shown in the lower section "Select a GM Pool"). Backed by tokens listed in brackets.
-        *   **GLV Vaults:** Yield-optimized vaults enabling trading across *multiple* markets (e.g., GLV [BTC-USDC], GLV [WETH-USDC] shown in the upper section "Select a GLV Vault"). Backed by tokens listed in brackets.
-        *   **Core Relationship:** A GLV Vault is explicitly defined as a "basket of GM tokens". This means when you deposit into a GLV Vault, you are essentially gaining exposure to a collection of underlying GM Pool tokens specified by the GMX protocol.
-    *   **Profit & Loss Implication:** Because a GLV Vault holds a basket of GM tokens, depositors earn profits from the underlying pools *but are also exposed to losses* incurred within those pools.
+*   **GM Pools:** These are liquidity pools designed to facilitate trading for a *single* market (e.g., ETH/USD, BTC/USD). The tokens backing a specific GM Pool are typically listed alongside its name (e.g., [BTC-USDC]). Users providing liquidity directly to a GM Pool receive GM tokens representing their share of that specific pool.
+*   **GLV Vaults:** These are yield-optimized vaults that enable trading across *multiple* markets simultaneously. A GLV Vault essentially acts as a curated "basket of GM tokens" from various underlying GM Pools, as defined by the GMX protocol. Examples include GLV [BTC-USDC] or GLV [WETH-USDC].
 
-2.  **Preparing for Liquidity Addition (0:27 - 0:40):**
-    *   The narrator notes they have USDC in their wallet.
-    *   The goal is set: Add liquidity to the GLV Vault for BTC-USDC.
-    *   **Token Identification:** For the GLV (BTC-USDC) vault, the underlying long token is identified as WBTC (Wrapped Bitcoin) and the short token is USDC.
-    *   **Action:** The user clicks the "Buy" button next to the GLV (BTC-USDC) vault listing.
-        *   *Initial State Shown:* GLV (BTC-USDC) Price: $1.3271, Total Supply: 4.30m ($5.71m), Buyable: 25.17m GLV ($33.40m), Wallet: 6.8579 ($9.10), APY: 9.79%.
+**Key Relationship & Implications:**
 
-3.  **GLV Vault Interface & Deposit Mechanics (0:40 - 0:58):**
-    *   The interface switches to the dedicated "V2 Pools" page for the GLV (BTC-USDC) GMX Liquidity Vault.
-    *   **Vault Composition:** The left side shows the "Composition" of the vault, listing the various underlying markets (GM Pools) it holds, their Total Value Locked (TVL), and their percentage composition within the vault (e.g., DOT/USD 4.65%, HYPE/USD 4.38%, ICP/USD 2.76%, etc.). This visually reinforces the "basket" concept.
-    *   **Deposit Mechanism Explained:**
-        *   Adding liquidity to the GLV Vault means the deposited funds (e.g., USDC) will be added to *one* of the underlying markets/pools listed in the composition.
-        *   **Market Token Concept:** The GLV Vault takes ownership of the resulting "market token" (the specific GM token representing liquidity in that chosen underlying pool, e.g., the GM token for BTC/USD).
-        *   **Withdrawal Mechanism (Implied):** When withdrawing, the GLV Vault burns that specific market token and retrieves the underlying liquidity from that market.
+Depositing into a GLV Vault means you are gaining exposure to the collection of underlying GM Pool tokens held within that vault. Consequently, depositors earn fees and yield generated from the underlying pools *but are also exposed to potential losses* incurred within those same pools. The GLV Vault diversifies exposure across multiple markets but also aggregates the risk from them.
 
-4.  **Executing the Deposit (0:58 - 1:36):**
-    *   **Deposit Options:** The interface presents "Single" and "Pair" options for depositing liquidity. The user selects "Single".
-    *   **Token Selection:** The user selects USDC from the "Pay" dropdown. Their balance of 0.95734 USDC ($0.95) is shown.
-    *   **Amount Selection:** The user clicks "MAX" to deposit their entire USDC balance (0.95734).
-    *   **Target Pool Selection (Crucial Step):**
-        *   A "Pool" dropdown appears below the amount fields. This allows the user to specify *which underlying market* within the GLV Vault their single token deposit (USDC) should target.
-        *   The narrator notes you *can* specify different markets (example given: FARTCOIN/USD [FARTCOIN/USD]).
-        *   The user *explicitly selects* the **BTC/USD [BTC-USDC]** pool from the list (by searching "BTC" and clicking it).
-        *   **Mechanism Recap:** The USDC will be added to the BTC/USD market within the GLV (BTC-USDC) vault. This will mint a BTC/USD market token owned by the GLV vault.
-    *   **Transaction Initiation:** The user clicks the "Buy GLV" button.
-    *   **Wallet Confirmation:** A MetaMask pop-up appears briefly to confirm the transaction. The user confirms.
-    *   **Confirmation Message:** A notification appears: "Buying GLV (BTC-USDC) with USDC. Buy request sent. Buy order executed."
+**Prerequisites:**
 
-5.  **Verifying the Result (1:36 - 1:47):**
-    *   The user navigates back to the initial "Earn" or overview page showing the GLV Vaults list.
-    *   **Updated Balance:** The "Wallet" column for the GLV (BTC-USDC) vault now shows an updated balance of **7.5790** GLV ($10.05). This reflects the original ~6.86 GLV plus the ~0.72 GLV purchased with the USDC deposit.
+*   A connected web3 wallet (e.g., MetaMask).
+*   The token you wish to deposit (in this example, USDC) available in your wallet.
 
-**Key Concepts Covered:**
+**Step-by-Step: Adding Single-Token Liquidity to a GLV Vault**
 
-*   **GM Pools:** Single-market liquidity pools.
-*   **GLV Vaults:** Multi-market, yield-optimized vaults acting as baskets of GM tokens.
-*   **Liquidity Provision:** The act of depositing assets into pools/vaults.
-*   **GLV Tokens:** Tokens representing a user's share in a GLV Vault.
-*   **Basket of Assets:** GLV Vaults hold multiple underlying GM Pool tokens.
-*   **Shared Profit/Loss:** GLV depositors are exposed to the performance (both gains and losses) of the underlying GM pools.
-*   **Single Token Deposit:** Adding liquidity using only one type of token (e.g., USDC).
-*   **Target Pool Selection:** When doing a single token deposit into GLV, users can specify *which* underlying GM pool the liquidity should be added to.
-*   **Market Tokens (GM Tokens):** Tokens representing liquidity in a specific GM pool. When depositing into GLV, the GLV vault takes ownership of the market token minted from the targeted underlying pool.
+Let's walk through adding USDC liquidity to the GLV (BTC-USDC) Vault:
 
-**Important Notes/Tips:**
+1.  **Navigate and Select Vault:** Go to the GMX V2 interface section displaying available liquidity options (often labeled "Earn" or similar). Locate the "Select a GLV Vault" section. Identify the target vault, for instance, GLV (BTC-USDC). Click the "Buy" or "Deposit" button associated with this vault.
 
-*   Understand that GLV Vaults diversify exposure across multiple GM markets but also consolidate the risk from those markets.
-*   When depositing a single token into a GLV Vault, be aware that you need to select the specific underlying GM pool you want your deposit to target. The system doesn't automatically distribute it unless perhaps you use a 'pair' deposit (not shown).
-*   The composition of the GLV vault (which GM markets it holds and their weights) is visible and determines the source of yield and risk.
+2.  **Understand the Vault Interface:** You will be directed to the dedicated page for the selected GLV Vault (e.g., GLV [BTC-USDC] GMX Liquidity Vault).
+    *   **Composition:** Note the "Composition" section. This area lists the various underlying GM markets/pools that the GLV Vault holds liquidity in (e.g., DOT/USD, HYPE/USD, ICP/USD, BTC/USD), along with their respective Total Value Locked (TVL) and percentage weight within the vault. This visually confirms the "basket" nature of the GLV Vault.
 
-**Code Blocks:**
+3.  **Initiate Single Token Deposit:**
+    *   Locate the deposit interface, often presenting options like "Single" and "Pair". Select the "Single" option.
+    *   From the "Pay" or "Deposit" dropdown menu, select the token you wish to add. In this case, select USDC. Your available balance will typically be displayed.
+    *   Enter the amount of the token you want to deposit. You can manually enter a value or use a "MAX" button if available.
 
-*   No specific code blocks were shown or discussed in this video clip.
+4.  **Select the Target Underlying Pool (Crucial Step):**
+    *   After selecting the token and amount for a single-token deposit, a "Pool" or "Target Pool" dropdown menu will appear.
+    *   **Mechanism:** When depositing a single token (like USDC) into a multi-asset GLV Vault, you must specify *which* underlying GM Pool within the vault's composition this liquidity should be added to. The system does not automatically distribute a single token deposit across all underlying pools.
+    *   **Action:** Use the dropdown to search for and select the specific underlying GM Pool you want your USDC to enter. For the GLV (BTC-USDC) vault, if your goal is to provide USDC liquidity against Bitcoin, you would select the **BTC/USD [BTC-USDC]** pool.
+    *   **Outcome:** By selecting BTC/USD, your deposited USDC will be added specifically to the BTC/USD GM Pool. In return, a corresponding BTC/USD market token (GM token) is minted. The GLV (BTC-USDC) Vault takes ownership of this newly minted GM token, effectively adding your liquidity contribution (via that specific market token) to its overall basket.
 
-**Links/Resources:**
+5.  **Execute and Confirm Transaction:**
+    *   Click the "Buy GLV" or "Deposit" button.
+    *   Your connected wallet (e.g., MetaMask) will prompt you to confirm the transaction. Review the details and approve it.
+    *   Wait for the transaction to be confirmed on the blockchain. You should see confirmation messages on the GMX interface (e.g., "Buy request sent," "Buy order executed").
 
-*   No external links or resources were mentioned in this video clip. The interface shown is GMX V2.
+6.  **Verify the Result:**
+    *   Navigate back to the main page listing the GLV Vaults.
+    *   Locate the GLV Vault you deposited into (e.g., GLV [BTC-USDC]).
+    *   Check the "Wallet" or "Your Balance" column. It should now reflect an increased amount of GLV tokens, representing your newly added liquidity share in the vault.
 
-**Questions/Answers:**
+**Key Takeaways:**
 
-*   No specific questions were asked or answered explicitly, but the video implicitly answers "How do I add single-token liquidity to a GMX V2 GLV Vault?".
-
-**Examples/Use Cases:**
-
-*   The primary example is depositing ~0.96 USDC into the GLV (BTC-USDC) vault by targeting the underlying BTC/USD GM pool.
-*   The possibility of targeting other pools like FARTCOIN/USD during the single deposit was mentioned as an alternative choice.
+*   GLV Vaults offer diversified exposure to multiple GMX V2 markets by holding a basket of underlying GM Pool tokens.
+*   Depositing into a GLV Vault exposes you to both the profits and losses of the underlying GM Pools it holds.
+*   When performing a *single-token* deposit into a GLV Vault, you must explicitly select the target underlying GM Pool for your funds.
+*   The GLV Vault manages the underlying GM tokens generated from deposits; users receive GLV tokens representing their overall share in the vault.
