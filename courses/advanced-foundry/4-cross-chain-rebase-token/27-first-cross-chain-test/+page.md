@@ -1,227 +1,302 @@
-Okay, here is a thorough and detailed summary of the provided video segment (0:00 - 10:41), covering the requested aspects:
+## Introduction to Testing Cross-Chain Bridging
 
-**Overall Summary**
+This lesson guides you through the process of testing a cross-chain rebase token system using Foundry and the Chainlink CCIP Local Simulator. We'll focus on verifying the `bridgeTokens` functionality, which involves sending tokens from a simulated Sepolia fork to an Arbitrum Sepolia fork and then back. This process includes significant setup, interaction with Foundry cheat codes, handling `payable` function calls, configuring CCIP parameters, and debugging common testing hurdles. While the setup is extensive, mastering these techniques is crucial for robust cross-chain application development.
 
-This video segment focuses on demonstrating and testing a cross-chain token bridging mechanism using Chainlink CCIP (Cross-Chain Interoperability Protocol) within the Foundry testing framework. The speaker reviews the extensive setup code required to simulate two chains (Sepolia and Arbitrum Sepolia) locally, deploy the necessary contracts (RebaseToken, RebaseTokenPool, Vault), configure them for CCIP communication, and then writes and debugs a Foundry test (`testBridgeAllTokens`) to verify that tokens can be successfully bridged from Sepolia to Arbitrum Sepolia and back again. Key Foundry cheatcodes and CCIP concepts are explained during the review and testing process.
+## Core Setup for Cross-Chain Testing
 
-**Detailed Flow & Concepts**
+A comprehensive testing environment is paramount for simulating cross-chain interactions. The following setup steps are prerequisites:
 
-1.  **Introduction (0:00 - 0:12):**
-    *   The video opens with a title card "First cross-chain test!".
-    *   The speaker acknowledges the extensive setup done previously.
+1.  **Local Fork Creation:**
+    *   We begin by creating local forks of our target blockchains. For this example, we'll use Sepolia and Arbitrum Sepolia.
+    *   `vm.createSelectFork("sepolia_rpc_url")` creates and selects the Sepolia fork (`sepoliaFork`).
+    *   `vm.createFork("arbitrum_sepolia_rpc_url")` creates the Arbitrum Sepolia fork (`arbSepoliaFork`).
 
-2.  **Setup Review (0:12 - 1:21):**
-    *   **Objective:** To prepare the environment for cross-chain testing locally.
-    *   **Forks:** Created local forks of Sepolia (`sepoliaFork`) and Arbitrum Sepolia (`arbSepoliaFork`) using `vm.createSelectFork` and `vm.createFork`.
-    *   **CCIP Simulator:** Instantiated `CCIPLocalSimulatorFork` to simulate CCIP interactions locally and made it persistent using `vm.makePersistent`.
-    *   **Network Details:** Retrieved simulated network details (like router addresses, chain selectors, LINK token address) for both chains using `ccipLocalSimulatorFork.getNetworkDetails`.
-    *   **Contract Deployment & Configuration (on both forks):**
-        *   Deployed `RebaseToken` and `RebaseTokenPool` contracts.
-        *   Deployed a `Vault` contract *only* on the Sepolia fork.
-        *   Granted mint/burn roles for the token, typically to the respective pool or vault.
-        *   Registered an admin for the token using `RegistryModuleOwnerCustom`.
-        *   Accepted the admin role and set the corresponding `TokenPool` address using `TokenAdminRegistry`. This links the token administration to the correct pool on each chain.
-    *   **Pool Configuration (`configureTokenPool` function review 0:55):**
-        *   **Purpose:** To make the `TokenPool` on one chain aware of its counterpart on the other chain.
-        *   **Mechanism:** Uses a `TokenPool.ChainUpdate` struct to package information about the *remote* chain (chain selector, pool address, token address).
-        *   **Rate Limits:** The struct also includes settings for inbound/outbound rate limits (set to disabled/zero in this setup).
-        *   **Applying Updates:** Calls `tokenPool.applyChainUpdates` on the *local* pool, passing an empty array for chains to remove (`new uint64[](0)`) and the `ChainUpdate` struct for the chain to add. This is done on *both* chains so each pool knows about the other.
+2.  **Chainlink CCIP Local Simulator:**
+    *   The `CCIPLocalSimulatorFork` contract is instantiated. This powerful tool simulates CCIP functionalities locally, enabling testing without deploying to live testnets for every iteration.
+    *   `vm.makePersistent(address(ccipLocalSimulatorFork))` ensures the simulator's state persists across different test function calls within the same test contract execution.
 
-3.  **Bridging Function Review (`bridgeTokens` 1:21 - 2:46):**
-    *   **Purpose:** A helper function containing the logic to initiate a CCIP token transfer.
-    *   **Inputs:** `amountToBridge`, `localFork`, `remoteFork`, `localNetworkDetails`, `remoteNetworkDetails`, `localToken`, `remoteToken`.
-    *   **Steps:**
-        *   Selects the `localFork` (`vm.selectFork`).
-        *   **CCIP Message Construction:** Creates a `Client.EVM2AnyMessage` struct (`message`).
-            *   `receiver`: The address on the destination chain to receive the tokens (`abi.encode(user)`).
-            *   `data`: Optional data payload (empty `""` here).
-            *   `tokenAmounts`: Specifies the token and amount to bridge (`[Client.EVMTokenAmount({token: address(localToken), amount: amountToBridge})]`).
-            *   `feeToken`: The address of the token used for fees (`localNetworkDetails.linkAddress` for LINK).
-            *   `extraArgs`: Encoded using `Client._argsToBytes(Client.EVMExtraArgsV1({gasLimit: 0}))`. The `gasLimit` here is for the *execution* on the destination chain by the CCIP receiver, *not* the source chain transaction gas. (Later changed to V2 and a non-zero limit).
-        *   **Fee Calculation:** Gets the required CCIP fee in LINK using `IRouterClient(localNetworkDetails.routerAddress).getFee(remoteNetworkDetails.chainSelector, message)`.
-        *   **Funding Fees:** Gets LINK tokens from a simulated faucet using `ccipLocalSimulatorFork.requestLinkFromFaucet(user, fee)`.
-        *   **Approvals:** Approves the CCIP router contract (`localNetworkDetails.routerAddress`) to spend the `fee` amount of LINK tokens and the `amountToBridge` of the `localToken` on behalf of the `user` (using `vm.prank(user)` before `approve` calls).
-        *   **Sending CCIP Message:** Calls `IRouterClient(localNetworkDetails.routerAddress).ccipSend(remoteNetworkDetails.chainSelector, message)` to initiate the bridge.
-        *   **Local Assertions:** Checks the `user`'s `localToken` balance decreased by `amountToBridge` and optionally checks the `localUserInterestRate`.
-        *   **Simulating Destination:**
-            *   Selects the `remoteFork` (`vm.selectFork`).
-            *   Simulates time passage for CCIP finality using `vm.warp(block.timestamp + 20 minutes)`.
-            *   Simulates message delivery and execution using `ccipLocalSimulatorFork.switchChainAndRouteMessage(remoteFork)`.
-        *   **Remote Assertions:** Checks the `user`'s `remoteToken` balance increased by `amountToBridge` and optionally checks the `remoteUserInterestRate`.
+3.  **Network Details Acquisition:**
+    *   Chain-specific details necessary for CCIP interaction are fetched from the simulator:
+        *   `sepoliaNetworkDetails = ccipLocalSimulatorFork.getNetworkDetails(SEPOLIA_CHAIN_SELECTOR);`
+        *   `arbSepoliaNetworkDetails = ccipLocalSimulatorFork.getNetworkDetails(ARB_SEPOLIA_CHAIN_SELECTOR);`
+    *   These details include router addresses, LINK token addresses, and chain selectors.
 
-4.  **Writing the Test (`testBridgeAllTokens` 2:46 - 6:03):**
-    *   **Goal:** Test bridging the user's entire deposited balance from Sepolia to Arb Sepolia and then back.
-    *   **Initial Steps:**
-        *   Selects `sepoliaFork`.
-        *   **Funding User:** Deals ETH to the `user` using `vm.deal(user, SEND_VALUE)`. `SEND_VALUE` is defined globally (`uint256 SEND_VALUE = 1e5;`).
-        *   **Depositing to Vault:**
-            *   Pranks as the `user` (`vm.prank(user)`).
-            *   Calls `vault.deposit()` while sending ETH. This requires special syntax: `payable(address(vault)).deposit{value: SEND_VALUE}()`. The `vault` address needs to be cast first to `address` and then to `payable`.
-        *   Asserts the user received the correct amount of `sepoliaToken` (the rebase token share) after depositing.
-    *   **First Bridge (Sepolia -> Arb Sepolia):** Calls `bridgeTokens` with `SEND_VALUE` and the corresponding fork/details/token arguments.
+4.  **Contract Deployment (Sepolia Fork):**
+    *   On the `sepoliaFork`:
+        *   Deploy the `RebaseToken` contract (e.g., `sepoliaToken`).
+        *   Deploy the `RebaseTokenPool` contract (e.g., `sepoliaPool`).
+        *   Deploy the `Vault` contract (this specific vault is deployed only on Sepolia in this scenario).
 
-5.  **Debugging and Fixing Tests (6:03 - 7:57):**
-    *   **Build Error:** Initial `forge test` fails with "Stack too deep". Fixed by adding the `--via-ir` flag: `forge test --mc Cross --via-ir`.
-    *   **Prank Override Error:** Test fails with `vm.prank: cannot override an ongoing prank`. This occurs because `setup` calls `configureTokenPool`, which itself uses `vm.prank`. The fix is to ensure `vm.stopPrank()` is called in `setup` *before* calling `configureTokenPool`.
-    *   **Out Of Gas Error:** Test fails with `OutOfGas` during the simulated message execution on the destination chain.
-        *   **Reason:** The `gasLimit: 0` in `extraArgs` is problematic with `chainlink-local`.
-        *   **Fix 1:** Changed `gasLimit` to `100_000`, still fails.
-        *   **Fix 2:** Changed `gasLimit` to `500_000` (speaker mentions 100k, but code shows 500k), test passes.
-        *   **Note:** Speaker clarifies this is a `chainlink-local` specific issue; real CCIP handles `gasLimit: 0` correctly (meaning use default).
-    *   **Using EVMExtraArgsV2:** The speaker updates the code to use `Client.EVMExtraArgsV2`, adding `allowOutOfOrderExecution: false`. This ensures messages are processed in the order they are sent. Test still passes.
+5.  **Role Management:**
+    *   Appropriate permissions are granted. For instance, the `sepoliaPool` and `Vault` contracts are granted minting and burning roles for the `sepoliaToken`.
 
-6.  **Testing Reverse Bridge (Arb Sepolia -> Sepolia 7:57 - 9:31):**
-    *   Selects the `arbSepoliaFork`.
-    *   Warps time again (`vm.warp`) to allow interest accrual (relevant for the rebase token).
-    *   Calls `bridgeTokens` again, swapping all "local" and "remote" arguments to send tokens back from Arbitrum Sepolia to Sepolia. The amount bridged is the user's *entire current balance* on Arbitrum Sepolia (`arbSepoliaToken.balanceOf(user)`).
-    *   Runs the full test suite (`forge test --mc Cross --via-ir -vvvv`).
+6.  **CCIP Admin Registration:**
+    *   The deployer (owner) is registered as an admin for CCIP configuration using a `RegistryModuleOwnerCustom` contract instance. This typically involves calling `ccipConfig.setCcipConfig(...)`.
 
-7.  **Successful Test & Conclusion (9:31 - 10:41):**
-    *   The test suite passes, confirming tokens can be bridged in both directions.
-    *   Speaker suggests further tests (bridging partial amounts, multiple bridges) but deems the current test sufficient for the tutorial.
-    *   Summarizes the concepts covered and encourages viewers to take a break before moving on to writing deployment scripts.
+7.  **Token Admin Registry Configuration:**
+    *   The owner accepts the admin role for the token.
+    *   The deployed `sepoliaPool` address is set in the `TokenAdminRegistry` for the `sepoliaToken`, linking the token to its managing pool for CCIP operations.
 
-**Important Code Blocks**
+8.  **Contract Deployment (Arbitrum Sepolia Fork):**
+    *   Similar deployment and configuration steps are repeated on the `arbSepoliaFork`:
+        *   Deploy `RebaseToken` (`arbSepoliaToken`).
+        *   Deploy `RebaseTokenPool` (`arbSepoliaPool`).
+        *   Grant roles and configure the `TokenAdminRegistry` for Arbitrum Sepolia.
 
-*   **Setup Overview (Conceptual):**
-    ```solidity
-    function setUp() public {
-        // 1. Create forks (Sepolia, Arb Sepolia) using vm.createFork / vm.createSelectFork
-        // 2. Instantiate CCIPLocalSimulatorFork & make persistent
-        // 3. Get network details for both chains
-        // 4. Deploy RebaseToken, RebaseTokenPool on Sepolia + configure (admin, pool link)
-        // 5. Deploy Vault on Sepolia + grant roles
-        // 6. Deploy RebaseToken, RebaseTokenPool on Arb Sepolia + configure (admin, pool link)
-        // 7. Configure Sepolia pool to know about Arb pool using configureTokenPool
-        // 8. Configure Arb pool to know about Sepolia pool using configureTokenPool
-        // 9. vm.stopPrank(); // Important to stop prank before configureTokenPool if it uses prank internally
-    }
-    ```
+9.  **Token Pool Configuration (`configureTokenPool`):**
+    *   A helper function, `configureTokenPool`, is crucial for setting up communication pathways between the token pools on different chains. It's called twice:
+        *   Once on the Sepolia fork, configuring `sepoliaPool` to communicate with `arbSepoliaPool`.
+        *   Once on the Arbitrum Sepolia fork, configuring `arbSepoliaPool` to communicate with `sepoliaPool`.
+    *   **Inside `configureTokenPool(localPool, localToken, remoteChainSelector, remotePoolAddress, remoteTokenAddress)`:**
+        *   This function constructs an array of `TokenPool.ChainUpdate` structs. Each struct contains:
+            *   `remoteChainSelector`: The CCIP chain selector of the destination chain.
+            *   `remotePoolAddress`: The address of the token pool on the destination chain.
+            *   `remoteTokenAddress`: The address of the token on the destination chain, ABI encoded.
+            *   Rate limiter configurations (often disabled for initial local testing).
+        *   It then calls `localPool.applyChainUpdates(new uint64[](0), chainsToAdd)`. The first argument (an empty array `new uint64[](0)`) indicates that no existing chain configurations are being removed, only new ones added.
 
-*   **configureTokenPool Snippet:**
-    ```solidity
-    function configureTokenPool(...) public {
-        vm.selectFork(fork); // Select the fork to configure
-        vm.prank(owner); // Act as owner
+## Implementing the Token Bridging Logic
 
-        // ... setup remotePoolAddresses ...
+The core of our cross-chain interaction is encapsulated in a `bridgeTokens` helper function. This function handles the steps required to send tokens from a source fork to a destination fork via CCIP.
 
-        TokenPool.ChainUpdate[] memory chainsToAdd = new TokenPool.ChainUpdate[](1);
-        chainsToAdd[0] = TokenPool.ChainUpdate({
-            remoteChainSelector: remoteChainSelector,
-            remotePoolAddresses: remotePoolAddresses, // bytes (encoded remote pool address)
-            remoteTokenAddress: abi.encode(remoteTokenAddress), // bytes (encoded remote token address)
-            outboundRateLimiterConfig: RateLimiter.Config({isEnabled: false, capacity: 0, rate: 0}),
-            inboundRateLimiterConfig: RateLimiter.Config({isEnabled: false, capacity: 0, rate: 0})
-        });
+```solidity
+function bridgeTokens(
+    uint256 localForkId,
+    uint256 remoteForkId,
+    address user,
+    RebaseToken localToken,
+    RebaseToken remoteToken,
+    uint256 amountToBridge,
+    NetworkDetails memory localNetworkDetails,
+    NetworkDetails memory remoteNetworkDetails
+) internal {
+    // 1. Select Source Fork
+    vm.selectFork(localForkId);
 
-        tokenPool.applyChainUpdates(new uint64[](0), chainsToAdd); // Add remote chain config
-    }
-    ```
+    // 2. Construct CCIP Message
+    Client.EVMTokenAmount[] memory tokenAmounts = new Client.EVMTokenAmount[](1);
+    tokenAmounts[0] = Client.EVMTokenAmount({
+        token: address(localToken),
+        amount: amountToBridge
+    });
 
-*   **bridgeTokens Snippet (Key Parts):**
-    ```solidity
-    function bridgeTokens(...) public {
-        vm.selectFork(localFork);
+    // Note: gasLimit initially set to 0, later adjusted to prevent OutOfGas
+    bytes memory extraArgs = Client._argsToBytes(
+        Client.EVMExtraArgsV1({gasLimit: 100_000, strict: false}) // gasLimit: 0 may cause issues with simulator
+    );
 
-        // ... Construct Client.EVMTokenAmount[] memory tokenAmounts ...
+    Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
+        receiver: abi.encode(user), // Tokens sent to the same user address on the remote chain
+        data: "", // No extra calldata for the receiver in this example
+        tokenAmounts: tokenAmounts,
+        feeToken: localNetworkDetails.linkAddress, // Pay CCIP fees in LINK
+        extraArgs: extraArgs
+    });
 
-        // Use V2 for allowOutOfOrderExecution control
-        bytes memory extraArgs = Client._argsToBytes(Client.EVMExtraArgsV2({
-            gasLimit: 500_000, // Non-zero required for chainlink-local
-            allowOutOfOrderExecution: false
-        }));
+    // 3. Calculate CCIP Fee
+    uint256 fee = IRouterClient(localNetworkDetails.routerAddress).getFee(
+        remoteNetworkDetails.chainSelector,
+        message
+    );
 
-        Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
-            receiver: abi.encode(user), // Destination address
-            data: "", // Optional payload
-            tokenAmounts: tokenAmounts, // Token(s) and amount(s)
-            feeToken: localNetworkDetails.linkAddress, // Pay fee in LINK
-            extraArgs: extraArgs
-        });
+    // 4. Fund User with Fee Token (LINK)
+    // In a real scenario, the user would have LINK. The simulator provides a faucet.
+    ccipLocalSimulatorFork.requestLinkFromFaucet(user, fee);
 
-        uint256 fee = IRouterClient(localNetworkDetails.routerAddress).getFee(remoteNetworkDetails.chainSelector, message);
-        ccipLocalSimulatorFork.requestLinkFromFaucet(user, fee);
+    // 5. User Approvals
+    vm.startPrank(user);
+    IERC20(localNetworkDetails.linkAddress).approve(localNetworkDetails.routerAddress, fee);
+    IERC20(address(localToken)).approve(localNetworkDetails.routerAddress, amountToBridge);
+    vm.stopPrank();
 
-        // Prank + Approvals for LINK and localToken
-        vm.prank(user);
-        IERC20(localNetworkDetails.linkAddress).approve(localNetworkDetails.routerAddress, fee);
-        vm.prank(user);
-        IERC20(address(localToken)).approve(localNetworkDetails.routerAddress, amountToBridge);
+    // 6. Send CCIP Message
+    // Note: This call might require msg.value if feeToken is address(0)
+    // For LINK, no msg.value is needed here if feeToken is LINK address.
+    vm.prank(user); // User initiates the ccipSend
+    bytes32 messageId = IRouterClient(localNetworkDetails.routerAddress).ccipSend(
+        remoteNetworkDetails.chainSelector,
+        message
+    );
+    vm.stopPrank();
 
-        // Record balance before sending
-        uint256 localBalanceBefore = localToken.balanceOf(user);
+    // 7. Local Assertions (Post-Send)
+    assertEq(localToken.balanceOf(user), /* initial balance - amountToBridge */, "Local balance incorrect after send");
+    // Assert interest rate on local token remained unchanged if applicable
 
-        // Send the CCIP message
-        vm.prank(user);
-        IRouterClient(localNetworkDetails.routerAddress).ccipSend(remoteNetworkDetails.chainSelector, message);
+    // 8. Simulate Message Delivery on Remote Fork
+    vm.selectFork(remoteForkId);
+    vm.warp(block.timestamp + 20 minutes); // Simulate network latency
+    ccipLocalSimulatorFork.switchChainAndRouteMessage(remoteForkId); // Trigger simulator to process message
 
-        // Assert local balance decreased
-        // ...
+    // 9. Remote Assertions (Post-Receive)
+    assertEq(remoteToken.balanceOf(user), amountToBridge, "Remote balance incorrect after receive");
+    // Assert interest rate on remote token matches original local rate if applicable
+}
+```
 
-        // Simulate destination chain execution
-        vm.selectFork(remoteFork);
-        vm.warp(block.timestamp + 20 minutes); // Simulate finality time
-        uint256 remoteBalanceBefore = remoteToken.balanceOf(user);
-        ccipLocalSimulatorFork.switchChainAndRouteMessage(remoteFork);
-        uint256 remoteBalanceAfter = remoteToken.balanceOf(user);
+Key aspects of this function:
+*   **Fork Selection:** `vm.selectFork(localForkId)` switches Foundry's execution context to the source chain.
+*   **CCIP Message Construction:** The `Client.EVM2AnyMessage` struct is populated.
+    *   `receiver`: ABI encoded address of the recipient on the destination chain.
+    *   `data`: Optional calldata for the receiver contract.
+    *   `tokenAmounts`: An array specifying tokens and amounts to bridge.
+    *   `feeToken`: Address of the token used for CCIP fees (LINK in this case).
+    *   `extraArgs`: Contains parameters like `gasLimit` for the execution on the receiver. Critically, for the CCIP Local Simulator, `gasLimit` often needs to be a non-zero value (e.g., `100_000`) to avoid "OutOfGas" errors, even if `0` (auto) would work on a live network.
+*   **Fee Calculation & Funding:** `getFee` is called on the CCIP Router to determine the cost. The simulator's `requestLinkFromFaucet` provides the user with test LINK.
+*   **Approvals:** The user (`vm.prank(user)`) must approve the CCIP Router to spend their LINK (for fees) and the token being bridged.
+*   **`ccipSend`:** The `ccipSend` function on the source chain's CCIP Router initiates the cross-chain message.
+*   **Message Simulation:** After sending, context is switched to the `remoteForkId`. `vm.warp` advances time to simulate network delay, and `ccipLocalSimulatorFork.switchChainAndRouteMessage` triggers the simulator to process and deliver the message to the destination chain.
+*   **Assertions:** Balances and other relevant state (like interest rates for rebase tokens) are checked on both the source chain (after sending) and the destination chain (after simulated delivery).
 
-        // Assert remote balance increased
-        assertEq(remoteBalanceAfter, remoteBalanceBefore + amountToBridge);
-        // ... other assertions ...
-    }
-    ```
+## Writing the End-to-End Bridge Test
 
-*   **testBridgeAllTokens Snippet (Key Parts):**
-    ```solidity
-    function testBridgeAllTokens() public {
-        vm.selectFork(sepoliaFork);
-        vm.deal(user, SEND_VALUE); // Give user ETH
+With the setup and `bridgeTokens` helper in place, we can write the actual test function. This test will simulate a user depositing assets into a vault on Sepolia, bridging those assets to Arbitrum Sepolia, and then bridging them all back to Sepolia.
 
-        vm.prank(user);
-        // Deposit ETH into Vault, requires casting to payable
-        payable(address(vault)).deposit{value: SEND_VALUE}();
-        assertEq(sepoliaToken.balanceOf(user), SEND_VALUE); // Check token minting
+```solidity
+// Test state variables declared at contract level:
+// Sepolia setup
+uint256 sepoliaFork;
+RebaseToken sepoliaToken;
+RebaseTokenPool sepoliaPool;
+Vault vault; // Assuming Vault is only on Sepolia
+NetworkDetails sepoliaNetworkDetails;
 
-        // Bridge Sepolia -> Arb Sepolia
-        bridgeTokens(
-            SEND_VALUE, sepoliaFork, arbSepoliaFork, sepoliaNetworkDetails,
-            arbSepoliaNetworkDetails, sepoliaToken, arbSepoliaToken
+// Arbitrum Sepolia setup
+uint256 arbSepoliaFork;
+RebaseToken arbSepoliaToken;
+RebaseTokenPool arbSepoliaPool;
+NetworkDetails arbSepoliaNetworkDetails;
+
+// Shared
+CCIPLocalSimulatorFork ccipLocalSimulatorFork;
+address user = makeAddr("user"); // Example user address
+
+// ... (setup function populates these variables) ...
+
+function testBridgeAllTokens() public {
+    uint256 DEPOSIT_AMOUNT = 1e5; // Using a small, fixed amount for clarity
+
+    // 1. Deposit into Vault on Sepolia
+    vm.selectFork(sepoliaFork);
+    vm.deal(user, DEPOSIT_AMOUNT); // Give user some ETH to deposit
+
+    vm.prank(user);
+    // To send ETH (msg.value) with a contract call in Foundry:
+    // Cast contract instance to address, then to payable, then back to contract type.
+    Vault(payable(address(vault))).deposit{value: DEPOSIT_AMOUNT}();
+
+    assertEq(sepoliaToken.balanceOf(user), DEPOSIT_AMOUNT, "User Sepolia token balance after deposit incorrect");
+
+    // 2. Bridge Tokens: Sepolia -> Arbitrum Sepolia
+    bridgeTokens(
+        sepoliaFork,
+        arbSepoliaFork,
+        user,
+        sepoliaToken,
+        arbSepoliaToken,
+        DEPOSIT_AMOUNT,
+        sepoliaNetworkDetails,
+        arbSepoliaNetworkDetails
+    );
+
+    // Assertions for this step are within bridgeTokens
+
+    // 3. Bridge All Tokens Back: Arbitrum Sepolia -> Sepolia
+    vm.selectFork(arbSepoliaFork);
+    vm.warp(block.timestamp + 20 minutes); // Advance time on Arbitrum Sepolia before bridging back
+
+    uint256 arbBalanceToBridgeBack = arbSepoliaToken.balanceOf(user);
+    assertTrue(arbBalanceToBridgeBack > 0, "User Arbitrum balance should be non-zero before bridging back");
+
+    bridgeTokens(
+        arbSepoliaFork,
+        sepoliaFork,
+        user,
+        arbSepoliaToken,
+        sepoliaToken,
+        arbBalanceToBridgeBack,
+        arbSepoliaNetworkDetails,
+        sepoliaNetworkDetails
+    );
+
+    // Final state check: User on Sepolia should have their initial deposit back
+    // (minus any very small precision differences if applicable to tokenomics, or fees not covered by faucet)
+    vm.selectFork(sepoliaFork);
+    // Note: Exact final balance might depend on tokenomics if any fees were burnt from principal.
+    // For this example, assume full amount returns.
+    assertEq(sepoliaToken.balanceOf(user), DEPOSIT_AMOUNT, "User Sepolia token balance after bridging back incorrect");
+}
+
+```
+This test is not designed as a fuzz test due to the simulation time involved with `vm.warp` and CCIP message routing.
+
+**Handling `msg.value` in Tests:**
+When a function (like `vault.deposit()`) is `payable` and expects ETH, Foundry tests must explicitly send this value. The syntax is: `ContractType(payable(address(contractInstance))).functionName{value: amountToSend}(arguments);`. This involves:
+1.  Getting the `address` of the contract instance.
+2.  Casting this `address` to `payable`.
+3.  Casting this `payable address` back to the `ContractType` to access its functions.
+4.  Appending `{value: amountToSend}` before the function arguments.
+
+## Navigating Common Foundry and CCIP Simulator Issues
+
+Testing complex systems, especially cross-chain ones, often involves debugging. Here are some common issues and their resolutions:
+
+1.  **Error: Stack too deep:**
+    *   This can occur during `forge build`, especially with complex contracts or deep inheritance.
+    *   **Potential Cause:** Solidity compiler struggling with complexity.
+    *   **Potential Fix:** Ensure your `foundry.toml` includes `via_ir = true` or you compile with the `--via-ir` flag. This enables the IR-based compilation pipeline which can handle more complex code. Sometimes, simply recompiling or minor refactoring resolves this.
+
+2.  **Error: Prank Override (`vm.prank: cannot override an ongoing prank... use vm.startPrank`)**
+    *   **Cause:** This typically happens when `vm.prank(actor)` is called while a `vm.startPrank(anotherActorOrSameActor)` is already active from an outer scope (e.g., the main `setUp` function) without a corresponding `vm.stopPrank()`. Nested `vm.prank` calls are not allowed; `vm.startPrank` / `vm.stopPrank` should be used to define broader scopes of impersonation.
+    *   **Fix:** Review your prank usage. If a prank is started in `setUp` (e.g., `vm.startPrank(owner)`), ensure it's stopped (`vm.stopPrank()`) before helper functions that might also use `vm.prank(owner)` are called, or refactor the helper to not assume it needs to initiate the prank if one might already be active. A common pattern is to use `vm.startPrank` at the beginning of `setUp` for owner actions and `vm.stopPrank` at the end, and within tests or helpers, use `vm.prank` for specific user actions, ensuring scopes don't improperly overlap. For instance, if `setUp` uses `vm.startPrank(owner)` for deployments, and a helper function like `configureTokenPool` also needs to act as `owner`, ensure the `setUp`'s prank scope is managed correctly (e.g., by calling `vm.stopPrank()` before such helpers if they manage their own pranks, or by passing the `owner` context implicitly).
+
+3.  **Error: OutOfGas (`EvmError: OutOfGas` during `ccipSend` or message execution)**
+    *   **Cause (with CCIP Local Simulator):** When constructing the `Client.EVMExtraArgsV1` (or `V2`) for the `Client.EVM2AnyMessage`, setting `gasLimit: 0` can lead to out-of-gas errors during the *simulated execution on the receiver contract*. While `0` often means "use as much gas as needed" in real CCIP, the local simulator may require an explicit, non-zero gas limit for the target function call.
+    *   **Fix:** In the `EVMExtraArgsV1` struct within your `bridgeTokens` function (or wherever the CCIP message is constructed), set `gasLimit` to a reasonable non-zero value (e.g., `100_000` or `200_000`). This value is for the gas provided to the receiver contract on the destination chain to execute the logic triggered by the CCIP message.
+        ```solidity
+        // Inside bridgeTokens, when creating EVM2AnyMessage:
+        bytes memory extraArgs = Client._argsToBytes(
+            Client.EVMExtraArgsV1({gasLimit: 100_000, strict: false}) // Changed from 0
         );
+        ```
+    *   **`EVMExtraArgsV2`:** You might also use `EVMExtraArgsV2`, which allows specifying `allowOutOfOrderExecution`. The `gasLimit` consideration remains similar.
 
-        // Bridge Arb Sepolia -> Sepolia (All Balance Back)
-        vm.selectFork(arbSepoliaFork);
-        vm.warp(block.timestamp + 20 minutes); // Allow time for interest/rebase
-        uint256 arbBalance = arbSepoliaToken.balanceOf(user);
-        bridgeTokens(
-            arbBalance, arbSepoliaFork, sepoliaFork, arbSepoliaNetworkDetails,
-            sepoliaNetworkDetails, arbSepoliaToken, sepoliaToken
-        );
-    }
-    ```
+## Key Foundry Cheat Codes and Techniques
 
-**Links or Resources Mentioned**
+Foundry provides powerful cheat codes for fine-grained control during testing:
 
-*   Implicitly: Foundry documentation (for cheatcodes), Chainlink CCIP documentation (for message structure, concepts), `chainlink-local` repository/tool. No explicit URLs were shared.
+*   **`vm.prank(address)` / `vm.startPrank(address)` / `vm.stopPrank()`:** Simulate transactions as if they were sent from a specific address. `startPrank` and `stopPrank` define a scope for multiple calls from the same address.
+*   **`vm.deal(address, uint256 balance)`:** Sets the ETH balance of an address.
+*   **`vm.warp(uint256 timestamp)`:** Sets the `block.timestamp` to a specific value, useful for testing time-dependent logic or simulating network latency.
+*   **`vm.selectFork(uint256 forkId)`:** Switches the current EVM execution context to a previously created fork.
+*   **`vm.createFork(string memory rpcUrl)` / `vm.createSelectFork(string memory rpcUrl)`:** Creates a new fork from a live network state. `createSelectFork` also immediately selects it.
+*   **`vm.makePersistent(address contractAddress)`:** Makes the state of the specified contract(s) persist across multiple test function calls within the same test contract execution. Useful for shared fixtures like the CCIP simulator.
+*   **Sending `msg.value`:** Use the `{value: amount}` syntax after the function name and before arguments: `payableContract.payableFunction{value: ethAmount}(arg1, arg2);`. Remember the casting: `ContractType(payable(address(instance))).function{value: v}();`.
+*   **Debugging:** Use `forge test -vvvv` (or more `v`s) for increased verbosity and detailed execution traces when diagnosing reverts or unexpected behavior.
 
-**Notes or Tips Mentioned**
+## Understanding CCIP Local Simulator Interactions
 
-*   Foundry tests involving complex contracts or many calls might require the `--via-ir` flag during compilation/testing.
-*   `vm.prank` cannot override an existing prank. Use `vm.stopPrank()` before starting a new one if necessary, or use `vm.startPrank` which can override. Be mindful of pranks used within helper functions called during setup.
-*   When testing with `chainlink-local`, the `gasLimit` field in `EVMExtraArgsV1/V2` *must* be set to a non-zero value (e.g., 100,000 or 500,000) to avoid `OutOfGas` errors during simulated destination execution. This differs from real CCIP.
-*   To send native currency (ETH) along with a contract call in Foundry tests, cast the contract's address to `payable` first: `payable(address(contractInstance)).functionName{value: amount}()`.
-*   Use `vm.warp` to simulate the passage of time, necessary for things like CCIP message finality or time-dependent contract logic (like interest accrual).
-*   Use `ccipLocalSimulatorFork.switchChainAndRouteMessage()` to trigger the simulated delivery and execution of the CCIP message on the destination fork.
+The `CCIPLocalSimulatorFork` contract is central to local cross-chain testing:
 
-**Questions or Answers Mentioned**
+*   **`requestLinkFromFaucet(address recipient, uint256 amount)`:** Simulates a LINK faucet, providing test LINK tokens to an address for paying CCIP fees.
+*   **`switchChainAndRouteMessage(uint256 forkId)`:** This function is called on the destination fork. It tells the simulator to process any pending CCIP messages targeted for that `forkId` (chain), effectively simulating the off-chain routing and on-chain delivery of the message.
+*   **`getNetworkDetails(uint64 chainSelector)`:** Provides essential network parameters like the CCIP router address and native LINK token address for a given chain.
+*   **`Client.EVM2AnyMessage` Structure:** This struct is the core payload for `ccipSend`. Key fields include:
+    *   `receiver`: The target contract address on the destination chain (ABI encoded).
+    *   `data`: Arbitrary calldata to be executed by the `receiver`.
+    *   `tokenAmounts`: An array of `Client.EVMTokenAmount` specifying tokens and amounts to transfer.
+    *   `feeToken`: Address of the token used to pay CCIP fees (e.g., LINK address). If `address(0)`, native currency is implied for fees.
+    *   `extraArgs`: Additional parameters for message execution, notably `gasLimit`.
+*   **CCIP Fees:** Fees are crucial for CCIP. The `IRouterClient.getFee()` function is used to determine the cost of sending a message, which must then be paid using the specified `feeToken`.
 
-*   No direct Q&A, but the debugging process implicitly answers:
-    *   "Why did my test fail with 'Stack too deep'?" -> Needs `--via-ir`.
-    *   "Why did my test fail with 'cannot override prank'?" -> Conflicting `vm.prank` calls, likely between `setup` and helper functions.
-    *   "Why did my test fail with 'OutOfGas' on the destination chain?" -> Need to set a non-zero `gasLimit` in `extraArgs` when using `chainlink-local`.
+## Conclusion and Further Testing
 
-**Examples or Use Cases Mentioned**
+By following these steps, you can successfully test cross-chain token bridging logic from Sepolia to Arbitrum Sepolia and back, verifying critical state changes like token balances and interest rates. The `bridgeTokens` helper function provides a reusable pattern for these interactions.
 
-*   The core use case is testing a cross-chain bridge for a custom `RebaseToken` between Sepolia and Arbitrum Sepolia testnets locally.
-*   Depositing ETH into a `Vault` contract which then mints share tokens (`RebaseToken`) is demonstrated as part of the test setup.
-*   Bridging the *entire* balance of a token back from the destination chain.
+This forms a solid foundation. Consider extending your test suite with scenarios like:
+*   Bridging partial amounts of tokens.
+*   Multiple consecutive bridge operations in both directions.
+*   Testing failure cases (e.g., insufficient fees, invalid receiver).
+*   Interactions with different users.
+
+Thorough testing, especially with local simulation tools like the Chainlink CCIP Local Simulator, is essential for building secure and reliable Web3 applications.
