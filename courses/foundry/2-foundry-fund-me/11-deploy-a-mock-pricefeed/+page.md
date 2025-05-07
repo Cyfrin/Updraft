@@ -1,0 +1,3 @@
+---
+DEPLOY A MOCK PRICEFEED
+---
