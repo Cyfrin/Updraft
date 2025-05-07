@@ -1,0 +1,3 @@
+---
+SMART CONTRACTS EVENTS
+---
