@@ -1,0 +1,3 @@
+---
+SOLIDITY STYLE GUIDE
+---
