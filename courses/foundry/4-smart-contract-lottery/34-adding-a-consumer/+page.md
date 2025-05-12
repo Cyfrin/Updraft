@@ -1,3 +1,0 @@
----
-ADDING A CONSUMER
----

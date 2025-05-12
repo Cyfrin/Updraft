@@ -1,3 +1,0 @@
----
-SETUP THE TESTS
----

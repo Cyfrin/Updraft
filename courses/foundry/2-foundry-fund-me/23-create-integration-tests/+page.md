@@ -1,3 +1,0 @@
----
-CREATE INTEGRATION TESTS
----

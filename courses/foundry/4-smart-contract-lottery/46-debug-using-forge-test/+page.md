@@ -1,3 +1,0 @@
----
-DEBUG USING FORGE TEST
----

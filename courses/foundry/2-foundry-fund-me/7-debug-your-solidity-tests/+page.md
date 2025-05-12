@@ -1,3 +1,0 @@
----
-DEBUG YOUR SOLIDITY TESTS
----

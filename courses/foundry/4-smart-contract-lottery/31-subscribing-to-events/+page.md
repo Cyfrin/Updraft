@@ -1,3 +1,0 @@
----
-SUBSCRIBING TO EVENTS
----

@@ -1,3 +1,0 @@
----
-REFACTORING EVENTS DATA
----

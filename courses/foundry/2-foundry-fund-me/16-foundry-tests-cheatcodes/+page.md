@@ -1,3 +1,0 @@
----
-FOUNDRY TESTS CHEATCODES
----

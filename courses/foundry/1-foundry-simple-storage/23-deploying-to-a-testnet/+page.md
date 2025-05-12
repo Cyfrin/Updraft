@@ -1,3 +1,0 @@
----
-DEPLOYING TO A TESTNET
----

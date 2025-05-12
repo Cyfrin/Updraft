@@ -1,3 +1,0 @@
----
-MID SECTION RECAP
----
