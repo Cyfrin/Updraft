@@ -10,33 +10,33 @@ As a recap, Chainlink Functions subscriptions are used to pay for, manage, and t
 
 1. Open [functions.chain.link](functions.chain.link), connect your wallet (make sure you are still connected to Sepolia) and click **Create Subscription**:
 
-![create-subscription](../assets/create-subscription.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/create-subscription.png' style='width: 100%; height: auto;' alt='create-subscription'}
 
 2. Enter your email and, optionally, a subscription name.
 
-![email-and-name](../assets/email-and-name.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/email-and-name.png' style='width: 100%; height: auto;' alt='email-and-name'}
 
 3. The first time you interact with the Subscription Manager using your wallet, you must accept the Terms of Service (ToS). A MetaMask popup will prompt you to sign a message to accept the TOS.
 
-![tos](../assets/tos.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/tos.png' style='width: 100%; height: auto;' alt='tos'}
 
 4. MetaMask will then pop up again and ask you to sign a message to approve the subscription creation:
 
-![approve-subscription-creation](../assets/approve-subscription-creation.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/approve-subscription-creation.png' style='width: 100%; height: auto;' alt='approve-subscription-creation'}
 
 5. After the subscription has been approved, MetaMask will pop up a third time and prompt you to sign a message that links the subscription name and email address you provided and ensure you are the subscription owner:
 
-![link-email-and-name](../assets/link-email-and-name.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/link-email-and-name.png' style='width: 100%; height: auto;' alt='link-email-and-name'}
 
 ## Funding a subscription
 
 After the subscription has been created, add funds by clicking the **Add funds** button:
 
-![add-funds](../assets/add-funds.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/add-funds.png' style='width: 100%; height: auto;' alt='add-funds'}
 
 For this example, enter `5 LINK` and click **Add funds**:
 
-![fund-subscription](../assets/fund-subscription.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/fund-subscription.png' style='width: 100%; height: auto;' alt='fund-subscription'}
 
 Sign the transaction and send the LINK tokens to your subscription. Once the transaction has gone through, your subscription will have been successfully created and funded. It is now ready to add consumer contracts to make Chainlink Functions requests.
 
@@ -44,21 +44,21 @@ Sign the transaction and send the LINK tokens to your subscription. Once the tra
 
 To add the `FunctionsConsumer` contract to your subscription, click **Add consumer**:
 
-![add-consumer](../assets/add-consumer.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/add-consumer.png' style='width: 100%; height: auto;' alt='add-consumer'}
 
 Then, go back to Remix and copy the address of the `FunctionsConsumer` contract we deployed in the previous lesson:
 
-![copy-address](../assets/copy-address.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/copy-address.png' style='width: 100%; height: auto;' alt='copy-address'}
 
 Back in the Chainlink Functions app, paste this in as the **Consumer address** and click **Add consumer**:
 
-![consumer-address](../assets/consumer-address.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/consumer-address.png' style='width: 100%; height: auto;' alt='consumer-address'}
 
 Sign the message in MetaMask to send the transaction to add the consumer contract to the subscription. Once the transaction has gone through, the subscription configuration is complete, and you will be ready to make your first request!
 
 Click **View subscription** to see an overview of your subscription, including the history of requests, the consumers added, and the LINK balance:
 
-![subscription-overview](../assets/subscription-overview.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/subscription-overview.png' style='width: 100%; height: auto;' alt='subscription-overview'}
 
 Copy the subscription ID - we are going to need this!
 
@@ -71,18 +71,18 @@ Back in Remix, expand the `FunctionsConsumer` contract dropdown in the **Deploye
 - `subscriptionId`: the ID you just copied.
 Click **transact** and then sign the transaction in MetaMask to make the Chainlink Functions request
 
-![get-temp](../assets/get-temp.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/get-temp.png' style='width: 100%; height: auto;' alt='get-temp'}
 
 On your subscription overview page, you can see your pending Chainlink Functions request:
 
-![pending-request](../assets/pending-request.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/pending-request.png' style='width: 100%; height: auto;' alt='pending-request'}
 
 Once the request has been filled, you will be able to see it in the **History** section:
 
-![history](../assets/history.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/history.png' style='width: 100%; height: auto;' alt='history'}
 
 Now, in Remix, if we interact with our `FunctionsConsumer` contract and call the `s_lastTemperature` and `s_lastCity` functions, we can see the returned result:
 
-![london-price](../assets/london-price.png)
+::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/london-price.png' style='width: 100%; height: auto;' alt='london-price'}
 
 As you can see, we successfully used Chainlink Functions to bring API data on-chain in a decentralized and secure way! 

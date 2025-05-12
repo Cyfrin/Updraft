@@ -16,7 +16,7 @@ Let's write our own ERC-20 token contract using Remix (Steps 1-3 were covered in
     - Give a name for your workspace. In this example, we will use the name "CLF".
     - Hit **Ok**
 
-    ![create-blank-workspace](../assets/create-blank-workspace.png)
+    ::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/create-blank-workspace.png' style='width: 100%; height: auto;' alt='create-blank-workspace'}
 
 2. Create a new folder:
     - Right-click in the file explorer sidebar and click **New Folder**
@@ -26,7 +26,7 @@ Let's write our own ERC-20 token contract using Remix (Steps 1-3 were covered in
     - Right-click on the `contracts` folder and click **New file**
     - Name the file `MyERC20.sol`
 
-    ![file-explorer](../assets/file-explorer.png)
+    ::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/file-explorer.png' style='width: 100%; height: auto;' alt='file-explorer'}
 
 4. Write the code!
     -  Copy and Paste the following token contract code: You could also create your token using the Openzeppelin Wizard. However, for now, you can use this pre-written one. For future smart contracts, you can copy and paste from the [course code repo](https://github.com/ciaranightingale/chainlink-fundamentals-code/blob/main/data-feeds/MyERC20.sol).

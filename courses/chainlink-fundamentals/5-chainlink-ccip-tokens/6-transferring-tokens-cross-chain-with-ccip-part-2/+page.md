@@ -10,24 +10,24 @@ This is a recap of what you learned in Section 2, Lesson 3, so we are going to g
 
 - In MetaMask, click on the **Tokens** tab and click the **LINK** token:
 
-![mm-link-token](../assets/mm-link-token.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/mm-link-token.png' style='width: 100%; height: auto;' alt='mm-link-token'}
 
 - Click the **Send** button:
 
-![send-link](../assets/send-link.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/send-link.png' style='width: 100%; height: auto;' alt='send-link'}
 
 - For the **Send to** address, paste the address of the `CCIPTokenSender` contract we deployed in the previous lesson:
 
-![send-to](../assets/send-to.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/send-to.png' style='width: 100%; height: auto;' alt='send-to'}
 
 - Enter the **Amount** of LINK to send to the contract. `3` LINK will be sufficient.
 - Click **Continue**:
 
-![send-amount](../assets/send-amount.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/send-amount.png' style='width: 100%; height: auto;' alt='send-amount'}
 
 - Click **Confirm** to sign the transaction and send the LINK tokens to the `CCIPTokenSender` contract:
 
-![confirm-transaction](../assets/confirm-transaction.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/confirm-transaction.png' style='width: 100%; height: auto;' alt='confirm-transaction'}
 
 ### Check the contract balance
 
@@ -38,7 +38,7 @@ Let's check the LINK tokens successfully transferred to the `CCIPTokenSender` co
 - Click on the **Contract** tabs and then **Read Contract** and find the `balanceOf` function
 - For the `account`, enter the `CCIPTokenSender` address:
 
-![link-etherscan](../assets/link-etherscan.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/link-etherscan.png' style='width: 100%; height: auto;' alt='link-etherscan'}
 
 If the transfer is successful, it will produce an output of `300000000000000`, which is 3 LINK in WEI.
 
@@ -56,13 +56,13 @@ To do this token approval, we are going to interact with the USDC contract on Et
 - Find the `approve` function and click on it to expand it.
 - For the `spender`, enter the `CCIPTokenSender` address; for the `value`, enter the number of tokens you want to send cross-chain; we will be sending `1 USDC` or `1000000` since USDC has 6 decimal places:
 
-![usdc-etherscan](../assets/usdc-etherscan.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/usdc-etherscan.png' style='width: 100%; height: auto;' alt='usdc-etherscan'}
 
 - Click **Write** to initiate the transaction.
 - Sign the transaction in MetaMask to send the transaction.
 - To confirm the approval was successful, click the **Read as Proxy** tab and click the `allowance` function. Enter your address as the `owner` and the `CCIPTokenSender` contract address as the `spender`. Then, click **Query**:
 
-![allowance-usdc](../assets/allowance-usdc.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/allowance-usdc.png' style='width: 100%; height: auto;' alt='allowance-usdc'}
 
 - If the approval was successful, you will see an output of `1000000`. 
 
@@ -75,16 +75,16 @@ Let's FINALLY send some USDC from Sepolia to Base Sepolia using CCIP!
     - `_receiver`: paste your wallet address since you will send yourself USDC on the destination chain. Note that, on some blockchains, you are not guaranteed to have the same address.
     - `_amount`: we are sending `1` USDC cross-chain, so put `1000000`(USDC has 6 decimal places).
 
-    ![transfer-usdc-inputs](../assets/transfer-usdc-inputs.png)
+    ::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/transfer-usdc-inputs.png' style='width: 100%; height: auto;' alt='transfer-usdc-inputs'}
 
 - Click **transact** to initiate the transaction. 
 - Sign the message in MetaMask by clicking **Confirm**.
 
-![confirm-cross-chain](../assets/confirm-cross-chain.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/confirm-cross-chain.png' style='width: 100%; height: auto;' alt='confirm-cross-chain'}
 
 - In Remix, we will see a log in the terminal confirming the transfer has been initiated on Sepolia.
 
-![confirmed-transaction-terminal](../assets/confirmed-transaction-terminal.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/confirmed-transaction-terminal.png' style='width: 100%; height: auto;' alt='confirmed-transaction-terminal'}
 
 - Copy the transaction hash! We will be using this shortly.
 
@@ -97,21 +97,21 @@ After sending a transaction, you can access the [CCIP Explorer](https://ccip.cha
 
 Paste the Sepolia transaction hash into the CCIP Explorer search bar:
 
-![ccip-explorer](../assets/ccip-explorer.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/ccip-explorer.png' style='width: 100%; height: auto;' alt='ccip-explorer'}
 
 This will bring up the transaction details for your cross-chain transfer. Here, you will be able to see an overview of the transaction, including the source and destination transactions to burn and mint the tokens, respectively.
 
 It will also show the **Status** of the cross-chain message. The tokens are only received on the destination chain after full finality is reached on the source chain. For Ethereum Sepolia, this is approximately 20 minutes, but the times for different chains can be found in the Chainlink documentation.
 
-![ccip-tx-details](../assets/ccip-tx-details.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/ccip-tx-details.png' style='width: 100%; height: auto;' alt='ccip-tx-details'}
 
 When the message's status changes from **Waiting for finality** to **Success**, you will have received your tokens on the destination chain:
 
-![message-success](../assets/message-success.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/message-success.png' style='width: 100%; height: auto;' alt='message-success'}
 
 To check your USDC balance, switch your network inside MetaMask to Base Sepolia and then check your USDC balance in the **Tokens** tab (assuming you have imported the USDC token on Base Sepolia).
 
-![balance-increased](../assets/balance-increased.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/balance-increased.png' style='width: 100%; height: auto;' alt='balance-increased'}
 
 Awesome! You successfully sent your first cross-chain message to bridge tokens from Sepolia to Base Sepolia using CCIP integrated into a smart contract!
 

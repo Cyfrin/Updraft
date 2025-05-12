@@ -14,7 +14,7 @@ Price Feeds empower smart contracts to act on important, real-time data such as 
 ## Find Available Chainlink Data Feeds
 Asset prices are presented in asset pairs, as the value of one asset is expressed in relation to another (e.g., 1 USD is worth 0.89 Euro, and so on). You can get the pairs and chains where Data Feeds are available at https://data.chain.link/. Note that Data Feeds are similar but not the same as Data Streams. Data streams will be covered later on in this course.
 
-![get-started-data-feeds](../assets/get-started-data-feeds.png)
+::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/get-started-data-feeds.png' style='width: 100%; height: auto;' alt='get-started-data-feeds'}
 
 You must know the feed’s on-chain address to get information from a Data Feed.
 

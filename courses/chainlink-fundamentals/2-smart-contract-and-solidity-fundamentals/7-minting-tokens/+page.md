@@ -5,13 +5,13 @@ We have not yet minted any tokens, which means currently the total available sup
 - Go to the **Deploy & Run Transactions** tab.
 - Find your token and expand the tab to see the contract's functions.
 
-![functions-on-contract](../assets/functions-on-contract.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/functions-on-contract.png' style='width: 100%; height: auto;' alt='functions-on-contract'}
 
 - Find the function `mint` and expand it to check the parameters.
     - `to`: The address receiving the minted tokens. We will create `100` tokens by setting the amount value as `100000000000000000000`. This is because our Token has `18` decimals. 
     - `amount`: The amount to mint.
 
-    ![transact](../assets/transact.png)
+    ::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/transact.png' style='width: 100%; height: auto;' alt='transact'}
 
 - To send the transaction, click on the **transact** button and confirm the transaction in your Metamask wallet.
 - Now, you can check to see if your balance has increased by calling `balanceOf` and passing the address you minted the tokens to.
@@ -23,9 +23,9 @@ Token approvals enable another address to spend another address's tokens. This f
 
 To use this feature, you can call the `approve` function, specifying the address that will spend your tokens and the amount they are allowed to spend. 
 
-![approve](../assets/approve.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/approve.png' style='width: 100%; height: auto;' alt='approve'}
 
 You can always verify if a contract has permission to spend your tokens by calling the `allowance` function.
 
-![allowance](../assets/allowance.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/allowance.png' style='width: 100%; height: auto;' alt='allowance'}
 

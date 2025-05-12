@@ -49,19 +49,19 @@ Token pools are smart contracts that manage the minting, burning, locking, and r
 The CCIP CCT Standard supports the following types of bridging mechanisms (remember, when using CCIP, all tokens need an associated Token Pool contract that is responsible for managing the token supply, regardless of the mechanism being used):
 - Mint and burn
 
-![ccip-burn-mint](../assets/ccip-burn-mint.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/ccip-burn-mint.png' style='width: 100%; height: auto;' alt='ccip-burn-mint'}
 
 - Mint and unlock
 
-![ccip-lock-mint](../assets/ccip-lock-mint.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/ccip-lock-mint.png' style='width: 100%; height: auto;' alt='ccip-lock-mint'}
 
 - Burn and unlock
 
-![ccip-burn-unlock](../assets/ccip-burn-unlock.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/ccip-burn-unlock.png' style='width: 100%; height: auto;' alt='ccip-burn-unlock'}
 
 - Lock and unlock
 
-![ccip-lock-unlock](../assets/ccip-lock-unlock.png)
+::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/ccip-lock-unlock.png' style='width: 100%; height: auto;' alt='ccip-lock-unlock'}
 
 ## How to Use the CCT Standard
 

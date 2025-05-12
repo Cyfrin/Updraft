@@ -4,7 +4,7 @@ Let's use the `TokenShop` contract to buy some `MyERC20` tokens. This is the con
 
 1. Open your Metamask and click the **Send** button. Enter the `TokenShop` contract address as the **To** address and enter `0.001` as the amount to send `0.001 ETH` to your `TokenShop` address.
 
-![mint-meta-mask](../assets/mint-meta-mask.png)
+::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/mint-meta-mask.png' style='width: 100%; height: auto;' alt='mint-meta-mask'}
 
 Click **Continue** and the **Confirm** to send the transaction.
 
@@ -14,10 +14,10 @@ This will send `0.001 ETH` to your `TokenShop` contract and trigger the `receive
 
 - You can check your MetaMask wallet, under Tokens, to see if the Token you’ve previously added to your MetaMask has an updated balance.
 
-![balance](../assets/balance.png)
+::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/balance.png' style='width: 100%; height: auto;' alt='balance'}
 
 You can also click on the `MyERC20` contract in Remix. Then, check how much of your token is held by your wallet address by calling `balanceOf` function and passing in your address.
 
-![balance-of](../assets/balance-of.png)
+::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/balance-of.png' style='width: 100%; height: auto;' alt='balance-of'}
 
 Congratulations! You just bought and minted tokens from the `MyERC20` contract using the `TokenShop` contract using Chainlink Price Feeds to convert an ETH amount to a USD amount to calculate how many tokens to mint!

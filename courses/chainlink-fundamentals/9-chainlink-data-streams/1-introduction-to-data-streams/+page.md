@@ -17,11 +17,11 @@ Chainlink Data Streams primarily provide market pricing data for assets. Pricing
 Data Streams for specific pairs are available on certain blockchains. You can look up the pairs and chains where Data Streams are supported through https://data.chain.link/.
 When presented with the below screen, click on “Data Streams”.
 
-![getting-started](../assets/getting-started.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/getting-started.png' style='width: 100%; height: auto;' alt='getting-started'}
 
 That will take you to https://data.chain.link/streams—which looks like this:
 
-![data-streams](../assets/data-streams.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/data-streams.png' style='width: 100%; height: auto;' alt='data-streams'}
 
 If you click on any of the Pairs in the “Stream” Column, it will take you to the page which has important configuration details such as that asset pair’s “feed id”, bid and ask prices, and more.
 

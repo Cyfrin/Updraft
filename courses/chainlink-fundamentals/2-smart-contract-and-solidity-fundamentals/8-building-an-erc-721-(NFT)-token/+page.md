@@ -8,7 +8,7 @@ When you first open the wizard, you will see an interface with options for the t
 
 We will be selecting the **ERC-721** option as this is the token standard for NFTs.
 
-![ozw-erc721](../assets/ozw-erc721.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/ozw-erc721.png' style='width: 100%; height: auto;' alt='ozw-erc721'}
 
 On the left side, you’ll notice the **Settings** tab. This is where we can configure various features for our NFT. We will be setting the following:
 
@@ -17,13 +17,13 @@ On the left side, you’ll notice the **Settings** tab. This is where we can con
 - Mintable
 - Auto-increment Ids
 
-![ozw-options](../assets/ozw-options.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/ozw-options.png' style='width: 100%; height: auto;' alt='ozw-options'}
 
 You will notice that the code is automatically filled out for you as you click various options. This makes it very quick and easy to generate templates for these contracts.
 
 In the upcoming Chainlink VRF Section, you will learn how to take this knowledge and utilize Chainlink VRF to add randomness to an NFT, creating a lot more fun for your users!
 
-![nft](../assets/nft.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/nft.png' style='width: 100%; height: auto;' alt='nft'}
 
 ## Conclusion
 

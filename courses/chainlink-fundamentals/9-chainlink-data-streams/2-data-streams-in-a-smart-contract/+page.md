@@ -9,7 +9,7 @@ This project uses the **Streams Trade** implementation of Chainlink Data Streams
 3. Chainlink Automation uses the **`StreamsLookup`** custom error to retrieve a signed report from the Data Streams Aggregation Network and return the data in a callback to the `performUpkeep` function.
 4. The **`performUpkeep`** function verifies the data by calling the **`verify`** function on the Chainlink Verifier contract.
 
-![streams-trade](../assets/streams-trade.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/streams-trade.png' style='width: 100%; height: auto;' alt='streams-trade'}
 
 ## Writing the code
 
@@ -321,22 +321,22 @@ Send `1 LINK` to the `StreamsUpkeep` address (that you just deployed).
     - Enter the amount as `1`. 
 Click **Continue** and then sign the transaction by clicking **Confirm** to fund the contract with LINK.
 
-![send-link](../assets/send-link.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/send-link.png' style='width: 100%; height: auto;' alt='send-link'}
 
 Finally, we need to verify the `StreamsUpkeep` contract. 
 - In Remix, flatten the contract by right-clicking the file and clicking **Flatten**
 
-![flatten](../assets/flatten.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/flatten.png' style='width: 100%; height: auto;' alt='flatten'}
 
 
 - Head to [Sepolia Etherscan] and search the address of the `StreamsUpkeep` contract. 
 - Click the **Contract** tab and then click **Verify and Publish**.
 
-![verify-and-publish](../assets/verify-and-publish.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/verify-and-publish.png' style='width: 100%; height: auto;' alt='verify-and-publish'}
 
 - Select the **Compiler Type** as **Solidity (Single file)** and select the Compiler version and License Type you used. Click **Continue**.
 
-![verify-options](../assets/verify-options.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/verify-options.png' style='width: 100%; height: auto;' alt='verify-options'}
 
 - Go back to Remix and copy the code in the `StreamsUpkeep_flattened.sol` file. Paste this into the source code box. Then click **Verify and Publish**. Note: if it fails, check no constructor arguments were accidentally added.
 - Your contract will now have a green tick next to the **Contract** tab.
@@ -350,27 +350,27 @@ The final step before we actually see this all working in action is to register 
 3. Select the `Trigger` as  **Log trigger** for the upkeep type and click **Next**.
 4. Specify the **Contract to automate** as the `StreamsUpkeep` contract address. In this example, you can ignore the warning about the Automation-compatible contract verification. Click **Next**.
 
-![contract-to-automate](../assets/contract-to-automate.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/contract-to-automate.png' style='width: 100%; height: auto;' alt='contract-to-automate'}
 
 5. Specify the `LogEmitter` contract address to tell Chainlink Automation what contracts to watch for log triggers. Then click **Next**.
 
-![emitter](../assets/emitter.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/emitter.png' style='width: 100%; height: auto;' alt='emitter'}
 
 6. Provide the ABI if the contract is not verified. To find the ABI of your contract in Remix, make sure the `LogEmitter` contract is open in the main window and navigate to the **Solidity Compiler** tab. Then, copy the ABI to your clipboard using the button at the bottom of the panel.
 
-![abi](../assets/abi.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/abi.png' style='width: 100%; height: auto;' alt='abi'}
 
 7. Paste the ABI and click **Next**. Leave the **Log index topic filters** box empty and click **Next** again.
 
 8. Give your upkeep a name e.g. "Data Streams Demo" and provide a **Starting balance** of `1` LINK. Leave all other options as they are. Click **Register Upkeep**.
 
-![upkeep-details](../assets/upkeep-details.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/upkeep-details.png' style='width: 100%; height: auto;' alt='upkeep-details'}
 
 9. Sign the transaction, submit a registration request, and send the LINK to fund the upkeep.
 10. Sign the message to verify ownership of the upkeep.
 11. Once this has confirmed, click **View Upkeep** to see an overview:
 
-![overview](../assets/overview.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/overview.png' style='width: 100%; height: auto;' alt='overview'}
 
 As per Section 4, you will be able to see the upkeep overview, details, and history.
 
@@ -380,7 +380,7 @@ In this example, the upkeep contract pays for the on-chain verification of repor
 
 Open MetaMask and send 1 testnet LINK on Arbitrum Sepolia to the upkeep contract address you saved earlier.
 
-![fund-upkeep](../assets/fund-upkeep.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/fund-upkeep.png' style='width: 100%; height: auto;' alt='fund-upkeep'}
 
 ### Emit a log
 
@@ -388,13 +388,13 @@ Finally, let’s call `emitLog` to see this working in action!
 
 - Head back to Remix and expand the `LogEmitter` contract in the **Deployed Contracts** section. Click **emitLog** and sign the transaction to call the function and emit the **Log** event.
 
-![emit-log](../assets/emit-log.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/emit-log.png' style='width: 100%; height: auto;' alt='emit-log'}
 
 - Sign the transaction and wait for it to confirm.
 
 - After the transaction is complete, the log is emitted, and the upkeep is triggered. You can find the upkeep transaction hash in the Chainlink Automation UI. Check to make sure the transaction is successful.
 
-![history](../assets/history.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/history.png' style='width: 100%; height: auto;' alt='history'}
 
 ## View the price
 
@@ -404,7 +404,7 @@ In the **Deploy & Run Transactions** tab in Remix, expand the details of the `St
 
 Click the `lastDecodedPrice` getter function to view the retrieved price. The answer on the ETH/USD stream uses `18` decimal places, so an answer of `248412100000000000` indicates an ETH/USD price of `2,484.121`. Some streams may use a different number of decimal places for answers. See the [Data Streams Crypto streams page](https://docs.chain.link/data-streams/crypto-streams) for more information.
 
-![data](../assets/data.png)
+::image{src='/chainlink-fundamentals/9-chainlink-data-streams/assets/data.png' style='width: 100%; height: auto;' alt='data'}
 
 ## (Optional) **EIP-3668: Use of `revert` to convey call information**
 

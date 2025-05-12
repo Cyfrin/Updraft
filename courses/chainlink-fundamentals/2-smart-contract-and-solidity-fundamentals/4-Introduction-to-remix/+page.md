@@ -24,7 +24,7 @@ When you open Remix, you will see a few important sections:
 4. **Solidity Compiler** (sidebar): Compile smart contracts with different Solidity versions.
 5. **Deploy & Run Transactions** (sidebar): Deploy contracts to a blockchain and interact with them.
 
-![remix](../assets/remix.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/remix.png' style='width: 100%; height: auto;' alt='remix'}
 
 ## Creating Workspaces, Folders, and Files
 
@@ -36,7 +36,7 @@ Remix allows you to create different **workspaces** to organize your projects. T
     - Give a name for your workspace. In this example, we will use the name "CLF".
     - Hit **Ok**
 
-    ![create-blank-workspace](../assets/create-blank-workspace.png)
+    ::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/create-blank-workspace.png' style='width: 100%; height: auto;' alt='create-blank-workspace'}
 
 2. Create a new folder:
     - Right-click in the file explorer sidebar and click **New Folder**
@@ -46,7 +46,7 @@ Remix allows you to create different **workspaces** to organize your projects. T
     - Right-click on the `contracts` folder and click **New file**
     - Name the file `MyERC20.sol`
 
-    ![file-explorer](../assets/file-explorer.png)
+    ::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/file-explorer.png' style='width: 100%; height: auto;' alt='file-explorer'}
 
 4. Write the code in your new file!
 
@@ -61,13 +61,13 @@ Before deploying a smart contract, you must compile it to check for errors and g
 3. Ensure your contract file is still open in the main window and click **Compile [YourContract.sol]**.
 4. If there are errors, they will appear in the terminal.
 
-![solidity-compiler-tab](../assets/solidity-compiler-tab.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/solidity-compiler-tab.png' style='width: 100%; height: auto;' alt='solidity-compiler-tab'}
 
 5. You can also compile by hitting `Cmd + S` on your Mac keyboard or `Ctrl + S` on Windows.
     - If there are no errors, the contract will compile successfully, and you’ll see a green checkmark.
 6. Remember the "ABI" part of the lesson 1? Well, when we compile our contract, the compiler generates the ABI! To get the ABI of a contract (e.g., for verification or a front-end application) scroll down in the **Solidity Compiler** tab and blick the ABI button:
 
-![remix-abi](../assets/remix-abi.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/remix-abi.png' style='width: 100%; height: auto;' alt='remix-abi'}
 
 ## Connecting to MetaMask
 
@@ -80,7 +80,7 @@ To deploy a contract on a real blockchain (e.g., Ethereum Mainnet, Sepolia, or P
 3. Select **Injected Provider - MetaMask** as the environment.
 4. MetaMask will prompt you to connect your wallet and approve the connection.
 
-![metamask-environment](../assets/metamask-environment.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/metamask-environment.png' style='width: 100%; height: auto;' alt='metamask-environment'}
 
 ## Deploying Smart Contracts
 
@@ -91,18 +91,18 @@ Once compiled, a smart contract can be deployed on a local blockchain (e.g., Rem
 1. Open the **Deploy & Run Transactions** panel.
 2. Select a deployment environment (e.g., **Remix VM** for testing or **Injected Provider - MetaMask** for live networks).
 
-![metamask-environment](../assets/metamask-environment.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/metamask-environment.png' style='width: 100%; height: auto;' alt='metamask-environment'}
 
 3. Choose the correct contract from the dropdown.
 4. Click **Deploy** and confirm the transaction in MetaMask to deploy your contract.
 
-![deploy](../assets/deploy.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/deploy.png' style='width: 100%; height: auto;' alt='deploy'}
 
 ### Pinning Deployed Smart Contracts
 
 After deployment, Remix allows you to pin a deployed contract to your workspace so you can continue interacting with it even after refreshing the page. Click the pin icon to pin the deployed contract.
 
-![pin-contract](../assets/pin-contract.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/pin-contract.png' style='width: 100%; height: auto;' alt='pin-contract'}
 
 ### The contract address
 
@@ -122,7 +122,7 @@ Once deployed, you can interact directly with your smart contract from Remix.
 4. Confirm transactions in MetaMask (for state-changing functions).
 5. View results in the Remix terminal.
 
-![remix-interact](../assets/remix-interact.png)
+::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/remix-interact.png' style='width: 100%; height: auto;' alt='remix-interact'}
 
 This lesson should give you a solid foundation in using Remix to develop and deploy Solidity smart contracts. Now, you’re ready to integrate Chainlink services into your contracts!
 
