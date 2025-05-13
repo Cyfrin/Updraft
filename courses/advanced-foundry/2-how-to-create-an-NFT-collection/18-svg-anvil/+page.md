@@ -1,42 +1,75 @@
-Okay, here is a thorough and detailed summary of the provided video clip (0:00 - 0:54):
+---
+title: SVG NFT Anvil Demo
+---
 
-**Overall Topic:**
-The video clip introduces decentralized storage solutions, specifically Filecoin and Arweave, as alternatives for storing NFT (Non-Fungible Token) metadata and assets, contrasting them with purely on-chain storage methods like storing SVGs directly on the blockchain.
+_Follow along the course with this video._
 
-**Key Concepts & Relationships:**
+---
 
-1.  **NFT Metadata Storage:** The core problem addressed is where to store the data associated with an NFT (like the image, description, attributes).
-2.  **Decentralized Storage Solutions:** The speaker presents these as a robust way to store NFT metadata off-chain but in a persistent and decentralized manner. This aims to avoid issues with centralized servers (like a company shutting down its server hosting the NFT image).
-3.  **Arweave:** Introduced as one popular decentralized storage solution. It is presented as providing "Permanent information storage."
-4.  **Filecoin:** Introduced as another popular decentralized storage network, described as being "designed to store humanity's most important information."
-5.  **IPFS (InterPlanetary File System):** While not explicitly discussed in depth in this clip, the `nft.storage` website shown mentions "Free decentralized storage and bandwidth for NFTs on IPFS and Filecoin," indicating IPFS is often used in conjunction with or as part of these solutions. Filecoin often acts as an incentive layer on top of IPFS.
-6.  **On-Chain Storage (SVG Example):** The speaker contrasts decentralized storage with storing assets *directly* on the blockchain, mentioning "SVGs on chain" as an example of this. He implies that while possible, it's not the *only* option, especially for more complex assets like detailed images.
-7.  **Off-Chain Decentralized Storage (Actual Images Example):** The alternative presented is storing "actual images on decentralized storage solutions." This allows for richer media while still leveraging decentralization.
-8.  **`nft.storage` Service:** Presented as a practical tool or service specifically designed to help users deploy NFT metadata onto decentralized networks like Filecoin and IPFS.
+### SVG NFT Anvil Demo
 
-**Important Links & Resources Mentioned:**
+Alright, let's do this for real. I wanna see our token in our Metamask wallet!
 
-1.  **Arweave:** `arweave.org` (shown on screen at 0:04) - Presented as a primary decentralized storage network.
-2.  **Filecoin:** `filecoin.io` (shown on screen at 0:12) - Presented as another primary decentralized storage network.
-3.  **NFT.Storage:** `nft.storage` (shown on screen at 0:17) - A specific service highlighted for easily storing NFT data on IPFS and Filecoin, offering free storage.
-4.  **Speaker's YouTube Channel:** Patrick Collins (`@PatrickAlphaC`, shown on screen at 0:33) - The speaker references his channel for more content. URL shown is `youtube.com/@PatrickAlphaC/videos`.
-5.  **Specific YouTube Video:** "Filecoin | But for Devs" (shown on screen at 0:35 as an 8:34 minute video on his channel) - A specific resource recommended for learning more about Filecoin.
-6.  **Blog Post:** Mentioned at 0:43 - The speaker states that *in the description* of his "Filecoin | But for Devs" YouTube video, there is a link to a blog post that teaches more about decentralized storage and the different solutions available.
+> ❗ **NOTE**
+> I recommend following along on `anvil` instead of sepolia, testnets can be slow and problematic, everything we're doing should work locally.
 
-**Important Notes & Tips:**
+We can start by kicking off our anvil chain. This has already been configured in our `Makefile`, so we should just have to run `make anvil`
 
-*   **Alternatives Exist:** The main point is that developers aren't limited to on-chain SVG storage for NFT assets.
-*   **Popularity:** Arweave and Filecoin are highlighted as "two of the most popular" decentralized storage options for this purpose.
-*   **Practical Tool:** `nft.storage` is presented as a user-friendly way to interact with Filecoin/IPFS for NFT data.
-*   **Future Trend:** The speaker expresses a belief that decentralized storage is a "really interesting space" and expects it to become "more and more prevalent" in the future.
+Once the chain is running, open a new terminal (while leaving this one open). We'll have to add some commands to our `Makefile` before proceeding.
 
-**Code Blocks:**
-No actual code blocks are shown or discussed in this specific video clip (0:00-0:54). The screen briefly shows a Visual Studio Code window (at 0:25) displaying a project file structure (`FOUNDRY-NFT-F23`), but no code within files is examined or explained.
+```js
+deployMood:
+	@forge script script/DeployMoodNft.s.sol:DeployMoodNft $(NETWORK_ARGS)
+```
 
-**Questions & Answers:**
-No specific questions are posed or answered within this clip. The format is explanatory.
+Looks great! Remember, you can add anvil as at network to Metamask by navigating to your network selector and choosing `+ Add network`.
 
-**Examples & Use Cases:**
+::image{src='/foundry-nfts/17-svg-anvil/svg-anvil2.png' style='width: 100%; height: auto;'}
 
-*   **Primary Use Case:** Storing NFT metadata (which includes pointers to assets like images, descriptions, traits, etc.) on decentralized networks instead of centralized servers or solely on-chain.
-*   **Specific Example:** Moving beyond storing simple SVGs on-chain to storing complex "actual images" on platforms like Filecoin or Arweave, potentially using `nft.storage` to facilitate the upload.
+Choose to add a network manually and enter the details as shown below:
+
+::image{src='/foundry-nfts/17-svg-anvil/svg-anvil3.png' style='width: 100%; height: auto;'}
+
+If you need to import an anvil account, this is simple as well. When an anvil chain is spun up, it provides you with public and private keys for a number of default accounts. In your Metamask account selector, choose `+ add account or hardware wallet`
+
+::image{src='/foundry-nfts/17-svg-anvil/svg-anvil4.png' style='width: 100%; height: auto;'}
+
+Select `import account` and enter one of the default private keys offered by the anvil chain.
+
+::image{src='/foundry-nfts/17-svg-anvil/svg-anvil5.png' style='width: 100%; height: auto;'}
+
+Once everything is set up, we should be able to run `make deployMood`...
+
+::image{src='/foundry-nfts/17-svg-anvil/svg-anvil1.png' style='width: 100%; height: auto;'}
+
+With the contract address, we should be able to use a cast command to interact with it.
+
+```bash
+cast send 0x5FbDB2315678afecb367f032d93F642f64180aa3 "mintNft()" --private-key ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --rpc-url http://localhost:8545
+```
+
+When that transaction completes, what we can _finally_ do, is take that contract address, go back into `Metamask > NFTs > Import NFT`. This is going to ask for our contract address, which we have from our deployment, and our tokenId, which is 0.
+
+Once imported ...
+
+::image{src='/foundry-nfts/17-svg-anvil/svg-anvil6.png' style='width: 100%; height: auto;'}
+
+LETS GOOOO! Now we need to flip it. We should be able to use largely the same `cast` command, let's just adjust the function to `flipMood`
+
+```bash
+cast send 0x5FbDB2315678afecb367f032d93F642f64180aa3 "flipMood(uint256)" 0 --private-key ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --
+rpc-url http://localhost:8545
+```
+
+> ❗ **NOTE**
+> For Metamask to reflect the change, we'll regrettably have to remove and readd the NFT collection.
+
+Once we reimport our NFT however...
+
+::image{src='/foundry-nfts/17-svg-anvil/svg-anvil7.png' style='width: 100%; height: auto;'}
+
+### Wrap Up
+
+We did it! We've just shown that we can write and deploy our own NFT contract with SVG art 100% on-chain. We could deploy this to a testnet if we wanted to. We could deploy this to a _mainnet_ if we wanted to. First hand we've experienced the power and advantages of keeping our data on-chain and as decentralized as possible.
+
+We've just done amazing work.

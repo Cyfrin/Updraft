@@ -1,86 +1,182 @@
-Okay, here is a thorough and detailed summary of the video excerpt about IPFS:
+---
+title: Foundry Setup
+---
 
-**Overall Summary**
+_Follow along the course with this video._
 
-This video excerpt explains the fundamentals of the InterPlanetary File System (IPFS) and demonstrates basic interaction with it, particularly in the context of its potential use with NFTs (though NFTs themselves aren't detailed here). It covers what IPFS is, how it uses content addressing (hashing/CIDs), the role of nodes and the network, the crucial concept of pinning for data persistence, and how IPFS differs from a blockchain. It then guides the viewer through installing IPFS tools (Desktop and Companion) and shows how to add a file to IPFS and access it via its CID, both directly (if the browser supports it) and through IPFS gateways.
+---
 
-**Key Concepts and How They Relate**
+### Foundry Setup
 
-1.  **IPFS (InterPlanetary File System):**
-    *   A peer-to-peer hypermedia protocol designed for decentralized data storage and retrieval.
-    *   Powers the "Distributed Web."
-    *   Aims to make the web upgradeable, resilient, and more open.
-    *   It's *not* a blockchain but shares similarities in being distributed and decentralized.
+Now that we know what an NFT is, let's investigate how we can build our own. As always the code we're writing will be available in the [**GitHub Repo**](https://github.com/Cyfrin/foundry-nft-cu) associate with this section.
 
-2.  **Hashing and Content Identifiers (CIDs):**
-    *   **Process:** When data (a file, code, etc.) is added to IPFS, it is cryptographically hashed.
-    *   **Uniqueness:** This process generates a unique "fingerprint" or hash for that specific piece of data. Every IPFS node uses the exact same hashing function, ensuring the same data always produces the same hash.
-    *   **CID:** This unique hash is called the Content Identifier (CID). It acts as the address for the data on the IPFS network. Instead of location-based addressing (like HTTP URLs), IPFS uses content-based addressing.
-    *   **Immutability Link:** The CID is directly derived from the content. If even one bit of the content changes, the CID will change completely. This links the address intrinsically to the data itself.
-    *   **Example CID Structure:** `ipfs://<hash>` (e.g., `ipfs://QmPsdDRX3QQfxsqnucUXJnkQiqpsFPozhZ2Gj9RUPGbhKA/`)
+To start, let's initialize our workspace. Create a new directory in your course folder.
 
-3.  **IPFS Nodes and Network:**
-    *   **Nodes:** Individual computers running the IPFS software. They store pieces of data (associated with CIDs).
-    *   **Lightweight:** IPFS nodes are described as much lighter weight than typical blockchain nodes.
-    *   **Network:** Nodes connect to each other, forming a large, distributed peer-to-peer network.
-    *   **Data Retrieval:** When a user requests data using a CID, their node (or a gateway) asks its peers on the network, "Who has the data for this CID?". The request propagates through the network until a node holding the data is found, and that node serves the data back.
+```bash
+mkdir foundry-nft
+```
 
-4.  **Pinning:**
-    *   **Purpose:** Pinning is the mechanism that ensures data persistence on the IPFS network. By default, IPFS nodes might cache data temporarily but can remove ("garbage collect") data that isn't frequently accessed or explicitly kept.
-    *   **Action:** Pinning tells an IPFS node to *always* keep a specific piece of data (identified by its CID) and not garbage collect it.
-    *   **Decentralization & Availability:** For data to be truly decentralized and highly available on IPFS, *multiple* nodes need to pin it. If only the original uploader pins the data, and their node goes offline, the data becomes inaccessible to the network, even though it technically "exists" on IPFS via its CID.
-    *   **Comparison to Mining:** Pinning is conceptually likened to (but distinct from) blockchain mining, as it's the active process nodes undertake regarding data, but it relates to storage persistence, not consensus or block creation.
+We can then switch to this directory and open it in VSCode.
 
-5.  **IPFS vs. Blockchain:**
-    *   **Storage vs. Execution:** IPFS is primarily for *decentralized storage*. It cannot execute smart contracts or perform complex computations like a blockchain.
-    *   **Data Replication:** Blockchain nodes typically replicate the *entire* chain state. IPFS nodes *optionally* choose which data (CIDs) they want to pin and store. Node sizes can vary greatly in IPFS based on pinned content.
-    *   **Consensus:** IPFS doesn't have a complex consensus mechanism like Proof-of-Work or Proof-of-Stake for block validation; its focus is on content addressing and data retrieval.
+```bash
+cd foundry-nft
+code .
+```
 
-**Code Blocks / Specific Examples Covered**
+Finally, we can initialize our foundry project.
 
-*   **Visual Diagram of Hashing:**
-    *   Input: `Our Code / File`
-    *   Process: `Hash It!`
-    *   Output (Example CID): `ipfs://QmPsdDRX3QQfxsqnucUXJnkQiqpsFPozhZ2Gj9RUPGbhKA/`
-    *   This illustrates the core concept of turning data into a unique IPFS address (CID).
+```bash
+forge init
+```
 
-*   **Importing a File via IPFS Desktop:**
-    *   The video shows clicking the "+ Import" button in the IPFS Desktop application, selecting "File," and choosing `next.config.js` from the local filesystem.
-    *   **Note:** The presenter explicitly mentions that viewers might not have this *exact* file (as it's from a previous part of the course), but the *process* of importing *any* small file is the focus. The imported file then appears in the list within IPFS Desktop, associated with its generated CID.
+Once initialized, be sure to remove the example contracts `src/Counter.sol`, `test/Counter.t.sol` and `script/Counter.s.sol`. Finally, assure that your `.gitignore` contains `.env` and `broadcast/`
 
-*   **Viewing Content via Browser/Companion:**
-    *   The presenter copies the CID of the imported file.
-    *   They paste it into the browser address bar, prefixed with `ipfs://`.
-    *   Example URL: `ipfs://QmPCkom6iS8BELeZRmE4mMfqSB7xw5yxJY7MYYxQZoVomP` (This is the CID for the imported `next.config.js` file).
-    *   The browser (using the IPFS Companion extension or native support) resolves this URI and displays the content of the file.
+### NFT Contracts
 
-*   **Viewing Content via IPFS Gateway:**
-    *   If direct `ipfs://` resolution fails, the presenter demonstrates using a public gateway.
-    *   They navigate to the `ipfs.github.io/public-gateway-checker/` page.
-    *   They choose a gateway (e.g., `4everland.io`).
-    *   The URL structure becomes: `https://<gateway-hostname>/ipfs/<CID>`
-    *   Example URL shown accessing different content (PUG NFT metadata): `https://bafybeig37ioir76s7mg5oobetncojcm3c3hxasyd4rvid4jghy4gkaheg4.ipfs.4everland.io/` (Note: This URL format uses a subdomain for the CID, another common gateway format).
-    *   The gateway retrieves the content from the IPFS network and serves it over standard HTTPS, displaying the JSON metadata in the browser.
+Now, as mentioned previously, NFTs are just another type of [**Token Standard**](https://eips.ethereum.org/EIPS/eip-721), similar to ERC20s. As such, we could simply write our contract and begin implementing all the necessary methods to comply with this standard. However, like ERC20s, we can also just import a library (like OpenZeppelin) which does all this heavy lifting for us.
 
-**Important Links and Resources Mentioned**
+Begin by creating `src/BasicNft.sol` and setting up our usual boilerplate.
 
-*   **ipfs.io:** The main website for the IPFS project. Contains documentation, installation guides, explanations.
-*   **ipfs.io/#how:** Section explaining the workings of IPFS.
-*   **ipfs.io/#install:** Page detailing various ways to install and use IPFS (Desktop, CLI, Companion).
-*   **IPFS Desktop App:** Downloadable application for running a node and managing files via a GUI.
-*   **IPFS Companion Extension:** Browser extension (available on Chrome Web Store, Firefox Add-ons) to enable `ipfs://` protocol handling and interact with IPFS nodes/gateways.
-*   **ipfs.github.io/public-gateway-checker/:** A resource listing public IPFS gateways and checking their status, useful for accessing IPFS content via HTTPS if direct access isn't working.
+```solidity
+// SPDX-License-Identifier: MIT
 
-**Important Notes and Tips**
+pragma solidity ^0.8.18;
 
-*   **Pinning is Crucial:** For data to remain available, it *must* be pinned by at least one active IPFS node. Relying solely on your own node makes the data vulnerable if your node goes offline. Strategies for ensuring data is pinned by others (pinning services, incentivization) are mentioned as topics for future discussion.
-*   **Public Data:** Anything uploaded to the public IPFS network can potentially be accessed by anyone who knows the CID. It's advised to only upload data you don't mind being public when testing.
-*   **Browser Support:** Native `ipfs://` handling varies by browser. Brave browser historically had strong support but changed its implementation. Extensions like IPFS Companion are often needed for other browsers like Chrome or Firefox.
-*   **Gateways are Centralized Bridges:** While gateways provide easy access, using them means you are routing your request through that gateway's server, introducing an element of centralization and trust in the gateway operator. Direct peer-to-peer access via a local node/companion is the "purest" form of IPFS interaction.
+contract BasicNft{}
+```
 
-**Questions and Answers Mentioned**
+We can install the OpenZeppelin Contracts library with:
 
-*   **Implied Question:** Is storing data on just my IPFS node truly decentralized?
-*   **Answer:** No. True decentralization and resilience require the data (CID) to be pinned by multiple independent nodes on the network.
+```bash
+forge install OpenZeppelin/openzeppelin-contracts --no-commit
+```
 
-This summary covers the core information presented in the video excerpt regarding IPFS, its mechanics, and how to interact with it at a basic level.
+To make things a little easier on ourselves, we can add this as a remapping to our `foundry.toml`. This remapping allows us to use some short-hand when importing from this directory.
+
+```toml
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+remappings = ["@openzeppelin/contracts=lib/openzeppelin-contracts/contracts"]
+```
+
+Now we can import and inherit the ERC721 contract into `BasicNft.sol`
+
+```solidity
+// SPDX-License-Identifier: MIT
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
+pragma solidity ^0.8.18;
+
+contract BasicNft is ERC721 {}
+```
+
+Your IDE will likely indicate an error until we've passed the necessary arguments to the ERC721 constructor. You can ctrl + left-click (cmd + left-click) on the imported ERC721.sol to navigate to this contract and confirm what the constructor requires.
+
+```solidity
+constructor(string memory name_, string memory symbol_) {
+    _name = name_;
+    _symbol = symbol_;
+}
+```
+
+Just like the ERC20, we need to give our token a name and a symbol, that makes sense. Feel free to choose your own, but I'm going to go with the name `Doggie` and the symbol `DOG`.
+
+```solidity
+// SPDX-License-Identifier: MIT
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
+pragma solidity ^0.8.18;
+
+contract BasicNft is ERC721 {
+
+    constructor() ERC721("Doggie", "DOG"){}
+}
+```
+
+Great! While this contract may have the basic functionality of an NFT protocol, there's a lot to be done yet. Because each token is unique and possesses a unique tokenId, we absolutely need a token counter to track this in storage. We'll increment this each time a token is minted.
+
+```solidity
+uint256 private s_tokenCounter;
+
+constructor() ERC721("Doggie", "DOG"){
+    s_tokenCounter = 0;
+}
+```
+
+Additionally, we want to add a function to mint NFTs. We will define it later:
+
+```solidity
+function mintNft() public {}
+```
+
+### TokenURI
+
+It's hard to believe, but once upon a time the tokenUri was once considered an optional parameter, despite being integral to how NFTs are used and consumed today.
+
+TokenURI stands for Token Uniform Resource Identifier. At its core it serves as an endpoint that returns the metadata for a given NFT.
+
+**Example TokenURI Metadata Schema:**
+
+```
+{
+    "title": "Asset Metadata",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Identifies the asset to which this NFT represents"
+        },
+        "description": {
+            "type": "string",
+            "description": "Describes the asset to which this NFT represents"
+        },
+        "image": {
+            "type": "string",
+            "description": "A URI pointing to a resource with mime type image/* representing the asset to which this NFT represents. Consider making any images at a width between 320 and 1080 pixels and aspect ratio between 1.91:1 and 4:5 inclusive."
+        }
+    }
+}
+```
+
+It's this metadata that defines what the properties of the NFT are, including what it looks like! In fact, if you go to [**OpenSea**](https://opensea.io/) and look at any NFT there, all the data and images you're being served come from calls to the tokenURI function.
+
+What this means to us is - any time someone mints a Doggie NFT, we need to assign a TokenURI to the minted TokenID which contains all the important information about the Doggie. Let's consider what this function would look like.
+
+> ❗ **NOTE**
+> The OpenZeppelin implementation of ERC721, which we've imported, has it's own virtual tokenURI function which we'll be overriding.
+
+By navigating to any NFT on OpenSea, you can find a link to the collection's contract on Etherscan. Click on `Read Contract` and find the tokenURI function (here's a link to [**Pudgy Penguins**](https://etherscan.io/address/0xbd3531da5cf5857e7cfaa92426877b022e612cf8#readContract) if you need it).
+
+Entering any valid tokenId should return the TokenURI of that NFT!
+
+::image{src='/foundry-nfts/3-foundry-setup/foundry-setup1.png' style='width: 100%; height: auto;'}
+
+By opening this URI in your browser, the details of that token's metadata should be made available:
+
+::image{src='/foundry-nfts/3-foundry-setup/foundry-setup2.png' style='width: 100%; height: auto;'}
+
+Note the imageURI property. This is what defines what the NFT actually looks like, you can copy this into your browser as well to view the NFT's image.
+
+::image{src='/foundry-nfts/3-foundry-setup/foundry-setup3.png' style='width: 100%; height: auto;'}
+
+Both the tokenUri and imageUri for this example are hosted on IPFS (Inter-planetary file system), a service offering decentralized storage that we'll go into in greater detail, in the next lesson.
+
+So what's this tokenURI function going to look like for us? Well, our BasicNFT is going to also use IPFS, so similarly to our example above, we'll need to set up our function to return this string, pointing to the correct location in IPFS.
+
+```solidity
+function tokenURI(uint256 tokenId) public view override returns (string memory) {}
+```
+
+Now, I've prepared some images you can choose from to use in your project, but feel free to use your own. Making these projects _yours_ goes a long way towards committing these things to memory. You can find the images I've provided in the [**GitHub Repo**](https://github.com/Cyfrin/foundry-nft-f23/tree/main/images/dogNft) for this section.
+
+::image{src='/foundry-nfts/3-foundry-setup/foundry-setup4.png' style='width: 100%; height: auto;'}
+
+Create a new folder in your workspace names `img` (image) and add the image of your choice to this directory.
+
+In the next lesson, we'll learn how to host our NFT images in a decentralized manner by leveraging IPFS.
+
+I'll see you there!

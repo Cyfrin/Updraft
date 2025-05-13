@@ -1,152 +1,275 @@
-Okay, here is a thorough and detailed summary of the provided video segment about implementing the `redeemCollateral` functionality in the `DSCEngine.sol` smart contract.
+---
+title: depositCollateralAndMintDSC
+---
 
-**Overall Summary**
+_Follow along the course with this video._
 
-The video focuses on implementing the logic for users to withdraw (redeem) their collateral from the DSC (Decentralized Stablecoin) system. It starts by defining the `redeemCollateral` function, outlining its requirements, particularly the health factor check. The speaker then implements this function, including internal state updates, event emissions, the actual token transfer, and the crucial health factor check. The video introduces the DRY (Don't Repeat Yourself) principle and explains that while the current implementation works, it will be refactored later for better modularity. It then identifies a user experience issue: redeeming collateral requires burning DSC first, necessitating two separate transactions. To address this, the speaker implements a `burnDsc` function and then a combined `redeemCollateralForDsc` function that performs both actions in a single transaction. Throughout the implementation, the speaker discusses design choices, security considerations (like reentrancy and CEI pattern), gas efficiency trade-offs, and the importance of Solidity's built-in checked math.
+---
 
-**Key Concepts Discussed**
+### depositCollateralAndMintDSC
 
-1.  **Redeeming Collateral:** The process by which a user withdraws the assets they initially deposited to back their DSC minting.
-2.  **Health Factor:** A critical metric representing the safety of a user's position (Collateral Value / Minted DSC Value). It must remain above a minimum threshold (typically 1) even after redeeming collateral, otherwise, the redemption is disallowed to prevent undercollateralized positions.
-3.  **Checks-Effects-Interactions (CEI) Pattern:** A security best practice in Solidity.
-    *   **Checks:** Validate conditions (e.g., permissions, inputs, state).
-    *   **Effects:** Make state changes to the contract (e.g., update balances, emit events).
-    *   **Interactions:** Call external contracts or transfer funds.
-    *   The video discusses a common, gas-efficient deviation where the interaction (token transfer) happens *before* a final crucial check (health factor), relying on the transaction's atomicity to revert everything if the final check fails.
-4.  **DRY (Don't Repeat Yourself):** A software development principle advocating for reducing repetition of logic. The speaker notes that the `redeemCollateral` and `burnDsc` functions have logic that might be reused (especially the health factor check and internal state updates) and plans to refactor them into more modular internal functions later.
-5.  **Solidity Checked Math (>=0.8.0):** Modern Solidity versions automatically check for arithmetic overflows and underflows. The speaker relies on this for the `s_collateralDeposited[...] -= amountCollateral` operation, knowing it will revert if `amountCollateral` is greater than the deposited amount.
-6.  **Reentrancy Guard:** The `nonReentrant` modifier is used on functions involving external calls/token transfers as a standard safety precaution against reentrancy attacks.
-7.  **`external` vs. `public` Visibility:** `external` functions can only be called from outside the contract, while `public` functions can be called externally *and* internally. The speaker changes `redeemCollateral` to `public` so it can be called by `redeemCollateralForDsc`.
-8.  **`transfer` vs. `transferFrom` (ERC20):**
-    *   `transfer`: Sends tokens from the *contract's* own balance. Used in `redeemCollateral` to send collateral from the DSCEngine back to the user.
-    *   `transferFrom`: Sends tokens from *another address* (requiring prior approval) to a recipient. Used in `burnDsc` to pull the user's DSC tokens into the DSCEngine contract before burning.
-9.  **Event Emission:** Emitting events (`CollateralRedeemed`) allows off-chain services to track contract activity.
-10. **Token Burning:** Destroying tokens permanently, usually by sending them to the zero address or using a specific `burn` function if available (like in `ERC20Burnable`). In `burnDsc`, the tokens are first transferred to the contract, then the `i_dsc.burn` function is called.
+Our current DSCEngine.sol for reference:
 
-**Code Implementation Details**
+<details>
+<summary>DSCEngine.sol</summary>
 
-**1. `redeemCollateral` Function**
+```solidity
+// Layout of Contract:
+// version
+// imports
+// errors
+// interfaces, libraries, contracts
+// Type declarations
+// State variables
+// Events
+// Modifiers
+// Functions
 
-*   **Purpose:** Allows a user to withdraw a specified amount of a specific collateral token they have deposited.
-*   **Requirement:** The user's health factor must remain above the minimum threshold *after* the withdrawal.
-*   **Signature & Modifiers (Final):**
-    ```solidity
-    function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral)
-        public // Changed from external to allow internal calls
+// Layout of Functions:
+// constructor
+// receive function (if exists)
+// fallback function (if exists)
+// external
+// public
+// internal
+// private
+// internal & private view & pure functions
+// external & public view & pure functions
+
+// SPDX-License-Identifier: MIT
+
+pragma solidity 0.8.18;
+
+import { ReentrancyGuard } from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { DecentralizedStableCoin } from "./DecentralizedStableCoin.sol";
+import { AggregatorV3Interface } from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+
+/*
+ * @title DSCEngine
+ * @author Patrick Collins
+ *
+ * The system is designed to be as minimal as possible, and have the tokens maintain a 1 token == $1 peg at all times.
+ * This is a stablecoin with the properties:
+ * - Exogenously Collateralized
+ * - Dollar Pegged
+ * - Algorithmically Stable
+ *
+ * It is similar to DAI if DAI had no governance, no fees, and was backed by only WETH and WBTC.
+ *
+ * Our DSC system should always be "overcollateralized". At no point, should the value of
+ * all collateral < the $ backed value of all the DSC.
+ *
+ * @notice This contract is the core of the Decentralized Stablecoin system. It handles all the logic
+ * for minting and redeeming DSC, as well as depositing and withdrawing collateral.
+ * @notice This contract is based on the MakerDAO DSS system
+ */
+contract DSCEngine is ReentrancyGuard {
+
+    ///////////////////
+    //     Errors    //
+    ///////////////////
+
+    error DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch();
+    error DSCEngine__NeedsMoreThanZero();
+    error DSCEngine__TokenNotAllowed(address token);
+    error DSCEngine__TransferFailed();
+    error DSCEngine__BreaksHealthFactor(uint256 healthFactor);
+    error DSCEngine__MintFailed();
+
+    /////////////////////////
+    //   State Variables   //
+    /////////////////////////
+
+    mapping(address token => address priceFeed) private s_priceFeeds;
+    DecentralizedStableCoin private immutable i_dsc;
+    mapping(address user => mapping(address token => uint256 amount)) private s_collateralDeposited;
+    mapping(address user => uint256 amountDscMinted) private s_DSCMinted;
+    address[] private s_collateralTokens;
+
+    uint256 private constant ADDITIONAL_FEED_PRECISION = 1e10;
+    uint256 private constant PRECISION = 1e18;
+    uint256 private constant LIQUIDATION_THRESHOLD = 50;
+    uint256 private constant LIQUIDATION_PRECISION = 100;
+    uint256 private constant MIN_HEALTH_FACTOR = 1e18;
+
+    ////////////////
+    //   Events   //
+    ////////////////
+
+    event CollateralDeposited(address indexed user, address indexed token, uint256 indexed amount);
+
+    ///////////////////
+    //   Modifiers   //
+    ///////////////////
+
+    modifier moreThanZero(uint256 amount){
+        if(amount <=0){
+            revert DSCEngine__NeedsMoreThanZero();
+        }
+        _;
+    }
+
+    modifier isAllowedToken(address token) {
+        if (s_priceFeeds[token] == address(0)) {
+            revert DSCEngine__TokenNotAllowed(token);
+        }
+        _;
+    }
+
+    ///////////////////
+    //   Functions   //
+    ///////////////////
+
+    constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
+        if(tokenAddresses.length != priceFeedAddresses.length){
+            revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
+        }
+
+        for(uint256 i=0; i < tokenAddresses.length; i++){
+            s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
+            s_collateralTokens.push(tokenAddresses[i]);
+        }
+        i_dsc = DecentralizedStableCoin(dscAddress);
+    }
+
+
+    ///////////////////////////
+    //   External Functions  //
+    ///////////////////////////
+
+    /*
+     * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
+     * @param amountCollateral: The amount of collateral you're depositing
+     */
+    function depositCollateral(
+        address tokenCollateralAddress,
+        uint256 amountCollateral
+    )
+        external
         moreThanZero(amountCollateral)
         nonReentrant
-    ```
-*   **Implementation:**
-    ```solidity
-    function redeemCollateral(address tokenCollateralAddress, uint256 amountCollateral)
-        public
-        moreThanZero(amountCollateral)
-        nonReentrant
+        isAllowedToken(tokenCollateralAddress)
     {
-        // Effect: Update internal accounting (relies on checked math for underflow)
-        s_collateralDeposited[msg.sender][tokenCollateralAddress] -= amountCollateral;
-
-        // Effect: Emit event for off-chain tracking
-        emit CollateralRedeemed(msg.sender, tokenCollateralAddress, amountCollateral);
-
-        // Interaction: Transfer collateral from contract back to user
-        bool success = IERC20(tokenCollateralAddress).transfer(msg.sender, amountCollateral);
+        s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
+        emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
+        bool success = IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);
         if (!success) {
-            revert DSCEngine_TransferFailed(); // Check transfer success
+            revert DSCEngine__TransferFailed();
         }
+    }
 
-        // Check: Ensure health factor is still valid after withdrawal
+    /*
+    * @param amountDscToMint: The amount of DSC you want to mint
+    * You can only mint DSC if you hav enough collateral
+    */
+    function mintDsc(uint256 amountDscToMint) external moreThanZero(amountDscToMint) nonReentrant {
+        s_DSCMinted[msg.sender] += amountDscToMint;
         _revertIfHealthFactorIsBroken(msg.sender);
-    }
-    ```
-*   **Discussion:** This function implements the core withdrawal logic. It updates the contract's internal state *before* the external call (`transfer`), but performs the critical health factor check *after* the interaction. This slightly violates strict CEI but is common for gas efficiency.
+        bool minted = i_dsc.mint(msg.sender, amountDscToMint);
 
-**2. `CollateralRedeemed` Event**
-
-*   **Purpose:** To log collateral redemption events.
-*   **Definition:**
-    ```solidity
-    event CollateralRedeemed(address indexed user, address indexed token, uint256 indexed amount);
-    ```
-
-**3. `burnDsc` Function**
-
-*   **Purpose:** Allows a user to burn their DSC tokens, effectively paying back their debt.
-*   **Signature & Modifiers (Final):**
-    ```solidity
-    function burnDsc(uint256 amount) public moreThanZero(amount) {
-        // Note: Initially external, changed to public for internal use.
-        // nonReentrant is likely needed here too due to transferFrom/burn, but wasn't added in the clip.
-    ```
-*   **Implementation:**
-    ```solidity
-    function burnDsc(uint256 amount) public moreThanZero(amount) {
-        // Effect: Update internal accounting of minted DSC
-        s_DSCMinted[msg.sender] -= amount;
-
-        // Interaction: Pull DSC tokens from user into this contract
-        bool success = i_dsc.transferFrom(msg.sender, address(this), amount);
-        // This conditional is hypothetically unreachable if transferFrom reverts on fail
-        if (!success) {
-            revert DSCEngine_TransferFailed();
+        if(!minted){
+            revert DSCEngine__MintFailed();
         }
-
-        // Interaction: Burn the tokens now held by this contract
-        i_dsc.burn(amount);
-
-        // Check: Potentially unnecessary health factor check (burning debt improves HF)
-        _revertIfHealthFactorIsBroken(msg.sender); // I don't think this would ever hit...
     }
-    ```
-*   **Discussion:** This function handles DSC burning. It requires `transferFrom` because the contract needs to pull tokens from the user before calling the `burn` function on the DSC token contract (`i_dsc`). The health factor check here is noted as likely redundant but included as a safety backup for now.
 
-**4. `redeemCollateralForDsc` Function**
+    ///////////////////////////////////////////
+    //   Private & Internal View Functions   //
+    ///////////////////////////////////////////
 
-*   **Purpose:** Provides a single-transaction way for users to burn DSC and redeem collateral simultaneously, improving user experience.
-*   **Signature:**
-    ```solidity
-    function redeemCollateralForDsc(
-        address tokenCollateralAddress,
-        uint256 amountCollateral,
-        uint256 amountDscToBurn
-    ) external
-    ```
-*   **Implementation:**
-    ```solidity
-    function redeemCollateralForDsc(
-        address tokenCollateralAddress,
-        uint256 amountCollateral,
-        uint256 amountDscToBurn
-    ) external {
-        // Call burnDsc first to reduce debt
-        burnDsc(amountDscToBurn);
-        // Call redeemCollateral to withdraw collateral
-        redeemCollateral(tokenCollateralAddress, amountCollateral);
-        // redeemCollateral already checks health factor
+    /*
+    * Returns how close to liquidation a user is
+    * If a user goes below 1, then they can be liquidated.
+    */
+    function _healthFactor(address user) private view returns(uint256){
+        (uint256 totalDscMinted, uint256 collateralValueInUsd) = _getAccountInformation(user);
+
+        uint256 collateralAdjustedForThreshold = (collateralValueInUsd * LIQUIDATION_THRESHOLD) / LIQUIDATION_PRECISION;
+
+        return (collateralAdjustedForThreshold * PRECISION) / totalDscMinted;
     }
-    ```
-*   **Discussion:** This acts as a wrapper function, calling the `burnDsc` and `redeemCollateral` functions in sequence. The final health factor check is implicitly handled within the `redeemCollateral` call.
 
-**Important Notes & Tips**
+    function _getAccountInformation(address user) private view returns(uint256 totalDscMinted,uint256 collateralValueInUsd){
+        totalDscMinted = s_DSCMinted[user];
+        collateralValueInUsd = getAccountCollateralValue(user);
+    }
 
-*   **Refactoring:** The speaker repeatedly emphasizes that `redeemCollateral` and `burnDsc` will be refactored later to follow the DRY principle and improve modularity.
-*   **Gas vs. Strict CEI:** Performing checks *after* interactions (like the health factor check in `redeemCollateral`) is often preferred for gas savings, even if it slightly deviates from the strict CEI order. Transaction atomicity ensures safety.
-*   **Checked Math Reliance:** Leverage Solidity 0.8.0+ checked math to avoid manual underflow/overflow checks where appropriate.
-*   **`nonReentrant`:** Use this modifier generously on functions involving external calls or token movements as a primary defense against reentrancy.
-*   **Comments for Auditors:** Leave comments explaining design choices, uncertainties, or areas needing review (like the potentially redundant checks) to aid security auditors.
-*   **Backup Checks:** Including checks like `if (!success)` after token transfers can be a good backup, even if the token standard suggests it should revert on failure.
+    function _revertIfHealthFactorIsBroken(address user) internal view {
+        uint256 userHealthFactor = _healthFactor(user);
+        if(userHealthFactor < MIN_HEALTH_FACTOR){
+            revert DSCEngine__BreaksHealthFactor(userHealthFactor);
+        }
+    }
 
-**Questions & Answers**
+    //////////////////////////////////////////
+    //   Public & External View Functions   //
+    //////////////////////////////////////////
 
-*   **Q:** How do users get their money (collateral) out?
-    **A:** Via the `redeemCollateral` function.
-*   **Q:** What's the main requirement for redeeming?
-    **A:** The user's health factor must be over 1 *after* the collateral is pulled.
-*   **Q:** Do we need to check the health factor in `burnDsc`?
-    **A:** Probably not, as burning debt improves health factor. But it's added as a backup for now, pending review/audit.
+    function getAccountCollateralValue(address user) public view returns (uint256 totalCollateralValueInUsd) {
+        for(uint256 i = 0; i < s_collateralTokens.length; i++){
+            address token = s_collateralTokens[i];
+            uint256 amount = s_collateralDeposited[user][token];
+            totalCollateralValueInUsd += getUsdValue(token, amount);
+        }
+        return totalCollateralValueInUsd;
+    }
 
-**Examples & Use Cases**
+    function getUsdValue(address token, uint256 amount) public view returns(uint256){
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
+        (,int256 price,,,) = priceFeed.latestRoundData();
 
-*   **Depositing $100 ETH, Minting $20 DSC:** This scenario is used to illustrate why a user can't just call `redeemCollateral` for the full $100 ETH if they still have DSC debt, as it would break their health factor. This motivates the need for the `burnDsc` function and the combined `redeemCollateralForDsc` function.
+        return ((uint256(price) * ADDITIONAL_FEED_PRECISION) * amount) / PRECISION;
+    }
 
-This detailed breakdown covers the essential implementation steps, concepts, and reasoning presented in the video clip regarding the redemption and burning functionalities.
+    function depositCollateralAndMintDsc() external {}
+
+    function redeemCollateralForDsc() external {}
+
+    function redeemCollateral() external {}
+
+    function burnDsc() external {}
+
+    function liquidate() external {}
+
+    function getHealthFactor() external view {}
+}
+```
+
+</details>
+
+
+Welcome back! I'm excited to keep going. So far our DSCEngine.sol has quite a bit of functionality already. We've the ability to mint DSC, we can deposit collateral, check account information and more.
+
+The next thing I want to tackle is sort of the main function we'd expect in this protocol, depositCollateralAndMintDsc. This function should serve as a combination of the last two we wrote which allows users to deposit and mint in a single transaction.
+
+The parameters for our depositCollateralAndMintDsc function are going to be similar to what we've seen in depositCollateral.
+
+```solidity
+function depositCollateralAndMintDsc(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountDscToMint){}
+```
+
+All we really need to do, in this function, is call our depositCollateral and mintDsc functions in sequence.
+
+> ❗ **NOTE**
+> Both `depositCollateral` and `mintDsc` are current `external` functions. Set them to `public` before proceeding!
+
+Because this is one of our main functions, we're absolutely going to add some NATSPEC.
+
+```solidity
+/*
+ * @param tokenCollateralAddress: the address of the token to deposit as collateral
+ * @param amountCollateral: The amount of collateral to deposit
+ * @param amountDscToMint: The amount of DecentralizedStableCoin to mint
+ * @notice: This function will deposit your collateral and mint DSC in one transaction
+ */
+function depositCollateralAndMintDsc(address tokenCollateralAddress, uint256 amountCollateral, uint256 amountDscToMint) external {
+    depositCollateral(tokenCollateralAddress, amountCollateral);
+    mintDsc(amountDscToMint);
+}
+```
+
+### Wrap Up
+
+This main function we've just written will allow users to deposit and mint in one transaction, greatly improving the UX of the protocol.
+
+We've got great momentum, let's look at how users can redeem collateral, in the next lesson.

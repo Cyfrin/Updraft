@@ -1,144 +1,306 @@
-Okay, here is a thorough and detailed summary of the video clip "Testing while developing" based on the provided transcript:
+---
+title: Deploy Script
+---
 
-**Overall Topic:**
+_Follow along the course with this video._
 
-The video focuses on the practice and importance of writing tests *concurrently* with smart contract development using the Foundry framework. The speaker demonstrates setting up a test file for the `DSCEngine` contract and writing initial unit tests, emphasizing how this iterative process provides confidence and helps catch errors early.
+---
 
-**Key Concepts Discussed:**
+### Deploy Script
 
-1.  **Testing While Developing:** The core idea is that testing shouldn't be an afterthought but an integral part of the development workflow. Writing tests alongside code helps ensure correctness, provides confidence in refactoring, and can speed up development by catching bugs early.
-2.  **Unit Tests vs. Integration Tests (Implicit):** The speaker distinguishes between writing basic unit tests (which could be done *before* deploy scripts) and tests that utilize the actual deploy scripts (closer to integration tests). He expresses a personal preference for using deploy scripts within his tests for setup but acknowledges that writing simpler unit tests first might be a good approach for others.
-3.  **Foundry Testing Framework:** The demonstration uses Foundry (`forge test`) and its standard libraries (`forge-std/Test.sol`) and cheatcodes (`vm`).
-4.  **Test Setup (`setup()` function):** A standard function in Foundry tests that runs before each test function (`test...`). It's used here to deploy contracts and set up the initial state needed for the tests.
-5.  **Using Deploy Scripts in Tests:** The speaker demonstrates importing and running the `DeployDSC.s.sol` script within the test `setup()` function. This ensures the test environment closely mirrors the actual deployment process.
-6.  **State Management in Tests:** Variables are declared at the contract level (`dsc`, `dsce`, `config`, `weth`, etc.) and initialized in the `setup()` function, making the deployed contracts and configuration accessible to all test functions.
-7.  **Assertion (`assertEq`):** Used to verify that the actual output of a function matches the expected output.
-8.  **Testing Revert Conditions (`vm.expectRevert`):** Demonstrates how to test that a function call reverts with a specific error, ensuring requirements and safety checks are enforced. Using the error `.selector` is shown for precise revert checking.
-9.  **Mocking and Pranking (`ERC20Mock`, `vm.startPrank`, `vm.stopPrank`, `makeAddr`):** Shows how to create mock ERC20 tokens, assign addresses to simulated users (`makeAddr`), and make calls *as* that user (`vm.startPrank`) to test access control and user interactions like `approve`.
-10. **Fork Testing (`--fork-url`):** The speaker runs tests against a forked Sepolia environment. This highlights the difference between testing with mocked/hardcoded values and testing against real-world (or testnet) conditions, especially regarding external data like price feeds.
-11. **Importance of Price Feeds in DeFi:** The `getUsdValue` function relies heavily on price feeds, and testing its calculation logic is critical. The failure during fork testing emphasizes the need to handle real vs. mocked price feed data correctly in tests.
+We've done a lot, so far and it's getting really complex. Now's a great time to perform a sanity check and write some tests.
 
-**Code Implementation and Discussion:**
+_I have no idea if what I'm doing makes any sort of sense. I want to make sure I write some tests here._
 
-1.  **Test File Creation:**
-    *   A new file `DSCengineTest.t.sol` is created under `test/unit/`.
-    *   Standard Solidity pragmas and SPDX license identifiers are added.
+Testing is crucial to ensure that our code is functioning as intended. Start by creating a new folder, `test/unit`. The tests we write are going to be integration tests, so lets prepare a deploy script. Create the file `script/DeployDSC.s.sol` as well. We should be well versed in setting up a deploy script at this point!
 
-2.  **Basic Test Contract Structure:**
-    ```solidity
-    // SPDX-License-Identifier: MIT
-    pragma solidity ^0.8.18;
+```solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.19;
 
-    import {Test} from "forge-std/Test.sol";
-    // ... other imports
+import { Script } from "forge-std/Script.sol";
+import { DecentralizedStableCoin } from "../src/DecentralizedStableCoin.sol";
+import { DSCEngine } from "../src/DSCEngine.sol";
 
-    contract DSCEngineTest is Test {
-        // State variables
-        DeployDSC deployer;
-        DecentralizedStableCoin dsc;
-        DSCEngine dsce;
-        HelperConfig config;
-        address ethUsdPriceFeed;
+contract DeployDSC is Script {
+
+    function run() external returns (DecentralizedStableCoin, DSCEngine) {}
+}
+```
+
+Beautiful, clean setup. In our run function we'll need to deploy both DecentralizedStableCoin.sol and DSCEngine.sol. DecentralizedStableCoin doesn't take any constructor parameters, so it's fairly straightforward, however DSCEngine requires `tokenAddresses[]`, `priceFeedAddresses[]` and the address of our DecentralizedStableCoin deployment. In order to provide these address arrays to our DSCEngine constructor, we're going to leverage a `HelperConfig`!
+
+### HelperConfig
+
+Create a new file `script/HelperConfig.s.sol`. The boilerplate here is pretty standard.
+
+```solidity
+// SPDX-License-Identifier: MIT
+
+import { Script } from "forge-std/Script.sol";
+
+pragma solidity ^0.8.18;
+
+contract HelperConfig is Script {}
+```
+
+Just like we did in previous lessons, we'll declare a NetworkConfig struct which contains a number of properties which will be determined by the network the transaction is placed on.
+
+```solidity
+contract HelperConfig is Script {
+
+    struct NetworkConfig{
+        address wethUsdPriceFeed;
+        address wbtcUsdPriceFeed;
         address weth;
-        address public USER = makeAddr("user");
-        uint256 public constant AMOUNT_COLLATERAL = 10 ether;
-        uint256 public constant STARTING_ERC20_BALANCE = 10 ether;
-
-        function setUp() public {
-            // ... setup logic
-        }
-
-        // Test functions below
+        address wbtc;
+        uint256 deployerKey;
     }
-    ```
-    *   The contract inherits from `Test`. State variables for deployed contracts, config, relevant addresses, and constants are declared.
 
-3.  **Setup Function Using Deploy Script:**
-    ```solidity
-    function setUp() public {
-        deployer = new DeployDSC();
-        // Run returns (DecentralizedStableCoin, DSCEngine, HelperConfig)
-        (dsc, dsce, config) = deployer.run();
-        // Get addresses from config
-        (ethUsdPriceFeed, , weth, , ) = config.activeNetworkConfig();
-        // Mint mock WETH to USER
-        ERC20Mock(weth).mint(USER, STARTING_ERC20_BALANCE);
+    NetworkConfig public activeNetworkConfig;
+
+    constructor() {}
+}
+```
+
+We can now start by writing the configuration for Sepolia, feel free to copy and paste the contract addresses I've compiled.
+
+```solidity
+function getSepoliaEthConfig() public view returns (NetworkConfig memory sepoliaNetworkConfig) {
+    sepoliaNetworkConfig = NetworkConfig({
+        wethUsdPriceFeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306, // ETH / USD
+        wbtcUsdPriceFeed: 0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43,
+        weth: 0xdd13E55209Fd76AfE204dBda4007C227904f0a81,
+        wbtc: 0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063,
+        deployerKey: vm.envUint("PRIVATE_KEY")
+    });
+}
+```
+
+This is simple enough since most of the tokens we'll be working with have their own Sepolia deployments, but next we'll be setting up a configuration function for our local Anvil chain. We'll have additional considerations such as the need for mocks.
+
+What we can do, is start this function by checking if the activeNetworkConfig has one of our token price feeds, and if not, we'll assume we're on anvil and deploy our mocks.
+
+```solidity
+function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory anvilNetworkConfig) {
+    // Check to see if we set an active network config
+    if (activeNetworkConfig.wethUsdPriceFeed != address(0)) {
+        return activeNetworkConfig;
     }
-    ```
-    *   The `DeployDSC` script contract is instantiated.
-    *   `deployer.run()` is called, and its return values (the deployed DSC, DSCEngine, and the HelperConfig) are assigned to the state variables.
-    *   Relevant addresses (WETH token, ETH/USD price feed) are extracted from the `HelperConfig`'s `activeNetworkConfig`.
-    *   *Crucially*, the `run` function in `DeployDSC.s.sol` was modified beforehand to also return the `HelperConfig` instance:
-        ```solidity
-        // In DeployDSC.s.sol
-        function run() external returns (DecentralizedStableCoin, DSCEngine, HelperConfig) {
-            HelperConfig config = new HelperConfig();
-            // ... rest of deployment logic ...
-            return (dsc, engine, config); // Added config return
-        }
-        ```
-    *   Mock WETH is minted to the `USER` address to simulate the user having funds.
 
-4.  **`testGetUsdValue` Test:**
-    ```solidity
-    function testGetUsdValue() public {
-        uint256 ethAmount = 15e18;
-        // // 15e18 * 2000/ETH = 30,000e18;
-        uint256 expectedUsd = 30000e18;
-        uint256 actualUsd = dsce.getUsdValue(weth, ethAmount);
-        assertEq(expectedUsd, actualUsd);
+    vm.startBroadcast();
+    MockV3Aggregator ethUsdPriceFeed = new MockV3Aggregator(DECIMALS, ETH_USD_PRICE);
+    ERC20Mock wethMock = new ERC20Mock("WETH", "WETH", msg.sender, 1000e8);
+
+    MockV3Aggregator btcUsdPriceFeed = new MockV3Aggregator(DECIMALS, BTC_USD_PRICE);
+    ERC20Mock wbtcMock = new ERC20Mock("WBTC", "WBTC", msg.sender, 1000e8);
+    vm.stopBroadcast();
+}
+```
+
+Be sure to declare your constants at the top of your script.
+
+```solidity
+uint8 public constant DECIMALS = 8;
+int256 public constant ETH_USD_PRICE = 2000e8;
+int256 public constant BTC_USD_PRICE = 1000e8;
+```
+
+Additionally, notice that we're employing the `MockV3Aggregator` as well as some `ERC20Mock`s in this function. Be sure to create the file `test/mocks/MockV3Aggregator.sol` and import it and the ERC20Mock library from OpenZeppelin into our deploy script. You can copy the version of this mock I've provided below, into your file.
+
+```solidity
+import { MockV3Aggregator } from "../test/mocks/MockV3Aggregator.sol";
+import { ERC20Mock } from "@openzeppelin/contracts/mocks/ERC20Mock.sol";
+```
+
+<details>
+<summary>MockV3Aggregator.sol</summary>
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+/**
+ * @title MockV3Aggregator
+ * @notice Based on the FluxAggregator contract
+ * @notice Use this contract when you need to test
+ * other contract's ability to read data from an
+ * aggregator contract, but how the aggregator got
+ * its answer is unimportant
+ */
+contract MockV3Aggregator {
+    uint256 public constant version = 0;
+
+    uint8 public decimals;
+    int256 public latestAnswer;
+    uint256 public latestTimestamp;
+    uint256 public latestRound;
+
+    mapping(uint256 => int256) public getAnswer;
+    mapping(uint256 => uint256) public getTimestamp;
+    mapping(uint256 => uint256) private getStartedAt;
+
+    constructor(uint8 _decimals, int256 _initialAnswer) {
+        decimals = _decimals;
+        updateAnswer(_initialAnswer);
     }
-    ```
-    *   Calculates the expected value based on a hardcoded price ($2000/ETH, matching the mock price in `HelperConfig`).
-    *   Calls the `getUsdValue` function on the deployed `dsce` instance.
-    *   Uses `assertEq` to compare.
-    *   *Discussion:* This test passes in a non-forked environment but fails in a forked environment because the `expectedUsd` uses the mock price, while `actualUsd` uses the *real* price from the forked chain's price feed.
 
-5.  **`testRevertsIfCollateralZero` Test:**
-    ```solidity
-     // Section header: // depositCollateral Tests //
-    function testRevertsIfCollateralZero() public {
-        vm.startPrank(USER);
-        ERC20Mock(weth).approve(address(dsce), AMOUNT_COLLATERAL);
-
-        // Expect revert with specific error selector
-        vm.expectRevert(DSCEngine.DSCEngine_NeedsMoreThanZero.selector);
-        // Call the function with zero amount
-        dsce.depositCollateral(weth, 0);
-        vm.stopPrank();
+    function updateAnswer(int256 _answer) public {
+        latestAnswer = _answer;
+        latestTimestamp = block.timestamp;
+        latestRound++;
+        getAnswer[latestRound] = _answer;
+        getTimestamp[latestRound] = block.timestamp;
+        getStartedAt[latestRound] = block.timestamp;
     }
-    ```
-    *   Uses `vm.startPrank` to simulate the call coming from `USER`.
-    *   The `USER` approves the `dsce` contract to spend their mock WETH.
-    *   Uses `vm.expectRevert` specifying the exact error (`DSCEngine_NeedsMoreThanZero`) via its selector. This ensures the function reverts for the *correct* reason.
-    *   Calls `depositCollateral` with `weth` address but a `0` amount.
-    *   Uses `vm.stopPrank`.
-    *   *Discussion:* This tests that the `moreThanZero` modifier (or equivalent check) is working correctly on the `depositCollateral` function.
 
-**Notes & Tips Mentioned:**
+    function updateRoundData(uint80 _roundId, int256 _answer, uint256 _timestamp, uint256 _startedAt) public {
+        latestRound = _roundId;
+        latestAnswer = _answer;
+        latestTimestamp = _timestamp;
+        getAnswer[latestRound] = _answer;
+        getTimestamp[latestRound] = _timestamp;
+        getStartedAt[latestRound] = _startedAt;
+    }
 
-*   It's good practice to test while building.
-*   Testing increases confidence in the code.
-*   Testing can make development faster by catching bugs earlier.
-*   Using deploy scripts in tests helps ensure the test environment matches deployment.
-*   Consider writing basic unit tests before deploy scripts, depending on preference/complexity.
-*   When fork testing, be aware that hardcoded values based on mocks (like prices) will likely cause failures if the test interacts with real chain data. Tests might need to be made "agnostic" or fetch expected values dynamically in such cases.
-*   Use specific error selectors (`vm.expectRevert(ErrorName.selector)`) for more robust revert testing.
-*   The process is iterative; expect tests to fail initially and require code adjustments.
-*   Using AI tools like GitHub Copilot can speed up writing boilerplate code like imports.
-*   Remember to add your `.env` file and run `source .env` when using RPC URLs (like `$SEPOLIA_RPC_URL`).
+    function getRoundData(uint80 _roundId)
+        external
+        view
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
+    {
+        return (_roundId, getAnswer[_roundId], getStartedAt[_roundId], getTimestamp[_roundId], _roundId);
+    }
 
-**Examples & Use Cases:**
+    function latestRoundData()
+        external
+        view
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
+    {
+        return (
+            uint80(latestRound),
+            getAnswer[latestRound],
+            getStartedAt[latestRound],
+            getTimestamp[latestRound],
+            uint80(latestRound)
+        );
+    }
 
-*   Testing the core logic of `DSCEngine`, a DeFi stablecoin protocol component.
-*   Testing value calculation (`getUsdValue`) based on token amount and price feeds.
-*   Testing input validation (`depositCollateral` reverting when the amount is zero).
-*   Simulating user interactions (approving tokens, depositing collateral) using `vm.startPrank`.
+    function description() external pure returns (string memory) {
+        return "v0.6/tests/MockV3Aggregator.sol";
+    }
+}
+```
 
-**Links & Resources:**
+</details>
 
-*   Foundry framework (implicitly used)
-*   `forge-std/Test.sol` (Foundry's standard test library)
-*   Foundry Cheatcodes (`vm`) - specifically `vm.startPrank`, `vm.stopPrank`, `vm.expectRevert`, `makeAddr`.
-*   OpenZeppelin Contracts (used for `ERC20Mock`) - path `@openzeppelin/contracts/mocks/ERC20Mock.sol` shown in import.
-*   Sepolia testnet (used for fork testing via `$SEPOLIA_RPC_URL`).
+
+Once mocks are deployed, we can configure the anvilNetworkConfig with those deployed addresses, and return this struct.
+
+```solidity
+anvilNetworkConfig = NetworkConfig({
+  wethUsdPriceFeed: address(ethUsdPriceFeed), // ETH / USD
+  weth: address(wethMock),
+  wbtcUsdPriceFeed: address(btcUsdPriceFeed),
+  wbtc: address(wbtcMock),
+  deployerKey: DEFAULT_ANVIL_PRIVATE_KEY,
+});
+```
+
+Assure you add the `DEFAULT_ANVIL_PRIVATE_KEY` to our growing list of constant state variables.
+
+```solidity
+uint8 public constant DECIMALS = 8;
+int256 public constant ETH_USD_PRICE = 2000e8;
+int256 public constant BTC_USD_PRICE = 1000e8;
+uint256 public constant DEFAULT_ANVIL_PRIVATE_KEY = 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
+```
+
+Great! With both of these functions written we can update our constructor to determine which function to call based on the block.chainid of our deployment.
+
+```solidity
+constructor() {
+    if(block.chainid == 11155111){
+        activeNetworkConfig = getSepoliaEthConfig();
+    } else{
+        activeNetworkConfig = getOfCreateAnvilEthConfig();
+    }
+}
+```
+
+With the HelperConfig complete, we can return to DeployDSC.s.sol. Please reference the [**HelperConfig.s.sol within the GitHub repo**](https://github.com/Cyfrin/foundry-defi-stablecoin-f23/blob/main/script/HelperConfig.s.sol) if thing's haven't worked for you, or won't compile at this point.
+
+### Back to DeployDSC
+
+Returning to `DeployDSC.s.sol`, we can now import our HelperConfig and use it to acquire the the parameters for our deployments.
+
+```solidity
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.19;
+
+import { Script } from "forge-std/Script.sol";
+import { DecentralizedStableCoin } from "../src/DecentralizedStableCoin.sol";
+import { DSCEngine } from "../src/DSCEngine.sol";
+import { HelperConfig } from "./HelperConfig.s.sol";
+
+contract DeployDSC is Script {
+
+    function run() external returns (DecentralizedStableCoin, DSCEngine) {
+        HelperConfig config = new HelperConfig();
+
+        (address wethUsdPriceFeed, address wbtcUsdPriceFeed, address weth, address wbtc, uint256 deployerKey) = config.activeNetworkConfig();
+    }
+}
+```
+
+With these values, we can now declare and assign our tokenAddresses and priceFeedAddresses arrays, and finally pass them to our deployments.
+
+```solidity
+...
+
+address[] public tokenAddresses;
+address[] public priceFeedAddresses;
+
+function run() external returns (DecentralizedStableCoin, DSCEngine) {
+    HelperConfig config = new HelperConfig();
+
+    (address wethUsdPriceFeed, address wbtcUsdPriceFeed, address weth, address wbtc, uint256 deployerKey) = config.activeNetworkConfig();
+
+    tokenAddresses = [weth, wbtc];
+    priceFeedAddresses = [wethUsdPriceFeed, wbtcUsdPriceFeed];
+
+    vm.startBroadcast();
+    DecentralizedStableCoin dsc = new DecentralizedStableCoin();
+    DSCEngine engine = new DSCEngine(tokenAddresses, priceFeedAddresses, address(dsc));
+    vm.stopBroadcast();
+}
+```
+
+Things look amazing so far, but there's one last thing we haven't really talked about. I'd mentioned in earlier lessons that we intend the DSCEngine to own and manage the DecentralizedStableCoin assets. DecentralizedStableCoin.sol is Ownable, and by deploying it this way, our msg.sender is going to be the owner by default. Fortunately, the Ownable library comes with the function `transferOwnership`. We'll just need to assure this is called in our deploy script.
+
+```solidity
+function run() external returns (DecentralizedStableCoin, DSCEngine) {
+    HelperConfig config = new HelperConfig();
+
+    (address wethUsdPriceFeed, address wbtcUsdPriceFeed, address weth, address wbtc, uint256 deployerKey) = config.activeNetworkConfig();
+
+    tokenAddresses = [weth, wbtc];
+    priceFeedAddresses = [wethUsdPriceFeed, wbtcUsdPriceFeed];
+
+    vm.startBroadcast();
+    DecentralizedStableCoin dsc = new DecentralizedStableCoin();
+    DSCEngine engine = new DSCEngine(tokenAddresses, priceFeedAddresses, address(dsc));
+    dsc.transferOwnership(address(engine));
+    vm.stopBroadcast();
+    return (dsc, engine);
+}
+```
+
+### Wrap Up
+
+Whew, not much left to say besides: Good work. In the next lesson, we'll be putting these scripts to the test with ... tests.
+
+See you there!
+
+[**DeployDSC.s.sol**](https://github.com/Cyfrin/foundry-defi-stablecoin-f23/blob/main/script/DeployDSC.s.sol)
+
+[**HelperConfig.s.sol**](https://github.com/Cyfrin/foundry-defi-stablecoin-f23/blob/main/script/HelperConfig.s.sol)

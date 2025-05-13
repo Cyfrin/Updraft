@@ -1,68 +1,131 @@
-Okay, here is a thorough and detailed summary of the video segment (0:00 - 1:09) on Audit Preparedness:
+---
+title: OracleLib
+---
 
-**Overall Topic:** The video segment serves as a note on the importance of Smart Contract Audit Preparedness, acknowledging that while deep security aspects haven't been covered yet in the course, they are crucial, especially for launching protocols. It directs viewers to resources and future course content for more information.
+_Follow along the course with this video._
 
-**Detailed Breakdown:**
+---
 
-1.  **Introduction (0:00 - 0:07)**
-    *   The video starts with a title card: "Note on audit preparedness".
-    *   A subsequent text overlay appears: "We will go a little deeper into security later in this course and we are working on a smart contract security course after this as well. Stay tuned :)". This sets the expectation that security is a forthcoming topic.
+### OracleLib
 
-2.  **Context within the Course (0:07 - 0:13)**
-    *   The speaker transitions to a code editor displaying a `README.md` file, likely for the current project (`foundry-defi-stablecoin-f23`).
-    *   The focus is on a checklist within the README. The relevant line being discussed is:
-        ```markdown
-        20 3. Smart Contract Audit Preparation
-        ```
-    *   This is presented as the final item in a list of tasks for the stablecoin project, following "1. Some proper oracle use" and "2. Write more tests".
-    *   The speaker mentions having briefly talked about what a smart contract audit *is*.
+There are a few assumptions that the `DecentralizedStableCoin` protocol is making that may lead to unexpected vulnerabilities. One of which is our use of an oracle for price feeds.
 
-3.  **Acknowledging Current Scope & Introducing Resources (0:14 - 0:31)**
-    *   **Concept:** The speaker explicitly states that the course hasn't covered a lot of security material *yet*, but it will be addressed later.
-    *   **Resource:** He introduces a key resource for audit readiness: The "Audit Readiness Checklist" from the Nascent XYZ GitHub repository.
-    *   **Link:** The screen shows the URL: `github.com/nascentxyz/simple-security-toolkit/blob/main/audit-readiness-checklist.md`
-    *   **Content of Resource (Visible on screen):** The checklist shown includes several points under "Bare minimum quality checklist":
-        *   Use the latest major version of Solidity.
-        *   Use known/established libraries where possible (mentioning OpenZeppelin and Solmate).
-        *   Contracts compile without any errors or warnings.
-        *   Document all functions (using NatSpec).
-        *   Any `public` function that can be made `external` should be made `external`.
-        *   Have tests for all "happy path" user stories.
-        *   Use the Checks-Effects-Interactions pattern.
-        *   Avoid using assembly as much as possible.
-        *   Document use of `unchecked`.
-        *   Run the code through a spellchecker.
-        *   Run a static analysis tool (Slither preferred, MythX alternative).
-        *   Have at least one trusted Solidity dev or security person sanity check contracts.
-    *   **Resource:** Under "Nice to haves" (partially visible):
-        *   Using Foundry? Strongly recommend using fuzz tests.
-        *   Write negative tests.
-        *   Try formal verification tools.
-        *   Write down security assumptions (example given about owner malice, Chainlink oracles, ERC20 compliance, reorg depth).
-    *   **Purpose:** The speaker notes this checklist contains many things developers *should* keep in mind.
+Much of our protocol relies on `Chainlink price feeds` for accurate value calculations. While a very dependable service, we would still want to protect against the impact of issues that could arise from the reliance on this system. We're going to do this by writing our own `library`!
 
-4.  **Emphasis on Security Mindset & Future Learning (0:31 - 1:05)**
-    *   **Target Audience:** The speaker addresses those who are "really serious" about launching a protocol.
-    *   **Concept: Security Mindset:** He stresses the need to have the "security mindset".
-    *   **Direction:** Viewers serious about security are explicitly told to get to the *last section* of the current course.
-    *   **Resource:** The speaker navigates the main course `README.md` (`github.com/ChainAccelOrg/foundry-full-course-f23`) to highlight:
-        ```markdown
-        Lesson 15: Introduction to Smart Contract Security (All security interested parties... get here)
-        * Reentrancy
-        * Symbolic Execution
-        * Flash loans
-        ```
-    *   **Content of Future Lesson:** Lesson 15 is presented as the place where the course will provide the necessary "lower-level security stuff" and the "basics" needed from a smart contract developer's perspective to stay secure.
+Create the file `src/libraries/OracleLib.sol`.
 
-5.  **Conclusion for Current Lesson (1:00 - 1:09)**
-    *   The speaker reiterates that security won't be covered extensively *in this lesson* (Lesson 12: Foundry DeFi | Stablecoin).
-    *   **Note:** However, he emphasizes that if they were *actually* launching the stablecoin project, these security considerations (and thus audit preparedness) would be essential.
-    *   He returns to the stablecoin project's `README.md` and adds a "soon" emoji (➡️ SOON) next to the "Smart Contract Audit Preparation" line, visually reinforcing that it's a topic to be revisited more deeply.
+Taking a look at the [**Chainlink price feeds**](https://docs.chain.link/data-feeds/price-feeds/addresses) available, we can see that each of these feeds as a configured `heartbeat`. The `heartbeat` of a price feed represents the maximum amount of time that can pass before the feed is meant to update, otherwise the price is said to be come `stale`.
 
-**Key Takeaways & Concepts:**
+In our `OracleLib`, let's write some checks to ensure the prices `DSCEngine` are using aren't `stale`. If prices being received by our protocol become stale, we hope to pause the functionality of our contract.
 
-*   **Audit Preparedness:** Being ready for a smart contract audit involves more than just writing functional code. It requires adherence to best practices, thorough documentation, extensive testing, and a security-first mindset.
-*   **Smart Contract Security:** A critical aspect of development, especially for protocols handling value. Key vulnerabilities/topics (like Reentrancy) will be covered later.
-*   **Resources:** External checklists (like Nascent's) and dedicated course sections (Lesson 15) are valuable for learning and applying security principles.
-*   **Course Structure:** The course builds functionality first (like the stablecoin) and then delves into the critical security aspects required for real-world deployment (in Lesson 15).
-*   **Importance:** Security and audit readiness are non-negotiable for launching serious protocols.
+```solidity
+//SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.18;
+
+/**
+ * @title OracleLib
+ * @author Patrick Collins
+ * @notice This library is used to check the Chainlink Oracle for stale data.
+ * If a price is stale, functions will revert, and render the DSCEngine unusable - this is by design.
+ * We want the DSCEngine to freeze if prices become stale.
+ *
+ * So if the Chainlink network explodes and you have a lot of money locked in the protocol... too bad.
+ */
+library OracleLib {
+    function staleCheckLatestRoundData() public view returns () {}
+```
+
+With our _beautiful_ `NATSPEC` in place detailing the `library` and its purposes, our main function here is going to be `stalePriceCheck`. Since we'll be checking `Chainlink's price feeds`, we know we'll need the `AggregatorV3Interface`, lets be sure to import that. The return types of our function are going to be those of the `latestRoundData` function within `AggregatorV3Interface`. Let's start by getting those values.
+
+```solidity
+...
+import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+...
+library OracleLib {
+    function staleCheckLatestRoundData(AggregatorV3Interface pricefeed) public view returns (uint80, int256, uint256, uint256, uint80) {
+        (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound) = pricefeed.latestRoundData();
+    }
+}
+```
+
+Now, we just need to calculate the time since the last update, and if it's over a threshold, we'll revert and return our variables. `Chainlink` sets a `heartbeat` of `3600 seconds for the ETH/USD` price feed, we'll give it even more time and set a `TIMEOUT` of `3 hours`. We can add a custom error to handle timeouts at this step as well.
+
+> ❗ **PROTIP** > `hours` is a keyword in solidity that is effectively `*60*60 seconds` .
+>
+> `3 hours` == `3 * 60 * 60` == `10800 seconds`.
+
+```solidity
+...
+import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+...
+library OracleLib {
+
+    error OracleLib__StalePrice();
+    uint256 private constant TIMEOUT = 3 hours;
+
+    function staleCheckLatestRoundData(AggregatorV3Interface pricefeed) public view returns (uint80, int256, uint256, uint256, uint80) {
+        (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound) = pricefeed.latestRoundData();
+
+        uint256 secondsSince = block.timestamp - updatedAt;
+        if (secondsSince > TIMEOUT) revert OracleLib__StalePrice();
+
+        return (roundId, answer, startedAt, updatedAt, answeredInRound);
+    }
+}
+```
+
+We should now be able to use this `library` for `AggregatorV3Interfaces` to automatically check if the price being supplied is stale.
+
+In `DSCEngine.sol`, we can import `OracleLib`, as our using statement under a new types header, and then replace all our calls to `latestRoundData` with `staleCheckLatestRoundData`.
+
+```solidity
+...
+import {OracleLib} from "./libraries/OracleLib.sol";
+...
+
+contract DSCEngine is Reentrancy Guard {
+
+    ///////////
+    // Types //
+    ///////////
+
+    using OracleLib for AggregatorV3Interface;
+
+    function _getUsdValue(address token, uint256 amount) private view returns (uint256) {
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
+        (, int256 price,,,) = priceFeed.staleCheckLatestRoundData();
+        // 1 ETH = 1000 USD
+        // The returned value from Chainlink will be 1000 * 1e8
+        // Most USD pairs have 8 decimals, so we will just pretend they all do
+        // We want to have everything in terms of WEI, so we add 10 zeros at the end
+        return ((uint256(price) * ADDITIONAL_FEED_PRECISION) * amount) / PRECISION;
+    }
+    ...
+    function getTokenAmountFromUsd(address token, uint256 usdAmountInWei) public view returns (uint256) {
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
+        (, int256 price,,,) = priceFeed.staleCheckLatestRoundData();
+        // $100e18 USD Debt
+        // 1 ETH = 2000 USD
+        // The returned value from Chainlink will be 2000 * 1e8
+        // Most USD pairs have 8 decimals, so we will just pretend they all do
+        return ((usdAmountInWei * PRECISION) / (uint256(price) * ADDITIONAL_FEED_PRECISION));
+    }
+}
+```
+
+### Wrap Up
+
+We've done a tonne of refactoring, and we're very nearly done. We should run `forge test` just to ensure everything is working as expected!
+
+::image{src='/foundry-defi/25-defi-oracle-lib/defi-oracle-lib1.png' style='width: 100%; height: auto;'}
+
+Beautiful.
+
+1. Proper oracle use ✅
+2. Writing more tests ❌
+3. Smart Contract Audit Preparation 🔜
+
+I'll be transparent, we aren't going to write additional tests together. This is something I encourage you to do, this is a great way to challenge yourself to improve. Use `forge coverage` as your guide and write additional tests, especially for our new `OracleLib`.
+
+In the next lesson we'll look at what's needed to prepare a protocol for a smart contract audit!
