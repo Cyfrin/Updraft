@@ -1,129 +1,135 @@
----
-title: Basic NFT Tests
----
+Okay, here is a thorough and detailed summary of the provided video clip "NFTs: Basic NFT: Interactions":
 
-_Follow along the course with this video._
+**Overall Goal:**
+The video demonstrates how to create a Foundry script (`.s.sol` file) to programmatically interact with a previously deployed `BasicNft` smart contract, specifically focusing on minting a new NFT. This provides an alternative to using command-line tools like `cast` for interactions.
 
----
+**File Creation and Setup:**
 
-### Basic NFT Tests
+1.  **New Interaction Script:** The speaker decides to create a dedicated script for interacting with the `BasicNft` contract, rather than using `cast` directly.
+2.  **File Location:** A new file named `Interactions.s.sol` is created within the `script` directory of the Foundry project.
+3.  **Boilerplate Code:** The speaker starts by adding standard Solidity boilerplate:
+    *   SPDX License Identifier: `// SPDX-License-Identifier: MIT`
+    *   Solidity Version Pragma: `pragma solidity ^0.8.18;`
+    *   Importing Foundry's `Script`:
+        ```solidity
+        import {Script} from "forge-std/Script.sol";
+        ```
+    *   Defining the Script Contract: A contract named `MintBasicNft` is defined, inheriting from `Script`.
+        ```solidity
+        contract MintBasicNft is Script {
+            // ...
+        }
+        ```
+    *   Defining the `run` function: The standard entry point for a Foundry script.
+        ```solidity
+        function run() external {
+            // Logic to mint the NFT will go here
+        }
+        ```
 
-Once the setup is complete, it's time to jump into tests. Writing an array of tests serves to validate the functionality of our contract, we'll start with something simple and verify that our NFT name is set correctly.
+**Interacting with the Most Recent Deployment:**
 
-Start with the usual boilerplate for our test contract. Create the file `test/BasicNftTest.t.sol`. Our test contract will need to import BasicNft, and our deploy script as well as import and inherit Foundry's `Test.sol`.
+1.  **Concept:** The speaker emphasizes the common need to interact with the *most recently deployed* instance of a contract, especially during development or scripting.
+2.  **Tool Introduction:** To achieve this easily, the `foundry-devops` package by ChainAccelOrg is introduced.
+3.  **Resource Link:** The GitHub repository for the package is shown: `https://github.com/ChainAccelOrg/foundry-devops`
+4.  **Installation:** The package is installed into the project using the `forge install` command.
+    *   **Command:**
+        ```bash
+        forge install ChainAccelOrg/foundry-devops --no-commit
+        ```
+    *   **Note:** The `--no-commit` flag is used to prevent Foundry from automatically creating a Git commit for the dependency update.
+5.  **Importing `DevOpsTools`:** The necessary utility contract is imported into the `Interactions.s.sol` script.
+    ```solidity
+    // Note: Path includes 'lib/' because it's an installed dependency
+    import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
+    ```
+6.  **Getting the Address:** Inside the `run` function, the `DevOpsTools.get_most_recent_deployment` function is used to retrieve the address.
+    *   **Code:**
+        ```solidity
+        function run() external {
+            address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment(
+                "BasicNft", // Name of the contract deployment (must match broadcast logs)
+                block.chainid // The chain ID to look for the deployment on
+            );
+            // ... call minting function ...
+        }
+        ```
+    *   **Explanation:** This function looks up the deployment artifacts saved by Foundry during `forge script ... --broadcast` and returns the address associated with the given contract name and chain ID.
+
+**Minting the NFT via Script:**
+
+1.  **Helper Function:** A dedicated internal (later changed to public) function `mintNftOnContract` is created to encapsulate the minting logic. This promotes modularity.
+2.  **Passing the Address:** The `mostRecentlyDeployed` address obtained earlier is passed to this helper function.
+    ```solidity
+    function run() external {
+        address mostRecentlyDeployed = // ... get address ...
+        mintNftOnContract(mostRecentlyDeployed);
+    }
+    ```
+3.  **`mintNftOnContract` Function Definition:**
+    ```solidity
+    function mintNftOnContract(address contractAddress) public {
+        vm.startBroadcast(); // Signal Foundry to start broadcasting transactions
+
+        // Code to call the mint function on the target contract
+
+        vm.stopBroadcast(); // Signal Foundry to stop broadcasting transactions
+    }
+    ```
+    *   **Concept (`vm.broadcast`):** `vm.startBroadcast()` and `vm.stopBroadcast()` are Foundry "cheatcodes" used within scripts. Any external contract calls made between these two lines will be packaged as actual transactions to be signed and sent to the target network when the script is run with the `--broadcast` flag.
+4.  **Token URI:** To mint an NFT, a `tokenURI` (pointing to the NFT's metadata) is required by the `BasicNft` contract's `mintNft` function.
+    *   The speaker copies the `PUG` constant (which holds an IPFS URI) from the `BasicNftTest.t.sol` test file into the `Interactions.s.sol` script file.
+        ```solidity
+        // Added at the contract level in MintBasicNft
+        string public constant PUG = "ipfs://bafybeig37ioir76s7mg5oobetncojcmc3hxasyd4rvid4jqhy4gkaheg4/?filename=0-PUG.json";
+        ```
+5.  **Importing `BasicNft`:** To interact with the `BasicNft` contract (specifically, to call its `mintNft` function), the script needs to know its interface. The `BasicNft` contract itself is imported.
+    ```solidity
+    import {BasicNft} from "../src/BasicNft.sol";
+    ```
+6.  **Calling `mintNft`:** Inside the `vm.broadcast` block within `mintNftOnContract`, the actual minting call is made:
+    ```solidity
+    function mintNftOnContract(address contractAddress) public {
+        vm.startBroadcast();
+
+        // Cast the address to the BasicNft type and call its function
+        BasicNft(contractAddress).mintNft(PUG); // PUG is the token URI string
+
+        vm.stopBroadcast();
+    }
+    ```
+
+**Final Script Structure (Relevant Parts):**
 
 ```solidity
-//SPDX-License-Identifier: MIT
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import {Test} from "forge-std/Test.sol";
-import {BasicNFT} from "../src/BasicNFT.sol";
-import {DeployBasicNft} from "../script/DeployBasicNFT.s.sol";
+import {Script} from "forge-std/Script.sol";
+import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
+import {BasicNft} from "../src/BasicNft.sol";
 
-contract BasicNFTTest is Test {
-  DeployBasicNft public deployer;
-  BasicNFT public basicNft;
+contract MintBasicNft is Script {
 
-  function setUp() public {
-      deployer = new DeployBasicNft();
-      basicNft = deployer.run();
-  }
+    string public constant PUG = "ipfs://bafybeig37ioir76s7mg5oobetncojcmc3hxasyd4rvid4jqhy4gkaheg4/?filename=0-PUG.json";
+
+    function run() external {
+        address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment(
+            "BasicNft",
+            block.chainid
+        );
+        mintNftOnContract(mostRecentlyDeployed);
+    }
+
+    function mintNftOnContract(address contractAddress) public {
+        vm.startBroadcast();
+        BasicNft(contractAddress).mintNft(PUG);
+        vm.stopBroadcast();
+    }
 }
 ```
 
-To confirm that the Name of your NFT is correct, declare a function `testNameIsCorrect` and specify it as public view.
-
-```solidity
-function testNameIsCorrect() public view {
-  string memory expected = "Doggie";
-  string memory actual = basicNft.name();
-  assert(expected == actual);
-}
-```
-
-Now, you may believe that we can simply do something like the above. We know the ERC721 standard allows us to call the `name` function to verify what what set, so that should be it, right?
-
-We actually run into an issue here.
-
-::image{src='/foundry-nfts/7-basic-nft-tests/basic-nft-tests1.png' style='width: 100%; height: auto;'}
-
-### Comparing Strings
-
-If you recall from previous lessons, strings are actually a special data type. Under the hood, strings exist as an array of bytes, arrays can't be compared to arrays in this way, this is limited to primitive data types. Primitive data types include things like int, bool, bytes32, address etc.
-
-So, how do we compare these strings? Since it's an array, we could loop through the elements of the array and compare each of them. This is entirely doable, but it's computationally expensive and going take a long time if the strings were very large!
-
-A more elegant approach would be to encode each of our string objects into a hash and compare the hashes.
-
-This is a point where I may use Foundry's tool, chisel, to sanity check myself as I go.
-
-```bash
-chisel
-```
-
-Use chisel to create a couple simple strings
-
-```bash
-string memory cat = "cat";
-string memory dog = "dog";
-```
-
-Now if you type `cat`, you should get a kinda crazy output that's representing the hex of that string.
-
-::image{src='/foundry-nfts/7-basic-nft-tests/basic-nft-tests2.png' style='width: 100%; height: auto;'}
-
-We'll leverage abi.encodePacked to convert this to bytes, then finally we can use keccak256 to hash the value into bytes32, which we can can use in our value comparison.
-
-::image{src='/foundry-nfts/7-basic-nft-tests/basic-nft-tests3.png' style='width: 100%; height: auto;'}
-
-> ❗ **NOTE**
-> I know we haven't covered encoding or abi.encodePacked in great detail yet, but don't worry - we will.
-
-If we apply this encoding and hashing methodology to our BasicNft test, we should come out with something that looks like this:
-
-```solidity
-function testNameIsCorrect() public view {
-  string memory expectedName = "Doggie";
-  string memory actualName = basicNft.name();
-
-  assert(keccak256(abi.encodePacked(expectedName)) == keccak256(abi.encodePacked(actualName)));
-}
-```
-
-In the above, we're encoding and hashing both of our strings before comparing them in our assertion. Now, if we run our test with `forge test --mt testNameIsCorrect`...
-
-::image{src='/foundry-nfts/7-basic-nft-tests/basic-nft-tests4.png' style='width: 100%; height: auto;'}
-
-Great work! Let's write a couple more tests together.
-
-### Testing Mint and Balance
-
-The next test we write will assure a user can mint the NFT and then change the user's balance. We'll need to create a user to prank in our test. Additionally, we'll need to provide our mint function a tokenUri, I've provided one below for convenience. If you've one prepared from the previous lesson, feel free to use it!
-
-```solidity
-contract BasicNftTest is Test {
-  ...
-  address public USER = makeAddr("user");
-  string public constant PUG =
-      "ipfs://bafybeig37ioir76s7mg5oobetncojcm3c3hxasyd4rvid4jqhy4gkaheg4/?filename=0-PUG.json";
-  ...
-  function testCanMintAndHaveABalance() public {
-    vm.prank(USER);
-    basicNft.mintNft(PUG);
-
-    assert(basicNft.balanceOf(USER) == 1);
-    assert(keccak256(abi.encodePacked(PUG)) == keccak256(abi.encodePacked(basicNft.tokenURI(0))));
-  }
-}
-```
-
-With this, we again should just be able to run `forge test` and see how things resolve.
-
-::image{src='/foundry-nfts/7-basic-nft-tests/basic-nft-tests5.png' style='width: 100%; height: auto;'}
-
-### Wrap Up
-
-Great work, again! Our tests are looking great. In the next lesson we'll look at how to set up an interactions script for the contract so that we can test things on a public test net with some integration testing.
-
-See you soon!
+**Conclusion:**
+The video successfully sets up a Foundry script (`Interactions.s.sol`) that can:
+1.  Find the address of the most recently deployed `BasicNft` contract using the `foundry-devops` package.
+2.  Programmatically call the `mintNft` function on that contract address, sending a real transaction when run with `--broadcast`.

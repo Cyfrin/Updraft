@@ -1,83 +1,165 @@
-## Introduction to Building a Cross-Chain Rebase Token
+## Building Cross-Chain Rebase Tokens with Foundry and Chainlink CCIP
 
-Welcome to this section focused on constructing a sophisticated DeFi primitive: a cross-chain rebase token. We'll leverage the power of the Foundry development toolkit and Chainlink's Cross-Chain Interoperability Protocol (CCIP) to build, test, and deploy a token capable of operating across multiple blockchain networks while incorporating a dynamic supply mechanism.
+Welcome to this advanced lesson where we'll dive deep into constructing, rigorously testing, and deploying a sophisticated financial instrument: a rebase token capable of operating and being transferred across multiple blockchains. We'll be leveraging the power of the Foundry development framework and Chainlink's Cross-Chain Interoperability Protocol (CCIP) to achieve this. This lesson, inspired by Ciara Nightingale's "Advanced Foundry Course" from Cyfrin, will equip you with the knowledge to build truly interoperable DeFi applications. The concepts and code structure are based on the `foundry-cross-chain-rebase-token-cu` repository.
 
-This lesson tackles complex concepts, including advanced Solidity patterns, intricate cross-chain interactions facilitated by CCIP, and robust testing methodologies essential for secure and reliable smart contract development. We will explore how to design a token whose supply adjusts based on accrued interest and how to enable seamless transfers of this token between different blockchains.
+## Core Concepts: Understanding the Building Blocks
 
-### Core Concepts Explored
+Before we delve into the code, let's establish a firm understanding of the fundamental concepts that underpin this project.
 
-Before diving into the code, let's establish a clear understanding of the fundamental concepts underpinning this project:
+*   **Rebase Token:** At its heart, a rebase token is a type of cryptocurrency where the total supply adjusts algorithmically. This adjustment is distributed proportionally among all token holders. Consequently, a user's token balance changes not due to direct transfers in or out of their wallet, but because the effective quantity or "value" represented by each token unit shifts with the supply. In our specific implementation, this rebase mechanism will be tied to an interest rate, causing user balances to appear to grow over time as interest accrues.
 
-1.  **Cross-Chain Functionality:** This refers to the capability of smart contracts or digital assets, like our token, to interact or move between distinct blockchain networks. Our goal is to build a single token standard that can exist and be transferred across multiple chains.
-2.  **Rebase Token:** Unlike standard ERC20 tokens where a user's balance only changes via direct transfers, a rebase token features an automatically adjusting total supply. This adjustment, or "rebase," is typically driven by specific criteria. In our case, the supply will grow based on accrued linear interest. Consequently, a user's balance can increase over time simply by holding the token, reflecting their proportional share of the expanding total supply.
-3.  **Chainlink CCIP (Cross-Chain Interoperability Protocol):** This is the secure messaging and token transfer protocol we will utilize to enable the cross-chain capabilities of our rebase token. CCIP provides the infrastructure for sending messages and initiating token movements between supported networks.
-4.  **Foundry:** Our primary development environment. Foundry is a comprehensive toolkit for Solidity development, offering tools for compilation, deployment, and advanced testing strategies like fuzz testing and fork testing, which are crucial for this project's complexity.
-5.  **CCIP Token Pool:** A specific smart contract pattern used in conjunction with Chainlink CCIP for facilitating cross-chain token transfers. It manages the locking or burning of tokens on the source chain and the corresponding releasing or minting on the destination chain.
-6.  **Burn and Mint Mechanism:** The chosen strategy for cross-chain token transfers. When a user initiates a cross-chain transfer, their tokens are destroyed (burned) on the origin chain. Following confirmation via CCIP, an equivalent amount of new tokens is created (minted) for them on the destination chain, managed by the respective Token Pool contracts.
-7.  **Linear Interest:** The mechanism driving our token's rebase functionality. Interest accrues proportionally over time, causing the total supply (and thus individual balances, proportionally) to increase predictably.
-8.  **Vault Contract:** A user-facing smart contract that serves as the primary interaction point. Users can deposit a base asset (e.g., ETH) into the Vault, which then mints the corresponding amount of rebase tokens. Conversely, users can redeem their rebase tokens through the Vault, which burns the tokens and returns the underlying base asset. This contract effectively links the rebase token to the yield generated (represented by the rebase).
-9.  **Fork Testing:** A powerful testing technique provided by Foundry. It allows us to create a local copy of a live blockchain's state (e.g., Sepolia testnet). Tests can then interact with deployed contracts and real-world state in a controlled, local environment, enabling realistic end-to-end testing of cross-chain interactions without repeated testnet deployments.
-10. **Precision and Truncation:** Inherent challenges when working with fixed-point arithmetic in Solidity, particularly for calculations involving rates and time, like our interest accrual. Careful implementation and specialized testing assertions are required to handle potential rounding errors or loss of precision.
-11. **Token Dust:** Very small residual amounts of tokens that can sometimes result from complex calculations or distribution mechanisms. While often negligible, they may need consideration in contract logic or when writing precise test assertions.
-12. **`super` Keyword (Solidity):** A keyword used within inheriting contracts to explicitly call functions defined in their parent contract(s). This is particularly relevant when overriding standard functions like `balanceOf` or `transfer`, allowing us to extend or modify the base functionality while still leveraging it.
+*   **Cross-Chain Functionality:** This refers to the capability of our rebase token and its associated logic to operate across different, independent blockchains. The core challenge here is enabling the token, or at least its value representation, to move from a source chain to a destination chain seamlessly.
 
-### Project Code Structure and Implementation Details
+*   **Chainlink CCIP (Cross-Chain Interoperability Protocol):** CCIP is the pivotal technology enabling our token's cross-chain capabilities. It provides a secure and reliable way for smart contracts on one blockchain to send messages and transfer tokens to smart contracts on another blockchain.
 
-The project repository contains several key components organized logically:
+*   **Burn-and-Mint Mechanism (for CCIP token transfers):** To maintain a consistent total circulating supply across all integrated chains (barring changes from the rebase mechanism itself), we employ a burn-and-mint strategy. When tokens are transferred from a source chain to a destination chain:
+    1.  Tokens are "burned" (irrevocably destroyed) on the source chain.
+    2.  An equivalent amount of new tokens is "minted" (created) on the destination chain.
 
-**`src/` Directory (Smart Contracts):**
+*   **Foundry:** Our development environment of choice is Foundry, a powerful and fast smart contract development toolkit written in Rust. We'll use Foundry for writing, testing (including complex scenarios like fuzzing and fork testing), and deploying our Solidity smart contracts.
 
-*   **`RebaseToken.sol`:** This is the heart of our project – the custom ERC20-like token contract implementing the rebase logic.
-    *   **Overridden Functions:** Key functions like `balanceOf` are overridden. Instead of returning a static value from a mapping, `balanceOf` dynamically calculates the user's current share.
-    *   **`balanceOf(address _user)` Logic:** This function retrieves the user's last recorded principal balance (using `super.balanceOf(_user)` to access the underlying ERC20 storage) and then calculates the interest accrued since the user's last interaction or balance update. The final balance returned is the sum of the principal and the calculated accrued interest, adjusted for precision.
-    *   **`_calculateUserAccumulatedInterestSinceLastUpdate(address _user)`:** An internal function responsible for computing the interest earned by a specific user based on their principal balance, their applicable interest rate (`s_userInterestRate[user]`), and the time elapsed (`block.timestamp - s_userLastUpdateTimestamp[user]`) since their balance was last updated. Precision factors (`PRECISION_FACTOR`) are used for fixed-point math.
-    *   **`mint()` and `burn()` Functions:** These functions have unique considerations. Before executing the core minting or burning logic (often calling the parent's implementation via `super`), they must first trigger an update (`_mintAccruedInterest`) to account for any interest accrued up to the current block timestamp, ensuring calculations are based on the most up-to-date balances.
-*   **`RebaseTokenPool.sol`:** This contract is a specialized version of a Chainlink CCIP Token Pool, specifically designed to handle our `RebaseToken`.
-    *   **Inheritance:** It inherits from CCIP's base `TokenPool` contract.
-    *   **Functionality:** Implements the `_lockOrBurn` and `_releaseOrMint` internal functions required by CCIP's burn-and-mint flow. On the source chain, it interacts with `RebaseToken.burn()`. On the destination chain, it interacts with `RebaseToken.mint()`, effectively managing the token's destruction and creation across chains as orchestrated by CCIP messages.
-*   **`Vault.sol`:** The primary interface for users.
-    *   **`deposit()` Function:** A `payable` function accepting the base asset (e.g., ETH). It calculates the equivalent amount of rebase tokens to issue based on the current state and calls `_rebaseToken.mint()` to credit the user.
-    *   **`redeem()` Function:** Allows users to exchange their rebase tokens back for the base asset. It takes the amount of rebase tokens to redeem, calls `_rebaseToken.burn()` to destroy them, and then transfers the corresponding amount of the base asset back to the user.
+*   **Linear Interest:** The rebase token in this project will accrue interest based on a straightforward linear model. The interest earned will be a product of the user's specific interest rate and the time elapsed since their last balance update or interaction.
 
-**`script/` Directory (Foundry Scripts):**
+*   **Fork Testing:** A crucial testing methodology we'll utilize is fork testing. This involves creating a local, isolated copy (a "fork") of an actual blockchain (e.g., Sepolia testnet, Arbitrum Sepolia testnet) at a specific block height. This allows us to test our smart contracts' interactions with existing, deployed contracts and protocols in a highly realistic environment without incurring real gas costs or requiring deployment to a live testnet for every iteration.
 
-*   Contains automation scripts written for Foundry's scripting capabilities.
-*   **`Deployer.s.sol`:** Deploys the core contracts (`RebaseToken`, `Vault`, `RebaseTokenPool`) to the target chains.
-*   **`ConfigurePools.s.sol`:** Configures the deployed `RebaseTokenPool` contracts on each chain, linking them together via CCIP settings.
-*   **`BridgeTokens.s.sol`:** Executes a cross-chain token transfer using the configured CCIP setup and token pools.
+*   **Local CCIP Simulation:** To streamline development and testing of cross-chain interactions, we will use tools like Chainlink Local's `CCIPLocalSimulatorFork`. This enables us to simulate CCIP message passing and token transfers entirely locally, which is invaluable for debugging and verifying logic before engaging with public testnets.
 
-**`test/` Directory (Foundry Tests):**
+## Learning Objectives for This Section
 
-*   **`RebaseToken.t.sol`:** Contains unit tests and fuzz tests specifically for the `RebaseToken` contract.
-    *   **Testing Focus:** Verifies the correctness of the rebase logic, interest accrual calculations, and overridden functions under various scenarios.
-    *   **Handling Precision:** Likely employs assertions like `assertApproxEqAbs` (Assert Approximate Equals Absolute) to gracefully handle minor discrepancies that can arise from fixed-point arithmetic and time-dependent calculations during fuzzing, preventing failures due to insignificant "token dust."
-*   **`CrossChain.t.sol`:** Contains integration tests focusing on the end-to-end cross-chain functionality.
-    *   **Fork Testing:** Utilizes Foundry's fork testing (`vm.createSelectFork`) to simulate interactions on live testnet environments (like Sepolia) locally.
-    *   **CCIP Simulation:** Leverages helper tools like `Chainlink Local` and `CCIPLocalSimulatorFork` to mimic the behavior of the CCIP network locally. This allows developers to test the full message-passing and token transfer flow (deposit -> bridge -> check balance on destination) without the delays and costs of constant testnet deployments.
+By the end of this lesson, you will have a comprehensive understanding of:
 
-**Automation (`bridgeToZkSync.sh`):**
+*   The fundamentals and practical application of Chainlink CCIP.
+*   How to enable an existing token for CCIP compatibility.
+*   Techniques for creating *custom* tokens specifically designed for CCIP, going beyond standard ERC20s.
+*   The design and implementation of a rebase token.
+*   Advanced Solidity and Foundry concepts, including:
+    *   Effective use of the `super` keyword for inheriting and extending contract functionality.
+    *   Sophisticated testing strategies.
+    *   Understanding and mitigating issues related to "token dust" (minute, economically insignificant token balances).
+    *   Handling precision and truncation challenges inherent in financial calculations, especially critical for rebase mechanisms.
+    *   Practical application of fork testing.
+    *   The use of nested structs for organizing complex data.
+*   The mechanics of bridging tokens between different blockchains.
+*   The intricacies of cross-chain transfers.
 
-*   A bash script is provided to demonstrate and automate the entire workflow:
-    1.  Deploying contracts to multiple chains (e.g., Sepolia and zkSync Sepolia).
-    2.  Configuring the CCIP lanes between the deployed token pools using Foundry scripts.
-    3.  Interacting with the `Vault` to deposit ETH and mint rebase tokens.
-    4.  Initiating and completing a cross-chain transfer using the `BridgeTokens.s.sol` script.
-*   This showcases how scripting can orchestrate complex, multi-step, multi-chain operations efficiently.
+## Smart Contract Architecture and Implementation Details
 
-### Key Takeaways and Learning Objectives
+Let's explore the key smart contracts that constitute our cross-chain rebase token system.
 
-By working through this section, you will gain practical experience and understanding in:
+### `RebaseToken.sol`: The Heart of Our Interest-Bearing Token
 
-*   Implementing Chainlink CCIP for cross-chain token transfers.
-*   Adapting existing or custom tokens (like our rebase token) for use with CCIP.
-*   Designing and coding a rebase token with time-based interest accrual.
-*   Utilizing advanced Solidity features like the `super` keyword in inheritance hierarchies.
-*   Mastering advanced Foundry testing techniques:
-    *   Fuzz testing stateful contracts with time-dependent logic.
-    *   Addressing precision issues in tests using approximate assertions.
-    *   Setting up and executing fork tests for cross-chain scenarios.
-    *   Employing local simulation tools like Chainlink Local for CCIP testing.
-*   Applying cross-chain design patterns like burn-and-mint bridging.
-*   Automating deployment and interaction workflows using bash and Foundry scripting.
+This contract defines the core logic for our rebase token.
 
-Remember, the dynamic nature of rebase token balances and the complexities of cross-chain interactions necessitate rigorous testing. Fork testing and tools that simulate the cross-chain environment locally are invaluable for ensuring the correctness and security of such systems.
+*   **Purpose:** To implement an ERC20-like token whose balances effectively increase over time due to an accrued interest mechanism.
+*   **Key Functions/Logic:**
+    *   `constructor()`: Initializes the token with standard parameters like name (e.g., "RebaseToken") and symbol (e.g., "RBT").
+    *   `balanceOf(address user) public view override returns (uint256)`: This function is a cornerstone of the rebase mechanism and behaves distinctively. Instead of merely returning a stored balance from a mapping, it *dynamically calculates* the user's current effective balance. It achieves this by taking the user's `currentPrincipalBalance` (which is the underlying ERC20-like balance, accessed via `super.balanceOf(user)`) and adding the `_calculateUserAccumulatedInterestSinceLastUpdate(user)`. The result is then adjusted by a `PRECISION_FACTOR` to manage decimal precision.
+        ```solidity
+        // Conceptual Solidity representation
+        // function balanceOf(address user) public view override returns (uint256) {
+        //     uint256 currentPrincipalBalance = super.balanceOf(user); // Underlying stored balance
+        //     if (currentPrincipalBalance == 0) return 0;
+        //     // 'shares' represents the newly accrued interest for the user since their last update
+        //     uint256 accruedInterest = _calculateUserAccumulatedInterestSinceLastUpdate(user);
+        //     return (currentPrincipalBalance + accruedInterest) / PRECISION_FACTOR; // Or multiplied, depending on precision handling strategy
+        // }
+        ```
+    *   **Modified Mint and Burn Functions:** The standard `_mint` and `_burn` functions (or their equivalents) will be augmented. Before any transfer, minting, or burning operation that affects a user's balance, a function like `_mintAccruedInterest(address user)` will be called. This function crystallizes any pending accrued interest into the user's principal balance, ensuring that all subsequent operations are based on their most up-to-date holdings.
+    *   **Interest Calculation Logic:**
+        *   `_calculateUserAccumulatedInterestSinceLastUpdate(address user)`: This internal function determines the amount of interest a user has earned since their last balance-modifying transaction or explicit interest update.
+        *   `_calculateLinearInterest(uint256 interestRate, uint256 timeDifference)`: This function implements the linear interest model: `linearInterest = (interestRate * timeDifference) / PRECISION_FACTOR`. It uses `s_userInterestRate[user]` (a mapping storing each user's specific interest rate) and the `timeDifference` since the last interest calculation point.
+
+### `RebaseTokenPool.sol`: Enabling Cross-Chain Transfers with CCIP
+
+This contract is responsible for managing the cross-chain movement of our rebase token using Chainlink CCIP. It will likely inherit from or extensively utilize Chainlink's `Pool.sol` contract or similar CCIP-specific base contracts.
+
+*   **Purpose:** To facilitate the burn-and-mint mechanism for transferring the rebase token between different blockchains via CCIP.
+*   **Key Functions/Logic:**
+    *   It implements the burn-and-mint pattern:
+        *   `lockOrBurn(...)` (or a similarly named function): When tokens are sent from the source chain, this function is called. It burns the specified amount of rebase tokens on the source chain and then constructs and dispatches a CCIP message to the destination chain, instructing it to mint an equivalent amount.
+        *   `releaseOrMint(...)` (or a similarly named function): On the destination chain, this function is triggered upon receiving a valid CCIP message from the source chain's pool. It then mints the appropriate amount of rebase tokens to the recipient.
+    *   It will also handle the encoding of necessary data, such as the user's current interest rate, to be sent along with the CCIP message. This ensures that user-specific parameters are correctly propagated across chains.
+
+### `Vault.sol`: Interacting with the Rebase Token
+
+The `Vault.sol` contract serves as an interface for users to acquire or redeem rebase tokens using a base asset (e.g., ETH).
+
+*   **Purpose:** To allow users to deposit a base asset (like ETH) and receive rebase tokens in return, and conversely, to redeem their rebase tokens for the underlying base asset.
+*   **Key Functions/Logic:**
+    *   `deposit() public payable`: Users send ETH to this function. The contract then mints an appropriate amount of rebase tokens to the user, calculated based on the current exchange rate (which might implicitly consider the token's accrued interest characteristics).
+    *   `redeem(uint256 amount)`: Users call this function, specifying the amount of rebase tokens they wish to redeem. The contract burns these rebase tokens from the user's balance and sends the corresponding amount of the base asset (ETH) back to the user.
+    *   `receive() external payable {}`: This special function allows the contract to receive ETH directly (e.g., through simple transfers), which is typically routed to the deposit logic.
+
+## Development Workflow: Scripts and Testing Strategies
+
+Foundry's scripting and testing capabilities are integral to our development process.
+
+### Foundry Scripts (`script/` directory)
+
+This directory houses Solidity scripts (`.s.sol` files) for automating deployment, configuration, and on-chain interactions.
+
+*   `Deployer.s.sol`: This script handles the deployment of the `RebaseToken`, `RebaseTokenPool`, and `Vault` contracts to the target blockchain.
+*   `ConfigurePool.s.sol`: After deployment, this script is used to configure the CCIP settings on the `RebaseTokenPool` contracts on each chain. This includes setting parameters like supported remote chains (using their chain selectors), addresses of token contracts on other chains, and rate limits for CCIP transfers.
+*   `BridgeTokens.s.sol`: This script provides a convenient way to initiate a cross-chain token transfer, automating the calls to the `RebaseTokenPool` for locking/burning and CCIP message dispatch.
+*   `Interactions.s.sol`: (Implied) This script would likely contain functions for other general interactions with the deployed contracts, such as depositing into the vault or checking balances.
+
+### Foundry Tests (`test/` directory)
+
+Rigorous testing is paramount, especially for financial applications involving cross-chain interactions.
+
+*   **`RebaseToken.t.sol`**:
+    *   **Purpose:** Contains unit and fuzz tests specifically for the `RebaseToken.sol` contract.
+    *   **Key Test Feature:** Employs `assertApproxEqAbs(value1, value2, delta)` for assertions. Due to the nature of interest calculations over time and potential floating-point arithmetic nuances (even when emulated with fixed-point in Solidity), rebase calculations can lead to very minor precision differences. Using `assertApproxEqAbs` allows us to verify that calculated values are within an acceptable tolerance (delta) of expected values, rather than insisting on exact equality (`assertEq`) which might lead to spurious test failures.
+
+*   **`CrossChain.t.sol`**:
+    *   **Purpose:** Contains fork tests designed to validate the end-to-end cross-chain functionality.
+    *   **Key Test Features:**
+        *   Utilizes `vm.createFork("rpc_url")` to create local forks of testnets like Sepolia and Arbitrum Sepolia. This allows tests to run against a snapshot of the real chain state.
+        *   Integrates `CCIPLocalSimulatorFork` from Chainlink Local. This powerful tool enables the simulation of CCIP message routing and execution between these local forks, effectively creating a local, two-chain (or multi-chain) test environment.
+        *   The test setup involves initializing two (or more) forked environments to represent the source and destination chains for the cross-chain operations.
+
+## Automating Deployment and Cross-Chain Operations: The `bridgeToZkSync.sh` Script
+
+To streamline the entire process from deployment to a live cross-chain transfer, a bash script like `bridgeToZkSync.sh` is invaluable.
+
+*   **Purpose:** This script automates a complex sequence of operations involving contract deployments, configurations, and interactions across multiple chains (e.g., Sepolia and zkSync Sepolia).
+*   **Steps it typically performs:**
+    1.  Sets necessary permissions for the `RebaseTokenPool` contract, often involving CCIP-specific roles.
+    2.  Assigns CCIP roles and configures permissions for inter-chain communication.
+    3.  Deploys the core contracts (`RebaseToken`, `RebaseTokenPool`, `Vault`) to a source chain (e.g., Sepolia) using `script/Deployer.s.sol`.
+    4.  Parses the deployment output to extract the addresses of the newly deployed contracts.
+    5.  Deploys the `Vault` (and potentially `RebaseToken` and `RebaseTokenPool` if not already deployed as part of a unified script) on the destination chain (e.g., zkSync Sepolia).
+    6.  Configures the `RebaseTokenPool` on the source chain (Sepolia) using `script/ConfigurePool.s.sol`, linking it to the destination chain by setting remote chain selectors, token addresses on the destination chain, and CCIP rate limits.
+    7.  Simulates user interaction by depositing funds (e.g., ETH) into the `Vault` on Sepolia, thereby minting rebase tokens.
+    8.  Includes a pause or wait period to allow some interest to accrue on the rebase tokens.
+    9.  Configures the `RebaseTokenPool` on the destination chain (zkSync Sepolia), establishing the reciprocal CCIP linkage.
+    10. Initiates a cross-chain transfer of the rebase tokens from Sepolia to zkSync Sepolia using `script/BridgeTokens.s.sol`.
+    11. Performs balance checks on both chains before and after the bridge operation to verify the successful transfer and correct accounting.
+
+## Key Takeaways and Best Practices
+
+Several important principles and practices emerge from this advanced development exercise:
+
+*   **Precision is Paramount:** When working with rebase tokens and time-based interest calculations, meticulous attention to precision is crucial. Use fixed-point arithmetic carefully in Solidity and employ approximate equality assertions like `assertApproxEqAbs` in your tests to account for minor, unavoidable discrepancies.
+*   **Local Simulation is Vital:** The ability to simulate complex cross-chain interactions locally, using tools like `CCIPLocalSimulatorFork`, dramatically accelerates the development and debugging cycle. It allows for rapid iteration before deploying to live testnets.
+*   **Automation through Scripting:** For multi-step, multi-chain deployment and interaction workflows, bash scripting (or other scripting languages) provides powerful automation, reducing manual errors and improving repeatability.
+*   **Leverage `super` for Extensibility:** The `super` keyword in Solidity is essential when inheriting from base contracts (like standard ERC20 implementations or CCIP base contracts). It allows you to extend or modify parent contract functionality while still being able to invoke the original parent implementation where needed.
+*   **Handle Token Dust:** Be mindful of "token dust"—very small, often economically insignificant, token balances that can arise from precision issues or certain transaction patterns. While not explicitly detailed in the summary for this token, it's a general consideration in token design.
+*   **Address Truncation:** Understand how integer division in Solidity can lead to truncation and ensure your calculations, especially those involving rates and time, are designed to minimize adverse effects.
+
+## Example Use Case: Putting It All Together
+
+By the conclusion of this section's practical application, a developer would be able to execute the following end-to-end flow:
+
+1.  **Deployment:** Deploy the `RebaseToken`, `RebaseTokenPool`, and `Vault` smart contracts onto the Sepolia testnet.
+2.  **Cross-Chain Deployment:** Deploy the corresponding smart contracts (or at least the `RebaseTokenPool` and potentially a `RebaseToken` representation) onto a second testnet, such as zkSync Sepolia.
+3.  **CCIP Configuration:** Configure Chainlink CCIP lanes between the deployed `RebaseTokenPool` contracts on Sepolia and zkSync Sepolia, enabling them to communicate and transfer tokens.
+4.  **Acquire Rebase Tokens:** Interact with the `Vault` contract on Sepolia by depositing ETH, thereby receiving an initial balance of rebase tokens.
+5.  **Interest Accrual:** Observe as the rebase token balance in the Sepolia wallet increases over time, reflecting the accrued interest as per the token's rebase mechanism.
+6.  **Cross-Chain Transfer:** Execute the `BridgeTokens.s.sol` Foundry script (or the overarching `bridgeToZkSync.sh` bash script). This script will:
+    *   Instruct the `RebaseTokenPool` on Sepolia to burn a specified amount of the user's rebase tokens.
+    *   Initiate a CCIP message to the `RebaseTokenPool` on zkSync Sepolia.
+    *   Upon successful CCIP message relay, the `RebaseTokenPool` on zkSync Sepolia will mint an equivalent amount of rebase tokens to the user's address on that chain.
+7.  **Verification:** The user can then verify their new rebase token balance on zkSync Sepolia and the correspondingly reduced (or zeroed, if all tokens were bridged) balance on Sepolia.
+
+This comprehensive example demonstrates the power of combining custom token logic with robust cross-chain interoperability solutions to create sophisticated and flexible DeFi applications.
