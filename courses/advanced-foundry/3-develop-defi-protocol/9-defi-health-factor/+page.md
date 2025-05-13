@@ -1,92 +1,360 @@
-Okay, here is a thorough and detailed summary of the provided video segment (0:00 - 1:21), covering the implementation of the actual minting logic within the `mintDsc` function in the `DSCEngine.sol` contract.
+---
+title: Health Factor
+---
 
-**Overall Topic:**
+_Follow along the course with this video._
 
-The video segment focuses on completing the `mintDsc` function in the `DSCEngine.sol` smart contract. Having previously implemented checks and updates related to the user's minted amount and health factor, the focus now shifts to interacting with the `DecentralizedStableCoin` contract to actually create (mint) the DSC tokens for the user.
+---
 
-**Key Concepts Discussed:**
+### Health Factor
 
-1.  **Health Factor Check:** The video revisits the importance of the `_revertIfHealthFactorIsBroken(msg.sender)` check within the `mintDsc` function. This check ensures that a user cannot mint more DSC than their collateral allows, preventing them from immediately becoming undercollateralized and eligible for liquidation. The presenter explicitly states that while they *could* allow users to mint into a liquidatable state, it's considered bad user experience (UX) and is therefore prevented.
-2.  **Contract Interaction & Ownership:** The core task is for the `DSCEngine` contract to call the `mint` function on the `DecentralizedStableCoin` (DSC) contract.
-3.  **`onlyOwner` Modifier:** The presenter highlights that the `mint` function within the `DecentralizedStableCoin.sol` contract has an `onlyOwner` modifier. This is crucial because it restricts who can create new DSC tokens.
-4.  **`DSCEngine` as Owner:** It's explained that the `DSCEngine` contract itself will be designated as the "owner" of the `DecentralizedStableCoin` contract. This architectural choice grants the `DSCEngine` the necessary permission to call the `onlyOwner`-protected `mint` function. Only the engine can mint tokens based on its internal logic (collateral deposits, health factor checks).
-5.  **Return Value Check:** After calling the external `mint` function, the presenter emphasizes checking its boolean return value. Although standard ERC20 `_mint` functions typically don't fail internally if prerequisites are met, it's good practice to handle the possibility of the external call returning `false`.
-6.  **Custom Errors:** A new custom error, `DSCEngine_MintFailed`, is introduced to provide a specific revert reason if the interaction with the `DecentralizedStableCoin`'s `mint` function fails (returns `false`).
+In the previous lesson we walked through the mintDsc function and a **_bunch_** of additional functions on which that operation depends. We briefly skimmed over the `Health Factor` of an account, and in this lesson we'll dive deeper into this concept and write the functions necessary to determine an account's `Health Factor`.
 
-**Code Blocks and Explanation:**
+So far, our `_healthFactor` function is only acquiring the user's `totalDscMinted` and the `collateralValueInUsd`. What we can now do, is take the ratio of these two.
 
-1.  **Recap of Existing `mintDsc` Logic (DSCEngine.sol):**
-    *   Timestamp: ~0:08 - 0:16
-    *   Code Snippet (Conceptual, lines highlighted):
-        ```solidity
-        function mintDsc(uint256 amountDscToMint) external moreThanZero(amountDscToMint) nonReentrant {
-            s_dscMinted[msg.sender] += amountDscToMint; // Update user's minted amount tracker
-            // ... (Implicit check for having enough collateral value happens before/within health factor check)
-            _revertIfHealthFactorIsBroken(msg.sender); // Check health factor AFTER accounting for new mint
-            // ---> NEW MINTING LOGIC ADDED HERE <---
+An account's `Health Factor` will be a bit more complex to consider than simply `collateralValueInUsd / totalDscMinted`. Remember, we want to assure the protocol is always `over-collateralized`, and to do this, there needs to be a threshold determined that this ratio needs to adhere to, 200% for example. We can set this threshold via a constant state variable.
+
+```solidity
+/////////////////////////
+//   State Variables   //
+/////////////////////////
+
+mapping(address token => address priceFeed) private s_priceFeeds;
+DecentralizedStableCoin private immutable i_dsc;
+mapping(address user => mapping(address token => uint256 amount)) private s_collateralDeposited;
+mapping(address user => uint256 amountDscMinted) private s_DSCMinted;
+address[] private s_collateralTokens;
+
+uint256 private constant ADDITIONAL_FEED_PRECISION = 1e10;
+uint256 private constant PRECISION = 1e18;
+uint256 private constant LIQUIDATION_THRESHOLD = 50;
+uint256 private constant LIQUIDATION_PRECISION = 100;
+```
+
+The threshold above, set at `50`, will assure a user's position is `200%` `over-collateralized`. We've also declared a `LIQUIDATION_PRECISION` constant for use in our calculation. We can apply this to our function's calculation now.
+
+```solidity
+/*
+* Returns how close to liquidation a user is
+* If a user goes below 1, then they can be liquidated.
+*/
+function _healthFactor(address user) private view returns(uint256){
+    (uint256 totalDscMinted, uint256 collateralValueInUsd) = _getAccountInformation(user);
+
+    uint256 collateralAdjustedForThreshold = (collateralValueInUsd * LIQUIDATION_THRESHOLD) / LIQUIDATION_PRECISION;
+}
+```
+
+Let's work this `Health Factor` calculation out mathematically with an example.
+
+Say a user deposits $150 worth of ETH and goes to mint $100 worth of DSC.
+
+```
+(150 * 50) / 100 = 75
+75/100 = 0.75
+0.75 < 1
+```
+
+In the above example, a user who has deposited $150 worth of ETH would not be able to mint $100 worth of DSC as it results in their `Health Factor` breaking. $100 in DSC requires $200 in collateral to be deposited for the `Health Factor` to remain above 1.
+
+```
+(200 * 50) / 100 = 100
+100/100 = 1
+1 >= 1
+```
+
+With a `LIQUIDATION_THRESHOLD` of 50, a user requires 200% over-collateralization of their position, or the risk liquidation. Now that we've adjusted our collateral amount to account for a position's `LIQUIDATION_THRESHOLD`, we can use this adjust value to calculate a user's true `Health Factor`.
+
+```solidity
+/*
+* Returns how close to liquidation a user is
+* If a user goes below 1, then they can be liquidated.
+*/
+function _healthFactor(address user) private view returns(uint256){
+    (uint256 totalDscMinted, uint256 collateralValueInUsd) = _getAccountInformation(user);
+
+    uint256 collateralAdjustedForThreshold = (collateralValueInUsd * LIQUIDATION_THRESHOLD) / LIQUIDATION_PRECISION;
+
+    return (collateralAdjustedForThreshold * PRECISION) / totalDscMinted;
+}
+```
+
+To apply our new return calculation to our above examples:
+
+```
+(150 * 50) / 100 = 75
+return (75 * 1e18) / 100e18
+return (0.75)
+```
+
+Alright! Now, we've been talking about `Health Factors` which are `< 1` as being at risk of liquidation. We should set this constant officially with a state variable before moving on. We'll need it in our `_revertIfHealthFactorIsBroken` function.
+
+```solidity
+/////////////////////////
+//   State Variables   //
+/////////////////////////
+
+mapping(address token => address priceFeed) private s_priceFeeds;
+DecentralizedStableCoin private immutable i_dsc;
+mapping(address user => mapping(address token => uint256 amount)) private s_collateralDeposited;
+mapping(address user => uint256 amountDscMinted) private s_DSCMinted;
+address[] private s_collateralTokens;
+
+uint256 private constant ADDITIONAL_FEED_PRECISION = 1e10;
+uint256 private constant PRECISION = 1e18;
+uint256 private constant LIQUIDATION_THRESHOLD = 50;
+uint256 private constant LIQUIDATION_PRECISION = 100;
+uint256 private constant MIN_HEALTH_FACTOR = 1e18;
+```
+
+We're ready to put our `_healthFactor` function and our `MIN_HEALTH_FACTOR` constant to work. We can use these to declare a conditional statement within `_revertIfHealthFactorIsBroken`, which will revert with a custom error if the conditional fails to pass.
+
+```solidity
+function _revertIfHealthFactorIsBroken(address user) internal view {
+    uint256 userHealthFactor = _healthFactor(user);
+    if(userHealthFactor < MIN_HEALTH_FACTOR){
+        revert DSCEngine__BreaksHealthFactor(userHealthFactor);
+    }
+}
+```
+
+Don't forget to add the custom error to the top of our contract with the others.
+
+```solidity
+///////////////////
+//     Errors    //
+///////////////////
+
+error DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch();
+error DSCEngine__NeedsMoreThanZero();
+error DSCEngine__TokenNotAllowed(address token);
+error DSCEngine__TransferFailed();
+error DSCEngine__BreaksHealthFactor(uint256 healthFactor);
+```
+
+### Wrap Up
+
+Another function down! We're killing it. We should assure things are compiling properly with `forge build`. If you run into any compilation errors, please reference the contract below which should reflect the state we're at currently.
+
+In the next lesson, we finish the `mintDsc` function! See you there!
+
+<details>
+<summary>DSCEngine.sol</summary>
+
+```solidity
+// Layout of Contract:
+// version
+// imports
+// errors
+// interfaces, libraries, contracts
+// Type declarations
+// State variables
+// Events
+// Modifiers
+// Functions
+
+// Layout of Functions:
+// constructor
+// receive function (if exists)
+// fallback function (if exists)
+// external
+// public
+// internal
+// private
+// internal & private view & pure functions
+// external & public view & pure functions
+
+// SPDX-License-Identifier: MIT
+
+pragma solidity 0.8.18;
+
+import { ReentrancyGuard } from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { DecentralizedStableCoin } from "./DecentralizedStableCoin.sol";
+import { AggregatorV3Interface } from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+
+/*
+ * @title DSCEngine
+ * @author Patrick Collins
+ *
+ * The system is designed to be as minimal as possible, and have the tokens maintain a 1 token == $1 peg at all times.
+ * This is a stablecoin with the properties:
+ * - Exogenously Collateralized
+ * - Dollar Pegged
+ * - Algorithmically Stable
+ *
+ * It is similar to DAI if DAI had no governance, no fees, and was backed by only WETH and WBTC.
+ *
+ * Our DSC system should always be "overcollateralized". At no point, should the value of
+ * all collateral < the $ backed value of all the DSC.
+ *
+ * @notice This contract is the core of the Decentralized Stablecoin system. It handles all the logic
+ * for minting and redeeming DSC, as well as depositing and withdrawing collateral.
+ * @notice This contract is based on the MakerDAO DSS system
+ */
+contract DSCEngine is ReentrancyGuard {
+
+    ///////////////////
+    //     Errors    //
+    ///////////////////
+
+    error DSCEngine__TokenAddressesAndPriceFeedAddressesAmountsDontMatch();
+    error DSCEngine__NeedsMoreThanZero();
+    error DSCEngine__TokenNotAllowed(address token);
+    error DSCEngine__TransferFailed();
+    error DSCEngine__BreaksHealthFactor(uint256 healthFactor);
+
+    /////////////////////////
+    //   State Variables   //
+    /////////////////////////
+
+    mapping(address token => address priceFeed) private s_priceFeeds;
+    DecentralizedStableCoin private immutable i_dsc;
+    mapping(address user => mapping(address token => uint256 amount)) private s_collateralDeposited;
+    mapping(address user => uint256 amountDscMinted) private s_DSCMinted;
+    address[] private s_collateralTokens;
+
+    uint256 private constant ADDITIONAL_FEED_PRECISION = 1e10;
+    uint256 private constant PRECISION = 1e18;
+    uint256 private constant LIQUIDATION_THRESHOLD = 50;
+    uint256 private constant LIQUIDATION_PRECISION = 100;
+    uint256 private constant MIN_HEALTH_FACTOR = 1e18;
+
+    ////////////////
+    //   Events   //
+    ////////////////
+
+    event CollateralDeposited(address indexed user, address indexed token, uint256 indexed amount);
+
+    ///////////////////
+    //   Modifiers   //
+    ///////////////////
+
+    modifier moreThanZero(uint256 amount){
+        if(amount <=0){
+            revert DSCEngine__NeedsMoreThanZero();
         }
-        ```
-    *   Explanation: The video quickly reviews that the function already updates the record of how much DSC the user (`msg.sender`) has minted (`s_dscMinted`) and then checks if this new total amount breaks their health factor.
+        _;
+    }
 
-2.  **`mint` Function in `DecentralizedStableCoin.sol`:**
-    *   Timestamp: ~0:36 - 0:41
-    *   Code Snippet (Function Signature):
-        ```solidity
-        function mint(address _to, uint256 _amount) external onlyOwner returns (bool) {
-            // ... internal logic ...
-            _mint(_to, _amount);
-            return true;
+    modifier isAllowedToken(address token) {
+        if (s_priceFeeds[token] == address(0)) {
+            revert DSCEngine__TokenNotAllowed(token);
         }
-        ```
-    *   Explanation: The presenter shows this function in the token contract. It takes the recipient address (`_to`) and the `_amount` to mint. Crucially, it's marked `external` and `onlyOwner`, meaning only the designated owner (which will be the `DSCEngine`) can call it. It returns a boolean indicating success.
+        _;
+    }
 
-3.  **Calling the `mint` Function from `DSCEngine.sol`:**
-    *   Timestamp: ~0:48 - 0:55
-    *   Code Snippet (Inside `mintDsc` function):
-        ```solidity
-        // (Inside mintDsc function, after health factor check)
-        bool minted = i_dsc.mint(msg.sender, amountDscToMint);
-        ```
-    *   Explanation: This is the core addition.
-        *   `i_dsc`: This is assumed to be the state variable holding the interface or address of the deployed `DecentralizedStableCoin` contract.
-        *   `.mint()`: Calls the `mint` function on the DSC contract instance.
-        *   `msg.sender`: Passes the address of the user calling `mintDsc` as the recipient (`_to`) for the newly minted tokens.
-        *   `amountDscToMint`: Passes the amount requested by the user as the `_amount` to mint.
-        *   `bool minted = ...`: Captures the boolean return value from the `i_dsc.mint` call.
+    ///////////////////
+    //   Functions   //
+    ///////////////////
 
-4.  **Checking the Mint Success and Reverting:**
-    *   Timestamp: ~1:05 - 1:15
-    *   Code Snippet (Inside `mintDsc` function):
-        ```solidity
-        // (Immediately after the bool minted = ... line)
-        if (!minted) {
-            revert DSCEngine_MintFailed();
+    constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses, address dscAddress){
+        if(tokenAddresses.length != priceFeedAddresses.length){
+            revert DSCEngine__TokenAddressesAndPriceFeedAddressesMustBeSameLength();
         }
-        ```
-    *   Explanation: This code checks if the `minted` variable is `false`. If the `i_dsc.mint` call failed for any reason and returned `false`, the transaction will revert with the specific custom error `DSCEngine_MintFailed`.
 
-5.  **Defining the Custom Error:**
-    *   Timestamp: ~1:15 - 1:20
-    *   Code Snippet (Near the top of `DSCEngine.sol` with other errors):
-        ```solidity
-        error DSCEngine_MintFailed();
-        ```
-    *   Explanation: This line defines the new custom error used in the revert check, making potential failures more informative.
+        for(uint256 i=0; i < tokenAddresses.length; i++){
+            s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
+            s_collateralTokens.push(tokenAddresses[i]);
+        }
+        i_dsc = DecentralizedStableCoin(dscAddress);
+    }
 
-**Relationships Between Concepts:**
 
-*   The `mintDsc` function in `DSCEngine` acts as a gatekeeper for creating new DSC tokens.
-*   It enforces the protocol's rules (like the health factor) *before* interacting with the token contract.
-*   The `onlyOwner` pattern establishes a controlled relationship where `DSCEngine` is the sole authority allowed to trigger the `mint` function in `DecentralizedStableCoin`, ensuring tokens are only created according to the engine's logic.
-*   The boolean return value of the `mint` function provides feedback to the `DSCEngine`, which is used to ensure the interaction was successful before proceeding.
+    ///////////////////////////
+    //   External Functions  //
+    ///////////////////////////
 
-**Notes or Tips Mentioned:**
+    /*
+     * @param tokenCollateralAddress: The ERC20 token address of the collateral you're depositing
+     * @param amountCollateral: The amount of collateral you're depositing
+     */
+    function depositCollateral(
+        address tokenCollateralAddress,
+        uint256 amountCollateral
+    )
+        external
+        moreThanZero(amountCollateral)
+        nonReentrant
+        isAllowedToken(tokenCollateralAddress)
+    {
+        s_collateralDeposited[msg.sender][tokenCollateralAddress] += amountCollateral;
+        emit CollateralDeposited(msg.sender, tokenCollateralAddress, amountCollateral);
+        bool success = IERC20(tokenCollateralAddress).transferFrom(msg.sender, address(this), amountCollateral);
+        if (!success) {
+            revert DSCEngine__TransferFailed();
+        }
+    }
 
-*   Preventing users from minting into a liquidatable state is a good design choice for better user experience.
-*   Checking the return value of external calls (like `i_dsc.mint`) is important for robustness, even if the underlying implementation is expected to succeed under normal conditions.
+    /*
+    * @param amountDscToMint: The amount of DSC you want to mint
+    * You can only mint DSC if you hav enough collateral
+    */
+    function mintDsc(uint256 amountDscToMint) public moreThanZero(amountDscToMint) nonReentrant {
+        s_DSCMinted[msg.sender] += amountDscToMint;
+    }
 
-**Examples or Use Cases:**
+    ///////////////////////////////////////////
+    //   Private & Internal View Functions   //
+    ///////////////////////////////////////////
 
-*   The primary use case demonstrated is the process a user follows to mint new DSC stablecoins: They call `mintDsc` on the `DSCEngine`, providing the desired amount. The engine validates the request against their collateral and health factor, and if valid, instructs the `DecentralizedStableCoin` contract to mint the tokens directly to the user's address.
+    /*
+    * Returns how close to liquidation a user is
+    * If a user goes below 1, then they can be liquidated.
+    */
+    function _healthFactor(address user) private view returns(uint256){
+        (uint256 totalDscMinted, uint256 collateralValueInUsd) = _getAccountInformation(user);
 
-No specific external links, resources, or explicit Q&A sessions were mentioned in this short segment.
+        uint256 collateralAdjustedForThreshold = (collateralValueInUsd * LIQUIDATION_THRESHOLD) / LIQUIDATION_PRECISION;
+
+        return (collateralAdjustedForThreshold * PRECISION) / totalDscMinted;
+    }
+
+    function _getAccountInformation(address user) private view returns(uint256 totalDscMinted,uint256 collateralValueInUsd){
+        totalDscMinted = s_DSCMinted[user];
+        collateralValueInUsd = getAccountCollateralValue(user);
+    }
+
+    function _revertIfHealthFactorIsBroken(address user) internal view {
+        uint256 userHealthFactor = _healthFactor(user);
+        if(userHealthFactor < MIN_HEALTH_FACTOR){
+            revert DSCEngine__BreaksHealthFactor(userHealthFactor);
+        }
+    }
+
+    //////////////////////////////////////////
+    //   Public & External View Functions   //
+    //////////////////////////////////////////
+
+    function getAccountCollateralValue(address user) public view returns (uint256 totalCollateralValueInUsd) {
+        for(uint256 i = 0; i < s_collateralTokens.length; i++){
+            address token = s_collateralTokens[i];
+            uint256 amount = s_collateralDeposited[user][token];
+            totalCollateralValueInUsd += getUsdValue(token, amount);
+        }
+        return totalCollateralValueInUsd;
+    }
+
+    function getUsdValue(address token, uint256 amount) public view returns(uint256){
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[token]);
+        (,int256 price,,,) = priceFeed.latestRoundData();
+
+        return ((uint256(price) * ADDITIONAL_FEED_PRECISION) * amount) / PRECISION;
+    }
+
+    function depositCollateralAndMintDsc() external {}
+
+    function redeemCollateralForDsc() external {}
+
+    function redeemCollateral() external {}
+
+    function burnDsc() external {}
+
+    function liquidate() external {}
+
+    function getHealthFactor() external view {}
+}
+```
+
+</details>
+

@@ -1,146 +1,81 @@
-Okay, here is a detailed and thorough summary of the video "Handler-based Fuzz (Invariant) tests - Debugging Fuzz Tests":
+---
+title: Handler - Mint DSC
+---
 
-**Video Purpose:**
-The video demonstrates how to debug Foundry's handler-based invariant tests (fuzz tests) when the test passes but the logged output suggests unexpected behavior, indicating a potential flaw in the test setup or the contract logic under certain conditions. Specifically, it focuses on diagnosing why a function intended to be called by the fuzzer (`mintDsc`) might not be executing successfully.
+_Follow along the course with this video._
 
-**The Initial Problem:**
+---
 
-1.  **Scenario:** An invariant test `invariant_protocolMustHaveMoreValueThanTotalSupply` is being run on a DeFi stablecoin protocol.
-2.  **Observation:** The test consistently passes (`[PASS]`). However, logs added within the invariant test show significant collateral value (`weth value`, `wbtc value`) but `total supply: 0`.
-3.  **Suspicion:** This is suspicious because if collateral exists, users should theoretically be able to mint the stablecoin (DSC), resulting in a non-zero total supply. The zero total supply suggests the `mintDsc` function might not be getting called or succeeding during the fuzz test runs.
+### Handler - mintDsc
 
-**Debugging Step 1: Verifying Function Execution with a Ghost Variable**
+In the last lesson our stateful fuzz tests were looking great, _but_ the validity of our tests was a little questionable because we haven't configured a way to mint any DSC during our tests. Because our totalSupply was always zero, changes to our collateral value were never going to violate our invariant.
 
-1.  **Question:** Is the `mintDsc` function within the `Handler.sol` contract (which simulates user interactions) actually being called and completing execution?
-2.  **Concept: Ghost Variables:** Handler contracts can use state variables ("ghost variables") to track information across the multiple, randomized function calls made by the fuzzer during an invariant test run. This is useful for accumulating data or checking if specific paths were taken. (Reference: Foundry Book - Handler Ghost Variables)
-3.  **Implementation:**
-    *   Add a counter variable to `Handler.sol`:
-        ```solidity
-        // In contract Handler is Test { ... }
-        uint256 public timesMintIsCalled;
-        ```
-    *   Increment this counter at the *very end* of the `mintDsc` function in `Handler.sol`:
-        ```solidity
-        function mintDsc(uint256 amount) public {
-            // ... existing logic to calculate maxDscToMint, check amounts ...
-            vm.startPrank(msg.sender);
-            dsce.mintDsc(amount);
-            vm.stopPrank();
-            timesMintIsCalled++; // Increment counter IF function completes
-        }
-        ```
-    *   Log the value of this counter within the main invariant test in `Invariants.sol`:
-        ```solidity
-        // In function invariant_protocolMustHaveMoreValueThanTotalSupply() public view { ... }
-        console.log("Times mint called: ", handler.timesMintIsCalled());
-        // Assert logic...
-        ```
-4.  **Result:** After running the test (`forge test -m invariant_protocolMustHaveMoreValueThanTotalSupply -vv`), the log output shows `Times mint called: 0`.
-5.  **Conclusion:** This confirms that the `timesMintIsCalled++` line is never being reached. The `mintDsc` function in the handler is either never called or, more likely, always exiting early via one of its `return` statements *before* the increment line.
+Let's change that now by writing a mintDsc function for our Handler.
 
-**The Challenge:**
-The video poses a challenge to the viewer: Pause and figure out *why* the `mintDsc` function is never completing. Why does `timesMintIsCalled` remain 0?
+```solidity
+function mintDsc(uint256 amount) public {}
+```
 
-**Debugging Step 2: Identifying the Root Cause (Handler Logic vs. Fuzzer Behavior)**
+To constrain our tests, there are a couple things to consider. Namely, we know the `amount` argument needs to be greater than zero or this function will revert with `DSCEngine__NeedsMoreThanZero`. So let's account for that by binding this value.
 
-1.  **Debugging Techniques Mentioned:**
-    *   Move the `timesMintIsCalled++` line higher up in the `mintDsc` function to see exactly where it exits.
-    *   Use `console.log` to print the values of variables like `maxDscToMint`, `amount`, and crucially, `msg.sender` just before the potential early `return` statements.
-2.  **Key Insight:** Foundry's invariant testing / fuzzing engine calls the functions specified in the `targetContract` (the `Handler` in this case) with:
-    *   Random sequences of function calls.
-    *   Random input values.
-    *   **Random `msg.sender` addresses.**
-3.  **Root Cause:** The `mintDsc` function logic relies on the caller (`msg.sender`) having previously deposited collateral. It uses `dsce.getAccountInformation(msg.sender)` to determine how much the caller *can* mint based on their collateral. The random addresses generated by the fuzzer have *not* deposited collateral. Therefore, `collateralValueInUsd` is likely 0 for these random callers, leading to `maxDscToMint` being 0 or negative, triggering the early `return` statements (`if (maxDscToMint < 0) { return; }` or `if (amount == 0) { return; }`). The actual `dsce.mintDsc(amount)` call is never reached for these random, unfunded callers.
+```solidity
+function mintDsc(uint256 amount) public {
+    amount = bound(amount, 1, MAX_DEPOSIT_SIZE);
+    vm.startPrank(msg.sender);
+    dcse.mintDsc(amount);
+    vm.stopPrank();
+}
+```
 
-**Debugging Step 3: Refining the Handler for Realistic Simulation**
+Another consideration for this function is that it will revert if the Health Factor of the user is broken. We _could_ account for this in our function by assuring that's never the case, but this is an example of a situation you may want to avoid over-narrowing your test focus. We _want_ this function to revert if the Health Factor is broken, so in this case we'd likely just set `fail_on_revert` to `false`.
 
-1.  **Goal:** Modify the `Handler`'s `mintDsc` function so that it simulates calls only from users who *could* potentially mint (i.e., users who have deposited collateral).
-2.  **Implementation:**
-    *   Add an array to `Handler.sol` to track users who have successfully deposited:
-        ```solidity
-        // In contract Handler is Test { ... }
-        address[] public usersWithCollateralDeposited;
-        ```
-    *   In the `depositCollateral` function within `Handler.sol`, add the depositor's address to this array:
-        ```solidity
-        function depositCollateral(uint256 collateralSeed, uint256 amountCollateral) public {
-            // ... existing logic ...
-            vm.stopPrank();
-            usersWithCollateralDeposited.push(msg.sender); // Track the depositor
-        }
-        ```
-        *   **Note/Caveat:** This simple implementation might add the same address multiple times if a user deposits more than once. For this example, this is accepted for simplicity.
-    *   Modify the `Handler`'s `mintDsc` function:
-        *   Add a `uint256 addressSeed` parameter. The fuzzer will provide random values for this.
-        *   **Select a sender:** Instead of using the fuzzer's `msg.sender` directly, pick an address from the `usersWithCollateralDeposited` array using the `addressSeed` and modulo arithmetic.
-        *   Use this selected `sender` variable when calling `dsce.getAccountInformation` and `vm.startPrank`.
-        ```solidity
-        // Modified mintDsc function in Handler.sol
-        function mintDsc(uint256 amount, uint256 addressSeed) public {
-            // ADD CHECK FOR EMPTY ARRAY (See Step 4)
+Situations like this will often lead developers to split their test suite into scenarios where `fail_on_revert` is appropriately false, and scenarios where `fail_on_revert` should be true. This allows them to cover all their bases.
 
-            // Select a sender who has deposited
-            address sender = usersWithCollateralDeposited[addressSeed % usersWithCollateralDeposited.length];
+Let's run our function and see how things look.
 
-            // Use the selected 'sender' for logic and pranking
-            (uint256 totalDscMinted, uint256 collateralValueInUsd) = dsce.getAccountInformation(sender);
+```bash
+forge test --mt invariant_ProtocolTotalSupplyLessThanCollateralValue
+```
 
-            int256 maxDscToMint = (int256(collateralValueInUsd) / 2) - int256(totalDscMinted);
-            if (maxDscToMint < 0) {
-                return;
-            }
-            amount = bound(amount, 0, uint256(maxDscToMint));
-            if (amount == 0) {
-                return;
-            }
+::image{src='/foundry-defi/22-defi-handler-mint-dsc/defi-handler-mint-dsc1.png' style='width: 100%; height: auto;'}
 
-            vm.startPrank(sender); // Prank as the selected sender
-            dsce.mintDsc(amount);
-            vm.stopPrank();
-            timesMintIsCalled++;
-        }
-        ```
+> ❗ **NOTE**
+> The `totalSupply = 0` here because of a mistake we made, we'll fix it soon!
 
-**Debugging Step 4: Handling Edge Cases in the Refined Handler**
+Ok, so things work when we have `fail_on_revert` set to `false`. We want our tests to be quite focused, so moving forward we'll leave `fail_on_revert` to `true`. What happens when we run it now?
 
-1.  **New Problem:** Running the test with the refined handler now fails with a `FAIL. Reason: Division or modulo by 0` error.
-2.  **Cause:** The error occurs in the line `addressSeed % usersWithCollateralDeposited.length`. If the `mintDsc` handler function is called by the fuzzer *before* any `depositCollateral` calls have occurred, the `usersWithCollateralDeposited` array will be empty (`length == 0`), causing a division/modulo by zero.
-3.  **Fix:** Add a check at the beginning of the `mintDsc` handler function to return immediately if the depositor array is empty.
-    ```solidity
-     function mintDsc(uint256 amount, uint256 addressSeed) public {
-         if (usersWithCollateralDeposited.length == 0) {
-             return; // Cannot mint if no one has deposited yet
-         }
-         // ... rest of the function ...
-     }
-    ```
+::image{src='/foundry-defi/22-defi-handler-mint-dsc/defi-handler-mint-dsc2.png' style='width: 100%; height: auto;'}
 
-**Successful Outcome:**
+As expected, our user's Health Factor is breaking. This is because we haven't considered _who_ is minting our DSC with respect to who has deposited collateral. We can account for this in our test by ensuring that the user doesn't attempt to mint more than the collateral they have deposited, otherwise we'll return out of the function. We'll determine the user's amount to mint by calling our `getAccountInformation` function.
 
-*   Running the test (`forge test -m invariant_protocolMustHaveMoreValueThanTotalSupply -vv`) now passes correctly.
-*   The logs show `Times mint called: 31` (or some non-zero number).
-*   The logs show `total supply: 28864...` (a non-zero number).
-*   This indicates the `mintDsc` function in the handler is now being successfully executed sometimes, leading to state changes (minting DSC) that make the invariant test more robust and meaningful.
+```solidity
+function mintDsc(uint256 amount) public {
+    (uint256 totalDscMinted, uint256 collateralValueInUsd) = dsce.getAccountInformation(msg.sender);
 
-**Additional Concepts & Tools:**
+    uint256 maxDscToMint = (collateralValueInUsd / 2) - totalDscMinted;
+    if(maxDscToMint < 0){
+        return;
+    }
 
-1.  **`invariant_gettersShouldNotRevert`:**
-    *   **Concept:** A standard, recommended invariant test to include in fuzz testing suites.
-    *   **Purpose:** It ensures that all `view` and `pure` functions (getters) on the main contract (`DSCEngine` in this case) do not revert under any state conditions reached during fuzzing. If a getter reverts, it often indicates a deeper issue or unexpected state.
-    *   **Implementation:** Create a function (e.g., `invariant_gettersShouldNotRevert`) and simply call all the getter functions within it.
-        ```solidity
-        // In Invariants.sol
-        function invariant_gettersShouldNotRevert() public view {
-            dsce.getLiquidationBonus();
-            dsce.getPrecision();
-            // Call ALL other view/pure functions from DSCEngine.sol
-            // Call ALL view/pure functions from DecentralizedStableCoin.sol (via dsce.getDsc())
-        }
-        ```
-2.  **`forge inspect <ContractName> methods`:**
-    *   **Purpose:** A Foundry command-line tool that lists all the public/external functions (methods) available in a compiled contract, along with their function selectors.
-    *   **Use Case:** Very useful for identifying all the getter functions (`view`/`pure`) that should be included in the `invariant_gettersShouldNotRevert` test. You can use this output as a checklist.
-    *   **Tip:** Using a consistent naming convention like `get...` for getter functions makes them easier to identify in the `forge inspect` output.
+    amount = bound(amount, 0, maxDscToMint);
+    if(amount < 0){
+        return;
+    }
 
-**Overall Conclusion:**
-Debugging invariant tests often involves understanding how the fuzzer interacts with the handler contract and ensuring the handler accurately simulates plausible user behavior. Using ghost variables, careful logging (especially of `msg.sender`), and refining handler logic to account for prerequisites (like needing deposited collateral before minting) are key techniques. Adding standard invariants like `invariant_gettersShouldNotRevert` and using tools like `forge inspect` further improve test coverage and robustness.
+    vm.startPrank(msg.sender);
+    dsce.mintDsc(amount);
+    vm.stopPrank();
+}
+```
+
+Let's try it!
+
+::image{src='/foundry-defi/22-defi-handler-mint-dsc/defi-handler-mint-dsc3.png' style='width: 100%; height: auto;'}
+
+### Wrap Up
+
+Bam, no reverts at all! Beautiful! You may notice (and I left a note above), our totalSupply seems stuck at 0.
+
+Sometimes passing tests can be deceptive...
+
+We'll look more closely as what's going on and how we can fix it at the start of our next lesson!

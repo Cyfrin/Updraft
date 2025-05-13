@@ -1,154 +1,273 @@
-Okay, here is a detailed and thorough summary of the video clip "NFTs: Debugging practice & some notes," covering the requested elements.
+---
+title: SVG NFT Deploy Script
+---
 
-**Overall Summary**
+_Follow along the course with this video._
 
-The video demonstrates a practical debugging session for a failing test in a Foundry project related to NFTs. The speaker encounters a failing test (`testFlipTokenToSad`) for a `MoodNft` contract. They systematically use Foundry's testing and debugging tools (`forge test` with verbosity flags, `assertEq`, `console.log`) to diagnose the issue. The root cause is identified as comparing the full token URI hash with the hash of only the SVG *image* URI, due to a misnamed constant. After correcting the constant used in the assertion, the test passes. The speaker then briefly explains the difference between unit and integration tests using the project's structure as an example and concludes by showing all tests passing (including on a fork) and suggesting further practice by improving test coverage and adding Makefile scripts.
+---
 
-**Debugging Process Walkthrough**
+### SVG NFT Deploy Script
 
-1.  **Initial Test Failure:** The speaker runs a specific test using `forge test -m testFlipTokenToSad`. The test fails with the reason "Assertion violated."
-2.  **Increasing Verbosity:** To get more information, they re-run the test with increased verbosity flags (`-vvvv`). This shows the call trace but doesn't immediately reveal the *values* causing the assertion failure with the initial `assert` statement.
-3.  **Using `assertEq`:** The speaker notes a preference for `assertEq` over a simple `assert(a == b)` because `assertEq` provides more informative output when it fails, specifically logging the "Left" and "Right" values that were being compared. They modify the assertion in the `testFlipTokenToSad` function.
-    *   *Original (Implied):* `assert(keccak256(abi.encodePacked(moodNft.tokenURI(0))) == keccak256(abi.encodePacked(SAD_SVG_URI)));`
-    *   *Modified:* `assertEq(keccak256(abi.encodePacked(moodNft.tokenURI(0))), keccak256(abi.encodePacked(SAD_SVG_URI)));`
-4.  **Analyzing `assertEq` Output:** Running `forge test -m testFlipTokenToSad -vvvv` again, the output now includes logs from `assertEq` showing the differing `bytes32` values for "Left" (the hash of the actual `tokenURI(0)`) and "Right" (the hash of the expected `SAD_SVG_URI`).
-5.  **Using `console.log`:** To inspect the value *before* hashing, the speaker adds a `console.log` statement inside the test function, right before the assertion:
-    ```solidity
-    console.log(moodNft.tokenURI(0));
-    assertEq(
-        keccak256(abi.encodePacked(moodNft.tokenURI(0))),
-        keccak256(abi.encodePacked(SAD_SVG_URI))
-    );
-    ```
-6.  **Viewing Log Output:** They run the test again with `-vv` (sufficient to see `console.log` output): `forge test -m testFlipTokenToSad -vv`. The terminal now shows the full data URI string returned by `moodNft.tokenURI(0)`.
-7.  **Verifying Token URI:** The speaker copies the logged data URI string.
-    *   Pastes it into a browser URL bar. This renders the JSON metadata.
-    *   Copies the Base64 encoded SVG string from the `image` field within the JSON.
-    *   Pastes this *image* data URI into the browser URL bar. This correctly renders the "sad" face SVG.
-    *   This confirms that `moodNft.tokenURI(0)` is generating the correct, complete metadata URI for the "sad" state.
-8.  **Identifying the Root Cause:** The speaker compares the value returned by `tokenURI(0)` (the full metadata URI) with the value stored in the constant `SAD_SVG_URI`. They realize `SAD_SVG_URI` was incorrectly named and actually held only the *SVG image data URI*, not the full *token metadata URI*.
-    ```solidity
-    // In MoodNftIntegrationTest.sol
-    // Incorrectly named constant (only holds image data)
-    string public constant SAD_SVG_IMAGE_URI = "data:image/svg+xml;base64,PHN2ZyB4b...";
-    // The assertion was mistakenly using this constant:
-    // keccak256(abi.encodePacked(SAD_SVG_IMAGE_URI)) // Renamed here for clarity
-    ```
-9.  **Correcting the Assertion:**
-    *   The speaker identifies the need for a constant holding the *entire* expected token URI string (which includes JSON structure and the image data URI).
-    *   They create a new constant `SAD_SVG_URI` and paste the full token URI string obtained from the `console.log` earlier.
-    ```solidity
-    // In MoodNftIntegrationTest.sol (New/Corrected Constant)
-    string public constant SAD_SVG_URI = "data:application/json;base64,eyJuYW1lIjoiTW..."; // Full token URI
-    ```
-    *   They ensure the `assertEq` is now comparing the hash of the actual `tokenURI(0)` with the hash of the new, correct `SAD_SVG_URI` constant.
-    ```solidity
-     assertEq(
-         keccak256(abi.encodePacked(moodNft.tokenURI(0))),
-         keccak256(abi.encodePacked(SAD_SVG_URI)) // Using the correct full token URI constant
-     );
-    ```
-    *   They also correct the naming of the existing constants to `HAPPY_SVG_IMAGE_URI` and `SAD_SVG_IMAGE_URI` for clarity, although this wasn't strictly necessary to fix the failing test.
-10. **Final Test Pass:** They re-run `forge test -m testFlipTokenToSad -vv`, and the test now passes.
+In this lesson, we'll jump right into creating the script to deploy our MoodNFT collection. We'll look at how this can be used to upgrade our tests, making them more dynamic and we'll discuss the value of integration testing.
 
-**Key Concepts & Relationships**
+To begin, we'll need to create the file `script/DeployMoodNft.s.sol` and fill it with our script boilerplate.
 
-*   **Foundry Testing (`forge test`):** The core tool used to run Solidity tests.
-*   **Debugging Tools:**
-    *   **Verbosity Flags (`-v`, `-vv`, `-vvv`, `-vvvv`, `-vvvvv`):** Control the level of detail in test output. `-vv` is needed for `console.log`, `-vvvv` includes call traces and `assertEq` logs.
-    *   **`console.log`:** A cheatcode provided by Foundry (`forge-std/console.sol`) to print values from within Solidity code during tests. Crucial for inspecting intermediate states.
-    *   **Assertions (`assert`, `assertEq`):** Used to verify conditions within tests. `assertEq` is highlighted as superior for debugging failed equality checks because it logs the differing values.
-*   **Data URIs:** The `tokenURI` returns a Data URI (RFC 2397), which embeds the actual data (in this case, Base64 encoded JSON) directly into the URI string. The JSON itself contains another Data URI for the SVG image. Understanding this structure was key to debugging.
-*   **Base64 Encoding:** Used within the Data URIs to represent binary data (like JSON or SVG) as text.
-*   **SVG (Scalable Vector Graphics):** The format used for the NFT images, embedded within the metadata.
-*   **Hashing (`keccak256`, `abi.encodePacked`):** Used in the assertion to compare potentially long strings efficiently. `abi.encodePacked` converts the arguments into tightly packed bytes before hashing. The bug arose from hashing two different strings (full token URI vs. just image URI).
-*   **Unit Tests vs. Integration Tests:**
-    *   **Unit Tests:** Test individual functions or components in isolation (e.g., testing only the `MoodNft` contract's `tokenURI` function, or the `DeployMoodNft` contract's helper function). Found in `test/unit/`.
-    *   **Integration Tests:** Test how multiple components or contracts interact (e.g., deploying `MoodNft` using `DeployMoodNft` and then calling functions on the deployed `MoodNft`). Found in `test/integrations/`. The debugging happened within an integration test (`MoodNftIntegrationTest.sol`).
-*   **Test Coverage (`forge coverage`):** A Foundry command that measures how much of the source code is executed by the tests. Used to identify untested code paths.
-*   **Makefiles:** Used to create shortcuts for common command-line tasks like testing, building, deploying, and running scripts.
+```solidity
+// SPDX-License-Identifier:MIT
+pragma solidity ^0.8.18;
 
-**Important Code Blocks**
+import {Script} from "forge-std/Script.sol";
+import {MoodNft} from "../src/MoodNft.sol";
 
-*   **Running a specific test:**
-    ```bash
-    forge test -m testFlipTokenToSad
-    ```
-*   **Running with verbosity/logging:**
-    ```bash
-    forge test -m testFlipTokenToSad -vvvv # Max verbosity + traces
-    forge test -m testFlipTokenToSad -vv   # To see console.log output
-    ```
-*   **Using `assertEq` for better failure output:**
-    ```solidity
-    // Inside a test function
-    assertEq(valueA, valueB); // Logs Left: valueA, Right: valueB if they differ
-    ```
-*   **Using `console.log`:**
-    ```solidity
-    import "forge-std/console.sol";
-    // ... inside test function ...
-    console.log(moodNft.tokenURI(0));
-    ```
-*   **The failing assertion (conceptually):**
-    ```solidity
-    // Comparing hash of full token URI vs hash of only image URI
-    assertEq(
-        keccak256(abi.encodePacked(moodNft.tokenURI(0))), // Left: hash(full_token_uri_string)
-        keccak256(abi.encodePacked(SAD_SVG_IMAGE_URI))     // Right: hash(image_uri_string)
-    );
-    ```
-*   **The corrected assertion:**
-    ```solidity
-     assertEq(
-         keccak256(abi.encodePacked(moodNft.tokenURI(0))), // Left: hash(full_token_uri_string)
-         keccak256(abi.encodePacked(SAD_SVG_URI))          // Right: hash(full_token_uri_string)
-     );
-    ```
-*   **Running tests on a fork:**
-    ```bash
-    forge test --fork-url $SEPOLIA_RPC_URL
-    ```
-*   **Checking test coverage:**
-    ```bash
-    forge coverage
-    ```
-*   **Makefile entry example:**
-    ```makefile
-    mint:
-        @forge script script/Interactions.s.sol:MintBasicNft $(NETWORK_ARGS)
+contract DeployMoodNft is Script {
+    function run() external returns (MoodNft) {}
+}
+```
 
-    # Suggested addition (conceptual)
-    # mintMoodNft:
-    #    @forge script script/Interactions.s.sol:MintMoodNft $(NETWORK_ARGS)
-    ```
+Looks great! Now we should consider how we're mention to deploy MoodNft.sol. We know that the constructor arguments for this contract take a sadSvgImageUri and a happySvgImageUri, so much like we did in `MoodNftTest.t.sol`, we _could_ hardcode these values. A better approach however may be to write our deploy script to read this data itself from our workspace. Our script can even do all the encoding for us.
 
-**Important Links or Resources Mentioned**
+Let's start with creating this encoding function.
 
-*   No specific external web links were mentioned, but the concepts relate to:
-    *   Foundry documentation (for `forge test`, `forge coverage`, cheatcodes like `console.log`, `vm.prank`).
-    *   Data URI scheme (RFC 2397).
-    *   Base64 encoding standard.
-    *   SVG specification.
+```solidity
+function svgToImageURI(string memory svg) public pure returns (string memory){
+    string memory baseURL = "data:image/svg+xml;base64,";
+}
+```
 
-**Important Notes or Tips**
+Set up like this, we can now use the Base64 offering from OpenZeppelin to encode the data passed to this function, and then concatenate it with our baseURI. We'll need to import Base64.
 
-*   Use `assertEq` instead of `assert(a == b)` for clearer debugging output on failures, as it shows both differing values.
-*   Use `console.log` within tests to inspect intermediate values when debugging. Run tests with at least `-vv` to see the log output.
-*   Be precise with variable and constant naming to avoid confusion (e.g., differentiate between a full `tokenURI` and an `imageURI`).
-*   Understand the structure of your data (like nested Data URIs in this case).
-*   Unit tests are for isolated components, integration tests are for interactions between components.
-*   Use `forge coverage` to ensure tests are adequately covering the codebase.
-*   Use Makefiles to simplify running complex or frequent Foundry commands.
+```solidity
+// SPDX-License-Identifier:MIT
+pragma solidity ^0.8.18;
 
-**Important Questions or Answers**
+import {Script} from "forge-std/Script.sol";
+import {MoodNft} from "../src/MoodNft.sol";
+import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
 
-*   **Q (Implicit):** Why is the `testFlipTokenToSad` test failing?
-*   **A:** The assertion was comparing the keccak256 hash of the full token URI against the hash of *only* the SVG image URI, because the constant used for the expected value (`SAD_SVG_URI`) was misnamed and held the wrong string.
+contract DeployMoodNft is Script {
+    function run() external returns (MoodNft) {}
 
-**Important Examples or Use Cases**
+    function svgToImageURI(string memory svg) public pure returns (string memory){
+    string memory baseURL = "data:image/svg+xml;base64,";
+    string memory svgBase64Encoded = Base64.encode(bytes(svg));
 
-*   **`MoodNft.sol`:** An example NFT contract where the token URI (and thus the image/metadata) changes based on an internal state ("mood"), demonstrating dynamic on-chain metadata generation.
-*   **`BasicNft.sol`:** A simpler example NFT contract (likely using IPFS for metadata, as seen in the `Interactions.s.sol` script).
-*   **Debugging a failing test:** The entire video serves as a use case for debugging failed assertions in Foundry tests.
-*   **Unit vs. Integration Testing:** The file structure (`test/unit`, `test/integrations`) and the different test files (`DeployMoodNftTest.sol`, `MoodNftTest.sol`, `MoodNftIntegrationTest.sol`) exemplify these testing strategies.
+    return string(abi.encodePacked(baseURL, svgBase64Encoded));
+    }
+}
+```
+
+The above function is taking the svg string parameter, encoding it with the OpenZeppelin Base64.encode function, and then prepends the encoded value with our baseURL. Great job!
+
+> ❗ **PROTIP**
+> You can replace `abi.encodePacked` with the more up-to-date `string.concat`!
+
+Before moving on, we should write a quick test to verify this is encoding things we way we expect.
+
+### Testing Our Encoding
+
+Let's test the function we just wrote. To keep things clean, create a new file `test/DeployMoodNftTest.t.sol`. The setup for this file is going to be the same as always.
+
+```solidity
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.18;
+
+import {DeployMoodNft} from "../script/DeployMoodNft.s.sol";
+import {Test} from "forge-std/Test.sol";
+
+contract DeployMoodNftTest is Test {
+    DeployMoodNft public deployer;
+    function setUp() public {
+        deployer = new DeployMoodNft();
+    }
+}
+```
+
+Easy enough, we're definitely getting good at this by now.
+
+Next we'll need a test function to verify that our SVG is being converted to a URI appropriately. We should have an example to compare the results of our test to. I've included an example URI below, feel free to encode your own SVG if you'd like!
+
+**Sample SVG:**
+
+```bash
+data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj4KPHRleHQgeD0iMjAwIiB5PSIyNTAiIGZpbGw9ImJsYWNrIj5IaSEgWW91IGRlY29kZWQgdGhpcyEgPC90ZXh0Pgo8L3N2Zz4=
+```
+
+In our test now, we can assign an expectedUri variable to this string. We'll need to also define the svg which we'll pass to the function.
+
+```solidity
+function testConvertSvgToUri() public view {
+    string memory expectedUri = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj4KPHRleHQgeD0iMjAwIiB5PSIyNTAiIGZpbGw9ImJsYWNrIj5IaSEgWW91IGRlY29kZWQgdGhpcyEgPC90ZXh0Pgo8L3N2Zz4=";
+    string memory svg = '<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><text x="200" y="250" fill="black">Hi! You decoded this! </text></svg>';
+
+    string memory actualUri = deployer.svgToImageURI(svg);
+}
+```
+
+Great! Now we'll need to assert that our expectedUri is equal to our actualUri. Remember, we can't compare strings directly since they're effectively bytes arrays. We need to hash these for easy comparison.
+
+```solidity
+assert(
+  keccak256(abi.encodePacked(expectedUri)) ==
+    keccak256(abi.encodePacked(actualUri))
+);
+```
+
+All that's left is to run our test!
+
+```bash
+forge test --mt testConvertSvgToUri
+```
+
+::image{src='/foundry-nfts/15-svg-deploy/svg-deploy1.png' style='width: 100%; height: auto;'}
+
+Nailed it! Our solidity scripted encoding is working just like our command line.
+
+`DeployMoodNft.sol` isn't currently defining what our `svg` parameters are, we hardcoded these into our test. Let's make the deploy script a little more dynamic by leverage the [**Foundry Cheatcode `readFile`**](https://book.getfoundry.sh/cheatcodes/fs?highlight=readFile#signature).
+
+Before we can allow Foundry to read our files into our deploy script, we'll need to set some permissions in `foundry.toml`. Add this to your `foundry.toml`:
+
+```toml
+fs_permissions = [{access = "read", path = "./img/"}]
+```
+
+> ❗ **NOTE**
+> This line provides the Foundry framework `read` permissions, specifically in the `img` directory. This is much safer than setting `FFI = true`!
+
+With this in place, we can now use the readFile cheatcode to access these SVG files in our deploy script.
+
+```solidity
+// SPDX-License-Identifier:MIT
+pragma solidity ^0.8.18;
+
+import {Script} from "forge-std/Script.sol";
+import {MoodNft} from "../src/MoodNft.sol";
+import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
+
+contract DeployMoodNft is Script {
+    function run() external returns (MoodNft) {
+        string memory sadSvg = vm.readFile("./img/sadSvg.svg");
+        string memory happySvg = vm.readFile("./img/happySvg.svg");
+    }
+
+    function svgToImageURI(string memory svg) public pure returns (string memory){
+    string memory baseURL = "data:image/svg+xml;base64,";
+    string memory svgBase64Encoded = Base64.encode(bytes(svg));
+
+    return string(abi.encodePacked(baseURL, svgBase64Encoded));
+    }
+}
+```
+
+Now we can deploy our MoodNft.sol contract in our run function, passing it the data read in from these files.
+
+```solidity
+function run () external returns (MoodNft) {
+    string memory sadSvg = vm.readFile("./img/sadSvg.svg");
+    string memory happySvg = vm.readFile("./img/happySvg.svg");
+
+    vm.startBroadcast();
+    MoodNft moodNft = new MoodNft(svgToImageURI(sadSvg), svgToImageURI(happySvg));
+    vm.stopBroadcast();
+
+    return moodNft;
+}
+```
+
+Because we're now using a deployment script, our testing framework is changing a little bit. The test we just wrote is more correctly classified as an integration test than a unit test. Let's keep things distinct by adjusting our test folder a bit first.
+
+Create the directories `test/integration` and `test/unit`. Within `test/integration` create a copy of our `MoodNftTest.t.sol` and name it something like `MoodNftIntegrationsTest.t.sol`, and move our `BasicNft.t.sol` file here as well (it uses a deployer too!).
+
+::image{src='/foundry-nfts/15-svg-deploy/svg-deploy2.png' style='width: 100%; height: auto;'}
+
+We'll adjust `MoodNftIntegrationsTest.t.sol` to use our deployer next.
+
+> ❗ **NOTE**
+> Moving your test files about may have broken some of your imports! You can add `../` to the beginning of each import to "back it out" of a directory. Things should work again!
+
+### MoodNftIntegrationsTest.t.sol
+
+The changes to be made in this file are fairly small, but impactful. Instead of deploying with:
+
+```solidity
+moodNft = new MoodNft(SAD_SVG_URI, HAPPY_SVG_URI);
+```
+
+We can use our newly written deployer. It'll need to be imported.
+
+<details>
+<summary>MoodNftIntegrationsTest.t.sol</summary>
+
+```solidity
+//SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.18;
+
+import {console, Test} from "forge-std/Test.sol";
+import {MoodNFT} from "../../src/MoodNFT.sol";
+import {DeployMoodNFT} from "../../script/DeployMoodNFT.s.sol";
+
+contract MoodNFTTest is Test {
+    MoodNFT moodNFT;
+    address USER = makeAddr("USER");
+    DeployMoodNFT deployer;
+
+    string public constant HAPPY_SVG_URI =
+        "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgd2lkdGg9IjQwMCIgIGhlaWdodD0iNDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgZmlsbD0icHVycGxlIiByPSI3OCIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgPGcgY2xhc3M9ImV5ZXMiPgogICAgPGNpcmNsZSBjeD0iNjEiIGN5PSI4MiIgcj0iMjAiLz4KICAgIDxjaXJjbGUgY3g9IjEyNyIgY3k9IjgyIiByPSIxMiIvPgogIDwvZz4KICA8cGF0aCBkPSJtMTM2LjgxIDExNi41M2MuNjkgMjYuMTctLjExIDQyLTgxLjUyLS43MyIgc3R5bGU9ImZpbGw6bm9uZTsgc3Ryb2tlOiBibGFjazsgc3Ryb2tlLXdpZHRoOiA3OyIvPgo8L3N2Zz4=";
+
+    string public constant SAD_SVG_URI =
+        "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgd2lkdGg9IjQwMCIgIGhlaWdodD0iNDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgZmlsbD0iZ3JlZW4iIHI9Ijc4IiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjMiLz4KICA8ZyBjbGFzcz0iZXllcyI+CiAgICA8Y2lyY2xlIGN4PSI2MSIgY3k9IjgyIiByPSIxMiIvPgogICAgPGNpcmNsZSBjeD0iMTI3IiBjeT0iODIiIHI9IjIwIi8+CiAgPC9nPgogIDxwYXRoIGQ9Im0xMzYuODEgMTM1LjUzYy42OSAyNi4xNy03NSAtNTAtODEuNTItLjczIiBzdHlsZT0iZmlsbDpub25lOyBzdHJva2U6IGJsYWNrOyBzdHJva2Utd2lkdGg6IDc7Ii8+Cjwvc3ZnPg==";
+
+    function setUp() public {
+        deployer = new DeployMoodNFT();
+        moodNFT = deployer.run();
+    }
+
+    function testViewTokenURIIntegration() public {
+        vm.prank(USER);
+        moodNFT.mintNft();
+        console.log(moodNFT.tokenURI(0));
+    }
+}
+```
+
+</details>
+
+
+With these adjustments, our tests should function identically to before.
+
+### Testing Flipping the URI
+
+One thing we definitely haven't tested yet, and we should do quickly, is our flipMood function. Lets assure this properly swaps between happy and sad when called.
+
+```solidity
+function testFlipMoodIntegration() public {
+    vm.prank(USER);
+    moodNFT.mintNft();
+    vm.prank(USER);
+    moodNFT.flipMood(0);
+    assert(keccak256(abi.encodePacked(moodNft.tokenURI(0))) == keccak256(abi.encodePacked(SAD_SVG_URI)));
+}
+```
+
+This test has our USER mint an NFT (which defaults as happy), and then flips the mood to sad with the flipMood function. We then assert that the token's URI matches what's expected.
+
+Let's run it!
+
+```bash
+forge test --mt testFlipMoodIntegration
+```
+
+::image{src='/foundry-nfts/15-svg-deploy/svg-deploy3.png' style='width: 100%; height: auto;'}
+
+Uh oh. That ain't right.
+
+### Wrap Up
+
+Wow, this was a big lesson. We've written a deploy script and refactored some of our tests into more secure integration style tests.
+
+For some reason `testFlipMoodIntegration` is erroring on us though...
+
+In the next lesson we'll get some practice debugging, I suppose!
+
+See you there!
