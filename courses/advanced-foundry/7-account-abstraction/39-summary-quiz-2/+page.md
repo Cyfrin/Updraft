@@ -1,3 +1,0 @@
----
-SUMMARY QUIZ 2
----

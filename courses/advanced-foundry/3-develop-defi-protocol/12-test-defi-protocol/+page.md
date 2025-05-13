@@ -1,96 +1,214 @@
-Okay, here is a thorough and detailed summary of the video segment (0:00 - 2:27) about creating the `depositCollateralAndMintDsc` function.
+---
+title: Tests
+---
 
-**Overall Summary**
+_Follow along the course with this video._
 
-This video segment focuses on creating a new core function, `depositCollateralAndMintDsc`, within the `DSCEngine.sol` smart contract. The purpose of this function is to combine two separate actions – depositing collateral and minting the Decentralized Stablecoin (DSC) – into a single, atomic transaction. This enhances user experience by simplifying the most common interaction with the protocol. The process involves defining the new function, implementing its logic by calling the existing `depositCollateral` and `mintDsc` functions, adjusting the visibility of those existing functions from `external` to `public` to allow internal calls, and adding NatSpec documentation for clarity.
+---
 
-**Key Concepts Discussed**
+### Tests
 
-1.  **Atomic Transactions:** The primary motivation for the `depositCollateralAndMintDsc` function is to allow users to perform two related actions (deposit collateral, mint stablecoin) within a single transaction. If any part of the transaction fails, the whole thing reverts, ensuring the state remains consistent.
-2.  **Function Visibility (`external` vs. `public`):**
-    *   Initially, both `depositCollateral` and `mintDsc` were marked as `external`. This means they could only be called from *outside* the contract (e.g., by a user's transaction or another contract).
-    *   To allow the new `depositCollateralAndMintDsc` function (which resides *within* the `DSCEngine` contract) to call these functions, their visibility needed to be changed to `public`.
-    *   `public` functions can be called both externally (like `external`) *and* internally (from within the same contract or derived contracts).
-3.  **User Experience (UX):** Creating a combined function significantly improves the user experience. Instead of requiring users to understand the protocol flow and send two separate transactions (which costs more gas and is more complex), they can achieve the primary goal (getting DSC by depositing collateral) with a single interaction.
-4.  **NatSpec Documentation:** The video emphasizes adding NatSpec comments (using `/** ... */`, `@param`, `@notice`) to document the function's purpose, parameters, and behavior. This is crucial for code maintainability and for others (or future self) to understand the code.
-5.  **Code Modularity & Composition:** The new function composes functionality by calling existing, more granular functions (`depositCollateral`, `mintDsc`). This follows good software design principles.
+Welcome back! We've added a tonne of functions to our `DSCEngine.sol`, so we're at the point where we want to perform a sanity check and assure everything is working as intended so far.
 
-**Important Code Blocks Covered**
+In the last lesson, we set up a deploy script as well as a `HelperConfig` to assist us in our tests. Let's get started!
 
-1.  **New Function Definition (`depositCollateralAndMintDsc`)**:
-    *   The function takes the collateral token's address, the amount of collateral to deposit, and the amount of DSC to mint as parameters.
-    *   Its core logic consists of calling the two underlying functions in sequence.
+Create `test/unit/DSCEngine.t.sol` and begin with the boilerplate we're used to. We know we'll have to import our deploy script as well as `Test`, `DecentralizedStableCoin.sol`, and `DSCEngine.sol`.
 
-    ```solidity
-    // Location: DSCEngine.sol (around lines 115-133)
+```solidity
+// SPDX-License-Identifier: MIT
 
-    /**
-     * @param tokenCollateralAddress The address of the token to deposit as collateral
-     * @param amountCollateral The amount of collateral to deposit
-     * @param amountDscToMint The amount of decentralized stablecoin to mint
-     * @notice This function will deposit your collateral and mint DSC in one transaction
-     */
-    function depositCollateralAndMintDsc(
-        address tokenCollateralAddress,
-        uint256 amountCollateral,
-        uint256 amountDscToMint
-    ) external { // Note: Retained 'external' for the combined function itself
-        depositCollateral(tokenCollateralAddress, amountCollateral);
-        mintDsc(amountDscToMint);
+pragma solidity ^0.8.18;
+
+import { DeployDSC } from "../../script/DeployDSC.s.sol";
+import { DSCEngine } from "../../src/DSCEngine.sol";
+import { DecentralizedStableCoin } from "../../src/DecentralizedStableCoin.sol";
+import { Test, console } from "forge-std/Test.sol";
+
+contract DSCEngineTest is Test {
+
+}
+```
+
+Declare our contract/script variables, then in our `setUp` function, we're going to need to deploy our contracts using our `DeployDSC` script.
+
+```solidity
+contract DSCEngineTest is Test {
+    DeployDSC deployer;
+    DecentralizedStableCoin dsc;
+    DSCEngine dsce;
+
+    function setUp() public {
+        deployer = new DeployDSC();
+        (dsc, dsce) = deployer.run();
     }
-    ```
+}
+```
 
-2.  **Visibility Change for `depositCollateral`**:
-    *   The visibility was changed from `external` to `public` to allow it to be called by `depositCollateralAndMintDsc`.
+I think a good place to start will be checking some of our math in `DSCEngine`. We should verify that we're pulling data from our price feeds properly and that our USD calculations are correct.
 
-    ```solidity
-    // Location: DSCEngine.sol (around line 123, then modified around line 130)
+```solidity
+/////////////////
+// Price Tests //
+/////////////////
 
-    // Before (around 1:11)
-    // function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) external ...
+function testGetUsdValue() public {}
+```
 
-    // After (around 1:13)
-    function depositCollateral(address tokenCollateralAddress, uint256 amountCollateral) public
-        moreThanZero(amountCollateral)
-        isAllowedToken(tokenCollateralAddress)
-        nonReentrant
-    {
-        // ... function body ...
+The `getUsdValue` function takes a token address and an amount as a parameter. We could import our mocks for reference here, but instead, let's adjust our `DeployDSC` script to also return our `HelperConfig`. We can acquire these token addresses from this in our test.
+
+```solidity
+contract DeployDSC is Script {
+    ...
+
+    function run() external returns (DecentralizedStableCoin, DSCEngine, HelperConfig) {
+        HelperConfig config = new HelperConfig();
+
+        (address wethUsdPriceFeed, address wbtcUsdPriceFeed, address weth, address wbtc, uint256 deployerKey) = config.activeNetworkConfig();
+
+        tokenAddresses = [weth, wbtc];
+        priceFeedAddresses = [wethUsdPriceFeed, wbtcUsdPriceFeed];
+
+        vm.startBroadcast();
+        DecentralizedStableCoin dsc = new DecentralizedStableCoin();
+        DSCEngine engine = new DSCEngine(tokenAddresses, priceFeedAddresses, address(dsc));
+        dsc.transferOwnership(address(engine));
+        vm.stopBroadcast();
+        return (dsc, engine, config);
     }
-    ```
+}
+```
 
-3.  **Visibility Change for `mintDsc`**:
-    *   Similar to `depositCollateral`, the visibility was changed from `external` to `public`.
+Now, back to our test. We'll need to do a few things in `DSCEngineTest.t.sol`.
 
-    ```solidity
-    // Location: DSCEngine.sol (around line 146, then modified around line 152)
+- Import our `HelperConfig`
+- Declare state variables for `HelperConfig`, weth and `ethUsdPriceFeed`
+- Acquire the imported config from our `deployer.run` call
+- Acquire `ethUsdPriceFeed` and weth from our `config`'s `activeNetworkConfig`
 
-    // Before (around 1:38)
-    // function mintDsc(uint256 amountDscToMint) external ...
+```solidity
+// SPDX-License-Identifier: MIT
 
-    // After (around 1:39)
-    function mintDsc(uint256 amountDscToMint) public
-        moreThanZero(amountDscToMint)
-        nonReentrant
-    {
-        // ... function body ...
-        // s_DSCMinted[msg.sender] += amountDscToMint; // (Existing logic shown briefly)
-        // _revertIfHealthFactorIsBroken(msg.sender); // (Existing logic shown briefly)
-        // bool minted = i_dsc.mint(msg.sender, amountDscToMint); // (Existing logic shown briefly)
-        // if (!minted) { // (Existing logic shown briefly)
-        //     revert DSCEngine_MintFailed(); // (Existing logic shown briefly)
-        // }
+pragma solidity ^0.8.18;
+
+import { DeployDSC } from "../../script/DeployDSC.s.sol";
+import { DSCEngine } from "../../src/DSCEngine.sol";
+import { DecentralizedStableCoin } from "../../src/DecentralizedStableCoin.sol";
+import { HelperConfig } from "../../script/HelperConfig.s.sol";
+import { Test, console } from "forge-std/Test.sol";
+
+contract DSCEngineTest is Test {
+    DeployDSC deployer;
+    DecentralizedStableCoin dsc;
+    DSCEngine dsce;
+    HelperConfig config;
+    address weth;
+    address ethUsdPriceFeed;
+
+    function setUp() public {
+        deployer = new DeployDSC();
+        (dsc, dsce, config) = deployer.run();
+        (ethUsdPriceFeed, , weth, , ) = config.activeNetworkConfig();
     }
-    ```
+}
+```
 
-**Important Notes or Tips**
+We're now ready to use some of these values in our test function. For our unit test, we'll be requesting the value of `15ETH`, or `15e18`. Our HelperConfig has the ETH/USD price configured at `$2000`. Thus we should expect `30000e18` as a return value from our getUsdValue function. Let's see if that's true.
 
-*   **Incremental Development:** The speaker acknowledges that `mintDsc` isn't fully tested yet but proceeds with creating the combined function, assuming the underlying parts work for now. This shows an iterative approach to development.
-*   **GitHub Copilot:** The speaker uses GitHub Copilot (an AI code assistant) to help generate the NatSpec documentation comments (evident around 1:55).
-*   **Clarity on Visibility:** Understanding the difference between `external` and `public` is crucial when designing contract interactions, especially when functions need to call each other.
+```solidity
+/////////////////
+// Price Tests //
+/////////////////
 
-**Examples or Use Cases**
+function testGetUsdValue() public {
+    // 15e18 * 2,000/ETH = 30,000e18
+    uint256 ethAmount = 15e18;
+    uint256 expectedUsd = 30000e18;
+    uint256 actualUsd = dsce.getUsdValue(weth, ethAmount);
+    assertEq(expectedUsd, actualUsd);
+}
+```
 
-*   The primary use case is for an end-user interacting with the DeFi protocol. They want to deposit Wrapped Bitcoin (WBTC) as collateral and mint $1000 worth of DSC stablecoin. Instead of sending two transactions (one to deposit WBTC, one to mint DSC), they can call `depositCollateralAndMintDsc` once with the WBTC address, the amount of WBTC, and 1000 (adjusted for decimals) as parameters.
+When you're ready, let see how we've done!
 
-No specific links, resources, questions, or answers were mentioned in this particular segment.
+```bash
+forge test --mt testGetUsdValue
+```
+
+::image{src='/foundry-defi/11-defi-tests/defi-tests1.PNG' style='width: 100%; height: auto;'}
+
+It works! We're clearly still on track. This is great. It's good practice to test things as you go to avoid getting too far down the rabbit-hole of compounding errors. Sanity checks along the way like this can save you time in having to refactor and change a bunch of code later.
+
+Before moving on, we should write a test for our `depositCollateral` function as well. We'll need to import our `ERC20Mock` in order to test deposits, so let's do that now. We'll also need to declare a `USER` to call these functions with and amount for them to deposit.
+
+```solidity
+import {ERC20Mock} from "@openzeppelin/contracts/mocks/ERC20Mock.sol";
+
+...
+
+contract DSCEngineTest is Test {
+
+    ...
+
+    address public USER = makeAddr("user");
+    uint256 public constant AMOUNT_COLLATERAL = 10 ether;
+
+    ...
+
+    /////////////////////////////
+    // depositCollateral Tests //
+    /////////////////////////////
+
+    function testRevertsIfCollateralZero() public {}
+}
+```
+
+Let's make sure our `USER` has some tokens minted to them in our `setUp`, they'll need them for several tests in our future.
+
+```solidity
+address public USER = makeAddr("user");
+uint256 public constant AMOUNT_COLLATERAL = 10 ether;
+uint256 public constant STARTING_ERC20_BALANCE = 10 ether;
+
+function setUp public {
+    deployer = new DeployDSC();
+    (dsc, dsce, config) = deployer.run();
+    (ethUsdPriceFeed, , weth, , ) = config.activeNetworkConfig();
+
+    ERC20Mock(weth).mint(USER, STARTING_ERC20_BALANCE);
+}
+```
+
+Our user is going to need to approve the `DSCEngine` contract to call `depositCollateral`. Despite this, we're going to deposit `0`. This _should_ cause our function call to revert with our custom error `DSCEngine__NeedsMoreThanZero`, which we'll account for with `vm.expectRevert`.
+
+```solidity
+ /////////////////////////////
+// depositCollateral Tests //
+/////////////////////////////
+
+function testRevertsIfCollateralZero() public {
+    vm.startPrank(USER);
+    ERC20Mock(weth).approve(address(dsce), AMOUNT_COLLATERAL);
+
+    vm.expectRevert(DSCEngine.DSCEngine__NeedsMoreThanZero.selector);
+    dsce.depositCollateral(weth, 0);
+    vm.stopPrank();
+}
+```
+
+Let's run it!
+
+```bash
+forge test --mt testRevertsIfCollateralZero
+```
+
+::image{src='/foundry-defi/11-defi-tests/defi-tests2.png' style='width: 100%; height: auto;'}
+
+### Wrap Up
+
+I need to mention, there's no _correct_ way to write a contract. I personally am always writing test as I'm writing code. You don't have to write a deploy script for your tests right away either, I like to do this to set up my integration tests as early as possible.
+
+It's important to find a process that works for you and stick to it.
+
+These are some great basic tests to begin with, I'm content with these for now. In the next lesson we'll jump back into writing some more functions for our `DSCEngine.sol`.
+
+See you soon!

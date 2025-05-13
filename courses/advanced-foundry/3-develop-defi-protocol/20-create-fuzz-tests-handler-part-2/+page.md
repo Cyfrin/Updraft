@@ -1,82 +1,217 @@
-Okay, here is a thorough and detailed summary of the video segment (0:00 - 3:05) based on the provided transcript and visuals:
+---
+title: Handler Fuzz Tests
+---
 
-**Overall Summary:**
+_Follow along the course with this video._
 
-The video segment provides a high-level walkthrough of the codebase for a Decentralized Stablecoin (DSC) project built using the Foundry framework. The speaker introduces the main contracts, key functionalities like minting, burning, collateral management, and liquidation, and highlights the testing structure, including unit, fuzz, and invariant tests. He emphasizes that this is an advanced topic, encourages viewers to take their time learning, and points to external resources for understanding stablecoins better. The core idea presented is a collateral-backed stablecoin where users deposit assets to mint the DSC token.
+---
 
-**Key Concepts and Relationships:**
+### Handler Fuzz Tests
 
-1.  **Decentralized Stablecoin (DSC):** The primary subject. It's presented as an ERC20 token designed to maintain a stable value (implied peg to USD later).
-2.  **Collateralization:** The fundamental mechanism for the stablecoin. Users deposit valuable assets (collateral, like WETH/WBTC mentioned later) into the system to mint DSC. The value of the collateral backs the value of the stablecoin.
-3.  **Minting & Burning:** Standard token operations crucial for the stablecoin's supply mechanism. Minting creates new DSC when collateral is deposited; burning destroys DSC, often when redeeming collateral or during liquidation.
-4.  **Contract Architecture:**
-    *   `DecentralizedStableCoin.sol`: The ERC20 token contract itself. It's described as minimalistic, handling basic token functions (mint, burn, transfer) but inheriting `ERC20Burnable` and `Ownable`.
-    *   `DSCEngine.sol`: The "main contract" or the core logic engine. It controls the `DecentralizedStableCoin` contract (specifically minting/burning permissions via `Ownable`) and manages all the complex logic like collateral deposits, redemptions, liquidations, and health factor calculations.
-5.  **Ownership (`Ownable`):** The `DecentralizedStableCoin` contract is owned by the `DSCEngine`. This ensures only the engine can mint or burn tokens according to the protocol's rules.
-6.  **Liquidation:** A critical process mentioned (but not fully detailed) where undercollateralized positions can be closed out by other users, ensuring the system remains solvent. The `liquidate` function is shown.
-7.  **Testing Tiers:** The project utilizes multiple testing strategies:
-    *   **Unit Tests:** For testing individual functions in isolation (`test/unit`).
-    *   **Fuzz Tests:** For testing functions with random inputs (`test/fuzz`).
-    *   **Invariant Tests:** A more advanced form of fuzz testing specific to Foundry. It checks if certain properties ("invariants") *always* hold true for the contract state, regardless of the sequence of valid user actions. The speaker highlights this as a key practice for advanced developers.
-8.  **Price Feeds:** External data sources (specifically Chainlink Price Feeds are mentioned) used by the `DSCEngine` to determine the monetary value of the deposited collateral, which is essential for calculating collateralization ratios and triggering liquidations.
-9.  **NatSpec:** Natural Language Specification comments used extensively in the code for documentation.
+Now that we've spent time investigating the types of tests available to us, and the strength of methodologies like fuzzing for protocols, we're going to build out our own `Stateful Fuzz Testing` suite for `DecentralizedStableCoin`.
 
-**Important Code Files and Blocks Discussed:**
+Navigate to the [**Fuzz Testing section**](https://book.getfoundry.sh/forge/fuzz-testing) in the Foundry Docs to read more on advanced fuzz testing within this framework.
 
-1.  **`src/DecentralizedStableCoin.sol`:** (0:12 - 0:37)
-    *   **Description:** Minimalistic ERC20 token contract.
-    *   **Inheritance:** `is ERC20Burnable, Ownable` (0:20)
-    *   **`constructor`:** Standard ERC20 setup: `constructor() ERC20("DecentralizedStableCoin", "DSC") {}` (0:29)
-    *   **`burn(uint256 _amount)`:** Allows burning tokens, restricted by `onlyOwner`. (0:31)
-    *   **`mint(address _to, uint256 _amount)`:** Allows minting tokens, restricted by `onlyOwner`. (0:34)
+In our previous fuzz testing examples, we were demonstrating "open testing". This kinda gives control to the framework and allows it to call any functions in a contract randomly, in a random order.
 
-2.  **`src/DSCEngine.sol`:** (0:39 - 1:27)
-    *   **Description:** The main logic contract, controls the DSC token. Contains "a ton of stuff".
-    *   **`depositCollateralAndMintDsc(...)`:** (External function, 0:56) Core function where users deposit collateral and mint DSC in one transaction. Calls internal `depositCollateral` and `mintDsc`.
-    *   **`redeemCollateralForDsc(...)`:** (External function, 1:06) Allows users to burn DSC and redeem a corresponding amount of collateral. Calls internal `_burnDsc` and `_redeemCollateral`.
-    *   **`redeemCollateral(...)`:** (External function, 1:08) Allows users to redeem collateral *if* they have no outstanding DSC debt.
-    *   **`burnDsc(uint256 amount)`:** (External function, 1:13) Allows users to burn their DSC (perhaps to improve health factor).
-    *   **`liquidate(...)`:** (External function, 1:16) Enables liquidation of undercollateralized positions.
-    *   **`mintDsc(uint256 amountDscToMint)`:** (Public function, 1:20) Allows minting DSC if the user already has sufficient collateral deposited.
-    *   **`depositCollateral(address tokenCollateralAddress, uint256 amountCollateral)`:** (Public function, 1:23) Allows depositing collateral without necessarily minting DSC immediately.
+More advanced fuzz tests implement [`handler based testing`](https://book.getfoundry.sh/forge/invariant-testing#handler-based-testing).
 
-3.  **`test/unit/`:** (1:33)
-    *   `DSCEngineTest.t.sol`
-    *   `DecentralizedStableCoinTest.t.sol`
-    *   `OracleLibTest.t.sol`
+Larger protocols will have so many functions available to them that it's important to narrow the focus of our tests for a better chance to find our bugs. This is where handlers come in. They allow us to configure aspects of a contract's state before our tests are run, as well as set targets for the test functions to focus on.
 
-4.  **`test/fuzz/`:** (1:44)
-    *   Contains fuzz tests, specifically highlighting invariant testing.
-    *   **`StopOnRevertInvariants.t.sol`:** (1:50) An example invariant test file. Contains functions starting with `invariant_` like `invariant_protocolMustHaveMoreValueThanTotalSupplyDollars()`.
+In the example provided by the Foundry Docs, we can see how the functionality of the deposit function can be fine tuned to assure that approvals and mints always occur before deposit is actually called.
 
-5.  **`script/DeployDSC.s.sol`:** (2:08)
-    *   **Description:** Foundry script for deploying the contracts.
-    *   **Usage:** Shows how it uses helper configs and passes in necessary addresses (like price feeds) during deployment.
+```solidity
+function deposit(uint256 assets) public virtual {
+    asset.mint(address(this), assets);
 
-**Important Links & Resources Mentioned:**
+    asset.approve(address(token), assets);
 
-1.  **GitHub Repository:** `github.com/ChainAccelOrg/foundry-defi-stablecoin-f23` (0:04, visible in browser tab)
-2.  **README.md:** Mentioned as the place to find all code and information. (2:20)
-3.  **Chainlink Price Feeds:** Mentioned as the source for asset prices used in the engine. (2:13)
-4.  **External Video Resource:** "Stablecoins | But Actually" by ChainDev on YouTube. Recommended for learning the fundamentals of stablecoins. (2:56)
+    uint256 shares = token.deposit(assets, address(this));
+}
 
-**Important Notes & Tips:**
+```
 
-*   This is an advanced section, requiring careful study. (2:27, 2:29)
-*   Take your time, ask questions, use available tools, and code along to understand. (2:29 - 2:36)
-*   Invariant testing is a crucial skill that differentiates advanced Solidity developers. (1:58 - 2:06)
-*   Good documentation (like NatSpec) is important. (1:09)
-*   The speaker believes stablecoins are a vital DeFi primitive and current solutions can be improved, motivating the project choice. (2:38 - 2:56)
+To illustrate, as show in the Foundry Docs as well, open testing has our framework calling functions directly as defined in the contracts within scope.
 
-**Important Questions & Answers:**
+::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests1.PNG' style='width: 100%; height: auto;'}
 
-*   **Question (Posed by speaker):** "What the heck is liquidation?" (1:17)
-*   **Answer:** Implied to be covered later in the course/section, but it involves handling undercollateralized positions.
+Conversely, handler based tests route our frameworks function calls through our handler, allowing us to configure only the functions/behaviour we want it to perform, filtering out bad runs from our tests.
 
-**Examples & Use Cases Mentioned:**
+::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests2.png' style='width: 100%; height: auto;'}
 
-*   **Minting DSC:** Users deposit collateral (e.g., WETH, WBTC) into the `DSCEngine` to mint new DSC tokens.
-*   **Redeeming Collateral:** Users burn their DSC tokens via the `DSCEngine` to get their deposited collateral back.
-*   **Maintaining Stability:** The system relies on collateral value (checked via price feeds) and liquidation mechanisms to ensure the DSC tokens remain solvent and (implicitly) stable.
+Let's finally start applying this methodology to our code base.
 
-This summary covers the key information presented in the first 3 minutes and 5 seconds of the video walkthrough.
+### Setup
+
+The first thing we want to do to prepare our stateful fuzzing suite is to configure some of the fuzzer options in our `foundry.toml`.
+
+```toml
+[invariant]
+runs = 128
+depth = 128
+fail_on_revert = false
+```
+
+Adding the above to our foundry.toml will configure our fuzz tests to attempt `128 runs` and make `128 calls` in each run (depth). We'll go over `fail_on_revert` in more detail soon.
+
+Next, create the directory `test/fuzz`. We'll need to create 2 files within this folder, `InvariantsTest.t.sol` and `Handler.t.sol`.
+
+`InvariantsTest.t.sol` will ultimately hold the tests and the invariants that we assert, while the handler will determine how the protocol functions are called. If our fuzzer makes a call to `depositCollateral` without having minted any collateral, it's kind of a wasted run. We can filter these with an adequate handler configuration.
+
+Before writing a single line of our invariant tests we need to ask the question:
+
+**_What are the invariants of my protocol?_**
+
+We need to ascertain which properties of our system must always hold. What are some for `DecentralizedStableCoin`?
+
+1. The total supply of DSC should be less than the total value of collateral
+2. Getter view functions should never revert
+
+I challenge you to think of more, but these are going to be the two simple invariants we work with here.
+
+### InvariantsTest.t.sol
+
+This file will be setup like any other test file to start, we've lots of practice here.
+
+```solidity
+// SPDX-License-Identifier: MIT
+
+pragma solidity 0.8.18;
+
+import {Test} from "forge-std/Test.sol";
+import {StdInvariant} from "forge-std/StdInvariant.sol";
+
+contract InvariantsTest is StdInvariant, Test {}
+```
+
+StdInvariant is quite important for our purposes, this is where we derive the ability to set a `targetContract` which we point to our Handler.
+
+Again, just like the tests we've written so far, we're going to begin with a `setUp` function. In this setUp we'll perform our usual deployments of our needed contracts via our deployment script. We'll import our `HelperConfig` as well.
+
+```solidity
+// SPDX-License-Identifier: MIT
+
+pragma solidity 0.8.18;
+
+import {Test} from "forge-std/Test.sol";
+import {StdInvariant} from "forge-std/StdInvariant.sol";
+import {DeployDSC} from "../../script/DeployDSC.s.sol";
+import {DSCEngine} from "../../src/DSCEngine.sol";
+import {DecentralizedStableCoin} from "../../src/DecentralizedStableCoin.sol";
+import {HelperConfig} from "../../script/HelperConfig.s.sol";
+
+contract InvariantsTest is StdInvariant, Test {
+    DeployDSC deployer;
+    DSCEngine dsce;
+    DecentralizedStableCoin dsc;
+    HelperConfig config;
+
+    function setUp() external {
+        deployer = new DeployDSC();
+        (dsc, dsce, config) = deployer.run();
+    }
+}
+```
+
+From this point, it's very easy for us to wrap this up quickly with an Open Testing methodology. All we would need to do is set our `targetContract` to our `DSCEngine (dsce)`, and then declare an invariant in our test function.
+
+In order to test the invariant that our collateral value must always be more than our total supply, we can leverage our `HelperConfig` to acquire the collateral addresses, and check the total balance of each collateral type within the protocol. That would look something like this (don't forget to import your `IERC20 interface` for these tokens):
+
+```solidity
+...
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+...
+contract InvariantsTest is StdInvariant, Test {
+    DeployDSC deployer;
+    DSCEngine dsce;
+    DecentralizedStableCoin dsc;
+    HelperConfig config;
+    address weth;
+    address wbtc;
+
+    function setUp() external {
+        deployer = new DeployDSC();
+        (dsc, dsce, config) = deployer.run();
+        (,,weth, wbtc, ) = config.activeNetworkConfig();
+        targetContract(address(dsce));
+    }
+
+    function invariant_protocolMustHaveMoreValueThanTotalSupply() public view {
+        uint256 totalSupply = dsc.totalSupply();
+        uint256 totalWethDeposited = IERC20(weth).balanceOf(address(dsce));
+        uint256 totalWbtcDeposited = IERC20(wbtc).balanceOf(address(dsce));
+    }
+}
+```
+
+To this point our test function is only acquiring the balanced of our collateral tokens, we'll need to convert this to it's USD value for a sound comparison to our DSC total supply. We can do this with our `getUsdValue` function!
+
+```solidity
+function invariant_protocolMustHaveMoreValueThanTotalSupply() public view {
+    uint256 totalSupply = dsc.totalSupply();
+    uint256 totalWethDeposited = IERC20(weth).balanceOf(address(dsce));
+    uint256 totalWbtcDeposited = IERC20(wbtc).balanceOf(address(dsce));
+
+    uint256 wethValue = dsce.getUsdValue(weth, totalWethDeposited);
+    uint256 wbtcValue = dsce.getUsdValue(wbtc, totalWbtcDeposited);
+}
+```
+
+And now, all we would need to do is add our assertion.
+
+```solidity
+assert(wethValue + wbtcValue > totalSupply);
+```
+
+With this in place our open invariant test is ready! Try to run it.
+
+> ❗ **PROTIP**
+> Import `console` and add `console.log("Weth Value: ", wethValue)`, `console.log("Wbtc Value: ", wbtcValue)`, `console.log("Total Supply: ", totalSupply)` for more clear readouts from your test.
+
+```bash
+forge test --mt invariant_protocolMustHaveMoreValueThanTotalSupply -vvvv
+```
+
+::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests3.png' style='width: 100%; height: auto;'}
+
+Our test identified a break in our assertion immediately.. but it's because we have no tokens or collateral. We can adjust our assertion to be `>=`, but it's a little bit cheaty.
+
+```solidity
+assert(wethValue + wbtcValue >= totalSupply);
+```
+
+::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests4.png' style='width: 100%; height: auto;'}
+
+Things pass! We didn't find any issues. This is where we may want to bump up the number of runs we're performing, you can see in the image above our fuzzer executed `128 runs` and `16,384 function calls`. If we bump this up to `1000 runs`, our fuzz test will be more thorough, but will take much longer to run. Try it out!
+
+::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests5.png' style='width: 100%; height: auto;'}
+
+Things pass again, but you can see how much more intense the test process was. There's a catch, however. In the image above, notice how many calls were made vs how many times a function call reverted. Every single call is reverting! This in essence means that our test wasn't able to _do_ anything. This is not a very reassuring test.
+
+The reason our test is still passing, despite all these reverts is related to the `fail_on_revert` option we touched on in our `foundry.toml`. If we adjust this to `true` we'll see that our test fails right away.
+
+**_Why are all the calls reverting?_**
+
+Without any guidance, Foundry is going to throw truly random data at the function calls. For example, our `depositCollateral` function is only configured to accept the two authorized tokens for our protocol, wbtc and weth, the fuzzer could be calling this function with thousands of invalid addresses.
+
+fail_on_revert can be great for quick testing and keeping things simple, but it can be difficult to narrow the validity of our runs when this is set to `false`.
+
+Let's set this option to `true` and run our test once more.
+
+::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests6.png' style='width: 100%; height: auto;'}
+
+We can see the first function being called by the fuzzer is `depositCollateral` and its passing a random `tokenAddress` argument causing our revert immediately.
+
+::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests7.png' style='width: 100%; height: auto;'}
+
+### Wrap Up
+
+We've just done a quick run down on Open Invariant tests for our `DecentralizedStableCoin` protocol, but we've seen some limitations of letting the fuzzer determine how to behave and which functions to call.
+
+We can do better.
+
+For now, rename `test/fuzz/InvariantsTest.t.sol` to `test/fuzz/OpenInvariantsTest.t.sol`, and comment the whole file out. Create a _new_ file `test/fuzz/Invariants.t.sol`. Copy over OpenInvariants.t.sol into this new file and uncomment. Rename the contract to `Invariants`. We'll be leveling this up soon.
+
+In the next lesson, we'll go over how we can use our `Handler` as the target of our tests to focus which functions in our protocol are called and how. By guiding our tests in this way, we'll be able to assure fewer runs reverts and more valid function calls are made.
+
+See you in the next one!
