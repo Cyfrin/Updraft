@@ -68,9 +68,9 @@ uint256[] memory amounts = router.getAmountsOut(amountIn, path);
 The final part of this demo is to console log the amounts.
 
 ```javascript
-console2.log("WETH", amounts[0]);
-console2.log("DAI", amounts[1]);
-console2.log("MKR", amounts[2]);
+console2.log("WETH: %18e", amounts[0]);
+console2.log("DAI: %18e", amounts[1]);
+console2.log("MKR: %18e", amounts[2]);
 ```
 
 Remember that the path has length three, so our amounts array will also have a length of three. We expect `amounts[0]` to be 1e18 because that is our input amount. `amounts[1]` will be the amount of `DAI` that we get for our input amount of `WETH` and `amounts[2]` will be the amount of `MKR` that we get for our input amount of `DAI`. 
@@ -94,9 +94,9 @@ The output of our test will be:
 [PASS] 1 test for test/uniswap-v2/UniswapV2SwapAmounts.test.sol:UniswapV2SwapAmountsTest
 Running 1 test for UniswapV2 (gas: 25511)
 Logs:
-WETH 1000000000000000000
-DAI 250083397486620145970214
-MKR 124276659515427830343
+WETH: 1
+DAI: 2566.845188977171554936
+MKR: 0.040213782244101485
 Test result: ok. 1 passed; 0 failed; finished in 5.31s
 ```
 
