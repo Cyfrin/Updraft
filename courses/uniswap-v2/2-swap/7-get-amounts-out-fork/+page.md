@@ -85,7 +85,7 @@ FORK_URL=https://eth-mainnet.g.alchemy.com/v2/KxztpzEzhqN54Jn_0SgMzN4AJ5Q50K4
 We can now copy the fork URL and paste it inside our terminal. Next, we will execute our test by running the following command:
 
 ```bash
-forge test --fork-url $FORK_URL --match-path test/uniswap-v2/UniswapV2SwapAmounts.test.sol
+forge test --fork-url $FORK_URL --match-path test/uniswap-v2/UniswapV2SwapAmounts.test.sol -vvv
 ```
 
 The output of our test will be:
