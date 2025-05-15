@@ -18,7 +18,7 @@ This check ensures that the price of the tokens does not change drastically due 
 
 Let's break down how this check is implemented in the code.
 
-The variables `x0` and `y0` represent the amount of tokens in the contract before the swap.
+The variables $x_0$ and $y_0$ represent the amount of tokens in the contract before the swap.
 
 The calculation of the amount of tokens that came in, `dx` and `dy`, is also important. This is calculated by taking the difference between the actual balance of the tokens and the internal balance of the tokens.
 
