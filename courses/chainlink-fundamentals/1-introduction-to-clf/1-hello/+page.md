@@ -23,7 +23,7 @@ Post a tweet about telling us if you've found this course helpful:
 
 This course has been adapted from the Chainlink Fundamentals course previously hosted on the Chainlink Developer Hub. This is a big thank you to Chainlink for the content they created that enabled us to create this course for Updraft students. A special thank you to the following people for their awesome work that meant we were able to create this course for you all.
 
-- Solange
-- Zubin
+- [Zubin Pratap](https://x.com/zubinpratap)
+- [Solange Gueiros](https://x.com/solangegueiros)
 
 With that said, let's get into it! <3
