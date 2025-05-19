@@ -11,7 +11,7 @@ In this lesson, we will learn how to simulate a swap on Uniswap V2. To do this, 
 
 We will be testing the `swapTokensForExactTokens` function.  
 
-```javascript
+```solidity
   // Receive an exact amount of output tokens for as few input tokens
   // as possible
   function test_swapTokensForExactTokens() public {
@@ -46,7 +46,7 @@ We will be testing the `swapTokensForExactTokens` function.
 We'll run the test with the following command:
 
 ```bash
-forge test --fork-url $FORK_URL --mp test/uniswap-v2/solutions/UniswapV2Swap.test.sol --mt test_swapTokensForExactTokens -vvv
+forge test --fork-url $FORK_URL --mp test/uniswap-v2/exercises/UniswapV2Swap.test.sol --mt test_swapTokensForExactTokens -vvv
 ```
 
 ### The Test Results
