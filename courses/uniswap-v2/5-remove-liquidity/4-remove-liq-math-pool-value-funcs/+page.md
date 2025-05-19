@@ -1,8 +1,6 @@
 We’ve derived the equation for how much liquidity we should receive when removing liquidity.  Let’s recap that equation.
 
-```
-L0 - L1 / L0 = dx / x0 = dy / y0
-```
+$\frac{L_0 - L_1}{L_0} = \frac{D_X}{X_0} = \frac{D_Y}{Y_0}$
 
 This equation tells us that when we decrease the liquidity from L0 to L1, then we will have to remove dx amount of token x and dy amount of token y.
 
@@ -10,9 +8,7 @@ So, we’ve derived this equation for how much liquidity we should receive when 
 
 **True for all 3 functions to measure pool value F(x, y) -> L**
 
-```
-F(x, y) = √xy
-```
+$f(x, y) = \sqrt{xy}$
 
 or
 
