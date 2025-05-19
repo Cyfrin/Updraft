@@ -26,3 +26,10 @@ The spot price of ETH in terms of DAI is then:
 ```
 
 In the next video, we'll show how to derive the equation we just used. We'll do that by looking at a small trade.  
+
+### As shown in the diagram.
+
+![Pasted image 20250416081146](https://github.com/user-attachments/assets/90d592ff-d607-4736-8ed1-346ef29fdbd4)
+
+
+
