@@ -71,7 +71,7 @@ if (address(token) < WETH) {
 We'll run our test using the fork URL from our `.env` file. We'll copy the fork URL from our `.env` file and paste it into our terminal. Then we'll execute the test with the following command. 
 
 ```bash
-forge test --fork-url $FORK_URL --match-path test/uniswap-v2/exercises/uniswapV2Factory.test.sol uniswapV2FactoryTest 
+forge test --fork-url $FORK_URL --mp test/uniswap-v2/solutions/UniswapV2Factory.test.sol -vvvv
 ```
 
 We can see that the test passes. 
