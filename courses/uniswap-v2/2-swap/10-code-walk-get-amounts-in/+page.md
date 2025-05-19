@@ -6,25 +6,25 @@ The first iteration of the for loop will assign the amount out to the last eleme
 
 The function `getAmountIn` uses an equation we derive from the Uniswap swap. 
 
-```javascript
+```solidity
 amountOut = numerator / denominator
 ```
 
 The denominator in this equation is:
 
-```javascript
+```solidity
 denominator = reserveOut - amountOut * 997 / 1000
 ```
 
 This equation is derived from the Uniswap swap equation where we solve for `dy`. 
 
-```javascript
+```solidity
 dy =  reserveOut * amountOut * 997 / (amountOut * 997 + reserveIn * 1000) 
 ```
 
 The numerator in this equation is:
 
-```javascript
+```solidity
 numerator = reserveIn * amountOut * 1000 / (amountOut * 997 + reserveIn * 1000)
 ```
 
@@ -36,7 +36,7 @@ We will keep looping through the array until we get to `amounts[0]`, which will 
 
 This is the implementation process of the `getAmountIn` function.
 
-```js
+```solidity
     // given an output amount of an asset and pair reserves, returns a required input amount of the other asset
     function getAmountIn(uint amountOut, uint reserveIn, uint reserveOut) internal pure returns (uint amountIn) {
         require(amountOut > 0, 'UniswapV2Library: INSUFFICIENT_OUTPUT_AMOUNT');
