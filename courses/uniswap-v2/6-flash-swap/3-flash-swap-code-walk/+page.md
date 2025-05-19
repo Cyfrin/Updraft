@@ -18,7 +18,7 @@ The only condition required for this code to execute is that the "data" input mu
 
 This is the implementation process of the `swap` function.
 
-```js
+```solidity
 // this low-level function should be called from a contract which performs important safety checks
 // NOTE: no amount in for input
 // NOTE: data used for flash swap
