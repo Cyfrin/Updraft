@@ -24,7 +24,7 @@ The calculation of the amount of tokens that came in, `dx` and `dy`, is also imp
 
 The code snippet demonstrates the calculation of `balance0Adjusted`, which is a key component of the invariant check:
 
-```javascript
+```solidity
 uint balance0Adjusted = balance0.mul(1000).sub(amount0In.mul(3));
 ```
 
@@ -32,7 +32,7 @@ The `balance0Adjusted` is calculated by multiplying the actual balance of token0
 
 Next, the code checks if the product of `balance0Adjusted` and `balance1Adjusted` is greater than or equal to the product of `reserve0` and `reserve1`, multiplied by 1,000 squared. This verifies the invariant condition.
 
-```javascript
+```solidity
 require(balance0Adjusted.mul(balance1Adjusted) >= reserve0.mul(reserve1).mul(1000 ** 2), 'UniswapV2: INSUFFICIENT_INPUT_AMOUNT');
 ```
 
@@ -45,7 +45,7 @@ We will cover more details about the Uniswap V2 Pair Contract, including its imp
 This is the implementation process of the `swap` function.
 
 
-```js
+```solidity
     // this low-level function should be called from a contract which performs important safety checks
     // NOTE: no amount in for input
     // NOTE: data used for flash swap
