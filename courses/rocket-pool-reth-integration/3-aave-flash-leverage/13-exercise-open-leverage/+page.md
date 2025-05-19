@@ -23,13 +23,13 @@ function open(OpenParams calldata params) external {
    - Encode flash loan data into `FlashLoanData`.
    - Call `flashLoan` to initiate a flash loan.
 
-   > **Hint:** Look inisde `AaveHelper` to see how to call the function `flashLoan`.
+   > **Hint:** Look inside `AaveHelper` to see how to call the function `flashLoan`.
 
 3. **Check health factor**
 
-   - Require that the health factor after the position is created is greater than or equal the the minimum health factor specified in the input `OpenParams.minHealthFactor`.
+   - Require that the health factor after the position is created is greater than or equal the minimum health factor specified in the input `OpenParams.minHealthFactor`.
 
-   > **Hint:** Look inisde `AaveHelper` to see how to get the health factor.
+   > **Hint:** Look inside `AaveHelper` to see how to get the health factor.
 
 # `_flashLoanCallback`
 
