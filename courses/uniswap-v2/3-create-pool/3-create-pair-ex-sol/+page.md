@@ -4,7 +4,7 @@ In this lesson, we'll learn how to create a Uniswap v2 pair contract using the U
 
 We'll create a new test file called `uniswapV2Factory.test.sol`. 
 
-```javascript
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -41,7 +41,7 @@ The first thing we'll do is assign the address of the pair contract to the `addr
 
 We'll write:
 
-```javascript
+```solidity
 address pair = factory.createPair(address(token), WETH);
 ```
 
@@ -49,7 +49,7 @@ Next, we'll need to access the `token0` and `token1` addresses, which are the ad
 
 We'll write:
 
-```javascript
+```solidity
 address token0 = IUniswapV2Pair(pair).token0();
 address token1 = IUniswapV2Pair(pair).token1();
 ```
@@ -58,7 +58,7 @@ The order of the tokens that we pass to the `createPair()` function doesn't matt
 
 We'll write:
 
-```javascript
+```solidity
 if (address(token) < WETH) {
   assertEq(token0, address(token), "token 0");
   assertEq(token1, WETH, "token 1");
@@ -71,7 +71,7 @@ if (address(token) < WETH) {
 We'll run our test using the fork URL from our `.env` file. We'll copy the fork URL from our `.env` file and paste it into our terminal. Then we'll execute the test with the following command. 
 
 ```bash
-forge test --fork-url $FORK_URL --mp test/uniswap-v2/solutions/UniswapV2Factory.test.sol -vvvv
+forge test --fork-url $FORK_URL --mp test/uniswap-v2/exercises/UniswapV2Factory.test.sol -vvvv
 ```
 
 We can see that the test passes. 
