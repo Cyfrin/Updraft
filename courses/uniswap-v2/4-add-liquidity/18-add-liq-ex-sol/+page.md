@@ -6,14 +6,14 @@ To add liquidity, we need to call the `addLiquidity` function on the `UniswapV2R
 
 We've already initialized the router contract in our code:
 
-```javascript
+```solidity
 UniswapV2Router02 private constant router =
 UniswapV2Router02(UNISWAP_V2_ROUTER_02);
 ```
 
 The code for adding liquidity to the DAI/WETH pair contract is:
 
-```javascript
+```solidity
 (uint amountA, uint amountB, uint liquidity) =
 router.addLiquidity(
 tokenA: DAI,
@@ -40,7 +40,7 @@ The parameters for the `addLiquidity` function are:
 
 We'll also console.log the outputs, which are `amountA`, `amountB`, and `liquidity`.
 
-```javascript
+```solidity
 console2.log("DAI: %18e", amountA);
 console2.log("WETH: %18e", amountB);
 console2.log("LP: %18e", liquidity);
@@ -66,8 +66,8 @@ We can see the amount of DAI that was sent to the pair contract, which is roughl
 
 **The output is similar to:**
 
-```js
-Ran 1 test for test/uniswap-v2/solutions/UniswapV2Liquidity.test.sol:UniswapV2LiquidityTest
+```solidity
+Ran 1 test for test/uniswap-v2/exercises/UniswapV2Liquidity.test.sol:UniswapV2LiquidityTest
 [PASS] test_addLiquidity() (gas: 126185)
 Logs:
   DAI: 237789.880105763455138062
