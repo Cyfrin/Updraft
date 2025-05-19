@@ -10,7 +10,7 @@ Next, we initialize the last element of the `amounts` array to `amountOut`. For 
 
 This results in the following `amounts` array:
 
-```javascript
+```solidity
 amounts = [0, 0, 1e18]
 ```
 
@@ -28,7 +28,7 @@ In essence, this is telling us that to get 1 MKR, we need approximately 2011 DAI
 
 At this point in the loop, the `amounts` array will look like this:
 
-```javascript
+```solidity
 amounts = [0, 2011, 1e18]
 ```
 
@@ -38,13 +38,13 @@ On this iteration, the function accesses the path of `i` (DAI) and the path of `
 
 The function will then call the `getReserves` function to determine the amount of WETH needed to obtain 2011 DAI.
 
-```javascript
+```solidity
 getReserves(factory, path[i - 1], path[i])
 ```
 
 The output from the `getReserves` function is then passed into the `getAmountIn` function:
 
-```javascript
+```solidity
 getAmountIn(amounts[i], reserveIn, reserveOut)
 ```
 
@@ -52,7 +52,7 @@ This function calculates the amount of WETH needed to obtain 2011 DAI and stores
 
 The final `amounts` array will look like this:
 
-```javascript
+```solidity
 amounts = [0.8, 2011, 1e18]
 ```
 
@@ -60,7 +60,7 @@ This demonstrates how the `getAmountsIn` function uses a loop to determine the a
 
 This is the implementation process of the `getAmountsIn` function.
 
-```js
+```solidity
     // performs chained getAmountIn calculations on any number of pairs
     function getAmountsIn(address factory, uint amountOut, address[] memory path) internal view returns (uint[] memory amounts) {
         require(path.length >= 2, 'UniswapV2Library: INVALID_PATH');
