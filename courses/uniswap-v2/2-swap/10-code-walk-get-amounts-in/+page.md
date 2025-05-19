@@ -31,3 +31,29 @@ numerator = reserveIn * amountOut * 1000 / (amountOut * 997 + reserveIn * 1000)
 The result of this calculation is then stored in the amounts array. 
 
 We will keep looping through the array until we get to `amounts[0]`, which will contain the amount of tokens that are needed to execute the swap. This entire process is performed inside the for loop. 
+
+---
+
+This is the implementation process of the `getAmountIn` function.
+
+```js
+    // given an output amount of an asset and pair reserves, returns a required input amount of the other asset
+    function getAmountIn(uint amountOut, uint reserveIn, uint reserveOut) internal pure returns (uint amountIn) {
+        require(amountOut > 0, 'UniswapV2Library: INSUFFICIENT_OUTPUT_AMOUNT');
+        require(reserveIn > 0 && reserveOut > 0, 'UniswapV2Library: INSUFFICIENT_LIQUIDITY');
+        // x0 * dy * 1000
+        uint numerator = reserveIn.mul(amountOut).mul(1000);
+        // (y0 - dy) * 997 
+        uint denominator = reserveOut.sub(amountOut).mul(997);
+        // NOTE:
+        // (x0 + dx * (1 - f))(y0 - dy) = x0 * y0
+        //       x0 * dy       1
+        // dx = --------- * -------
+        //       y0 - dy     1 - f
+        //       x0 * dy * 1000
+        // dx = ----------------- 
+        //      (y0 - dy) * 997
+        // NOTE: round up
+        amountIn = (numerator / denominator).add(1);
+    }
+```
