@@ -47,28 +47,28 @@ The `UniswapV2Router02` contract has already been deployed to a test network in 
 To call the `removeLiquidity()` function, we will use the following code:
 
 ```javascript
-(uint amountA, uint amountB) = router.removeLiquidity(
-    tokenA,
-    tokenB,
-    liquidity,
-    amountAMin,
-    amountBMin,
-    to,
-    deadline
-);
+(uint256 amountA, uint256 amountB) = router.removeLiquidity({
+    tokenA: DAI,
+    tokenB: WETH,
+    liquidity: liquidity,
+    amountAMin: 1 * 1e18,
+    amountBMin: 1 * 1e18,
+    to: user,
+    deadline: block.timestamp
+});
 ```
 
 We will console log the amounts of DAI and WETH that we receive from calling this function. 
 
 ```javascript
-console2.log("DAI:", amountA);
-console2.log("WETH:", amountB);
+console2.log("DAI: %18e", amountA);
+console2.log("WETH: %18e", amountB);
 ```
 
 Now we will execute the test and see the results. 
 
 ```bash
-forge test --fork-url FORK_URL --match-path test/uniswap-v2/exercises/uniswap-v2/liquidity.test.sol --vvv
+forge test --fork-url $FORK_URL --mp test/uniswap-v2/solutions/UniswapV2Liquidity.test.sol --mt test_removeLiquidity -vvv
 ```
 
 We have successfully removed liquidity from the DAI/WETH pool and received the expected amounts of DAI and WETH. 
