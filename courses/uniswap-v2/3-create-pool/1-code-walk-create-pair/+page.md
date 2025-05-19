@@ -27,7 +27,7 @@ The `create2` function is a clever trick that Uniswap V2 uses to make deploying 
 
 This is the implementation process of the `createPair` function.
 
-```js
+```solidity
     function createPair(address tokenA, address tokenB) external returns (address pair) {
         require(tokenA != tokenB, 'UniswapV2: IDENTICAL_ADDRESSES');
         // NOTE: sort tokens by address
