@@ -5,17 +5,19 @@ In this lesson, we'll run a test using the `getAmountIn` function from the Unisw
 First, we'll write a Foundry test that calls the `getAmountIn` function. We'll use the same path as our previous example: WETH, DAI, and MKR. 
 
 ```javascript
-function test_getAmountIn() public {
-    address[] memory path = new address[](3);
-    path[0] = WETH;
-    path[1] = DAI;
-    path[2] = MKR;
-    uint256 amountOut = 1e18;
-    uint256[] memory amounts = router.getAmountIn(amountOut, path);
-    console2.log("WETH", amounts[0]);
-    console2.log("DAI", amounts[1]);
-    console2.log("MKR", amounts[2]);
-}
+    function test_getAmountsIn() public {
+        address[] memory path = new address[](3);
+        path[0] = WETH;
+        path[1] = DAI;
+        path[2] = MKR;
+
+        uint256 amountOut = 1e16;    // 1e18 will cause an error: `[Revert] ds-math-sub-underflow`
+        uint256[] memory amounts = router.getAmountsIn(amountOut, path);
+
+        console2.log("WETH: %18e", amounts[0]);
+        console2.log("DAI: %18e", amounts[1]);
+        console2.log("MKR: %18e", amounts[2]);
+    }
 ```
 
 We need to set the `amountOut` and the `path` parameters for this function. Our `amountOut` will be 1 MKR, or 1e18. This function will return an array of `uint` values representing the amount of each token we'll need to get 1 MKR.
