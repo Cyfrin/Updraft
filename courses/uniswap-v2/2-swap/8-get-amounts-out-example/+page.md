@@ -45,7 +45,7 @@ The `getAmountsOut` function plays a crucial role in Uniswap V2, enabling users 
 This is the implementation process of the `getAmountsOut` function.
 
 
-```js
+```solidity
     // performs chained getAmountOut calculations on any number of pairs
     // NOTE: amounts[0] = amountIn
     //       amounts[n - 1] = final amount out
