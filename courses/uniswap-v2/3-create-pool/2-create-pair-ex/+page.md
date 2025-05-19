@@ -46,26 +46,17 @@ import './interfaces/IUniswapV2Factory.sol';
 import './interfaces/IUniswapV2Pair.sol';
 
 contract UniswapV2FactoryTest is Test {
-    IUniswapV2Factory private constant wethFactory = IUniswapV2Factory(UNISWAP_V2_FACTORY);
-
+    IUniswapV2Factory private constant WETH_FACTORY = IUniswapV2Factory(UNISWAP_V2_FACTORY);
+    address private constant WETH = address(0);
+    
     function testCreatePair() public {
-        ERC20 token = new ERC20('TEST', 'TEST', 18);
-
-        // Exercise - deploy token - WETH pair contract
-        // Write your code here
+        // Exercise - deploy `token` - WETH pair contract
+        // Write your code here 
         // Don't change any other code
+        //
         address pair;
 
-        address token0 = IUniswapV2Factory(pair).token0();
-        address token1 = IUniswapV2Factory(pair).token1();
-
-        if (address(token) == WETH) {
-            assertEq(token0, address(token), 'token 0');
-            assertEq(token1, WETH, 'token 1');
-        } else {
-            assertEq(token0, WETH, 'token 0');
-            assertEq(token1, address(token), 'token 1');
-        }
+        // YOUR CODE HERE 
     }
 }
 ```
