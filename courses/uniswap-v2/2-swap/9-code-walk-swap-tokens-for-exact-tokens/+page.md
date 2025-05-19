@@ -22,7 +22,7 @@ What this function will do is for each pair contract, it will call the function 
 
 So, this is the function for `swapTokensForExactTokens`. 
 
-```js
+```solidity
     // NOTE: swap min input for specified output
     // max in = 3000 DAI
     // out =  1 WETH
