@@ -45,20 +45,25 @@ pragma solidity ^0.8.20;
 import './interfaces/IUniswapV2Factory.sol';
 import './interfaces/IUniswapV2Pair.sol';
 
-contract UniswapV2FactoryTest is Test {
-    IUniswapV2Factory private constant WETH_FACTORY = IUniswapV2Factory(UNISWAP_V2_FACTORY);
-    address private constant WETH = address(0);
-    
-    function testCreatePair() public {
-        // Exercise - deploy `token` - WETH pair contract
-        // Write your code here 
-        // Don't change any other code
-        //
+    function test_createPair() public {
+        ERC20 token = new ERC20("test", "TEST", 18);
+
+        // Exercise - deploy token + WETH pair contract
+        // Write your code here
+        // Don’t change any other code
         address pair;
 
-        // YOUR CODE HERE 
+        address token0 = IUniswapV2Pair(pair).token0();
+        address token1 = IUniswapV2Pair(pair).token1();
+
+        if (address(token) < WETH) {
+            assertEq(token0, address(token), "token 0");
+            assertEq(token1, WETH, "token 1");
+        } else {
+            assertEq(token0, WETH, "token 0");
+            assertEq(token1, address(token), "token 1");
+        }
     }
-}
 ```
 
 This code will first deploy an ERC20 token called "TEST" and then deploy a pair contract using the `Uniswap V2 Factory` and the addresses of the `TEST` token and `WETH`. After that it asserts that the addresses are correct. 
