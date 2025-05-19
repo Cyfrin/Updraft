@@ -12,31 +12,33 @@ In this lesson, we will learn how to simulate a swap on Uniswap V2. To do this, 
 We will be testing the `swapTokensForExactTokens` function.  
 
 ```javascript
-function testSwapTokensForExactTokens() public {
-  address[] memory path = new address[](3);
-  path[0] = WETH;
-  path[1] = DAI;
-  path[2] = MKR;
+  // Receive an exact amount of output tokens for as few input tokens
+  // as possible
+  function test_swapTokensForExactTokens() public {
+      address[] memory path = new address[](3);
+      path[0] = WETH;
+      path[1] = DAI;
+      path[2] = MKR;
 
-  uint amountOut = 0.1 * 1e18;
-  uint amountInMax = 1e18;
+      uint256 amountOut = 0.1 * 1e18;    // 1e17
+      uint256 amountInMax = 1e18;
 
-  vm.prank(user);
+      vm.prank(user);
+      // Input token amount and all subsequent output token amounts
+      uint256[] memory amounts = router.swapTokensForExactTokens({
+          amountOut: amountOut,
+          amountInMax: amountInMax,
+          path: path,
+          to: user,
+          deadline: block.timestamp
+      });
 
-  uint256[] memory amounts = router.swapTokensForExactTokens(
-    amountOut,
-    amountInMax,
-    path,
-    user,
-    block.timestamp
-  );
+      console2.log("WETH: %18e", amounts[0]);
+      console2.log("DAI: %18e", amounts[1]);
+      console2.log("MKR: %18e", amounts[2]);
 
-  console.log("WETH", amounts[0]);
-  console.log("DAI", amounts[1]);
-  console.log("MKR", amounts[2]);
-
-  assertEq(mkr.balanceOf(user), amountOut, "MKR balance of user");
-}
+      assertEq(mkr.balanceOf(user), amountOut, "MKR balance of user");
+  }
 ```
 
 ### Running the Test
@@ -44,7 +46,7 @@ function testSwapTokensForExactTokens() public {
 We'll run the test with the following command:
 
 ```bash
-forge test test/UniswapV2/exercises/UniswapV2Swap.test.sol:UniswapV2Test --fork-url $FORK_URL --match-path test/UniswapV2/exercises/UniswapV2Swap.test.sol
+forge test --fork-url $FORK_URL --mp test/uniswap-v2/solutions/UniswapV2Swap.test.sol --mt test_swapTokensForExactTokens -vvv
 ```
 
 ### The Test Results
