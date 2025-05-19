@@ -32,6 +32,31 @@ This process is repeated every time a swap occurs or liquidity is added or remov
 
 ## Overflow Behavior
 
-You might notice the comment `// addition overflow is desired` in the code snippet above. This is unusual! Usually, overflow in code is a bad thing. 
+You might notice the comment `// overflow is desired` in the code snippet above. This is unusual! Usually, overflow in code is a bad thing. 
 
 However, in this case, it's important for calculating the TWAP. The `update` function uses `uint`s for storing the cumulative price, and because `uint`s have a fixed size, they can overflow. When we calculate the difference between two cumulative prices to determine the average price, it's fine if the cumulative prices have overflowed. This is because the overflow is a consistent factor, and it cancels out when we calculate the difference. 
+
+
+---
+
+This is the implementation process of the `_update` function.
+
+```js
+// update reserves and, on the first call per block, price accumulators
+function _update(uint balance0, uint balance1, uint112 _reserve0, uint112 _reserve1) private {
+    require(balance0 <= uint112(-1) && balance1 <= uint112(-1), 'UniswapV2: OVERFLOW');
+    uint32 blockTimestamp = uint32(block.timestamp % 2**32);
+    uint32 timeElapsed = blockTimestamp - blockTimestampLast; // overflow is desired
+    if (timeElapsed > 0 && _reserve0 != 0 && _reserve1 != 0) {
+        // NOTE: TWAP - Time weighted average pricing 
+        // * never overflows, and + overflow is desired
+        //                                                       224 bits            32 bits = 256 bits
+        price0CumulativeLast += uint(UQ112x112.encode(_reserve1).uqdiv(_reserve0)) * timeElapsed;
+        price1CumulativeLast += uint(UQ112x112.encode(_reserve0).uqdiv(_reserve1)) * timeElapsed;
+    }
+    reserve0 = uint112(balance0);
+    reserve1 = uint112(balance1);
+    blockTimestampLast = blockTimestamp;
+    emit Sync(reserve0, reserve1);
+}
+```
