@@ -181,7 +181,7 @@ To create this array:
     tokenAmounts[0] = tokenAmount;
     ```
 
-3. **Building the CCIP message**:Create a message `Client.EVM2AnyMessage` struct with the relevant values:
+3. **Building the CCIP message** create a message `Client.EVM2AnyMessage` struct with the relevant values:
 
 ```solidity
 Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
