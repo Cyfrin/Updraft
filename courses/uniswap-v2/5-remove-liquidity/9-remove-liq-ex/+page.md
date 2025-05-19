@@ -2,7 +2,7 @@ This is an introduction to the Uniswap V2 liquidity removal exercise. We will be
 
 The contract is initialized in the setup above. This setup is simulated as if the user added liquidity to the DAI/WETH pair and received this amount of liquidity shares:
 
-```javascript
+```solidity
   function test_removeLiquidity() public {
       vm.startPrank(user);
       (,, uint256 liquidity) = router.addLiquidity({
