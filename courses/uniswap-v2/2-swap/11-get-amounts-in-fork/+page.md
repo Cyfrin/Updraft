@@ -4,7 +4,7 @@ In this lesson, we'll run a test using the `getAmountIn` function from the Unisw
 
 First, we'll write a Foundry test that calls the `getAmountIn` function. We'll use the same path as our previous example: WETH, DAI, and MKR. 
 
-```javascript
+```solidity
     function test_getAmountsIn() public {
         address[] memory path = new address[](3);
         path[0] = WETH;
