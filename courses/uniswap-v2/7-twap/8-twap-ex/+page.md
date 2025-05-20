@@ -4,7 +4,7 @@ In this lesson we'll be building a time-weighted average pricing (TWAP) oracle u
 
 We are going to modify a simple oracle example from Uniswap V2 that uses a library called FixedPoint:
 
-```javascript
+```solidity
 import "FixedPoint.sol";
 ```
 
@@ -12,7 +12,7 @@ The FixedPoint library uses fixed-point arithmetic, which is a way of representi
 
 We will be using this library to calculate the time-weighted average price of two tokens, token0 and token1. The contract will have the following state variables: 
 
-```javascript
+```solidity
 uint256 public price0CumulativeLast;
 uint256 public price1CumulativeLast;
 uint32 public updatedAt;
@@ -20,7 +20,7 @@ uint32 public updatedAt;
 
 The first exercise is to initialize the constructor of the contract.  This will require us to pass the address of the Uniswap V2 pair contract:
 
-```javascript
+```solidity
 constructor(address _pair) {
     pair = _pair;
 }
@@ -53,7 +53,7 @@ The fourth and final exercise is to write the `consult` function. This function 
 
 Let's look at an example. We have token0 as WETH and token1 as USDC. If we pass an amountIn of 2 WETH, and the average price of WETH in terms of USDC is 2000 USDC/1 WETH. The amount out would be 4000 USDC.
 
-```javascript
+```solidity
 function consult(address tokenIn, uint256 amountIn) external view returns (uint256 amountOut) {
     // 1. Require tokenIn is either token0 or token1
     require(tokenIn == token0 || tokenIn == token1, "invalid token");
@@ -81,7 +81,7 @@ In the next lesson, we'll look at how to deploy this TWAP oracle and use it in a
 
 Exercises：`foundry/test/uniswap-v2/exercises/UniswapV2Twap.sol`
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity >= 0.4 < 0.9;
 
