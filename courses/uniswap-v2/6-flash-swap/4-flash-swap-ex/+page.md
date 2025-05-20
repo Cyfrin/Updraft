@@ -2,7 +2,7 @@ In this lesson, we will be completing a contract called UniswapV2FlashSwap. This
 
 We will start by looking at the constructor for the UniswapV2FlashSwap contract. 
 
-```javascript
+```solidity
 contract UniswapV2FlashSwap {
     UniswapV2Pair private immutable pair;
     address private immutable token0;
@@ -18,7 +18,7 @@ contract UniswapV2FlashSwap {
 
 We will then need to complete two functions: flashSwap and uniswapV2Call. We will start with the flashSwap function. 
 
-```javascript
+```solidity
 function flashSwap(address token, uint256 amount) external {
     require(token == token0 || token == token1, "invalid token");
 
@@ -58,7 +58,7 @@ Later, when the function uniswapV2Call is called by the pair contract, we will d
 
 The last part to complete this function is to call the swap function on the pair contract. 
 
-```javascript
+```solidity
 pair.swap(
     amount0Out,
     amount1Out,
@@ -69,7 +69,7 @@ pair.swap(
 
 We will now move on to the uniswapV2Call function. This function is a callback function that will be called by the UniswapV2Pair contract after the flash swap.
 
-```javascript
+```solidity
 // Uniswap V2 callback
 function uniswapV2Call(
     address sender,
@@ -116,7 +116,7 @@ Finally, we will use the token.transferFrom function to transfer the amount of t
 
 The next part of the lesson will show a test file for the UniswapV2FlashSwap contract. 
 
-```javascript
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
