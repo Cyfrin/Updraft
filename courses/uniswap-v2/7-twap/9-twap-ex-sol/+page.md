@@ -4,7 +4,7 @@ In this lesson, we'll go over the solution to the Uniswap v2 TWAP exercises.
 
 The first exercise involves setting up the constructor of our contract. We begin by setting the pair contract address as a state variable. We then get the token zero and token one addresses from the pair contract and store them as state variables. Finally, we get the price0cumulativeLast and price1cumulativeLast values from the pair contract and store them as state variables.  To do this, we call the `getReserves()` function on the pair contract, which returns the reserves and the last timestamp the reserves were updated. We store the timestamp in our updatedAt variable.
 
-```javascript
+```solidity
 // Exercise 1
 constructor(address _pair) {
     // 1. Set pair contract from constructor input
@@ -23,7 +23,7 @@ constructor(address _pair) {
 
 The second exercise involves creating a function that calculates the cumulative prices up to the current timestamp. We use the `getCurrentCumulativePrices()` function which returns the current price0cumulative and price1cumulative. We then calculate the TWAP for token0 and token1. To calculate the TWAP, we subtract the last cumulative price from the current cumulative price and divide by the time elapsed since the last update. 
 
-```javascript
+```solidity
 // Exercise 2
 // Calculates cumulative prices up to current timestamp
 function _getCurrentCumulativePrices()
@@ -65,7 +65,7 @@ function _getCurrentCumulativePrices()
 
 The third exercise involves updating the cumulative prices. We begin by casting the current block timestamp to a uint32 and storing it as a state variable. We then calculate the time elapsed since the last update and ensure that it's greater than or equal to our minimum wait time. If it's greater than or equal to the minimum wait time, we call the `getCurrentCumulativePrices()` function to get the current cumulative prices. We then subtract the last cumulative prices from the current cumulative prices and divide by the time elapsed to get the TWAP for token0 and token1. Lastly, we update our state variables, price0cumulativeLast, price1cumulativeLast, and updatedAt.
 
-```javascript
+```solidity
 // Exercise 3
 // Updates cumulative prices
 function update() external {
@@ -111,7 +111,7 @@ The fourth exercise involves a function called `consult()`. This function takes 
 
 To calculate the output amount, we multiply the TWAP of the input token by the input amount. We then use the `decode144()` function to convert the result from a `uq144x112` to a uint144.
 
-```javascript
+```solidity
 // Exercise 4
 // Returns the amount out corresponding to the amount in for a given token
 function consult(address tokenIn, uint256 amountIn)
@@ -145,7 +145,7 @@ function consult(address tokenIn, uint256 amountIn)
 To test our contract we first need to set our environment variables for the fork URL and then run the test using forge.
 
 ```bash
-forge test --fork-url $FORK_URL --mp test/uniswap-v2/solutions/UniswapV2Twap.test.sol -vvv
+forge test --fork-url $FORK_URL --mp test/uniswap-v2/exercises/UniswapV2Twap.test.sol -vvv
 ```
 
 This will run the tests we wrote to ensure that our contract works as expected.
