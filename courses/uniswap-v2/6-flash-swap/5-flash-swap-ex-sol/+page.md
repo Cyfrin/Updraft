@@ -6,7 +6,7 @@ Uniswap V2 allows you to borrow liquidity from a pool to execute an arbitrage op
 
 Let's implement a smart contract that executes a flash swap on Uniswap V2.
 
-```javascript
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -50,7 +50,7 @@ Here is what the `flashSwap` function does:
 
 Now let's move on to the Uniswap V2 pair contract. This contract needs to have a function that is called back by our `flashSwap` contract. This function is called `uniswapV2Call`:
 
-```javascript
+```solidity
   // Uniswap V2 callback
   function uniswapV2Call(
       address sender,
