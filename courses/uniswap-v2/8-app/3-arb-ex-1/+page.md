@@ -8,7 +8,7 @@ We will create a smart contract that will execute an arbitrage between two Unisw
 
 We will need to implement a function called `swap`.  The function will need to take in a struct called `SwapParams`, which we will define. `SwapParams` will contain the following:
 
-```javascript
+```solidity
 struct SwapParams {
     address router0; 
     address router1; 
@@ -40,7 +40,7 @@ After the arbitrage is complete, the `swap` function will return `amountIn` plus
 
 We will implement another function called `flashSwap` that will perform arbitrage using a flash swap. The difference between this function and the `swap` function is that we will borrow the tokens we need to start the arbitrage from a Uniswap V2 pair contract.  The function `flashSwap` will take in the following parameters:
 
-```javascript
+```solidity
 function flashSwap(address pair, bool isToken0, SwapParams calldata params) 
     external;
 ```
@@ -63,7 +63,7 @@ The function `UniswapV2Call` will be called back by the pair contract and will c
 Exercises `foundry/test/uniswap-v2/exercises/UniswapV2Arb1.sol`
 
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
@@ -133,7 +133,7 @@ Let's look at an example test for our arbitrage contract:
 
 Test `foundry/test/uniswap-v2/exercises/UniswapV2Arb1.test.sol`
 
-```javascript
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
