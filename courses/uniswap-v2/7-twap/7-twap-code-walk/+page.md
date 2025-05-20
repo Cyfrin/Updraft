@@ -8,7 +8,7 @@ We'll focus on an internal function called `update`, which is called every time 
 
 The code snippet below is the section of the `update` function we'll be focused on in this lesson:
 
-```javascript
+```solidity
     // NOTE: TWAP is time-weighted average pricing
     price0CumulativeLast += uint(uq112x112.encode(reserve1).uqdiv(reserve0)) * timeElapsed;
     price1CumulativeLast += uint(uq112x112.encode(reserve0).uqdiv(reserve1)) * timeElapsed;
@@ -41,7 +41,7 @@ However, in this case, it's important for calculating the TWAP. The `update` fun
 
 This is the implementation process of the `_update` function.
 
-```js
+```solidity
 // update reserves and, on the first call per block, price accumulators
 function _update(uint balance0, uint balance1, uint112 _reserve0, uint112 _reserve1) private {
     require(balance0 <= uint112(-1) && balance1 <= uint112(-1), 'UniswapV2: OVERFLOW');
