@@ -6,14 +6,14 @@ Let's get started!
 
 First, we'll import the `UniswapV2Pair` interface:
 
-```javascript
+```solidity
 import {IUniswapV2Pair} from
     "../../../src/interfaces/uniswap-v2/IUniswapV2Pair.sol";
 ```
 
 Next, we'll create a `struct` to represent the data that we'll send to the `flashSwap` function:
 
-```javascript
+```solidity
 struct FlashSwapData {
     // Caller of flashSwap (msg.sender inside flashSwap)
     address caller;
@@ -34,7 +34,7 @@ struct FlashSwapData {
 
 Now, we'll write the `flashSwap` function:
 
-```javascript
+```solidity
 // Exercise 1
 // - Flash swap to borrow tokenOut
 /**
@@ -84,7 +84,7 @@ function flashSwap(
 
 Finally, we'll write the `uniswapV2Call` function, which will execute the arbitrage and repay the borrowed tokens:
 
-```javascript
+```solidity
 function uniswapV2Call(
     address sender,
     uint256 amount0Out,
@@ -134,7 +134,7 @@ function uniswapV2Call(
 Now, we can execute the tests in our terminal. We'll start by setting up the fork URL, then execute the tests:
 
 ```bash
-forge test --fork-url $FORK_URL --mp test/uniswap-v2/solutions/UniswapV2Arb2.test.sol -vvv
+forge test --fork-url $FORK_URL --mp test/uniswap-v2/exercises/UniswapV2Arb2.test.sol -vvv
 ```
 
 We should see the tests pass. We can copy the profit from the terminal and divide it by 1e18 to see our profit in ETH. 
