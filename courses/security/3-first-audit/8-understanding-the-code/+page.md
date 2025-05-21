@@ -24,14 +24,14 @@ After gaining a fundamental understanding, you can start going through the code.
 
 First Lines:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.18;
 ```
 
 The open source license seems fine. A compiler version of `0.8.18` may not be an immediate concern, but we do know that this isn't the most recent compiler version. It may be worthwhile to make note of this to come back to.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.18; // Q: Is this the correct compiler version?
 ```

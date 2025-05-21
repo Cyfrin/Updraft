@@ -40,7 +40,7 @@ remappings = ['foundry-huff/=lib/foundry-huff/src']
 
 Our next step will be making the necessary adjustments to our Huff test contract, including the import and use of the `HuffDeployer` our test file is going to look like this when applied:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

@@ -24,7 +24,7 @@ So if ever you’re hunting for an exploit, or you have identified an attack whe
 
 To get a clear understanding, let’s put these into practice. Starting with a code base from [Solidity by example](https://solidity-by-example.org/hacks/self-destruct/) - and then carrying it into Remix, we will be able to observe this concept directly in action.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
