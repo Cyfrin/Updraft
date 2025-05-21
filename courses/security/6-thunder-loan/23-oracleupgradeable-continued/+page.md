@@ -9,7 +9,7 @@ Ok, we've delved pretty thoroughly into the importance of initialization, but we
 <details>
 <summary>OracleUpgradeable.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity 0.8.20;
 

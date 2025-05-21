@@ -30,7 +30,7 @@ I used Google Sheets and I've set my table up like below. I've only kept the fil
 
 Alright, we're set up! The Tincho method would have us starting small and working our way up, collecting little wins along the way. So, that' what we're going to do. The first file we'll assess is `IPoolFactory.sol`.
 
-```js
+```solidity
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity 0.8.20;
 

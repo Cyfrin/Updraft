@@ -11,7 +11,7 @@ The first _real_ contract we're going to scope out is `OracleUpgradeable.sol` an
 <details>
 <summary>OracleUpgradeable.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity 0.8.20;
 
@@ -51,7 +51,7 @@ contract OracleUpgradeable is Initializable {
 
 Starting from the top, we can verify that our 3 imports `ITSwapPool`, `IPoolFactory` and `Initializable` are being utilized, and they are.
 
-```js
+```solidity
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity 0.8.20;
 

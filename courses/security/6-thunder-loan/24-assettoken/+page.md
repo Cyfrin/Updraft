@@ -13,7 +13,7 @@ But, we're getting ahead of ourselves. Let's get started looking at `AssetToken.
 <details>
 <summary>AssetToken.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity 0.8.20;
 
