@@ -23,7 +23,7 @@ This exercise is designed to test your understanding of how to structure a smart
    - Encode flash loan data into `FlashLoanData`.
    - Call `flashLoan` to initiate a flash loan.
 
-   > **Hint:** Look inisde `AaveHelper` to see how to call the function `flashLoan`.
+   > **Hint:** Look inside `AaveHelper` to see how to call the function `flashLoan`.
 
 # `_flashLoanCallback`
 
@@ -47,7 +47,7 @@ function _flashLoanCallback(
 
    > **Hint:**
    >
-   > - Look into `AaveHelpe` for how to repay stablecoin debt and withdraw collateral.
+   > - Look into `AaveHelper` for how to repay stablecoin debt and withdraw collateral.
    > - Look into `SwapHelper` for how to swap tokens.
 
 2. **Handle profit and loss**
