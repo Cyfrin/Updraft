@@ -1,0 +1,5 @@
+
+           ---
+           title: Compound Interest Approximation
+           ---
+        
