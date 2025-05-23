@@ -29,7 +29,7 @@ After we write this code, we can call the deposit function inside of the strateg
 
 ```solidity
 interface IStrategyManager {
-  function stakerStrategyShares(address user, address strategy)
+  function stakerDepositShares(address user, address strategy)
     external
     view
     returns (uint256 shares);
