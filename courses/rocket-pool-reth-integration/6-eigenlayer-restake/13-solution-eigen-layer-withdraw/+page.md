@@ -2,24 +2,16 @@
 
 Once we queue the withdrawal by calling the function `undelegate`, we have to wait a certain amount of time, then we’ll be able to actually withdraw the tokens from EigenLayer.
 
-The amount of time that we have to wait is calculated from the function `getWithdrawalDelay()` in `EigenLayerRestake.sol`.
+The amount of time that we have to wait is calculated here inside `DelegationManager._completeQueuedWithdrawal`
 
 ```solidity
-function getWithdrawalDelay() external view returns (uint256) {
-  uint256 protocolDelay = delegationManager.minWithdrawalDelayBlocks();
-  address[] memory strategies = new address[](1);
-  strategies[0] = address(strategy);
-  uint256 strategyDelay = delegationManager.getWithdrawalDelay(strategies);
-  return max(protocolDelay, strategyDelay);
-}
+uint32 slashableUntil = withdrawal.startBlock + MIN_WITHDRAWAL_DELAY_BLOCKS;
+require(uint32(block.number) > slashableUntil, WithdrawalDelayNotElapsed());
 ```
 
-Basically, it is the maximum of the protocol delay, and the delay that is specific to each strategy that you've deposited into. The protocol delay is fetched by calling the function `minWithdrawalDelayBlocks` from the delegation manager.
-To get the withdrawal delay specific to each strategy, we’ll have to loop through the strategies that we've deposited into, and then call the function `getWithdrawalDelay`.
+Basically, it is the `MIN_WITHDRAWAL_DELAY_BLOCKS` after a withdraw has been initiated. The min withdraw delay is fetched by calling the function `minWithdrawalDelayBlocks` from the delegation manager.
 
 In our application, we've only deposited into the rETH strategy. So we only need to just get the withdrawal delay specific to rETH strategy, take these two delays, the protocol delay, and the delay specific to rETH strategy, and then return the maximum. This is the amount of waiting time that we'll have to wait, after we queued a withdrawal, before we can actually withdraw.
-
-Let's take a look at the inputs first. The function `withdraw()` will take in the operator, the operator that we're withdrawing the stakes from, the staked assets, the amount of shares to withdraw and `startBlockNum`. This `startBlockNum` is the block number when we queued a withdraw. In our application, when we call the function undelegate, it'll automatically queue a withdrawal, which is handled by the function undelegate on the delegation manager.
 
 So the starting block where withdrawal is queued, is the block when we call the function undelegate. So now, let's actually withdraw the tokens.
 
@@ -63,7 +55,6 @@ And the function that we’ll eventually need to call is called `completeQueuedW
 delegationManager.completeQueuedWithdrawal({
     Withdrawal calldata withdrawal,
     address[] calldata tokens,
-    uint256 middlewareTimesIndex,
     bool receiveAsTokens
 })
 ```
@@ -119,7 +110,6 @@ shares: _shares
 ```
 
 Ok, the next step is to prepare parameters to call the function completeWithdrawal. We prepared this parameter called withdrawal, struct withdrawal. So this will be the struct that we just prepared.
-We don't need `middleWareTimesIndex`, so we'll set it to `0`.
 
 And then `receiveAsTokens`? Do we want to receive rETH? Yes, so I'll set it to true. That completes this exercise.
 
