@@ -11,7 +11,7 @@ Failure to initialize can clear be incredibly impactful. Let's see how the explo
 
 > **Note:** I've added the initializer modifier to our initialize function here. This is omitted in the video version of this lesson. Feel free to copy this contract into your Remix instance.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

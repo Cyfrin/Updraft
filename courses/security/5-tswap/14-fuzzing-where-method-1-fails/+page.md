@@ -9,7 +9,7 @@ Let's ramp things up to a much more robust contract `HandlerStatefulFuzzCatches.
 <details>
 <summary>HandlerStatefulFuzzCatches.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
@@ -88,7 +88,7 @@ Create a new folder in our `test/invariant-break` folder named `handler`. Within
 
 There's going to be a lot to this, so let's break down this test set up one step at a time. First, we're going to need to import `HandlerStatefulFuzzCatches.sol` as well as `Test` and `StdInvariant` just as before. This contract takes an array of `supportedTokens` in it's constructor, so we'll need to import some tokens - the repo has provided mocks in `test/mocks` for use! Finally, be sure to import the IERC20 interface.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

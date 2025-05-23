@@ -12,7 +12,7 @@ _Follow along with the video lesson:_
 
 Two down, two to go! The next contract we should take a look at is TokenFactory.sol. We should recall from our diagram this is responsible for deploying L1Token.sol.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

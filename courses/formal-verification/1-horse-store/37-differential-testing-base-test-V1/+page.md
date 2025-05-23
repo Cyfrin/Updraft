@@ -19,7 +19,7 @@ We accomplish this by having our Huff and Solidity versions of our tests inherit
 
 Let's look at what our Base_TestV1 will look like.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.20;

@@ -20,7 +20,7 @@ Assure `fail_on_revert = true` in our `foundry.toml`. This will give us the best
 
 We'll start with writing our `Handler` as a way to constrain how our fuzzer behaves. You can think of a `Handler` as wrapper around our contract that the invariant test suite interacts with in a sensible way.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
@@ -52,7 +52,7 @@ We want it to:
 
 Lets employ a way for our Handler to determine which tokens are supported. We'll start by importing `YieldERC20` and `MockUSDC`. These are going to need to be input parameters for our constructor as well. Our setup so far should look something like this:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
@@ -127,7 +127,7 @@ Here's the entire `Handler.t.sol` for reference.
 <details>
 <summary>Handler.t.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
@@ -193,7 +193,7 @@ Now we can begin writing our tests in `Invariant.t.sol`!
 
 This file is going to look really similar to our `AttemptedBreakTest.t.sol` except it's going to be scoped to work with our `Handler` instead of `HandlerStateFulFuzzCatches.sol` directly.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

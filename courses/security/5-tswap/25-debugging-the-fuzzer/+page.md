@@ -117,7 +117,7 @@ Here's my fully tweaked `Handler` for reference:
 <details>
 <summary>Handler.t.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.20;

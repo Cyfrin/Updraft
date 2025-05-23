@@ -20,7 +20,7 @@ Right-click the `src` folder and select `Solidity: Metrics` to generate our repo
 
 It looks like our smallest contract is going to be L1Token.sol, so let's start there.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
