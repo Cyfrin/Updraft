@@ -26,8 +26,7 @@ F(X0, Y0) = X0 + Y0
 We call this the *spot price of Y in terms of X*. This is equal to _Y_ divided by _X_.
 
 ```
-X/Y = Spot price of Y
-    in terms of X
+X/Y = Spot price of Y in terms of X
 ```
 
 So if we flip this around, _X_ divided by _Y_ would be the spot price of token _Y_ in terms of token _X_.
@@ -36,53 +35,45 @@ Now we can use this to convert this _Y0_ in terms of token _X_.
 
 We multiply _Y0_ by the spot price of _Y0_. 
 
-```
-F(X0, Y0) = X0 + Y0 * (X0/Y0)
-```
+$F(X_0, Y_0) = X_0 + Y_0 * \frac{X_0}{Y_0}$
+
 
 The _Y0_ on the top and the _Y0_ on the bottom cancel out, and this turns out to be 2 times _X0_.
 
-```
-F(X0, Y0) = X0 + Y0 * (X0/Y0) = 2 * X0
-```
+$F(X_0, Y_0) = X_0 + Y_0 * \frac{X_0}{Y_0} = 2 * X_0$
 
-So this is the motivation for saying that _F_ of _X_ and _Y_ is equal to 2_X_. We are measuring the value of this AMM in terms of token _X_. The first term simply comes from the amount of token _X_ that is inside the pool. And the second term comes from converting the amount of token _Y_ in terms of token _X_.
+
+So this is the motivation for saying that _F_ of _X_ and _Y_ is equal to $2X_0$. We are measuring the value of this AMM in terms of token _X_. The first term simply comes from the amount of token _X_ that is inside the pool. And the second term comes from converting the amount of token _Y_ in terms of token _X_.
 
 Let's go over an example. _X0_ is 6 million DAI and _Y0_ is 3,000 ETH.
 
-```
-F(X0, Y0) = X0 + Y0 * (X0/Y0) = 2 * X0
-= 6,000,000 DAI + 6,000,000 DAI/3000 ETH * 3000 ETH
-= 12,000,000 DAI
-```
+$F(X_0, Y_0) = X_0 + Y_0 * \frac{X_0}{Y_0} = 2 * X_0$
+
+$= 6,000,000 DAI + \frac{6,000,000 DAI}{3000 ETH} * 3000ETH$
+
+$= 12,000,000 DAI$
+
 
 Next, using this definition as the value of the pool, let's calculate _L1_ minus _L0_ over _L0_.
 
-```
-L1-L0 / L0 =
-```
+$\frac{L_1 - L_0}{L_0}$
 
 Let's start with _L1_. Again, _L1_ will be the value of the pool after adding liquidity. After adding _dX_ and _dY_ amounts of tokens, by definition this is equal to _F_ of _X0_ plus _dX_ , _Y0_ plus _dY_.
 
-```
-L1-L0 / L0 = F(X0 + dX, Y0 + dY) - F(X0, Y0) / F(X0, Y0)
-```
+$\frac{L_1 - L_0}{L_0} = \frac{F(X_0 + d_X, Y_0 + d_Y) - F(X_0, Y_0)}{F(X_0, Y_0)}$
 
 _L0_ is liquidity before adding liquidity. This is simply _F_ of _X0_ and _Y0_.
 
-```
-L1-L0 / L0 = F(X0 + dX, Y0 + dY) - F(X0, Y0) / F(X0, Y0)
-= 2 * (X0 + dX) - 2 * X0 / 2 * X0
-```
+$\frac{L_1 - L_0}{L_0} = \frac{F(X_0 + d_X, Y_0 + d_Y) - F(X_0, Y_0)}{F(X_0, Y_0)}$
+
+$= \frac{2(X_0 + d_X) - 2X_0}{2X_0}$
 
 The 2s cancel out and the _X0_ on the top cancel out, and we are left with _dX_ divided by _X0_.
+    
+$= \frac{d_X}{d_Y}$
 
-```
-L1-L0 / L0 = F(X0 + dX, Y0 + dY) - F(X0, Y0) / F(X0, Y0)
-= 2 * (X0 + dX) - 2 * X0 / 2 * X0 = dX/X0
-```
 
-So this shows that when we define the pool value function as 2_X_, then _L1_ minus _L0_ divided by _L0_ is equal to _dX_ divided by _X0_.
+So this shows that when we define the pool value function as 2X, then _L1_ minus _L0_ divided by _L0_ is equal to _dX_ divided by _X0_.
 
 Now we can do something similar and define _F_ of _X_ and _Y_ to be 2 times _Y_. And we will get that _L1_ minus _L0_ over _L0_ is equal to _dY_ divided by _Y0_.
 

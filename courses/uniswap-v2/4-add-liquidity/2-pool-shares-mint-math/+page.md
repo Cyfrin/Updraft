@@ -35,33 +35,20 @@ L1 / L0
 This tells us how much the pool's value increased after the user added liquidity. We can then say that the shares to mint are proportional to this increase, as follows:
 
 ```
-T + S / T = L1 / L0
+(T + S) / T = L1 / L0
 ```
 
 In this equation, we are expressing the increase in shares. Before the user added liquidity, there were *T* total shares. After the user adds liquidity, the total shares are *T + S*. We are saying that the ratio of these two values is proportional to the increase in the pool's value. 
 
 We can solve this equation for *S*, the amount of shares to mint:
 
-```bash
-T + S / T = L1 / L0
-```
-
-```bash
-T + S = L1 / L0 * T
-```
-
-```bash
-S = L1 / L0 * T - T
-```
-
-```bash
-S = (L1 - L0) / L0 * T
-```
+1. $\frac{(T + S)}{T}=\frac{L_1}{L_0}$
+2. $T + S=\frac{L_1}{L_0}T$
+3. $S=\frac{L_1}{L_0}T - T$
+4. $S=\frac{L_1 - L_0}{L_0}T$
 
 Therefore, the equation we use to calculate the amount of shares to mint is:
 
-```
-S = (L1 - L0) / L0 * T
-```
+$S=\frac{L_1 - L_0}{L_0}T$
 
 When we apply this equation to a practical example, we'll see that the user receives shares in proportion to the liquidity they contribute. This means the user's ownership of the pool accurately reflects their contribution. 

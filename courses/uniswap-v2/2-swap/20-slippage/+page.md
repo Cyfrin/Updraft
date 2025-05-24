@@ -19,3 +19,7 @@ We can visualize slippage using an AMM curve.
 This curve represents the relationship between the amount of DAI and ETH in the liquidity pool. As we trade on the DEX, the curve shifts. The amount of ETH we receive is represented by the length of the blue line on the curve. The length of the blue line for Bob's trade is shorter than the length of the blue line for our trade.
 
 Because of the way the AMM curve is curved, the amount of ETH we receive diminishes with each trade.
+
+### As shown in the diagram.
+
+![Pasted image 20250416081726](https://github.com/user-attachments/assets/47ff14b9-aaa0-4b29-84cf-98169327b47c)

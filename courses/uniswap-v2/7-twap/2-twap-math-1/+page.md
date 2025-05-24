@@ -6,72 +6,72 @@ TWAP is a method for calculating the average price of a token over a specific pe
 
 Let's say we have a token X and token Y, and we want to calculate the average price of token X in terms of token Y. Let's say we have a price for each time stamp, and we can represent it as P of i. We can write the price in terms of the amount of token Y in the contract divided by the amount of token X in the contract.
 
-```
-P of i = Y / X
-```
 
-The time stamp can be represented as T of i.
+$P_i=\frac{Y}{X}$
 
-```
-T of i 
-```
 
-The price P of i will only apply for a time period between T of i and less than T of i + 1. 
 
-If we model the time difference between T of i and the next one T of i + 1 as Δ of T of i, this would be the time difference between the two time stamps.
+The time stamp can be represented as $T_i$.
 
-```
-Δ of T of i = T of i + 1 - T of i
-```
+$T_i$
 
-If we want to calculate the TWAP from T0 to Tn, we would need to take the average of P0, P1, P2 and so on all the way up to P to the n - 1.
 
-```
-P0 + P1 + P2 + ... + P to the n - 1
-```
 
-We would also need to calculate the duration of time for each price. The duration for P0 would be T1 - T0. We can write this concisely as Δ of T0.
+The price P of i will only apply for a time period between T of i and less than $T_{i+1}$. 
 
-```
-Δ of T0 = T1 - T0
-```
+If we model the time difference between T of i and the next one $T_{i+1}$. as $ΔT_i$ , this would be the time difference between the two time stamps.
 
-We would then divide by the whole duration which is Tn - T0.
 
-```
-Δ of T0 / Tn - T0
-```
+$ΔT_i=T_{i+1}-T_i$
+
+
+
+If we want to calculate the TWAP from T0 to Tn, we would need to take the average of P0, P1, P2 and so on all the way up to $P_{n - 1}$.
+
+$P_0 + P_1 + P_2 + ... + P_{n-1}$
+
+
+
+We would also need to calculate the duration of time for each price. The duration for P0 would be $T_1 - T_0$. We can write this concisely as $ΔT_0$.
+
+$ΔT_0 = T_1 - T_0$
+
+
+
+We would then divide by the whole duration which is $T_n - T_0$.
+
+$\frac{ΔT_0}{T_n - T_0}$
+
+
 
 This fraction is the percentage of time that the price was at P0 in the time between Tn and T0. We can use the same method to calculate the weights for each price, P1, P2, and so on.
 
 To calculate the TWAP from Tk to Tn, we can use the same formula and modify the indices.
 
-```
-Δ of Tk / Tn - Tk * Pk + 
-Δ of Tk + 1 / Tn - Tk * Pk + 1 +
-Δ of Tk + 2 / Tn - Tk * Pk + 2 + ... + 
-Δ of Tn - 1 / Tn - Tk * P to the n - 1
-```
+$\frac{ΔT_k}{T_n-T_k}P_k +$
+$\frac{ΔT_{k+1}}{T_n-T_k}P_{k+1}+$
+$\frac{ΔT_{k+2}}{T_n-T_k}P_{k+2}+$
+$\frac{ΔT_{n-1}}{T_n-T_k}P_{n-1}$
 
-We can simplify this equation further by pulling out Tn - Tk from each term.
 
-```
-Δ of Tk / Tn - Tk * Pk + 
-Δ of Tk + 1 / Tn - Tk * Pk + 1 +
-Δ of Tk + 2 / Tn - Tk * Pk + 2 + ... + 
-Δ of Tn - 1 / Tn - Tk * P to the n - 1
 
-= (Δ of Tk * Pk + Δ of Tk + 1 * Pk + 1 + Δ of Tk + 2 * Pk + 2 + ... + Δ of Tn - 1 * P to the n - 1) / Tn - Tk
-```
+We can simplify this equation further by pulling out $T_n-T_k$ from each term.
+
+$\frac{ΔT_k}{T_n-T_k}P_k +$
+$\frac{ΔT_{k+1}}{T_n-T_k}P_{k+1}+$
+$\frac{ΔT_{k+2}}{T_n-T_k}P_{k+2}+$
+$\frac{ΔT_{n-1}}{T_n-T_k}P_{n-1}$
+
+$=\frac{ΔT_kP_k+ΔT_{k+1}P_{k+1}+ΔT_{k+2}P_{k+2}+...+ΔT_{n-1}P_{n-1}}{T_n-T_n}$
+
 
 We can simplify this equation even further by using the summation symbol. 
 
-```
-= Σ( i = k to n - 1 ) Δ of Ti * Pi / Tn - Tk
-```
+$=\frac{\sum\limits_{i=k}^{n-1}{ΔT_iP_i}}{T_n-T_k}$
+
 
 This equation will calculate the TWAP from Tk to Tn.
 
-[Diagram]
 
 In the next lesson, we'll discuss the concept of cumulative price. We'll rewrite this equation using cumulative prices to make it even easier to calculate.
+

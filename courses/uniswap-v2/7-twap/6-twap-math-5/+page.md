@@ -8,14 +8,13 @@ However, we cannot apply this same logic to say that the TWAP of token Y is equa
 
 As we discussed in the previous videos, the TWAP of token X from time tk to tn is given by this equation.
 
-```javascript
-TWAP of X from tk to tn =  Σ(i=k to n+1) Δt_i * p_i / (tn - tk)
-```
+TWAP of X from $T_k$ to $T_n = \frac{\sum\limits_{i=k}^{n-1}{ΔT_iP_i}}{T_n-T_k}$
+
 
 The equation for the TWAP of token Y is almost similar to this equation. The only difference is that we need to take the spot price of token Y in terms of token X. This is given by 1 over P of Y.
 
-```javascript
-TWAP of Y from tk to tn =  Σ(i=k to n+1) Δt_i * (1 / p_i) / (tn - tk)
-```
+
+TWAP of Y from $T_k$ to $T_n = \frac{\sum\limits_{i=k}^{n-1}{ΔT_i\frac{1}{P_i}}}{T_n-T_k}$
+
 
 And it's hard to imagine that taking 1 over this equation will be equal to this equation. If you're curious, you can do the math and check that taking 1 over this equation will not be equal to this equation. 
