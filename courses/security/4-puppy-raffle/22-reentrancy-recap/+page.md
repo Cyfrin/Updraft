@@ -23,7 +23,7 @@ We learnt that re-entrancy is a _very_ common attack vector and walked through h
 <details>
 <summary>Re-entrancy Test Example</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

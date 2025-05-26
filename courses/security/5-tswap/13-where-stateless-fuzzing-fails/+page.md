@@ -12,7 +12,7 @@ This methodology will allow us to utilize a fuzz testing approach while consider
 
 Let's look at a different contract in our repo now, `StatefulFuzzCatches.sol`. Stateless fuzz catching would have been unable to find vulnerabilities in this situation:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
@@ -40,7 +40,7 @@ _What makes this contract so difficult for stateless fuzzing?_
 
 Well, let's write a stateless fuzz test for this contract and see what happens, create a file `test/StatefulFuzzCatches.t.sol`...
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
@@ -70,7 +70,7 @@ Even if we ran the test 100,000 times, the bug wouldn't be found. The reason is 
 
 Let's set up a **stateful** fuzz test now to see how it stacks up.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
