@@ -1,6 +1,6 @@
 In the previous video we were introduced to an equation that relates how liquidity changes in a Uniswap V2 constant product market maker (AMM) to changes in the amount of each asset in the pool. The equation is: 
 
-L1 - L0 / L0 = dX / X0 = dY / Y0
+$\frac{L_1 - L_0}{L_0} = \frac{dx}{x_0} = \frac{dy}{y_0}$
 
 Where L0 is the initial liquidity, L1 is the liquidity after adding dX and dY amount of token X and Y, X0 is the initial amount of token X, and Y0 is the initial amount of token Y. 
 
@@ -15,4 +15,5 @@ We will define our liquidity function as F(X, Y) = L where:
 
 We came up with three different ways to define this function, which we will discuss in the coming lessons.
 
-**#Tag: Diagram of pool liquidity function** 
+**Diagram** 
+![Pasted image 20250417063123](https://github.com/user-attachments/assets/b4c9a0de-8a25-487f-bdfa-85ed089fd82c)

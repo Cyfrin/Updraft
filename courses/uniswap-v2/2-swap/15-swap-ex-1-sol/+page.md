@@ -13,21 +13,21 @@ The user will call the `UniswapV2Router02` contract, which contains the `swapExa
 We'll then specify the function to be called and assign the returned array of `uint` values to a variable.
 
 ```javascript
-uint256[] memory amounts = router.swapExactTokensForTokens(
-    amountIn,
-    amountOutMin,
-    path,
-    user,
-    block.timestamp
-);
+uint256[] memory amounts = router.swapExactTokensForTokens({
+    amountIn: amountIn,
+    amountOutMin: amountOutMin,
+    path: path,
+    to: user,
+    deadline: block.timestamp
+});
 ```
 
 These `uint` values represent the amount of each token exchanged during the swap. We can console.log these values to visualize the intermediate steps of the swap:
 
 ```javascript
-console.log("WETH", amounts[0]);
-console.log("DAI", amounts[1]);
-console.log("MKR", amounts[2]);
+console2.log("WETH: %18e", amounts[0]);
+console2.log("DAI: %18e", amounts[1]);
+console2.log("MKR: %18e", amounts[2]);
 ```
 
 Lastly, we'll assert that the user's balance of MKR is greater than or equal to the minimum output amount.
@@ -41,7 +41,7 @@ In this test, we're simulating a swap of WETH to DAI and then from DAI to MKR. T
 To execute this test, we need to run `forge` with the correct fork URL and path.
 
 ```bash
-forge test --fork-url $FORK_URL --match-path test/uniswap-v2/exercises/UniswapV2/swap.sol -vv
+forge test --fork-url $FORK_URL --mp test/uniswap-v2/exercises/UniswapV2Swap.test.sol -vvv
 ```
 
 This will run the test on a mainnet fork and provide verbose logging.

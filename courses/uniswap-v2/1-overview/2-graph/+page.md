@@ -4,9 +4,9 @@ We are going to look at the constant product AMM, a type of decentralized exchan
 
 The function used for the constant product AMM is defined as:
 
-```
-x * y = L ^ 2
-```
+
+$x * y = L^2$
+
 
 Where:
 
@@ -22,7 +22,7 @@ In this example, we see an AMM where:
 * y = 200
 * L = 200
 
-This means the liquidity of the AMM is 200, and all combinations of token X and token Y that satisfy the function `x * y = L ^ 2` are valid.
+This means the liquidity of the AMM is 200, and all combinations of token X and token Y that satisfy the function $x * y = L^2$ are valid.
 
 **How does the curve determine the amount of token that goes out in a trade?**
 
@@ -34,6 +34,6 @@ L represents the *liquidity* of the AMM. The bigger the L value, the bigger the 
 
 **Example:**
 
-If we start with an AMM where x = 400 and y = 400, and L = 400, adding 200 tokens X results in x1 = 600 and y1 = 266.6666667. In this case, the amount of token Y removed from the pool (dY) will be 133.3333333. 
+If we start with an AMM where x = 400 and y = 400, and L = 400, adding 200 tokens X results in x1 = 600 and y1 = 266.66667. In this case, the amount of token Y removed from the pool (dY) will be 133.33333. 
 
 We can see that as L increases, the amount of token Y that can be acquired for the same amount of token X increases.
