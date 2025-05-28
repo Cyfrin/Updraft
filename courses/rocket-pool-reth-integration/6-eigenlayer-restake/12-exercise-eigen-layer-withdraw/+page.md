@@ -19,7 +19,6 @@ function withdraw(address operator, uint256 shares, uint32 startBlockNum)
 
    - Call `delegationManager.completeQueuedWithdrawal` to withdraw rETH from EigenLayer.
    - Set `IDelegationManager.Withdrawal.nonce` to 0.
-   - Use `middlewareTimesIndex` = 0 when calling this function.
 
    > **Hint:** See the interface `IDelegateManager`.
 
