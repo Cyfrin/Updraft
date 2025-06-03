@@ -14,11 +14,11 @@ In order to develop an in-depth understanding, I would highly recommend visiting
 
 ## What is the mempool?
 
-::image{src='/security-section-8/3-mev-introduction/regular-transaction.png' style='width: 100%; height: auto;' alt='regular transaction'}
+![regular transaction](/security-section-8/3-mev-introduction/regular-transaction.png)
 
 When a transaction is initiated it uses an RPC_URL, as we know. This URL points to a specific node on the blockchain which, instead of immediately integrating it into its block, places it into its 'memory pool', or 'mempool'. This constitutes the lower tier of workings that enable blockchain.
 
-::image{src='/security-section-8/3-mev-introduction/mempool.png' style='width: 100%; height: auto;' alt='mempool'}
+![mempool](/security-section-8/3-mev-introduction/mempool.png)
 
 As we know, nodes essentially "take turns" building blocks for the blockchain. So if you send your transaction to a single node, the node will have to wait until it's that node's turn to include your transaction! This could take months!
 
@@ -36,6 +36,6 @@ If a malicious actor were to see a transaction in this waiting room that would b
 
 The malicious actor's transaction would execute before the victims!
 
-::image{src='/security-section-8/3-mev-introduction/mev.svg' style='width: 100%; height: auto;' alt='front-running'}
+![front-running](/security-section-8/3-mev-introduction/mev.svg)
 
 This is called Front-Running and is one of the most common forms of MEV. Let's look at a more minimal diagram in the next lesson before moving on.

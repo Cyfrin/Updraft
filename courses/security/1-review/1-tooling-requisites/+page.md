@@ -32,7 +32,7 @@ For Linux and Mac users, you can simply stick with the environments you're alrea
 
 AI tools like [**Phind**](https://www.phind.com/) or [**ChatGPT**](https://www.chat.openai.com) aid in seeking answers when things get tough. One nifty feature **Phind** offers is web searching; you can query "_install Foundry for the ETH ecosystem_", and the tool will surf the web, compile an answer, and offer you a digestible solution for your query!
 
-::image{src='/security-section-1/1-tooling/tooling1.PNG' style='width: 100%; height: auto;' alt='block fee'}
+![block fee](/security-section-1/1-tooling/tooling1.PNG)
 
 ## Web3 Is About Community
 

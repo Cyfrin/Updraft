@@ -6,7 +6,7 @@ Chainlink is a decentralized oracle network (DON) that provides smart contracts 
 
 Chainlink does this using a similar model to a blockchain–there is a decentralized network of independent operators (oracle nodes) that retrieve data from multiple sources. This data is then aggregated, and a single aggregated data point is delivered on-chain.
 
-::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/chainlink-architecture.png' style='width: 100%; height: auto;' alt='chainlink-architecture'}
+![chainlink-architecture](/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/chainlink-architecture.png)
 
 Chainlink has become the most widely used DON because it addresses the key challenges of connecting blockchains to external information:
 

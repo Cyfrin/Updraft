@@ -21,7 +21,7 @@ And I'm here to tell you, it doesn't matter. The bots simulate the transaction, 
 
 We look at a [modified example](https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/MEV/Bouncer.sol) where we add a "bouncer" contract to try to "block" the transactions.
 
-::image{src='/security-section-8/10-mev-live-again/bouncer.png' style='width: 100%; height: auto;' alt='bouncer'}
+![bouncer](/security-section-8/10-mev-live-again/bouncer.png)
 
 ```javascript
 // SPDX-License-Identifier: MIT

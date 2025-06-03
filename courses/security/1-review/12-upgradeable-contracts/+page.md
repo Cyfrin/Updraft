@@ -57,7 +57,7 @@ Within our `Proxy.sol` contract, we've got the `_delegate()` function. This func
 
 The `_delegate()` function, then sends that data over to some `implementation` contract.
 
-::image{src='/security-section-1/12-upgradeable/upgrades2.png' style='width: 100%; height: auto;' alt='block fee'}
+![block fee](/security-section-1/12-upgradeable/upgrades2.png)
 
 Looking at `SmallProxy.sol` you can see you have these two functions:
 
@@ -148,7 +148,7 @@ function setImplementation(address implementationB);
 
 When we then pass the same data as before to our proxy contract, we can indeed see this is reaching `implementationB` and we're having returned `newValue +2`!
 
-::image{src='/security-section-1/12-upgradeable/upgrades3.png' style='width: 100%; height: auto;' alt='block fee'}
+![block fee](/security-section-1/12-upgradeable/upgrades3.png)
 
 ---
 

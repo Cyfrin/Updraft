@@ -18,11 +18,11 @@ Let's walk through how to get some testnet LINK, how to add LINK to MetaMask and
 
 - Click the **Add to wallet** button to import the LINK token to NetaMask. Note that this will only add the token for that secific network. This will need to be repeated for all networks you intend to use LINK tokens.
 
-::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/add-to-wallet.png' style='width: 100%; height: auto;' alt='add-to-wallet'}
+![add-to-wallet](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/add-to-wallet.png)
 
 - Click **Add token** to add the token to your MetaMask
 
-::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/add-token.png' style='width: 100%; height: auto;' alt='add-token'}
+![add-token](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/add-token.png)
 
 #### Using a LINK faucet
 
@@ -30,13 +30,13 @@ To obtain testnet LINK, head to the [Chainlink Faucet](https://faucets.chain.lin
 
 Click the **Link** button at the top right, select the network(s) you want to get LINK on and click **Continue. "
 
-::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/select-networks-link.png' style='width: 100%; height: auto;' alt='select-networks-link'}
+![select-networks-link](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/select-networks-link.png)
 
 - Click **Get tokens** and click **Confirm** in MetaMask to sign the transaction.
 - Once the transaction has confirmed, you can see the LINK balance in your wallet.
 
-::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/link-sent.png' style='width: 100%; height: auto;' alt='link-sent'}
-::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/link-metamask.png' style='width: 100%; height: auto;' alt='link-metamask'}
+![link-sent](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/link-sent.png)
+![link-metamask](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/link-metamask.png)
 
 ### Adding a token to MetaMask
 
@@ -46,17 +46,17 @@ LINK was easy to add to MetaMask since Chainlink included that cheeky **Add to w
 
 - Open MetaMask and check you are on the same chain as the token address you just copied by clicking on the network button on the top left corner in MetMask
 
-::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/select-a-network.png' style='width: 100%; height: auto;' alt='select-a-network'}
+![select-a-network](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/select-a-network.png)
 
 - Click the **Tokens** tab, click the vertical three dots button, and then **Import tokens**  
 
-::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/token-tab.png' style='width: 100%; height: auto;' alt='tokenb-tab'}
+![tokenb-tab](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/token-tab.png)
 
 - Enter the token contract address. MetaMask will automatically detect your token and its related information if it follows the ERC-20 standard.
 
 - Check the correct information (Address, Token Symbol, and Decimals).
 
-::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/import-usdc.png' style='width: 100%; height: auto;' alt='import-usdc'}
+![import-usdc](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/import-usdc.png)
 
 - Click **Next** to confirm the information. Click **Import** to import your token to MetaMask. This lets you view your balance and send tokens to others using the MetaMask UI.
 
@@ -66,20 +66,20 @@ To send tokens to another address:
 
 - Click on the **Tokens** tab, then click the token you want to send (you need to have imported it already), e.g., the LINK token.
 
-::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/mm-link-token.png' style='width: 100%; height: auto;' alt='mm-link-token'}
+![mm-link-token](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/mm-link-token.png)
 
 - Click the **Send** button.
 
-::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/send-link.png' style='width: 100%; height: auto;' alt='send-link'}
+![send-link](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/send-link.png)
 
 - Paste the address you want to send the tokens to.
 
-::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/send-to.png' style='width: 100%; height: auto;' alt='send-to'}
+![send-to](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/send-to.png)
 
 - Enter the amount and then click **Next**
 
-::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/send-amount.png' style='width: 100%; height: auto;' alt='send-amount'}
+![send-amount](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/send-amount.png)
 
 - To sign the transaction, click **Confirm**. This transaction will now be sent and the tokens will be transferred to the address you specified. 
 
-::image{src='/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/confirm-transaction.png' style='width: 100%; height: auto;' alt='confirm-transaction'}
+![confirm-transaction](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/confirm-transaction.png)

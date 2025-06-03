@@ -46,7 +46,7 @@ CCIP consists of the following components to facilitate cross-chain communicatio
 
 - **Receiver**: An EOA or smart contract that receives the cross-chain transaction. The receiver may differ from the sender depending on the specific use case, such as sending assets to another user on a different chain. Only smart contracts can receive data.
 
-::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/ccip-architecture.png' style='width: 100%; height: auto;' alt='ccip-architecture'}
+![ccip-architecture](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/ccip-architecture.png)
 
 ## Fee-Handling
 

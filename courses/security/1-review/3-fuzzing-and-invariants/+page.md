@@ -77,7 +77,7 @@ Fuzzing also comes in flavours, the above being an example of `stateless fuzzing
 
 This is important for situations like our `doStuff` function
 
-::image{src='/security-section-1/3-fuzz-test/fuzz2.png' style='width: 100%; height: auto;' alt='block fee'}
+![block fee](/security-section-1/3-fuzz-test/fuzz2.png)
 
 A stateful fuzz test would instead utilize the same contract we just triggered and call another function on it, creating an interlocking sequence of functions throughout a single run. Achieving this in Foundry requires using the `invariant` keyword and a bit of setup:
 
