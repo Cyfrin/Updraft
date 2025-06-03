@@ -23,7 +23,7 @@ Here, `<RPC_URL>` represents ZKsync node address, such as `http://127.0.0.1:8011
 
 This command instructs Foundry to locate the `SimpleStorage` contract in the `src/SimpleStorage.sol` file and deploy it. Upon execution, the contract compiles and deploys successfully. The output will display details such as the deployer, the deployed contract address, and the transaction hash.
 
-::image{src='/foundry-simply-storage/27-zksync-local-deploy/deployment-successful.png' style='width: 50%; height: auto;'}
+![deployment-successful](/foundry-simply-storage/27-zksync-local-deploy/deployment-successful.png)
 
 Using the `--legacy` flag is recommended for deploying simple contracts, while more complex codebases may require different approaches. Attempting to deploy without the `--legacy` flag might result in errors like `failed to serialize transaction, address to address is null`, which will be covered in future lessons.
 

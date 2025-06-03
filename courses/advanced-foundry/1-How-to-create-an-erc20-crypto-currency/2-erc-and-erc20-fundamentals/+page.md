@@ -25,7 +25,7 @@ If `EIPs` get enough traction to warrant genuine consideration they will often g
 
 New `Improvement Proposals` and `Requests for Comments` are tracked on websites such as [**eips.ethereum.org**](https://eips.ethereum.org/), where you can watch these proposals go through the process real time and be adopted or rejected by the community.
 
-::image{src='/foundry-erc20s/1-erc20-basics/erc20-basics1.PNG' style='width: 100%; height: auto;'}
+![erc20-basics1](/foundry-erc20s/1-erc20-basics/erc20-basics1.PNG)
 
 ### EIP status terms
 

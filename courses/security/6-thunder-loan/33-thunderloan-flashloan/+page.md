@@ -363,7 +363,7 @@ Alright - strictly speaking, it doesn't look like this is doing anything. This f
 
 A whole loan flow looks something like this:
 
-::image{src='/security-section-6/33-thunderloan-flashloan/thunderloan-flashloan1.png' style='width: 100%; height: auto;'}
+![thunderloan-flashloan1](/security-section-6/33-thunderloan-flashloan/thunderloan-flashloan1.png)
 
 After the flash loan is executed, this function closes with a very important check:
 

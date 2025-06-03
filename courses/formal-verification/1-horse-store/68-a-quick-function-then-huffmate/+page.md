@@ -857,7 +857,7 @@ We can finally begin defining our `MINT_HORSE()` macro:
 
 Next we'll need to access the msg.sender, as that's to whom the token is being minted. Fortunately we've an op code specifically to reference the `CALLER`.
 
-::image{src='/formal-verification-1/68-a-quick-function-then-huffmate/a-quick-function-then-huffmate1.png' style='width: 100%; height: auto;'}
+![a-quick-function-then-huffmate1](/formal-verification-1/68-a-quick-function-then-huffmate/a-quick-function-then-huffmate1.png)
 
 This op code will add the 20 byte address of the callers account to the top of our stack!
 

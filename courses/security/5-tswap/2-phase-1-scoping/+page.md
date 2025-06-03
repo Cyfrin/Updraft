@@ -25,7 +25,7 @@ Let's outline some of the important parts of this onboarding checklist together.
 
 ### Extensive Onboarding Form
 
-::image{src='/security-section-5/2-phase-1-scoping/scoping1.png' style='width: 100%; height: auto;'}
+![scoping1](/security-section-5/2-phase-1-scoping/scoping1.png)
 
 When we first look at this document we'll likely see some familiar things to start. We ask for some basic protocol information including:
 
@@ -46,15 +46,15 @@ Notice that TSwap's SLOC is 374 - this is nearly DOUBLE what Puppy Raffle was an
 
 We should also note that the coverage reported here is ... abysmal.
 
-::image{src='/security-section-5/2-phase-1-scoping/scoping2.png' style='width: 100%; height: auto;'}
+![scoping2](/security-section-5/2-phase-1-scoping/scoping2.png)
 
 The next sections I won't go over in great detail now, but read through these questions and their importance will become clear as we go through the protocol.
 
-::image{src='/security-section-5/2-phase-1-scoping/scoping3.png' style='width: 100%; height: auto;'}
+![scoping3](/security-section-5/2-phase-1-scoping/scoping3.png)
 
 Remember that communication with these protocols is paramount, the clearer the line of communication you have with a protocol, the better.
 
-::image{src='/security-section-5/2-phase-1-scoping/scoping4.png' style='width: 100%; height: auto;'}
+![scoping4](/security-section-5/2-phase-1-scoping/scoping4.png)
 
 The next sections touch on known issues and previous audit reports. This information is incredibly valuable in allowing a security researcher in focusing their efforts.
 
@@ -64,7 +64,7 @@ We can see that the protocol, in this instance, hasn't provided us any additiona
 
 The last section of the Extensive Onboarding Form we should be familiar with, protocols should have answers to questions found on the Rekt Test, which of course includes a Post Deployment Plan.
 
-::image{src='/security-section-5/2-phase-1-scoping/scoping5.png' style='width: 100%; height: auto;'}
+![scoping5](/security-section-5/2-phase-1-scoping/scoping5.png)
 
 ### Wrap Up
 

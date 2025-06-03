@@ -48,7 +48,7 @@ function listItem(address nftAddress, uint256 tokenId, uint256 price) external {
 
 In the listItem function, our Assembly block is being used to emit an event, or emit logs. We can see how Log4 works through our handy reference in [**evm.codes**](https://www.evm.codes/).
 
-::image{src='/formal-verification-3/3-emitting-logs-with-assembly/emitting-logs-with-assembly-log-41.png' style='width: 100%; height: auto;'}
+![emitting-logs-with-assembly-log-41](/formal-verification-3/3-emitting-logs-with-assembly/emitting-logs-with-assembly-log-41.png)
 
 This op code will append our log record with 4 topics and takes 6 stack input elements. Let's consider how this is being used in our contract.
 

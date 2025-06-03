@@ -13,7 +13,7 @@ _Follow along with this video:_
 
 In lieu of updating adjusting this behaviour, let's simply define vacuity and better understand it's impact and how to avoid it in our testing.
 
-::image{src='/formal-verification-3/20-vacuity/vacuity1.png' style='width: 100%; height: auto;'}
+![vacuity1](/formal-verification-3/20-vacuity/vacuity1.png)
 
 Simply put, vacuity defines a situation in which our assertion is effectively unchecked, because we aren't supplying the prover an input that satisfies our spec.
 
@@ -51,6 +51,6 @@ methods {
 
 With this change in place, we should be able to run the prover once more...
 
-::image{src='/formal-verification-3/20-vacuity/vacuity2.png' style='width: 100%; height: auto;'}
+![vacuity2](/formal-verification-3/20-vacuity/vacuity2.png)
 
 🥳

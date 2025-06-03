@@ -14,19 +14,19 @@ So far we've seen an example of a `view summary` in our demonstrations of the `A
 
 `View summaries` themselves are broken into a few different flavours:
 
-::image{src='/formal-verification-3/17-summary-declaration-examples/summary-declaration-examples1.png' style='width: 100%; height: auto;'}
+![summary-declaration-examples1](/formal-verification-3/17-summary-declaration-examples/summary-declaration-examples1.png)
 
 We also have `HAVOC summaries` available to us, which allow us to control, with greater specificity, how the prover responds to particular function calls.
 
 > ❗ **NOTE** > `HAVOC'd` verifications may result in undesirable levels of restriction with regards to the soundness and validity of your proof. Use things like `HAVOC_ALL` with restraint and purpose.
 
-::image{src='/formal-verification-3/17-summary-declaration-examples/summary-declaration-examples2.png' style='width: 100%; height: auto;'}
+![summary-declaration-examples2](/formal-verification-3/17-summary-declaration-examples/summary-declaration-examples2.png)
 
 Lastly, for the scope of this course, and most applicably to our GasBad solution, we have `DISPATCHER summaries`.
 
 A `DISPATCHER summary` set to true tells the prover that a given function can only execute logic as defined by another contract within our scope. This restricts the behaviour of the function calls in the prover to something predictable and thus validatable.
 
-::image{src='/formal-verification-3/17-summary-declaration-examples/summary-declaration-examples3.png' style='width: 100%; height: auto;'}
+![summary-declaration-examples3](/formal-verification-3/17-summary-declaration-examples/summary-declaration-examples3.png)
 
 ### Wrap Up
 

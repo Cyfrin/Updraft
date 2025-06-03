@@ -14,7 +14,7 @@ Our methods block til now has been fairly minimalistic, but this section has a l
 
 Exact entries are telling the prover 'here's a particular function, on a particular contract, test it'. This can be a little restrictive, but offers a lot of granular control when necessary.
 
-::image{src='/formal-verification-3/16-method-entries-introduction/method-entries-introduction1.png' style='width: 100%; height: auto;'}
+![method-entries-introduction1](/formal-verification-3/16-method-entries-introduction/method-entries-introduction1.png)
 
 So, in our simple NftMock.spec example, we were effectively doing this:
 
@@ -30,7 +30,7 @@ methods {
 
 In addition to `exact entries` however, we have other options available to us, such as [**`wildcard entries`**](https://docs.certora.com/en/latest/docs/cvl/methods.html#wildcard-entries).
 
-::image{src='/formal-verification-3/16-method-entries-introduction/method-entries-introduction2.png' style='width: 100%; height: auto;'}
+![method-entries-introduction2](/formal-verification-3/16-method-entries-introduction/method-entries-introduction2.png)
 
 What `wildcard entries` allow us to do is abstract out which contract a given function is being called on.
 
@@ -54,7 +54,7 @@ This tells `Certora` that any `totalSupply` function, found within any scoped fi
 
 Additionally, additionally - there are `catch-all entries`. These function almost opposite to wildcard entries. Catch-all entries allow us to specify that all function of a given contract are to behave the same way.
 
-::image{src='/formal-verification-3/16-method-entries-introduction/method-entries-introduction3.png' style='width: 100%; height: auto;'}
+![method-entries-introduction3](/formal-verification-3/16-method-entries-introduction/method-entries-introduction3.png)
 
 Applied to our previous example, the syntax would look something like this:
 

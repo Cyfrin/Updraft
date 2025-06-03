@@ -8,7 +8,7 @@ title: Recon - Manual Review - IPoolFactory.sol
 
 After setting our initial context and utilizing our suite of auditing tools, it's time to get our hands dirty with some thorough manual review. Much like our previous auditing process, one viable option available to us is to start from the test suite. Just look at this test coverage, it'll probably be an informational on it's own.
 
-::image{src='/security-section-6/15-recon-ipoolfactory/recon-ipoolfactory3.png' style='width: 100%; height: auto;'}
+![recon-ipoolfactory3](/security-section-6/15-recon-ipoolfactory/recon-ipoolfactory3.png)
 
 This time, we're going to dive right into manual review however.
 
@@ -18,13 +18,13 @@ Run solidity metrics again and let's take another look at what we're working wit
 
 > **Remember:** You can run solidity metrics by right-clicking the `src` folder and selecting `Solidity: Metrics` to generate the report.
 
-::image{src='/security-section-6/15-recon-ipoolfactory/recon-ipoolfactory1.png' style='width: 100%; height: auto;'}
+![recon-ipoolfactory1](/security-section-6/15-recon-ipoolfactory/recon-ipoolfactory1.png)
 
 Copy this table into a spreadsheet of your choice, it will allow us to sort and manage our scope more easily through this process, tracking what we've done as we go.
 
 I used Google Sheets and I've set my table up like below. I've only kept the file and complexity columns.
 
-::image{src='/security-section-6/15-recon-ipoolfactory/recon-ipoolfactory2.png' style='width: 100%; height: auto;'}
+![recon-ipoolfactory2](/security-section-6/15-recon-ipoolfactory/recon-ipoolfactory2.png)
 
 ### The Tincho Method Applied
 
@@ -62,4 +62,4 @@ I otherwise see no glaring issues here!
 
 Let's check this file off, celebrate our little win and move on to the next one!
 
-::image{src='/security-section-6/15-recon-ipoolfactory/recon-ipoolfactory4.png' style='width: 100%; height: auto;'}
+![recon-ipoolfactory4](/security-section-6/15-recon-ipoolfactory/recon-ipoolfactory4.png)

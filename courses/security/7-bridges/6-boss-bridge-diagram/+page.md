@@ -8,7 +8,7 @@ _Follow along with the video lesson:_
 
 ### Boss Bridge Diagram
 
-::image{src='/security-section-7/6-boss-bridge-diagram/boss-bridge-diagram1.png' style='width: 100%; height: auto;'}
+![boss-bridge-diagram1](/security-section-7/6-boss-bridge-diagram/boss-bridge-diagram1.png)
 
 How does your diagram compare to mine? You _did_ try to do one .. **_right?_**
 

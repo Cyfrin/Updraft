@@ -99,7 +99,7 @@ If things have been set up well we should be able to run the following command t
 forge test --mt testFuzzCatchesStateless -vvvv
 ```
 
-::image{src='/security-section-5/12-stateless-fuzzing/stateless-fuzzing1.png' style='width: 100%; height: auto;'}
+![stateless-fuzzing1](/security-section-5/12-stateless-fuzzing/stateless-fuzzing1.png)
 
 We can see it doesn't take much for Foundry's Fuzzer to catch our edge case! When the argument `2` is passed, our function returns `0` _breaking our invariant_.
 

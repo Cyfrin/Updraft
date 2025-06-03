@@ -12,7 +12,7 @@ In the previous lesson, we learned how to combine _arrays_ and _structs_ to stor
 
 If we remove a semicolon from the code and then try to compile it, you'll encounter some 🚫 **error messages**. They will prevent the compiler from converting the code into a machine-readable form.
 
-::image{src='/solidity/remix/lesson-2/errors-warnings/errors2.png' style='width: 100%; height: auto;'}
+![errors2](/solidity/remix/lesson-2/errors-warnings/errors2.png)
 
 Restoring the semicolon to its correct position will prevent any errors, enabling us to proceed with deploying the code to the Remix VM.
 On the other hand, if we delete the SPDX license identifier from the top of our code and recompile, we will receive a yellow box showing a ⚠️ **warning**.
@@ -21,7 +21,7 @@ On the other hand, if we delete the SPDX license identifier from the top of our 
 > Warning: SPDX license identifier not provided in source file
 ```
 
-::image{src='/solidity/remix/lesson-2/errors-warnings/warning.png' style='width: 100%; height: auto;'}
+![warning](/solidity/remix/lesson-2/errors-warnings/warning.png)
 
 Unlike errors, **warnings** allow the code to be compiled and deployed but it's wise to take them seriously and aim to remove them entirely. They point out poor or risky practices in your code and sometimes indicate potential bugs.
 
@@ -43,7 +43,7 @@ Let's now attempt to resolve the semicolon error we intentionally created before
 
 We can input the compiler error under the drop-down menu, execute the search, and get a comprehensive explanation of why the error happened and how to fix it.
 
-::image{src='/solidity/remix/lesson-2/errors-warnings/phind-answer.png' style='width: 100%; height: auto;'}
+![phind-answer](/solidity/remix/lesson-2/errors-warnings/phind-answer.png)
 
 #### Other resources
 

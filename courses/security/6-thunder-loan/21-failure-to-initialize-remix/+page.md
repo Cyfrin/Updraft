@@ -38,15 +38,15 @@ contract FailureToInitialize is Initializable {
 
 The example here is very simple, but it should illustrate the potential impact of failing to initialize. Go ahead and compile and deploy `FailureToInitialize.sol`
 
-::image{src='/security-section-6/21-failure-to-initialize-remix/failure-to-initialize-remix1.png' style='width: 100%; height: auto;'}
+![failure-to-initialize-remix1](/security-section-6/21-failure-to-initialize-remix/failure-to-initialize-remix1.png)
 
 You should see it begin initialized with `myValue` set to zero. If the protocol then proceeds to be used (by calling `increment`), the `initialize` function can be called at any time to overwrite the expected `myValue`.
 
-::image{src='/security-section-6/21-failure-to-initialize-remix/failure-to-initialize-remix2.png' style='width: 100%; height: auto;'}
+![failure-to-initialize-remix2](/security-section-6/21-failure-to-initialize-remix/failure-to-initialize-remix2.png)
 
 If our `myValue` is changed on us via initialize, we're not even able to re-initialize to fix `myValue` now, effectively breaking our protocol!
 
-::image{src='/security-section-6/21-failure-to-initialize-remix/failure-to-initialize-remix3.png' style='width: 100%; height: auto;'}
+![failure-to-initialize-remix3](/security-section-6/21-failure-to-initialize-remix/failure-to-initialize-remix3.png)
 
 You could imagine a situation like this impacting the management of something very important - like billions of dollars. Failure to initialize can be a very severe attack path depending on the architecture of the protocol and what's being initialized.
 

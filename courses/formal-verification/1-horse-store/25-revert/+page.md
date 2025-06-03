@@ -14,7 +14,7 @@ We could easily imagine a scenario where `call data` is sent to our contract, no
 
 We should protect against this by terminating the execution when no matches are found by our dispatcher. We can leverage the `REVERT` op code to do this.
 
-::image{src='/formal-verification-1/25-revert/revert-1.png' style='width: 50%; height: auto;'}
+![revert-1](/formal-verification-1/25-revert/revert-1.png)
 
 The revert op code takes two stack inputs, the **byte offset** and **byte size**. Both of these are used to return data from memory (like an error code) when the REVERT operation is executed. We haven't dealt with memory and have no errors so we won't worry about this, we'll simply pass 0s.
 
@@ -55,7 +55,7 @@ Our Huff contract with REVERT implemented should look something like this.
 
 Now, if we head back to the [**evm.codes playground**](https://www.evm.codes/playground) with our new runtime bytecode (`huffc src/horseStoreV1/HorseStore.huff --bin-runtime`), we can send some garbage `call data` and step through the operations to see how the contract responds.
 
-::image{src='/formal-verification-1/25-revert/revert-2.png' style='width: 50%; height: auto;'}
+![revert-2](/formal-verification-1/25-revert/revert-2.png)
 
 It seems our revert works exactly as intended! Our revert code will terminate the execution if hit and return an error!
 

@@ -64,13 +64,13 @@ function getSelectorOne() public pure returns(bytes4 selector){
 
 Adding this to our Remix contract, we can compile and deploy. Calling this function results in...
 
-::image{src='/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors1.png' style='width: 100%; height: auto;'}
+![evm-signatures-selectors1](/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors1.png)
 
 This is exactly what we'd expect it to be! Great! Now what else do we need? The parameters we're passing our function call are going to need to be encoded with this signature.
 
 Much like abi.encode and abi.encodePacked, the EVM offers us a way to encode our parameters with a given selector through `abi.encodeWithSelector`
 
-::image{src='/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors2.png' style='width: 100%; height: auto;'}
+![evm-signatures-selectors2](/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors2.png)
 
 We can write another function to compile this data for our function call for us.
 
@@ -122,17 +122,17 @@ Let's run this function in Remix to see it in action. Compile and redeploy `Call
 
 As expected, after deployment our storage variables initialize as `0`
 
-::image{src='/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors3.png' style='width: 100%; height: auto;'}
+![evm-signatures-selectors3](/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors3.png)
 
 Now, if we pass the contract address and 50 as an amount to our `callTransferWithBinary` function, Remix's terminal should provide us an output on what happened.
 
-::image{src='/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors4.png' style='width: 100%; height: auto;'}
+![evm-signatures-selectors4](/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors4.png)
 
 Here we can see that our transaction was successful, represented by the bool `true`. The bytes4 value of our returnData is empty, because our transfer function doesn't actually return anything!
 
 With this transaction complete, we should be able to repoll the storage variables in our contract. We would expect them to be updated with the values we passed `callTransferWithBinary`...
 
-::image{src='/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors5.png' style='width: 100%; height: auto;'}
+![evm-signatures-selectors5](/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors5.png)
 
 ...and they are! Amazing! Another option Solidity affords us is the ability to encode with a signature. This effectively saves us a step since we don't have to determine the function selector first.
 
@@ -285,15 +285,15 @@ contract CallFunctionWithoutContract {
 
 By passing this contract the address of our `CallAnything.sol` deployment. We're able to use the functions it possesses to interact with `CallAnything.sol`
 
-::image{src='/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors6.png' style='width: 100%; height: auto;'}
+![evm-signatures-selectors6](/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors6.png)
 
 Before we interact with anything, recall what the values of our storage variables on `CallAnything.sol` are currently.
 
-::image{src='/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors7.png' style='width: 100%; height: auto;'}
+![evm-signatures-selectors7](/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors7.png)
 
 Now we can call `callTransferFunctionDirectlyThree` on our `CallFunctionWithoutContract.sol` by passing a new address and amount. This should result in an updating of the storage variables on CallAnything.sol via this low-level call.
 
-::image{src='/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors8.png' style='width: 100%; height: auto;'}
+![evm-signatures-selectors8](/foundry-nfts/22-evm-signatures-selectors/evm-signatures-selectors8.png)
 
 ### Wrap Up
 

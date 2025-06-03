@@ -22,7 +22,7 @@ Start by running `slither .` just as before and let's dive into the output start
 
 ### Slither Highs
 
-::image{src='/security-section-4/40-slither-walkthrough/slither-walkthrough1.png' style='width: 75%; height: auto;'}
+![slither-walkthrough1](/security-section-4/40-slither-walkthrough/slither-walkthrough1.png)
 
 **1. Sends Eth to Arbitrary User**
 
@@ -73,7 +73,7 @@ uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.difficulty
 
 ### Slither Mediums
 
-::image{src='/security-section-4/40-slither-walkthrough/slither-walkthrough2.png' style='width: 75%; height: auto;'}
+![slither-walkthrough2](/security-section-4/40-slither-walkthrough/slither-walkthrough2.png)
 
 **1. Performs a Multiplication on the Result of a Division**
 
@@ -145,7 +145,7 @@ You can remove these warning from your `Slither` report by navigating to the res
 
 ### Slither Lows
 
-::image{src='/security-section-4/40-slither-walkthrough/slither-walkthrough3.png' style='width: 75%; height: auto;'}
+![slither-walkthrough3](/security-section-4/40-slither-walkthrough/slither-walkthrough3.png)
 
 **1. Lacks a Zero Check**
 

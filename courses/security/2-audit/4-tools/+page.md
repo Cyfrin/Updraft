@@ -28,7 +28,7 @@ Throughout this course, we'll work heavily with Slither and Aderyn, you'll becom
 
 Next we have Fuzz testing, which really comes in two flavours, `fuzz testing` and `stateful fuzz testing`.
 
-::image{src='/security-section-2/4-tools/tools2.png' style='width: 100%; height: auto;'}
+![tools2](/security-section-2/4-tools/tools2.png)
 
 A few other types of testing we _won't_ be covering are `differential test` and `chaos tests`, but in an effort to further you security journey, you always want to be looking for new looks and expanding your knowledge, so you may want to check them out.
 

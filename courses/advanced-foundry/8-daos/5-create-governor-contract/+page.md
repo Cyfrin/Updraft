@@ -14,7 +14,7 @@ Fortunately, [**OpenZeppelin's Contract Wizard**](https://wizard.openzeppelin.co
 
 By selecting the `Governor` configuration, we're presenting with a number of options to customize.
 
-::image{src='/foundry-daos/5-governor-contract/governor-contract1.png' style='width: 100%; height: auto;'}
+![governor-contract1](/foundry-daos/5-governor-contract/governor-contract1.png)
 
 Voting Delay - Time between proposal creation and the start of voting
 

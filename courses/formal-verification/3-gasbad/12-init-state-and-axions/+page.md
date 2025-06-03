@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 Welcome back! We're almost ready to start verifying this protocol, but we've left out an important component. As things stand in `GasBad.spec` currently, nothing will work. Unlike Solidity, the ghost variables we've declared aren't initialized with any value. The `Certora Verification Language (CVL)` requires [**Initial State Axioms**](https://docs.certora.com/en/latest/docs/cvl/ghosts.html#initial-state-axioms) in order to assign starting points to our `listingUpdatesCount` and `log4Count` variables.
 
-::image{src='/formal-verification-3/12-init-state-and-axioms/init-state-and-axioms1.png' style='width: 100%; height: auto;'}
+![init-state-and-axioms1](/formal-verification-3/12-init-state-and-axioms/init-state-and-axioms1.png)
 
 ---
 

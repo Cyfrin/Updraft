@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 At it's highest level of abstraction what TSwap aims to do is: Allow users a permissionless way to swap assets between each other at a fair price.
 
-::image{src='/security-section-5/4-what-is-a-dex/what-is-a-dex1.png' style='width: 100%; height: auto;'}
+![what-is-a-dex1](/security-section-5/4-what-is-a-dex/what-is-a-dex1.png)
 
 TSwap (based off Uniswap) is an example of a Decentralized Exchange, or a `DEX`.
 

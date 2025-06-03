@@ -13,7 +13,7 @@ Let's expand further on the concepts from the previous lesson because there are 
 - Memory
 - Storage
 
-::image{src='/formal-verification-1/10-memory-and-storage/memory-and-storage-1.png' style='width: 75%; height: auto;'}
+![memory-and-storage-1](/formal-verification-1/10-memory-and-storage/memory-and-storage-1.png)
 
 As depicted above, unlike the stack, data can be stored and retrieved from any slot available.
 
@@ -26,7 +26,7 @@ In addition to these, accessing data in `storage` is _much_ more expensive than 
 
 I'll draw your attention to the SSTORE and MSTORE
 
-::image{src='/formal-verification-1/10-memory-and-storage/memory-and-storage-1.png' style='width: 75%; height: auto;'}
+![memory-and-storage-1](/formal-verification-1/10-memory-and-storage/memory-and-storage-1.png)
 
 We can see clearly to what extent I mean _"more expensive"_. The difference in gas when accessing data in `storage` is **massive.**
 

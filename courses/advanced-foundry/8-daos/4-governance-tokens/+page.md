@@ -10,7 +10,7 @@ _Follow along with this video._
 
 As mentioned in the previous closing remarks, I suspect this will mostly be review, as we set up this token, so let's keep our momentum and jump right into it. Start with creating `src/GovToken.sol`. The token we'll use in this demonstration will be _so standard_ that we can just lean on [**OpenZeppelin's Contract Wizard**](https://wizard.openzeppelin.com/) and select `ERC20` and `votes`.
 
-::image{src='/foundry-daos/4-governance-tokens/governance-tokens1.png' style='width: 100%; height: auto;'}
+![governance-tokens1](/foundry-daos/4-governance-tokens/governance-tokens1.png)
 
 Copying this into our contract and we're already almost set (I've adjusted below to utilize named imports).
 

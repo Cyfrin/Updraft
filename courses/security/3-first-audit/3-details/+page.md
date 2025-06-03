@@ -40,7 +40,7 @@ Once our client has provided answers to the above and provided an updated codeba
 
 Your client should have provided you a commit hash. By navigating to the GitHub Repo's commit history, you can used the first `7 characters` of the commit hash to find the exact version of the repo to focus on. We'll be going over cloning this locally later in the course.
 
-::image{src='/security-section-3/3-details/details2.png' style='width: 100%; height: auto;'}
+![details2](/security-section-3/3-details/details2.png)
 
 Let's go through the client's submitted details.
 

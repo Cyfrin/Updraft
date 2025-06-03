@@ -21,7 +21,7 @@ Before we continue, there are a couple important terms to understand.
     Wei:  1,000,000,000 Wei  = 1 Gwei (Gigawei)
     Gwei: 1,000,000,000 Gwei = 1 Eth
 
-::image{src='/blockchain-basics/09-gas-II/gas-II1.png' style='width: 75%; height: auto;'}
+![gas-II1](/blockchain-basics/09-gas-II/gas-II1.png)
 
 _Reference the above image, the labelled sections will be detailed below_
 
@@ -31,7 +31,7 @@ _Reference the above image, the labelled sections will be detailed below_
 
 In Metamask, you can navigate to `Market > Advanced > Edit Gas Limit` in order to set this value.
 
-::image{src='/blockchain-basics/09-gas-II/gas-II2.png' style='width: 75%; height: auto;'}
+![gas-II2](/blockchain-basics/09-gas-II/gas-II2.png)
 
 **3. Base Gas Fee:** The base fee of a transaction, represented in Gwei. Remember, this is cost per gas.
 

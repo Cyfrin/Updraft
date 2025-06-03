@@ -55,7 +55,7 @@ function _isActivePlayer() internal view returns (bool) {
 
 Now, we haven't seen this referenced anywhere before now, we may want to simply investigate when this function is being used.
 
-::image{src='/security-section-4/36-recon-continued-3/recon-continued1.png' style='width:75%; height:auto;'}
+![recon-continued1](/security-section-4/36-recon-continued-3/recon-continued1.png)
 
 Ironically, it seems this function isn't being used anywhere in our protocol!
 

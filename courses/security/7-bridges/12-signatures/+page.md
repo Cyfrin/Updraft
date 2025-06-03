@@ -131,19 +131,19 @@ To run the required server we can then run:
 
 When can then open `http://localhost:3000` in a browser to access the locally hosted demo. Once set up, you can click on `signatures` in the top right and it should look something like this:
 
-::image{src='/security-section-7/12-signatures/signatures1.png' style='width: 100%; height: auto;'}
+![signatures1](/security-section-7/12-signatures/signatures1.png)
 
 Fundamentally a message signature takes a message, and hashes it with a user's private key.
 
-::image{src='/security-section-7/12-signatures/signatures2.png' style='width: 100%; height: auto;'}
+![signatures2](/security-section-7/12-signatures/signatures2.png)
 
 A public key can then be used to verify the signature on a message.
 
-::image{src='/security-section-7/12-signatures/signatures3.png' style='width: 100%; height: auto;'}
+![signatures3](/security-section-7/12-signatures/signatures3.png)
 
 If the message being verified has been changed, or if the public key doesn't match the signature, a message won't be verified.
 
-::image{src='/security-section-7/12-signatures/signatures4.png' style='width: 100%; height: auto;'}
+![signatures4](/security-section-7/12-signatures/signatures4.png)
 
 With this understanding of how signatures work refreshed in our minds, we can come back to the MessageHashUtils contract. In order to make messaging and hashes more standardized a few Improvement Proposals have been made and adopted. One of which is [**ERC-191: Signed Data Standard**](https://eips.ethereum.org/EIPS/eip-191).
 
@@ -171,7 +171,7 @@ The standard proposed was that all signed data would follow the format:
 
 In this format the `version` denotes the type and structure of the data being signed.
 
-::image{src='/security-section-7/12-signatures/signatures5.png' style='width: 100%; height: auto;'}
+![signatures5](/security-section-7/12-signatures/signatures5.png)
 
 The example provided in the ERC does a great job at detailing how this works in practice.
 

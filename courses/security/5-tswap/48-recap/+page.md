@@ -18,11 +18,11 @@ It's been a journey, but let's do a quick recap of everything we've covered in t
 
    While gathering context for TSwap we learnt what an automated market maker is, what a decentralized exchange is and their functions within DeFi.
 
-   ::image{src='/security-section-5/48-recap/recap1.png' style='width: 100%; height: auto;'}
+   ![recap1](/security-section-5/48-recap/recap1.png)
 
    We also covered how AMMs differ from conventional orderbook exchanges and why this adjustment was needed in a blockchain world.
 
-   ::image{src='/security-section-5/48-recap/recap2.png' style='width: 100%; height: auto;'}
+   ![recap2](/security-section-5/48-recap/recap2.png)
 
 3. Liquidity Providers
 

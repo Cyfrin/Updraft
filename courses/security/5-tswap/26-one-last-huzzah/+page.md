@@ -28,13 +28,13 @@ Run the test and let's see what we get.
 forge test --mt statefulFuzz_constantProductFormulaStaysTheSameX -vvvv
 ```
 
-::image{src='/security-section-5/26-one-last-huzzah/one-last-huzzah1.png' style='width: 100%; height: auto;'}
+![one-last-huzzah1](/security-section-5/26-one-last-huzzah/one-last-huzzah1.png)
 
 It errors! We can see that our expectedDeltaX and our actualDeltaX are wildly different. _What could possibly be going on here?_
 
 > **Protip:** Rather than scrolling through all the function calls in our test's trace, often the steps that lead to our issue can be found in the most recent function execution near the bottom.
 
-::image{src='/security-section-5/26-one-last-huzzah/one-last-huzzah2.png' style='width: 100%; height: auto;'}
+![one-last-huzzah2](/security-section-5/26-one-last-huzzah/one-last-huzzah2.png)
 
 I've highlighted the most recent execution in the image above. We notice immediately that the function being called is `swapPoolTokenForWethBasedOnOutputWeth`. Things seems fairly unremarkable until we reach the actual swap of tokens when `swapExactOutput` is called. We would expect this function to execute two transfers, one from the `swapper` to `TSwapPool` and another from `TSwapPool` to the `swapper`.
 

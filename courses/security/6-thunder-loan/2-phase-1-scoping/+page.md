@@ -65,7 +65,7 @@ Let's run solidity metrics on our `src` folder to get a send of the size and com
 
 > **Remember:** You can right click the `src` folder in your workspace and select `Solidity: Metrics` to generate the report.
 
-::image{src='/security-section-6/2-phase-1-scoping/phase-1-scoping1.png' style='width: 100%; height: auto;'}
+![phase-1-scoping1](/security-section-6/2-phase-1-scoping/phase-1-scoping1.png)
 
 With an nSLOC of 391 and a Complexity of 327, Thunder Loan represents the biggest code bases we've approached yet. We can see most of the logic and complexity exists within ThunderLoan.sol and ThunderLoanUpgraded.sol.
 

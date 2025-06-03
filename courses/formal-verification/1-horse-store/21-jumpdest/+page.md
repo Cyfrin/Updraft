@@ -15,7 +15,7 @@ huffc src/horseStoreV1/HorseStore.huff --bin-runtime
 
 Paste the returned runtime bytecode into the evm.codes playground and let's step through what's happening with our contract.
 
-::image{src='/formal-verification-1/21-jumpdest/jumpdest-1.png' style='width: 75%; height: auto;'}
+![jumpdest-1](/formal-verification-1/21-jumpdest/jumpdest-1.png)
 
 By adding the runtime bytecode to the playground, we're presented with almost exactly what we wrote in Huff, converted to pure op codes. Something that's going to stand out is the `JUMPDEST` code. To understand this op code, let's take one step back.
 
@@ -34,7 +34,7 @@ So, looking again at our playground:
 - JUMPI - Jumps to our destination if the value returned by EQ is anything other than 0
 - JUMPDEST - An empty stack at our jump destination
 
-::image{src='/formal-verification-1/21-jumpdest/jumpdest-2.png' style='width: 75%; height: auto;'}
+![jumpdest-2](/formal-verification-1/21-jumpdest/jumpdest-2.png)
 
 Currently of course, nothing is going to happen after we jump to our new destination. We haven't added any logic to our macro yet. I encourage you to experiment in the playground before moving on.
 

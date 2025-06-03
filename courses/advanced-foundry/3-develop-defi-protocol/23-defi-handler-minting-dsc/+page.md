@@ -37,14 +37,14 @@ Let's run our function and see how things look.
 forge test --mt invariant_ProtocolTotalSupplyLessThanCollateralValue
 ```
 
-::image{src='/foundry-defi/22-defi-handler-mint-dsc/defi-handler-mint-dsc1.png' style='width: 100%; height: auto;'}
+![defi-handler-mint-dsc1](/foundry-defi/22-defi-handler-mint-dsc/defi-handler-mint-dsc1.png)
 
 > ❗ **NOTE**
 > The `totalSupply = 0` here because of a mistake we made, we'll fix it soon!
 
 Ok, so things work when we have `fail_on_revert` set to `false`. We want our tests to be quite focused, so moving forward we'll leave `fail_on_revert` to `true`. What happens when we run it now?
 
-::image{src='/foundry-defi/22-defi-handler-mint-dsc/defi-handler-mint-dsc2.png' style='width: 100%; height: auto;'}
+![defi-handler-mint-dsc2](/foundry-defi/22-defi-handler-mint-dsc/defi-handler-mint-dsc2.png)
 
 As expected, our user's Health Factor is breaking. This is because we haven't considered _who_ is minting our DSC with respect to who has deposited collateral. We can account for this in our test by ensuring that the user doesn't attempt to mint more than the collateral they have deposited, otherwise we'll return out of the function. We'll determine the user's amount to mint by calling our `getAccountInformation` function.
 
@@ -70,7 +70,7 @@ function mintDsc(uint256 amount) public {
 
 Let's try it!
 
-::image{src='/foundry-defi/22-defi-handler-mint-dsc/defi-handler-mint-dsc3.png' style='width: 100%; height: auto;'}
+![defi-handler-mint-dsc3](/foundry-defi/22-defi-handler-mint-dsc/defi-handler-mint-dsc3.png)
 
 ### Wrap Up
 

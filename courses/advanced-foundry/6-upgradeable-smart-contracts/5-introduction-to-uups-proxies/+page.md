@@ -131,7 +131,7 @@ Within UUPSUpgradeable we can see the main function we'll need to leverage upgra
 
 Once inherited, we'll see a compiler warning advising that BoxV1 should be marked as abstract.
 
-::image{src='/foundry-upgrades/4-UUPS/UUPS1.png' style='width: 100%; height: auto;'}
+![UUPS1](/foundry-upgrades/4-UUPS/UUPS1.png)
 
 We receive this error because we don't have all the necessary functions defined in BoxV1 as required by UUPSUpgradeable which is an abstract contract.
 
@@ -173,7 +173,7 @@ In older implementations of UUPSUpgradeable, you may see a line that I wanted to
 uint256[50] private __gap;
 ```
 
-::image{src='/foundry-upgrades/4-UUPS/UUPS2.png' style='width: 100%; height: auto;'}
+![UUPS2](/foundry-upgrades/4-UUPS/UUPS2.png)
 
 If you recall to previous lessons, when values are assigned by a function, the variable name doesn't ultimately matter as the value is assigned to a storage slot. We saw that storage clashes were possible when an upgraded implementation contract made changes to the order of storage variable assignments, leading to some funky behaviours.
 
@@ -211,7 +211,7 @@ import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/I
 
 If we open Intializable.sol, there's a lot of valuable insight to be gained about what's happening and how it works.
 
-::image{src='/foundry-upgrades/4-UUPS/UUPS3.png' style='width: 100%; height: auto;'}
+![UUPS3](/foundry-upgrades/4-UUPS/UUPS3.png)
 
 This line of the documentation really gets to the heart of what the purpose of the initializer is.
 

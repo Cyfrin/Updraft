@@ -44,7 +44,7 @@ make deploy
 
 Foundry allows us to check the storage of a deployed contract with a very simple `cast` command. For this we'll need to recall to which storage slot the `s_password` variable is assigned.
 
-::image{src='/security-section-3/16-proof-of-code/proof-of-code1.png' style='width: 100%; height: auto;'}
+![proof-of-code1](/security-section-3/16-proof-of-code/proof-of-code1.png)
 
 With this consideration we can run the command `cast storage <address> <storageSlot>` like this (_your address may be different_).
 

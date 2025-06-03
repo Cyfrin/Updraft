@@ -38,7 +38,7 @@ pragma solidity 0.8.18; // Q: Is this the correct compiler version?
 
 Formatting our in-line comments in a reliable way will allow us to easily come back to these areas later by leveraging search.
 
-::image{src='/security-section-3/8-understanding-code/understanding1.png' style='width: 100%; height: auto;'}
+![understanding1](/security-section-3/8-understanding-code/understanding1.png)
 
 ### Taking Notes
 
@@ -63,7 +63,7 @@ The intended functionality is pretty clear. Maybe we want to jot this down in ou
 
 Let's consider things upto our constructor.
 
-::image{src='/security-section-3/8-understanding-code/understanding2.png' style='width: 100%; height: auto;'}
+![understanding2](/security-section-3/8-understanding-code/understanding2.png)
 
 Everything looks great so far, the client is using some clear standard naming conventions.
 

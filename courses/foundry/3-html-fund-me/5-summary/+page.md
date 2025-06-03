@@ -37,7 +37,7 @@ const signer = provider.getSigner();
 
 Once a wallet is connected, it's important to remember that the browser sends transactions _to_ our wallet for signing/confirmation. The wallet does _not_ provide private key information to the browser application.
 
-::image{src='/html-fundme/2-metamask/metamask5.png' style='width: 75%; height: auto;'}
+![metamask5](/html-fundme/2-metamask/metamask5.png)
 
 We also learnt a basic way to verify the function calls being sent to our wallet through the use of `function selectors` and decoding `calldata`. We'll go over this in more detail later!
 

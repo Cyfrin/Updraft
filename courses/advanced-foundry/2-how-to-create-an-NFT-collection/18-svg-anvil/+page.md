@@ -24,23 +24,23 @@ deployMood:
 
 Looks great! Remember, you can add anvil as at network to Metamask by navigating to your network selector and choosing `+ Add network`.
 
-::image{src='/foundry-nfts/17-svg-anvil/svg-anvil2.png' style='width: 100%; height: auto;'}
+![svg-anvil2](/foundry-nfts/17-svg-anvil/svg-anvil2.png)
 
 Choose to add a network manually and enter the details as shown below:
 
-::image{src='/foundry-nfts/17-svg-anvil/svg-anvil3.png' style='width: 100%; height: auto;'}
+![svg-anvil3](/foundry-nfts/17-svg-anvil/svg-anvil3.png)
 
 If you need to import an anvil account, this is simple as well. When an anvil chain is spun up, it provides you with public and private keys for a number of default accounts. In your Metamask account selector, choose `+ add account or hardware wallet`
 
-::image{src='/foundry-nfts/17-svg-anvil/svg-anvil4.png' style='width: 100%; height: auto;'}
+![svg-anvil4](/foundry-nfts/17-svg-anvil/svg-anvil4.png)
 
 Select `import account` and enter one of the default private keys offered by the anvil chain.
 
-::image{src='/foundry-nfts/17-svg-anvil/svg-anvil5.png' style='width: 100%; height: auto;'}
+![svg-anvil5](/foundry-nfts/17-svg-anvil/svg-anvil5.png)
 
 Once everything is set up, we should be able to run `make deployMood`...
 
-::image{src='/foundry-nfts/17-svg-anvil/svg-anvil1.png' style='width: 100%; height: auto;'}
+![svg-anvil1](/foundry-nfts/17-svg-anvil/svg-anvil1.png)
 
 With the contract address, we should be able to use a cast command to interact with it.
 
@@ -52,7 +52,7 @@ When that transaction completes, what we can _finally_ do, is take that contract
 
 Once imported ...
 
-::image{src='/foundry-nfts/17-svg-anvil/svg-anvil6.png' style='width: 100%; height: auto;'}
+![svg-anvil6](/foundry-nfts/17-svg-anvil/svg-anvil6.png)
 
 LETS GOOOO! Now we need to flip it. We should be able to use largely the same `cast` command, let's just adjust the function to `flipMood`
 
@@ -66,7 +66,7 @@ rpc-url http://localhost:8545
 
 Once we reimport our NFT however...
 
-::image{src='/foundry-nfts/17-svg-anvil/svg-anvil7.png' style='width: 100%; height: auto;'}
+![svg-anvil7](/foundry-nfts/17-svg-anvil/svg-anvil7.png)
 
 ### Wrap Up
 

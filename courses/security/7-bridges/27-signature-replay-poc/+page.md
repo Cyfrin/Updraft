@@ -128,7 +128,7 @@ Ok, let's run it and see how Boss Bridge responds to our signature replay attack
 forge test --mt testSignatureReplay --vvv
 ```
 
-::image{src='/security-section-7/27-signature-replay-poc/signature-replay-poc1.png' style='width: 100%; height: auto;'}
+![signature-replay-poc1](/security-section-7/27-signature-replay-poc/signature-replay-poc1.png)
 
 ### Wrap Up
 

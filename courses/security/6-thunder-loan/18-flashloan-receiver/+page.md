@@ -37,7 +37,7 @@ We can check if the import is being inherited anywhere by searching our workspac
 
 > **Protip:** You can use the keyboard shortcuts `ctrl + shift + f`(windows) and `cmd + shift + f`(mac) to open the workspace search menu.
 
-::image{src='/security-section-6/18-flashloan-receiver/flashloan-receiver1.png' style='width: 100%; height: auto;'}
+![flashloan-receiver1](/security-section-6/18-flashloan-receiver/flashloan-receiver1.png)
 
 It seems as though this import is only being used in one of Thunder Loan's mock files for testing.
 
@@ -93,7 +93,7 @@ function executeOperation(
 
 We've completed our first pass of all of Thunder Loan's interfaces!
 
-::image{src='/security-section-6/18-flashloan-receiver/flashloan-receiver2.png' style='width: 100%; height: auto;'}
+![flashloan-receiver2](/security-section-6/18-flashloan-receiver/flashloan-receiver2.png)
 
 We haven't really found anything _meaty_ but we've found some informationals to call out. It's important to remember that our ultimate goal is to improve the protocol not just with security but with engineering best practices as well. This is just one example of adding value to the review you're performing.
 

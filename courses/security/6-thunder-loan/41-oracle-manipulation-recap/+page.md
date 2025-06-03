@@ -16,7 +16,7 @@ Arbitrage is the process by which a profit can be made by identifying a price di
 
 This is one of the primary use cases of flash loans.
 
-::image{src='/security-section-6/41-oracle-manipulation-recap/oracle-manipulation-recap1.png' style='width: 100%; height: auto;'}
+![oracle-manipulation-recap1](/security-section-6/41-oracle-manipulation-recap/oracle-manipulation-recap1.png)
 
 ### Flash Loans
 
@@ -28,7 +28,7 @@ The fees collected from flash loans serve as incentive for those supplying liqui
 
 In the case of a recognized price discrepancy, this means any user would be able to take greater advantage of the arbitrage opportunity and the greatest profits aren't reserved for whales or those with the most money.
 
-::image{src='/security-section-6/41-oracle-manipulation-recap/oracle-manipulation-recap2.png' style='width: 100%; height: auto;'}
+![oracle-manipulation-recap2](/security-section-6/41-oracle-manipulation-recap/oracle-manipulation-recap2.png)
 
 ### Oracle Manipulation
 
@@ -171,7 +171,7 @@ contract MaliciousFlashLoanReceiver is IFlashLoanReceiver {
 </details>
 
 
-::image{src='/security-section-6/41-oracle-manipulation-recap/oracle-manipulation-recap3.png' style='width: 100%; height: auto;'}
+![oracle-manipulation-recap3](/security-section-6/41-oracle-manipulation-recap/oracle-manipulation-recap3.png)
 
 This section was heavy. Now's a great time to take a break before continuing on.
 

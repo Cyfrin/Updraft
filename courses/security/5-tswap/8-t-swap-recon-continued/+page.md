@@ -29,7 +29,7 @@ Every pool is a pair of TOKEN X & WETH.
 
 This may be a great point in our process to go through the code base and make connections to what functions are actually performing these actions described in the docs. We may even create ....
 
-::image{src='/security-section-5/8-tswap-recon-continued/tswap-recon-cont1.png' style='width: 75%; height: auto;'}
+![tswap-recon-cont1](/security-section-5/8-tswap-recon-continued/tswap-recon-cont1.png)
 
 A Protocol Diagram!
 

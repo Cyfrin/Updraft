@@ -23,7 +23,7 @@ Type: uint
 
 We've also learnt that adding any to this number is going to wrap around to 0 again, but what happens if we try to cast a larger number into this smaller container?
 
-::image{src='/security-section-4/31-unsafe-casting/unsafe-casting1.png' style='width: 75%; height: auto;'}
+![unsafe-casting1](/security-section-4/31-unsafe-casting/unsafe-casting1.png)
 
 We can see above that when `20e18` is cast as a `uint64` the returned value is actually the difference between `type(uint64).max` and `20e18`.
 

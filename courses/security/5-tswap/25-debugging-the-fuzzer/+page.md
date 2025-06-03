@@ -18,11 +18,11 @@ Begin by running our test, passing the verbose flag to acquire a trace in our ou
 forge test --mt statefulFuzz_constantProductFormulaStaysTheSameY --vvvv
 ```
 
-::image{src='/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer1.png' style='width: 100%; height: auto;'}
+![debugging-the-fuzzer1](/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer1.png)
 
 Fail, as expected. This output tells us the exception occurring during a call of the `deposit` function, but we can scroll up in the trace output to gain more information.
 
-::image{src='/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer2.png' style='width: 100%; height: auto;'}
+![debugging-the-fuzzer2](/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer2.png)
 
 Ok, this gives us more detail to assess. It's clear that we're receiving a custom error when calling deposit, this is due to passing `0` as an argument:
 
@@ -68,7 +68,7 @@ function swapPoolTokenForWethBasedOnOutputWeth(uint256 outputWeth) public {
 
 Now we can try our test again.
 
-::image{src='/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer3.png' style='width: 100%; height: auto;'}
+![debugging-the-fuzzer3](/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer3.png)
 
 Ok, a new error! New errors mean progress. If we scroll up on this one, we can see that our assertion is actually acting strangely!
 
@@ -106,7 +106,7 @@ Then run it again!
 
 > **Note:** debugging our fuzz sequences is a truly iterative process. The errors you receive, and how many of them, may actually be different if you have different errors in your code. Use the steps and skills shown here to debug any error you receive the same way.
 
-::image{src='/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer4.png' style='width: 100%; height: auto;'}
+![debugging-the-fuzzer4](/security-section-5/25-debugging-the-fuzzer/debugging-the-fuzzer4.png)
 
 Boom.
 

@@ -12,7 +12,7 @@ Auditing smart contracts is an arduous yet essential task in the blockchain real
 
 ### Static Analysis - Boosting Your Auditing Efficiency
 
-::image{src='/security-section-4/4-tooling-slither/tooling-slither1.png' style='width: 75%; height: auto;'}
+![tooling-slither1](/security-section-4/4-tooling-slither/tooling-slither1.png)
 
 Static analysis is a method where code is checked for potential issues without actually executing it. Essentially, it's a way to "debug" your code by looking for specific keywords in a certain order or pattern.
 
@@ -32,7 +32,7 @@ This document lists _all_ the vulnerabilities that Slither is checking for and r
 
 For example:
 
-::image{src='/security-section-4/4-tooling-slither/tooling-slither2.png' style='width: 75%; height: auto;'}
+![tooling-slither2](/security-section-4/4-tooling-slither/tooling-slither2.png)
 
 This could have helped us with PasswordStore! It's easy to see how valuable these tools can be in making our work easier and more efficient.
 
@@ -70,7 +70,7 @@ The output color codes potential issues:
 
 Here's an example of what some of these look like:
 
-::image{src='/security-section-4/4-tooling-slither/tooling-slither3.png' style='width: 75%; height: auto;'}
+![tooling-slither3](/security-section-4/4-tooling-slither/tooling-slither3.png)
 
 ### Wrap Up
 

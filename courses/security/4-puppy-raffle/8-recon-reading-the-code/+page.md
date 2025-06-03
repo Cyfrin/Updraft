@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 What I like to do when first assessing a codebase is to start at the `main entry point`. Sometimes this area of a protocol may be a little unclear, but using Solidity: Metrics can help us out a lot.
 
-::image{src='/security-section-4/7-recon-reading-docs/reading-docs2.png' style='width: 75%; height: auto;'}
+![reading-docs2](/security-section-4/7-recon-reading-docs/reading-docs2.png)
 
 Pay special attention to the functions marked `public` or `external`. Especially those which `modify state` or are `payable`. These are going to be certain potential attack vectors.
 

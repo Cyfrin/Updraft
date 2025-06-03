@@ -29,7 +29,7 @@ This may be a little tricky, but it's entirely possible. However, we first need 
 
 ### Ghost Variables
 
-::image{src='/formal-verification-3/11-ghosts-and-hooks/ghosts-and-hooks1.png' style='width: 100%; height: auto;'}
+![ghosts-and-hooks1](/formal-verification-3/11-ghosts-and-hooks/ghosts-and-hooks1.png)
 
 At their core, `Ghost Variables` are variable which are declared specifically to be used by `Certora`. Declaring them this way allows them to act as extensions to contract state and their values will mimic the behaviour of contract storage (reverting and resetting when appropriate).
 
@@ -47,7 +47,7 @@ ghost mathint listingUpdatesCount;
 
 ### Hooks
 
-::image{src='/formal-verification-3/11-ghosts-and-hooks/ghosts-and-hooks2.png' style='width: 100%; height: auto;'}
+![ghosts-and-hooks2](/formal-verification-3/11-ghosts-and-hooks/ghosts-and-hooks2.png)
 
 [**`Hooks`**](https://docs.certora.com/en/latest/docs/cvl/hooks.html) allow us to specify an operation which triggers the `hook` and logic that is executed when the `hook` is triggered. For example - any time a particular variable is invoked with `SLOAD` - a `hook` could trigger something to happen.
 
@@ -67,7 +67,7 @@ hook Sstore s_listings[KEY address nftAddress][KEY uint256 tokenId].price uint25
 
 Ok, so our hook looks kinda gross, let me break it down.
 
-::image{src='/formal-verification-3/11-ghosts-and-hooks/ghosts-and-hooks3.png' style='width: 100%; height: auto;'}
+![ghosts-and-hooks3](/formal-verification-3/11-ghosts-and-hooks/ghosts-and-hooks3.png)
 
 > ❗ **NOTE**
 > The STORAGE keyword was made unnecessarily in later updates to Certora

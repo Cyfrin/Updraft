@@ -84,7 +84,7 @@ Both of the returned variables here are declared as private, so these functions 
 
 We didn't find too many issues with AssetToken.sol, but we got a much better understanding of the role it plays within Thunder Loan. We can check this one off our list!
 
-::image{src='/security-section-6/25-asset-token-update-exchange-rate/asset-token-update-exchange-rate1.png' style='width: 100%; height: auto;'}
+![asset-token-update-exchange-rate1](/security-section-6/25-asset-token-update-exchange-rate/asset-token-update-exchange-rate1.png)
 
 We'll finally approach ThunderLoan.sol itself in the next lesson. While technically a little bigger, we expect a lot of overlap between ThunderLoan.sol and ThunderLoanUpgraded.sol as well as valuable context regarding what's being changed between the two versions.
 

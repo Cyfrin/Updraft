@@ -20,7 +20,7 @@ rule calling_any_function_should_result_in_each_contract_having_the_same_state(m
 
 Now, in this configuration, `method f` would represent any function within the scoped codebase which can be called with any calldata in any environment. We can assert a little more control over to which methods our parametric rule applies by implementing filters.
 
-::image{src='/formal-verification-3/23-method-filtering/method-filtering1.png' style='width: 100%; height: auto;'}
+![method-filtering1](/formal-verification-3/23-method-filtering/method-filtering1.png)
 
 This methodology should be similar to employing a require statement such as:
 

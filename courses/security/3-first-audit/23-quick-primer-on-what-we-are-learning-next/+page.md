@@ -16,4 +16,4 @@ Secondly, we need to convert our `findings.md` - a markdown file - into a profes
 
 Let's get started with `determining a finding's severity`.
 
-::image{src='/security-section-3/21-quick-primer/primer1.png' style='width: 100%; height: auto;'}
+![primer1](/security-section-3/21-quick-primer/primer1.png)

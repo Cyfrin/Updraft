@@ -52,6 +52,6 @@ If you remember, our empty `MAIN` macro returned `60008060093d393df3` as the `Co
 
 Looking closely, we see `5F` appended to the end of our previous bytecode string. [**evm.codes**](https://www.evm.codes/?fork=shanghai) will show us that indeed, this hex represents PUSH0!
 
-::image{src='/formal-verification-1/12-push-opcode/push-opcode-1.png' style='width: 100%; height: auto;'}
+![push-opcode-1](/formal-verification-1/12-push-opcode/push-opcode-1.png)
 
 We did it!

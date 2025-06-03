@@ -123,6 +123,6 @@ certoraRun ./certora/conf/NftMock.conf
 
 And, after a brief wait for the server/process, we should see a successfully verification.
 
-::image{src='/formal-verification-3/7-proving-minting-nfts/proving-minting-nfts1.png' style='width: 100%; height: auto;'}
+![proving-minting-nfts1](/formal-verification-3/7-proving-minting-nfts/proving-minting-nfts1.png)
 
 Good job!

@@ -42,11 +42,11 @@ If "true", Certora will look through its list of known contracts for functions t
 
 If we look closely as our error in Certora we can see something labelled `AUTO summary`.
 
-::image{src='/formal-verification-3/18-summary-implementations/summary-implementations1.png' style='width: 100%; height: auto;'}
+![summary-implementations1](/formal-verification-3/18-summary-implementations/summary-implementations1.png)
 
 [**Auto summaries**](https://docs.certora.com/en/latest/docs/cvl/methods.html#auto-summaries) effectively represent the Certora prover just trying to figure out what should be happening when not explicitly told. It's specific affect will vary dependent on the type of call being performed.
 
-::image{src='/formal-verification-3/18-summary-implementations/summary-implementations2.png' style='width: 100%; height: auto;'}
+![summary-implementations2](/formal-verification-3/18-summary-implementations/summary-implementations2.png)
 
 Our `safeTransferFrom` scenario would be classified as `other calls`, as a result `HAVOC_ECF` is employed, and this is why we see our function HAVOCing in our test.
 
@@ -139,11 +139,11 @@ invariant anytime_mapping_updated_emit_event()
 </details>
 
 
-::image{src='/formal-verification-3/18-summary-implementations/summary-implementations3.png' style='width: 100%; height: auto;'}
+![summary-implementations3](/formal-verification-3/18-summary-implementations/summary-implementations3.png)
 
 Uh oh, we're still seeing an issue. Let's drill into the call trace to determine what's happening. If we navigate through the call trace Certora provides to the safeTransferFrom call that was previously failing, we can see a few interesting things.
 
-::image{src='/formal-verification-3/18-summary-implementations/summary-implementations4.png' style='width: 100%; height: auto;'}
+![summary-implementations4](/formal-verification-3/18-summary-implementations/summary-implementations4.png)
 
 It looks like our `safeTransferFrom` function is being called from `NftMock`'s implementation of it, like we'd expect. This function is subsequently calling `_checkOnERC721Received`, and ultimately `onERC721Received`!
 
@@ -182,11 +182,11 @@ function _.onERC721Received(address, address, uint256, bytes) external => CONSTA
 
 Let's try running the prover again, now that we've added this additional method block function.
 
-::image{src='/formal-verification-3/18-summary-implementations/summary-implementations5.png' style='width: 100%; height: auto;'}
+![summary-implementations5](/formal-verification-3/18-summary-implementations/summary-implementations5.png)
 
 Well, at least our number of violations are falling. We're also getting lots of practice at debugging these call traces! Let's see what's happening this time.
 
-::image{src='/formal-verification-3/18-summary-implementations/summary-implementations6.png' style='width: 100%; height: auto;'}
+![summary-implementations6](/formal-verification-3/18-summary-implementations/summary-implementations6.png)
 
 Of course this would HAVOC, `call` can _literally_ do anything! As we've seen, if a situation arises which `Certora` can't predict outcomes of, it's going to let slip its dogs of war (cry HAVOC), breaking our invariant.
 

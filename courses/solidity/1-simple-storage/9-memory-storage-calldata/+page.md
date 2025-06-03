@@ -43,7 +43,7 @@ function addPerson(string calldata _name, uint256 _favoriteNumber) public {
 }
 ```
 
-::image{src='/solidity/remix/lesson-2/memory/calldata.png' style='width: 100%; height: auto;'}
+![calldata](/solidity/remix/lesson-2/memory/calldata.png)
 
 ### Storage
 
@@ -65,7 +65,7 @@ If you try to specify the `memory` keyword for an `uint256` variable, you'll enc
 > Data location can only be specified for array, struct, or mapping type
 ```
 
-::image{src='/solidity/remix/lesson-2/memory/memory-err.png' style='width: 100%; height: auto;'}
+![memory-err](/solidity/remix/lesson-2/memory/memory-err.png)
 
 In Solidity, a `string` is recognized as an **array of bytes**. On the other hand, primitive types, like `uint256` have built-in mechanisms that dictate how and where they are stored, accessed and manipulated.
 

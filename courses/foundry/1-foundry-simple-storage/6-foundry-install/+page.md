@@ -24,7 +24,7 @@ When commands pile up in your terminal, things can get a little overwhelming. Cl
 
 ### Understanding the Trash Can and the X
 
-::image{src='/foundry/5-foundryinstall/foundryinstall1.png' style='width: 100%; height: auto;'}
+![foundryinstall1](/foundry/5-foundryinstall/foundryinstall1.png)
 
 The trash can and the X buttons in your terminal perform distinct functions. Hitting `X` simply hides your terminal but retains all the previous lines of code. On the other hand, trashing it essentially deletes whatever is running in it. To open up a clean terminal, hit the trash can and then pull it back using `Toggle` or `Terminal > New Terminal`.
 
@@ -82,6 +82,6 @@ echo 'source /home/user/.bashrc' >> ~/.bash_profile
 
 And there we have it! Congratulations on installing Foundry and prepping your terminal to work seamlessly with it. Remember, hitting snags during installation is normal, especially if you're new to this. Don't hesitate to engage with the course community via GitHub if you run into issues.
 
-::image{src='/foundry/5-foundryinstall/foundryinstall2.png' style='width: 100%; height: auto;'}
+![foundryinstall2](/foundry/5-foundryinstall/foundryinstall2.png)
 
 Here's to many hassle-free coding sessions with Foundry!

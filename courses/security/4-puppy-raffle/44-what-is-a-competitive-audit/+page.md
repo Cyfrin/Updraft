@@ -20,7 +20,7 @@ In a competitive audit, you're competing to find _bugs_, you're paid if you find
 
 We can see how these payouts work by looking at the [**CodeHawks Docs**](https://docs.codehawks.com/). Findings rewards are ultimately broken down into shares and severity, where the system rewards finding more unique, difficult to find bugs.
 
-::image{src='/security-section-4/44-what-is-a-competitive-audit/competitive-audit1.png' style='width: 75%; height: auto;'}
+![competitive-audit1](/security-section-4/44-what-is-a-competitive-audit/competitive-audit1.png)
 
 You can also find examples of scenarios and calculations on the [**CodeHawks Docs**](https://docs.codehawks.com/hawks-auditors/payouts).
 
@@ -28,7 +28,7 @@ You can also find examples of scenarios and calculations on the [**CodeHawks Doc
 
 The quality of competitive audits has been found to be - incredible. To use a past contest on CodeHawks as an example, the Beedle-Fi audit resulted in a staggering number of findings.
 
-::image{src='/security-section-4/44-what-is-a-competitive-audit/competitive-audit2.png' style='width: 75%; height: auto;'}
+![competitive-audit2](/security-section-4/44-what-is-a-competitive-audit/competitive-audit2.png)
 
 Security reviews of this nature consistently find more bugs that private reviews _and_ they serve as the perfect platforms to gain experience and build your security researcher career.
 

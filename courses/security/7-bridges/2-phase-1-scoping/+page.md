@@ -94,7 +94,7 @@ Alright, things look pretty good. Let's see how thorough the test coverage on Bo
 forge coverage
 ```
 
-::image{src='/security-section-7/2-phase-1-scoping/phase-1-scoping1.png' style='width: 100%; height: auto;'}
+![phase-1-scoping1](/security-section-7/2-phase-1-scoping/phase-1-scoping1.png)
 
 Ok, ok.. I see you Boss Bridge. This team clearly has _some_ knowledge about security best practices. We've got some room for improvement though with a couple missing functions/branches. We'll have to take a closer look at this test suite for sure.
 
@@ -108,7 +108,7 @@ Before moving on we should definitely acquire a sense of the size of this code b
 
 Right-click the `src` folder and select `Solidity: Metrics`.
 
-::image{src='/security-section-7/2-phase-1-scoping/phase-1-scoping2.png' style='width: 100%; height: auto;'}
+![phase-1-scoping2](/security-section-7/2-phase-1-scoping/phase-1-scoping2.png)
 
 We can see this code base is quite a bit smaller and arguably less complex than some we've been over already. It's about half the size of ThunderLoan!
 

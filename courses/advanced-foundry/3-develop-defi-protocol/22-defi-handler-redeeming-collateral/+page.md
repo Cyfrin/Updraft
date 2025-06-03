@@ -35,7 +35,7 @@ Let's run it!
 forge test --mt invariant_ProtocolTotalSupplyLessThanCollateralValue -vvvv
 ```
 
-::image{src='/foundry-defi/21-defi-handler-redeem-collateral/defi-handler-redeem-collateral1.png' style='width: 100%; height: auto;'}
+![defi-handler-redeem-collateral1](/foundry-defi/21-defi-handler-redeem-collateral/defi-handler-redeem-collateral1.png)
 
 Uh oh, it looks like we're running into an issue when the maxCollateralToRedeem is 0. We can fix this with a small adjustment to our function.
 
@@ -55,7 +55,7 @@ function redeemCollateral(uint256 collateralSeed, uint256 amountCollateral) publ
 }
 ```
 
-::image{src='/foundry-defi/21-defi-handler-redeem-collateral/defi-handler-redeem-collateral2.png' style='width: 100%; height: auto;'}
+![defi-handler-redeem-collateral2](/foundry-defi/21-defi-handler-redeem-collateral/defi-handler-redeem-collateral2.png)
 
 Woo, nailed it again! Our handler now allows us to test both the depositCollateral and redeemCollateral functionality of our protocol. Through the use of our handler, we've ensured that all the calls to deposit and redeem are going to be valid as well, avoiding reverts and wasted fuzz runs.
 
