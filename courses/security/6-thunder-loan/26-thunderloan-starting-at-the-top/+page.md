@@ -326,7 +326,7 @@ import { IFlashLoanReceiver } from "../interfaces/IFlashLoanReceiver.sol";
 
 These look pretty standard though a few imports may stand out or be unfamiliar so far such as [**OwnableUpgradeable**](https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/master/contracts/access/OwnableUpgradeable.sol) which serves as an upgradeable variation of the famous ownable library. We may also want to gain more familiarity with:
 
-- [**UUPSUpgradeable**](https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/master/contracts/proxy/utils/UUPSUpgradeable.sol) - UUPS proxy patter covered in the [**Foundry Full Course**](https://updraft.cyfrin.io/courses/advanced-foundry). A very common smart contract proxy pattern.
+- [**UUPSUpgradeable**](https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable/blob/master/contracts/proxy/utils/UUPSUpgradeable.sol) - UUPS proxy pattern covered in the [**Foundry Full Course**](https://updraft.cyfrin.io/courses/advanced-foundry). A very common smart contract proxy pattern.
 - [**Address**](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Address.sol) - Library to simplify the handling of Address functionality.
 
 I recommend taking the time to read up on these in more detail.
