@@ -23,7 +23,7 @@ function deposit(uint256 rethAmount) external returns (uint256 shares) {
 
    > **Hint:**
    >
-   > - See `IRewardPoolDepostiWrapper` for how to call `depositSingle`.
+   > - See `IRewardPoolDepositWrapper` for how to call `depositSingle`.
    > - See exercise on Balancer to see how to prepare parameters to add liquidity.
 
 3. **Refund**
