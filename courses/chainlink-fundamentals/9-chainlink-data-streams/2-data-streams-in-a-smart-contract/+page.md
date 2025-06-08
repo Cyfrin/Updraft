@@ -34,7 +34,7 @@ First, let’s create a smart contract that emits the event that will trigger Au
 
 Now, let’s write our upkeep smart contract, which Automation will call when `LogEmitter::emitLog` is called. 
 
-- Create a file called `StreamsUpkeep.sol` in the `contracts` folder. In this file, copy and paste the code from the `StreamsUpkeep.sol` contract in the [course code repo]([https://github.com/ciaranightingale/chainlink-fundamentals-code/blob/main/data-streams/LogEmitter.sol](https://github.com/ciaranightingale/chainlink-fundamentals-code/blob/main/data-streams/StreamsUpkeep.sol)).
+- Create a file called `StreamsUpkeep.sol` in the `contracts` folder. In this file, copy and paste the code from the `StreamsUpkeep.sol` contract in the [course code repo](https://github.com/Cyfrin/chainlink-fundamentals-cu/blob/main/chainlink-course-code/data-streams/StreamsUpkeep.sol).
 
 **Note**: as of writing, `@chainlink v1.3.0` requires you use a compiler version of `0.8.19`.
 
