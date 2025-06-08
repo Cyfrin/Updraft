@@ -34,7 +34,7 @@ This is not the whole function but we break it to not overwhelm you.
 1. We define the function, make it public and apply the `raffleEnteredAndTimePassed` modifier;
 2. We define two new variables `additionalEntrants` and `startingIndex`;
 3. We assign `1` to `startingIndex` because we don't want to start with `index 0`, you will see why in a moment;
-4. We use a for loop that creates 5 addresses. If we started from `index 0` then the first created address would have been `address(0)`. `address(0)` has a special status in the Ethereum ecosystem, you shouldn't use it in tests because different systems check against sending to it or against configuring it. Your tests would fail and not necessarily because your smart contract is broken;
+4. We use a for loop that creates 3 addresses. If we started from `index 0` then the first created address would have been `address(0)`. `address(0)` has a special status in the Ethereum ecosystem, you shouldn't use it in tests because different systems check against sending to it or against configuring it. Your tests would fail and not necessarily because your smart contract is broken;
 5. Inside the loop, we use `hoax` which acts as `deal + prank` to call `raffle.enterRaffle` using each of the newly created addresses. Read more about `hoax` [here](https://book.getfoundry.sh/reference/forge-std/hoax?highlight=hoax#hoax).
 
 Ok, now we need to pretend to be Chainlink VRF and call `fulfillRandomWords`. We will need the `requestId` and the `consumer`. The consumer is simple, it's the address of the `Raffle` contract. How do we get the `requestId`? We did this in the previous lesson!
@@ -43,7 +43,7 @@ Ok, now we need to pretend to be Chainlink VRF and call `fulfillRandomWords`. We
 function testFulfillRandomWordsPicksAWinnerResetsAndSendsMoney() public raffleEnteredAndTimePassed {
     // Arrange
 
-    uint256 additionalEntrants = 333;
+    uint256 additionalEntrants = 3;
     uint256 startingIndex = 1;
 
     for (uint256 i = startingIndex; i < startingIndex + additionalEntrants; i++) {
