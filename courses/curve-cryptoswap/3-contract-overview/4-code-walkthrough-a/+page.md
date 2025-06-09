@@ -55,7 +55,7 @@ Here is the part that calculates the current A parameter and the gamma parameter
 
 As stated earlier A_gamma_0 packs state variables. A is packed in the first 128 bits and gamma is packed in the last 128 bits. To get the A0 parameter, it bitshifts by 128 to the right. And the same goes for gamma1. We see that since gamma1 is the last 128 bits, it does a bitwise mask with 128 bits to get the value of gamma. The A parameter is on the left side of the 128 bits, so to get the value you need to bitshift to the right.
 
-If the current block timestamp is less than T1, where T1 is the future A gamma time, then we know that the current timestamp is somewhere inbetween T0 and T1. It then will perform a linear calculation to see where the A parameter and the gamma parameter is. First it minuses T0 from T1. Then it sets T0 to the current timestamp minus T0. Here we are saying T1 from the current value is T1 - T0. The current T1 is equal to T1 - T0. The current T0 is equal to block.timestamp - T0. T2 is equal to T1 - T0.
+If the current block timestamp is less than T1, where T1 is the future A gamma time, then we know that the current timestamp is somewhere in between T0 and T1. It then will perform a linear calculation to see where the A parameter and the gamma parameter is. First it minuses T0 from T1. Then it sets T0 to the current timestamp minus T0. Here we are saying T1 from the current value is T1 - T0. The current T1 is equal to T1 - T0. The current T0 is equal to block.timestamp - T0. T2 is equal to T1 - T0.
 
 T2 is equal to T1 - T0. We know that T1 is T1-T0. And T0 is b-T0. If you simplify you get T1 - b. So what this is doing is sliding all of the timestamps by T0.
 
