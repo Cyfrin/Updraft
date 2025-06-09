@@ -11,7 +11,7 @@ First, let's create a simple Python script that will utilize **Titanoboa**.
 import boa
 import sys
 
-print(boa.eval('"empty(uint256())"'))
+print(boa.eval("empty(uint256())"))
 print("Hello!")
 ```
 
@@ -19,7 +19,7 @@ If we try to run this script without having **Titanoboa** installed, we'll encou
 
 **Let's install Titanoboa globally using pip** 
 ```bash
-python3.11 -m pip install titano Boa
+python3.11 -m pip install titanoboa
 ```
 
 This will install **Titanoboa** for the global Python 3.11 environment.
@@ -33,11 +33,11 @@ We get the correct output because **Titanoboa** was installed globally in our Py
 
 **UV's strength lies in its ability to manage dependencies for specific project environments. Let's demonstrate this.**
 
-**We'll add Titano Boa to our project environment using UV.**
+**We'll add Titanoboa to our project environment using UV.**
 
 **Add a dependency with UV**
 ```bash
-uv add titano Boa
+uv add titanoboa
 ```
 
 This will create a new folder called `venv` in our project directory and automatically add **Titanoboa** to the project environment. 
@@ -65,7 +65,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 
 dependencies = [
-  "titano Boa>=0.2.4",
+  "titanoboa>=0.2.4",
 ]
 ```
 
