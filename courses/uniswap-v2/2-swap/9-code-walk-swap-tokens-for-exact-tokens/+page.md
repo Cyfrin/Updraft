@@ -22,33 +22,26 @@ What this function will do is for each pair contract, it will call the function 
 
 So, this is the function for `swapTokensForExactTokens`. 
 
-```javascript
-function swapTokensForExactTokens(
-        uint amountOutMin,
+```solidity
+    // NOTE: swap min input for specified output
+    // max in = 3000 DAI
+    // out =  1 WETH
+    function swapTokensForExactTokens(
+        uint amountOut,
+        uint amountInMax,
         address[] calldata path,
         address to,
         uint deadline
-    )
-        external
-        virtual
-        override
-        ensure(deadline)
-        payable
-    {
-        // calculates amountIn based on the desired amountOut
-        uint amountIn = UniswapV2Library.getAmountsIn(amountOut, path)[0];
-
-        // checks if the amountIn is less than or equal to the user's max input
-        require(amountIn <= amountInMax, 'UniswapV2Router: EXCESSIVE_INPUT_AMOUNT');
-
-        // transfers the user's input token to the first pair contract for trading
+    ) external virtual override ensure(deadline) returns (uint[] memory amounts) {
+        // NOTE: calculates amounts based on the desired amountOut
+        amounts = UniswapV2Library.getAmountsIn(factory, amountOut, path);
+        // NOTE: checks if the amounts is less than or equal to the user's max input
+        require(amounts[0] <= amountInMax, 'UniswapV2Router: EXCESSIVE_INPUT_AMOUNT');
+        // NOTE: transfers the user's input token to the first pair contract for trading
         TransferHelper.safeTransferFrom(
-            msg.sender,
-            UniswapV2Library.pairForFactory(factory, path[0], path[1]),
-            amountIn
+            path[0], msg.sender, UniswapV2Library.pairFor(factory, path[0], path[1]), amounts[0]
         );
-
-        // performs the swap in the loop, traversing through all pairs in the path
-        swap(amounts, path, to);
+        // NOTE: performs the swap in the loop, traversing through all pairs in the path
+        _swap(amounts, path, to);
     }
 ```

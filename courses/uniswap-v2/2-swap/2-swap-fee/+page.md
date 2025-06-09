@@ -14,24 +14,26 @@ For example, if the swap fee rate *F* is 0.5, then the swap fee would be half of
 
 Now, let's determine how to calculate the output amount of DY, *dy*, when we factor in swap fees. We can start by looking at the formula to calculate DY without considering any fees:
 
-```javascript
-dy = dx * y0 / (x0 + dx)
-```
 
-In this formula, *dx* represents the amount of DX we are inputting, *y0* is the amount of DY in the liquidity pool, and *x0* is the amount of DX in the liquidity pool.
+$dy = \frac{dx * y_0} {(x_0 + dx)}$
 
-In Uniswap V2, when a swap occurs, a fraction of *dx* is taken out as a fee. As we mentioned before, this swap fee can be expressed as *f * dx*.  We can modify our equation for DY to account for this swap fee by subtracting it from *dx* in the numerator and denominator.
 
-```javascript
-dy = dx(1 - f) * y0 / (x0 + dx(1 - f))
-```
+In this formula, *dx* represents the amount of DX we are inputting, $y_0$ is the amount of DY in the liquidity pool, and $x_0$ is the amount of DX in the liquidity pool.
 
-In essence, we are multiplying *dx* by *1 - f* in both the numerator and denominator to reflect the fact that a fraction of the input *dx* is taken out as a swap fee.
+In Uniswap V2, when a swap occurs, a fraction of *dx* is taken out as a fee. As we mentioned before, this swap fee can be expressed as $f * dx$.  We can modify our equation for DY to account for this swap fee by subtracting it from *dx* in the numerator and denominator.
+
+
+$dy = \frac{dx(1 - f) * y_0} {x_0 + dx(1 - f)}$
+
+
+In essence, we are multiplying *dx* by $1 - f$ in both the numerator and denominator to reflect the fact that a fraction of the input *dx* is taken out as a swap fee.
 
 Let's go through an example of how to calculate DY, accounting for swap fees. Let's say we have a liquidity pool with 6,000,000 DAI and 3000 ETH. Uniswap V2 has a swap fee rate of 0.3%, or 0.003. If we are inputting *dx* of 1000 DAI, we can plug our values into our formula:
 
-```javascript
-dy = 1000 * 0.997 * 3000 / (6000000 + 1000 * 0.997)
-```
+$dy = \frac{1000 * (1 - 0.003) * 3000}{6000000 + 1000 * (1 - 0.003)}$
+
+$dy = \frac{1000 * 0.997 * 3000} {6000000 + 1000 * 0.997}$
+
+
 
 We can now use a calculator to determine the value of *dy*, which would be approximately 0.498341 ETH. 

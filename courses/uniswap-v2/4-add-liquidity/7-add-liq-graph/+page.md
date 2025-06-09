@@ -1,6 +1,8 @@
+https://www.desmos.com/calculator/w3khgtzadd
+
 When we add liquidity to Uniswap V2, we can add an arbitrary amount of tokens. If we want to provide some amount of token X, there is an equation that tells us how much token Y we must also provide.  Likewise, if we want to provide some amount of token Y, then there is an equation that tells us how much token X we must also provide. This equation is based on the invariant, which says that the price of the AMM before adding liquidity and after adding liquidity must be the same. 
 
-Let's visualize this! We'll use Desmos to see how the AMM curve shifts when we add liquidity. We'll start with a pool with an initial liquidity, L, of 100. The invariant of this pool is X * Y = L^2, so in this case X * Y = 100^2. If we add more liquidity to the pool, the AMM curve will shift to the top right. The more liquidity we add, the flatter the curve becomes.
+Let's visualize this! We'll use Desmos to see how the AMM curve shifts when we add liquidity. We'll start with a pool with an initial liquidity, L, of 100. The invariant of this pool is $X * Y = L^2$, so in this case $X * Y = 100^2$. If we add more liquidity to the pool, the AMM curve will shift to the top right. The more liquidity we add, the flatter the curve becomes.
 
 For this visualization, we'll focus on how the price (token X in terms of token Y) is affected by adding liquidity. The current price, P, is 0.4, meaning that 1 token X is worth 0.4 tokens Y. Let's draw a line from the origin of our graph to the point on the curve that represents the current state of the pool (before adding liquidity). This line will have a slope equal to the current price, 0.4.
 

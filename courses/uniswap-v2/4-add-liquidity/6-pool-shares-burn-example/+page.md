@@ -4,9 +4,7 @@ We need to reflect this 9% share decrease in the amount of tokens in the pool. B
 
 We can calculate this difference using the following formula:
 
-```
-L0 - L1 = S / T * L0
-```
+$L_0 - L_1 = \frac{S}{T}L_0$
 
 Where:
 
@@ -23,9 +21,9 @@ In our example:
 
 Therefore:
 
-```
-L0 - L1 = 100 / 1100 * 1210 = 110
-```
+$L_0 - L_1 = \frac{100}{1100} * 1210 = 110$
+
+
 
 This confirms that the user will receive 110 USDC.
 

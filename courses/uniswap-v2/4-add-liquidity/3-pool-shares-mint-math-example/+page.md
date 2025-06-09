@@ -12,9 +12,7 @@ Let's visualize this with a pie chart. The purple portion of the pie represents 
 
 We're going to mint shares to reflect this change. To do this, we'll use the following equation:
 
-```
-S = (L1 - L0) / L0 * T
-```
+$S=\frac{L_1 - L_0}{L_0}T$
 
 Where:
 
@@ -25,16 +23,11 @@ Where:
 
 We'll say that we have 1,000 total shares before the deposit. Using our equation, we can plug in the values for L1, L0, and T.
 
-```
-S = (1,210 - 1,100) / 1,100 * 1,000
-```
+$S=\frac{1210 - 1100}{1100}*1000$
 
 This simplifies to:
 
-```
-S = 110 / 1,100 * 1,000 
-```
-
-S = 100
+1. $S=\frac{110}{1100}*1000$
+2. $S = 100$
 
 We must mint 100 shares to reflect the 10% increase in the pool's value. Now, the total shares in the pool are 1,100. 

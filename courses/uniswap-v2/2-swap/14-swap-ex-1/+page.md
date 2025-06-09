@@ -1,6 +1,6 @@
 ## Uniswap V2 Router Test
 
-This lesson will introduce Uniswap V2 Router, focusing on testing the Swap Exact Tokens For Tokens function. This is a common task in smart contract testing, where you want to simulate a swap of tokens in a real-world scenario.
+This lesson will introduce Uniswap V2 Router, focusing on testing the `swapExactTokensForTokens` function. This is a common task in smart contract testing, where you want to simulate a swap of tokens in a real-world scenario.
 
 Let's begin by setting up our test environment. First, we will need to import some interfaces.
 
@@ -55,7 +55,7 @@ function testSwapExactTokensForTokens() public {
 }
 ```
 
-The Swap Exact Tokens For Tokens function takes several inputs:
+The `swapExactTokensForTokens` function takes several inputs:
 
 * **amountIn**: This is the amount of tokens the user will be sending in.
 * **amountOutMin**: This is the minimum amount of output tokens the user expects.
