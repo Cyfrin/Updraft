@@ -1,74 +1,134 @@
-## Gas Comparison: Constants and Immutables vs Storage
+## Optimizing Vyper Gas Costs: Constants and Immutables vs. Storage
 
-We are going to explore how expensive it is to deploy a contract, and call a fund function with constants and immutables.
+Gas efficiency is paramount in smart contract development. Every operation on the blockchain consumes gas, which translates directly into transaction costs for users. Optimizing your contracts to use less gas makes them cheaper to deploy and interact with, providing a significant advantage. One fundamental optimization technique involves choosing the right way to store fixed values: using `constant` and `immutable` variables versus standard state (storage) variables.
 
-Let's make sure that our contract has compiled and is ready to be deployed.
+This lesson explores the gas cost implications of these choices in Vyper by comparing two versions of a simple `buy_me_a_coffee` contract: one using a `constant` variable and another using a storage variable for the same value.
 
-Next, we will navigate to the deploy tab in Remix. We are going to be using our injected Metamask. However, we're going to go back to our fake chain.
+### Scenario 1: Gas Costs with Constants and Immutables
 
-Now, we're going to use this price feed address. We'll copy this, paste it in, and deploy our contract.
+We begin with a Vyper contract (`buy_me_a_coffee.vy`) that utilizes both `constant` and `immutable` variables. Constants are values known at compile time and embedded directly into the contract's bytecode. Immutables are set once during deployment (in the `__init__` constructor) and then also become fixed parts of the contract code. Storage variables, in contrast, reside in the contract's storage slots on the blockchain.
 
-After a few moments, we'll see that our contract has deployed and is available to interact with.
+Our focus will be on the `MINIMUM_USD` variable, initially declared as a `constant`.
 
-Let's take a look at how much gas it cost to deploy our contract. In the transaction details, scroll down and you'll find the transaction cost. This is the entire cost of the whole transaction. Let's copy this number.
+**Initial Contract Snippet:**
 
-Now we'll return to our contract code, and above our deploy function, we'll add this line:
+```vyper
+# Constants & Immutables
+MINIMUM_USD: public(constant(uint256)) = as_wei_value(5, "ether") # Compile-time constant
+PRICE_FEED: public(immutable(AggregatorV3Interface)) # Set in __init__
+OWNER: public(immutable(address)) # Set in __init__
+PRECISION: public(constant(uint256)) = 1 * (10 ** 18) # Compile-time constant
 
-```python
-# With constants: 262853
-```
+# Storage
+funders: public(DynArray[address, 1000])
+funder_to_amount_funded: public(HashMap[address, uint256])
 
-We'll add a second line:
-
-```python
-# With constants: 105332
-```
-
-Next, we'll make some changes to our contract code to remove the `constant` keyword. This will require us to change our deploy function to the following code:
-
-```python
 @deploy
 def __init__(price_feed: address):
-    self.minimum_usd = as_wei_value(5, "ether")
+    # Immutables are assigned here
     PRICE_FEED = AggregatorV3Interface(price_feed)
     OWNER = msg.sender
-```
+    # Note: MINIMUM_USD is NOT set here; it's a constant
 
-We've also changed our fund function to the following:
-
-```python
 @external
 @payable
 def fund():
-    """Allows users to send $ to this contract 
-    Have a minimum $ amount to send
-    How do we convert the ETH amount to dollars amount?"""
-
-    usd_value_of_eth: uint256 = self.get_eth_to_usd_rate(msg.value)
-    assert usd_value_of_eth >= self.minimum_usd, "You must spend more ETH!"
-    self.funders.append(msg.sender)
-    self.funder_to_amount_funded[msg.sender] += msg.value
-
+    value: uint256 = msg.value
+    # ... price conversion logic ...
+    # Reading the constant value:
+    assert usd_value_of_eth >= MINIMUM_USD, "You must spend more ETH!"
+    # ... rest of fund logic ...
 ```
 
-We'll compile these changes and deploy our contract again.
+**Deployment and Interaction:**
 
-Now, let's take a look at the gas costs and compare them. 
+1.  **Compile:** The contract is compiled using the Vyper compiler (e.g., within the Remix IDE).
+2.  **Deploy:** The contract is deployed to a test network (like a local fork or Sepolia testnet) using a tool like Remix connected via MetaMask. During deployment, the address for the `price_feed` immutable variable is provided as an argument to the `__init__` function.
+3.  **Deployment Gas:** Inspecting the deployment transaction reveals the gas cost.
+    *   **Deployment Cost (Constants/Immutables): 262,853 gas**
+4.  **Call `fund()`:** The `fund` function is called with a specific Ether value (e.g., 0.002 ETH, converted to Wei).
+5.  **`fund()` Gas:** Inspecting the `fund` transaction reveals its gas cost.
+    *   **`fund()` Call Cost (Constants/Immutables): 105,332 gas**
 
-With constants, deploying our contract cost 262,853 gas. Let's put those numbers side by side to really see the difference.
+We record these gas costs for comparison.
 
-Without constants, it cost 282,553 gas to deploy our contract. 
+### Scenario 2: Gas Costs with Storage Variables
 
-That's 20,000 gas difference, or in real world money, it's 7 cents cheaper.  
+Now, let's modify the contract to use a standard storage variable for the minimum donation amount instead of a `constant`.
 
-Let's do the same for the fund function. We'll copy 0.002, and call the fund function. 
+**Code Modifications:**
 
-After confirmation, let's take a look at the gas cost. 
+1.  **Declaration:** Change `MINIMUM_USD` from a `constant` to a regular state variable, following Vyper's lowercase convention for storage variables.
+2.  **Initialization:** Move the value assignment from the declaration line into the `__init__` function, using `self.` to indicate a storage variable write.
+3.  **Reference Update:** Update the reference within the `fund` function's `assert` statement to use `self.minimum_usd`.
 
-With constants, the transaction cost was 105,332 gas.  We'll go back to our contract and put these costs side by side. 
+**Modified Contract Snippets:**
 
-Without constants, the transaction cost is 107,432 gas. 
+```vyper
+# --- Variable Declaration (Changed) ---
+minimum_usd: public(uint256) # Now a storage variable
 
-Again, by making the minimum a constant we saved 2,000 gas.
+# --- __init__ function (Added Initialization) ---
+@deploy
+def __init__(price_feed: address):
+    # Assign value to storage variable during deployment
+    self.minimum_usd = as_wei_value(5, "ether") # <<< Added line
+    PRICE_FEED = AggregatorV3Interface(price_feed)
+    OWNER = msg.sender
 
-So we've seen that making small changes to our code can lead to significantly lower gas usage, which will save money for anyone interacting with your contracts. 
+# --- fund function (Updated Reference) ---
+@external
+@payable
+def fund():
+    value: uint256 = msg.value
+    # ... price conversion logic ...
+    # Reading the storage variable:
+    assert usd_value_of_eth >= self.minimum_usd, "You must spend more ETH!" # <<< Updated reference
+    # ... rest of fund logic ...
+```
+
+**Deployment and Interaction:**
+
+1.  **Recompile:** The modified contract is compiled.
+2.  **Deploy:** The new version is deployed using the exact same procedure and arguments as before.
+3.  **Deployment Gas:** Inspecting the deployment transaction reveals the new gas cost.
+    *   **Deployment Cost (Storage): 282,553 gas**
+4.  **Call `fund()`:** The `fund` function is called again with the same Ether value (0.002 ETH).
+5.  **`fund()` Gas:** Inspecting the `fund` transaction reveals its gas cost.
+    *   **`fund()` Call Cost (Storage): 107,432 gas**
+
+### Gas Cost Comparison and Analysis
+
+Let's compare the results side-by-side:
+
+| Operation          | Gas Cost (Constant/Immutable) | Gas Cost (Storage) | Saving with Constant |
+| :----------------- | :---------------------------- | :----------------- | :------------------- |
+| **Contract Deploy** | 262,853                       | 282,553            | **19,700 gas**       |
+| **`fund()` Call**  | 105,332                       | 107,432            | **2,100 gas**        |
+
+**Why the Difference?**
+
+*   **Deployment Cost:**
+    *   **Constants/Immutables:** The value of `MINIMUM_USD` (as a `constant`) is directly baked into the contract's bytecode during compilation. No storage write operation is needed during deployment for this value. Immutables are also efficiently stored as part of the deployed code.
+    *   **Storage:** When `minimum_usd` is a storage variable, the line `self.minimum_usd = as_wei_value(5, "ether")` in the `__init__` function executes an `SSTORE` opcode during deployment. `SSTORE` (writing to storage) is one of the most expensive operations on the EVM. This storage write significantly increases the deployment gas cost.
+
+*   **Runtime (`fund()` Call) Cost:**
+    *   **Constants/Immutables:** Reading the value of `MINIMUM_USD` (as a `constant`) involves fetching the value directly from the contract's bytecode. This is a very cheap operation. Reading immutables is similarly efficient.
+    *   **Storage:** Reading the value of `self.minimum_usd` (as a storage variable) requires an `SLOAD` opcode. `SLOAD` (reading from storage) is considerably more expensive than reading from code/memory, as it requires accessing the blockchain's state trie.
+
+**Conclusion:**
+
+Using `constant` variables for values known at compile time and `immutable` variables for values set only once at deployment provides substantial gas savings compared to using storage variables.
+
+*   You save gas during **deployment** because you avoid expensive `SSTORE` operations for initializing these values.
+*   You save gas during **runtime** every time the value is read, because accessing bytecode is cheaper than executing an `SLOAD` operation.
+
+While the savings per transaction (around 2,100 gas in our `fund` example) might seem small, they accumulate significantly over the lifetime of a frequently used contract, directly benefiting users by reducing their transaction fees.
+
+### Key Takeaways for Gas Optimization
+
+*   **Use `constant`:** For any value that is fixed, known before compilation, and will never change (e.g., mathematical constants, version numbers, fixed configuration parameters like `PRECISION` or `MINIMUM_USD` in our initial example). Use `UPPER_CASE_WITH_UNDERSCORES` naming convention.
+*   **Use `immutable`:** For any value that is set *only once* during contract deployment (in `__init__`) and will never change afterwards (e.g., owner address, addresses of other essential contracts like `PRICE_FEED`, deployment-time configuration). Use `UPPER_CASE_WITH_UNDERSCORES` naming convention.
+*   **Use Storage:** Reserve storage variables (`lower_case_with_underscores`) for data that *needs* to change after the contract has been deployed (e.g., user balances, dynamic settings, lists of participants like `funders`).
+
+By consciously choosing between constants, immutables, and storage based on whether and when a value needs to be set or changed, you can write significantly more gas-efficient Vyper smart contracts.
