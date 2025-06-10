@@ -1,104 +1,32 @@
-## Contract Design
+## Designing Your First Vyper Smart Contract: Planning and Requirements
 
-We're going to make a very minimal favorite things list. We want to store favorite numbers and favorite people with their favorite numbers.
+Before diving into writing complex code, especially for immutable systems like smart contracts, careful planning is essential. Understanding precisely what your contract needs to achieve is the critical first step. This lesson outlines the initial design phase for a simple "Favorite Things List" smart contract using the Vyper programming language.
 
-Here is some basic code to get started:
+We'll begin within a Vyper Integrated Development Environment (IDE). When starting a new Vyper contract file (typically with a `.vy` extension), you'll often see some initial lines:
 
-```python
-# pragma version >=0.4.1
+```vyper
+# pragma version 0.4.0
+# @license MIT
+```
+
+The `# pragma version` directive specifies the version of the Vyper compiler the contract is intended for. This helps ensure compatibility and prevents issues if compiler behaviour changes in future versions. The `# @license` line uses the SPDX license identifier (in this case, MIT) to declare the open-source license under which the code is released. Comments in Vyper are denoted by the `#` symbol.
+
+With the basic file structure in place, the next crucial step is defining the contract's requirements. What exactly do we want this smart contract to do? For our example, we aim to create a "Favorite Things List" with two primary functions:
+
+1.  Store a general list of favorite numbers.
+2.  Store specific people and associate each person with *their* individual favorite number.
+
+To keep these requirements front and center during development, it's good practice to outline them directly within the code file using comments. This acts as an initial design document embedded within the source code itself:
+
+```vyper
+# pragma version 0.4.0
+# @license MIT
+
 # favorite things list:
 # favorite numbers
 # favorite people with their favorite number
 ```
 
-To store these items, we're going to use mappings. A mapping is like a dictionary or hashmap. We'll use the key to be the person and the value to be their favorite number.
+Here, we've added comments outlining the core purpose (a favorite things list) and its two specific data storage requirements. This simple specification clearly states our goals: we need a mechanism to hold a collection of numbers and another mechanism to map an identifier (representing a person) to a specific number.
 
-```python
-# pragma version >=0.4.1
-# favorite things list:
-# favorite numbers
-# favorite people with their favorite number
-
-favorite_numbers: HashMap[uint256, uint256]
-favorite_people: HashMap[address, uint256]
-```
-
-Mappings have a default value. If we don't assign a value, the default value is 0.
-
-```python
-# pragma version >=0.4.1
-# favorite things list:
-# favorite numbers
-# favorite people with their favorite number
-
-favorite_numbers: HashMap[uint256, uint256]
-favorite_people: HashMap[address, uint256]
-
-def set_favorite_number(number: uint256):
-    favorite_numbers[number] = number
-```
-
-Now we have a function to set a favorite number. This is a pretty simple and straightforward function. We take a number and set it to the same number, but we could change this later.
-
-```python
-# pragma version >=0.4.1
-# favorite things list:
-# favorite numbers
-# favorite people with their favorite number
-
-favorite_numbers: HashMap[uint256, uint256]
-favorite_people: HashMap[address, uint256]
-
-def set_favorite_number(number: uint256):
-    favorite_numbers[number] = number
-
-def set_favorite_person(person: address, number: uint256):
-    favorite_people[person] = number
-```
-
-We have another function to set the favorite person. It takes a person, their address, and their favorite number. We set it to the dictionary where we store the favorite person.
-
-```python
-# pragma version >=0.4.1
-# favorite things list:
-# favorite numbers
-# favorite people with their favorite number
-
-favorite_numbers: HashMap[uint256, uint256]
-favorite_people: HashMap[address, uint256]
-
-def set_favorite_number(number: uint256):
-    favorite_numbers[number] = number
-
-def set_favorite_person(person: address, number: uint256):
-    favorite_people[person] = number
-
-def get_favorite_number(number: uint256) -> uint256:
-    return favorite_numbers[number]
-```
-
-Lastly, we have a function to get the favorite number. It takes a number and then it returns the favorite number. It simply returns the value of the number from the dictionary.
-
-```python
-# pragma version >=0.4.1
-# favorite things list:
-# favorite numbers
-# favorite people with their favorite number
-
-favorite_numbers: HashMap[uint256, uint256]
-favorite_people: HashMap[address, uint256]
-
-def set_favorite_number(number: uint256):
-    favorite_numbers[number] = number
-
-def set_favorite_person(person: address, number: uint256):
-    favorite_people[person] = number
-
-def get_favorite_number(number: uint256) -> uint256:
-    return favorite_numbers[number]
-
-def get_favorite_person(person: address) -> uint256:
-    return favorite_people[person]
-```
-
-We now have a function to get the favorite person, which takes a person's address and returns their favorite number.
+Having clearly defined what our contract needs to accomplish, the next logical step is to determine *how* to implement this functionality using Vyper's features and syntax. How do we translate these requirements into actual Vyper code structures?
