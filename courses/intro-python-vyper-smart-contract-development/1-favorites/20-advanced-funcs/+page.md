@@ -1,130 +1,135 @@
-## Advanced Vyper Functions
+## Exploring Advanced Vyper Function Syntax
 
-We will show you some examples of functions in Vyper. All of the examples that I will show you here are called external functions. This means that after we deploy the contract, we will be able to call these functions.
+Welcome! In this lesson, we move beyond the basics and delve into some more advanced aspects of defining functions in Vyper. While some concepts might seem challenging initially, remember that understanding comes with practice and repetition. We'll explore specific syntax elements using practical examples within a sample contract. All functions demonstrated here will be marked `@external`, meaning they can be called from outside the contract once deployed.
 
-So, we'll declare as external:
+## Understanding Function Decorators
 
-```python
-@external
+Decorators are special keywords prefixed with `@` that modify the behavior or properties of a function. We'll focus on two key decorators here:
+
+*   **`@external`**: This is perhaps the most common decorator you'll encounter. It marks a function as part of the contract's public Application Binary Interface (ABI). This means the function can be called via transactions sent to the contract or through calls from other contracts or external accounts. All our examples in this lesson use `@external`.
+*   **`@pure`**: This decorator signifies that a function promises not to read from or modify the contract's state storage. Functions marked `@pure` (along with `@view` functions, which we'll discuss later) can often be called off-chain without incurring gas costs, provided the call itself doesn't trigger a state-changing transaction. We'll explore the nuances of `@pure` and `@view` in more detail in a subsequent lesson.
+
+We will also briefly mention `@internal` functions later, which are callable only from within the same contract.
+
+## Defining Functions in Vyper
+
+As a reminder, defining a function in Vyper uses the standard Python `def` keyword, followed by the function name, parameters, and return type annotation.
+
+The general syntax looks like this:
+
+```vyper
+def function_name(parameter_name: parameter_type, ...) -> return_type:
+    # Function body
+    return value
 ```
 
-Now, there's another keyword called internal, which I will explain in another video, and then I'll put another keyword called pure:
+*   `parameter_name: parameter_type`: Defines input parameters with their respective data types (e.g., `x: uint256`).
+*   `-> return_type`: Specifies the data type of the value the function will return (e.g., `-> uint256`).
 
-```python
-@pure
-```
+## Handling Integer Division
 
-Also, explain this in another video. Here, I just want to show you some syntax for how to write functions in Vyper:
+A crucial point in Vyper involves integer division. When dividing two integers where the result might not be a whole number, Vyper requires a specific operator:
 
-```python
-def
-```
+*   **`//`**: This is the **floor division** operator. It performs the division and rounds the result *down* to the nearest whole number.
 
-Let's call this function multiply:
+Using a single slash `/` is not the standard way to perform integer division in Vyper as demonstrated here. Always use `//` when dividing integers to ensure predictable, floored results.
 
-```python
-def multiply
-```
+## Using the 'pass' Keyword
 
-And as the name implies it will multiply two uint256, X uint256 and Y uint256.
+Sometimes, you might want to define a function's signature (its name, parameters, and return type) but aren't ready to implement its logic yet. In Python and Vyper, you can use the `pass` keyword as a placeholder.
 
-```python
-def multiply(x: uint256, y: uint256)
-```
+*   **`pass`**: This is a null operation – nothing happens when it executes. It acts as a valid placeholder for the function body, allowing the contract to compile successfully even if the function does nothing.
 
-And we want to return the product of X and Y.
+## Returning Multiple Values
 
-```python
-def multiply(x: uint256, y: uint256) -> uint256:
-```
+Vyper functions are not limited to returning just a single value. You can return multiple values, potentially of different types.
 
-To do this, we'll say put an arrow, then say we're going to return uint256 uint256.
+*   **Declaring Multiple Return Types**: In the function signature, enclose the multiple return types within parentheses: `-> (type1, type2, ...)`.
+*   **Returning Multiple Values**: In the `return` statement, provide the values as a tuple, enclosed in parentheses: `return (value1, value2, ...)`.
 
-```python
-def multiply(x: uint256, y: uint256) -> uint256:
-return
-```
+## Practical Examples: The Func.vy Contract
 
-And then, call it. Okay, and to multiply two numbers, we will say return.
+Let's illustrate these concepts with a simple contract, `Func.vy`.
 
-```python
-def multiply(x: uint256, y: uint256) -> uint256:
-return x * y
-```
+```vyper
+# pragma version ^0.4.0
 
-So, that's an example of a simple function that takes in two inputs, and then returns the product of the two numbers.
-
-Let me show you another example. I'm going to copy this. Again, we'll start with external, pure:
-
-```python
+# Example 1: Basic multiplication
 @external
 @pure
-```
+def multiply(x: uint256, y: uint256) -> uint256:
+    """
+    @notice Multiplies two unsigned integers.
+    @param x The first number.
+    @param y The second number.
+    @return The product of x and y.
+    """
+    return x * y
 
-Then I'll call this function divide:
-
-```python
+# Example 2: Integer division
+@external
+@pure
 def divide(x: uint256, y: uint256) -> uint256:
-```
+    """
+    @notice Divides two unsigned integers using floor division.
+    @param x The dividend.
+    @param y The divisor.
+    @return The result of x // y (rounded down).
+    """
+    # Note the use of // for integer division
+    return x // y
 
-We're going to divide X by Y and it's going to return uint256.
-
-```python
-def divide(x: uint256, y: uint256) -> uint256:
-return
-```
-
-Now, you would think that to divide two numbers, you just have to put a slash. However, in Vyper when you're dividing two integers, then you need to do double slash.
-
-```python
-def divide(x: uint256, y: uint256) -> uint256:
-return x // y
-```
-
-For the next example, sometimes you want to declare a function, but don't want to implement the code yet, you just want to make sure that the contract compiles. In this case, you can use the keyword pass. So, for example, let's say that we have a function external:
-
-```python
+# Example 3: Placeholder function using 'pass'
 @external
 def todo():
-```
+    """
+    @notice A placeholder function that does nothing yet.
+    """
+    # 'pass' allows an empty function body
+    pass
 
-def, and I'll call this, let's say, todo. And we're not going to return any outputs. It's also not going to take any inputs. What we want to say is we're going to implement the code inside here later. What you can do is type pass:
-
-```python
-@external
-def todo():
-pass
-```
-
-Basically, this function will do nothing.
-
-Okay, and the last example I'll show you is how do you return multiple outputs? So, let's say external again, and I'll use pure again for this example, and say def return many.
-
-```python
-@external
-@pure
-def return_many()
-```
-
-For the input, we'll keep it simple, it's not going to take any inputs. And for the output, how would we return multiple outputs? To do this, you'll need to put the type of the output inside the parentheses. For example, let's say we wanted to return uint256 and some boolean:
-
-```python
+# Example 4: Returning multiple values
 @external
 @pure
 def return_many() -> (uint256, bool):
+    """
+    @notice Demonstrates returning multiple values of different types.
+    @return A uint256 value (123) and a boolean value (True).
+    """
+    # Return types are (uint256, bool)
+    # Return values as a tuple
+    return (123, True)
+
 ```
 
-Bool, we'll say return. For the first output, we need to return a uint256. So, let's return 123. And for the second output, we'll need to return a boolean, that's say true.
+**Explanation:**
 
-```python
-@external
-@pure
-def return_many() -> (uint256, bool):
-return (123, True)
-```
+1.  **`multiply`**: A straightforward function demonstrating `@external`, `@pure`, parameter/return type definitions (`uint256`), and the standard multiplication operator (`*`).
+2.  **`divide`**: This function highlights the critical use of the floor division operator `//` for integer division in Vyper.
+3.  **`todo`**: Shows how `pass` can be used to create a valid, empty function body. Note it doesn't use `@pure` as its purpose might eventually involve state changes (though currently, it doesn't).
+4.  **`return_many`**: Demonstrates the syntax for returning multiple values. The signature declares `-> (uint256, bool)`, and the function returns a tuple `(123, True)`.
 
-Okay, so those are some examples of how to write functions in Vyper. Let's try compiling and deploying the contract.
+## Demonstrating Function Behavior
 
-```bash
-vyper compile advanced_functions.vy
-```
+After writing this code in an environment like the Remix IDE with the Vyper plugin:
+
+1.  **Compile:** The `Func.vy` contract compiles successfully.
+2.  **Deploy:** The contract is deployed (e.g., to the Remix VM).
+3.  **Interact:** We can now call the deployed functions:
+    *   Calling `todo()` executes successfully but performs no actions, as expected due to `pass`.
+    *   Calling `return_many()` (as an off-chain call since it's `@pure`) returns the values: `uint256: 123` and `bool: true`.
+    *   Calling `multiply(x=2, y=3)` returns `uint256: 6`.
+    *   Calling `divide(x=4, y=2)` returns `uint256: 2`.
+    *   Calling `divide(x=1, y=2)` returns `uint256: 0` (because 1 / 2 = 0.5, which floors down to 0).
+    *   Calling `divide(x=3, y=2)` returns `uint256: 1` (because 3 / 2 = 1.5, which floors down to 1). This clearly demonstrates the floor division behavior of `//`.
+
+## Key Takeaways
+
+*   Functions intended to be called from outside the contract must be marked `@external`.
+*   `@pure` functions promise not to read or write contract storage.
+*   Use the floor division operator `//` for integer division in Vyper.
+*   The `pass` keyword serves as a placeholder for an empty function body.
+*   Specify multiple return types using parentheses in the signature: `-> (type1, type2)`.
+*   Return multiple values as a tuple: `return (value1, value2)`.
+
+This lesson covered several important syntactical elements for defining more complex functions in Vyper. Mastering these will allow you to build more sophisticated smart contracts.
