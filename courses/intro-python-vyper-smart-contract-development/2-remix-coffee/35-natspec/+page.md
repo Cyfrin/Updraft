@@ -1,44 +1,81 @@
-## Natspec docstring
+## Enhancing Vyper Contracts with Natspec Documentation
 
-Now that we've learned more about immutables and constants, we can improve our code to be more professional and gas-efficient.
+Writing functional Vyper code is the first step, but making it understandable, maintainable, and professional requires good documentation. While single-line comments using `#` are useful for brief notes, Vyper supports multi-line docstrings (`"""Docstring goes here"""`) which are essential for implementing the Ethereum Natural Language Specification Format, commonly known as Natspec.
 
-Before we even get to immutables and constants, we can improve our code by adding documentation at the top of the contract.
+Natspec provides a standardized way to richly document your smart contracts and their components. This isn't just about adding comments; it's about creating structured metadata that can be interpreted by developers, end-users (e.g., in wallet interfaces during transaction signing), and automated tooling like IDEs or block explorers. Adopting Natspec significantly improves the professionalism and readability of your codebase.
 
-This is a special type of comment called a docstring. We can do this by adding three quotes:
+**From Basic Comments to Natspec**
 
-```python
+Consider a simple contract that initially uses `#` comments for basic information:
+
+```vyper
+# Buy Me A Coffee!
+# Author: You!
+# License: MIT
+# Goal: Create a sample funding contract
+# Version: 0.4.0
+
+# --- Contract Code Starts Below ---
+```
+
+While this conveys information, it lacks structure. We can improve this using multi-line docstrings and Natspec tags.
+
+**Introducing Multi-line Docstrings (`""" """`)**
+
+Vyper, like Python, allows multi-line comments using triple quotes (`"""`). Everything enclosed within these quotes is ignored by the compiler. This syntax is the foundation for Natspec documentation.
+
+```vyper
 """
+This is a multi-line comment block.
+It can span several lines and is ideal
+for detailed explanations or Natspec documentation.
 """
 ```
 
-This is the same as adding a hashtag (#) to every single line, but this means that we don't have to do that. Everything within these three quotes will be a comment.
+**Implementing Contract-Level Natspec**
 
-We can use a special docstring format called NatSpec Metadata to add documentation to our code. It's a way to provide rich documentation for functions, return values, and more.
+Natspec uses special tags, typically starting with `@`, to denote specific pieces of metadata. For documenting the contract as a whole, several standard tags are commonly used:
 
-To use NatSpec, we add an "at" symbol (@) followed by a tag. We'll add the following NatSpec tags at the top of our contract:
+*   `@title`: A human-readable name or title for the contract.
+*   `@author`: The name or entity that created the contract.
+*   `@license`: Specifies the software license under which the contract is released (using SPDX identifiers like `MIT`, `GPL-3.0-only`, etc.). This is crucial for open-source clarity.
+*   `@notice`: A user-focused explanation of what the contract does or what a specific function does. This might be displayed to users interacting with the contract.
+*   `@dev`: (Not shown in the final example but available) Developer-focused notes explaining implementation details, logic, or rationale.
 
-```python
-pragma version 0.4.1
+Let's apply these tags within a docstring at the top of our contract file:
+
+```vyper
+"""
 @license MIT
 @title Buy Me A Coffee!
 @author You!
-@notice This contract is for creating a sample funding contract.
+@notice This contract is for creating a sample funding contract
+"""
 ```
 
-- **`pragma version`**: specifies the version of Vyper we are using. It isn't part of NatSpec, but it is convention to put it at the top of our contract.
-- **`@license`**: describes the license for our code (in this case, MIT).
-- **`@title`**: provides a short title for our contract.
-- **`@author`**: identifies the author of the code.
-- **`@notice`**: explains to an end user what the contract does.
+This is much cleaner and more structured than the initial `#` comments.
 
-The compiler doesn't parse docstrings for internal functions. While we can add NatSpec tags in comments for internal functions, the compiler won't process or include them.
+**Handling the `pragma` Directive**
 
-We can add other NatSpec tags to document different parts of our contract, like functions and parameters. For example:
+You might have noticed the `pragma version` directive was initially included in the `#` comments. It's important to understand that `pragma` is **not** a Natspec tag. While you might technically place it inside a docstring without the `@`, this is not the standard convention.
 
-```python
-@dev Explains to a developer any extra details.
-@param Documents a single parameter.
-@return Documents one or all return value(s).
+Based on common practice among Vyper developers and examples in official documentation, the recommended approach is to place the `pragma` directive *outside* and *above* the main Natspec docstring, using a standard `#` comment.
+
+**The Recommended Structure**
+
+Combining these elements, the professional and conventional way to structure the top of your Vyper file with Natspec documentation and the pragma directive looks like this:
+
+```vyper
+# pragma version 0.4.0
+
+"""
+@license MIT
+@title Buy Me A Coffee!
+@author You!
+@notice This contract is for creating a sample funding contract
+"""
+
+# --- Rest of your contract code (interfaces, variables, functions, etc.) ---
 ```
 
-Let's add these NatSpec tags to our code so it looks a little more professional.
+By adopting Natspec, you make your Vyper contracts significantly easier to understand, audit, and integrate into the wider Web3 ecosystem. Remember to consult the official Vyper documentation for a complete list of Natspec tags, including those used for documenting functions (`@param`, `@return`), state variables, and events.
