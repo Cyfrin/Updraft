@@ -1,49 +1,41 @@
-## Mappings to track funders
+## Tracking Total Contribution Amounts per Funder
 
-In this lesson, we'll learn how to keep track of who sent funds to our contract, and how much they sent.
+In our previous steps, we developed a way to record the addresses of everyone who sent funds to our smart contract, likely using a dynamic array. However, simply knowing *who* funded isn't always enough. A common requirement is to know the *total amount* each individual has contributed over time. Our current contract lacks this capability.
 
-We'll use a mapping. Mappings are a fundamental concept in smart contracts. Think of them as dictionaries in Python or JavaScript. They pair a key with a value. We can make mappings public to allow anyone to read them.
+To associate each funder's address with their cumulative contribution, the ideal data structure in Vyper is a `HashMap`. Think of this like a dictionary or key-value store. We will map each funder's `address` (the key) to a `uint256` value representing the total amount they have sent in Wei (the value).
 
-We'll create a new mapping to keep track of funders and how much they sent.
+First, we need to declare a new state variable within our contract to store this mapping. State variables store data persistently on the blockchain. We'll name it `funder_to_amount_funded` and define its type and visibility:
 
-```python
-# # Keep track of who sent us
-# # How much they sent us
+```vyper
+# Keep track of the total amount funded by each address
+# Maps: funder address -> total amount funded
+funder_to_amount_funded: public(HashMap[address, uint256])
 ```
 
-We'll call this new mapping `_funders_to_amount_funded`.
+Here, `public` makes the mapping readable externally – anyone can query the total amount funded by a specific address using the automatically generated getter function. `HashMap[address, uint256]` specifies that this is a mapping where keys are blockchain addresses and values are unsigned 256-bit integers, which are suitable for storing Ether amounts in Wei.
 
-```python
-# funder -> how much they funded
-_funders_to_amount_funded: public(HashMap[address, uint256])
+Next, we need to modify our `fund()` function. This function must be marked `payable` so it can receive Ether. Inside this function, after a user sends funds (and potentially after other checks like minimum amounts are passed), we need to update the mapping to reflect the new contribution.
+
+We access the mapping using the sender's address (`msg.sender`) as the key. We retrieve the current amount stored for that address, add the amount sent in the *current* transaction (`msg.value`), and store the new total back into the mapping for that same address.
+
+```vyper
+# Inside the payable fund() function...
+# Previous logic might include adding the funder to a list:
+# self.funders.append(msg.sender) # Assuming this exists from previous steps
+
+# Update the total amount funded by this sender
+self.funder_to_amount_funded[msg.sender] = self.funder_to_amount_funded[msg.sender] + msg.value
 ```
 
-This mapping will store the address of the funder as a key and the amount they sent as a value.
+Crucially, `msg.sender` is a built-in variable that provides the address of the account calling the function, and `msg.value` is a built-in variable available in `payable` functions that provides the amount of Wei sent with the call. If `msg.sender` hasn't funded before, `self.funder_to_amount_funded[msg.sender]` will default to 0, ensuring the first contribution is recorded correctly.
 
-In our `fund` function, we'll track the amount each person sent us.
+Vyper, like many programming languages, offers a shorthand syntax for this type of increment-and-assign operation. Instead of writing `variable = variable + value`, you can use the `+=` operator:
 
-```python
-@payable
-def fund():
-    """
-    Allows users to send $ to this contract
-    Have a minimum $ amount to send
-    """
-    # ... previous code
-    self._funders_to_amount_funded[msg.sender] += msg.value
-    # ...
+```vyper
+# Equivalent shorthand syntax for the update
+self.funder_to_amount_funded[msg.sender] += msg.value
 ```
 
-Here, we access the hash map with the `msg.sender` address as the key and add the amount sent by the `msg.sender` (`msg.value`) to the value associated with the `msg.sender` in the hash map. We can also use the `+=` operator as a shorthand for adding to a value in a mapping.
+This single line performs the exact same operation as the longer version shown previously: it adds `msg.value` to the current value associated with `msg.sender` in the mapping and updates the mapping entry in place.
 
-```python
-self._funders_to_amount_funded[msg.sender] = self._funders_to_amount_funded[msg.sender] + msg.value
-```
-
-We can also use the `+=` operator as a shorthand for adding to a value in a mapping.
-
-```python
-self._funders_to_amount_funded[msg.sender] += msg.value
-```
-
-This is the same as writing the line above.
+By adding this `HashMap` state variable and the logic to update it within the `fund` function, our contract now effectively tracks the cumulative amount contributed by each individual funder.
