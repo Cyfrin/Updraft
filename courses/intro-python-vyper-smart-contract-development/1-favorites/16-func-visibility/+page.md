@@ -1,75 +1,91 @@
-## Visibility in Vyper
+## Understanding Visibility in Vyper
 
-In this lesson, we will explore the concept of visibility within Vyper contracts. Visibility is a fundamental aspect of how we control access to different components within a contract. We will focus on the keywords `public` and `internal`.
+Visibility in smart contract programming dictates which parts of your contract (state variables and functions) can be accessed and from where. Vyper, a Pythonic language for the Ethereum Virtual Machine (EVM), uses specific keywords and decorators to manage this crucial aspect of contract security and design. Understanding visibility ensures that functions are called only when intended and data is exposed appropriately.
 
-The concept of visibility allows us to define the scope of accessibility to different elements in our smart contracts. Let's dive in by examining the code for our `favorites.vy` contract:
+Let's explore visibility using a simple example contract, `favorites.vy`:
 
-```python
-
-# pragma version >=0.4.1
+```vyper
+# pragma version 0.4.0
 # @license MIT
 
-my_favorite_number: public(uint256) = 0
+my_favorite_number: public(uint256) # 0
+
 @external
 def store(new_number: uint256):
     self.my_favorite_number = new_number
 ```
 
-We have a state variable `my_favorite_number` that is declared as `public`. This means it is visible and accessible from anywhere. For example, an external user could interact with the `my_favorite_number` variable directly, without having to use any functions.
+In this initial state:
 
-We also have a function `store` that is declared as `@external`. This means that this function can only be accessed from outside the contract, via a transaction. No other functions within the contract can call `store` directly.
+1.  **`my_favorite_number: public(uint256)`**: This declares a state variable named `my_favorite_number`. The `public` keyword is key here. It automatically instructs the Vyper compiler to generate a *getter function* with the same name (`my_favorite_number()`). This allows anyone (users or other contracts) outside of this contract to read the current value of `my_favorite_number` by calling this auto-generated function. The variable can also be accessed and modified from within the contract's functions (using `self.my_favorite_number`).
 
-Now let's look at how `internal` visibility functions work. We can remove the `public` keyword from our `my_favorite_number` state variable. We can then change the `@external` decorator to `@internal`:
+2.  **`@external def store(...)`**: This defines a function named `store`. The `@external` decorator specifies its visibility. Functions marked `@external` can *only* be called from outside the contract. This means an Externally Owned Account (EOA) or another smart contract can trigger this function, but it cannot be called from another function within the *same* contract using the `self` keyword (e.g., `self.store(...)` would be invalid).
 
-```python
+### Implicit Visibility Defaults
 
-# pragma version >=0.4.1
-# @license MIT
+Vyper has sensible defaults if you omit explicit visibility markers:
 
-my_favorite_number: uint256 = 0
+1.  **State Variables:** If you remove the `public` keyword from a state variable declaration (e.g., `my_favorite_number: uint256`), Vyper does *not* create an automatic getter function. The variable remains accessible internally to the contract's logic (via `self`), but it cannot be directly read from the outside world. Its visibility effectively becomes internal.
+
+2.  **Functions:** If you do not add a visibility decorator (`@external` or `@internal`) to a function definition, Vyper **implicitly defaults to `@internal`**.
+
+### Internal Visibility: `@internal`
+
+Let's modify our `store` function to explicitly use (or demonstrate the default of) `@internal` visibility. Imagine we also removed `public` from the state variable for this specific scenario:
+
+```vyper
+# (Assuming 'public' was also removed from my_favorite_number)
+my_favorite_number: uint256 # 0
+
 @internal
 def store(new_number: uint256):
     self.my_favorite_number = new_number
 ```
 
-We can then compile the code:
+The `@internal` decorator signifies that this function can *only* be called from *within* the same contract. Other functions defined in `favorites.vy` could call it using `self.store(...)`. However, it is completely inaccessible from outside the contract. If you were to deploy this version, you would find:
 
-```bash
-Compile favorites.vy
-```
+*   No external interface (like a button in Remix) to call the `store` function directly.
+*   No external interface to read `my_favorite_number` (because `public` was removed).
 
-The `internal` keyword means that the function `store` can only be called by other functions within the same contract. Let's add an example:
+### Interaction Between Visibility Types
 
-```python
+Understanding how functions with different visibility levels interact is crucial:
 
-# pragma version >=0.4.1
-# @license MIT
+*   **External Calling Internal (Allowed):** An `@external` function *can* call an `@internal` function using `self`. This is a common pattern for organizing code, where an external entry point uses internal helper functions.
 
-my_favorite_number: uint256 = 0
-@internal
-def store(new_number: uint256):
-    self.my_favorite_number = new_number
-def store_other():
-    self.store(7)
-```
+    ```vyper
+    # Conceptual Example
+    @internal
+    def _update_number(new_number: uint256): # Note: often prefixed with _
+        self.my_favorite_number = new_number
 
-When we try to compile this code, we get an error because the `store_other` function is trying to call the `store` function, which is declared as `internal`.
+    @external
+    def set_favorite_to_seven():
+        # Valid: External function calling an internal one
+        self._update_number(7)
+    ```
 
-We can fix this by making the `store` function `external`, which allows it to be called from outside the contract. We can also make `my_favorite_number` `public` again so that it's visible from the outside.
+*   **Internal Calling External (Disallowed via `self`):** An `@internal` function **cannot** call an `@external` function using `self`. External functions are designed as entry points *from outside* the contract, not for internal control flow initiated via `self`. Attempting this will cause a compilation error.
 
-```python
+    ```vyper
+    # Example leading to an Error
+    @internal
+    def try_invalid_call():
+        # INVALID: Cannot call an external function via self
+        self.set_favorite_to_seven() # Assuming set_favorite_to_seven is @external
 
-# pragma version >=0.4.1
-# @license MIT
+    @external
+    def set_favorite_to_seven():
+        # ... (implementation) ...
+        pass
+    ```
 
-my_favorite_number: public(uint256) = 0
-@external
-def store(new_number: uint256):
-    self.my_favorite_number = new_number
-def store_other():
-    self.store(7)
-```
+    Compiling code with an internal function calling an external function via `self` will result in a `CallViolation` error, explicitly stating: `CallViolation: Cannot call external functions via 'self' or via library`. This enforces the intended separation of external interfaces and internal logic.
 
-We can compile this code and we will see it functions as expected.
+### Key Takeaways on Vyper Visibility
 
-This is a basic introduction to the concept of visibility in Vyper contracts. By mastering the use of keywords like `public` and `internal`, we can create more secure and modular smart contracts.
+*   **State Variables:** Use `public` to automatically create an external getter function. Without `public`, the variable is only accessible internally.
+*   **`@external` Functions:** Can *only* be called from outside the contract. Cannot be called using `self` from within the contract.
+*   **`@internal` Functions:** Can *only* be called from within the contract using `self`. This is the **default** visibility for functions if no decorator is specified.
+*   **`self` Keyword:** Used for internal calls. It can invoke `@internal` functions but *cannot* invoke `@external` functions.
+*   **Purpose:** Visibility controls access, enhancing security and enforcing clear contract interaction patterns. Choosing the correct visibility is essential for robust and secure smart contract development.
