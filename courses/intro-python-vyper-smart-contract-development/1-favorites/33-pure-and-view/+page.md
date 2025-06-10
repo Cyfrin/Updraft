@@ -1,78 +1,90 @@
-## Pure vs. View Functions
+## Vyper Function Decorators: Pure vs. View Explained
 
-We're going to look at a couple of key concepts in Vyper: `pure` and `view` functions. These are important to know to write better smart contracts.
+In Vyper, function decorators like `@pure` and `@view` provide important information about a function's behavior, specifically regarding its interaction with the blockchain state. Both decorators signal that a function is *read-only*, meaning it promises not to alter any data stored permanently on the blockchain within the contract's state variables. Understanding the difference between them is crucial for writing efficient and secure smart contracts.
 
-We'll use the `@pure` and `@view` decorators in our code. Let's start with the `@pure` decorator.
+Let's break down the core concepts and the distinction between `@pure` and `@view`.
 
-**Pure Functions**
+**Core Concepts Recap**
 
-A `pure` function is a function that:
+*   **Read-Only Functions:** Functions that do not modify the blockchain state. They don't change the values of any state variables.
+*   **State Variables:** Variables declared within a contract whose values persist on the blockchain (e.g., `my_variable: public(uint256)`). Changing these requires a state-modifying transaction.
+*   **Global Variables:** Special variables provided by the Ethereum Virtual Machine (EVM) offering context about the blockchain or transaction (e.g., `block.timestamp`, `msg.sender`).
+*   **Function Decorators:** Python-like syntax (`@decorator_name`) placed above a function definition to modify or declare its properties.
 
-- **Is read-only:** It doesn't modify the state of the blockchain.
-- **Does not read state or global variables:** This means it can't access any data that's stored on the blockchain or in the global scope.
+**The `@pure` Decorator**
 
-Let's look at an example:
+Functions marked with `@pure` are the most restrictive type of read-only function.
 
-```python
+*   **Restriction:** A `pure` function **cannot read** contract state variables *nor* can it read any global variables (like `block.timestamp` or `msg.sender`).
+*   **Operation:** It can only operate on the input arguments passed directly to it and any local variables defined within its scope.
+*   **Analogy:** Think of a pure mathematical function. Given the same inputs, it will always produce the same output, regardless of any external state.
+
+**Example: A `@pure` Function**
+
+```vyper
+# pragma version ^0.4.0
+
 @external
 @pure
 def add(x: uint256, y: uint256) -> uint256:
+    """
+    This function is pure because it only uses its input arguments
+    (x and y) to calculate the result. It does not access any
+    contract state variables or EVM global variables.
+    """
     return x + y
 ```
 
-This function takes two inputs, `x` and `y`, both of which are `uint256` (unsigned integers up to 256 bits). The function returns their sum. Since it's `@pure`, we know it's read-only and doesn't use any state or global variables.
+This `add` function simply returns the sum of its two inputs. Its execution depends solely on `x` and `y`.
 
-**View Functions**
+**The `@view` Decorator**
 
-A `view` function is also read-only, but it can read data from the blockchain. This includes state variables and global variables. Global variables are those defined by the EVM like `block` and `msg`.
+Functions marked with `@view` are also read-only, but they have fewer restrictions than `pure` functions.
 
-For example, we can read from a state variable called `count`:
+*   **Permission:** A `view` function **can read** contract state variables and global variables.
+*   **Restriction:** Crucially, it still **cannot modify** any state variables. It only "views" the state.
+*   **Analogy:** Think of "viewing" or inspecting the current condition of the contract or the blockchain environment without making any changes.
 
-```python
-@external
-@view
-def add_to_count(x: uint256) -> uint256:
-    return x + self.count + block.timestamp
-```
+**Example: A `@view` Function**
 
-This `view` function returns the sum of the input `x`, the current value of the state variable `count`, and the current block timestamp.
+First, let's assume our contract has a state variable:
 
-Let's recap:
-
-- **Pure functions** are read-only and don't read any state or global variables.
-- **View functions** are read-only but can read state and global variables.
-
-**Code Example**
-
-```python
-@external
-@pure
-def add(x: uint256, y: uint256) -> uint256:
-    return x + y
-
+```vyper
 count: public(uint256)
+```
 
+Now, here's a `view` function that uses it:
+
+```vyper
 @external
 @view
 def add_to_count(x: uint256) -> uint256:
+    """
+    This function is 'view' because it reads the state variable
+    'self.count' and the global variable 'block.timestamp'.
+    However, it does NOT modify 'self.count' or any other state.
+    Because it reads state/globals, it cannot be 'pure'.
+    """
     return x + self.count + block.timestamp
 ```
 
-In this example, `add` is a `pure` function, and `add_to_count` is a `view` function.
+This `add_to_count` function reads the current value stored in the `count` state variable and the current `block.timestamp`. Since it reads these external values but doesn't write to the state, it qualifies as `@view`. It cannot be `@pure` because it accesses `self.count` and `block.timestamp`.
 
-**Deploying and Interacting with the Contract**
+**Illustrating the Boundaries**
 
-Let's deploy the contract and try using these functions:
+*   **State Modification:** If a function attempts to change a state variable (e.g., `self.count += 1`), it is no longer read-only. Such a function cannot be marked as `@pure` *or* `@view`. It requires a transaction that modifies the blockchain state.
+*   **Reading State:** If our original `add` function were changed to `return x + y + self.count`, it would now be reading state. It could no longer be `@pure`, but it *could* potentially be marked `@view` (as long as it doesn't write to state).
+*   **Reading Global Variables:** Similarly, if `add` were changed to `return x + y + block.timestamp`, it would be reading a global variable. This also disqualifies it from being `@pure`, but it *could* potentially be `@view`.
 
-1.  **Compile the contract:** We can compile the code and get the ABI (Application Binary Interface) and bytecode, which are needed to deploy the contract.
-2.  **Deploy the contract:** We can deploy the contract to the blockchain using a tool like Remix.
-3.  **Call the `add` function:** This function is `@pure`, so it won't modify any state. We can call it with two inputs, say 2 and 3, and it will return 5.
-4.  **Call the `add_to_count` function:** This function is `@view`, so it won't modify any state. We can call it with an input, say 2, and it will return a value that's the sum of 2, the current value of the `count` state variable, and the current block timestamp.
+**Practical Demonstration**
 
-**Important Considerations**
+When compiled and deployed (e.g., using Remix IDE):
 
-- Using `@pure` and `@view` functions can make your smart contracts more gas-efficient. This is because they don't need to write data to the blockchain.
-- `Pure` functions are deterministic: They always return the same output for the same input. This is useful for functions that are used in calculations or for verifying data.
-- `View` functions are useful for reading data from the blockchain and displaying it to users.
+*   Calling the `add(x=2, y=3)` function directly returns `5`. This is a simple, self-contained calculation.
+*   Calling the `add_to_count(x=2)` function returns a large number. This number represents `2 +` the current value of `count` (initially `0` if not set otherwise) `+` the current Unix timestamp (`block.timestamp`). This demonstrates its ability to read both contract state and global blockchain variables.
 
-We've just scratched the surface of pure and view functions. There's much more to learn, like their relationship to the EVM and their differences from other function types. But this overview should give you a good starting point.
+**Summary: When to Use Which**
+
+*   Use **`@pure`** when your function performs calculations or logic based *only* on its input arguments and local variables. It needs no information about the contract's state or the blockchain environment.
+*   Use **`@view`** when your function needs to *read* information from the contract's state variables or access global variables like `block.timestamp` or `msg.sender`, but it guarantees *not to change* any state.
+*   Use **neither** decorator if your function needs to *modify* the contract's state variables (e.g., incrementing a counter, transferring tokens, recording data).
