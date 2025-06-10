@@ -1,5 +1,0 @@
-
-           ---
-           title: Generate Proof Script
-           ---
-        

@@ -1,5 +1,0 @@
-
-           ---
-           title: Meet The Instructor
-           ---
-        

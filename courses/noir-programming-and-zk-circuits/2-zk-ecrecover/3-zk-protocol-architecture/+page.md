@@ -1,5 +1,0 @@
-
-           ---
-           title: Zk Protocol Architecture
-           ---
-        

@@ -1,5 +1,0 @@
-
-           ---
-           title: Noir Architecture
-           ---
-        

@@ -1,5 +1,0 @@
-
-           ---
-           title: Building The Project
-           ---
-        

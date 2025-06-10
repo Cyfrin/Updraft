@@ -1,5 +1,0 @@
-
-           ---
-           title: Zero Subtrees
-           ---
-        

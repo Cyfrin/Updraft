@@ -1,5 +1,0 @@
-
-           ---
-           title: Mid Way Summary
-           ---
-        

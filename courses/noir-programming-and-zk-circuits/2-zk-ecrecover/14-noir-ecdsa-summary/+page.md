@@ -1,5 +1,0 @@
-
-           ---
-           title: Noir Ecdsa Summary
-           ---
-        

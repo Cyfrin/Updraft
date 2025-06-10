@@ -1,5 +1,0 @@
-
-           ---
-           title: Panagram Contract Setup
-           ---
-        
