@@ -8,7 +8,7 @@ title: IThunderLoan.sol
 
 The next file on our list of most simple to most complex is another interface, IThunderLoan.sol. Let's take a look.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

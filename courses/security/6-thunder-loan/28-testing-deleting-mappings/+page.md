@@ -37,7 +37,7 @@ Here's a contract you can copy over:
 <details>
 <summary>Remix Delete Mapping</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 

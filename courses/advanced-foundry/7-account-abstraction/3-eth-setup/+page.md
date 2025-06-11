@@ -109,7 +109,7 @@ Now, let's update `MinimalAccount.sol` to implement the `IAccount` interface. Fi
 
 ```solidity
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.24;
+pragma solidity ^0.8.26;
 
 import {IAccount} from "lib/account-abstraction/contracts/interfaces/IAccount.sol";
 import {PackedUserOperation} from "lib/account-abstraction/contracts/interfaces/PackedUserOperation.sol";
@@ -117,7 +117,6 @@ import {PackedUserOperation} from "lib/account-abstraction/contracts/interfaces/
 // The flow for ERC-4337 typically involves an EntryPoint contract
 // calling into this account contract.
 contract MinimalAccount is IAccount {
-
 }
 ```
 By declaring `contract MinimalAccount is IAccount`, we tell the Solidity compiler that our `MinimalAccount` contract promises to implement all functions defined in the `IAccount` interface.

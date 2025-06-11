@@ -26,7 +26,7 @@ If we review the existing test suite provided by the protocol, it's clear it lea
 <details>
 <summary>ThunderLoanTest.t.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
@@ -164,7 +164,7 @@ Our test, when calling `flashloan` is going to pass `mockFlashLoanReceiver` as i
 <details>
 <summary>MockFlashLoanReceiver.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

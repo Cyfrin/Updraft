@@ -268,7 +268,7 @@ Taking a look at the test suite of Thunder Loan, we can actually get an idea of 
 <details>
 <summary>MockFlashLoanReceiver</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

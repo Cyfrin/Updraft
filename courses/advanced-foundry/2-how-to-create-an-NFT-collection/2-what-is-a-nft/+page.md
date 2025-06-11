@@ -51,7 +51,7 @@ Now, when we talk about NFT representing _Art_ that comes with some implications
 
 The solution to this was the inclusion of the tokenUri within the ERC721 Standard. This serves as a property of a token which details what the asset looks like as well as any attributes associated with it. A basic tokenUri looks something like:
 
-```js
+```json
 {
     "name": "Name",
     "description": "Description",
