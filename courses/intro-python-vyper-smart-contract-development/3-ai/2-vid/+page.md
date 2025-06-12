@@ -1,33 +1,107 @@
-## AI Prompting Introduction
+## Master the Art of Finding Answers: Your Guide to Getting Unblocked
 
-In the age of AI, debugging and getting into software engineering has never been easier. Here are the exact six steps we need to take to unblock ourselves from any software engineering error we'll ever get:
+In software engineering, encountering errors and roadblocks is inevitable. While the advent of Artificial Intelligence (AI) has dramatically changed how we approach problem-solving, the fundamental skill remains the same: knowing *how* to find answers efficiently. This guide outlines a structured, iterative process combining modern AI tools with traditional methods and community engagement to help you get unstuck and accelerate your learning.
 
-1. **Tinker** - Try to pinpoint your error. We can usually use an AI buddy to help us out here. Pinpointing your error will potentially solve your problem before we even go into an AI and allow us to craft a better question to an AI.
-    * **Example:** Try adding a debug print to see where the issue is.
-    * **Example:** Comment out sections of code to see if it fixes the issue.
+## The 7-Step Framework for Efficient Problem Solving
 
-2. **Ask your AI** - We can use ChatGPT, Phind, Bing's AI, or if we want to get wrong answers, Google's Bard. There are six principles to prompt engineering so that we can get the best out of our AI.
-    * **Example:** Ask "I'm getting this error [Error message]: [Code].  What's the issue?"
- * **Principle 1: Write clear and specific instructions** - Give as much context as possible. 
- * **Principle 2: Give as much context as possible** - Use delimiters to clearly indicate distinct parts of the input.
- * **Principle 3: Use delimiters to clearly indicate distinct parts of the input** - Especially look out for something called hallucinations. 
- * **Principle 4: Look out for hallucinations** - Hallucinations are when your AI gives you an output that it thinks is right, but it's completely wrong. For example, if we write about writing Solidity invariant tests in Foundry, ChatGPT disgraces us by saying we have to npm install it from OpenZeppelin. These can be tough to spot, but once we try it out we'll see it doesn't work.
- * **Principle 5: Understand limitations** - Finally, we want to understand the limitations of the AI we're working with. 
- * **Principle 6: Iterate constantly** - Large language models are trained on human conversations, so we can interact with them as if we're having a conversation, but it's important to know the limitations of these AIs.  As most AIs have a limit on how many tokens or words they can keep in context at one time. AI is trained off of human language, so if we're good at asking other humans questions, we'll probably be good at asking robots questions too. Asking questions is a skill, so keep practicing. I've got a link in the description to learn.deeplearning.ai, which is a free course to help software engineers be better prompt engineers. 
+Imagine you run a script and are greeted with a series of cryptic error messages:
 
-3. **Read docs** - When the AIs can't help us, we'll have to go back to the old standbys, actually doing work ourselves. And one of the first pieces of work is reading the documentation. We should have done this already. However, we can still use ChatGPT because a strategy that we constantly use is, I'll copy paste sections of the documentation, add to ChatGPT's context and say, "Something like the above are the docs for tool X, based on those docs, how do I do Y?"
-   * **Example:** "This is a section of Solidity docs: [Copy and paste relevant docs here] This is my solidity code: [Copy and paste solidity code here] Based on the docs, how do I do [Specific goal in code]?"
+```bash
+patrick@iMac: [ai-prompting-f23]$ python3 my_script.py
+ERROR: you're literally free
+ERROR: boxed you
+ERROR: zero earned
+ERROR: zero pr
+```
 
-4. **Web Search** - Google might be crying because ChatGPT is eating its lunch, but Google still has what AI doesn't have - the entire internet. Previously, anytime I ran into an issue, I prayed someone else had run into it before I made a post on it so I could Google search that exact issue. There's a new tool called Phind that combines web search with AI as it does a web search and it crawls through all the data of the sites, reads them all, and then gives us an answer based off of what it reads.
-   * **Example:** "How do I debug Solidity code?"
+While AI makes debugging easier than ever, a systematic approach is key. We'll use this 7-step framework to navigate from error to understanding:
 
-5. **Ask in a forum** - Sometimes, the information just isn't out there and we need to ask human beings. We always want to ask our questions on a web-indexed forum like Stack Exchange, Stack Overflow, Quora, or Reddit. This way web crawlers and more likely AIs can scrape the data from these sites and learn from us. That way the next time we have this question, we can get our answers quickly. Asking on Discord and Twitter is a shit because your knowledge will get lost to the unsearchable hole conversations that Discord is and web crawlers don't index them. 
-   * **Example:** "I'm getting this error in Solidity: [Code]. How do I fix it?"
-   * **Example:** "I'm trying to deploy my smart contract, but I'm getting this error: [Code]. How do I fix it?"
-   * **Example:** "I'm trying to compile my Solidity code, but I'm getting this error: [Code]. How do I fix it?"
+1.  **Tinker**
+2.  **Ask your AI**
+3.  **Read docs**
+4.  **Web search**
+5.  **Ask in a forum**
+6.  **Ask on the support forum or GitHub**
+7.  **Iterate**
 
-6. **Ask support or GitHub** - The super secret alpha is to ask a question on Stack Exchange, and then post your Stack Exchange link to Discord. We should 100% always ask our questions and format them with markdown. And if we're not sure how to do markdown, we can ask ChatGPT to help us format our questions in markdown.
-   * **Example:** "I'm getting this error in Solidity: [Code]. How do I fix it?"
+Let's break down each step.
 
-7. **Iterate** - Do all these same steps over again. And, as always, keep hopping through the code and until next time, stay ribbeting, my fellow blockchainers.
-                    
+## Step 1: Tinker First, Ask Questions Later
+
+Before immediately seeking external help, take some time to investigate the problem yourself. Try to isolate the error. Can you reproduce it consistently? Does commenting out a specific section of code make it go away? The goal is to pinpoint the source of the issue as precisely as possible.
+
+**Pro Tip:** You can even leverage AI during this phase. Ask tools like ChatGPT to suggest potential causes or debugging strategies based on the error message. The better you understand the problem's scope, the better the questions you can formulate for AI or human experts later.
+
+## Step 2: Harness the Power of AI Prompting
+
+Large Language Models (LLMs) are powerful allies in debugging. Tools like ChatGPT, Phind.com, Bing AI, and Google Bard can provide quick insights, generate code snippets, and explain complex concepts. However, effectively querying these tools requires understanding the principles of good prompting:
+
+1.  **Write Clear and Specific Instructions:** Be direct. State exactly what you need the AI to do. Avoid ambiguity.
+2.  **Give Maximum Context:** Provide all relevant information – your code, the full error message, the specific goal you're trying to achieve, and what you've already tried.
+3.  **Use Delimiters:** Clearly separate instructions from context (like code or error messages) using markers such as triple backticks (\`\`\`), quotation marks, or XML tags. This helps the AI parse your input correctly.
+4.  **Beware of Hallucinations:** AIs can generate plausible-sounding but entirely incorrect information with high confidence. For instance, an AI might confidently suggest installing a tool like Foundry using `npm install @openzeppelin/foundry`, which is wrong (Foundry uses `foundryup` and isn't an OpenZeppelin package). Always verify critical information, especially installation commands or complex logic.
+5.  **Understand Limitations:** Be aware of the AI's constraints, particularly token limits (the context window size). Models like ChatGPT 3.5 have smaller limits (e.g., 4096 tokens) than GPT-4 (8k or 32k). This affects how much code and conversation history the AI can process at once.
+6.  **Iterate Constantly:** Treat your interaction with the AI as a conversation. Refine your questions based on its responses. If the first answer isn't helpful, provide more context or rephrase your query.
+
+**Resource Recommendation:** The free "ChatGPT Prompt Engineering for Developers" course on `learn.deeplearning.ai` offers valuable techniques specifically for software engineers.
+
+Mastering the art of asking good questions is crucial – it applies equally to querying AIs and collaborating with human colleagues.
+
+## Step 3: Consult the Official Documentation (RTFM)
+
+Often overlooked, the official documentation for the tool, library, or language you're using is a primary source of truth. Reading The Friendly Manual (RTFM) should frequently be one of your first steps.
+
+**AI Integration Tip:** If the documentation is dense or you're unsure how it applies to your specific problem, copy relevant sections and paste them directly into your AI prompt. You can then ask questions like: "The text above contains documentation for tool X. Based on this documentation, how do I achieve Y?"
+
+## Step 4: Leverage Web Search Effectively
+
+Traditional web search engines like Google remain indispensable. However, also consider AI-powered search engines designed for developers, such as Phind.com.
+
+Phind works by performing a web search, analyzing the content of top results (like documentation, blog posts, and forum answers), and then synthesizing an AI-generated answer, complete with citations of its sources. This makes it particularly effective for finding solutions derived from multiple existing online resources.
+
+## Step 5: Engage the Community: Asking on Forums
+
+If AI, documentation, and web search haven't yielded a solution, it's time to tap into human expertise. This is especially useful when dealing with novel problems or unique edge cases where information might not yet exist online.
+
+**Where to Ask (Recommended):** Prioritize public, web-indexed forums:
+*   Stack Exchange (e.g., `ethereum.stackexchange.com`, `stackoverflow.com`)
+*   Reddit (relevant subreddits)
+*   Quora
+
+**Why:** Answers posted on these platforms become part of the collective knowledge base. They are indexed by search engines and AI crawlers, helping countless other developers who might face the same issue later.
+
+**Where NOT to Ask (Generally Discouraged for Initial Questions):**
+*   Discord servers
+*   Twitter
+
+**Why:** These platforms are often poorly indexed and difficult to search ("unsearchable hellholes"). Valuable solutions shared in transient chat messages or threads are easily lost.
+
+**"Super Secret Alpha" Tip:** To combine discoverability with speed, first post your well-structured question on a platform like Stack Exchange. Then, share the *link* to your Stack Exchange question on Discord or Twitter to draw attention to it more quickly. This ensures the knowledge is preserved publicly while still leveraging faster communication channels.
+
+**Formatting is Crucial:** Always format your questions clearly, especially when including code snippets. Use **Markdown** for code blocks, lists, and emphasis.
+
+**AI Formatting Tip:** If you're unsure about Markdown, ask your AI assistant:
+```markdown
+Can you help me format my question in markdown to post on stack exchange?
+
+[Paste your unformatted question and code here]
+```
+
+## Step 6: Escalate to Support or GitHub Issues
+
+Depending on the nature of the tool or library you're using, the next step varies:
+
+*   **Scenario 1: Open Source Tool/Library:** If the project is open source (e.g., hosted on GitHub), create a detailed, well-formatted issue in the project's repository (`Issues` tab). Describe the problem, what you've tried, your environment, and include reproducible steps if possible. This directly engages the maintainers, contributes to the project's improvement, and might uncover bugs.
+*   **Scenario 2: Closed Source Tool/Library:** Ideally, prioritize open-source tools! But if you must use a closed-source product, locate their official support channel or dedicated support forum and submit your query there.
+
+Engaging with open-source projects by reporting issues or even contributing fixes is a vital part of maintaining a healthy software ecosystem.
+
+## Step 7: Iterate Until Resolved
+
+Remember, problem-solving is rarely a linear process. You'll often need to cycle back through these steps. An answer from the AI might lead you back to the documentation with a new perspective. A forum suggestion might prompt further tinkering. Keep refining your understanding and your questions as you gather more information.
+
+## Conclusion: Embrace the Iterative Journey
+
+Mastering the 7-step framework—Tinker, AI Query, Read Docs, Web Search, Forum Post, GitHub/Support, and Iterate—transforms debugging from a frustrating chore into a structured learning process. By leveraging AI effectively, consulting authoritative sources, and engaging with the community constructively, you can not only solve your immediate problems but also contribute to the collective knowledge base, making the path easier for those who follow.
+
+Just as you might ask an AI for help with code, you can even ask it for creative sparks. For example, asking ChatGPT for a frog-themed video outro might yield: "Keep hopping through the code, and until next time, stay ribbiting, my fellow blockchaineers!" Embrace the tools and the process, and keep learning.
