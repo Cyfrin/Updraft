@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Preface
 
-I'll start by saying, you've done great getting his far, if at first some of these concepts are hard to grasp, things will get better with experience as we move through the course and you're exposed to real world examples.
+I'll start by saying, you've done great getting this far, if at first some of these concepts are hard to grasp, things will get better with experience as we move through the course and you're exposed to real world examples.
 
 I definitely would recommend going back and reviewing the parts that you don't quite get and asking questions in the [**discussions tab**](https://github.com/Cyfrin/foundry-full-course-f23/discussions) of the GitHub repository.
 

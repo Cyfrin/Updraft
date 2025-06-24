@@ -20,8 +20,6 @@ Securing Web3 isn't a one man/woman job. Collaboration and working together is a
 
 As always, there'll be an audit-data branch of the Vault Guardians repo to compare your results to.
 
-::image{src='/security-section-8/2-perseverance/vault-guardians.png' style='width: 100%; height: auto;' alt='vault guardians'}
-
 ### Wrap Up
 
 So... To recap.

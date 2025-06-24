@@ -37,7 +37,7 @@ function getMinimumWethDepositAmount() external pure returns (uint256) {
 
 These three functions all look great, with proper visibilities set.
 
-Now our final two functions:
+Now, our final two functions:
 
 ```js
 function getPriceOfOneWethInPoolTokens() external view returns (uint256) {

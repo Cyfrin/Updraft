@@ -3,7 +3,7 @@ Now that we know what an SVG is and how we can code it, we can use this coding t
 We'll call our new contract "mood_nft.vy" and inside we will code:
 
 ```javascript
-pragma version 0.4.0
+pragma version 0.4.1
 @license MIT
 @title Mood NFT
 ```
@@ -37,4 +37,4 @@ BASE_URI: public(constant(String[34])) = "https://gateway.pinata.cloud/ipfs/"
 EIP_712_VERSION: constant(String[1]) = "1"
 ```
 
-We are now ready to start deploying our dynamic NFT, which we'll do in the next video! 
+We are now ready to start deploying our dynamic NFT, which we'll do in the next video!

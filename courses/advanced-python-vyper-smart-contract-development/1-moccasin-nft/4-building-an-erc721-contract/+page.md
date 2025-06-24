@@ -1,10 +1,10 @@
 ## Building an ERC721 contract
 
-We've learned that an NFT is similar to an ERC20. It's the ERC721 standard. 
+We've learned that an NFT is similar to an ERC20. It's the ERC721 standard.
 
 We can find all about the different functions in this standard by going to the Ethereum website. If we scroll down, we can see some different events. We've learned about events. We know how to make events. We see some different functions as well. These are the Solidity functions, so we can just easily write them as Vyper.
 
-We could start grabbing these. We could take this, go to our AI agent, and ask it to write this in Vyper, please. We could do this for all of the functions. Or, we could check to see if our good friend Snakemake has one of these already. 
+We could start grabbing these. We could take this, go to our AI agent, and ask it to write this in Vyper, please. We could do this for all of the functions. Or, we could check to see if our good friend Snakemake has one of these already.
 
 We go to Snakemake, then to SRC / Snakemake / tokens, just like the ERC20.vvy. There's an ERC721.
 
@@ -18,7 +18,7 @@ We're going to go back over here. I'm going to remove my README, pull up my term
 mox install snekmate
 ```
 
-You'll notice I'm not in a virtual environment, and in a previous lesson I might have told you to go in a virtual environment. We no longer need to be inside of a virtual environment because we made a little issue on UV and they changed it. So this is the power of open source. We made an issue, we said, "Hey, we get this little error here, I have to be in a virtual environment, I don't think I need to be in one, " and the UV people said, "Yup, makes sense," and they changed UV and updated it. Now, we can just run: 
+You'll notice I'm not in a virtual environment, and in a previous lesson I might have told you to go in a virtual environment. We no longer need to be inside of a virtual environment because we made a little issue on UV and they changed it. So this is the power of open source. We made an issue, we said, "Hey, we get this little error here, I have to be in a virtual environment, I don't think I need to be in one, " and the UV people said, "Yup, makes sense," and they changed UV and updated it. Now, we can just run:
 
 ```bash
 mox install snekmate
@@ -41,7 +41,7 @@ basic_nft.vy
 We'll create a little basic NFT in here.  Now, I know in that video we went over some concepts. We'll go over them again in here, because the token UI thing can be a little squirrely. So, we're going to make it make sense. So, let's go ahead, let's do:
 
 ```python
-# pragma version 0.4.0
+# pragma version 0.4.1
 @license MIT
 @title Puppy NFT
 from snekmate.tokens import erc721
@@ -79,4 +79,4 @@ Boom. And that looks a little bit nicer already. And then, we're also going to d
 exports: erc721.interface
 ```
 
-So, we get all the functions of the ERC721. Nice. 
+So, we get all the functions of the ERC721. Nice.

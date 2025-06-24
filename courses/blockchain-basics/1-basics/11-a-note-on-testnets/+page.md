@@ -22,4 +22,4 @@ We'll explore what a different explorer looks like, such as Etherscan or Blocksc
 
 ### Summary
 
-The testnet sections are optional throughout CipherUpdraft. If you want to experience it firsthand, we highly recommend using Tenderly.
+The testnet sections are optional throughout Cyfrin Updraft. If you want to experience it firsthand, we highly recommend using Tenderly.

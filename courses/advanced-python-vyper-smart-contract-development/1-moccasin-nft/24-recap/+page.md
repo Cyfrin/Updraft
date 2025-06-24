@@ -10,7 +10,7 @@ Finally, we built a custom token URI for our NFT that dynamically changes based 
 Here�s an example of the code we created:
 
 ```python
-# pragma version 0.4.0
+# pragma version 0.4.1
 # license MIT
 # title Mood NFT
 
@@ -110,6 +110,6 @@ external:
             return abi.decode(buffer, encode(String[FINAL_STRING_URI_SIZE]))
 ```
 
-We learned that we can get the entire hex data from a transaction by encoding the function selector and parameters with ABI encoding. We can then use this data to call any function on the blockchain. We can even use a block explorer like Etherscan to see the hex data that was sent in a transaction and to verify that it matches the function selector and parameters we used. 
+We learned that we can get the entire hex data from a transaction by encoding the function selector and parameters with ABI encoding. We can then use this data to call any function on the blockchain. We can even use a block explorer like Etherscan to see the hex data that was sent in a transaction and to verify that it matches the function selector and parameters we used.
 
 We learned a lot in this section and you should be proud of yourself for completing it. Congratulations!

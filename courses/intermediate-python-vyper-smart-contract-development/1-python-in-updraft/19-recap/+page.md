@@ -1,3 +1,5 @@
+## Recap
+
 In this lesson, we learned how to code using Python notebooks on Google Colab. This is a commonly used method for data scientists and portfolio managers, especially those who work at hedge funds or asset managers.  
 
 In a previous lesson, we learned about the basics of Python. We were able to write a function to calculate how many years have passed after January 1st of a given year:

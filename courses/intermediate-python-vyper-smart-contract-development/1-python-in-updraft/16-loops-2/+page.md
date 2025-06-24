@@ -18,7 +18,7 @@ for number in range(3):
 print("Done!")
 ```
 
-The `for` keyword lets Python know that we are going to use a for-range loop. The loop will iterate over the numbers in `range(3)` � that is, the numbers 0, 1, and 2. For each number, it will execute the code in the loop block (which prints "My number is" plus the number).  Let's run this code and see what happens.
+The `for` keyword lets Python know that we are going to use a for-range loop. The loop will iterate over the numbers in `range(3)` - that is, the numbers 0, 1, and 2. For each number, it will execute the code in the loop block (which prints "My number is" plus the number).  Let's run this code and see what happens.
 
 We can see the output:
 ```

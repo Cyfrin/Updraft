@@ -17,7 +17,7 @@
 
 [license-shield]: https://img.shields.io/github/license/cyfrin/updraft.svg?style=for-the-badge
 
-[license-url]: https://github.com/cyfrin/updraft/blob/master/LICENSE.txt
+[license-url]: https://github.com/Cyfrin/Updraft/blob/main/LICENSE
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 
@@ -50,7 +50,7 @@ Please refer to this for an in depth explanation of the content:
 -   [LinkedIn](https://www.linkedin.com/school/cyfrin-updraft/) - Add Updraft to your learning experiences
 -   [Discord](https://discord.gg/cyfrin) - Join a community of 3000+ developers and auditors
 -   [Newsletter](https://www.cyfrin.io/newsletter) - Weekly security research tips and resources to level up your career
--   [Codehawks](https://www.codehawks.com/) - Smart contracts auditing competitions to help securing web3
+-   [CodeHawks](https://www.codehawks.com/) - Smart contracts auditing competitions to help securing web3
 
 </br>
 

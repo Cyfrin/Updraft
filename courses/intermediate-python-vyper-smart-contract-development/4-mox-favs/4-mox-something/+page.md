@@ -1,9 +1,9 @@
 ## Compiling a project
 
-We have our `favorites.vy` file here with a pragma version 0.4.0. We also see a comment indicating the license is MIT.
+We have our `favorites.vy` file here with a pragma version 0.4.1. We also see a comment indicating the license is MIT.
 
 ```python
-# pragma version 0.4.0
+# pragma version 0.4.1
 # @license MIT
 ```
 

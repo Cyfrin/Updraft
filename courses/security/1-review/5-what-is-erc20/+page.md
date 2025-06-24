@@ -8,7 +8,7 @@ _Follow along the with the video_
 
 ## What are ERC20 tokens?
 
-Firstly, let's define what ERC20s are. ERC20s are tokens that exist and function on a blockchain network using a predefined standard called [the ERC20 token standard](https://ethereum.org/en/developers/docs/standards/tokens/ERC20/). This standard is essentially a set of rules that dictate certain functions a token should have, allowing it to interact seamlessly with other tokens on the network.
+Firstly, let's define what ERC20s are. ERC20s are tokens that exist and function on a blockchain network using a predefined standard called [the ERC20 token standard](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/). This standard is essentially a set of rules that dictate certain functions a token should have, allowing it to interact seamlessly with other tokens on the network.
 
 However, the magic doesn't just stop at being tokens. ERC20s are also smart contracts. This hybrid nature allows ERC20 tokens to embody complex functionalities on the blockchain. Isn't that cool? A few notable examples of ERC20s include tokens like Tether, Chainlink, Uni and DAI.
 

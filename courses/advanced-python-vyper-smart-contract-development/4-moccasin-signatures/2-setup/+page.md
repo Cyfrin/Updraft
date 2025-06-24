@@ -36,7 +36,7 @@ We don't want to store thousands of people in an array or mapping on chain becau
 We'll begin coding by creating a new file called `snek_token.vy`. This will be the token we'll be airdropping:
 
 ```javascript
-# pragma version 0.4.0
+# pragma version 0.4.1
 
 @license MIT
 @title snek_token
@@ -83,7 +83,7 @@ mox install snekmate
 We'll create a new file called `merkle_airdrop.vy`.
 
 ```javascript
-# pragma version 0.4.0
+# pragma version 0.4.1
 
 @license MIT
 @title Merkle Airdrop
@@ -96,4 +96,4 @@ def claim():
     pass
 ```
 
-In our deploy script, when we deploy the `snek` token, we'll send them to the `merkle_airdrop`. The `merkle_airdrop` will have all the tokens to send. 
+In our deploy script, when we deploy the `snek` token, we'll send them to the `merkle_airdrop`. The `merkle_airdrop` will have all the tokens to send.

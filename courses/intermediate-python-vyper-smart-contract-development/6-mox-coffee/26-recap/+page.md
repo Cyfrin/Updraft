@@ -28,7 +28,7 @@ For our example, we'll have three files:
 #### buy_me_a_coffee.vy
 
 ```python
-#pragma version 0.4.0
+#pragma version 0.4.1
 
 @license MIT
 @title Buy Me A Coffee!
@@ -214,6 +214,6 @@ Moccasin provides a database where we can store information about our deployment
 
 Congratulations on completing this section! You have learned how to format code, understand constants and immutables, write unit tests, and run fork tests. You've also learned how to use mox's manifest named and how to use a database to keep track of your deployments.
 
-Now is a great time to take a break, go for a walk, or lift some iron at the gym! You have earned it! We've covered a lot in this section, so make sure to review the material and reach out if you have any questions.  
+Now is a great time to take a break, go for a walk, or lift some iron at the gym! You have earned it! We've covered a lot in this section, so make sure to review the material and reach out if you have any questions.
 
-Get ready for the next section, where we will learn about deploying our smart contracts to the Ethereum blockchain! 
+Get ready for the next section, where we will learn about deploying our smart contracts to the Ethereum blockchain!

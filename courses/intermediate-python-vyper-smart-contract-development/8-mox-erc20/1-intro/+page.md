@@ -53,7 +53,7 @@ We will also learn how to format our smart contract code in a way that automatic
 ### Code Blocks
 
 ```python
-pragma version ^0.4.0
+pragma version ^0.4.1
 ```
 
 ```python

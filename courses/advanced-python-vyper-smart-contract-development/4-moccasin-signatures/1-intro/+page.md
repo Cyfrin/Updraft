@@ -153,7 +153,7 @@ if __name__ == "__main__":
 The `merkle-airdrop` contract includes the `claim` function:
 
 ```python
-#pragma version 0.4.0
+#pragma version 0.4.1
 
 title Merkle Airdrop
 @license MIT

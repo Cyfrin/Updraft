@@ -142,7 +142,7 @@ TokenURI stands for Token Uniform Resource Identifier. At its core it serves as 
 }
 ```
 
-It's this metadata that defines what the properties of the NFT are, including what it looks like! In fact, if you go to [**OpenSea**](https://opensea.io/) and look at any NFT there, all the the data and images you're being served come from calls to the tokenURI function.
+It's this metadata that defines what the properties of the NFT are, including what it looks like! In fact, if you go to [**OpenSea**](https://opensea.io/) and look at any NFT there, all the data and images you're being served come from calls to the tokenURI function.
 
 What this means to us is - any time someone mints a Doggie NFT, we need to assign a TokenURI to the minted TokenID which contains all the important information about the Doggie. Let's consider what this function would look like.
 

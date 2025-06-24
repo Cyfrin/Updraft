@@ -1,11 +1,11 @@
 ## Stablecoin Project Setup
 
-We are going to create a new repo for it. 
+We are going to create a new repo for it.
 ```bash
 mkdir mox-stablecoin-cu
 ```
 
-Then we will open this directory in Visual Studio Code: 
+Then we will open this directory in Visual Studio Code:
 ```bash
 code mox-stablecoin-cu
 ```
@@ -22,7 +22,7 @@ Next, we will open "README.md" to define what we are building.
 # Stablecoin
 ## Introduction
 1. Users can deposit $200 of ETH
-2. They can then mint $50 of Stablecoin 
+2. They can then mint $50 of Stablecoin
     1. This means they will have a 4/1 ratio of collateral to stablecoin (200/50 = 4/1)
     2. We will set a required collateral ratio of 2/1
     3. If the price of ETH drops, for example to $50, others should be able to liquidate those users!
@@ -37,7 +37,7 @@ We are going to create our actual stablecoin.
 We will call this "decentralized_stable_coin.vy."
 
 ```
-# pragma version 0.4.0
+# pragma version 0.4.1
 @license MIT
 @author You
 @title Decentralized Stable Coin
@@ -74,7 +74,7 @@ DECIMALS: constant(uint8) = 18
 EIP_712_VERSION: constant(String[20]) = "1"
 ```
 
-We will export our stablecoin using "IERC20" and other functions. 
+We will export our stablecoin using "IERC20" and other functions.
 ```
 exports: (
     erc20.IERC20,
@@ -88,7 +88,7 @@ exports: (
 
 The final code is as follows:
 ```
-# pragma version 0.4.0
+# pragma version 0.4.1
 @license MIT
 @author You
 @title Decentralized Stable Coin
@@ -142,5 +142,3 @@ def init():
                          ```
 
                         Based on the criteria above, ensure the provided lesson matches what's required. Check the major topics in the written lesson vs the video content. If anything in the written lesson ISN'T in the video, remove it. If anything in the video ISN'T in the written lesson, add it.
-                        
-

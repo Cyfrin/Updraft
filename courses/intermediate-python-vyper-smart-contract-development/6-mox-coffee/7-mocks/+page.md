@@ -56,7 +56,7 @@ This method of mocking is common in testing. We might need to rewrite a contract
 **Code Block for `mock_v3_aggregator.vy`:**
 
 ```python
-# pragma version 0.4.0
+# pragma version 0.4.1
 #license MIT
 
 DECIMALS: immutable(uint8)

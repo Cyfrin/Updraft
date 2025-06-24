@@ -110,7 +110,7 @@ We'll deploy a smart contract with Python. This will involve the following steps
 
 *   **Setup Tenderly Virtual Network**
 
-    To get started with Web3py, we need to make sure that we have a Web3 provider that is able to interact with our blockchain. We can do this through Tenderly's virtual networks. Tenderly has a nice feature that allows us to get up and running with a virtual network very easily. 
+    To get started with Web3py, we need to make sure that we have a Web3 provider that is able to interact with our blockchain. We can do this through Tenderly's virtual networks. Tenderly has a nice feature that allows us to get up and running with a virtual network very easily.
 *   **Fund a wallet**
 
     We'll need a wallet to be able to interact with our blockchain. We can use Tenderly to get a test wallet that we can fund with some Ether.
@@ -122,7 +122,7 @@ We'll deploy a smart contract with Python. This will involve the following steps
     The unsafe way involves hardcoding your private key directly into your Python script. This is generally not a good practice as this leaves your private key susceptible to security risks.
 
     We'll run the following command to create a file called `favorites_unsafe.py`
-    
+
     ```bash
     touch favorites_unsafe.py
     ```

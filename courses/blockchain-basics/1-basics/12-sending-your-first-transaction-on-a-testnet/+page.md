@@ -4,7 +4,7 @@ We're going to learn how to work with Testnets. Working with Testnets is optiona
 
 **Testnet Basics**
 
-At the time of recording, Sepolia is a popular Testnet. You can find the most up-to-date information about Testnets on the GitHub repository associated with this course (Cyprin Foundry Full Course, formerly known as ChainAccelOrg Foundry Full Course). 
+At the time of recording, Sepolia is a popular Testnet. You can find the most up-to-date information about Testnets on the GitHub repository associated with this course (Cyfrin Foundry Full Course, formerly known as ChainAccelOrg Foundry Full Course). 
 
 Testnets are constantly changing, so it's important to check the recommended Testnets section on the GitHub repository.
 

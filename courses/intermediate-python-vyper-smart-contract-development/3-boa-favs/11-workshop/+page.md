@@ -6,7 +6,7 @@ Let's first create our Vyper contract:
 
 ```python
 # I'm a comment!
-pragma version 0.4.0
+pragma version 0.4.1
 @license MIT
 
 struct Person:

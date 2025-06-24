@@ -8,7 +8,7 @@ title: Reporting Continued
 
 > **Note:** You may have additional `informational severity` issues that we identified in your project. The write ups for these should be fairly easy with all the experience we have, as such we won't explicitly cover them further in this course, but I encourage you to write them anyway for practice.
 
-In this lesson we'll continue to create write-ups for the vulnerabilities we've identified in TSwap. The next bug noted is `low severity` and found in the `_addLiquidityMintAndTransfer` function.
+In this lesson, we'll continue to create write-ups for the vulnerabilities we've identified in TSwap. The next bug noted is `low severity` and found in the `_addLiquidityMintAndTransfer` function.
 
 ```js
 function _addLiquidityMintAndTransfer(

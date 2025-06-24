@@ -78,8 +78,8 @@ By and large this interface looks pretty good to me, the informational we found 
 ```js
 // @Audit-Informational: Where's the NATSPEC?
 // @Audit-Question: Is `token` the token being borrowed?
-// @Audit Question: Is `amount` the amount of tokens?
-// @Audit Question: Who is the initiator?
+// @Audit-Question: Is `amount` the amount of tokens?
+// @Audit-Question: Who is the initiator?
 function executeOperation(
         address token,
         uint256 amount,

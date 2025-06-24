@@ -89,11 +89,11 @@ assert(bool(uint8(map_1[v1])) == bool(1));
 
 The first line is where the mint function is being called by the attacking contract.
 
-The second line is where an assertion is made that the minted NFT has the desired rare traits. If this assersion fails, the whole transaction is reverted.
+The second line is where an assertion is made that the minted NFT has the desired rare traits. If this assertion fails, the whole transaction is reverted.
 
 **Attacker Receives Rare NFT:**
 
-The attacking contract called this mint function and reverted for over 6 hours. Spending ~$20,000/hour in gas until they minted the rare NFT they wanted Meebit #16647. The NFT possessed a Visitor trait and sold for ~$700,000.
+The attacking contract called this mint function and reverted for over 6 hours. Spending ~$20,000/hour in gas until they minted the rare NFT they wanted Meebit \#16647. The NFT possessed a Visitor trait and sold for ~$700,000.
 
 ::image{src='/security-section-4/27-weak-randomness-case-study/meebit1.png' style='width: 75%; height: auto;'}
 

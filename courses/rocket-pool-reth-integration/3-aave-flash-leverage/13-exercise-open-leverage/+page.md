@@ -16,20 +16,20 @@ function open(OpenParams calldata params) external {
 
    - Transfer collateral from `msg.sender` into this contract.
 
-   > **Hint:** Look into the struct `OpemParams` to find out how much collateral to pull in.
+   > **Hint:** Look into the struct `OpenParams` to find out how much collateral to pull in.
 
 2. **Initiate a flash loan**
 
    - Encode flash loan data into `FlashLoanData`.
    - Call `flashLoan` to initiate a flash loan.
 
-   > **Hint:** Look inisde `AaveHelper` to see how to call the function `flashLoan`.
+   > **Hint:** Look inside `AaveHelper` to see how to call the function `flashLoan`.
 
 3. **Check health factor**
 
-   - Require that the health factor after the position is created is greater than or equal the the minimum health factor specified in the input `OpenParams.minHealthFactor`.
+   - Require that the health factor after the position is created is greater than or equal the minimum health factor specified in the input `OpenParams.minHealthFactor`.
 
-   > **Hint:** Look inisde `AaveHelper` to see how to get the health factor.
+   > **Hint:** Look inside `AaveHelper` to see how to get the health factor.
 
 # `_flashLoanCallback`
 
@@ -52,7 +52,7 @@ function _flashLoanCallback(
 
    > **Hint:**
    >
-   > - Look into `AaveHelpe` for how to supply collateral and borrow stablecoin.
+   > - Look into `AaveHelper` for how to supply collateral and borrow stablecoin.
    > - Look into `SwapHelper` for how to swap tokens.
 
 2. **Repay flash loan**

@@ -4,7 +4,7 @@ This course will have some exercises using Foundry, so we will explain the setup
 
 The first step is to navigate to the Github repository called "defi-reth". Then you need to `git clone` the repository by clicking on the code to obtain the correct URL, then within the terminal, you will need to type:
 ```bash
-git clone followed by this URL
+git clone https://github.com/Cyfrin/defi-reth.git
 ```
 
 Once we `git clone` the repository, open it with a code editor. Then click on the "README" file to show you how to set up Foundry to complete the exercises. 

@@ -29,6 +29,6 @@ In addition to working with `function dispatchers`, we learnt how to manage stor
 
 ### Wrap Up
 
-This is heavy stuff, but you're doing great. If you're feeling a little overwhelmed - now's a great time to take a break. If things aren't quite clicking, I encourage you to come back and tinker with things. Make changes to our Huff contract, experiment with how the different op codes interact with each other. Additionally, the [Huff Documentation](docs.huff.sh) does a great job helping to understand the EVM and I encourage you to give it a read as supplemental learnings.
+This is heavy stuff, but you're doing great. If you're feeling a little overwhelmed - now's a great time to take a break. If things aren't quite clicking, I encourage you to come back and tinker with things. Make changes to our Huff contract, experiment with how the different op codes interact with each other. Additionally, the [Huff Documentation](https://docs.huff.sh/) does a great job helping to understand the EVM and I encourage you to give it a read as supplemental learnings.
 
 In the next lessons we're going to be diving into how to write Foundry tests which are compatible with Huff, allowing us to do all of our Huff debugging in Foundry. Let's go!

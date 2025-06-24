@@ -1,324 +1,285 @@
-## Building a Rebase Token: Initial Implementation in Solidity
+## Writing Your First Rebase Token in Solidity
 
-This lesson guides you through the initial steps of creating a `RebaseToken.sol` smart contract using the Foundry framework and OpenZeppelin libraries. Our goal is to build a cross-chain ERC20 token where a user's balance automatically increases over time based on an accrued interest mechanism, without requiring explicit claiming transactions. We'll achieve this by inheriting from the standard OpenZeppelin `ERC20` contract and overriding key functions, notably `balanceOf`, to implement the dynamic rebasing logic.
+Welcome to this lesson where we'll dive into the practical aspects of creating a `RebaseToken` using Solidity. This type of token is designed with an ERC20 foundation but includes a rebase mechanism, allowing a user's balance to increase over time based on a set interest rate. We'll cover setting up the basic ERC20 structure, introducing global and user-specific interest rates, dynamically calculating balances to reflect accrued interest, and minting this interest when users interact with the contract.
 
-### Core Concepts of the Rebase Token
+## Initial Project Setup and Contract Definition
 
-Before diving into the code, let's understand the fundamental concepts:
+Let's begin by setting up our Solidity file and defining the basic contract structure.
 
-1.  **Rebase Token:** Unlike standard ERC20 tokens where `balanceOf` simply returns a stored value, a rebase token calculates the balance dynamically. It considers the user's initial principal amount (tokens originally minted or received) and adds the interest accrued since their last interaction with the contract. The balance effectively grows linearly over time.
-2.  **Interest Rate Mechanism:**
-    *   **Global Interest Rate (`s_interestRate`):** A single rate, defined per second, applicable to the entire contract. This rate is designed to only increase or stay the same, rewarding early participants.
-    *   **Personal Interest Rate (`s_userInterestRate`):** When a user first interacts (e.g., receives minted tokens), the *current* global interest rate is captured and stored as their personal rate. This rate is used for calculating their specific accrued interest going forward.
-    *   **Last Update Timestamp (`s_userLastUpdatedAtTimestamp`):** To calculate interest accurately, the contract tracks the block timestamp of the last time each user's balance effectively changed or their interest was accounted for.
-3.  **Solidity Precision:** Solidity lacks native support for floating-point numbers. We handle calculations involving rates and balances using fixed-point arithmetic. This involves scaling numbers up by a large factor (typically `1e18` for 18 decimal places, matching the ERC20 standard) before performing calculations. We'll use a constant `PRECISION_FACTOR` (`1e18`) to represent the scaled value of `1`. Multiplication is performed before division to maintain precision.
-4.  **NatSpec Comments:** We will use Solidity Natural Language Specification (NatSpec) comments (`/** ... */`) extensively. These comments (`@title`, `@author`, `@notice`, `@dev`, `@param`, `@return`) improve code readability, enable automatic documentation generation, and can assist developer tools.
+First, create a new Solidity file named `RebaseToken.sol` within your project's `src` directory.
 
-### Project Setup and Dependencies
-
-We'll use the Foundry framework for development and testing.
-
-1.  **Create Contract File:** Create a new file named `RebaseToken.sol` within your Foundry project's `src` directory.
-2.  **Boilerplate:** Add the SPDX license identifier and the Solidity version pragma at the top of the file:
-    ```solidity
-    // SPDX-License-Identifier: MIT
-    pragma solidity ^0.8.24;
-    ```
-3.  **Install OpenZeppelin:** We need the battle-tested `ERC20` implementation from OpenZeppelin. Find the latest version tag (e.g., `v5.1.0`) on the OpenZeppelin Contracts GitHub repository. Install it using Foundry:
-    ```bash
-    forge install openzeppelin/openzeppelin-contracts@v5.1.0 --no-commit
-    ```
-    *Note: We use a specific version tag for stability and `--no-commit` if you have uncommitted changes in your repository.*
-4.  **Configure Remappings:** Tell the Solidity compiler where to find the OpenZeppelin library by adding a remapping to your `foundry.toml` file:
-    ```toml
-    [profile.default]
-    # ... other settings
-    remappings = [
-        "@openzeppelin/=lib/openzeppelin-contracts/"
-    ]
-    # ... other settings
-    ```
-5.  **Import ERC20:** Import the necessary contract into `RebaseToken.sol`:
-    ```solidity
-    import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-    ```
-6.  **Verify Setup:** Run `forge build` in your terminal to ensure the import works and the project compiles.
-
-### Contract Definition and State Variables
-
-Now, let's define the contract structure, inherit from `ERC20`, and declare the necessary state variables.
+Every Solidity file should start with an SPDX license identifier and a pragma directive specifying the compiler version. For this project, we'll use the MIT license and Solidity version `0.8.24` or compatible patch versions.
 
 ```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
+```
+The `SPDX-License-Identifier` is standard practice for open-source contracts, clearly stating how others can use your code. The `pragma solidity ^0.8.24;` line instructs the compiler on which Solidity version the code is written for, ensuring compatibility and access to specific language features. The caret (`^`) allows for compiler versions from `0.8.24` up to, but not including, `0.9.0`.
 
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+Now, let's define the basic shell for our contract:
 
-/**
- * @title Rebase Token
- * @author [Your Name/Organization]
- * @notice Implements a cross-chain ERC20 token where balances increase automatically over time.
- * @dev This contract uses a rebasing mechanism based on a per-second interest rate.
- * The global interest rate can only increase or stay the same. Each user gets assigned
- * the prevailing global interest rate upon their first interaction involving balance updates.
- * Balances are calculated dynamically in the `balanceOf` function.
- */
-contract RebaseToken is ERC20 {
-    // Represents 1 with 18 decimal places for fixed-point math
-    uint256 private constant PRECISION_FACTOR = 1e18;
+```solidity
+contract RebaseToken {
 
-    // Global interest rate per second (scaled by PRECISION_FACTOR)
-    // Example: 5e10 represents 0.00000005 or 0.000005% per second
-    uint256 private s_interestRate = 5e10;
-
-    // Maps users to their specific interest rate (set at interaction time)
-    mapping(address => uint256) private s_userInterestRate;
-
-    // Maps users to the block timestamp of their last balance update/interest accrual
-    mapping(address => uint256) private s_userLastUpdatedAtTimestamp;
-
-    // Constructor, Events, Errors, and Functions will follow...
 }
 ```
 
-*   We inherit from `ERC20` using the `is` keyword.
-*   Contract-level NatSpec comments explain the purpose and high-level mechanics.
-*   `PRECISION_FACTOR` is defined for our fixed-point calculations.
-*   `s_interestRate` stores the global rate, initialized to a sample value.
-*   Mappings `s_userInterestRate` and `s_userLastUpdatedAtTimestamp` store user-specific data.
-*   The `s_` prefix denotes storage variables, and `private` visibility is used initially; we can add specific getters if needed later.
+## Integrating OpenZeppelin's ERC20 Standard
 
-### Events and Custom Errors
+To avoid reinventing the wheel and to leverage well-audited, secure code, we'll build our `RebaseToken` on top of OpenZeppelin's standard ERC20 implementation. This is a common best practice in smart contract development.
 
-Define events to log important state changes and custom errors for clear revert reasons.
+We'll use Foundry to manage our dependencies. To install OpenZeppelin Contracts, navigate to their GitHub repository (e.g., `https://github.com/OpenZeppelin/openzeppelin-contracts`) to find the latest stable version. For this lesson, we'll use version `v5.1.0`. It's crucial to pin dependency versions to ensure reproducible builds.
+
+Run the following Foundry command in your terminal:
+
+```bash
+forge install openzeppelin/openzeppelin-contracts@v5.1.0 --no-commit
+```
+The `forge install` command adds the OpenZeppelin library as a submodule to your project. The `@v5.1.0` part pins it to that specific version. The `--no-commit` flag is used here to prevent Foundry from automatically committing the submodule changes, which is useful if you have uncommitted changes in your local repository.
+
+Next, import the `ERC20` contract into your `RebaseToken.sol` file. We'll use a named import, which is preferred as it only brings the necessary components into your contract's scope:
 
 ```solidity
-    // Inside the RebaseToken contract
-
-    /**
-     * @notice Emitted when the global interest rate is updated.
-     * @param newInterestRate The new global interest rate per second (scaled).
-     */
-    event InterestRateSet(uint256 newInterestRate);
-
-    /**
-     * @notice Error reverted when attempting to set an interest rate lower than the current one.
-     * @param currentInterestRate The current global interest rate (scaled).
-     * @param proposedInterestRate The proposed new interest rate that was rejected (scaled).
-     */
-    error RebaseToken__InterestRateCanOnlyIncrease(uint256 currentInterestRate, uint256 proposedInterestRate);
-
-    // Constructor, Functions will follow...
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 ```
 
-*   `InterestRateSet`: Signals a change in the global `s_interestRate`.
-*   `RebaseToken__InterestRateCanOnlyIncrease`: Provides specific context if the interest rate update rule is violated. *Note: The summary mentioned a naming inconsistency (`CanOnlyDecrease`) which we've corrected here to reflect the logic (`CanOnlyIncrease`).*
+To enable the Solidity compiler to resolve the `@openzeppelin/` import path, you need to add a remapping to your `foundry.toml` file. This makes your import paths cleaner and more portable.
 
-### Constructor
+```toml
+remappings = [
+    "@openzeppelin/=lib/openzeppelin-contracts/"
+]
+```
+After adding the remapping, you can run `forge build` to confirm that the setup is correct and the compiler can find the OpenZeppelin contracts.
 
-The constructor initializes the underlying `ERC20` token with its name and symbol.
+## Structuring the Basic RebaseToken
+
+With OpenZeppelin integrated, we can now define the `RebaseToken` contract to inherit from `ERC20`.
+
+Modify your contract definition as follows:
 
 ```solidity
-    // Inside the RebaseToken contract
-
-    /**
-     * @notice Initializes the Rebase Token with a name and symbol.
-     */
-    constructor() ERC20("Rebase Token", "RBT") {}
-
-    // Functions will follow...
+contract RebaseToken is ERC20 {
+    // ...
+}
 ```
 
-### Core Functionality: Setting Rates, Minting, and Calculating Balances
-
-Now, let's implement the core functions that define the rebase behavior.
-
-**1. Setting the Global Interest Rate**
-
-This function allows updating the global rate, enforcing the rule that it can only increase or stay the same.
+Next, we'll add a constructor. The constructor for `RebaseToken` must call the parent `ERC20` constructor, providing the token's name and symbol.
 
 ```solidity
-    /**
-     * @notice Sets the global interest rate for the token contract.
-     * @dev Reverts if the proposed rate is lower than the current rate.
-     * Emits an {InterestRateSet} event on success.
-     * @param _newInterestRate The desired new global interest rate per second (scaled by PRECISION_FACTOR).
-     */
-    function setInterestRate(uint256 _newInterestRate) external {
-        // Ensure the interest rate never decreases
-        if (_newInterestRate < s_interestRate) {
-            revert RebaseToken__InterestRateCanOnlyIncrease(s_interestRate, _newInterestRate);
-        }
-        s_interestRate = _newInterestRate;
-        emit InterestRateSet(_newInterestRate);
+constructor() ERC20("Rebase Token", "RBT") {
+    // We will handle initial minting later, so this remains empty for now.
+}
+```
+
+## Documenting with NatSpec Comments
+
+Clear documentation is vital for smart contract development. Solidity supports the Ethereum Natural Language Specification Format (NatSpec) for this purpose. Good NatSpec comments make your contract easier to understand, integrate with, and can also help AI code assistants provide better suggestions.
+
+Let's add NatSpec comments to our `RebaseToken` contract:
+
+```solidity
+/**
+ * @title RebaseToken
+ * @author Your Name/Alias
+ * @notice This is a cross-chain rebase token that incentivises users to deposit into a vault and gain interest in rewards.
+ * @notice The interest rate in the smart contract can only decrease.
+ * @notice Each user will have their own interest rate that is the global interest rate at the time of deposit.
+ */
+contract RebaseToken is ERC20 {
+    // ... constructor and other code ...
+}
+```
+
+## Implementing Interest Rate Logic
+
+Now, let's introduce the core mechanics for handling interest rates.
+
+**State Variables for Interest Calculation:**
+
+We need several state variables to manage interest:
+
+1.  `PRECISION_FACTOR`: A constant to handle decimal precision. Solidity doesn't have native floating-point numbers, so we use integers and scale them. `1e18` (1 followed by 18 zeros) is commonly used to represent 1 or 100% with 18 decimal places of precision.
+
+    ```solidity
+    uint256 private constant PRECISION_FACTOR = 1e18;
+    ```
+
+2.  `s_interestRate`: This will store the global interest rate per second for the contract. The `s_` prefix is a common convention for storage variables. Let's initialize it to `5e10`. If `1e18` represents 100%, then `5e10` represents a rate of `(5e10 / 1e18) = 0.00000005` or `0.000005%` per second.
+
+    ```solidity
+    uint256 private s_interestRate = 5e10;
+    ```
+
+3.  `s_userInterestRate`: A mapping to store the specific interest rate "locked in" for each user when they first interact (e.g., mint tokens).
+
+    ```solidity
+    mapping(address => uint256) private s_userInterestRate;
+    ```
+
+4.  `s_userLastUpdatedTimestamp`: A mapping to store the timestamp of the last time each user's balance effectively accrued interest or was updated.
+
+    ```solidity
+    mapping(address => uint256) private s_userLastUpdatedTimestamp;
+    ```
+
+**Custom Error and Event for Interest Rate Changes:**
+
+To provide better error handling and enable off-chain monitoring, we'll define a custom error and an event related to interest rate changes.
+
+```solidity
+error RebaseToken__InterestRateCanOnlyDecrease(uint256 oldInterestRate, uint256 newInterestRate);
+event InterestRateSet(uint256 newInterestRate);
+```
+
+**`setInterestRate` Function:**
+
+This function will allow an authorized party (e.g., the contract owner) to set the global `s_interestRate`. A key requirement is that this rate can only ever decrease, rewarding early adopters.
+
+```solidity
+/**
+ * @notice Set the global interest rate for the contract.
+ * @param _newInterestRate The new interest rate to set (scaled by PRECISION_FACTOR basis points per second).
+ * @dev The interest rate can only decrease. Access control (e.g., onlyOwner) should be added.
+ */
+function setInterestRate(uint256 _newInterestRate) external { // TODO: Add access control
+    if (_newInterestRate > s_interestRate) {
+        revert RebaseToken__InterestRateCanOnlyDecrease(s_interestRate, _newInterestRate);
     }
+    s_interestRate = _newInterestRate;
+    emit InterestRateSet(_newInterestRate);
+}
 ```
+*Note:* The condition `_newInterestRate > s_interestRate` ensures that the function reverts if an attempt is made to set a new rate higher than the current one, enforcing the "can only decrease" rule.
 
-**2. Calculating Accumulated Interest Multiplier**
+**`getUserInterestRate` Getter Function:**
 
-This internal helper function calculates the multiplier representing the interest growth since the user's last update.
+We'll provide a public view function to allow anyone to query a user's locked-in interest rate.
 
 ```solidity
-    /**
-     * @notice Calculates the interest multiplier for a user since their last update.
-     * @dev The multiplier represents (1 + (user_rate * time_elapsed)).
-     * The result is scaled by PRECISION_FACTOR.
-     * @param _user The address of the user.
-     * @return linearInterest The calculated interest multiplier (scaled).
-     */
-    function _calculateUserAccumulatedInterestSinceLastUpdate(address _user) internal view returns (uint256 linearInterest) {
-        uint256 lastUpdateTimestamp = s_userLastUpdatedAtTimestamp[_user];
-        // If never updated, assume current time to avoid huge elapsed time
-        if (lastUpdateTimestamp == 0) {
-            // Or alternatively, could set it during mint/transfer in initial setup
-            lastUpdateTimestamp = block.timestamp;
-        }
-
-        uint256 timeElapsed = block.timestamp - lastUpdateTimestamp;
-
-        // Calculate interest part: user_rate * time_elapsed (already scaled by 1e18 * seconds)
-        uint256 interestPart = s_userInterestRate[_user] * timeElapsed;
-
-        // Calculate multiplier: 1 + interest part
-        // PRECISION_FACTOR represents 1 (scaled)
-        linearInterest = PRECISION_FACTOR + interestPart;
-        // Example: If rate is 10% per second (scaled) and 2 seconds pass:
-        // interestPart = (0.1 * 1e18) * 2 = 0.2 * 1e18
-        // linearInterest = 1e18 + 0.2 * 1e18 = 1.2 * 1e18 (representing a 1.2x multiplier)
-    }
+/**
+ * @notice Gets the locked-in interest rate for a specific user.
+ * @param _user The address of the user.
+ * @return The user's specific interest rate.
+ */
+function getUserInterestRate(address _user) external view returns (uint256) {
+    return s_userInterestRate[_user];
+}
 ```
 
-*   This function calculates `1 + (Rate * Time)` scaled by `PRECISION_FACTOR`.
-*   It uses the user's specific rate (`s_userInterestRate`) and the time elapsed since `s_userLastUpdatedAtTimestamp`.
-*   A check for `lastUpdateTimestamp == 0` handles the initial state before any updates.
+## Minting Tokens and Accruing Interest
 
-**3. Overriding `balanceOf`**
+The `mint` function is a critical part of our rebase token. It will be called when a user performs an action that results in new tokens being created for them (e.g., depositing assets into an associated vault).
 
-This is the core of the rebase mechanism. We override the standard `balanceOf` to return the dynamic balance.
+**`mint` Function Logic:**
+
+When `mint` is called for a user:
+1.  Any interest that has accrued for this user since their last interaction must be calculated and minted to them. This is handled by an internal function `_mintAccruedInterest`.
+2.  The user's specific interest rate (`s_userInterestRate[_to]`) is set to the current global `s_interestRate`. This "locks in" the prevailing rate for their newly minted tokens.
+3.  The actual principal amount of tokens is minted using the standard ERC20 `_mint` function.
 
 ```solidity
-    /**
-     * @notice Gets the dynamic balance of an account, including accrued interest.
-     * @dev Overrides the standard ERC20 balanceOf function.
-     * Calculates balance as: Principal * (1 + (User Rate * Time Elapsed)).
-     * Uses fixed-point math.
-     * @param _user The address to query the balance for.
-     * @return The calculated total balance (principal + accrued interest).
-     */
-    function balanceOf(address _user) public view override returns (uint256) {
-        // Get the stored principal balance (this is what _mint/_burn directly affects)
-        // super.balanceOf() calls the original ERC20 implementation.
-        uint256 principalBalance = super.balanceOf(_user);
-
-        // If principal is zero, calculated balance is also zero
-        if (principalBalance == 0) {
-            return 0;
-        }
-
-        // Get the interest multiplier (scaled by 1e18)
-        uint256 interestMultiplier = _calculateUserAccumulatedInterestSinceLastUpdate(_user);
-
-        // Calculate final balance: (Principal * Multiplier) / PrecisionFactor
-        // Principal is already scaled (implicitly by 1e18 as it's an ERC20 balance)
-        // Multiplier is scaled by 1e18
-        // Result of multiplication is scaled by 1e36
-        // Divide by PRECISION_FACTOR (1e18) to get the final balance scaled by 1e18
-        return (principalBalance * interestMultiplier) / PRECISION_FACTOR;
-    }
+/**
+ * @notice Mints tokens to a user, typically upon deposit.
+ * @dev Also mints accrued interest and locks in the current global rate for the user.
+ * @param _to The address to mint tokens to.
+ * @param _amount The principal amount of tokens to mint.
+ */
+function mint(address _to, uint256 _amount) external { // TODO: Add access control (e.g., onlyVault)
+    _mintAccruedInterest(_to);
+    s_userInterestRate[_to] = s_interestRate;
+    _mint(_to, _amount);
+}
 ```
 
-*   We use `super.balanceOf(_user)` to fetch the underlying stored balance, which represents the principal.
-*   We call `_calculateUserAccumulatedInterestSinceLastUpdate` to get the growth multiplier.
-*   The crucial calculation `(principalBalance * interestMultiplier) / PRECISION_FACTOR` performs the multiplication first to preserve precision before dividing by `PRECISION_FACTOR` to bring the result back to the correct scale (18 decimals).
+**`_mintAccruedInterest` Internal Function (Partial Implementation):**
 
-**4. Accruing Interest (Internal Helper)**
-
-Before any action that changes the principal balance (like minting or transferring), we need to effectively "cash in" the accrued interest by minting it. This function also updates the user's last update timestamp.
+This internal function is responsible for calculating and minting the interest owed to a user. For now, we'll focus on one crucial part: updating the user's last updated timestamp. The full interest calculation and minting logic will be fleshed out later.
 
 ```solidity
-    /**
-     * @notice Calculates accrued interest, mints it, and updates the user's last timestamp.
-     * @dev This should be called *before* operations that rely on an up-to-date principal balance
-     * or that modify the principal (e.g., mint, transfer, burn).
-     * @param _user The address for which to accrue interest.
-     */
-    function _mintAccruedInterest(address _user) internal {
-        uint256 principalBalance = super.balanceOf(_user);
+/**
+ * @dev Internal function to calculate and mint accrued interest for a user.
+ * @dev Updates the user's last updated timestamp.
+ * @param _user The address of the user.
+ */
+function _mintAccruedInterest(address _user) internal {
+    // TODO: Implement full logic to calculate and mint actual interest tokens.
+    // The amount of interest to mint would be:
+    // current_dynamic_balance - current_stored_principal_balance
+    // Then, _mint(_user, interest_amount_to_mint);
 
-        // Avoid calculations if principal is zero
-        if (principalBalance == 0) {
-            // Still update timestamp if they have a rate assigned, might receive tokens later
-            if(s_userInterestRate[_user] > 0) {
-                 s_userLastUpdatedAtTimestamp[_user] = block.timestamp;
-            }
-            return;
-        }
-
-        uint256 totalBalanceWithInterest = balanceOf(_user); // Use our overridden balanceOf
-
-        // Interest to mint is the difference between the calculated total and the stored principal
-        uint256 interestToMint = totalBalanceWithInterest - principalBalance;
-
-        // Mint the accrued interest amount if there is any
-        if (interestToMint > 0) {
-            // _mint is the internal function from the parent ERC20 contract
-            _mint(_user, interestToMint);
-        }
-
-        // Crucially, update the timestamp AFTER calculating and minting interest
-        s_userLastUpdatedAtTimestamp[_user] = block.timestamp;
-    }
+    s_userLastUpdatedTimestamp[_user] = block.timestamp;
+}
 ```
+Updating `s_userLastUpdatedTimestamp` is vital because it marks the new baseline from which future interest will accrue.
 
-*   This internal function first gets the principal using `super.balanceOf`.
-*   It then calculates the *total* balance (principal + interest) using our overridden `balanceOf`.
-*   The difference is the interest that has accrued since the last update.
-*   This interest amount is minted using the inherited `_mint` function.
-*   Finally, and importantly, `s_userLastUpdatedAtTimestamp[_user]` is updated to `block.timestamp`.
+## Overriding `balanceOf` for Dynamic Balance Calculation
 
-**5. Minting New Tokens**
+A core feature of this rebase token is that the user's balance reflects accrued interest without requiring constant state updates on the blockchain (which would be very gas-intensive). We achieve this by overriding the standard `balanceOf` function.
 
-The public `mint` function allows creating new tokens. It must first account for any existing accrued interest before minting the new principal and setting the user's interest rate.
+The overridden `balanceOf` will calculate the user's current balance dynamically, including any interest accrued since their `s_userLastUpdatedTimestamp`.
+
+The formula for the new balance is essentially:
+`Dynamic Balance = Stored Principal Balance * (1 + (User's Locked Interest Rate * Time Elapsed))`
+
+Here's the implementation:
 
 ```solidity
-    /**
-     * @notice Mints new principal tokens to a user's account.
-     * @dev Accrues existing interest first, then sets the user's interest rate
-     * to the current global rate, and finally mints the new principal amount.
-     * @param _to The recipient address.
-     * @param _amount The amount of principal tokens to mint.
-     */
-    function mint(address _to, uint256 _amount) external {
-        // 1. Calculate and mint any pending interest for the recipient FIRST
-        _mintAccruedInterest(_to);
+/**
+ * @notice Returns the current balance of an account, including accrued interest.
+ * @param _user The address of the account.
+ * @return The total balance including interest.
+ */
+function balanceOf(address _user) public view override returns (uint256) {
+    // Get the user's stored principal balance (tokens actually minted to them).
+    uint256 principalBalance = super.balanceOf(_user);
 
-        // 2. Set (or update) the user's personal interest rate to the current global rate
-        s_userInterestRate[_to] = s_interestRate;
-        // Note: Timestamp is updated inside _mintAccruedInterest
+    // Calculate the growth factor based on accrued interest.
+    uint256 growthFactor = _calculateUserAccumulatedInterestSinceLastUpdate(_user);
 
-        // 3. Mint the requested principal amount using the inherited internal function
-        _mint(_to, _amount); // This updates the value returned by super.balanceOf()
-    }
+    // Apply the growth factor to the principal balance.
+    // Remember PRECISION_FACTOR is used for scaling, so we divide by it here.
+    return principalBalance * growthFactor / PRECISION_FACTOR;
+}
 ```
+In this function:
+*   `super.balanceOf(_user)` calls the original `balanceOf` function from the parent `ERC20` contract, retrieving the underlying stored balance (the principal).
+*   `_calculateUserAccumulatedInterestSinceLastUpdate(_user)` is an internal helper function we'll define next, which returns the growth factor `(1 + Rate * Time)` scaled by `PRECISION_FACTOR`.
+*   The final division by `PRECISION_FACTOR` adjusts the result back to the correct token decimal precision, as both `principalBalance` (if it uses token decimals) and `growthFactor` are effectively scaled.
 
-*   Calls `_mintAccruedInterest(_to)` to update the principal balance with accrued interest *before* adding more.
-*   Assigns the current `s_interestRate` to `s_userInterestRate[_to]`.
-*   Calls the standard internal `_mint` function to increase the principal balance.
+## Calculating the Interest Growth Factor
 
-**6. Getter for User Interest Rate**
+The `_calculateUserAccumulatedInterestSinceLastUpdate` internal function is responsible for calculating the growth factor used in our dynamic `balanceOf`.
 
-A simple view function to allow external checking of a user's assigned rate.
+This factor represents `1 + (UserInterestRate * TimeElapsed)`, scaled by `PRECISION_FACTOR`.
 
 ```solidity
-    /**
-     * @notice Gets the specific interest rate assigned to a user.
-     * @param _user The address of the user.
-     * @return The user's assigned interest rate per second (scaled).
-     */
-    function getUserInterestRate(address _user) external view returns (uint256) {
-        return s_userInterestRate[_user];
-    }
-} // End of RebaseToken contract
-```
+/**
+ * @dev Calculates the growth factor due to accumulated interest since the user's last update.
+ * @param _user The address of the user.
+ * @return The growth factor, scaled by PRECISION_FACTOR. (e.g., 1.05x growth is 1.05 * 1e18).
+ */
+function _calculateUserAccumulatedInterestSinceLastUpdate(address _user) internal view returns (uint256 linearInterestFactor) {
+    // 1. Calculate the time elapsed since the user's balance was last effectively updated.
+    uint256 timeElapsed = block.timestamp - s_userLastUpdatedTimestamp[_user];
 
-This completes the initial implementation of the `RebaseToken.sol` contract, covering state setup, rate management, and the core dynamic balance calculation via the overridden `balanceOf` function, along with the necessary logic in `mint` and `_mintAccruedInterest` to handle the rebasing correctly. Further development would involve implementing `transfer`, `transferFrom`, `burn`, and adding relevant tests.
+    // If no time has passed, or if the user has no locked rate (e.g., never interacted),
+    // the growth factor is simply 1 (scaled by PRECISION_FACTOR).
+    if (timeElapsed == 0 || s_userInterestRate[_user] == 0) {
+        return PRECISION_FACTOR;
+    }
+
+    // 2. Calculate the total fractional interest accrued: UserInterestRate * TimeElapsed.
+    // s_userInterestRate[_user] is the rate per second.
+    // This product is already scaled appropriately if s_userInterestRate is stored scaled.
+    uint256 fractionalInterest = s_userInterestRate[_user] * timeElapsed;
+
+    // 3. The growth factor is (1 + fractional_interest_part).
+    // Since '1' is represented as PRECISION_FACTOR, and fractionalInterest is already scaled, we add them.
+    linearInterestFactor = PRECISION_FACTOR + fractionalInterest;
+    return linearInterestFactor;
+}
+```
+**A Note on Precision:** When performing arithmetic with scaled fixed-point numbers, it's generally best to perform multiplications before divisions to maintain maximum precision. However, always be mindful of potential overflows. In our `balanceOf` function, `principalBalance * growthFactor` is done first, then division by `PRECISION_FACTOR`. This is safe if `principalBalance` and `growthFactor` are within reasonable limits such that their product doesn't exceed `uint256`'s maximum value.
+
+This lesson has laid the foundational code for our `RebaseToken`. We've set up the ERC20 base, implemented logic for global and user-specific interest rates, and most importantly, created a dynamic `balanceOf` function that reflects accrued interest without constant state updates. Future lessons would build upon this by fully implementing `_mintAccruedInterest`, adding `burn` and `transfer` functionalities (which also need to account for rebase mechanics), and incorporating robust access control.

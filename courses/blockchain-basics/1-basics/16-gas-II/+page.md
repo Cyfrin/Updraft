@@ -38,7 +38,7 @@ In Metamask, you can navigate to `Market > Advanced > Edit Gas Limit` in order t
 There are a couple important points to note regarding the Base Fee
 
 - The fee is burnt as of EIP-1559. Burning serves to remove the value from circulation, combating inflation on the protocol. The amount burnt can be seen beneath the `Base Fee` in the image above.
-- The fee is dynamic, under EIP-1559, if a block is more than 50% full, the `Base Gas Fee` is increased for the next block. Likewise, if a block is less then 50% full, the fee decreases. This serves to balance network demand and capacity.
+- The fee is dynamic, under EIP-1559, if a block is more than 50% full, the `Base Gas Fee` is increased for the next block. Likewise, if a block is less than 50% full, the fee decreases. This serves to balance network demand and capacity.
 
 **4. Max Gas Fee:** This is the maximum cost per cast the transaction has been configured to allow. This can again be configured prior to sending a transaction.
 
@@ -60,7 +60,7 @@ Pulling up a transaction in a block explorer like Etherscan can provide us a ton
 - Where the transaction is being sent
 - The value included in a transaction
 
-From here we can also see details about the `transactions fees` and `gas` costs.
+From here we can also see details about the `transaction fees` and `gas` costs.
 
 `Gas` is a measure of computation required to perform a task, the cost of a transaction is derived from a `Gas Price` (made of `Base` and `Priority Fees`) and the amount of `gas` used.
 

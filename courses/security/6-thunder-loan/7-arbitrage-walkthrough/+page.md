@@ -27,8 +27,8 @@ Steps:
 
 ### Wrap Up
 
-Clearly DeFi systems like flash loans are incredibly powerful when used to level the playing field of financial opportunity in Web3
+Clearly, DeFi systems like flash loans are incredibly powerful when used to level the playing field of financial opportunity in Web3.
 
-In the next lesson we briefly touch on some contention surrounding flash loans and if they're actually _bad_ or _amoral_.
+In the next lesson, we briefly touch on some contention surrounding flash loans and if they're actually _bad_ or _amoral_.
 
 See you there!

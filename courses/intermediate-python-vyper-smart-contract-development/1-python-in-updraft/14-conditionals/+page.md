@@ -2,7 +2,7 @@
 
 In Python, we can use `if` / `else` statements, also known as conditionals. 
 
-Let�s create a new chunk of code.  
+Let's create a new chunk of code.  
 ```python
 if 7 > 5:
     print("7 is greater than 5")
@@ -14,7 +14,7 @@ We can run this code as it is.
 7 is greater than 5
 ```
 
-Now, let�s try seeing if the numbers are equal:
+Now, let's try seeing if the numbers are equal:
 
 ```python
 if 7 == 5:
@@ -77,7 +77,7 @@ else:
     print("5 is greater than 7")
 ```
 
-If we run this line, it will still print out �7 is greater than 5�. This is because what we are saying is if 7 is greater than 5, print out �7 is greater than 5�. Otherwise, print out �5 is greater than 7�. 
+If we run this line, it will still print out "7 is greater than 5". This is because what we are saying is if 7 is greater than 5, print out "7 is greater than 5". Otherwise, print out '5 is greater than 7'. 
 
 If we were to flip the sign around to say if 7 is less than 5:
 
@@ -114,4 +114,4 @@ else:
     print("5 is greater than 7")
 ```
 
-If that is a little confusing, don�t worry about it for now. It will make sense to you the more you work with conditionals. 
+If that is a little confusing, don't worry about it for now. It will make sense to you the more you work with conditionals. 
