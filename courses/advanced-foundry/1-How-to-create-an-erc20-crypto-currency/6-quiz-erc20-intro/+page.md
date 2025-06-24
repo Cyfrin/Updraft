@@ -1,3 +1,0 @@
----
-QUIZ ERC20 INTRO
----
