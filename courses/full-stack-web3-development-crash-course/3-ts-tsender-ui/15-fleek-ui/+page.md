@@ -4,7 +4,7 @@ After building and testing your application, the final crucial step is deploymen
 
 ## Introducing Fleek: Your web3 Hosting Platform
 
-Fleek (`fleck.xyz`) is a platform specializing in building and hosting static websites, making it an excellent choice for web3 applications. Key reasons for using Fleek include:
+Fleek (`fleek.xyz`) is a platform specializing in building and hosting static websites, making it an excellent choice for web3 applications. Key reasons for using Fleek include:
 
 *   **Static Site Focus:** Optimized for deploying front-ends built as static sites.
 *   **web3 Integrations:** Offers various plugins and integrations tailored for the web3 ecosystem.
@@ -102,7 +102,7 @@ Your code, including the `next.config.ts` changes, is now on GitHub, ready for F
 
 Now, let's connect Fleek to your GitHub repository:
 
-1.  **Log in to Fleek:** Go to `fleck.xyz` and log in or sign up.
+1.  **Log in to Fleek:** Go to `fleek.xyz` and log in or sign up.
 2.  **Navigate to Hosting:** Go to your Dashboard and select the **Hosting** tab.
 3.  **Start Deployment:** Click **"Add new"** and then **"Deploy my site"**.
 4.  **Connect Git Provider:** Select **GitHub**.
@@ -131,7 +131,7 @@ With Fleek connected to your GitHub repository, you can configure the deployment
 
 ## Monitoring Your Fleek Deployment
 
-Fleek will now begin the deployment process. You'll see status updates like "Queued" and "Building". Fleek provides a temporary domain (e.g., `your-site-name.on-fleck.app`) where your site will be accessible once deployed.
+Fleek will now begin the deployment process. You'll see status updates like "Queued" and "Building". Fleek provides a temporary domain (e.g., `your-site-name.on-fleek.app`) where your site will be accessible once deployed.
 
 Navigate to the **Deployments** tab for your site in Fleek to see detailed progress and logs. The typical stages include:
 
