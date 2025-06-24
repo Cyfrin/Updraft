@@ -68,9 +68,9 @@ uint256[] memory amounts = router.getAmountsOut(amountIn, path);
 The final part of this demo is to console log the amounts.
 
 ```javascript
-console2.log("WETH", amounts[0]);
-console2.log("DAI", amounts[1]);
-console2.log("MKR", amounts[2]);
+console2.log("WETH: %18e", amounts[0]);
+console2.log("DAI: %18e", amounts[1]);
+console2.log("MKR: %18e", amounts[2]);
 ```
 
 Remember that the path has length three, so our amounts array will also have a length of three. We expect `amounts[0]` to be 1e18 because that is our input amount. `amounts[1]` will be the amount of `DAI` that we get for our input amount of `WETH` and `amounts[2]` will be the amount of `MKR` that we get for our input amount of `DAI`. 
@@ -85,7 +85,7 @@ FORK_URL=https://eth-mainnet.g.alchemy.com/v2/KxztpzEzhqN54Jn_0SgMzN4AJ5Q50K4
 We can now copy the fork URL and paste it inside our terminal. Next, we will execute our test by running the following command:
 
 ```bash
-forge test --fork-url $FORK_URL --match-path test/uniswap-v2/UniswapV2SwapAmounts.test.sol
+forge test --fork-url $FORK_URL --mp test/uniswap-v2/UniswapV2SwapAmounts.test.sol --mt test_getAmountsOut -vvv
 ```
 
 The output of our test will be:
@@ -94,11 +94,13 @@ The output of our test will be:
 [PASS] 1 test for test/uniswap-v2/UniswapV2SwapAmounts.test.sol:UniswapV2SwapAmountsTest
 Running 1 test for UniswapV2 (gas: 25511)
 Logs:
-WETH 1000000000000000000
-DAI 250083397486620145970214
-MKR 124276659515427830343
+WETH: 1
+DAI: 2566.845188977171554936
+MKR: 0.040213782244101485
 Test result: ok. 1 passed; 0 failed; finished in 5.31s
 ```
+
+**Why is the result inconsistent with the course video?** This may be due to low liquidity. The return amount of MKR will depend on the liquidity of the pool. Low liquidity means lower output. Reference: https://github.com/Cyfrin/advanced-defi-2024/discussions/23#discussioncomment-13166712
 
 We can see from the log that we put in one `WETH` and we got out a certain amount of `DAI`. For that amount of `DAI`, we got out a certain amount of `MKR`.
 

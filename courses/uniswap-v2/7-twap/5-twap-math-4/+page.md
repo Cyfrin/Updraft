@@ -3,55 +3,45 @@
 In this lesson, we'll discuss the concept of Time Weighted Average Price (TWAP) within the context of Uniswap V2.
 
 ### What is TWAP?
-The Time Weighted Average Price (TWAP) is the average price of a token (X) in terms of another token (Y). This is calculated over a specific time period (t<sub>i</sub> ≤ t < t<sub>i + 1</sub>) where Δt is the duration of the price. 
+The Time Weighted Average Price (TWAP) is the average price of a token (X) in terms of another token (Y). This is calculated over a specific time period ($t_i ≤ t < t_{i + 1}$) where Δt is the duration of the price. 
 
 ### Calculating TWAP
 To calculate the TWAP, we'll use the concept of cumulative price and a specific formula.
 
-The cumulative price (c<sub>j</sub>) up to time t<sub>j</sub> is calculated as the sum of the price for each time period:
+The cumulative price ($c_j$) up to time $t_j$ is calculated as the sum of the price for each time period:
 
-```javascript
-c<sub>j</sub> = cumulative price up to t<sub>j</sub> = ∑<sub>i = 0</sub><sup>j-1</sup> Δt<sub>i</sub>.p<sub>i</sub>
-```
+$C_j$ = cumulative price up to $T_j=\sum\limits_{i=0}^{j-1}{ΔT_iP_i}$
 
-We can then expand the formula for the cumulative price from time t<sub>k</sub> to t<sub>n</sub> as:
+We can then expand the formula for the cumulative price from time t_k to t_n as:
 
-```javascript
-∑<sub>i = k</sub><sup>n-1</sup> Δt<sub>i</sub>.p<sub>i</sub> = Δt<sub>k</sub>.p<sub>k</sub> + ... + Δt<sub>n-1</sub>.p<sub>n-1</sub>
-```
+$\sum\limits_{i=k}^{n-1}{ΔT_iP_i=ΔT_kP_l+...+ΔT_{n-1}P_{n-1}}$
+
 
 This can be further simplified as:
 
-```javascript
-∑<sub>i = k</sub><sup>n-1</sup> Δt<sub>i</sub>.p<sub>i</sub> = (Δt<sub>0</sub>.p<sub>0</sub> + ... + Δt<sub>k-1</sub>.p<sub>k-1</sub> + Δt<sub>k</sub>.p<sub>k</sub> + ... + Δt<sub>n-1</sub>.p<sub>n-1</sub>) - (Δt<sub>0</sub>.p<sub>0</sub> + ... + Δt<sub>k-1</sub>.p<sub>k-1</sub>)
-```
+$\sum\limits_{i=k}^{n-1}{ΔT_iP_i=(ΔT_0P_0+...+ΔT_{k-1}P_{k-1}+ΔT_kP_k+...+ΔT_{n-1}P_{n-1})-(ΔT_0P_0+...+ΔT_{k-1}P_{k-1})}$
+
 
 This then becomes:
 
-```javascript
-∑<sub>i = k</sub><sup>n-1</sup> Δt<sub>i</sub>.p<sub>i</sub> = c<sub>n</sub> - c<sub>k</sub>
-```
+$\sum\limits_{i=k}^{n-1}{ΔT_iP_i}=C_n-C_k$
 
-Therefore, the TWAP from time t<sub>k</sub> to t<sub>n</sub> can be calculated as:
 
-```javascript
-TWAP from t<sub>k</sub> to t<sub>n</sub> = (c<sub>n</sub> - c<sub>k</sub>) / (t<sub>n</sub> - t<sub>k</sub>)
-```
+Therefore, the TWAP from time t_k to t_n can be calculated as:
+
+TWAP from $t_k$ to $t_n = \frac{c_n - c_k}{t_n - t_k}$
 
 ### TWAP to Current Time
-We cannot directly calculate the TWAP from a specific time (t<sub>k</sub>) to the current time (t), as we do not know how long the current price will remain at its current value.
+We cannot directly calculate the TWAP from a specific time ($t_k$) to the current time (t), as we do not know how long the current price will remain at its current value.
 
-To solve this, we can use a technique which sets the current time (t) to t<sub>n + 1</sub>, and the current price (p) to p<sub>n</sub>, which results in:
+To solve this, we can use a technique which sets the current time (t) to $t_{n + 1}$, and the current price (p) to $p_n$, which results in:
 
-```javascript
-∑<sub>i = k</sub><sup>n</sup> Δt<sub>i</sub>.p<sub>i</sub> = ∑<sub>i = k</sub><sup>n-1</sup> Δt<sub>i</sub>.p<sub>i</sub> + Δt<sub>n</sub>.p<sub>n</sub> = c<sub>n</sub> + (t - t<sub>n</sub>).p
-```
+$\sum\limits_{i=k}^{n}{ΔT_iP_i}=\sum\limits_{i=k}^{n-1}{ΔT_iP_i+ΔT_nP_n}=C_n+(T-T_n)P$
 
-Using this, we can then calculate the TWAP from time t<sub>k</sub> to t<sub>n + 1</sub> using the formula:
 
-```javascript
-TWAP from t<sub>k</sub> to t<sub>n + 1</sub> = (c<sub>n</sub> + (t - t<sub>n</sub>).p - c<sub>k</sub>) / (t<sub>n + 1</sub> - t<sub>k</sub>)
-```
+Using this, we can then calculate the TWAP from time t_k to t_n + 1 using the formula:
+
+TWAP from $t_k$ to $t_{n + 1} = \frac{c_n+(t-t_n)P-c_k}{t_{n + 1} - t_k}$
 
 This formula will allow us to estimate the TWAP up to the current time.
 
@@ -62,7 +52,7 @@ This formula will allow us to estimate the TWAP up to the current time.
 
 We have the following price and timestamp data:
 
-| t<sub>i</sub> | p<sub>i</sub> | Δt<sub>i</sub>.p<sub>i</sub> | c<sub>i</sub> |
+| $t_i$ | $p_i$ | $Δt_ip_i$ | $c_i$ |
 |---|---|---|---|
 | 1 | 1000 | - | - |
 | 3 | 100 | (3 - 1)1000 = 2000 | 2000 |
@@ -72,14 +62,11 @@ We have the following price and timestamp data:
 
 We want to calculate the TWAP from time 4 to 11:
 
-```javascript
-TWAP from 4 to 11 = (c<sub>11</sub> - c<sub>4</sub>) / (t<sub>11</sub> - t<sub>4</sub>) = (11800 - 3100) / (11 - 4)
-```
+TWAP from 4 to 11 = $\frac{c_11 - c_4}{t_11 - t_4}=\frac{11800 - 3100}{11 - 4}$
+
 
 This gives us:
 
-```javascript
-TWAP from 4 to 11 = 1271.43
-```
+TWAP from 4 to 11 = $1271.43$
 
 This demonstrates how we can calculate the TWAP up to the current time. 

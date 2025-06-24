@@ -2,7 +2,7 @@ In this lesson, we will be completing a contract called UniswapV2FlashSwap. This
 
 We will start by looking at the constructor for the UniswapV2FlashSwap contract. 
 
-```javascript
+```solidity
 contract UniswapV2FlashSwap {
     UniswapV2Pair private immutable pair;
     address private immutable token0;
@@ -18,7 +18,7 @@ contract UniswapV2FlashSwap {
 
 We will then need to complete two functions: flashSwap and uniswapV2Call. We will start with the flashSwap function. 
 
-```javascript
+```solidity
 function flashSwap(address token, uint256 amount) external {
     require(token == token0 || token == token1, "invalid token");
 
@@ -58,7 +58,7 @@ Later, when the function uniswapV2Call is called by the pair contract, we will d
 
 The last part to complete this function is to call the swap function on the pair contract. 
 
-```javascript
+```solidity
 pair.swap(
     amount0Out,
     amount1Out,
@@ -69,7 +69,7 @@ pair.swap(
 
 We will now move on to the uniswapV2Call function. This function is a callback function that will be called by the UniswapV2Pair contract after the flash swap.
 
-```javascript
+```solidity
 // Uniswap V2 callback
 function uniswapV2Call(
     address sender,
@@ -116,40 +116,51 @@ Finally, we will use the token.transferFrom function to transfer the amount of t
 
 The next part of the lesson will show a test file for the UniswapV2FlashSwap contract. 
 
-```javascript
+```solidity
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity 0.8.24;
 
-import "../src/interfaces/uniswap-v2/UniswapV2Pair.sol";
-import "../src/interfaces/IERC20.sol";
+import {Test, console2} from "forge-std/Test.sol";
+import {IERC20} from "../../../src/interfaces/IERC20.sol";
+import {IUniswapV2Router02} from
+    "../../../src/interfaces/uniswap-v2/IUniswapV2Router02.sol";
+import {
+    DAI,
+    UNISWAP_V2_ROUTER_02,
+    UNISWAP_V2_PAIR_DAI_WETH
+} from "../../../src/Constants.sol";
+import {UniswapV2FlashSwap} from "./UniswapV2FlashSwap.sol";
 
-// UniswapRouter02 private constant router = UniswapRouter02(UNISWAP_V2_ROUTER_02);
+contract UniswapV2FlashSwapTest is Test {
+    IERC20 private constant dai = IERC20(DAI);
 
-UniswapV2FlashSwap private flashSwap;
+    IUniswapV2Router02 private constant router =
+        IUniswapV2Router02(UNISWAP_V2_ROUTER_02);
+    UniswapV2FlashSwap private flashSwap;
 
-address private constant user = address(100);
+    address private constant user = address(100);
 
-function setUp() public {
-    flashSwap = new UniswapV2FlashSwap(UNISWAP_V2_PAIR_DAI_WETH);
-}
+    function setUp() public {
+        flashSwap = new UniswapV2FlashSwap(UNISWAP_V2_PAIR_DAI_WETH);
 
-function testFlashSwap() public {
-    uint256 dai0 = dai.balanceOf(UNISWAP_V2_PAIR_DAI_WETH);
-    vm.prank(user);
-    deal(DAI, user, 10000 * 1e18);
-    dai.approve(address(flashSwap), type(uint256).max);
+        deal(DAI, user, 10000 * 1e18);
+        vm.prank(user);
+        dai.approve(address(flashSwap), type(uint256).max);
+        // user -> flashSwap.flashSwap
+        //         -> pair.swap
+        //            -> flashSwap.uniswapV2Call
+        //               -> token.transferFrom(user, flashSwap, fee)
+    }
 
-    // user -> pair.swap
-    // -> flashSwap.uniswapV2Call
-    // -> token.transferFrom(user, flashSwap, fee)
+    function test_flashSwap() public {
+        uint256 dai0 = dai.balanceOf(UNISWAP_V2_PAIR_DAI_WETH);
+        vm.prank(user);
+        flashSwap.flashSwap(DAI, 1e6 * 1e18);
+        uint256 dai1 = dai.balanceOf(UNISWAP_V2_PAIR_DAI_WETH);
 
-    flashSwap.flashSwap(DAI, 1e18);
-
-    uint256 dai1 = dai.balanceOf(UNISWAP_V2_PAIR_DAI_WETH);
-
-    console.log("DAI (fee):", dai0 - dai1);
-
-    assertGt(dai1, dai0, "DAI balance of pair");
+        console2.log("DAI fee: %18e", dai1 - dai0);
+        assertGe(dai1, dai0, "DAI balance of pair");
+    }
 }
 
 ```
