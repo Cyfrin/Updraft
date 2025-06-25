@@ -32,4 +32,4 @@ print(signed_transaction)
 
 Let's even more cool about this is we just have a signed transaction, but we haven't actually sent it yet. We haven't sent it to the blockchain. It's literally just like sitting in our terminal here. Like, anybody could literally take this transaction, now that it's signed, and go execute it.
 
-So, additionally, you don't really want to have signed transactions lying around, so try not to do that, as well. But, p p p p p
+So, additionally, you don't really want to have signed transactions lying around, so try not to do that, as well.

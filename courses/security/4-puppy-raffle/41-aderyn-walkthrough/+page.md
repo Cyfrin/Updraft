@@ -20,7 +20,7 @@ We can start by running `aderyn .`. This should generate an already formatted ma
 
 **1. Centralization Risk for Trusted Owners**
 
-- Dangerous Calls: - Found in src/PuppyRaffle.sol [Line: 180](src/PuppyRaffle.sol#L180)
+- Dangerous Calls: - Found in src/PuppyRaffle.sol [Line: 180](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L180)
 
       ```solidity
           function changeFeeAddress(address newFeeAddress) external onlyOwner {
@@ -32,13 +32,13 @@ We can start by running `aderyn .`. This should generate an already formatted ma
 
 **1. `abi.encodePacked()` should not be used with dynamic types when passing the result to a hash function such as `keccak256()`**
 
-- Dangerous Calls: - Found in src/PuppyRaffle.sol [Line: 213](src/PuppyRaffle.sol#L213)
+- Dangerous Calls: - Found in src/PuppyRaffle.sol [Line: 213](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L213)
 
       ```solidity
                   abi.encodePacked(
       ```
 
-      - Found in src/PuppyRaffle.sol [Line: 217](src/PuppyRaffle.sol#L217)
+      - Found in src/PuppyRaffle.sol [Line: 217](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L217)
 
       ```solidity
                               abi.encodePacked(
@@ -48,7 +48,7 @@ We can start by running `aderyn .`. This should generate an already formatted ma
 
 **2. Solidity pragma should be specific, not wide**
 
-- Dangerous Calls: - Found in src/PuppyRaffle.sol [Line: 3](src/PuppyRaffle.sol#L3)
+- Dangerous Calls: - Found in src/PuppyRaffle.sol [Line: 3](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L3)
 
       ```solidity
       pragma solidity ^0.7.6;
@@ -60,19 +60,19 @@ We can start by running `aderyn .`. This should generate an already formatted ma
 
 **1. Missing checks for `address(0)` when assigning values to address state variables**
 
-- Dangerous Calls: - Found in src/PuppyRaffle.sol [Line: 69](src/PuppyRaffle.sol#L69)
+- Dangerous Calls: - Found in src/PuppyRaffle.sol [Line: 69](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L69)
 
       ```solidity
               feeAddress = _feeAddress;
       ```
 
-      - Found in src/PuppyRaffle.sol [Line: 159](src/PuppyRaffle.sol#L159)
+      - Found in src/PuppyRaffle.sol [Line: 159](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L159)
 
       ```solidity
               previousWinner = winner;
       ```
 
-      - Found in src/PuppyRaffle.sol [Line: 182](src/PuppyRaffle.sol#L182)
+      - Found in src/PuppyRaffle.sol [Line: 182](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L182)
 
       ```solidity
               feeAddress = newFeeAddress;
@@ -82,19 +82,19 @@ We can start by running `aderyn .`. This should generate an already formatted ma
 
 **2. Functions not used internally could be marked external**
 
-- Dangerous Calls: - Found in src/PuppyRaffle.sol [Line: 86](src/PuppyRaffle.sol#L86)
+- Dangerous Calls: - Found in src/PuppyRaffle.sol [Line: 86](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L86)
 
       ```solidity
           function enterRaffle(address[] memory newPlayers) public payable {
       ```
 
-      - Found in src/PuppyRaffle.sol [Line: 105](src/PuppyRaffle.sol#L105)
+      - Found in src/PuppyRaffle.sol [Line: 105](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L105)
 
       ```solidity
           function refund(uint256 playerIndex) public {
       ```
 
-      - Found in src/PuppyRaffle.sol [Line: 205](src/PuppyRaffle.sol#L205)
+      - Found in src/PuppyRaffle.sol [Line: 205](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L205)
 
       ```solidity
           function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
@@ -106,28 +106,28 @@ We can start by running `aderyn .`. This should generate an already formatted ma
 
 **3. Constants should be defined and used instead of literals**
 
-- Dangerous Calls - Found in src/PuppyRaffle.sol [Line: 94](src/PuppyRaffle.sol#L94)
+- Dangerous Calls - Found in src/PuppyRaffle.sol [Line: 94](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L94)
   `solidity
-    for (uint256 i = 0; i < players.length - 1; i++) {
-    `
+  for (uint256 i = 0; i < players.length - 1; i++) {
+  `
 
-      - Found in src/PuppyRaffle.sol [Line: 96](src/PuppyRaffle.sol#L96)
+      - Found in src/PuppyRaffle.sol [Line: 96](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L96)
 
       ```solidity
       for (uint256 j = i + 1; j < players.length; j++) {
       ```
 
-      - Found in src/PuppyRaffle.sol [Line: 141](src/PuppyRaffle.sol#L141)
+      - Found in src/PuppyRaffle.sol [Line: 141](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L141)
 
       ```solidity
       uint256 prizePool = (totalAmountCollected * 80) / 100;
       ```
-      - Found in src/PuppyRaffle.sol [Line: 142](src/PuppyRaffle.sol#L142)
+      - Found in src/PuppyRaffle.sol [Line: 142](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L142)
 
       ```solidity
           uint256 fee = (totalAmountCollected * 20) / 100;
       ```
-      - Found in src/PuppyRaffle.sol [Line: 148](src/PuppyRaffle.sol#L148)
+      - Found in src/PuppyRaffle.sol [Line: 148](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L148)
 
       ```solidity
           uint256 rarity = uint256(keccak256(abi.encodePacked(msg.sender, block.difficulty))) % 100;
@@ -137,19 +137,19 @@ We can start by running `aderyn .`. This should generate an already formatted ma
 
 **4. Event is missing `indexed` fields**
 
-- Dangerous Calls: - Found in src/PuppyRaffle.sol [Line: 59](src/PuppyRaffle.sol#L59)
+- Dangerous Calls: - Found in src/PuppyRaffle.sol [Line: 59](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L59)
 
       ```solidity
           event RaffleEnter(address[] newPlayers);
       ```
 
-      - Found in src/PuppyRaffle.sol [Line: 60](src/PuppyRaffle.sol#L60)
+      - Found in src/PuppyRaffle.sol [Line: 60](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L60)
 
       ```solidity
           event RaffleRefunded(address player);
       ```
 
-      - Found in src/PuppyRaffle.sol [Line: 61](src/PuppyRaffle.sol#L61)
+      - Found in src/PuppyRaffle.sol [Line: 61](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/15c50ec22382bb1f3106aba660e7c590df18dcac/src/PuppyRaffle.sol#L61)
 
       ```solidity
           event FeeAddressChanged(address newFeeAddress);

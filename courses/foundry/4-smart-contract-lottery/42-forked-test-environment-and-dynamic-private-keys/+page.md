@@ -577,7 +577,7 @@ Ran 12 tests for test/unit/RaffleTest.t.sol:RaffleTest
 [PASS] testDontAllowPlayersToEnterWhileRaffleIsCalculating() (gas: 161916)
 [PASS] testEmitsEventOnEntrance() (gas: 68752)
 [PASS] testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256) (runs: 257, μ: 80568, ~: 80568)
-[PASS] testFulfillRandomWordsPicksAWinnerRestesAndSendsMoney() (gas: 314207)
+[PASS] testFulfillRandomWordsPicksAWinnerResetsAndSendsMoney() (gas: 314207)
 [PASS] testPerformUpkeepCanOnlyRunIfCheckUpkeepIsTrue() (gas: 153220)
 [PASS] testPerformUpkeepRevertsIfCheckUpkeepIsFalse() (gas: 17399)
 [PASS] testPerformUpkeepUpdatesRaffleStateAndEmitsRequestId() (gas: 158980)
@@ -1040,7 +1040,7 @@ Ran 12 tests for test/unit/RaffleTest.t.sol:RaffleTest
 [PASS] testDontAllowPlayersToEnterWhileRaffleIsCalculating() (gas: 135654)
 [PASS] testEmitsEventOnEntrance() (gas: 68752)
 [FAIL. Reason: call reverted as expected, but without data; counterexample: calldata=0x9a3d2cf80000000000000000000000000000000000000000000000000000000000000b18 args=[2840]] testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256) (runs: 0, μ: 0, ~: 0)
-[FAIL. Reason: EvmError: Revert] testFulfillRandomWordsPicksAWinnerRestesAndSendsMoney() (gas: 297296)
+[FAIL. Reason: EvmError: Revert] testFulfillRandomWordsPicksAWinnerResetsAndSendsMoney() (gas: 297296)
 [PASS] testPerformUpkeepCanOnlyRunIfCheckUpkeepIsTrue() (gas: 126958)
 [PASS] testPerformUpkeepRevertsIfCheckUpkeepIsFalse() (gas: 17399)
 [PASS] testPerformUpkeepUpdatesRaffleStateAndEmitsRequestId() (gas: 133024)
@@ -1088,7 +1088,7 @@ function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256 request
 }
 ```
 
-The other failing test is `testFulfillRandomWordsPicksAWinnerRestesAndSendsMoney`. Looking through its code we can see why it fails:
+The other failing test is `testFulfillRandomWordsPicksAWinnerResetsAndSendsMoney`. Looking through its code we can see why it fails:
 
 ```solidity
 // Pretend to be Chainlink VRF

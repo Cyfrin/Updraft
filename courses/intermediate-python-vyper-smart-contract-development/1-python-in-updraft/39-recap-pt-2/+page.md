@@ -23,7 +23,7 @@ uv python pin 3.12
 We can add packages to our virtual environment using UV:
 
 ```bash
-uv add Titanoboa 
+uv add titanoboa 
 ```
 
 We can activate our virtual environment by running:

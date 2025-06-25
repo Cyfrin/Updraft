@@ -8,7 +8,7 @@ Let's create a Chainlink Functions subscription on Sepolia.
 
 As a recap, Chainlink Functions subscriptions are used to pay for, manage, and track Chainlink Functions requests.
 
-1. Open [functions.chain.link](functions.chain.link), connect your wallet (make sure you are still connected to Sepolia) and click **Create Subscription**:
+1. Open [functions.chain.link](https://functions.chain.link/), connect your wallet (make sure you are still connected to Sepolia) and click **Create Subscription**:
 
 ![create-subscription](/chainlink-fundamentals/7-chainlink-functions/assets/create-subscription.png)
 
