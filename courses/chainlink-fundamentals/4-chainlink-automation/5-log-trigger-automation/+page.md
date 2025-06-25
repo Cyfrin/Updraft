@@ -75,7 +75,7 @@ Fill in the **Upkeep details**:
 
 ::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/log-upkeep-details.png' style='width: 100%; height: auto;' alt='log-upkeep-details'}
 
-Click **Register Upkeep** and submit the registration request. Once confirmation has been recived, sign the message to verify ownership. Your automation is now created! 
+Click **Register Upkeep** and submit the registration request. Once confirmation has been received, sign the message to verify ownership. Your automation is now created! 
 
 ::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/log-upkeep-registration.png' style='width: 100%; height: auto;' alt='log-upkeep-registration'}
 
