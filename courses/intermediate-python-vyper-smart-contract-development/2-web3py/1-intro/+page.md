@@ -39,8 +39,8 @@ This is from the Cyfrin Updraft Vyper Course.
 
 We have a file called `favorites.vy` which we'll interact with in this lesson:
 
-```
-# pragma version ^0.4.1
+```python
+# pragma version >=0.4.1
 # @license MIT
 
 my_favorite_number: uint256
@@ -74,7 +74,7 @@ def add_person(name: String[100], favorite_number: uint256):
 
 We'll also learn how to write a Python key encryptor script, which will help us deploy a smart contract:
 
-```
+```python
 from eth_key import Account
 import getpass
 from pathlib import Path

@@ -38,3 +38,61 @@ The output of this function is the `amounts` array, which contains the calculate
 * `amounts[2]`: 1.2427 * 1e18 (amount of MKR received after swapping the DAI)
 
 The `getAmountsOut` function plays a crucial role in Uniswap V2, enabling users to calculate the potential outcomes of swaps and make informed trading decisions. 
+
+---
+
+
+This is the implementation process of the `getAmountsOut` function.
+
+
+```solidity
+    // performs chained getAmountOut calculations on any number of pairs
+    // NOTE: amounts[0] = amountIn
+    //       amounts[n - 1] = final amount out
+    //       amounts[i] = intermediate amounts out
+    function getAmountsOut(address factory, uint amountIn, address[] memory path) internal view returns (uint[] memory amounts) {
+        require(path.length >= 2, 'UniswapV2Library: INVALID_PATH');
+        amounts = new uint[](path.length);
+        amounts[0] = amountIn;
+
+        // NOTE: Example
+        // --- Inputs ---
+        // amountIn = 1e18
+        // path = [WETH, DAI, MKR]
+        // --- Outputs ---
+        // WETH    1000000000000000000 (1 * 1e18)
+        // DAI  2500339748620145970214 (2500.3397... * 1e18)
+        // MKR     1242766501542703043 (1.2427... * 1e18)
+
+        // --- Execution ---
+        // amounts = [0, 0, 0]
+        // amounts = [1000000000000000000, 0, 0]
+
+        // For loop
+        // i = 0
+        // path[i] = WETH, path[i + 1] = DAI
+        // amounts[i] = 1000000000000000000
+        // amounts[i + 1] = 2500339748620145970214
+        // amounts = [1000000000000000000, 2500339748620145970214, 0]
+
+        // i = 1
+        // path[i] = DAI, path[i + 1] = MKR
+        // amounts[i] = 2500339748620145970214
+        // amounts[i + 1] = 1242766501542703043
+        // amounts = [1000000000000000000, 2500339748620145970214, 1242766501542703043]
+
+        // NOTE:
+        //   i | path[i]   | path[i + 1]
+        //   0 | path[0]   | path[1]
+        //   1 | path[1]   | path[2]
+        //   2 | path[2]   | path[3]
+        // n-2 | path[n-2] | path[n-1]
+        for (uint i; i < path.length - 1; i++) {
+            // NOTE: reserves = internal balance of tokens inside pair contract
+            (uint reserveIn, uint reserveOut) = getReserves(factory, path[i], path[i + 1]);
+            // NOTE: use the previous output for input
+            amounts[i + 1] = getAmountOut(amounts[i], reserveIn, reserveOut);
+        }
+    }
+
+```

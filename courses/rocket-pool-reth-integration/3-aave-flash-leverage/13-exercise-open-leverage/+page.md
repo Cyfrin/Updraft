@@ -16,7 +16,7 @@ function open(OpenParams calldata params) external {
 
    - Transfer collateral from `msg.sender` into this contract.
 
-   > **Hint:** Look into the struct `OpemParams` to find out how much collateral to pull in.
+   > **Hint:** Look into the struct `OpenParams` to find out how much collateral to pull in.
 
 2. **Initiate a flash loan**
 
@@ -52,7 +52,7 @@ function _flashLoanCallback(
 
    > **Hint:**
    >
-   > - Look into `AaveHelpe` for how to supply collateral and borrow stablecoin.
+   > - Look into `AaveHelper` for how to supply collateral and borrow stablecoin.
    > - Look into `SwapHelper` for how to swap tokens.
 
 2. **Repay flash loan**

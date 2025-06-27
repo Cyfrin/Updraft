@@ -1,95 +1,100 @@
-We're going to start by deleting everything in our Remix here. You're probably a little bit familiar with Remix at this point, which is great. So, we're going to go ahead and delete everything in my Remix here. And, I'm going to create again this hi.sol contract here. Oh, it came back. Sorry about that. And, I'm going to create this hi.sol contract because, again, Remix assumes you're going to be working with Solidity and is always looking for Solidity. So, we have to at least make a Solidity file.
+## Setting Up Your First Vyper Project in Remix
 
-```python
-pragma solidity ^0.8.18;
+This lesson walks you through the initial steps of setting up a new smart contract project using the Vyper language within the Remix Integrated Development Environment (IDE). We'll create a simple "Buy Me a Coffee" contract, defining its basic structure and requirements.
 
-contract hi {
+First, ensure you have a clean Remix workspace. It's good practice to start fresh, so delete any pre-existing default folders (like `contracts`, `scripts`, `tests`) and files (`.sol` or `.vy`) in the File Explorer tab if you haven't already. We assume you have some basic familiarity with navigating the Remix interface.
 
-}
-```
+**Handling a Remix Quirk: The Placeholder Solidity File**
 
-So, we're going to go ahead and we'll go to the Solidity compiler. We'll compile hi.sol so that we don't have to worry about this in the future. And then, we'll also do SPDX license identifier MIT.
+Before diving into Vyper, we need to address a quirk present in Remix (as of the time of this writing). For certain functionalities like deployment to work smoothly, even when primarily developing in Vyper, Remix often expects at least one Solidity file to have been compiled.
 
-```python
+To satisfy this requirement, let's create a minimal Solidity file:
+
+1.  In the Remix File Explorer, create a new file named `hi.sol`.
+2.  Add the following basic Solidity code:
+
+```solidity
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+pragma solidity 0.8.18; // Specifies Solidity compiler version
 
-contract hi {
-
-}
+contract hi {} // Defines an empty contract named 'hi'
 ```
 
-Again, don't need to worry about the Solidity stuff for now, just know that as of recording, Remix has this bug where it needs to see a Solidity file in order for it to deploy anything. But, so let's go back to our File Explorer here. And let's create a new file called buy me a coffee.
+3.  Navigate to the "Solidity Compiler" tab (the Solidity logo icon).
+4.  Ensure the compiler version selected matches (or is compatible with) `0.8.18`.
+5.  Click the "Compile hi.sol" button.
 
-Now, right on the naming convention here, you see we're using underscores for spaces between the names here. This is known as snake case. And, there's a bit of a disagreement in the Vyper community as of recording, if this is better, or something called camel case is better, which looks like this. Where it's like every start of a new word just has a capitalized letter at the beginning. Python by nature is typically what's called snake case with these underscores like this. But, I want to point out that for the names of files, you might see it both ways. In the Python, in the Vyper code itself, we'll definitely be using snake case with the underscores. But, for the names of file it might go either way. Now, before we actually begin coding anything, let's write down what we want to do here. It's usually a good idea to write down what you want your code base to do before you even get started coding so that you have a design spec of what it should be doing. And, this is a really good step for anybody who is building smart contracts or building any type of code. So, what do we want this to do? Well, we want this application to do three things: allow us to get funds from users so that people can buy us coffee. We want to be able to withdraw those funds so that we can actually go off and buy the coffee. And then finally, set a minimum funding value in USD.
+Once it compiles successfully, you can effectively ignore this file. Its sole purpose is to enable seamless Vyper development and deployment later within Remix.
 
-Now, originally, I said $50, we might make it five. We might make it two because now that I'm thinking about it, $50 coffee is ridiculous. But, you know, you can set your coffee price to whatever you want it to be. So, let's go ahead and let's get started here, of course, with pragma version 0.4.1. And, we'll say @license MIT.
+**Creating the Vyper Contract File and Naming Conventions**
 
-```python
-# Get funds from users
-# Withdraw funds
-# Set a minimum funding value in USD
+Now, let's create our main Vyper contract file:
 
-# pragma version 0.4.1
-# @license: MIT
+1.  Go back to the "File Explorer" tab.
+2.  Create a new file named `buy_me_a_coffee.vy`. The `.vy` extension signifies that this is a Vyper file.
+
+Note the filename `buy_me_a_coffee.vy` uses **snake_case** (lowercase words separated by underscores). This is the standard convention inherited from Python, which Vyper is based on. While you might see **CamelCase** (like `BuyMeACoffee.vy`) used for filenames in some projects (there's some community debate on file naming), it's crucial to remember that *within the Vyper code itself* (for variables, functions, etc.), the strong convention is to use **snake_case**. We will stick to snake_case for the filename as well.
+
+**Defining Project Requirements (Design First)**
+
+Before writing any complex logic, it's highly recommended to outline what the contract should do. This acts as a design specification and helps guide development. For our "Buy Me a Coffee" contract, the core requirements are:
+
+1.  Allow users to send Ether (funds) to the contract.
+2.  Allow the contract owner to withdraw these funds.
+3.  Enforce a minimum funding amount, specified in an equivalent USD value (we'll handle the conversion logic later).
+
+Let's add these requirements as comments at the top of our `buy_me_a_coffee.vy` file:
+
+```vyper
+# 1 Get funds from users
+# 2 Withdraw funds
+# 3 Set a minimum funding value in USD
 ```
 
-And then if you want, you can also do @author and put your name here.
+This simple contract simulates a way for people to donate crypto, ensuring a minimum donation size, and allowing the recipient to access the donations.
 
-```python
-# Get funds from users
-# Withdraw funds
-# Set a minimum funding value in USD
+**Building the Basic Contract Structure**
 
-# pragma version 0.4.1
-# @license: MIT
-# @author: You!
+Every Vyper contract starts with some essential lines:
+
+1.  **Pragma:** Specifies the Vyper compiler version the contract is written for.
+2.  **NatSpec Comments:** Special comments providing metadata about the contract (license, author, etc.), similar to Solidity's NatSpec.
+
+Add the following lines below the requirements comments in `buy_me_a_coffee.vy`:
+
+```vyper
+# pragma version 0.4.0 # Specifies Vyper compiler version
+# @ license: MIT      # Declares the software license
+# @ author: You!       # Declares the author
 ```
 
-There's a couple other different types of tags that you'll see people use pretty often. And, pretty soon we'll actually learn a nicer way to format this than with these hashtags here, but we'll get to that in a bit.
+We're using Vyper version `0.4.0`. NatSpec tags like `@license` and `@author` provide useful documentation. Other tags exist, and we'll explore more structured documentation later.
 
-Now, let's actually build a little bit of a skeleton for our smart contract here. Let's just build the names of the functions that we want this to have. So, we probably want a def fund some type of fund function here.
+**Creating Function Skeletons with `pass`**
 
-```python
-# Get funds from users
-# Withdraw funds
-# Set a minimum funding value in USD
+Based on our requirements, we know we'll need functions for funding and withdrawal. Let's define the basic structure for these using Python's `def` keyword. Since we aren't adding logic yet, we'll use the `pass` keyword. `pass` is a null operation – it does nothing but serves as a valid placeholder where code is syntactically required, allowing the contract to compile.
 
-# pragma version 0.4.1
-# @license: MIT
-# @author: You!
+Add the following function definitions:
 
+```vyper
 def fund():
+    pass # Placeholder for funding logic
+
+def withdraw():
+    pass # Placeholder for withdrawal logic
 ```
 
-And what you can do that's quite nice in Vyper is that if you want to just name a function but not have it do anything quite yet, you can just type this pass in the function definition.
+You can navigate to the "Vyper Compiler" tab in Remix, select version `0.4.0`, and compile `buy_me_a_coffee.vy`. It should compile successfully, demonstrating that `pass` creates syntactically valid, albeit empty, functions.
 
-```python
-# Get funds from users
-# Withdraw funds
-# Set a minimum funding value in USD
+**Adding Function Visibility with `@external`**
 
-# pragma version 0.4.1
-# @license: MIT
-# @author: You!
+By default, functions in Vyper are internal. To allow users (or other contracts) outside of this contract to call our functions, we need to explicitly define their visibility. Vyper uses **decorators** (prefixed with `@`) for this.
 
-def fund():
-    pass
-```
+The `@external` decorator marks a function as part of the contract's public interface, making it callable from outside. Both our `fund` function (so users can send funds) and our `withdraw` function (so the owner can withdraw) need to be externally callable.
 
-So, this contract right here, even though it doesn't really do anything, is actually valid Vyper. So, I can even go ahead and compile this. And, you'll see that it compiles successfully.
+Modify the function definitions to include the `@external` decorator:
 
-So, this pass keyword is valid Vyper here. So, we want def fund. What else? We probably want def withdraw. We want to be able to withdraw the money that is funded to us. And, that's pretty much it. Now, these two functions are going to be the main functionality of the contract. However, we are obviously going to be adding other functions in here as well because, well, in order to fund and withdraw, we probably need some other functionality, including getting price and etc. So, this fund function, we want anybody outside of this contract to be able to call. So, let's give it a visibility of @external. So now, anybody can call this. Same thing, we want humans to actually be able to call withdraw. So, we'll do @external. We probably only want us to call this, but we'll fix that in a bit.
-
-```python
-# Get funds from users
-# Withdraw funds
-# Set a minimum funding value in USD
-
-# pragma version 0.4.1
-# @license: MIT
-# @author: You!
-
+```vyper
 @external
 def fund():
     pass
@@ -98,3 +103,9 @@ def fund():
 def withdraw():
     pass
 ```
+
+Compile the contract again to ensure everything is correct.
+
+**Note:** While `withdraw` is marked `@external` now, allowing anyone to potentially call it, this is not secure. In subsequent lessons, we will add access control logic to ensure only the designated owner can call the `withdraw` function.
+
+You now have a basic Vyper contract skeleton set up in Remix, complete with necessary configurations, requirements documentation, and placeholder functions ready for implementation.

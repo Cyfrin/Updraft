@@ -72,7 +72,7 @@ function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256 randomR
 {
     // Arrange
     // Act / Assert
-    vm.expectRevert("nonexistent request");
+    vm.expectRevert(VRFCoordinatorV2_5Mock.InvalidRequest.selector);
     // vm.mockCall could be used here...
     VRFCoordinatorV2_5Mock(vrfCoordinator).fulfillRandomWords(
         randomRequestId,

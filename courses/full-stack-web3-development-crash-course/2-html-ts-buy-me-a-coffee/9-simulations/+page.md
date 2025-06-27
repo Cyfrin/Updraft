@@ -208,6 +208,10 @@ async function fund() {
       const currentChain = await getCurrentChain(walletClient);
 
       // 3. Call simulateContract with all parameters
+      publicClient = createPublicClient({
+        transport: custom(window.ethereum),
+      });
+      
       console.log("Preparing simulation parameters...");
       await publicClient.simulateContract({
         // Contract details:
