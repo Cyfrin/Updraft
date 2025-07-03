@@ -2,6 +2,10 @@
 
 Welcome to our advanced foundry course. We hit the ground running in this section. We are going to develop an ERC20 Crypto Currency. You will:
 
+Testing some random link maybe hello.in 
+
+Testing another loans.in
+
 1. learn the fundamentals of ERC20
 2. manually create your own token
 3. explore the OpenZeppelin
