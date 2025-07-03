@@ -10,7 +10,7 @@ Let's recap everything we've learnt in this lesson so far - it's been a lot.
 
 ### Onboarding
 
-We learnt the importance of thoroughly onboarding a protocol. Often we'll receive audit requests without context or preparation (ie random etherscan links) and it's our job to advise the protocol that these are inappropriate. We should educate them on steps required to be ready for an audit. Think back to our [**minimal-onboarding-questions**](https://github.com/Cyfrin/3-passwordstore-audit/blob/onboarded/minimal-onboarding-questions.md)
+We learnt the importance of thoroughly onboarding a protocol. Often we'll receive audit requests without context or preparation (ie random etherscan links) and it's our job to advise the protocol that these are inappropriate. We should educate them on steps required to be ready for an audit. Think back to our [**minimal-onboarding-questions**](https://github.com/Steiner-254/PasswordStore-Audit/blob/main/minimal-onboarding-questions.md)
 
 **About the Project** - Summary of the project
 
