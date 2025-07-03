@@ -68,7 +68,7 @@ function withdrawToken(IERC20 token) external requireSupportedToken(token) {
 
 Nothing out of the ordinary it seems, we're just calling `safeTransfer` on the token. Maybe we need to take a closer look at `YieldERC20.sol`.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

@@ -11,7 +11,7 @@ A reminder of where Invariant.t.sol sits currently:
 <details>
 <summary>Invariant.t.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.20;
@@ -88,7 +88,7 @@ contract Invariant is StdInvariant, Test {
 
 Here's Invariant.t.sol all together before we finally run our test, in the next lesson.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.20;

@@ -18,7 +18,7 @@ We're going to start just the same as we did in our earlier lessons. Create the 
 
 We'll begin with `Invariant.t.sol`!
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.20;
@@ -54,7 +54,7 @@ contract DeployTSwap is Script {
 
 In this script we can see that the protocol is passing a mockWeth token contract with its deployment of PoolFactory. We can do the same in our test suite `setUp` function, let's create some quick mock ERC20s. Start by creating a mocks folder, `test/mocks` and a file named `ERC20Mock.sol` within. The mock token contract should look like this, and should be very familiar.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.20;
@@ -83,7 +83,7 @@ contract TSwapPoolTest is Test {
 
 We can use our mock to create two separate tokens in `Invariant.t.sol` like this:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.20;
@@ -104,7 +104,7 @@ contract Invariant is StdInvariant, Test {
 
 Next, we'll of course need to import the `PoolFactory` and `TSwapPool` contracts. With that done we can start adding deployments to our `setUp` function.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.20;

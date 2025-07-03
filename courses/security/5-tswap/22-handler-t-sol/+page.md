@@ -10,7 +10,7 @@ This point in a good time to pause. If things aren't making perfect sense, that'
 
 The boilerplate of our handler is going to be very similar to what we saw in our previous examples. This will be our starting point.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.20;
@@ -75,7 +75,7 @@ Alright, with a little more context we have some idea of what functions will nee
 
 Let's start small with the `deposit` function.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.20;

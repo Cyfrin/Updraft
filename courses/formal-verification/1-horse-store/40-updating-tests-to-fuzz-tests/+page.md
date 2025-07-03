@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 If you've taken a look at the **[GitHub repo](https://github.com/Cyfrin/1-horse-store-s23)** associated with this course, you'll see we're doing things a little bit differently. Looking at the differential testing in the repo, things are much more formal.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

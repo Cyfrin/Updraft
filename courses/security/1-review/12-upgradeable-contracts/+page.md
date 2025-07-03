@@ -16,7 +16,7 @@ All the code we'll be working with here is available in the Upgrades repo of the
 
 Let's take a look at a simple proxy example:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.19;
