@@ -14,13 +14,13 @@ The first question that probably comes to mind is **_"Where did these pools of t
 
 This is where `liquidity providers` come in. `Liquidity providers` add their tokens to liquidity pools to fund the trading by users. In exchange a liquidity provider will often receive an LPToken (liquidity provider token) at the ratio of what they've contributed to the total pool.
 
-::image{src='/security-section-5/6-liquidity-providers/liquidity-providers1.png' style='width: 75%; height: auto;'}
+![liquidity-providers1](/security-section-5/6-liquidity-providers/liquidity-providers1.png)
 
 The next questions you're probably asking are **_"Why would anyone do that? What's an LP Token?"_**
 
 This is where `fees` come in. Let's look at a slightly adjusted diagram:
 
-::image{src='/security-section-5/6-liquidity-providers/liquidity-providers2.png' style='width: 75%; height: auto;'}
+![liquidity-providers2](/security-section-5/6-liquidity-providers/liquidity-providers2.png)
 
 Each transaction in a DEX like TSwap or Uniswap incurs a fee (we've used 0.3% as an example). This fee is typically added to the respective liquidity pool.
 

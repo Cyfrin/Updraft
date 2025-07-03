@@ -16,7 +16,7 @@ Our next step will be routing this call to the correct `Program Counter` for tha
 
 For our purposes, we're going to use `JUMPI` since we want to `JUMP` if our `function selector` comparison returns `True`.
 
-::image{src='/formal-verification-1/20-jump-and-jumpi/jump-and-jumpi-1.png' style='width: 75%; height: auto;'}
+![jump-and-jumpi-1](/formal-verification-1/20-jump-and-jumpi/jump-and-jumpi-1.png)
 
 We can see that `JUMPI` takes two stack inputs. The first is a `counter`, which is the new `program counter` our code execution will continue from. In our example, this is our function location, this is where we want our `call data` to be processed. The second input simply determines whether or not the `program counter` should be adjusted. If this value is 0, the current `program counter` is incremented, if the value is _anything else_ - the program counter will be set to whatever our first input is.
 

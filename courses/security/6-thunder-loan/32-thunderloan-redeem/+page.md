@@ -104,7 +104,7 @@ As we perform our review we should constantly be looking for questions like this
 
 We can use `chisel` to answer this question for us quite quickly. Try it out! We would expect to receive `2e6` USDC given an `exchangeRate` of `2`.
 
-::image{src='/security-section-6/32-thunderloan-redeem/thunderloan-redeem1.png' style='width: 100%; height: auto;'}
+![thunderloan-redeem1](/security-section-6/32-thunderloan-redeem/thunderloan-redeem1.png)
 
 And it does!
 

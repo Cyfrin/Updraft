@@ -10,7 +10,7 @@ _Follow along the course with this video._
 
 In a [**previous lesson**](https://updraft.cyfrin.io/courses/advanced-foundry/how-to-create-an-NFT-collection/foundry-setup) we discussed tokenUris and I walked you through an example of viewing the TokenURI of a token on OpenSea.
 
-```js
+```json
 {
   "attributes": [
     {

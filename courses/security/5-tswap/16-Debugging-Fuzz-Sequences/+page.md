@@ -12,7 +12,7 @@ Alright! The moment of truth, let's run our test with:
 forge test --mt statefulFuzz_testInvariantBreaksHandler
 ```
 
-::image{src='/security-section-5/16-debugging-fuzz-sequences/debugging-fuzz-sequences1.png' style='width: 100%; height: auto;'}
+![debugging-fuzz-sequences1](/security-section-5/16-debugging-fuzz-sequences/debugging-fuzz-sequences1.png)
 
 Oh no! Something went wrong. We can see `assertion violated` in the output, but there's not a lot of information. In situations like this, we should leverage the `-vvvv` flag.
 
@@ -54,7 +54,7 @@ function setUp() public {
 
 Now let's try it.
 
-::image{src='/security-section-5/16-debugging-fuzz-sequences/debugging-fuzz-sequences2.png' style='width: 100%; height: auto;'}
+![debugging-fuzz-sequences2](/security-section-5/16-debugging-fuzz-sequences/debugging-fuzz-sequences2.png)
 
 Alright! It looks like we may have found something! We're seeing an error of `ERC20InsufficientBalance` when calling `withdrawToken` on `yieldERC20`. That's odd. Let's look at the `withdrawToken` function again.
 
@@ -68,7 +68,7 @@ function withdrawToken(IERC20 token) external requireSupportedToken(token) {
 
 Nothing out of the ordinary it seems, we're just calling `safeTransfer` on the token. Maybe we need to take a closer look at `YieldERC20.sol`.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

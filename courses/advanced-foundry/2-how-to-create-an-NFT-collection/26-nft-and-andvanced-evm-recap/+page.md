@@ -12,7 +12,7 @@ Guess what. You just learnt an insane amount in this section. Let's run down the
 
 We started off by learning what a `Non-fungible token (NFT)` is. And we explored this technology by creating our very own `BasicNFT`.
 
-::image{src='/foundry-nfts/24-recap/recap1.png' style='width: 100%; height: auto;'}
+![recap1](/foundry-nfts/24-recap/recap1.png)
 
 While going through this process, we learnt all about options for decentralized data storage including services like
 
@@ -23,7 +23,7 @@ While going through this process, we learnt all about options for decentralized 
 
 We also learnt that we could store data and image directly on the blockchain by creating a dynamic, on-chain `SVG NFT` that we can use to reflect our mood!
 
-::image{src='/foundry-nfts/24-recap/recap2.png' style='width: 100%; height: auto;'}
+![recap2](/foundry-nfts/24-recap/recap2.png)
 
 While we're able to store this data on chain, it's important to note that it may become prohibitively expensive from the perspective of gas and computation. We proposed protocols such as [**Filecoin**](https://filecoin.io/) and [**Arweave**](https://arweave.org/) which serve to mitigate these concerns in decentralized data storage.
 
@@ -37,7 +37,7 @@ In addition to this we learnt how to encode our transaction data into this bytec
 
 As a result of our greater understanding of how encoded data is used in EVM transactions, we also gained the ability to verify any transaction sent to our wallet and to keep ourselves safe from malicious ones.
 
-::image{src='/foundry-nfts/24-recap/recap3.png' style='width: 100%; height: auto;'}
+![recap3](/foundry-nfts/24-recap/recap3.png)
 
 ### Wrap Up
 

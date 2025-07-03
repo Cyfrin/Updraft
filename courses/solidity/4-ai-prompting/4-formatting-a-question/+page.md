@@ -12,7 +12,7 @@ As practice, I want you to navigate to the [**GitHub discussions page**](https:/
 
 > Try to categorize your discussion appropriately. `General` for conversations and discussions, `QA` for questions.
 
-::image{src='/solidity/ai-prompting/question1.png' style='width: 100%; height: auto;'}
+![question1](/solidity/ai-prompting/question1.png)
 
 ## The Art of Asking Questions
 

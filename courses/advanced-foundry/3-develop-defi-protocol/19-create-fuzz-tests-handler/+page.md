@@ -10,7 +10,7 @@ _Follow along the course with this video._
 
 Ok, welcome back! I hope you had a chance to take a break, and I _also_ hope you took the time to try to write your own tests. Hopefully your `forge coverage` is outputting something closer to this:
 
-::image{src='/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests1.png' style='width: 100%; height: auto;'}
+![defi-handler-fuzz-tests1](/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests1.png)
 
 If not...I **_strongly_** encourage you to pause the video and practice writing some tests.
 
@@ -167,7 +167,7 @@ function testIAlwaysGetZero(uint256 data) public {
 
 That's it. Now, if we run this test with Foundry, it'll throw random data at our function as many times as we tell it to (we'll discuss runs soon), until it breaks our assertion.
 
-::image{src='/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests2.png' style='width: 100%; height: auto;'}
+![defi-handler-fuzz-tests2](/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests2.png)
 
 I'll mention now that the fuzzer isn't using _truly_ random data, it's pseudo-random, and how your fuzzing tool chooses its data matters! Echidna and Foundry are both solid choices in this regard, but I encourage you to research the differences on your own.
 
@@ -177,7 +177,7 @@ Important properties of the fuzz tests we configure are its `runs` and `depth`.
 
 In our example, the fuzz tester took 18 random inputs to find our edge case.
 
-::image{src='/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests3.png' style='width: 100%; height: auto;'}
+![defi-handler-fuzz-tests3](/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests3.png)
 
 However, we can customize how many attempts the fuzzer makes within our foundry.toml by adding a section like:
 
@@ -198,7 +198,7 @@ function doStuff(uint256 data) public {
 
 ... and run the fuzzer again...
 
-::image{src='/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests4.png' style='width: 100%; height: auto;'}
+![defi-handler-fuzz-tests4](/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests4.png)
 
 We can see it will run all .. 1001 runs (I guess zero counts 😅).
 
@@ -278,7 +278,7 @@ function invariant_testAlwaysReturnsZero() public view {
 
 Now, if our fuzzer ever calls our doStuff function with a value of 7, hiddenValue will be assigned 7 and the next time doStuff is called, our invariant should break. Let's run it.
 
-::image{src='/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests5.png' style='width: 100%; height: auto;'}
+![defi-handler-fuzz-tests5](/foundry-defi/18-defi-handler-fuzz-tests/defi-handler-fuzz-tests5.png)
 
 We can see in the output the two subsequent function calls that lead to our invariant breaking. First doStuff was called with the argument of `7`, then it was called with `429288169336124586202452331323751966569421912`, but it doesn't matter what it was called with next, we knew our invariant was going to break.
 

@@ -14,7 +14,7 @@ Introducing: [**Prover Arguments**](https://docs.certora.com/en/latest/docs/prov
 
 Prover arguments (prover_args) are CLI (or conf file) options which can be used to fine tune the behaviour of the prover. I greatly encourage you to read through the options available on the Certora Docs. For our purposes, we want to consider the `-optimisticFallback` option is going to be useful.
 
-::image{src='/formal-verification-3/19-optimistic-fallback-prover-args/optimistic-fallback-prover-args1.png' style='width: 100%; height: auto;'}
+![optimistic-fallback-prover-args1](/formal-verification-3/19-optimistic-fallback-prover-args/optimistic-fallback-prover-args1.png)
 
 Let's apply this argument to our `GasBad.conf`.
 

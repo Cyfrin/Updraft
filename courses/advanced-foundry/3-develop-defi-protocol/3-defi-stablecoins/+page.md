@@ -26,7 +26,7 @@ Let's get started.
 
 That's really it, at the end of the day. More accurately put:
 
-::image{src='/foundry-defi/3-defi-stablecoins-but-actually/defi-stablecoins-but-actually1.png' style='width: 100%; height: auto;'}
+![defi-stablecoins-but-actually1](/foundry-defi/3-defi-stablecoins-but-actually/defi-stablecoins-but-actually1.png)
 
 [**Investopedia**](https://www.investopedia.com/terms/s/stablecoin.asp) describes `stablecoins` as - Cryptocurrencies the value of which is pegged, or tied, to that of another currency, commodity or financial instrument.
 
@@ -42,7 +42,7 @@ A simple example of unstable buying power is `Bitcoin (BTC)`. The number of appl
 
 **_Money is important._**
 
-::image{src='/foundry-defi/3-defi-stablecoins-but-actually/defi-stablecoins-but-actually2.PNG' style='width: 100%; height: auto;'}
+![defi-stablecoins-but-actually2](/foundry-defi/3-defi-stablecoins-but-actually/defi-stablecoins-but-actually2.PNG)
 
 Ok, not Scrooge McDuck important.
 
@@ -105,7 +105,7 @@ You can see what I mean by spectrum by comparing how some of these tokens functi
 
 [**The Dirt Roads blog**](https://dirtroads.substack.com/p/-40-pruning-memes-algo-stables-are) has a great article and visualizations outlining these differences in detail and where popular assets fall on this spectrum.
 
-::image{src='/foundry-defi/3-defi-stablecoins-but-actually/defi-stablecoins-but-actually3.png' style='width: 100%; height: auto;'}
+![defi-stablecoins-but-actually3](/foundry-defi/3-defi-stablecoins-but-actually/defi-stablecoins-but-actually3.png)
 
 > ❗ **NOTE**
 > Dirt Roads uses `Dumb` as the opposite of algorithmic, instead of governed.
@@ -263,7 +263,7 @@ Now, here's something that may give you whiplash:
 
 **_The stablecoin preferred by the average user, is likely much less important than those preferred by the 'rich whales' in the space_**
 
-::image{src='/foundry-defi/3-defi-stablecoins-but-actually/defi-stablecoins-but-actually4.png' style='width: 100%; height: auto;'}
+![defi-stablecoins-but-actually4](/foundry-defi/3-defi-stablecoins-but-actually/defi-stablecoins-but-actually4.png)
 
 Let me explain with another thought experiment.
 

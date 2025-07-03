@@ -58,7 +58,7 @@ The start of our contract should look very familiar.
 > running `forge build` so that our project will not error. Like this:
 > `contract Box is Ownable(initialOwner) {}`
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;
@@ -72,7 +72,7 @@ This contract is only going to serve as the contract which is managed by our DAO
 
 Let's add the ability to store and retrieve a value from our contract. The ability to change this number will be modifier with `onlyOwner` such that only our DAO may call it.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.18;

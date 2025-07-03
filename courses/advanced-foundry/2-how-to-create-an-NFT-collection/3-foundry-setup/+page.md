@@ -153,15 +153,15 @@ By navigating to any NFT on OpenSea, you can find a link to the collection's con
 
 Entering any valid tokenId should return the TokenURI of that NFT!
 
-::image{src='/foundry-nfts/3-foundry-setup/foundry-setup1.png' style='width: 100%; height: auto;'}
+![foundry-setup1](/foundry-nfts/3-foundry-setup/foundry-setup1.png)
 
 By opening this URI in your browser, the details of that token's metadata should be made available:
 
-::image{src='/foundry-nfts/3-foundry-setup/foundry-setup2.png' style='width: 100%; height: auto;'}
+![foundry-setup2](/foundry-nfts/3-foundry-setup/foundry-setup2.png)
 
 Note the imageURI property. This is what defines what the NFT actually looks like, you can copy this into your browser as well to view the NFT's image.
 
-::image{src='/foundry-nfts/3-foundry-setup/foundry-setup3.png' style='width: 100%; height: auto;'}
+![foundry-setup3](/foundry-nfts/3-foundry-setup/foundry-setup3.png)
 
 Both the tokenUri and imageUri for this example are hosted on IPFS (Inter-planetary file system), a service offering decentralized storage that we'll go into in greater detail, in the next lesson.
 
@@ -173,7 +173,7 @@ function tokenURI(uint256 tokenId) public view override returns (string memory) 
 
 Now, I've prepared some images you can choose from to use in your project, but feel free to use your own. Making these projects _yours_ goes a long way towards committing these things to memory. You can find the images I've provided in the [**GitHub Repo**](https://github.com/Cyfrin/foundry-nft-f23/tree/main/images/dogNft) for this section.
 
-::image{src='/foundry-nfts/3-foundry-setup/foundry-setup4.png' style='width: 100%; height: auto;'}
+![foundry-setup4](/foundry-nfts/3-foundry-setup/foundry-setup4.png)
 
 Create a new folder in your workspace names `img` (image) and add the image of your choice to this directory.
 

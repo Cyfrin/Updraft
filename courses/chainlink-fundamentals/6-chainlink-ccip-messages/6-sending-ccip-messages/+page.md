@@ -23,7 +23,7 @@ For this, we will follow the same steps as in Section 5 Lesson 5, so revisit tha
 
 From MetaMask, send `3` LINK to the `Sender` contract address:
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/send-link.png' style='width: 100%; height: auto;' alt='send-link'}
+![send-link](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/send-link.png)
 
 ## Approve the Sender and Receiver contracts
 
@@ -42,7 +42,7 @@ The `Sender` has been deployed to Sepolia, so we will use [Etherscan](https://se
 2. Click on the **Contract** and then the **Write as Proxy** tabs.
 3. Click **Connect to Web3** and connect your wallet:
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/etherscan-sepolia.png' style='width: 100%; height: auto;' alt='etherscan-sepolia'}
+![etherscan-sepolia](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/etherscan-sepolia.png)
 
 4. Click on the `approve` function:
     - Paste the `Sender` address as the `spender` 
@@ -50,7 +50,7 @@ The `Sender` has been deployed to Sepolia, so we will use [Etherscan](https://se
     - Click **Write**
     - Confirm the transaction in MetaMask
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/sepolia-approve.png' style='width: 100%; height: auto;' alt='sepolia-approve'}
+![sepolia-approve](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/sepolia-approve.png)
 
 5. Confirm the `Sender` has been added as a spender by:
     - Clicking the **Read as Proxy** tab.
@@ -61,7 +61,7 @@ The `Sender` has been deployed to Sepolia, so we will use [Etherscan](https://se
     - Clicking **Query**.
     - `1000000` will be returned if the `Sender` was successfully added as a spender.
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/sepolia-allowance.png' style='width: 100%; height: auto;' alt='sepolia-allowance'}
+![sepolia-allowance](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/sepolia-allowance.png)
 
 ### Approving the Vault
 
@@ -76,7 +76,7 @@ The `Vault` has been deployed to Base Sepolia. So we will use [Basescan](https:/
     - Click **Write**.
     - Confirm the transaction in MetaMask.
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/basescan.png' style='width: 100%; height: auto;' alt='basescan'}
+![basescan](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/basescan.png)
 
 5. Confirm the `Vault` has been added as a spender by:
     - Clicking the **Read as Proxy** tab.
@@ -87,7 +87,7 @@ The `Vault` has been deployed to Base Sepolia. So we will use [Basescan](https:/
     - Clicking **Query**.
     - `1000000` will be returned if the `Vault` was successfully added as a spender.
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/allowance-base.png' style='width: 100%; height: auto;' alt='allowance-base'}
+![allowance-base](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/allowance-base.png)
 
 ## Sending the cross-chain message
 
@@ -101,19 +101,19 @@ FINALLY! We are ready to send the cross-chain message!
     - `_target`: the `Vault` contract address.
 - Click **transact** and sign the transaction in MetaMask to send the message cross-chain:
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/transfer-usdc.png' style='width: 100%; height: auto;' alt='transfer-usdc'}
+![transfer-usdc](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/transfer-usdc.png)
 
 - Once your transaction has confirmed on Sepolia, copy the transaction hash:
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/transaction-hash.png' style='width: 100%; height: auto;' alt='transaction-hash'}
+![transaction-hash](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/transaction-hash.png)
 
 - Head to the [CCIP Explorer](https://ccip.chain.link/) and paste the transaction hash to see the status of your CCIP message:
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/transaction-details.png' style='width: 100%; height: auto;' alt='transaction-details'}
+![transaction-details](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/transaction-details.png)
 
 - Once finality has been reached, you will see the status in the CCIP explorer:
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/success.png' style='width: 100%; height: auto;' alt='success'}
+![success](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/success.png)
 
 ## Checking the data was executed 
 
@@ -124,7 +124,7 @@ Let's check that the USDC was successfully automatically deposited into the vaul
 - Paste your MetaMask address as the `address` and click **balances**.
 - If the data has been successfully executed, `1000000` will be returned:
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/balances.png' style='width: 100%; height: auto;' alt='balances'}
+![balances](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/balances.png)
 
 This was a very challenging lesson so great job at getting to the end! I recommend you take a break here to digest all of that information before moving onto the next section.
 
@@ -149,7 +149,7 @@ To do this you will need to:
     - If you get stuck, [this lesson on Updraft](https://updraft.cyfrin.io/courses/solidity/simple-storage/zksync-plugin) will take you through using the ZKsync plugin step-by step.
     - You will also need to get some Zksync Sepolia ETH to pay for the gas. Watch [this Updraft lesson](https://updraft.devcyfrin.com/courses/blockchain-basics/basics/making-your-first-transaction-on-zksync) if you need a refresher of how to do this.
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/zksync-plugin.png' style='width: 100%; height: auto;' alt='zksync-plugin'}
+![zksync-plugin](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/zksync-plugin.png)
 
 7. Get some test CCIP tokens (CCIP-BnM for Burn and Mint) by [calling `drip()` on the token contract using Etherscan](https://sepolia.etherscan.io/token/0xfd57b4ddbf88a4e07ff4e34c487b99af2fe82a05#writeContract).
 9. Call `transferTokens` as before and check the CCIP explorer to check the status of your cross-chain transfer.

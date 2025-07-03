@@ -14,7 +14,7 @@ In the last lesson we left off with a gross error that hit us when running our n
 forge test --mt testFlipMoodIntegration -vvv
 ```
 
-::image{src='/foundry-nfts/16-svg-debug/svg-debug1.png' style='width: 100%; height: auto;'}
+![svg-debug1](/foundry-nfts/16-svg-debug/svg-debug1.png)
 
 Hmm, this gives us a little more information, detailing that our assertion failed as well as providing us an output of one of the SVG URIs, but I think we can do better.
 
@@ -33,7 +33,7 @@ Let's run it again.
 forge test --mt testFlipMoodIntegration -vvv
 ```
 
-::image{src='/foundry-nfts/16-svg-debug/svg-debug2.png' style='width: 100%; height: auto;'}
+![svg-debug2](/foundry-nfts/16-svg-debug/svg-debug2.png)
 
 Well, our hashes are definitely different. We can import console and log out some variables to see what's going wrong.
 
@@ -62,11 +62,11 @@ Running this now, should output our tokenURI, which we can verify in our browser
 
 Pasting this into our browser and checking the imageUri we should be able to verify that this _is_ the Sad tokenUri.. so what's going on?
 
-::image{src='/foundry-nfts/16-svg-debug/svg-debug3.png' style='width: 100%; height: auto;'}
+![svg-debug3](/foundry-nfts/16-svg-debug/svg-debug3.png)
 
 Let's check the other side of the assertion. We have the SAD_SVG_URI as a constant variable, let's toss it into our browser.
 
-::image{src='/foundry-nfts/16-svg-debug/svg-debug4.png' style='width: 100%; height: auto;'}
+![svg-debug4](/foundry-nfts/16-svg-debug/svg-debug4.png)
 
 Wait a minute! One of these is returning our **_tokenURI_** and the other is our **_imageURI_**! This is why it's important to be explicit in our naming conventions! Let's adjust these constants, and our test, right away. We can define a variable with what we expect the **_tokenURI_** to be and assert versus that.
 
@@ -88,7 +88,7 @@ function testFlipMoodIntegration() public {
 
 With these adjustments, we can run our test again...
 
-::image{src='/foundry-nfts/16-svg-debug/svg-debug5.png' style='width: 100%; height: auto;'}
+![svg-debug5](/foundry-nfts/16-svg-debug/svg-debug5.png)
 
 Beautiful!
 
@@ -102,4 +102,4 @@ I highly encourage you to try to write this script for MoodNFT. It should be abl
 
 Your second call to action is going to be increasing the coverage of our contracts. Write some tests and try to get MoodNFT and our scripts closer to 100%!
 
-::image{src='/foundry-nfts/16-svg-debug/svg-debug6.png' style='width: 100%; height: auto;'}
+![svg-debug6](/foundry-nfts/16-svg-debug/svg-debug6.png)

@@ -14,7 +14,7 @@ We should be able to even re-run our test to remind ourselves of the issue:
 forge test --mt statefulFuzz_constantProductFormulaStaysTheSameX
 ```
 
-::image{src='/security-section-5/45-invariant-break-write-up-and-poc/invariant-break-write-up-and-poc1.png' style='width: 100%; height: auto;'}
+![invariant-break-write-up-and-poc1](/security-section-5/45-invariant-break-write-up-and-poc/invariant-break-write-up-and-poc1.png)
 
 There it is. Let's get the `proof of code` out of the way first!
 
@@ -130,7 +130,7 @@ Now, if we run this test, performing a single swap, we would expect this to pass
 forge test --mt testInvariantBroken
 ```
 
-::image{src='/security-section-5/45-invariant-break-write-up-and-poc/invariant-break-write-up-and-poc2.png' style='width: 100%; height: auto;'}
+![invariant-break-write-up-and-poc2](/security-section-5/45-invariant-break-write-up-and-poc/invariant-break-write-up-and-poc2.png)
 
 Of course this would pass, we need 10 swaps in order for our invariant to break. Let's implement that logic next.
 
@@ -178,7 +178,7 @@ If we run this unit test now...
 forge test --mt testInvariantBroken -vvvv
 ```
 
-::image{src='/security-section-5/45-invariant-break-write-up-and-poc/invariant-break-write-up-and-poc3.png' style='width: 100%; height: auto;'}
+![invariant-break-write-up-and-poc3](/security-section-5/45-invariant-break-write-up-and-poc/invariant-break-write-up-and-poc3.png)
 
 Boom! We have our PoC which can be pasted into our report, which I've written below. Challenge yourself to write the other portions of this write-up and then compare to my included example:
 

@@ -20,11 +20,11 @@ A **Layer 2** is any application built on outside an L1 blockchain that _hooks b
 
 **Rollups** are L2 scaling solutions that enable to increase the number of transactions on Ethereum by bundling multiple transactions into one, reducing gas costs.
 
-::image{src='/blockchain-basics/15-l1s-l2s-and-rollups/tx-bundle.png' style='width: 100%; height: auto;'}
+![tx-bundle](/blockchain-basics/15-l1s-l2s-and-rollups/tx-bundle.png)
 
 Rollups help solve the blockchain trilemma, which states that a blockchain can only achieve two out of three properties: _decentralization_, _security_, and _scalability_. In the case of Ethereum, **scalability** is sacrificed as it can only process approximately 15 transactions per second. Rollups, on the other hand, aim to enhance scalability without compromising security or decentralization.
 
-::image{src='/blockchain-basics/15-l1s-l2s-and-rollups/bc-trilemma.png' style='width: 100%; height: auto;'}
+![bc-trilemma](/blockchain-basics/15-l1s-l2s-and-rollups/bc-trilemma.png)
 
 #### How Rollups Work
 

@@ -18,7 +18,7 @@ Let's start with opening `invariant-break/StatelessFuzzCatches.sol`
 
 We see a very simple contract with a clearly defined invariant, similar to what we've seen before.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
@@ -44,7 +44,7 @@ Now we can start to recreate the folder we deleted, one step at a time.
 
 Create the `test/invariant-break` folder and within create a file titled `StatelessFuzzCatchesTest.t.sol` and we can start writing the test that will catch our bug for us.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
@@ -99,7 +99,7 @@ If things have been set up well we should be able to run the following command t
 forge test --mt testFuzzCatchesStateless -vvvv
 ```
 
-::image{src='/security-section-5/12-stateless-fuzzing/stateless-fuzzing1.png' style='width: 100%; height: auto;'}
+![stateless-fuzzing1](/security-section-5/12-stateless-fuzzing/stateless-fuzzing1.png)
 
 We can see it doesn't take much for Foundry's Fuzzer to catch our edge case! When the argument `2` is passed, our function returns `0` _breaking our invariant_.
 

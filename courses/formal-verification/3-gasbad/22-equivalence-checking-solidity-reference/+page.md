@@ -21,7 +21,7 @@ Our whole reason for using `Certora`, and formally verifying this repo is - we'v
 
 This is going to be an example of a `Parametric Rule`, which we learnt about previously.
 
-::image{src='/formal-verification-3/22-equivalence-checking-solidity-reference/equivalence-checking-solidity-reference1.png' style='width: 100%; height: auto;'}
+![equivalence-checking-solidity-reference1](/formal-verification-3/22-equivalence-checking-solidity-reference/equivalence-checking-solidity-reference1.png)
 
 ```js
 rule calling_any_function_should_result_in_each_contract_having_the_same_state(method f){}

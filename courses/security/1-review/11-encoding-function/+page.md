@@ -36,7 +36,7 @@ This encoded function call in the data field is how the EVM, or any EVM compatib
 
 ### Direct Function Calls
 
-::image{src='/security-section-1/11-encoding-function/encoding-function1.png' style='width: 100%; height: auto;' alt='block fee'}
+![block fee](/security-section-1/11-encoding-function/encoding-function1.png)
 
 With our understanding of ABI encoding, the possibilities expand. We're now able to populate the data field of our transactions directly with the binary or hex code corresponding to the desired function call. Remember, when you initially compile your transaction, `data` was a field that existed? This is where that comes into play.
 

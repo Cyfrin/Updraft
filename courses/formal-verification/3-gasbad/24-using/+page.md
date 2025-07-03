@@ -20,7 +20,7 @@ rule calling_any_function_should_result_in_each_contract_having_the_same_state(m
 
 ...we are calling `method f` on _whichever contract is currently being verified_. Remember that functionally `f(e, args) == currentContract.f(e, args)`. With that said, we need a way to reference the specific contracts we mean for our rule to compare, and this is where the `using` keyword comes in.
 
-::image{src='/formal-verification-3/24-using/using1.png' style='width: 100%; height: auto;'}
+![using1](/formal-verification-3/24-using/using1.png)
 
 By declaring these variables at the top of our spec file, we can use them to reference particular contracts within our verification scope.
 

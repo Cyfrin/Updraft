@@ -12,7 +12,7 @@ Let's jump right in!
 
 ### Transaction Fee and Gas Price: What are they?
 
-::image{src='/blockchain-basics/06-intro-to-gas/intro-to-gas1.png' style='width: 100%; height: auto;' alt='etherscan transaction'}
+![etherscan transaction](/blockchain-basics/06-intro-to-gas/intro-to-gas1.png)
 
 While inspecting an Ethereum transaction, two terms invariably catch the glance: "transaction fee" and "gas price". Let's clarify what they are and why they matter.
 

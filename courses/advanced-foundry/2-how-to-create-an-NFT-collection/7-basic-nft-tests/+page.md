@@ -46,7 +46,7 @@ Now, you may believe that we can simply do something like the above. We know the
 
 We actually run into an issue here.
 
-::image{src='/foundry-nfts/7-basic-nft-tests/basic-nft-tests1.png' style='width: 100%; height: auto;'}
+![basic-nft-tests1](/foundry-nfts/7-basic-nft-tests/basic-nft-tests1.png)
 
 ### Comparing Strings
 
@@ -71,11 +71,11 @@ string memory dog = "dog";
 
 Now if you type `cat`, you should get a kinda crazy output that's representing the hex of that string.
 
-::image{src='/foundry-nfts/7-basic-nft-tests/basic-nft-tests2.png' style='width: 100%; height: auto;'}
+![basic-nft-tests2](/foundry-nfts/7-basic-nft-tests/basic-nft-tests2.png)
 
 We'll leverage abi.encodePacked to convert this to bytes, then finally we can use keccak256 to hash the value into bytes32, which we can can use in our value comparison.
 
-::image{src='/foundry-nfts/7-basic-nft-tests/basic-nft-tests3.png' style='width: 100%; height: auto;'}
+![basic-nft-tests3](/foundry-nfts/7-basic-nft-tests/basic-nft-tests3.png)
 
 > ❗ **NOTE**
 > I know we haven't covered encoding or abi.encodePacked in great detail yet, but don't worry - we will.
@@ -93,7 +93,7 @@ function testNameIsCorrect() public view {
 
 In the above, we're encoding and hashing both of our strings before comparing them in our assertion. Now, if we run our test with `forge test --mt testNameIsCorrect`...
 
-::image{src='/foundry-nfts/7-basic-nft-tests/basic-nft-tests4.png' style='width: 100%; height: auto;'}
+![basic-nft-tests4](/foundry-nfts/7-basic-nft-tests/basic-nft-tests4.png)
 
 Great work! Let's write a couple more tests together.
 
@@ -120,7 +120,7 @@ contract BasicNftTest is Test {
 
 With this, we again should just be able to run `forge test` and see how things resolve.
 
-::image{src='/foundry-nfts/7-basic-nft-tests/basic-nft-tests5.png' style='width: 100%; height: auto;'}
+![basic-nft-tests5](/foundry-nfts/7-basic-nft-tests/basic-nft-tests5.png)
 
 ### Wrap Up
 

@@ -24,11 +24,11 @@ Our first transaction involves receiving funds. There are two ways to receive fu
 
    - **Locking and Unlocking**: Tokens are locked on the source chain and unlocked on the destination chain.
 
-     ::image{src='/blockchain-basics/18-making-your-first-transaction-on-zksync/lock-unlock.png' style='width: 100%; height: auto;'}
+     ![lock-unlock](/blockchain-basics/18-making-your-first-transaction-on-zksync/lock-unlock.png)
 
    - **Minting and Burning**: Tokens are burned on the source chain and minted on the destination chain. The bridge protocol must control the token supply to manage this process. An example is [CCTV](https://www.circle.com/en/cross-chain-transfer-protocol) by the Circle team, where USDC is burned and minted to facilitate bridging.
 
-     ::image{src='/blockchain-basics/18-making-your-first-transaction-on-zksync/burn-mint.png' style='width: 100%; height: auto;'}
+     ![burn-mint](/blockchain-basics/18-making-your-first-transaction-on-zksync/burn-mint.png)
 
 3. **Get Sepolia ETH**: Use the [recommended faucet](https://cloud.google.com/application/web3/faucet/ethereum/sepolia) to obtain Sepolia ETH. With 0.05 Sepolia ETH, you're ready to transfer to zkSync Sepolia.
 

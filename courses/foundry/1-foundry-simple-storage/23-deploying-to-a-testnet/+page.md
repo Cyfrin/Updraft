@@ -20,7 +20,7 @@ _To create one, we could run our own blockchain node, but let's be honest — ma
 
 One promising option is using Alchemy - a free NaaS platform that we can send the transactions to. This procedure resides within the _Deploying to Testnet or Mainnet_ section in the full course repo of the Foundry.
 
-::image{src='/foundry/19-testnet-deploy/testnet1.png' style='width: 100%; height: auto;'}
+![testnet1](/foundry/19-testnet-deploy/testnet1.png)
 
 To access the Alchemy platform, we simply click on the aforementioned function. On the platform, we sign up (I used Google sign-in for this demo).
 

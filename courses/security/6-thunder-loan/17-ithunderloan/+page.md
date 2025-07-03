@@ -8,7 +8,7 @@ title: IThunderLoan.sol
 
 The next file on our list of most simple to most complex is another interface, IThunderLoan.sol. Let's take a look.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
@@ -22,7 +22,7 @@ Ok, fairly simple file again. This seems to be an interface for the ThunderLoan.
 - Does the contract actually implement the interface
 - Do the functions in the interface match the functions to be called on the contract
 
-::image{src='/security-section-6/17-ithunderloan/ithunderloan1.png' style='width: 100%; height: auto;'}
+![ithunderloan1](/security-section-6/17-ithunderloan/ithunderloan1.png)
 
 Straight away, we can see that Thunder Loan isn't actually implementing this interface, easy informational finding.
 
@@ -53,4 +53,4 @@ Whether or not the above would classify as a `low` or `informational` severity f
 
 Great! Two more findings, let's keep going!
 
-::image{src='/security-section-6/17-ithunderloan/ithunderloan2.png' style='width: 100%; height: auto;'}
+![ithunderloan2](/security-section-6/17-ithunderloan/ithunderloan2.png)

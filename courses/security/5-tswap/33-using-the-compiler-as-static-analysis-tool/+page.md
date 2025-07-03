@@ -24,7 +24,7 @@ We should take the time to read and understand the provided NATSPEC for this fun
 
 An assessment of the function's parameters in our IDE points to an issue our compiler identified earlier...
 
-::image{src='/security-section-5/33-using-the-compiler-as-static-analysis-tool/using-the-compiler-as-static-analysis-tool1.png' style='width: 100%; height: auto;'}
+![using-the-compiler-as-static-analysis-tool1](/security-section-5/33-using-the-compiler-as-static-analysis-tool/using-the-compiler-as-static-analysis-tool1.png)
 
 We can see this, and other issues pointed out by our compiler again by running `forge build`.
 
@@ -51,11 +51,11 @@ function deposit(
 
 Wow, we identified a potential high just through a compiler output! We should definitely check some of the other warnings.
 
-::image{src='/security-section-5/33-using-the-compiler-as-static-analysis-tool/using-the-compiler-as-static-analysis-tool2.png' style='width: 100%; height: auto;'}
+![using-the-compiler-as-static-analysis-tool2](/security-section-5/33-using-the-compiler-as-static-analysis-tool/using-the-compiler-as-static-analysis-tool2.png)
 
 `poolTokenReserves`, as pointed out by the compiler, is on line 107. It looks like this variable may have been held over from when the function was calculating things locally, but this logic has since been replaced with a function which is handling all the math.
 
-::image{src='/security-section-5/33-using-the-compiler-as-static-analysis-tool/using-the-compiler-as-static-analysis-tool3.png' style='width: 100%; height: auto;'}
+![using-the-compiler-as-static-analysis-tool3](/security-section-5/33-using-the-compiler-as-static-analysis-tool/using-the-compiler-as-static-analysis-tool3.png)
 
 Ultimately `poolTokenReserves` is a waste of gas and we can make a note of it as well.
 

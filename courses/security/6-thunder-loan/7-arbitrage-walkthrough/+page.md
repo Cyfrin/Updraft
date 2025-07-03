@@ -10,7 +10,7 @@ Alright, with a little more context and understanding about flash loans, let's w
 
 We'll start with a poor, average user who can only afford 1 ETH at $5.
 
-::image{src='/security-section-6/7-arbitrage-walkthrough/arbitrage-walkthrough1.png' style='width: 100%; height: auto;'}
+![arbitrage-walkthrough1](/security-section-6/7-arbitrage-walkthrough/arbitrage-walkthrough1.png)
 
 His options are pretty limited. How would this look with a flash loan protocol involved?
 
@@ -23,7 +23,7 @@ Steps:
 
 > **Steps 2-4 happen in a single transaction!**
 
-::image{src='/security-section-6/7-arbitrage-walkthrough/arbitrage-walkthrough2.png' style='width: 100%; height: auto;'}
+![arbitrage-walkthrough2](/security-section-6/7-arbitrage-walkthrough/arbitrage-walkthrough2.png)
 
 ### Wrap Up
 

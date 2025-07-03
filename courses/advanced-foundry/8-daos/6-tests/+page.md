@@ -159,7 +159,7 @@ All we need, let's run it as a sanity check!
 forge test --mt testCantUpdateBoxWithoutGovernance
 ```
 
-::image{src='/foundry-daos/6-tests/tests1.png' style='width: 100%; height: auto;'}
+![tests1](/foundry-daos/6-tests/tests1.png)
 
 Beautiful!
 
@@ -377,7 +377,7 @@ Woo! This is exciting, we're ready to run the test.
 Forge test --mt testGovernanceUpdatesBox -vvv
 ```
 
-::image{src='/foundry-daos/6-tests/tests2.png' style='width: 100%; height: auto;'}
+![tests2](/foundry-daos/6-tests/tests2.png)
 
 ### Wrap Up
 

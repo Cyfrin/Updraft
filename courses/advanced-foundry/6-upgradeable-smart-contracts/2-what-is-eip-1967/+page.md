@@ -178,7 +178,7 @@ function readStorage() public view returns(uint256 valueAtStorageSlotZero){
 
 With these functions in place, we should be able to deploy our contracts in Remix. The first thing we'll need to do is call the setImplementation function on our SmallProxy contract, passing the address of `ImplementationA`. This is how the proxy knows where to delegate calls.
 
-::image{src='/foundry-upgrades/3-eip-1967/eip-1967-1.png' style='width: 100%; height: auto;'}
+![eip-1967-1](/foundry-upgrades/3-eip-1967/eip-1967-1.png)
 
 By passing an argument to `getDataToTransact` we're provided the encoded call data necessary to set our `valueAtStorageSlotZero` to `777`. Remember, sending a transaction to our proxy with this call data should update the storage _in the proxy_.
 
@@ -187,7 +187,7 @@ By passing an argument to `getDataToTransact` we're provided the encoded call da
 
 To see this in action, we just need to paste our `getDataToTransact` return value into the CALLDATA field and his `Transact`.
 
-::image{src='/foundry-upgrades/3-eip-1967/eip-1967-2.png' style='width: 100%; height: auto;'}
+![eip-1967-2](/foundry-upgrades/3-eip-1967/eip-1967-2.png)
 
 `valueAtStorageSlotZero` has been updated on our proxy contract!
 
@@ -209,7 +209,7 @@ Next, deploy ImplementationB and then call setImplementation on SmallProxy, pass
 
 Just like before, we can use `getDataToTransact` to determine our necessary call data. By passing _the same_ call data, pertaining to the argument 777 we can see ...
 
-::image{src='/foundry-upgrades/3-eip-1967/eip-1967-3.png' style='width: 100%; height: auto;'}
+![eip-1967-3](/foundry-upgrades/3-eip-1967/eip-1967-3.png)
 
 `valueAtStorageSlotZero` now reflects the new implementation logic of `newValue + 2`!
 

@@ -19,7 +19,7 @@ rule calling_any_function_should_result_in_each_contract_having_the_same_state(m
 
 With things as we've set them up, we'd expect our rule to call the same method on each of our in scope contracts ... except the [**Certora Documentation**](https://docs.certora.com/en/latest/docs/cvl/rules.html#parametric-rules) says this is wrong 😅.
 
-::image{src='/formal-verification-3/25-finishing-the-rule/finishing-the-rule1.png' style='width: 100%; height: auto;'}
+![finishing-the-rule1](/formal-verification-3/25-finishing-the-rule/finishing-the-rule1.png)
 
 So, this means we'll need to use a different variable for the method called on each contract. The catch is, we need to assure the **same** method is called on each, this is where we'll use a require to ensure the selectors of both arbitrary methods match.
 
@@ -172,7 +172,7 @@ rule calling_any_function_should_result_in_each_contract_having_the_same_state(m
 </details>
 
 
-::image{src='/formal-verification-3/25-finishing-the-rule/finishing-the-rule2.png' style='width: 100%; height: auto;'}
+![finishing-the-rule2](/formal-verification-3/25-finishing-the-rule/finishing-the-rule2.png)
 
 Uh oh, what's happening here? The error is telling us we have a missing environment variable, even though we tagged these functions as `envfree`...
 
@@ -224,11 +224,11 @@ rule calling_any_function_should_result_in_each_contract_having_the_same_state(m
 
 With this adjustment in place, we can run the prover again.
 
-::image{src='/formal-verification-3/25-finishing-the-rule/finishing-the-rule3.png' style='width: 100%; height: auto;'}
+![finishing-the-rule3](/formal-verification-3/25-finishing-the-rule/finishing-the-rule3.png)
 
 It looks like it found a bunch of violations, but the CLI output doesn't provide many details, we should dig deeper into the calls and investigate. If we turn the the `Certora` UI, we can see that a huge number of our function calls failed their `sanity` check!
 
-::image{src='/formal-verification-3/25-finishing-the-rule/finishing-the-rule4.png' style='width: 100%; height: auto;'}
+![finishing-the-rule4](/formal-verification-3/25-finishing-the-rule/finishing-the-rule4.png)
 
 This is actually a product of how we're handling the functions in `GasBad.spec`.
 
@@ -243,7 +243,7 @@ require(gasBadMarketplace.getListing(e, listingAddr, tokenId).seller ==
 
 Because we're using `require` statements, instead of a `filter block`, `Certora` recognizes calls that don't satisfy these requires as unsound and thus flags them as failing our `sanity` check. If we look closely, we can see the calls with were successfully verified were those in which the function signatures match between our implementations, while those without matches fail this `sanity` check.
 
-::image{src='/formal-verification-3/25-finishing-the-rule/finishing-the-rule5.png' style='width: 100%; height: auto;'}
+![finishing-the-rule5](/formal-verification-3/25-finishing-the-rule/finishing-the-rule5.png)
 
 ### Wrap Up
 

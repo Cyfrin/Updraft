@@ -58,7 +58,7 @@ This is going to one of the most important functions we learn about in this sect
 
 We're going to need to access the block's timestamp, fortunately there's an op code that does just this `TIMESTAMP`.
 
-::image{src='/formal-verification-1/64-feedhorse-macro/feedhorse_macro1.png' style='width: 100%; height: auto;'}
+![feedhorse_macro1](/formal-verification-1/64-feedhorse-macro/feedhorse_macro1.png)
 
 So, our function takes a `uint256 horseId`, we're going to want to add this to our stack as well. We know how to do this with the op code `calldataload`, which takes an offset, then adds 32 bytes of call data from the offset to our stack.
 

@@ -18,21 +18,21 @@ Let's see how this works in the evm.codes playground!
 
 Recall what's required on our stack for our `shr` op code to function. `shr` takes `number of bits to shift` and the `32 bytes to shift`. These items need to be in our stack, in this order (top down). Our order of operations in the playground should look like this:
 
-::image{src='/formal-verification-1/15-evm-playground/evm-playground-1.png' style='width: 100%; height: auto;'}
+![evm-playground-1](/formal-verification-1/15-evm-playground/evm-playground-1.png)
 
 By clicking `Run` in the playground we can then step through each op code and see how it affects our **memory**, **stack**, **storage** and **return values**.
 
 Stepping through our first operation, we can see that 102 is added to our stack.
 
-::image{src='/formal-verification-1/15-evm-playground/evm-playground-2.png' style='width: 100%; height: auto;'}
+![evm-playground-2](/formal-verification-1/15-evm-playground/evm-playground-2.png)
 
 The second operation adds 4 to the top of our stack.
 
-::image{src='/formal-verification-1/15-evm-playground/evm-playground-3.png' style='width: 100%; height: auto;'}
+![evm-playground-3](/formal-verification-1/15-evm-playground/evm-playground-3.png)
 
 And our final step leaves us with `10` on our stack.
 
-::image{src='/formal-verification-1/15-evm-playground/evm-playground-4.png' style='width: 100%; height: auto;'}
+![evm-playground-4](/formal-verification-1/15-evm-playground/evm-playground-4.png)
 
 This is a hex value which we know we can convert using `cast --to-base 0x10 dec`. We indeed get 16!
 

@@ -37,7 +37,7 @@ You're highly encouraged to read through these articles for more context and a d
 
 `Sandwich Attacks` are similar in nature to `Just In Time (JIT)` liquidity exploits in that they both involve a `front run` and `back run` phase of the attack.
 
-::image{src='/security-section-8/11-case-study-pashov/case-study-pashov1.png' style='width: 100%; height: auto;' alt='pashov'}
+![pashov](/security-section-8/11-case-study-pashov/case-study-pashov1.png)
 
 In the diagram above, the user ends up paying way more for their expected swap!
 

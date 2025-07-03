@@ -14,7 +14,7 @@ First step, let's add what we need to our `audit-data` folder.
 
 Boilerplating things is something you should get used to. This involves reusing assets and templating processes so that it's quick to get started. Here, we can grab our logo from our previous `PasswordStore` repo, and our formatted report template can be copied from [**`audit-report-templating`**](https://github.com/Cyfrin/audit-report-templating) repo into a new file we name `report-formatted.md` within our `audit-data` folder.
 
-::image{src='/security-section-4/63-pdf-report/pdf-report1.png' style='width: 75%; height: auto;'}
+![pdf-report1](/security-section-4/63-pdf-report/pdf-report1.png)
 
 With this template in place, we can just begin filling it out. Start by adding your name and details to customize the report.
 
@@ -804,7 +804,7 @@ Similarly to the previous PDF generating lesson, I'll include some common pitfal
      - The file may be hidden - files prepended with `.` are often hidden. You can reveal all files in a directory with the command `ls -a`
      - The file may be elsewhere - navigate back in directories (`cd ..`) until you reach one that looks like this
 
-     ::image{src='/security-section-3/28-making-a-pdf/making-a-pdf1.png' style='width: 75%; height: auto;'}
+     ![making-a-pdf1](/security-section-3/28-making-a-pdf/making-a-pdf1.png)
 
      ...from here navigate to `usr/share/pandoc/data/templates`. In here you will find existing templates and this is where `eisvogel.latex` should be added.
 

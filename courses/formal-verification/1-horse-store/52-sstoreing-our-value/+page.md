@@ -177,7 +177,7 @@ In our example, we're providing `0x04` (the size of our `function selector`) and
 
 Now we see a new op code, `SWAP2`!
 
-::image{src='/formal-verification-1/52-sstoreing-our-value/sstoreing-our-value1.png' style='width: 100%; height: auto;'}
+![sstoreing-our-value1](/formal-verification-1/52-sstoreing-our-value/sstoreing-our-value1.png)
 
 `SWAP2` simply exchanges the position with the top item of our stack, with the 3rd item from the top of our stack. You can imagine it like swapping our top item, with the second index from the top.
 

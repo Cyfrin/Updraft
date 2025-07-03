@@ -18,7 +18,7 @@ Before we can use `Aderyn`, we'll need to first install `Rust`. Like `Slither`, 
 
 Once `Rust` has been installed, you can run the command `cargo install Aderyn`. This will install our tool.
 
-::image{src='/security-section-4/5-tooling-aderyn/tooling-aderyn1.png' style='width: 75%; height: auto;'}
+![tooling-aderyn1](/security-section-4/5-tooling-aderyn/tooling-aderyn1.png)
 
 > **Note:** If you've already installed Aderyn, this command will also update you to the current version. Your terminal will advise if the tool is already installed.
 

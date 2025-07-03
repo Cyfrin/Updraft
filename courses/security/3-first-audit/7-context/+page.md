@@ -22,7 +22,7 @@ If we're following `The Tincho` method, our first step is going to be reading th
 
 _Quick tip: Check if an extension must be installed for VS Code if it's not working for you._
 
-::image{src='/security-section-3/7-context/context2.png' style='width: 100%; height: auto;'}
+![context2](/security-section-3/7-context/context2.png)
 
 Already, we should be thinking about potential attack vectors with the information we've gleaned.
 
@@ -36,17 +36,17 @@ Following Tincho's advice our next step will be to organize the files of the pro
 
 1. Download and install the [**Solidity Metrics**](https://marketplace.visualstudio.com/items?itemName=tintinweb.solidity-metrics) extension for VS Code.
 
-::image{src='/security-section-3/7-context/context3.png' style='width: 100%; height: auto;'}
+![context3](/security-section-3/7-context/context3.png)
 
 2. Once installed, you can right-click the appropriate folders to run the tool on and select `Solidity: Metrics` from the context menu.
 
 > _Pro-tip: If your repo has more than one applicable folder, you can CTRL + Click to select multiple simultaneously._
 
-::image{src='/security-section-3/7-context/context4.png' style='width: 100%; height: auto;'}
+![context4](/security-section-3/7-context/context4.png)
 
 After generating the report, navigate to the command palette and locate 'export this metrics report'. Once exported, you'll have HTML access to the report for future reference.
 
-::image{src='/security-section-3/7-context/context5.png' style='width: 100%; height: auto;'}
+![context5](/security-section-3/7-context/context5.png)
 
 Applying Tincho's methodology to this process, we can:
 
@@ -57,7 +57,7 @@ Applying Tincho's methodology to this process, we can:
 
 Some aspects I'll draw your attention to in this metrics report are the `Inheritance Graph`, `The Call Graph`, and `The Contracts Summary`. It's not super obvious with such a simple protocol, but these are going to provide valuable insight down the line. Familiarize yourself with them now (way at the bottom).
 
-::image{src='/security-section-3/7-context/context6.png' style='width: 100%; height: auto;'}
+![context6](/security-section-3/7-context/context6.png)
 
 Understanding your codebase and its functionalities is the first step towards securing it.
 

@@ -32,7 +32,7 @@ We could do another comparison, but if we haven't jumped anywhere, our stack is 
 
 An op code is available to us which will help us achieve a cleaner and more gas efficient path to our goal, `DUP1`
 
-::image{src='/formal-verification-1/22-dup1/dup1-1.png' style='width: 75%; height: auto;'}
+![dup1-1](/formal-verification-1/22-dup1/dup1-1.png)
 
 `DUP1` simply takes the top item of the stack, copies it and adds both items back to the stack. By executing this op code directly after the first time we accessed the `call data`'s `function selector`, it would keep a copy of this selector for us to access, on the bottom of our stack. How does this look in our code?
 

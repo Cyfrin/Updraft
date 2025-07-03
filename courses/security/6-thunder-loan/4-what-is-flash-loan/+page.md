@@ -14,7 +14,7 @@ Let's consider a typical scenario. Suppose there are two DEXs, A and B. On Dex A
 
 You could buy one Ethereum at DEX A for $5, then head over to DEX B and sell that Ethereum for $6. This simple transaction would net you a profit of $1. This process is known as **Arbitrage.**
 
-::image{src='/security-section-6/4-what-is-a-flash-loan/what-is-a-flash-loan1.png' style='width: 100%; height: auto;'}
+![what-is-a-flash-loan1](/security-section-6/4-what-is-a-flash-loan/what-is-a-flash-loan1.png)
 
 Imagine if this situation were to scale up, and you were able to buy 10, 100 or 1000 ETH. The problem lies in the average person's ability to shoulder the upfront investment.
 

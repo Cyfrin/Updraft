@@ -16,7 +16,7 @@ If not, that's ok. Our friend Slither is here to help us. This vulnerability is 
 make slither
 ```
 
-::image{src='/security-section-7/19-arbitrary/arbitrary1.png' style='width: 100%; height: auto;'}
+![arbitrary1](/security-section-7/19-arbitrary/arbitrary1.png)
 
 `arbitrary from in transferFrom: token.safeTransferFrom(from,address(vault),amount)` Hmm, what does this mean exactly? If we're ever unsure of what Slither is telling us, we can follow [**the link**](https://github.com/crytic/slither/wiki/Detector-Documentation#arbitrary-from-in-transferfrom) in the output to read more about the detector and what it's .. detecting.
 

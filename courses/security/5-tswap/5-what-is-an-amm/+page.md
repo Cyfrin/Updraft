@@ -16,7 +16,7 @@ Before we better detail an AMM, we should first understand how `order book` exch
 
 An order book exchange is fundamentally very simple, it will track desired buy and sell orders and effectively try to match them.
 
-::image{src='/security-section-5/5-what-is-an-amm/what-is-an-amm1.png' style='width: 100%; height: auto;'}
+![what-is-an-amm1](/security-section-5/5-what-is-an-amm/what-is-an-amm1.png)
 
 Order book exchanges come with a fatal flaw in a blockchain ecosystem though - cost.
 
@@ -30,7 +30,7 @@ This is where Automated Market Makers come in!
 
 An AMM functions by leveraging asset pools with the goal of maintaining the ratio of assets traded with the pool.
 
-::image{src='/security-section-5/5-what-is-an-amm/what-is-an-amm2.png' style='width: 100%; height: auto;'}
+![what-is-an-amm2](/security-section-5/5-what-is-an-amm/what-is-an-amm2.png)
 
 As we can see, as orders are placed against the liquidity pools the ratio between the two assets traded changes, this drives the price of the asset pair for the next trade when executed.
 

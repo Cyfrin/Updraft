@@ -18,7 +18,7 @@ CodeHawks First Flights offer an excellent platform for budding smart contract s
 
 If you are a beginner, they are a perfect opportunity to get live auditing experience and build upon the things you've learnt in a practical setting. For experienced auditors, they serve as a chance to engage in the community and iterate on your established skills.
 
-::image{src='/security-section-4/1-introduction/introduction1.png' style='width: 100%; height: auto;'}
+![introduction1](/security-section-4/1-introduction/introduction1.png)
 
 We'll be going over how to submit an awesome competitive finding in this section.
 

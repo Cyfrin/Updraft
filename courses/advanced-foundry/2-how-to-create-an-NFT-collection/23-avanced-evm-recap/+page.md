@@ -25,7 +25,7 @@ string memory someString = string(abi.encodePacked("Hi Mom! ", "Miss you!"))
 
 We learnt that when a contract is compiled, it's actually compiled into an ABI (application binary interface) and a binary or bytecode format.
 
-::image{src='/foundry-nfts/21-evm-recap/evm-recap1.png' style='width: 100%; height: auto;'}
+![evm-recap1](/foundry-nfts/21-evm-recap/evm-recap1.png)
 
 Any transaction we send to the blockchain is ultimately compiled down to this bytecode. For contract creation transactions, the data field of the transaction _is_ this bytecode.
 
@@ -35,11 +35,11 @@ Any system capable of reading the operations contained within this bytecode is s
 
 We also learnt that we can use the encoding functionality of the EVM to encode basically anything. Basic encoding is accomplished with `abi.encode`, but we've a few options available to us.
 
-::image{src='/foundry-nfts/21-evm-recap/evm-recap2.png' style='width: 100%; height: auto;'}
+![evm-recap2](/foundry-nfts/21-evm-recap/evm-recap2.png)
 
 `abi.encode` will result in a padded return value, however the EVM offers a way to save space/gas by packing our encodings through `abi.encodePacked`.
 
-::image{src='/foundry-nfts/21-evm-recap/evm-recap3.png' style='width: 100%; height: auto;'}
+![evm-recap3](/foundry-nfts/21-evm-recap/evm-recap3.png)
 
 The EVM also affords us the ability to decode and multi-encode, really giving us flexibility to work with our data.
 

@@ -166,11 +166,11 @@ function _getHouseName(uint256 id) private pure returns (string memory) {
 - As per the description in Section 2, now connect MetaMask to Remix.
 - Remember that subscription ID we copied when we created the subscription? Go back to the VRF app page and copy your subscription ID (if you haven't already):
 
-::image{src='/chainlink-fundamentals/8-chainlink-vrf/assets/subscription-id.png' style='width: 100%; height: auto;' alt='subscription-id'}
+![subscription-id](/chainlink-fundamentals/8-chainlink-vrf/assets/subscription-id.png)
 
 - Paste this as the `subscriptionId` constructor parameter and click **Deploy**:
 
-::image{src='/chainlink-fundamentals/8-chainlink-vrf/assets/deploy.png' style='width: 100%; height: auto;' alt='deploy'}
+![deploy](/chainlink-fundamentals/8-chainlink-vrf/assets/deploy.png)
 
 - Remember to pin the contract to your workspace!
 
@@ -184,20 +184,20 @@ Let's go back to the VRF app. We have deployed our consumer contract `HousePicke
 
 - Paste the contract address of the `HousePicker` contract as the **Consumer address** and click **Add consumer**:
 
-::image{src='/chainlink-fundamentals/8-chainlink-vrf/assets/consumer-address.png' style='width: 100%; height: auto;' alt='consumer-address'}
+![consumer-address](/chainlink-fundamentals/8-chainlink-vrf/assets/consumer-address.png)
 
 - Sign the transaction to approve adding the consumer to the subscription.
 - Once the transaction has confirmed, you will be able to view your subscription by clicking the **View subscription** button:
 
-::image{src='/chainlink-fundamentals/8-chainlink-vrf/assets/consumer-added.png' style='width: 100%; height: auto;' alt='consumer-added'}
+![consumer-added](/chainlink-fundamentals/8-chainlink-vrf/assets/consumer-added.png)
 
 - This will take you to an overview of your active subscriptions; click on the ID of your active subscription to open it:
 
-::image{src='/chainlink-fundamentals/8-chainlink-vrf/assets/overview.png' style='width: 100%; height: auto;' alt='overview'}
+![overview](/chainlink-fundamentals/8-chainlink-vrf/assets/overview.png)
 
 - You will be able to see how many fulfillments have occurred on your subscription and the balance:
 
-::image{src='/chainlink-fundamentals/8-chainlink-vrf/assets/id.png' style='width: 100%; height: auto;' alt='id'}
+![id](/chainlink-fundamentals/8-chainlink-vrf/assets/id.png)
 
 Let's make a request for a random number (this is sometimes referred to as a "request for randomness but means the same thing)!
 
@@ -206,18 +206,18 @@ Let's make a request for a random number (this is sometimes referred to as a "re
 To send a request for a random number and get a Hogwarts house, we need to call `rollDice`. 
 This function will return the `requestId` to see when our request has been fulfilled:
 
-::image{src='/chainlink-fundamentals/8-chainlink-vrf/assets/roll-dice.png' style='width: 100%; height: auto;' alt='roll-dice'}
+![roll-dice](/chainlink-fundamentals/8-chainlink-vrf/assets/roll-dice.png)
 
 Once you have signed the transaction, you can view the pending request in the Subscription Overview page. This will happen if you do not have enough LINK in the subscription (which I didn't) - you can click the **Fund subscription** button to add extra funds at any time. 
 
-::image{src='/chainlink-fundamentals/8-chainlink-vrf/assets/pending.png' style='width: 100%; height: auto;' alt='pending'}
+![pending](/chainlink-fundamentals/8-chainlink-vrf/assets/pending.png)
 
 Once your request has been fulfilled, it will be visible in the **History** tab:
 
-::image{src='/chainlink-fundamentals/8-chainlink-vrf/assets/history.png' style='width: 100%; height: auto;' alt='history'}
+![history](/chainlink-fundamentals/8-chainlink-vrf/assets/history.png)
 
 Now, you can go back to your contract in Remix and call `house`, passing your address as an argument, to see which Hogwarts house you were selected for:
 
-::image{src='/chainlink-fundamentals/8-chainlink-vrf/assets/house.png' style='width: 100%; height: auto;' alt='house'}
+![house](/chainlink-fundamentals/8-chainlink-vrf/assets/house.png)
 
 And that's it! You have successfully created a VRF consumer smart contract and used the subscription model to fund requests for randomness.

@@ -11,15 +11,15 @@ Time-based automation enables you to automate any function in an existing smart 
 
 1. Open [Remix](http://remix.ethereum.org) and create a new workspace by clicking the burger icon and then **Create blank workspace**. Name the workspace "Automation" and click **Ok**:
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/create-blank-workspace.png' style='width: 100%; height: auto;' alt='create-blank-workspace'}
+![create-blank-workspace](/chainlink-fundamentals/4-chainlink-automation/assets/create-blank-workspace.png)
 
 2. Create a folder called `contracts` by clicking the **Create folder** button:
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/create-folder.png' style='width: 100%; height: auto;' alt='create-folder'}
+![create-folder](/chainlink-fundamentals/4-chainlink-automation/assets/create-folder.png)
 
 3. Open the `contracts` folder by clicking on it and then create a file called `TimeBased.sol` by clicking on the **Create file** button:
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/remix-file-timebased.png' style='width: 100%; height: auto;' alt='remix-file'}
+![remix-file](/chainlink-fundamentals/4-chainlink-automation/assets/remix-file-timebased.png)
 
 4. Paste the following code from the [course code repo](https://github.com/ciaranightingale/chainlink-fundamentals-code/blob/main/automation/TimeBased.sol) into the `TimeBased.sol` file.
 
@@ -33,31 +33,31 @@ Let's deploy this contract to Sepolia.
 
 - Head to the **Solidity compiler** tab and click **Compile TimeBased.sol** to compile your contract. 
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/compile.png' style='width: 100%; height: auto;' alt='compile'}
+![compile](/chainlink-fundamentals/4-chainlink-automation/assets/compile.png)
 
 - Head to the **Deploy & run transactions** tab and select **Injected Provider - MetaMask** for the **Environment** to connect MetaMask to Remix.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/environment.png' style='width: 100%; height: auto;' alt='environment'}
+![environment](/chainlink-fundamentals/4-chainlink-automation/assets/environment.png)
 
 - Open MetaMask and check you are still connected to Sepolia by clicking the top left-hand network selector button.
 
 - Click **Deploy** to deploy the `TimeBased` contract. This will trigger MetaMask to pop up. Click **Confirm** to sign the transaction to deploy the contract.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/deploy.png' style='width: 100%; height: auto;' alt='deploy'}
+![deploy](/chainlink-fundamentals/4-chainlink-automation/assets/deploy.png)
 
 You will know if your contract has been successfully deployed if:
 
 - The Remix terminal window (the block at the bottom of your screen) shows a green tick next to the transaction information:
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/remix-terminal.png' style='width: 100%; height: auto;' alt='remix-terminal'}
+![remix-terminal](/chainlink-fundamentals/4-chainlink-automation/assets/remix-terminal.png)
 
 - Your MetaMask shows a successful contract deployment transaction:
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/contract-deployment.png' style='width: 100%; height: auto;' alt='contract-deployment'}
+![contract-deployment](/chainlink-fundamentals/4-chainlink-automation/assets/contract-deployment.png)
 
 - And your contract is in the **Deployed contracts** section:
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/deployed-contract.png' style='width: 100%; height: auto;' alt='deployed-contract'}
+![deployed-contract](/chainlink-fundamentals/4-chainlink-automation/assets/deployed-contract.png)
 
 - Click the pin icon to the workspace to pin the `TimeBased` smart contract. This will ensure that the contract instance persists in your workspace when Remix is reloaded. 
 
@@ -82,17 +82,17 @@ Let’s verify our contract on [Etherscan](https://sepolia.etherscan.io/).
 1. Head to the [Etherscan website](https://sepolia.etherscan.io/).
 2. Search for the `TimeBased` contract address, then head to the **Contract** tab and click **Verify and Publish**.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/verify-and-publish.png' style='width: 100%; height: auto;' alt='verify-and-publish'}
+![verify-and-publish](/chainlink-fundamentals/4-chainlink-automation/assets/verify-and-publish.png)
 
 3. Fill in the values for your contract. The compiler version can be found on the **Solidity compiler** tab in Remix. Click **Continue**.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/verify.png' style='width: 100%; height: auto;' alt='verify'}
+![verify](/chainlink-fundamentals/4-chainlink-automation/assets/verify.png)
 
 3. On the next screen, paste in the code for the contract and leave the rest of the options default/blank. Click **Verify and Publish**. 
 
 When you return to the contract on Etherscan, you should now see a green checkmark next to the **Contract** tab. Now, you can view the source code on Etherscan and easily interact with the contract from the **Read contract** and **Write contract** tabs.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/verified.png' style='width: 100%; height: auto;' alt='verified'}
+![verified](/chainlink-fundamentals/4-chainlink-automation/assets/verified.png)
 
 ## Creating a Time-Based Automation
 
@@ -103,11 +103,11 @@ Now that we’ve deployed and verified our smart contract let’s create the aut
 - Check that you’re connected to Sepolia by clicking the network dropdown in the app's top-right corner.
 - For the trigger mechanism, select **Time-based trigger** and click **Next**.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/time-based-trigger.png' style='width: 100%; height: auto;' alt='time-based-trigger'}
+![time-based-trigger](/chainlink-fundamentals/4-chainlink-automation/assets/time-based-trigger.png)
 
 - Enter the `TimeBased` contract address and click **Next**. Our contract has been verified in this example, meaning Chainlink Automation can fetch the ABI. If you have a contract that has yet to be verified, you can provide the ABI.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/time-based-options.png' style='width: 100%; height: auto;' alt='time-based-options'}
+![time-based-options](/chainlink-fundamentals/4-chainlink-automation/assets/time-based-options.png)
 
 - For the **Target function**, select the `count` function; this is the function we want Automation to execute, and click **Next**.
 
@@ -146,28 +146,28 @@ Examples:
     - **Starting balance**: A starting balance of LINK is used to pay for Chainlink Automation. In this example, `5` LINK will be sufficient.
     - The **Project information** is optional; we will leave it blank.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/upkeep-details-time.png' style='width: 100%; height: auto;' alt='upkeep-details-time'}
+![upkeep-details-time](/chainlink-fundamentals/4-chainlink-automation/assets/upkeep-details-time.png)
 
 - Click **Register Upkeep** and approve the transactions to deploy the CRON job contract, request time-based upkeep registration, receive registration confirmation, and finally sign the message. 
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/deploy-cron-job-contract.png' style='width: 100%; height: auto;' alt='deploy-cron-job-contract'}
+![deploy-cron-job-contract](/chainlink-fundamentals/4-chainlink-automation/assets/deploy-cron-job-contract.png)
 
 - Once this is complete, you should see that your registration request was successful, and you can then view your upkeep. 
 
 The **upkeep page** provides a quick overview of the upkeep status, such as when it was last run, the current balance of LINK, and how much LINK has been spent.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/timebased-counter.png' style='width: 100%; height: auto;' alt='timebased-counter'}
+![timebased-counter](/chainlink-fundamentals/4-chainlink-automation/assets/timebased-counter.png)
 
 The **details section** will give you all the information about the upkeep, including when it will run next and what function it will call.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/timebased-details.png' style='width: 100%; height: auto;' alt='timebased-details'}
+![timebased-details](/chainlink-fundamentals/4-chainlink-automation/assets/timebased-details.png)
 
 The **history section** shows the history of the upkeep. It is a useful tool for verifying whether an upkeep has been completed. Once five minutes have passed, you should be able to refresh the page and see that the upkeep has been completed.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/timebased-history.png' style='width: 100%; height: auto;' alt='timebased-history'}
+![timebased-history](/chainlink-fundamentals/4-chainlink-automation/assets/timebased-history.png)
 
 If you head back to Etherscan, you can see the value of `counter` has increased. The upkeep will continue until it either runs out of LINK or the upkeep is paused.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/counter-increased.png' style='width: 100%; height: auto;' alt='counter-increased'}
+![counter-increased](/chainlink-fundamentals/4-chainlink-automation/assets/counter-increased.png)
 
 **Note**: You can pause your automation from the Automation app UI or withdraw your LINK funds from it if you want it to stop running. You can always resume it later if necessary or create a new one for future projects.

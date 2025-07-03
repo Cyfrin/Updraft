@@ -127,7 +127,7 @@ A small line, but potentially _very_ impactful.
 
 Well - we've completed our whole first pass of this code base (save the upgrade to ThunderLoan) and we didn't find anything significant!?
 
-::image{src='/security-section-6/35-thunderloan-repay-final-functions/thunderloan-repay-final-functions1.png' style='width: 100%; height: auto;'}
+![thunderloan-repay-final-functions1](/security-section-6/35-thunderloan-repay-final-functions/thunderloan-repay-final-functions1.png)
 
 In this process we've gained a tonne of context and understanding, but we've also left a number of unanswered questions throughout the code. I think our best approach is going to be diving into the questions we've left ourselves, answering them and seeing what becomes of them.
 

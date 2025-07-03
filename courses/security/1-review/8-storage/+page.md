@@ -12,7 +12,7 @@ In this lesson, we are going to discuss some important aspects related to variab
 
 First and foremost, we need to familiarize ourselves with the concept of `Storage`. In Solidity, when we refer to variables that are global or those that persist over time, we are actually referring to variables that exist in `Storage`.
 
-::image{src='/security-section-1/8-storage/storage1.png' style='width: 100%; height: auto;' alt='block fee'}
+![block fee](/security-section-1/8-storage/storage1.png)
 
 Think of `Storage` as a huge array or list that contains all the variables we create in Solidity. When we declare a variable in a contract—say a contract named `fundamentalStorage`—to be a certain value, such as `favoriteNumber`, we're essentially demanding this variable to persist. This persistence is obtained via `Storage`.
 

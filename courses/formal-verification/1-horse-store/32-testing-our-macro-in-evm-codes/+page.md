@@ -18,7 +18,7 @@ Here's an example of valid call data to set our number of horses to 7 and the ca
 0xcdfead2e0000000000000000000000000000000000000000000000000000000000000007
 ```
 
-::image{src='/formal-verification-1/32-testing-macro-evm-codes/testing-macro-evm-codes-1.png' style='width: 100%; height: auto;'}
+![testing-macro-evm-codes-1](/formal-verification-1/32-testing-macro-evm-codes/testing-macro-evm-codes-1.png)
 
 
 I want to draw you attention to the `stop` op code I've added near the end. This code is an imperative aspect of handling functions in Huff.

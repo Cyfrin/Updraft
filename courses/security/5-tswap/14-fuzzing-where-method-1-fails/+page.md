@@ -9,7 +9,7 @@ Let's ramp things up to a much more robust contract `HandlerStatefulFuzzCatches.
 <details>
 <summary>HandlerStatefulFuzzCatches.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
@@ -88,7 +88,7 @@ Create a new folder in our `test/invariant-break` folder named `handler`. Within
 
 There's going to be a lot to this, so let's break down this test set up one step at a time. First, we're going to need to import `HandlerStatefulFuzzCatches.sol` as well as `Test` and `StdInvariant` just as before. This contract takes an array of `supportedTokens` in it's constructor, so we'll need to import some tokens - the repo has provided mocks in `test/mocks` for use! Finally, be sure to import the IERC20 interface.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
@@ -169,7 +169,7 @@ function testStartingAmount() public view {
 }
 ```
 
-::image{src='/security-section-5/14-fuzzing-where-method-1-fails/fuzzing-where-method-1-fails1.png' style='width: 100%; height: auto;'}
+![fuzzing-where-method-1-fails1](/security-section-5/14-fuzzing-where-method-1-fails/fuzzing-where-method-1-fails1.png)
 
 Perfect!
 
@@ -198,7 +198,7 @@ In this function, we're assuring the fuzz tests will end with our `user` withdra
 
 Let's run it with `forge test --mt statefulFuzz_TestInvariantBreaks`
 
-::image{src='/security-section-5/14-fuzzing-where-method-1-fails/fuzzing-where-method-1-fails2.png' style='width: 100%; height: auto;'}
+![fuzzing-where-method-1-fails2](/security-section-5/14-fuzzing-where-method-1-fails/fuzzing-where-method-1-fails2.png)
 
 It passes! Boom, safe and secure, right? Wrong.
 
@@ -206,7 +206,7 @@ Look closely and we see `2048` calls were made by our test, but `2048` of them r
 
 If we navigate back to our `foundry.toml` and set `fail_on_revert` to `true`, we can run our test again as `forge test --mt statefulFuzz_TestInvariantBreaks -vvvv` to gain some insight.
 
-::image{src='/security-section-5/14-fuzzing-where-method-1-fails/fuzzing-where-method-1-fails3.png' style='width: 100%; height: auto;'}
+![fuzzing-where-method-1-fails3](/security-section-5/14-fuzzing-where-method-1-fails/fuzzing-where-method-1-fails3.png)
 
 Ah! It's reverting with the error `HandlerStatefulFuzzCatches__UnsupportedToken()`. Of course! Our fuzz test is calling `depositToken` with random addresses, but we only have 2 supported tokens!
 

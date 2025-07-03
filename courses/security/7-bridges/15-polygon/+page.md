@@ -64,7 +64,7 @@ Many of these passed arguments are hashed into the transaction data and then the
 
 Something to note about ecrecover - it returns `address(0)` on an error!
 
-::image{src='/security-section-7/15-polygon/polygon1.png' style='width: 100%; height: auto;'}
+![polygon1](/security-section-7/15-polygon/polygon1.png)
 
 The EVM actually _does_ have a check to assure `address(0)` isn't returned, but this was never copied into the ecrecovery wrapper, which means ecrecovery - still returns `address(0)`.
 

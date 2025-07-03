@@ -36,7 +36,7 @@ Beyond just teaching you to code, this course prepares you to maneuver DeFi, NFT
 
 ### Best Practices
 
-::image{src='/blockchain-basics/git-repo.png' style='width: 100%; height: auto;' alt='git repo'}
+![git repo](/blockchain-basics/git-repo.png)
 
 Let's start by covering some of the best practices to help you get the absolute most out of this course.
 

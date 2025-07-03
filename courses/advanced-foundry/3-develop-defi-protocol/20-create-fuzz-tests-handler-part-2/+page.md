@@ -33,11 +33,11 @@ function deposit(uint256 assets) public virtual {
 
 To illustrate, as show in the Foundry Docs as well, open testing has our framework calling functions directly as defined in the contracts within scope.
 
-::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests1.PNG' style='width: 100%; height: auto;'}
+![defi-handler-stateful-fuzz-tests1](/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests1.PNG)
 
 Conversely, handler based tests route our frameworks function calls through our handler, allowing us to configure only the functions/behaviour we want it to perform, filtering out bad runs from our tests.
 
-::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests2.png' style='width: 100%; height: auto;'}
+![defi-handler-stateful-fuzz-tests2](/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests2.png)
 
 Let's finally start applying this methodology to our code base.
 
@@ -172,7 +172,7 @@ With this in place our open invariant test is ready! Try to run it.
 forge test --mt invariant_protocolMustHaveMoreValueThanTotalSupply -vvvv
 ```
 
-::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests3.png' style='width: 100%; height: auto;'}
+![defi-handler-stateful-fuzz-tests3](/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests3.png)
 
 Our test identified a break in our assertion immediately.. but it's because we have no tokens or collateral. We can adjust our assertion to be `>=`, but it's a little bit cheaty.
 
@@ -180,11 +180,11 @@ Our test identified a break in our assertion immediately.. but it's because we h
 assert(wethValue + wbtcValue >= totalSupply);
 ```
 
-::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests4.png' style='width: 100%; height: auto;'}
+![defi-handler-stateful-fuzz-tests4](/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests4.png)
 
 Things pass! We didn't find any issues. This is where we may want to bump up the number of runs we're performing, you can see in the image above our fuzzer executed `128 runs` and `16,384 function calls`. If we bump this up to `1000 runs`, our fuzz test will be more thorough, but will take much longer to run. Try it out!
 
-::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests5.png' style='width: 100%; height: auto;'}
+![defi-handler-stateful-fuzz-tests5](/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests5.png)
 
 Things pass again, but you can see how much more intense the test process was. There's a catch, however. In the image above, notice how many calls were made vs how many times a function call reverted. Every single call is reverting! This in essence means that our test wasn't able to _do_ anything. This is not a very reassuring test.
 
@@ -198,11 +198,11 @@ fail_on_revert can be great for quick testing and keeping things simple, but it 
 
 Let's set this option to `true` and run our test once more.
 
-::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests6.png' style='width: 100%; height: auto;'}
+![defi-handler-stateful-fuzz-tests6](/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests6.png)
 
 We can see the first function being called by the fuzzer is `depositCollateral` and its passing a random `tokenAddress` argument causing our revert immediately.
 
-::image{src='/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests7.png' style='width: 100%; height: auto;'}
+![defi-handler-stateful-fuzz-tests7](/foundry-defi/19-defi-handler-stateful-fuzz-tests/defi-handler-stateful-fuzz-tests7.png)
 
 ### Wrap Up
 

@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 Now you're starting to see the picture, and the Boss Bridge MEV becomes clear.
 
-::image{src='/security-section-8/8-mev-boss/mev-boss-bridge1.png' style='width: 100%; height: auto;' alt='boss bridge mev'}
+![boss bridge mev](/security-section-8/8-mev-boss/mev-boss-bridge1.png)
 
 Similarly to the Signature Replay attack, a malicious actor could see a signer's call to sendToL1 pending in the MemPool. With access to the signature sent in the transaction, it can be front run, causing the sendToL1 transaction to happen unexpectedly, or multiple times.
 

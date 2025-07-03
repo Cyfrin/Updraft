@@ -18,7 +18,7 @@ It's worth noting, however, that constants or immutable variables do not occupy 
 
 To illustrate:
 
-::image{src='/security-section-1/7-advanced-solidity/sol2.png' style='width: 100%; height: auto;' alt='block fee'}
+![block fee](/security-section-1/7-advanced-solidity/sol2.png)
 
 ### Hands-on Learning with Code
 

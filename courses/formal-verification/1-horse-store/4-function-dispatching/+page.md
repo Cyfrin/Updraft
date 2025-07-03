@@ -31,7 +31,7 @@ contract HorseStore {
 
 By deploying this contract in remix and calling the `updateNumberOfHorses()` function, we're provided an output that looks like this:
 
-::image{src='/formal-verification-1/4-function-dispatching/function-dispatching-1.png' style='width: 75%; height: auto;'}
+![function-dispatching-1](/formal-verification-1/4-function-dispatching/function-dispatching-1.png)
 
 We're most interested in the `input` data.
 
@@ -73,7 +73,7 @@ Behind the scenes, Solidity has a **function dispatcher** that matches the selec
 
 However, if writing in a lower-level language like Huff, you have to manually set up the dispatcher yourself to connect call data to functions. This gives more control but requires extra work.
 
-::image{src='/formal-verification-1/4-function-dispatching/function-dispatching-2.png' style='width: 75%; height: auto;'}
+![function-dispatching-2](/formal-verification-1/4-function-dispatching/function-dispatching-2.png)
 
 ## Putting It Together
 

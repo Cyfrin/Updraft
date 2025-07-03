@@ -14,7 +14,7 @@ We've got a _lot_ more to cover.
 
 Before we move on at all, you should take a look at this section on the [**GitHub Repo**](https://github.com/Cyfrin/security-and-auditing-full-course-s23?tab=readme-ov-file#-section-5-invariants--intro-to-defi--tswap-audit). You'll see right away - DO NOT LOOK AT THE CONTRACTS.
 
-::image{src='/security-section-5/1-introduction/intro1.png' style='width: 100%; height: auto;'}
+![intro1](/security-section-5/1-introduction/intro1.png)
 
 We're going to be learning how to use some advanced tooling and advanced testing concepts such as fuzzing, invariant testing and more.
 

@@ -20,7 +20,7 @@ We've done this a few times, so we should be familiar with the process - go ahea
 
 You'll likely be met with this message, `selfdestruct` is being heavily considered for deprecation, but for now this vulnerability still exists, so we can ignore this message for now.
 
-::image{src='/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized1.png' style='width: 50%; height: auto;'}
+![mishandling-eth-minimized1](/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized1.png)
 
 <details>
 <summary>SelfDestructMe.sol</summary>
@@ -69,7 +69,7 @@ A user is able to deposit funds, which updates their balance as well as the `tot
 
 I've deposited 1 Ether to the contract, here.
 
-::image{src='/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized2.png' style='width: 50%; height: auto;'}
+![mishandling-eth-minimized2](/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized2.png)
 
 The issue comes from this line:
 
@@ -83,17 +83,17 @@ This is **_false_**.
 
 Go ahead and deploy the `AttackSelfDestructMe.sol` contract. The constructor requires an attack target, so be sure to copy the address for `SelfDestructMe.sol` and pass it to your deploy. Give the contract a balance during deployment as well.
 
-::image{src='/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized3.png' style='width: 50%; height: auto;'}
+![mishandling-eth-minimized3](/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized3.png)
 
 Now, when the attack function is called, `selfdestruct` will be triggered, and we expect to see our 5 Ether forced onto `SelfDestructMe.sol`.
 
 And, that's exactly what we see:
 
-::image{src='/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized4.png' style='width: 50%; height: auto;'}
+![mishandling-eth-minimized4](/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized4.png)
 
 Lastly, try calling the `withdraw` function on `SelfDestructMe.sol`. It reverts! The contract's accounting has been broken and it's balance is now stuck!
 
-::image{src='/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized5.png' style='width: 75%; height: auto;'}
+![mishandling-eth-minimized5](/security-section-4/34-mishandling-eth-minimized/mishandling-eth-minimized5.png)
 
 ### Wrap Up
 

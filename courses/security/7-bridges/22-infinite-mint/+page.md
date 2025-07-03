@@ -84,7 +84,7 @@ Let's run the test.
 forge test --mt testCanTransferFromVaultToVault
 ```
 
-::image{src='/security-section-7/22-infinite-mint/infinite-mint1.png' style='width: 100%; height: auto;'}
+![infinite-mint1](/security-section-7/22-infinite-mint/infinite-mint1.png)
 
 Yikes.
 

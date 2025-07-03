@@ -50,7 +50,7 @@ You will be asked to enter a private key, please paste one of the private keys a
 
 Voila!
 
-::image{src='/foundry-simply-storage/12-deploy-a-smart-contract-locally-using-forge/Image1.PNG' style='width: 75%; height: auto;'}
+![Image1](/foundry-simply-storage/12-deploy-a-smart-contract-locally-using-forge/Image1.PNG)
 
 You can go to Ganache and check the `Blocks` and `Transactions` tabs to see more info about what you just did.
 

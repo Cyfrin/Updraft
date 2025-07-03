@@ -10,20 +10,20 @@ _Follow along with this video:_
 
 At it's most minimalistic, a re-entrancy attack looks like this:
 
-::image{src='/security-section-4/18-exploit-reentrancy/exploit-reentrancy3.png' style='width: 75%; height: auto;'}
+![exploit-reentrancy3](/security-section-4/18-exploit-reentrancy/exploit-reentrancy3.png)
 
 A reentrancy attack occurs when an attacker takes advantage of the recursive calling capability of a contract. By repeatedly calling a function within a contract, the attacker can withdraw funds or manipulate contract state before the initial function call is resolved, often leading to the theft of funds or other unintended consequences.
 
 As a more indepth reference:
 
-::image{src='/security-section-4/18-exploit-reentrancy/exploit-reentrancy2.png' style='width: 75%; height: auto;'}
+![exploit-reentrancy2](/security-section-4/18-exploit-reentrancy/exploit-reentrancy2.png)
 
 We learnt that re-entrancy is a _very_ common attack vector and walked through how to identify and reproduce the vulnerability both in [**Remix**](https://remix.ethereum.org/#url=https://github.com/Cyfrin/sc-exploits-minimized/blob/main/src/reentrancy/Reentrancy.sol&lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.20+commit.a1b79de6.js) and locally as well as how to test for them.
 
 <details>
 <summary>Re-entrancy Test Example</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

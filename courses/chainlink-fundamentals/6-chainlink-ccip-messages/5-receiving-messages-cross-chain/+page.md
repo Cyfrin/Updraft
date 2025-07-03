@@ -175,7 +175,7 @@ Compile the `Receiver` contract and deploy it to Base Sepolia. Make sure you are
 
 Click **Deploy**:
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/receiver.png' style='width: 100%; height: auto;' alt='receiver'}
+![receiver](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/receiver.png)
 
 Once it has been deployed, remember to pin it to your workspace! Also, note down the address again, as you did with the `Sender` and `Vault` addresses, so you can copy it without having to connect to Base Sepolia.
 

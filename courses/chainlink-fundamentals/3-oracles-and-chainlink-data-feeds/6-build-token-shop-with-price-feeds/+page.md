@@ -20,7 +20,7 @@ The `TokenShop` contract will integrate with our custom ERC-20 token contract fr
 
 2. Click on the **File Explorer** button on the left vertical navigation bar and create a new file that you can name `TokenShop.sol`.
 
-::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/create-new-file.png' style='width: 100%; height: auto;' alt='create-new-file'}
+![create-new-file](/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/create-new-file.png)
 
 3. Copy the code from the [course code repo on GitHub](https://github.com/ciaranightingale/chainlink-fundamentals-code/blob/main/data-feeds/TokenShop.sol) and paste it into your `TokenShop.sol` file.
 When pasting into Remix, you may get an alert that you’re pasting code—just click **Close**.
@@ -181,7 +181,7 @@ For more information on low-level calls and sending ETH within a smart contract,
 3. Make sure that your MetaMask browser wallet is connected to Sepolia and that you’ve connected to MetaMask as your Remix environment (the injected provider).
 4. The TokenShop contract requires a `tokenAddress` as a constructor parameter. So, paste the `MyERC20.sol` contract address you deployed in the previous section.
 
-::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/token-shop-deploy.png' style='width: 100%; height: auto;' alt='token-shop-deploy'}
+![token-shop-deploy](/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/token-shop-deploy.png)
 
 5. Click on **Deploy**, and this will open MetaMask. Hit **Confirm** to sign the transaction on Sepolia. This will deploy the `TokenShop` contract to Sepolia testnet.
 
@@ -192,7 +192,7 @@ After it’s deployed to Sepolia, you will see the transaction details in Remix�
 
 Ideally, at this point, both your `MyERC20` and `TokenShop` contracts should be pinned to your active Remix Workspace.
 
-::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/copy-address.png' style='width: 100%; height: auto;' alt='copy-address'}
+![copy-address](/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/copy-address.png)
 
 ## TokenShop Access Control
 
@@ -200,13 +200,13 @@ Now let's give your `TokenShop` contract the ability to “mint” your tokens f
 
 1. In the **Deployed contracts** section, find your `MyERC20` contract dropdown. Look for the `MINTER_ROLE` function. Since it is a public state variable, it will have an automatic getter function to "get" it's value. 
 
-::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/minter-role.png' style='width: 100%; height: auto;' alt='minter-role'}
+![minter-role](/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/minter-role.png)
 
 2. Click it to read the data from your smart contract. Its value is `“0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6”`. This is the [keccak256](https://www.cyfrin.io/glossary/keccak256) hash string representing the word “MINTER_ROLE”.
 
 3. Next, expand the `grantRole` function using the down arrow and paste that `MINTER_ROLE` hash `0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6` into the `grantRole` function along with the address of the `TokenShop` contract you just deployed:
 
-::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/grant-role.png' style='width: 100%; height: auto;' alt='grant-role'}
+![grant-role](/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/grant-role.png)
 
 4. Click `transact` to call the function and then sign the transaction in the MetaMask pop-up by clicking **Confirm**.
 
@@ -225,7 +225,7 @@ The function will return a boolean (`true` or `false`) indicating whether that a
 
 3. Put in those two inputs and click on the `hasRole` button. It should return a boolean response of `true`.
 
-::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/has-role.png' style='width: 100%; height: auto;' alt='has-role'}
+![has-role](/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/has-role.png)
 
 ## Getting Price Data From Chainlink Price Feeds
 
@@ -234,7 +234,7 @@ We will now use the Chainlink USD/ETH Price Feed that we referenced inside our `
 - Go to your `TokenShop` contract dropdown and find the `getChainlinkDataFeedLatestAnswer` function. You can hover your mouse over the buttons to see the full function name. 
 - Click on the **transact** to call that function and send a transaction. It will return the price with 8 decimal places.
 
-::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/get-chainlink-price.png' style='width: 100%; height: auto;' alt='get-chain-price'}
+![get-chain-price](/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/get-chainlink-price.png)
 
 This is the price of `1 ETH` in terms of `USD` using 8 decimal precision. Note that different feeds may have different precisions.
 

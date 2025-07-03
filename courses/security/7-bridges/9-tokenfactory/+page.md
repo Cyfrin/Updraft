@@ -8,11 +8,11 @@ _Follow along with the video lesson:_
 
 ### TokenFactory.sol
 
-::image{src='/security-section-7/9-tokenfactory/tokenfactory1.png' style='width: 100%; height: auto;'}
+![tokenfactory1](/security-section-7/9-tokenfactory/tokenfactory1.png)
 
 Two down, two to go! The next contract we should take a look at is TokenFactory.sol. We should recall from our diagram this is responsible for deploying L1Token.sol.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

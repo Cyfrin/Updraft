@@ -25,11 +25,11 @@ Visit Section 2 if you need a reminder of how to do this.
 
 1. Open the Transporter testnet app and click on one of the **Connect Wallet** buttons.
 
-::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/transporter-connect-wallet.png' style='width: 100%; height: auto;' alt='transporter-connect-wallet'}
+![transporter-connect-wallet](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/transporter-connect-wallet.png)
 
 2. Check the Box to accept the Terms of Service and select your wallet option (e.g., MetaMask). Click **Connect** when prompted in MetaMask to connect your wallet to Transporter.
 
-::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/terms-of-service.png' style='width: 100%; height: auto;' alt='terms-of-service'}
+![terms-of-service](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/terms-of-service.png)
 
 3. We must now define the source and destination chains and the token we want to transfer.
     - Select Ethereum Sepolia as **From** (the source chain).
@@ -37,32 +37,32 @@ Visit Section 2 if you need a reminder of how to do this.
     - Select USDC as the **Token**.
     - Input the **Amount** as `1` USDC.
 
-::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/approve-transporter.png' style='width: 100%; height: auto;' alt='approve-transporter'}
+![approve-transporter](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/approve-transporter.png)
 
 4. Click **Approve USDC**
     -  Select the **Approve one-time only** option.
 
-::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/approve-one-time.png' style='width: 100%; height: auto;' alt='approve-one-time'}
+![approve-one-time](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/approve-one-time.png)
 
 5. In the MetaMask pop-up, check the Spending cap is `1` as the amount to approve. Click **Confirm** to send the approval transaction.
 
-::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/confirm-approve.png' style='width: 100%; height: auto;' alt='confirm-approve'}
+![confirm-approve](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/confirm-approve.png)
 
 6. Once the approval transaction is confirmed, click **Send** in Transporter to bridge the tokens.
 7. Sign the transaction in MetaMask to burn the tokens on Sepolia and send the cross-chain message. This will trigger USDC tokens to be minted on Base Sepolia once finality is reached on Ethereum Sepolia and the message has been received.
 
-::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/cross-chain-message-steps.png' style='width: 100%; height: auto;' alt='cross-chain-message-steps'}
+![cross-chain-message-steps](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/cross-chain-message-steps.png)
 
 Click **View transaction** to open the CCIP explorer and see the cross-chain message details, including the status of the message, the source and destination chain transactions hashes, the amount, fees, sender and receiver addresses:
 
-::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/ccip-explorer-transporter.png' style='width: 100%; height: auto;' alt='ccip-explorer-transporter'}
+![ccip-explorer-transporter](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/ccip-explorer-transporter.png)
 
 Once the status moves to **Success**, you will have completed your cross-chain transfer using CCIP! This should take around 20 minutes for Ethereum Sepolia finality.
 
-::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/transporter-message-success.png' style='width: 100%; height: auto;' alt='transporter-message-success'}
+![transporter-message-success](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/transporter-message-success.png)
 
-::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/transporter-message-success-2.png' style='width: 100%; height: auto;' alt='transporter-message-success-2'}
+![transporter-message-success-2](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/transporter-message-success-2.png)
 
 You can now check your USDC balance on Base Sepolia to see if your balance of USDC has increased by `1` and the cross-chain transfer was successful.
 
-::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/balance-increased.png' style='width: 100%; height: auto;' alt='balance-increased'}
+![balance-increased](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/balance-increased.png)

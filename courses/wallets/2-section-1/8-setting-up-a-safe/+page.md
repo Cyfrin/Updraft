@@ -14,72 +14,72 @@ For developers, if you have an ownership role or permissions in your smart contr
 
 1. **Visit the Safe Official Website**: Follow this [link](https://app.safe.global/welcome) to visit the Safe official website. You should see a page like this:
 
-   ::image{src='/wallets/8-setting-up-safe/landingPage.png' style='width: 75%; height: auto;'}
+   ![landingPage](/wallets/8-setting-up-safe/landingPage.png)
 
 2. **Select the Blockchain Network**: Choose the chain on which you want to deploy the Safe smart contract wallet. For this example, we'll use the Ethereum Sepolia test net.
 
-   ::image{src='/wallets/8-setting-up-safe/walletConnectModal.png' style='width: 75%; height: auto;'}
+   ![walletConnectModal](/wallets/8-setting-up-safe/walletConnectModal.png)
 
 3. **Connect Your Wallet**: Select the wallet type you want to use to connect to the Safe website.
 
-   ::image{src='/wallets/8-setting-up-safe/createAccount.png' style='width: 75%; height: auto;'}
+   ![createAccount](/wallets/8-setting-up-safe/createAccount.png)
 
 4. **Enter Safe Name**: After connecting your wallet, enter the name of your Safe.
 
-   ::image{src='/wallets/8-setting-up-safe/addSigners.png' style='width: 75%; height: auto;'}
+   ![addSigners](/wallets/8-setting-up-safe/addSigners.png)
 
 5. **Configure Signers**: Ideally, set up a 2-of-3 Safe smart contract wallet. For simplicity, we'll set up a 1-of-1 Safe smart contract wallet. Configure the required threshold for transaction approval.
 
 6. **Estimate Gas Fees**: The next page will estimate the gas fee for creating your Safe smart contract wallet. You can either pay it yourself or use Safe's sponsorship for testnets.
 
-   ::image{src='/wallets/8-setting-up-safe/gasEstimation.png' style='width: 75%; height: auto;'}
+   ![gasEstimation](/wallets/8-setting-up-safe/gasEstimation.png)
 
 7. **Deploy Safe Wallet**: Once the transaction is sent, you will see a page showing the address where your Safe smart contract is deployed.
 
-   ::image{src='/wallets/8-setting-up-safe/transactionState.png' style='width: 75%; height: auto;'}
+   ![transactionState](/wallets/8-setting-up-safe/transactionState.png)
 
 8. **Start Using Safe**: Click on the `Start using Safe {Wallet}` button to access the user interface of your Safe smart contract wallet.
 
-   ::image{src='/wallets/8-setting-up-safe/UserUi.jpeg' style='width: 75%; height: auto;'}
+   ![UserUi](/wallets/8-setting-up-safe/UserUi.jpeg)
 
 ### Viewing and Verifying Your Safe Wallet
 
 To view your wallet on Etherscan, click on the icon circled in the image below:
 
-   ::image{src='/wallets/8-setting-up-safe/viewWalletIcon.png' style='width: 75%; height: auto;'}
+   ![viewWalletIcon](/wallets/8-setting-up-safe/viewWalletIcon.png)
 
 This will take you to the Etherscan page of your deployed Safe smart contract wallet:
 
-   ::image{src='/wallets/8-setting-up-safe/smartContractEtherscanPage.png' style='width: 75%; height: auto;'}
+   ![smartContractEtherscanPage](/wallets/8-setting-up-safe/smartContractEtherscanPage.png)
 
 Click on the `contract` tab to view the Gnosis Safe Proxy contract:
 
-   ::image{src='/wallets/8-setting-up-safe/GnosisSafeProxy.png' style='width: 75%; height: auto;'}
+   ![GnosisSafeProxy](/wallets/8-setting-up-safe/GnosisSafeProxy.png)
 
 To verify the smart contract code, compare it with the source code in the Gnosis Safe GitHub repository. Click on the link circled below to get the deployed bytecode of the contract:
 
-   ::image{src='/wallets/8-setting-up-safe/sourceCodeContract.png' style='width: 75%; height: auto;'}
+   ![sourceCodeContract](/wallets/8-setting-up-safe/sourceCodeContract.png)
 
 ### Using the Safe Wallet User Interface
 
 The user interface offers various features. You can connect to applications listed on the UI or use the `wallet-connect` feature for apps not listed.
 
-   ::image{src='/wallets/8-setting-up-safe/apps.png' style='width: 75%; height: auto;'}
+   ![apps](/wallets/8-setting-up-safe/apps.png)
 
 To connect to an app like Uniswap via `wallet-connect`, follow these steps:
 
 1. Visit the Uniswap website and select `wallet-connect` instead of MetaMask.
 2. Copy the connection link from the modal:
 
-   ::image{src='/wallets/8-setting-up-safe/walletConnectModal.png' style='width: 75%; height: auto;'}
+   ![walletConnectModal](/wallets/8-setting-up-safe/walletConnectModal.png)
 
 3. Paste the link into the Safe wallet UI:
 
-   ::image{src='/wallets/8-setting-up-safe/safeWalletConnect.png' style='width: 75%; height: auto;'}
+   ![safeWalletConnect](/wallets/8-setting-up-safe/safeWalletConnect.png)
 
 4. Approve the connection:
 
-   ::image{src='/wallets/8-setting-up-safe/safeWalletConnectModal.png' style='width: 75%; height: auto;'}
+   ![safeWalletConnectModal](/wallets/8-setting-up-safe/safeWalletConnectModal.png)
 
 Once connected, your Safe wallet will be linked to Uniswap or any other app you choose.
 

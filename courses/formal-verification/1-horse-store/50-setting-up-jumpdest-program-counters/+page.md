@@ -169,7 +169,7 @@ JUMP          // [0x04, calldata_size, 0x3f, 0x43, func_selector]]
 
 Now, this looks like we're pushing a bunch of random things to the stack and then calling a `JUMP`. That's kind of true, but things will seem less random soon, haha! Let's look at JUMP since we've never seen it used before.
 
-::image{src='/formal-verification-1/50-setting-up-jumpdest-program-counters/setting-up-jumpdest-program-counters1.png' style='width: 100%; height: auto;'}
+![setting-up-jumpdest-program-counters1](/formal-verification-1/50-setting-up-jumpdest-program-counters/setting-up-jumpdest-program-counters1.png)
 
 `JUMP` takes the top item of our stack and continues our execution from that bytes offset location. This chunk of code represents our `updateHorseNumber jump dest 1`. When we reach the `JUMP` operation on this chunk.
 

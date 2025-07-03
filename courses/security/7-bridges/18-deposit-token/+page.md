@@ -33,7 +33,7 @@ function depositTokensToL2(address from, address l2Recipient, uint256 amount) ex
 
 The `NATSPEC` here nicely details the functionality we'd expect based on our earlier protocol diagram. This function locks tokens into the `vault`, which emits an event. This event is listened for off-chain to trigger the mint of tokens on L2.
 
-::image{src='/security-section-7/18-deposit-token/deposit-token1.png' style='width: 100%; height: auto;'}
+![deposit-token1](/security-section-7/18-deposit-token/deposit-token1.png)
 
 Foremost, we can see that a user can only call this function if the protocol is not paused, via the `whenNotPaused` modifier.
 

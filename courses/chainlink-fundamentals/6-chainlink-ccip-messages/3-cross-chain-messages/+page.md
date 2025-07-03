@@ -173,11 +173,11 @@ Once the `Sender` contract has been successfully deployed AND pinned, note down 
 
 Switch the connected network to Base Sepolia inside MetaMask by clicking the network dropdown on the top left:
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/switch-networks.png' style='width: 100%; height: auto;' alt='switch-networks'}
+![switch-networks](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/switch-networks.png)
 
 Verify in Remix that you are connected to Base Sepolia by checking that the network has a chain ID of `84532`. 
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/chain-id.png' style='width: 100%; height: auto;' alt='chain-id'}
+![chain-id](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/chain-id.png)
 
 Now, deploy the `Vault` to Base Sepolia AND pin it to your workspace once it has deployed. Again, note down this address so you can easily copy it without having to switch back to Base Sepolia.
 

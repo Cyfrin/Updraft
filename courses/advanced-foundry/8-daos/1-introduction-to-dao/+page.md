@@ -45,15 +45,15 @@ Let's take a closer look at an active an live DAO Today. Compound protocol is se
 
 We can access their governance system, and view past and pending proposals, through the Governance UI of their website.
 
-::image{src='/foundry-daos/1-intro/intro1.png' style='width: 100%; height: auto;'}
+![intro1](/foundry-daos/1-intro/intro1.png)
 
 If we navigate to one [**specific proposal**](https://compound.finance/governance/proposals/256), we can gain a lot of insight into how this process works. The proposal view breaks down the votes received, the number of participating addresses and importantly the Proposal History. We're able to see that every proposal begins with a transaction.
 
-::image{src='/foundry-daos/1-intro/intro2.png' style='width: 100%; height: auto;'}
+![intro2](/foundry-daos/1-intro/intro2.png)
 
 Let's take a closer look at this [**create transaction**](https://etherscan.io/tx/0xbe0b8152195a29c7ac61144dbaa9f98b00fbb7c59d15b19e96105a42195fa829)! This transaction will show us all of the data submitted to the proposal.
 
-::image{src='/foundry-daos/1-intro/intro3.png' style='width: 100%; height: auto;'}
+![intro3](/foundry-daos/1-intro/intro3.png)
 
 Decoding this function selector shows a pretty standard propose function. Typically a proposal will be broken down into:
 
@@ -70,11 +70,11 @@ Often the functions being called are part of the DAO's functionality and typical
 
 Once created, and after a brief delay configured by the protocol, a proposal becomes active for voting. This is a predetermined duration during which members of the DAO can vote to accept or refuse a proposal
 
-::image{src='/foundry-daos/1-intro/intro4.png' style='width: 100%; height: auto;'}
+![intro4](/foundry-daos/1-intro/intro4.png)
 
 Voting can happen directly on-chain of course, or through the provided app interface provided [**here**](https://app.compound.finance/vote?market=usdc-mainnet).
 
-::image{src='/foundry-daos/1-intro/intro5.png' style='width: 100%; height: auto;'}
+![intro5](/foundry-daos/1-intro/intro5.png)
 
 If voting succeeds, a proposal will be queued for execution. This queue period affords time before execution of a proposal for a number of things including:
 

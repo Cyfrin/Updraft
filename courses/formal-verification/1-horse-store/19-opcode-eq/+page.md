@@ -22,7 +22,7 @@ readNumberOfHorses = 0xe026c017
 
 These selectors can be determines by running `cast sig "updateHorseNumber(uint256)"` and `cast sig readNumberOfHorses()` respectfully. Once we have these signatures, there's an op code we can use to check equality, the `EQ` op code! Let's review how it works in [**evm.codes**](https://www.evm.codes/?fork=shanghai)
 
-::image{src='/formal-verification-1/19-opcode-eq/opcode-eq-1.png' style='width: 75%; height: auto;'}
+![opcode-eq-1](/formal-verification-1/19-opcode-eq/opcode-eq-1.png)
 
 As we can see, the `EQ` op code takes the top item on our stack and compares it to the next item in the stack. This op code will return `1` if the values compared are equal and `0` if they are not equal.
 

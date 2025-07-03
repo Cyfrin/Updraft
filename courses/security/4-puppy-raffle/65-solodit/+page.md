@@ -18,11 +18,11 @@ Thus, [**Solodit**](https://solodit.xyz/) was born. [**Solodit**](https://solodi
 
 Once logged in, you should see something like this: a clean UI through which you can search and filter by anything you'd like.
 
-::image{src='/security-section-4/65-solodit/solodit1.png' style='width: 75%; height: auto;'}
+![solodit1](/security-section-4/65-solodit/solodit1.png)
 
 By navigating to the [**`Audits` menu**](https://solodit.xyz/audit), we can even see live and upcoming audit competitions as well as learn about types of audits such as the Multi-Phase Audit.
 
-::image{src='/security-section-4/65-solodit/solodit2.png' style='width: 75%; height: auto;'}
+![solodit2](/security-section-4/65-solodit/solodit2.png)
 
 In addition to this, Solodit aggregates open `bug bounties` as well as `leaderboard` positions across multiple auditing platforms.
 

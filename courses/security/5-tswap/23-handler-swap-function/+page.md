@@ -36,7 +36,7 @@ function getInputAmountBasedOnOutput(
 
 First, let's begin with the formula our invariant was derived from `x * y = (x + ∆x) * (y - ∆y)`, we can substitute `∆y` for outputAmount since this will reflect by how much our poolToken is changing:
 
-::image{src='/security-section-5/23-handler-swap-function/handler-swap-function1.png' style='width: 100%; height: auto;'}
+![handler-swap-function1](/security-section-5/23-handler-swap-function/handler-swap-function1.png)
 
 From the equation `x*outputAmount  = ∆x(y - outputAmount)` we just need to substitute a few known variables.
 
@@ -44,7 +44,7 @@ From the equation `x*outputAmount  = ∆x(y - outputAmount)` we just need to sub
 - `∆x` is going to be the `inputAmount` as discussed earlier, the input of poolTokens to get the desired output in `weth`.
 - `y` will be our `outputReserves`, just as x was a reflection of total poolTokens, this will be a reflection of total `weth` tokens.
 
-::image{src='/security-section-5/23-handler-swap-function/handler-swap-function2.png' style='width: 100%; height: auto;'}
+![handler-swap-function2](/security-section-5/23-handler-swap-function/handler-swap-function2.png)
 
 Our resulting formula is remarkably similar to what's returned by the `getInputAmountBasedOnOutput`function (10000 and 997 are related to fees, we can ignore them for now):
 
@@ -148,7 +148,7 @@ Alright! Here's our completed `Handler` for reference:
 <details>
 <summary>Handler.t.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.20;

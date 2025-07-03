@@ -42,7 +42,7 @@ Developers can register upkeeps, while node operators can register as Automation
 - They generate cryptographically signed reports.
 - The Registry validates these reports before executing the upkeep functions.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/automation-architecture.png' style='width: 100%; height: auto;' alt='automation-architecture'}
+![automation-architecture](/chainlink-fundamentals/4-chainlink-automation/assets/automation-architecture.png)
 
 This architecture provides several key benefits:
 
