@@ -152,7 +152,7 @@ This time, we want to deploy to Remix's local node - **Rexmix VM (Cancun)**.
 
 2. Make sure you have the `CCIPLocalSimulator.sol` file open in the main window. In the **Contract** dropdown, select `CCIPLocalSimulator`. Click **Deploy**.
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/remix-vm.png' style='width: 100%; height: auto;' alt='remix-vm'}
+![remix-vm](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/remix-vm.png)
 
 3. The `CCIPLocalSimulator` contract will now be visible in the **Deployed Contracts** section. 
 
@@ -160,7 +160,7 @@ This time, we want to deploy to Remix's local node - **Rexmix VM (Cancun)**.
 
 5. Copy the **linkToken_** address.
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/config.png' style='width: 100%; height: auto;' alt='config'}
+![config](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/config.png)
 
 ### Deploy the LINK token
 
@@ -169,7 +169,7 @@ We need to, as before, fund our `Sender` contract with LINK tokens to pay for CC
     - Paste the  **linkToken_** address in the **At Address** box.
     - Click the **At Address** button.
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/at-address.png' style='width: 100%; height: auto;' alt='at-address'}
+![at-address](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/at-address.png)
 
 Now, the `LinkToken` contract will show in the **Deployed Contracts** section. We will be able to fund contracts with LINK.
 
@@ -193,20 +193,20 @@ Expand the `MessageSender` contract in the **Deployed Contracts** section and ex
 
 **Note**: Remix will fail to estimate the gas properly for the `sendMessage` function. 
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/gas-failed.png' style='width: 100%; height: auto;' alt='gas-failed'}
+![gas-failed](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/gas-failed.png)
 
 To work around this, we need to set the gas limit manually to `3000000` by clicking the radio button at the top of the **Deploy and run transactions** tab:
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/custom-gas-limit.png' style='width: 100%; height: auto;' alt='custom-gas-limit'}
+![custom-gas-limit](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/custom-gas-limit.png)
 
 Click **transact** to call the function and test sending the CCIP message.
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/send-message.png' style='width: 100%; height: auto;' alt='send-message'}
+![send-message](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/send-message.png)
 
 You'll notice this is near instant! No need to wait for finality - cool right!
 
 To check if the message was received by `MessageReceiver`, call the `getLastReceivedMessageDetails` function. You'll see the message ID and the message we sent using Chainlink Local!
 
-::image{src='/chainlink-fundamentals/6-chainlink-ccip-messages/assets/message-received.png' style='width: 100%; height: auto;' alt='message-received'}
+![message-received](/chainlink-fundamentals/6-chainlink-ccip-messages/assets/message-received.png)
 
 And that's it! You have successfully used Chainlink Local in Remix to test sending a cross-chain message with CCIP. 

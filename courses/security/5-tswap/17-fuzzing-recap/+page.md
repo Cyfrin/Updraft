@@ -20,7 +20,7 @@ This lesson also touched on `foundry.toml` configurations for our fuzz testing w
 
 `Open stateful fuzzing` allowed us to retain our contract state from one run to the next. Tracking these state changes between runs allows our fuzzing test suite to catch even deeper vulnerabilities.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

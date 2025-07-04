@@ -55,6 +55,6 @@ We can check how the byte code of our contract is doing so far with `huffc src/h
 
 We were also introduced to the evm.codes playground, wherein we can experiment with byte code and op code inputs to walk through each operation being executed. In the screenshot below, I've included the runtime byte code and we can see that it is indeed exactly what we've coded in our Huff contract!
 
-::image{src='/formal-verification-1/17-opcodes-recap/opcodes-recap-1.png' style='width: 100%; height: auto;'}
+![opcodes-recap-1](/formal-verification-1/17-opcodes-recap/opcodes-recap-1.png)
 
 In the next lesson we'll try our luck at function dispatching and routing the `call data` to where it needs to be. Let's go!

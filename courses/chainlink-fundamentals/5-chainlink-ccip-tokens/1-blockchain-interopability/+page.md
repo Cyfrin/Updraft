@@ -18,7 +18,7 @@ There are three main token-bridging mechanisms:
     - **Source Chain -> Destination Chain**: Tokens are sent to and held in a secure smart contract on the source chain. This is known as "locking" the tokens. Equivalent "wrapped" tokens are minted as representations on the destination chain. Wrapped tokens are 1:1 backed representations of the original asset that allow it to be used on a blockchain different from its native one. You can think of it like an IOU.
     - **Destination Chain -> Source Chain**: Wrapped tokens are burned on the destination chain to release the original tokens by unlocking them on the source chain.
 
-    ::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/lock-mint.png' style='width: 100%; height: auto;' alt='lock-mint'}
+    ![lock-mint](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/lock-mint.png)
 
 2. **Burn and mint**: 
     - **Source chain**: Tokens are permanently destroyed (burned).
@@ -26,7 +26,7 @@ There are three main token-bridging mechanisms:
     - This process is the same for the return journey.
     - This approach is particularly suitable for native tokens with minting authority.
 
-    ::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/burn-mint.png' style='width: 100%; height: auto;' alt='burn-mint'}
+    ![burn-mint](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/burn-mint.png)
 
 3. **Lock and unlock**:
     - **Source chain**: Tokens are locked in a smart contract.
@@ -34,14 +34,14 @@ There are three main token-bridging mechanisms:
     - This process is the same for the return journey.
     - This mechanism requires sufficient liquidity on both sides; typically, liquidity providers are incentivized through revenue sharing or yield opportunities.
 
-    ::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/lock-unlock.png' style='width: 100%; height: auto;' alt='lock-unlock'}
+    ![lock-unlock](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/lock-unlock.png)
     
 4. **Burn and Unlock**:
     - **Source chain**: Tokens are permanently burned
     - **Destination chain**: Equivalent tokens are unlocked from a reserve pool, requiring liquidity providers.
     - This approach combines the finality of burning with the need for pre-existing liquidity on the destination chain.
 
-    ::image{src='/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/burn-unlock.png' style='width: 100%; height: auto;' alt='burn-unlock'}
+    ![burn-unlock](/chainlink-fundamentals/5-chainlink-ccip-tokens/assets/burn-unlock.png)
 
 ## Cross-chain Messaging
 

@@ -22,7 +22,7 @@ Ethernaut, is amazing. It's effectively a compilation of CTFs (capture the flags
 
 You _are_ expected to know a little bit of JavaScript for some of the functionality of `Ethernaut`, but with a little work you can deploy the instanced contracts and interact with them through `Foundry` or `Etherscan` as well.
 
-::image{src='/security-section-4/64-exercises/exercises1.png' style='width: 75%; height: auto;'}
+![exercises1](/security-section-4/64-exercises/exercises1.png)
 
 ### Damn Vulnerable DeFi
 
@@ -35,7 +35,7 @@ Unfortunately DVD is _also_ written in `Hardhat`, so some JavaScript knowledge g
 
 What you can do, if you're not comfortable with `Hardhat` would be to copy the contracts that Damn Vulnerable Defi provides you into a Forge project and just try to break it locally. Each challenge in DVD provides you with your objectives.
 
-::image{src='/security-section-4/64-exercises/exercises2.png' style='width: 75%; height: auto;'}
+![exercises2](/security-section-4/64-exercises/exercises2.png)
 
 ### Case Studies
 

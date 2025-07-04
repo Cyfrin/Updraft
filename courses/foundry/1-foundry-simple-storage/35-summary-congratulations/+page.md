@@ -36,7 +36,7 @@ Moreover, the knowledge on how to auto format contracts with `Forge format` was 
 forge format my_contract.sol
 ```
 
-::image{src='/foundry/23-summary/summary1.png' style='width: 100%; height: auto;'}
+![summary1](/foundry/23-summary/summary1.png)
 
 ## Looking Ahead
 
@@ -44,4 +44,4 @@ With these tools in your web development arsenal, you've performed exceptionally
 
 Take a breather. Remember, breaks enhance productivity. Till next time, continue to strive for greatness in every line of code you write!
 
-::image{src='/foundry/23-summary/summary2.png' style='width: 100%; height: auto;'}
+![summary2](/foundry/23-summary/summary2.png)

@@ -16,7 +16,7 @@ In audits and especially in bug bounties, it is your obligation to convince the 
 
 BUT. Before we walkthrough another report, I want to introduce you to competitive audits. We're going to go over what they are, how they differ from private audits and how to submit a finding for them.
 
-::image{src='/security-section-4/43-reporting-primer/reporting-primer1.svg' style='width: 75%; height: auto;'}
+![reporting-primer1](/security-section-4/43-reporting-primer/reporting-primer1.svg)
 
 ---
 

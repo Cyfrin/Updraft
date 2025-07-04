@@ -65,11 +65,11 @@ You may receive an error at this point when you run the prover as it may detect 
 
 By sidestepping this loop being detected we should see things pass...
 
-::image{src='/formal-verification-3/6-total-supply-greater-than-0/total-supply-greater-than-01.png' style='width: 100%; height: auto;'}
+![total-supply-greater-than-01](/formal-verification-3/6-total-supply-greater-than-0/total-supply-greater-than-01.png)
 
 ...and our job passes without errors! Although, if we turn our `rule_sanity` back to `basic`, what do you think is going to happen?
 
-::image{src='/formal-verification-3/6-total-supply-greater-than-0/total-supply-greater-than-02.png' style='width: 100%; height: auto;'}
+![total-supply-greater-than-02](/formal-verification-3/6-total-supply-greater-than-0/total-supply-greater-than-02.png)
 
 ### Wrap Up
 

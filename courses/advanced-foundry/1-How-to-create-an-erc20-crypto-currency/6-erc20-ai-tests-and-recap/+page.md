@@ -98,7 +98,7 @@ Let's run it!
 forge test --mt testBobBalance
 ```
 
-::image{src='/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap1.PNG' style='width: 100%; height: auto;'}
+![erc20-ai-tests-and-recap1](/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap1.PNG)
 
 Easy pass. Let's write a couple more tests and then we'll see what AI can do to help us.
 
@@ -106,19 +106,19 @@ Easy pass. Let's write a couple more tests and then we'll see what AI can do to 
 
 Next, let's test some approvals. The ERC20 standard contains an important function, `transferFrom`. It is often the case that a smart contract protocol may need to transfer tokens _on behalf_ of a user the way this access is controlled is through the `transferFrom` function.
 
-::image{src='/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap2.png' style='width: 100%; height: auto;'}
+![erc20-ai-tests-and-recap2](/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap2.png)
 
 In summary, an address needs to be approved by another in order to transfer tokens on their behalf, otherwise the transaction should revert with an error.
 
 Approvals, naturally, are handled through the `approve` and allowance functionality within the ERC20 standard.
 
-::image{src='/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap3.png' style='width: 100%; height: auto;'}
+![erc20-ai-tests-and-recap3](/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap3.png)
 
 Through these methods a user is able to approve another address to spend, or otherwise interact with, a limited (or often unlimited) number of tokens.
 
 The security risks associated with this are pretty clear, which is why we've seen services like Etherscan's Token Approval Checker pop up. These allow you to see at a glance which addresses possess approvals for tokens in your wallet.
 
-::image{src='/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap4.png' style='width: 100%; height: auto;'}
+![erc20-ai-tests-and-recap4](/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap4.png)
 
 While it costs a little gas, it's good practice to regularly assess your approvals and revoke them when no longer applicable or appropriate.
 
@@ -159,11 +159,11 @@ Let's run the test!
 forge test --mt testAllowancesWork
 ```
 
-::image{src='/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap5.png' style='width: 100%; height: auto;'}
+![erc20-ai-tests-and-recap5](/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap5.png)
 
 Nice, another pass! However, if we run `forge coverage` ...
 
-::image{src='/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap6.png' style='width: 100%; height: auto;'}
+![erc20-ai-tests-and-recap6](/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap6.png)
 
 Abysmal. We have a long way to go!
 

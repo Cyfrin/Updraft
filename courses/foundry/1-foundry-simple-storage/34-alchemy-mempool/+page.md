@@ -55,7 +55,7 @@ Once your application is up and running, you will have access to the application
 
 If you observe a lower success rate for your transactions, go to the "Recent Invalid Request" tab. This will list all unsuccessful requests along with the reasons for their failure, making it easier for you to debug and fix issues.
 
-::image{src='/foundry/22-alchemy/alchemy1.png' style='width: 100%; height: auto;'}
+![alchemy1](/foundry/22-alchemy/alchemy1.png)
 
 ## Mempool Watcher
 

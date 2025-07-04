@@ -30,7 +30,7 @@ In Solidity, this Assembly block is actually written in a language called `Yul`,
 
 The [**Solidity Documentation**](https://docs.soliditylang.org/en/latest/yul.html) is a great reference for what these Yul functions are doing.
 
-::image{src='/security-section-7/10-unsupported-opcodes/unsupported-opcodes1.png' style='width: 100%; height: auto;'}
+![unsupported-opcodes1](/security-section-7/10-unsupported-opcodes/unsupported-opcodes1.png)
 
 What does this mean for our Boss Bridge function?
 
@@ -73,7 +73,7 @@ Since we have some unanswered questions, this is actually a good chance to lean 
 
 By searching the checklist for "opcodes" we should be able to find:
 
-::image{src='/security-section-7/10-unsupported-opcodes/unsupported-opcodes2.png' style='width: 100%; height: auto;'}
+![unsupported-opcodes2](/security-section-7/10-unsupported-opcodes/unsupported-opcodes2.png)
 
 Hmm.. this definitely seems like it could be an important consideration in a cross chain bridge like Boss Bridge. Let's see how this applies to our situation.
 
@@ -83,7 +83,7 @@ Run `forge build`. This should generate a JSON file for TokenFactory in our `out
 
 **If your TokenFactory.json file looks like this:**
 
-::image{src='/security-section-7/10-unsupported-opcodes/unsupported-opcodes3.png' style='width: 100%; height: auto;'}
+![unsupported-opcodes3](/security-section-7/10-unsupported-opcodes/unsupported-opcodes3.png)
 
 **...right-click and select `Format Document`.**
 
@@ -93,7 +93,7 @@ Within this list, we expect to find the `create` opcode. A reference list for op
 
 We can definitely see it popping up, if we search our bytecode for this.. don't worry about it showing up a few time for our purposes here.
 
-::image{src='/security-section-7/10-unsupported-opcodes/unsupported-opcodes4.png' style='width: 100%; height: auto;'}
+![unsupported-opcodes4](/security-section-7/10-unsupported-opcodes/unsupported-opcodes4.png)
 
 This opcode is of course compatible with the `Ethereum` chain, but Boss Bridge is meant to work on `zkSync Era`! I wonder if the `create` opcode is supported, we should check [**their docs**](https://docs.zksync.io/).
 
@@ -118,7 +118,7 @@ Alright, all good to know, but not exactly what we're looking for. It _does_ see
 
     To guarantee that create/create2 functions operate correctly, the compiler must be aware of the bytecode of the deployed contract in advance. "
 
-::image{src='/security-section-7/10-unsupported-opcodes/unsupported-opcodes5.png' style='width: 100%; height: auto;'}
+![unsupported-opcodes5](/security-section-7/10-unsupported-opcodes/unsupported-opcodes5.png)
 
 Uh oh. The third example we're given by the zkSync docs looks suspiciously like our `Boss Bridge` execution of `create`!
 

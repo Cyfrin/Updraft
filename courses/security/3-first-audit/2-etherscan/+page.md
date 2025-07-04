@@ -40,7 +40,7 @@ You should recall the [**Rekt Test**](https://blog.trailofbits.com/2023/08/14/ca
 
 How does your client's protocol stand up against these questions?
 
-::image{src='/security-section-2/3-rekt/rekt1.png' style='width: 100%; height: auto;'}
+![rekt1](/security-section-2/3-rekt/rekt1.png)
 
 If all they've provided you is an Etherscan link - the answer is poorly.
 

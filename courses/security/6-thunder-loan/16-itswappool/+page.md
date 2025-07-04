@@ -8,7 +8,7 @@ title: Manual Review - ITSwapPool.sol
 
 ITSwapPool.sol is up next in our climb towards more complex code bases to review in Thunder Loan.
 
-```js
+```solidity
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity 0.8.20;
 
@@ -44,4 +44,4 @@ The limited nature of tokens being used may raise questions pertaining to the pr
 
 Wow, another quick one down, we're flying through these quick wins. Thanks Tincho Method!
 
-::image{src='/security-section-6/16-itswappool/itswappool1.png' style='width: 100%; height: auto;'}
+![itswappool1](/security-section-6/16-itswappool/itswappool1.png)

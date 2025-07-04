@@ -8,11 +8,11 @@ _Follow along with the video lesson:_
 
 ### L1Vault.sol
 
-::image{src='/security-section-7/8-vault/l1vault1.png' style='width: 100%; height: auto;'}
+![l1vault1](/security-section-7/8-vault/l1vault1.png)
 
 Alright! The next most complex contract that our Solidity Metrics report identifies is `L1Vault.sol`. Let's take a look at that contract next.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 

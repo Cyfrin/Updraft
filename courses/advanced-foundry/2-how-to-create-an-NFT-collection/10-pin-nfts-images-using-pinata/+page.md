@@ -30,15 +30,15 @@ In addition to the above, the `IPFS` network doesn't automatically distribute al
 
 Fortunately, there are services available which developers can use to pin their data for them, decentralizing access to it. One such service is [**Pinata.cloud**](https://www.pinata.cloud/).
 
-::image{src='/foundry-nfts/10-ipfs-https/ipfs-https1.png' style='width: 100%; height: auto;'}
+![ipfs-https1](/foundry-nfts/10-ipfs-https/ipfs-https1.png)
 
 Once an account is created and you've logged in, the UI functions much like an `IPFS` node and you can simply upload any files you want the service to pin on your behalf.
 
-::image{src='/foundry-nfts/10-ipfs-https/ipfs-https2.png' style='width: 100%; height: auto;'}
+![ipfs-https2](/foundry-nfts/10-ipfs-https/ipfs-https2.png)
 
 Once uploaded, `Pinata` will provide a `CID`, just like `IPFS` itself will.
 
-::image{src='/foundry-nfts/10-ipfs-https/ipfs-https3.png' style='width: 100%; height: auto;'}
+![ipfs-https3](/foundry-nfts/10-ipfs-https/ipfs-https3.png)
 
 > ❗ **PROTIP**
 > Whenever I work on a project, I will upload my images/data both to my local `IPFS` node as well as `Pinata` to assure the data is always pinned _somewhere_.
@@ -51,4 +51,4 @@ In the next lesson we'll discuss `Scalable Vector Graphics`, or `SVGs` and how i
 
 See you there!
 
-::image{src='/foundry-nfts/10-ipfs-https/ipfs-https4.png' style='width: 100%; height: auto;'}
+![ipfs-https4](/foundry-nfts/10-ipfs-https/ipfs-https4.png)

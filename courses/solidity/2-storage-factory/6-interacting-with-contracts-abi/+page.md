@@ -50,7 +50,7 @@ function sfStore(uint256 _simpleStorageIndex, uint256 _simpleStorageNumber) publ
 
 If you go to Solidity's compile tab, you will find a button that lets you copy the ABI to the clipboard.
 
-::image{src='/solidity/remix/lesson-3/interacting/interacting-contract1.png' style='width: 100%; height: auto;'}
+![interacting-contract1](/solidity/remix/lesson-3/interacting/interacting-contract1.png)
 
 > 🗒️ **NOTE**:br
 > In Solidity, it's possible to **type cast** an _address_ to a type _contract_

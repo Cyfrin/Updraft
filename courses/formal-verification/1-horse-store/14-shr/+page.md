@@ -20,7 +20,7 @@ In order to achieve this, there's an op code we can use! 😲
 
 In [**evm.codes**](https://www.evm.codes/?fork=shanghai) search for `shr`. This stands for `Shift Right` and is precisely the tool we need.
 
-::image{src='/formal-verification-1/14-shr/shr-1.png' style='width: 100%; height: auto;'}
+![shr-1](/formal-verification-1/14-shr/shr-1.png)
 
 In order to use this op code, we need 2 items on the stack
 

@@ -16,7 +16,7 @@ What we've been provided is a little sparse - but read through the README of [**
 <summary>About Puppy Raffle</summary>
 
 <p align="center">
-::image{src='/security-section-4/7-recon-reading-docs/reading-docs1.svg' style='width: 75%; height: auto;'}
+![reading-docs1](/security-section-4/7-recon-reading-docs/reading-docs1.svg)
 :br
 
 # Puppy Raffle

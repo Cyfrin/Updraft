@@ -19,7 +19,7 @@ The Chainlink Functions Playground is a useful tool for developers to get hands-
 
 Navigate to the [Chainlink Functions Playground](https://functions.chain.link/playground) where you will see an **Input** window:
 
-::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/functions-playground.png' style='width: 100%; height: auto;' alt='functions-playground'}
+![functions-playground](/chainlink-fundamentals/7-chainlink-functions/assets/functions-playground.png)
 
 The playground has the following fields:
 
@@ -39,11 +39,11 @@ Let's use the Chainlink Functions Playground to call an API to get a Star Wars c
 
 Click the **Fill with example code** dropdown button and click the **Star Wars characters** example:
 
-::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/code-example.png' style='width: 100%; height: auto;' alt='code-example'}
+![code-example](/chainlink-fundamentals/7-chainlink-functions/assets/code-example.png)
 
 The following JavaScript source code will populate the **Source code** window:
 
-::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/star-wars-code.png' style='width: 100%; height: auto;' alt='star-wars-code'}
+![star-wars-code](/chainlink-fundamentals/7-chainlink-functions/assets/star-wars-code.png)
 
 ### Arguments 
 
@@ -67,7 +67,7 @@ A HTTP request is made to the URL: https://swapi.info/api/people/${characterId} 
 
 Let’s assume that your first argument (which gets assigned to `characterId`) is `1`. If you go to the link in a new browser tab, the swapi.info API server will send you back the following information:
 
-::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/api.png' style='width: 100%; height: auto;' alt='api'}
+![api](/chainlink-fundamentals/7-chainlink-functions/assets/api.png)
 
 This has all the data about the Star Wars character with ID `1`: Luke Skywalker in Swapi’s database. If you change the `characterId` argument to `2` (and so on), you will get information on other Star Wars characters assigned to that specific ID.
 
@@ -81,7 +81,7 @@ To run the code:
 
 You will see the **Console log** and **Output** populate on the right with all the information about Luke Skywalker:
 
-::image{src='/chainlink-fundamentals/7-chainlink-functions/assets/output.png' style='width: 100%; height: auto;' alt='output'}
+![output](/chainlink-fundamentals/7-chainlink-functions/assets/output.png)
 
 By utilizing the Chainlink Functions Playground, you verified your JavaScript code works without needing to deploy a smart contract, interact with Chainlink Functions, or make a subscription (more on this shortly).
 

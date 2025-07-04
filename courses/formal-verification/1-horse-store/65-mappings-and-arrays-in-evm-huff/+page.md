@@ -51,7 +51,7 @@ I'll keep a running reminder of our current total contract state at the top of e
 
 Now's a good time to go back and reference the Solidity Documentation. We should be reminded that mappings are handled using a very specific algorithm.
 
-::image{src='/formal-verification-1/65-mappings-and-arrays-in-evm-huff/mappings-and-arrays-in-evm-huff1.png' style='width: 100%; height: auto;'}
+![mappings-and-arrays-in-evm-huff1](/formal-verification-1/65-mappings-and-arrays-in-evm-huff/mappings-and-arrays-in-evm-huff1.png)
 
 We cover this in a little more detail in the Foundry Full Course on Updraft, so I won't go over it here, but lets look at how we accomplish this in Huff.
 

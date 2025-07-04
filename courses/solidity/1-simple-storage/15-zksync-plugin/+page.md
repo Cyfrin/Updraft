@@ -10,7 +10,7 @@ _Follow along with the video_
 
 In this lesson, you're about to learn the same type of layer 2 or rollup deployment that professional developers are using. On Remix, we can start by activating the **zkSync plugin** in our environment. In the _plugin manager_, search for "zkSync" and activate the zkSync module. You'll notice that a new zkSync tab on the left side will appear.
 
-::image{src='/solidity/1-simple-storage/15-zksync-plugin/zksync-module.png' style='width: 100%; height: auto;'}
+![zksync-module](/solidity/1-simple-storage/15-zksync-plugin/zksync-module.png)
 
 This module is made of sections for compiling, deploying, and interacting with contracts on zkSync.
 
@@ -25,7 +25,7 @@ Let's start by compiling the `SimpleStorage.sol` file by hitting the "Compile" b
 
 After compilation, you can go to the `environment tab` to connect your MetaMask wallet, ensuring it is set to the _zkSync Sepolia testnet_. Once connected, you can **deploy and verify** the `SimpleStorage` contract.
 
-::image{src='/solidity/1-simple-storage/15-zksync-plugin/wallet.png' style='width: 100%; height: auto;'}
+![wallet](/solidity/1-simple-storage/15-zksync-plugin/wallet.png)
 
 ### Verifying Deployment
 

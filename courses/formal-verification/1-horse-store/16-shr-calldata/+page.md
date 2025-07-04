@@ -39,7 +39,7 @@ With that determined, let's add what we need to our contract.
 
 And our stack should look like this:
 
-::image{src='/formal-verification-1/16-shr-calldata/shr-calldata-1.png' style='width: 100%; height: auto;'}
+![shr-calldata-1](/formal-verification-1/16-shr-calldata/shr-calldata-1.png)
 
 Our final step to isolate the `function selector` from our received `call data` is going to be executing the `shr` operation, exciting!
 
@@ -54,7 +54,7 @@ Our final step to isolate the `function selector` from our received `call data` 
 
 The stack now:
 
-::image{src='/formal-verification-1/16-shr-calldata/shr-calldata-2.png' style='width: 100%; height: auto;'}
+![shr-calldata-2](/formal-verification-1/16-shr-calldata/shr-calldata-2.png)
 
 This is great! We finally have our `function selector` on the stack and we can finally start to do some function dispatching!
 

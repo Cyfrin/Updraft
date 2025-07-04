@@ -34,7 +34,7 @@ if (endingBalance < startingBalance + fee) {
 
 Effectively, a user taking a `flash loan` is able to do anything they want between the `transferUnderlyingTo` and the conditional check at the end of this function. This is only possible because if that check on the `endingBalance` doesn't pass, the entire transaction (and anything that was done with the loan) will revert!
 
-::image{src='/security-section-6/5-pay-back-or-revert/pay-back-or-revert1.png' style='width: 100%; height: auto;'}
+![pay-back-or-revert1](/security-section-6/5-pay-back-or-revert/pay-back-or-revert1.png)
 
 It's easy to see what opportunities a system like `flash loans` enables for the average user. No longer will these advantages be available only to whales!
 

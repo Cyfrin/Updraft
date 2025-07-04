@@ -16,7 +16,7 @@ For out first audit we're immersing ourselves into a scenario where we're auditi
 
 In later lessons we'll also go through the process of submission findings in a competitive scenario like `CodeHawks`
 
-::image{src='/security-section-3/1-review/firstaudit1.png' style='width: 100%; height: auto;'}
+![firstaudit1](/security-section-3/1-review/firstaudit1.png)
 
 ### The End Goal
 

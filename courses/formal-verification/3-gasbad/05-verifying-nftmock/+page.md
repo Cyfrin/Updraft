@@ -57,7 +57,7 @@ certoraRun ./certora/conf/NftMock.conf
 
 Running the above on our current spec is going to of course pass. The proof is a tautology and our spec isn't testing anything meaningful.
 
-::image{src='/formal-verification-3/5-verifying-nftmock/verifying-nftmock1.png' style='width: 100%; height: auto;'}
+![verifying-nftmock1](/formal-verification-3/5-verifying-nftmock/verifying-nftmock1.png)
 
 `Certora` refers to situations like this as `vacuous` and we can actually add a check into our `conf` file to validate this sort of thing.
 
@@ -75,7 +75,7 @@ Running the above on our current spec is going to of course pass. The proof is a
 
 By adding this flag and running the prover again...
 
-::image{src='/formal-verification-3/5-verifying-nftmock/verifying-nftmock2.png' style='width: 100%; height: auto;'}
+![verifying-nftmock2](/formal-verification-3/5-verifying-nftmock/verifying-nftmock2.png)
 
 We should see an output like this in our terminal indicating that our spec is violating `vacuity`.
 

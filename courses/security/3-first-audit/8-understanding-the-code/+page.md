@@ -24,21 +24,21 @@ After gaining a fundamental understanding, you can start going through the code.
 
 First Lines:
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.18;
 ```
 
 The open source license seems fine. A compiler version of `0.8.18` may not be an immediate concern, but we do know that this isn't the most recent compiler version. It may be worthwhile to make note of this to come back to.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.18; // Q: Is this the correct compiler version?
 ```
 
 Formatting our in-line comments in a reliable way will allow us to easily come back to these areas later by leveraging search.
 
-::image{src='/security-section-3/8-understanding-code/understanding1.png' style='width: 100%; height: auto;'}
+![understanding1](/security-section-3/8-understanding-code/understanding1.png)
 
 ### Taking Notes
 
@@ -63,7 +63,7 @@ The intended functionality is pretty clear. Maybe we want to jot this down in ou
 
 Let's consider things upto our constructor.
 
-::image{src='/security-section-3/8-understanding-code/understanding2.png' style='width: 100%; height: auto;'}
+![understanding2](/security-section-3/8-understanding-code/understanding2.png)
 
 Everything looks great so far, the client is using some clear standard naming conventions.
 

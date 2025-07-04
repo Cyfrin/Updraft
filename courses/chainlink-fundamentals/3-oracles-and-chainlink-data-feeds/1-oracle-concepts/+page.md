@@ -10,7 +10,7 @@ Smart contracts have limited functionality because they cannot independently fet
 
 This fundamental limitation is known as the Oracle Problem. Blockchain applications struggle to achieve full real-world applicability without a reliable way to connect with external data sources.
 
-::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/blockchain-uses.png' style='width: 100%; height: auto;' alt='blochchain-uses'}
+![blochchain-uses](/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/blockchain-uses.png)
 
 ## What is a Blockchain Oracle?
 
@@ -48,7 +48,7 @@ They perform several critical functions:
 - Use multiple independent nodes to fetch and validate data, reducing risks of manipulation and downtime.
 - Enhance security, transparency, and reliability by distributing trust among multiple parties to create a trust-minimized system.
 
-::image{src='/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/centralized-vs-decentralized.png' style='width: 100%; height: auto;' alt='centralized-vs-decentralized'}
+![centralized-vs-decentralized](/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/centralized-vs-decentralized.png)
 
 ## When to Use Oracles
 

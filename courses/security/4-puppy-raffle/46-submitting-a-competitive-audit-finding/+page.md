@@ -14,7 +14,7 @@ We've come a long way in this guide, and now it's time to learn how to submit yo
 
 Navigate to an active CodeHawks First Flight and click the link `Submit a Finding`.
 
-::image{src='/security-section-4/46-submitting-competitive-finding/submitting-competitive-finding1.png' style='width: 75%; height: auto;'}
+![submitting-competitive-finding1](/security-section-4/46-submitting-competitive-finding/submitting-competitive-finding1.png)
 
 Some of this should seem very familiar. We can enter a title and choose an appropriate severity.
 
@@ -23,7 +23,7 @@ Some of this should seem very familiar. We can enter a title and choose an appro
 
 For `Relevant GitHub Links`, we're meant to provide a link, not just to the code base/contract, but to the specific lines we've identified as problematic. Using our DoS Vulnerability from `PuppyRaffle.sol` as an example, we can link directly to the loop in our `enterRaffle` function by right-clicking the line in GitHub and choosing `copy permalink`.
 
-::image{src='/security-section-4/46-submitting-competitive-finding/submitting-competitive-finding2.png' style='width: 75%; height: auto;'}
+![submitting-competitive-finding2](/security-section-4/46-submitting-competitive-finding/submitting-competitive-finding2.png)
 
 Take some time to view the README of the First Flight you're looking at. You'll find important information for the contest available such as:
 
@@ -45,7 +45,7 @@ Once you're satisfied with how things look, click `Submit Finding`. This should 
 
 Something to always strive for is quality in the write ups you submit. In competitive audits submitting a finding that is a duplicate with other auditors is common. Platforms will reward an attention to submission quality by choosing a `selected report`. This reports represent the best quality write up for a given vulnerability and these reports receive _bonus payouts_.
 
-::image{src='/security-section-4/46-submitting-competitive-finding/submitting-competitive-finding4.png' style='width: 75%; height: auto;'}
+![submitting-competitive-finding4](/security-section-4/46-submitting-competitive-finding/submitting-competitive-finding4.png)
 
 ### Wrap Up
 

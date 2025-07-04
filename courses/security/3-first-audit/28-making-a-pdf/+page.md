@@ -97,7 +97,7 @@ Ok, this wasn't easy and there are admittedly a tonned of potential pitfalls alo
      - The file may be hidden - files prepended with `.` are often hidden. You can reveal all files in a directory with the command `ls -a`
      - The file may be elsewhere - navigate back in directories (`cd ..`) until you reach one that looks like this
 
-     ::image{src='/security-section-3/28-making-a-pdf/making-a-pdf1.png' style='width: 75%; height: auto;'}
+     ![making-a-pdf1](/security-section-3/28-making-a-pdf/making-a-pdf1.png)
 
      ...from here navigate to `usr/share/pandoc/data/templates`. In here you will find existing templates and this is where `eisvogel.latex` should be added.
 

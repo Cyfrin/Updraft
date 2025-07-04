@@ -16,11 +16,11 @@ Don't hesitate to jump in and get as much experience actually going through thes
 
 Your first step, of course will be to sign up to CodeHawks and create an account. You can begin by clicking `Become a Hawk` on the [**CodeHawks Homepage**](https://www.codehawks.com/)
 
-::image{src='/security-section-4/45-codehawks/codehawks1.png' style='width: 75%; height: auto;'}
+![codehawks1](/security-section-4/45-codehawks/codehawks1.png)
 
 Connect the browser wallet of your choice when prompted and then fill out your profile information.
 
-::image{src='/security-section-4/45-codehawks/codehawks2.png' style='width: 75%; height: auto;'}
+![codehawks2](/security-section-4/45-codehawks/codehawks2.png)
 
 > **Note:** CodeHawks pays out on Arbitrum in USDC, so ensure you're using an EVM compatible wallet to receive rewards!
 

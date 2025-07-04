@@ -14,7 +14,7 @@ Alright, eventually someone is going to send our contract some `calldata` and we
 
 Fortunately we have an op code just for this purpose! `calldataload` will allow us to load our `calldata` onto the stack.
 
-::image{src='/formal-verification-1/13-calldataload/calldataload-1.png' style='width: 100%; height: auto;'}
+![calldataload-1](/formal-verification-1/13-calldataload/calldataload-1.png)
 
 So we can see the `calldataload` op code is going to take whatever is on top of our stack, and use it as the `bytes offset`. Since we want to capture our _whole_ function selector, we set this offset to 0 by using `PUSH0` as the operation prior to `calldataload`.
 

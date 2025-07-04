@@ -67,6 +67,6 @@ cast to-base 777 hex
 
 With the above, we can see that 0x309 should be expected to pop up as we walk through the op code execution in our debugger, and indeed it does.
 
-::image{src='/formal-verification-1/39-foundry-opcode-debugger/foundry-opcode-debugger1.png' style='width: 100%; height: auto;'}
+![foundry-opcode-debugger1](/formal-verification-1/39-foundry-opcode-debugger/foundry-opcode-debugger1.png)
 
 I can't encourage you enough to practice and experiment with this debugger. Being able to read through op code executions will be an invaluable low level skill for those serious about a deep understanding of the EVM.

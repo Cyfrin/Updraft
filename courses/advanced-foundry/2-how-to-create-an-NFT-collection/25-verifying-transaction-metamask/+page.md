@@ -12,7 +12,7 @@ Possessing this better understanding of encoding empowers us to do something ver
 
 If we write to a contract on Etherscan, a transaction will pop up in our Metamask wallet, by navigating to the HEX tab, we can see the data being sent in this transaction.
 
-::image{src='/foundry-nfts/23-verifying-metamask/verifying-metamask1.png' style='width: 100%; height: auto;'}
+![verifying-metamask1](/foundry-nfts/23-verifying-metamask/verifying-metamask1.png)
 
 We should recognize this calldata as similar to the data we sent in our previous lessons.
 
@@ -42,7 +42,7 @@ We can see that this matches the first 4 bytes of the calldata in our Metamask t
 cast --calldata-decode "mintNFT(string)" 0xfb37e883000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000076578616d706c6500000000000000000000000000000000000000000000000000
 ```
 
-::image{src='/foundry-nfts/23-verifying-metamask/verifying-metamask2.png' style='width: 100%; height: auto;'}
+![verifying-metamask2](/foundry-nfts/23-verifying-metamask/verifying-metamask2.png)
 
 Worked like a charm!
 
@@ -54,11 +54,11 @@ To see this yourselves, navigate to [**openchain.xyz/signatures**](https://openc
 
 In the search field, enter `0x23b872dd`. You'll see that this function signature is attributed to multiple, completely different functions!
 
-::image{src='/foundry-nfts/23-verifying-metamask/verifying-metamask3.png' style='width: 100%; height: auto;'}
+![verifying-metamask3](/foundry-nfts/23-verifying-metamask/verifying-metamask3.png)
 
 Importantly, the Solidity compiler **will not** allow a contract to contain two or more functions which share a selector. You'll receive a compiler error:
 
-::image{src='/foundry-nfts/23-verifying-metamask/verifying-metamask4.png' style='width: 100%; height: auto;'}
+![verifying-metamask4](/foundry-nfts/23-verifying-metamask/verifying-metamask4.png)
 
 I encourage you to try this out yourself in Remix! See if you can find any other conflicting function selectors! This is why it may be important to verify through the contract's code directly, which function is actually being called.
 

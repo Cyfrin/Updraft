@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 So where does our `Certora` situation leave us? The call trace we were provided actually provides a clue we can use to side step this issue of our ghost variables being HAVOC'd.
 
-::image{src='/formal-verification-3/14-persistent-ghosts/persistent-ghosts1.png' style='width: 100%; height: auto;'}
+![persistent-ghosts1](/formal-verification-3/14-persistent-ghosts/persistent-ghosts1.png)
 
 It can be seen, within the function call which resulted in our HAVOC, a flag which indicates:
 

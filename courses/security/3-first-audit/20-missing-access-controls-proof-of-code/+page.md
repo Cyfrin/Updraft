@@ -51,7 +51,7 @@ Let's write a `fuzz test` to check if in fact addresses other than the owner are
 
 Foundry will pass this function random addresses to see if the assert holds, based on the number of runs we've configured.
 
-::image{src='/security-section-3/20-access-control-poc/access-control1.png' style='width: 100%; height: auto;'}
+![access-control1](/security-section-3/20-access-control-poc/access-control1.png)
 
 We can see that through 256 runs, our fuzz test passed! So indeed any address was able to call our `setPassword` function!.
 

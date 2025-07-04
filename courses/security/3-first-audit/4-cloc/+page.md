@@ -46,7 +46,7 @@ cloc ./src/
 
 This is what the output might look like:
 
-::image{src='/security-section-3/4-cloc/cloc1.png' style='width: 100%; height: auto;'}
+![cloc1](/security-section-3/4-cloc/cloc1.png)
 
 ### The Importance of Knowing Your Codebase Size
 

@@ -12,7 +12,7 @@ Ok, we've gained lots of context and understand about data storage in general an
 
 At the core of the NFT we'll build is a `flipMood` function which allows the owner to flip their NFT between happy and sad images.
 
-::image{src='/foundry-nfts/12-svg-nft/svg-nft1.png' style='width: 100%; height: auto;'}
+![svg-nft1](/foundry-nfts/12-svg-nft/svg-nft1.png)
 
 Start with creating the file `src/MoodNft.sol` and filling out the usual boilerplate. We're definitely getting good at this by now.
 

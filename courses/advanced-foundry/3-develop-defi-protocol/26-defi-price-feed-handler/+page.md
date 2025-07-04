@@ -54,11 +54,11 @@ With this new function, our test runs will intermittently change the price of ou
 forge test --mt invariant_ProtocolTotalSupplyLessThanCollateralValue -vvvv
 ```
 
-::image{src='/foundry-defi/24-defi-handler-price-feed/defi-handler-price-feed1.png' style='width: 100%; height: auto;'}
+![defi-handler-price-feed1](/foundry-defi/24-defi-handler-price-feed/defi-handler-price-feed1.png)
 
 Our assertion is breaking! If we look more closely at the trace of executions we can obtain a clearer understanding of what actually happened:
 
-::image{src='/foundry-defi/24-defi-handler-price-feed/defi-handler-price-feed2.png' style='width: 100%; height: auto;'}
+![defi-handler-price-feed2](/foundry-defi/24-defi-handler-price-feed/defi-handler-price-feed2.png)
 
 When updateCollateralPrice was called, the price was updated to a number so low as to break our invariant! The minted DSC was not longer collateralized by the weth which had been deposited.
 

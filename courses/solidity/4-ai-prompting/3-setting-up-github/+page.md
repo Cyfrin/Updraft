@@ -10,7 +10,7 @@ Here I'm going to walk you through the creation of a GitHub account.
 
 Asking well-formatted, articulate questions greatly enhances your chances of receiving prompt and effective answers. Many times, these communities are comprised of people who answer queries simply out of goodwill and a shared passion for the knowledge involved. Therefore, make sure your questions are well-crafted to do justice to their time and effort!
 
-::image{src='/solidity/ai-prompting/github1.png' style='width: 100%; height: auto;'}
+![github1](/solidity/ai-prompting/github1.png)
 
 A key platform to engage with these communities is GitHub. If you haven't already, now's the perfect time to activate an account. Don't skip ahead, this is imperative. Let's get started.
 
@@ -18,11 +18,11 @@ A key platform to engage with these communities is GitHub. If you haven't alread
 
 GitHub is the go-to platform for developers. It offers a manageable approach to maintaining code repositories and facilitates collaborative coding and issue resolution. Setting up an account on GitHub is pretty straightforward. If you haven't already done this, you will need an email to get started.
 
-::image{src='/solidity/ai-prompting/github3.png' style='width: 100%; height: auto;'}
+![github3](/solidity/ai-prompting/github3.png)
 
 To sign up for GitHub, just click on "Sign up" and enter your valid email address.
 
-::image{src='/solidity/ai-prompting/github4.png' style='width: 100%; height: auto;'}
+![github4](/solidity/ai-prompting/github4.png)
 
 ## **Step 2: Account Creation**
 
@@ -30,11 +30,11 @@ Click on "Create account". After registering your email on GitHub, you will rece
 
 When prompted, choose the free version.
 
-::image{src='/solidity/ai-prompting/github5.png' style='width: 100%; height: auto;'}
+![github5](/solidity/ai-prompting/github5.png)
 
 And voila! You've created your GitHub profile.
 
-::image{src='/solidity/ai-prompting/github6.png' style='width: 100%; height: auto;'}
+![github6](/solidity/ai-prompting/github6.png)
 
 ### **Moving Forward: Asking 'Great' Questions**
 

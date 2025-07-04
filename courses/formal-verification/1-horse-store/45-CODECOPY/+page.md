@@ -165,7 +165,7 @@ The first several op codes are examples of things we've seen before. Without get
 
 This continues until we reach the `CODECOPY` operation. We'd mentioned it briefly before, but now we're going to see it in action. Let see what it does.
 
-::image{src='/formal-verification-1/45-CODECOPY/CODECOPY1.png' style='width: 100%; height: auto;'}
+![CODECOPY1](/formal-verification-1/45-CODECOPY/CODECOPY1.png)
 
 Now, what's this doing in the context of our contract?
 
@@ -207,7 +207,7 @@ INVALID       // []
 
 After copying our `runtime code` to memory we `PUSH0` and call `RETURN`.
 
-::image{src='/formal-verification-1/45-CODECOPY/CODECOPY2.png' style='width: 100%; height: auto;'}
+![CODECOPY2](/formal-verification-1/45-CODECOPY/CODECOPY2.png)
 
 `RETURN` takes a bytes offset and a size to be returned from memory. We're passing `0x00` and `0xa5` which represents the whole size of the `runtime code` we've copied into memory. This is what our transaction is returning and is being copied to the blockchain!
 

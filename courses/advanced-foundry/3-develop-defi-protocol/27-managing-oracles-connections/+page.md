@@ -118,7 +118,7 @@ contract DSCEngine is Reentrancy Guard {
 
 We've done a tonne of refactoring, and we're very nearly done. We should run `forge test` just to ensure everything is working as expected!
 
-::image{src='/foundry-defi/25-defi-oracle-lib/defi-oracle-lib1.png' style='width: 100%; height: auto;'}
+![defi-oracle-lib1](/foundry-defi/25-defi-oracle-lib/defi-oracle-lib1.png)
 
 Beautiful.
 

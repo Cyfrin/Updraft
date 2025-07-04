@@ -22,7 +22,7 @@ A Layer 2 (L2) chain's maturity is evaluated based on specific properties and ca
 
 In the [L2Beat summary](https://l2beat.com/scaling/summary) it's possible to see the actual stage of each rollup:
 
-::image{src='/blockchain-basics/17-rollup-stages/l2beat-summary.png' style='width: 100%; height: auto;'}
+![l2beat-summary](/blockchain-basics/17-rollup-stages/l2beat-summary.png)
 
 Currently, [Zksync Era](https://l2beat.com/scaling/projects/zksync-era) is operating as a `Stage 0` rollup. In the dedicated page on L2, we can find a risk analysis:
 

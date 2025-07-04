@@ -12,7 +12,7 @@ Now that you've **definitely** tried reviewing the codebase on your own, let's s
 
 Take a look at the [**Puppy Raffle Repo**](https://github.com/Cyfrin/4-puppy-raffle-audit)'s README
 
-::image{src='/security-section-4/3-phase-1-scoping/phase-1-scoping1.png' style='width: 50%; height: auto;'}
+![phase-1-scoping1](/security-section-4/3-phase-1-scoping/phase-1-scoping1.png)
 
 
 ### README Overview
@@ -42,7 +42,7 @@ make
 
 Once we've run our `make` command, we should check out the protocol tests. I like to start by running `forge coverage` to see what kind of baseline we're starting with.
 
-::image{src='/security-section-4/3-phase-1-scoping/phase-1-scoping2.png' style='width: 50%; height: auto;'}
+![phase-1-scoping2](/security-section-4/3-phase-1-scoping/phase-1-scoping2.png)
 
 Thing's don't look great.
 
@@ -63,7 +63,7 @@ We also see exactly which contracts are under review.
 
 Moving on, we should take notice of the **Compatibilities** section.
 
-::image{src='/security-section-4/3-phase-1-scoping/phase-1-scoping3.png' style='width: 50%; height: auto;'}
+![phase-1-scoping3](/security-section-4/3-phase-1-scoping/phase-1-scoping3.png)
 
 That Solc version is strange - definitely make note of it.
 

@@ -17,7 +17,7 @@ Decentralized Finance (DeFi) is an enormous ecosystem, we couldn't hope to offer
 
 A good starting place is [**DeFi Llama**](https://defillama.com/). This website aggregates data from major DeFi protocols and provides a snapshot of what's happening in the space.
 
-::image{src='/foundry-defi/1-defi-introduction/defi-introduction1.PNG' style='width: 100%; height: auto;'}
+![defi-introduction1](/foundry-defi/1-defi-introduction/defi-introduction1.PNG)
 
 DeFi Llama demonstrates the size of various DeFi protocols by ranking them by Total Value Locked (TVL). Some of the biggest include:
 
@@ -44,7 +44,7 @@ I often encourage people to go checkout AAVE and Uniswap to get a feel for what 
 
 [**AAVE**](https://aave.com/), as mentioned, is a decentralized borrowing and lending platform. By logging into the dApp by connecting a wallet, users can see assets they hold which can be offered as collateral and assets available to borrow.
 
-::image{src='/foundry-defi/1-defi-introduction/defi-introduction2.PNG' style='width: 100%; height: auto;'}
+![defi-introduction2](/foundry-defi/1-defi-introduction/defi-introduction2.PNG)
 
 Each asset has it's own calculated Annual Percentage Yield (APY) which effectively represents the interest a lender to the protocol would make on deposits of a given asset.
 
@@ -52,7 +52,7 @@ Each asset has it's own calculated Annual Percentage Yield (APY) which effective
 
 Another massively popular protocol that I like to bring to people's attention is [**Uniswap**](https://uniswap.org/).
 
-::image{src='/foundry-defi/1-defi-introduction/defi-introduction3.PNG' style='width: 100%; height: auto;'}
+![defi-introduction3](/foundry-defi/1-defi-introduction/defi-introduction3.PNG)
 
 Uniswap is a decentralized exchange which allows users to swap tokens for any other token.
 
@@ -95,11 +95,11 @@ If you are new to DeFi, a great starting point is [DeFi Llama](https://defillama
 
 ### The Beauty of DeFi
 
-::image{src='/foundry-defi/1-defi-introduction/defi-introduction1.PNG' style='width: 100%; height: auto;'}
+![defi-introduction1](/foundry-defi/1-defi-introduction/defi-introduction1.PNG)
 
 The beauty of DeFi and the reason for its growing popularity is the access it provides to sophisticated financial products and instruments in a decentralized context.
 
-::image{src='/foundry-defi/1-defi-introduction/defi-introduction2.PNG' style='width: 100%; height: auto;'}
+![defi-introduction2](/foundry-defi/1-defi-introduction/defi-introduction2.PNG)
 
 In my opinion, DeFi is possibly the most exciting and important application of smart contracts. I highly recommend spending some time to become conversant with the basics of DeFi, if not becoming fully fluent. Start with useful resources such as the [Bankless](https://www.bankless.com/) podcast and [MetaMask Learn](https://learn.metamask.io/).
 
@@ -119,7 +119,7 @@ In this course, we will be building our version of a stablecoin. The concept of 
 
 ## IV. Foundry Stablecoin Project is the Most Advanced.
 
-::image{src='/foundry-defi/1-defi-introduction/defi-introduction3.PNG' style='width: 100%; height: auto;'}
+![defi-introduction3](/foundry-defi/1-defi-introduction/defi-introduction3.PNG)
 
 Even though we have following lessons on upgrades, governance, introduction to security, this Foundry Stablecoin project is the most advanced one we're working with, hands down.
 

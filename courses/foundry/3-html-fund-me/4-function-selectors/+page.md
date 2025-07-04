@@ -10,11 +10,11 @@ _Follow along the course with this video._
 
 Continuing from the last lesson, when we call the `fund` function our MetaMask is going to pop up with a bunch of information about the transaction.
 
-::image{src='/html-fundme/3-function-selector/function-selector1.png' style='width: 75%; height: auto;'}
+![function-selector1](/html-fundme/3-function-selector/function-selector1.png)
 
 By clicking the `Hex` tab, we can confirm the raw data for this transaction and exactly which function is being called.
 
-::image{src='/html-fundme/3-function-selector/function-selector2.png' style='width: 75%; height: auto;'}
+![function-selector2](/html-fundme/3-function-selector/function-selector2.png)
 
 We'll go into `function selectors` a lot more later, but the important thing to understand is that when a Solidity contract is compiled, our functions are converted into a low-level bytecode called a `function selector`.
 
@@ -45,7 +45,7 @@ function fund(uint256 amount) public payable {
 
 If we were to call this function, the information MetaMask gives us is a little different.
 
-::image{src='/html-fundme/3-function-selector/function-selector3.png' style='width: 75%; height: auto;'}
+![function-selector3](/html-fundme/3-function-selector/function-selector3.png)
 
 In this instance, we can use the command `cast --calldata-decode <SIG> <CALLDATA>` to provide us the parameters being passed in this function call!
 

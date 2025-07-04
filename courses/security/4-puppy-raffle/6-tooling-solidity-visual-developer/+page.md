@@ -22,19 +22,19 @@ We also went over `Solidity Metrics` earlier, but let's take another look as `Pu
 
 Scrolling to the bottom of the `Solidity: Metrics` report, take a look at the `Inheritance Graph`
 
-::image{src='/security-section-4/6-tooling-svd/tooling-svd1.png' style='width: 75%; height: auto;'}
+![tooling-svd1](/security-section-4/6-tooling-svd/tooling-svd1.png)
 
 From this illustration we can see that the contract `PuppyRaffle` is of types `ERC721` and `Ownable`.
 
 A little further down we see a `Call Graph`
 
-::image{src='/security-section-4/6-tooling-svd/tooling-svd2.png' style='width: 75%; height: auto;'}
+![tooling-svd2](/security-section-4/6-tooling-svd/tooling-svd2.png)
 
 This provides us a clear reference of which functions are being called by which other functions!
 
 And finally `Solidity: Metrics` gives us a `Contract Summary`
 
-::image{src='/security-section-4/6-tooling-svd/tooling-svd3.png' style='width: 75%; height: auto;'}
+![tooling-svd3](/security-section-4/6-tooling-svd/tooling-svd3.png)
 
 This is incredibly valuable. It provides is a clear breakdown of `Internal` vs `External functions` as well as identifies which functions are `payable` and can `modify state`!
 
@@ -44,7 +44,7 @@ There's another tool I'll briefly mention - some developers swear by it. It's th
 
 In addition to providing very similar reporting as Solidity Metrics, the inheritance graph is interactive and it provides syntax highlighting in your code based on variable types.
 
-::image{src='/security-section-4/6-tooling-svd/tooling-svd4.png' style='width: 75%; height: auto;'}
+![tooling-svd4](/security-section-4/6-tooling-svd/tooling-svd4.png)
 
 Check it out if you feel it would be useful for adding some clarity to your development and security reviews!
 

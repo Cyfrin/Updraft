@@ -20,8 +20,8 @@ Imagine that there are hundreds of these stakers. Each of them will have to deci
 
 Proof of Stake is secured by the amount of value that is staked. When stakers have to split their capital to stake some into the off-chain service and some other to Ethereum, it fragments economic security.
 
-Let’s say that this staker had $100. They can either choose this $100 to stake ETH or to stake this other service or split this $100 to participate in Proof of Stake for both Ethereum and this service.
+Let’s say that this staker had \$100. They can either choose this \$100 to stake ETH or to stake this other service or split this \$100 to participate in Proof of Stake for both Ethereum and this service.
 
-The $100 of economic security is split between Ethereum and this other service.
+The \$100 of economic security is split between Ethereum and this other service.
 
 This is the problem of Proof of Stake from the staker's perspective, but there’s also a perspective from the protocol. For a new protocol, it’s difficult to get the attention of potential stakers to stake tokens into their protocol over another protocol such as Ethereum.

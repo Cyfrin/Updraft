@@ -14,7 +14,7 @@ Start by creating a new folder named `breakdowns`, we'll be compiling our op cod
 
 Navigate to `out/horseStoreV1/HorseStore.sol/HorseStore.json`. This is the ABI of our deployed HorseStore contract. Within this file you'll find a `bytecode` object with an `object` property. This represents our op codes for the contract in bytecode!
 
-::image{src='/formal-verification-1/42-solidity-opcodes-from-bytecode/solidity-opcodes-from-bytecode1.png' style='width: 100%; height: auto;'}
+![solidity-opcodes-from-bytecode1](/formal-verification-1/42-solidity-opcodes-from-bytecode/solidity-opcodes-from-bytecode1.png)
 
 Create a new file named `solc-breakdowns.c++`. This won't actually be a C++ file, but some of the syntax highlighting for C++ will make things easier on us. You can paste your bytecode to the top of this file as a comment for reference.
 

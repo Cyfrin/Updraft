@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 Let's look at a few ways that randomness, as we've seen in `PuppyRaffle` and our [**sc-exploits-minimized**](https://github.com/Cyfrin/sc-exploits-minimized) examples, can be manipulated.
 
-::image{src='/security-section-4/26-weak-randomness-issues/randomness-issues1.png' style='width: 75%; height: auto;'}
+![randomness-issues1](/security-section-4/26-weak-randomness-issues/randomness-issues1.png)
 
 ### block.timestamp
 

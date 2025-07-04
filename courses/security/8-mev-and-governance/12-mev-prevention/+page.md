@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 Our first line of defense against MEV is to refine our designs. To illustrate this, let's revisit our [**Puppy Raffle repo**](https://github.com/Cyfrin/4-puppy-raffle-audit/blob/main/src/PuppyRaffle.sol). The issue was when `selectWinner` was called.
 
-::image{src='/security-section-8/12-mev-prevention/mev-prevention1.png' style='width: 100%; height: auto;'}
+![mev-prevention1](/security-section-8/12-mev-prevention/mev-prevention1.png)
 
 How can we protect Puppy Raffle from MEV attacks? Well, we can do a couple things.
 
@@ -57,7 +57,7 @@ There's no universal statement that covers all the possible situations in which 
 
 Another thing we can consider for defense is the use of a private or "dark" `mempool`, such as [**Flashbots Protect**](https://docs.flashbots.net/flashbots-protect/overview), [**MEVBlocker**](https://mevblocker.io/) or [**Securerpc**](https://securerpc.com/).
 
-::image{src='/security-section-8/12-mev-prevention/flashbots.png' style='width: 100%; height: auto;' alt='pashov'}
+![pashov](/security-section-8/12-mev-prevention/flashbots.png)
 
 Instead of submitting your transaction to a `public mempool`, you can send your transaction to this `private mempool`. Unlike the `public mempool`, this keeps the transaction for itself until it's time to post it on the chain.
 

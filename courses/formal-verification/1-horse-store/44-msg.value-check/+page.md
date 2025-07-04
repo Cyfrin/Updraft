@@ -163,11 +163,11 @@ I've added our comment notation to our op code list to keep track of what's on o
 
 We've seen many of these op codes before, but some of them are new. Each time a new op code is mentioned, I'll include a screenshot of it's details from [evm.codes](https://www.evm.codes/#34?fork=cancun). I encourage you to use this website like a dictionary as we attempt to define what's being executed. `CALLVALUE` adds to the stack, the value included with the current call.
 
-::image{src='/formal-verification-1/44-msg.value-check/msg_value-check1.png' style='width: 100%; height: auto;'}
+![msg_value-check1](/formal-verification-1/44-msg.value-check/msg_value-check1.png)
 
 We then duplicate this value with `DUP1` and check if it's equal to zero with the conditional `ISZERO`
 
-::image{src='/formal-verification-1/44-msg.value-check/msg_value-check2.png' style='width: 100%; height: auto;'}
+![msg_value-check2](/formal-verification-1/44-msg.value-check/msg_value-check2.png)
 
 Next it looks like we're setting up the executions response to this `ISZERO` conditional. We push a program counter/jump destination to the stack with PUSH1 0x0e then execute JUMPI.
 
@@ -183,7 +183,7 @@ REVERT
 
 It's going to revert! You can even see this in our foundry script if you try to pass a value to our contract creation, in our test. It won't even let us compile!
 
-::image{src='/formal-verification-1/44-msg.value-check/msg_value-check3.png' style='width: 100%; height: auto;'}
+![msg_value-check3](/formal-verification-1/44-msg.value-check/msg_value-check3.png)
 
 ### Summary
 

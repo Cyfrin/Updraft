@@ -30,7 +30,7 @@ Your first step, once the repo is cloned locally, is to delete the `certora` fol
 
 Let's crack open the README to verify the setup steps recommended by the protocol.
 
-::image{src='/formal-verification-3/2-setup//setup1.png' style='width: 100%; height: auto;'}
+![setup1](/formal-verification-3/2-setup//setup1.png)
 
 The protocol wants us to use the `make` command! This should largely set our workspace up for us by removing old modules, installing our dependencies and building the project.
 
@@ -39,7 +39,7 @@ The protocol wants us to use the `make` command! This should largely set our wor
 
 Lastly, before diving into the code base itself, we should see how the protocol's existing test suite looks. It seems they currently have BaseTest.t.sol which they are leveraging to compare their code bases and gas currently. Let's run it!
 
-::image{src='/formal-verification-3/2-setup//setup2.png' style='width: 100%; height: auto;'}
+![setup2](/formal-verification-3/2-setup//setup2.png)
 
 ### Wrap Up
 

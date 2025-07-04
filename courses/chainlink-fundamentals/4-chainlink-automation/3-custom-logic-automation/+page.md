@@ -28,7 +28,7 @@ To deploy the contract to Sepolia, follow the steps in the previous lessons. The
 
 - Set the `_updateInterval` constructor parameter to `300` (this equals 5 minutes), and click the **Deploy** button.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/custom-automation-deploy.png' style='width: 100%; height: auto;' alt='custom-automation-deploy'}
+![custom-automation-deploy](/chainlink-fundamentals/4-chainlink-automation/assets/custom-automation-deploy.png)
 
 - Once the contract is deployed, you can **verify it on [Etherscan](https://sepolia.etherscan.io/)** using the process outlined in the time-based automation lesson. 
 
@@ -36,11 +36,11 @@ To deploy the contract to Sepolia, follow the steps in the previous lessons. The
 
 We imported contracts, which means you’ll need to flatten the file first (put the code all into a single file) and then paste that code instead of just the `CustomLogic` code into the verification process. You can do this in the File Explorer by right-clicking the `CustomLogic.sol` file and clicking **Flatten**.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/flatten.png' style='width: 100%; height: auto;' alt='flatten'}
+![flatten](/chainlink-fundamentals/4-chainlink-automation/assets/flatten.png)
 
 - Now you can copy the flattened code in `CustomLogic_flattened.sol` and use it for verification.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/flattened.png' style='width: 100%; height: auto;' alt='flattened'}
+![flattened](/chainlink-fundamentals/4-chainlink-automation/assets/flattened.png)
 
 ## checkUpkeep
 
@@ -48,7 +48,7 @@ We imported contracts, which means you’ll need to flatten the file first (put 
 
 **Note**: To manually call the `checkUpkeep` and `performUpkeep` functions, pass an empty bytes array as the function parameter:
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/empt-bytes.png' style='width: 100%; height: auto;' alt='empty-bytes'}
+![empty-bytes](/chainlink-fundamentals/4-chainlink-automation/assets/empt-bytes.png)
 
 ## Register Custom Logic Upkeep
 
@@ -56,7 +56,7 @@ With the contract deployed, we can head to the [Chainlink Automation app](https:
 
 - This time, we’ll select **Custom Logic** and enter the address of our deployed contract, then click **Next**.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/custom-logic-trigger.png' style='width: 100%; height: auto;' alt='custom-logic-trigger'}
+![custom-logic-trigger](/chainlink-fundamentals/4-chainlink-automation/assets/custom-logic-trigger.png)
 
 - Fill in the **Upkeep details**: 
     - **Upkeep name**: A name for the upkeep visible on the Automation dashboard, e.g. **"TimeBased Counter"**
@@ -65,22 +65,22 @@ With the contract deployed, we can head to the [Chainlink Automation app](https:
     - **Starting balance**: A starting balance of LINK is used to pay for Chainlink Automation. In this example, `5` LINK will be sufficient.
     - The **Project information** is optional; we will leave it blank.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/custom-logic-options.png' style='width: 100%; height: auto;' alt='custom-logic-options'}
+![custom-logic-options](/chainlink-fundamentals/4-chainlink-automation/assets/custom-logic-options.png)
 
 - Confirm the registration request and sign the message to verify your ownership of the upkeep.
 
 - The **upkeep page** provides a quick overview that shows the upkeep status, such as when it was last run, the current balance of LINK, and how much LINK has been spent.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/custom-logic-overview.png' style='width: 100%; height: auto;' alt='custom-logic-overview'}
+![custom-logic-overview](/chainlink-fundamentals/4-chainlink-automation/assets/custom-logic-overview.png)
 
 - The **details section** gives you all the information about the upkeep, such as when it will run next and what function it will call.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/custom-logic-details.png' style='width: 100%; height: auto;' alt='custom-logic-details'}
+![custom-logic-details](/chainlink-fundamentals/4-chainlink-automation/assets/custom-logic-details.png)
 
 The **history section** shows the history of the upkeep, including every time it’s run. Once five minutes have passed, you should be able to refresh the page and see that the upkeep has been completed.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/custom-logic-history.png' style='width: 100%; height: auto;' alt='custom-logic-history'}
+![custom-logic-history](/chainlink-fundamentals/4-chainlink-automation/assets/custom-logic-history.png)
 
 If you head back to Remix, you can see the value of `counter` has increased after 5 minutes has passed. The upkeep will continue until it runs out of LINK or is paused.
 
-::image{src='/chainlink-fundamentals/4-chainlink-automation/assets/counter-increated-customs.png' style='width: 100%; height: auto;' alt='counter-increased-custom'}
+![counter-increased-custom](/chainlink-fundamentals/4-chainlink-automation/assets/counter-increated-customs.png)

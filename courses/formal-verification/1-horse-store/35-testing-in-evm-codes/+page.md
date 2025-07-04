@@ -24,7 +24,7 @@ Click run and step through the execution of this function call. The first steps 
 
 Your contract state should look something like this if you've stepped through the `updateNumberOfHorses` execution (using 7 as a passed parameter):
 
-::image{src='/formal-verification-1/35-testing-in-evm-codes/testing-in-evm-codes1.png' style='width: 100%; height: auto;'}
+![testing-in-evm-codes1](/formal-verification-1/35-testing-in-evm-codes/testing-in-evm-codes1.png)
 
 Let's step through the execution further and see how things perform. Looking at the op codes added to our contract following our `readNumberOfHorses()` jump destination (`JUMPDEST`) we should see:
 
@@ -36,6 +36,6 @@ Let's step through the execution further and see how things perform. Looking at 
 6. PUSH0 - bytes offset of data accessed from memory, or where to begin reading from the data string - again in our case this is zero to capture everything
 7. RETURN - returns the data from memory beginning at the offset on the top of the stack, the size of this data string is determined by our second item in the stack (32 bytes)
 
-::image{src='/formal-verification-1/35-testing-in-evm-codes/testing-in-evm-codes2.png' style='width: 100%; height: auto;'}
+![testing-in-evm-codes2](/formal-verification-1/35-testing-in-evm-codes/testing-in-evm-codes2.png)
 
 That's really all there is to it! Breaking down the operations of a contract step by step makes each execution clear and easy to understand!

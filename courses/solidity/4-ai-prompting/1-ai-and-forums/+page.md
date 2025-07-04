@@ -22,7 +22,7 @@ Lets go through them.
 
 Pinpoint your error, review your code manually making small adjustments you suspect may resolve the issue. Pinpointing the error in your code will help you frame your question/prompt in the next step.
 
-::image{src='/solidity/ai-prompting/debug1.png' style='width: 100%; height: auto;'}
+![debug1](/solidity/ai-prompting/debug1.png)
 
 ### Ask Your AI
 

@@ -95,7 +95,7 @@ The second line is where an assertion is made that the minted NFT has the desire
 
 The attacking contract called this mint function and reverted for over 6 hours. Spending ~$20,000/hour in gas until they minted the rare NFT they wanted Meebit \#16647. The NFT possessed a Visitor trait and sold for ~$700,000.
 
-::image{src='/security-section-4/27-weak-randomness-case-study/meebit1.png' style='width: 75%; height: auto;'}
+![meebit1](/security-section-4/27-weak-randomness-case-study/meebit1.png)
 
 ### Wrap Up
 

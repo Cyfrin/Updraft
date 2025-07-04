@@ -16,7 +16,7 @@ forge snapshot
 
 This is going to run all of our tests, but keep a record of gas costs in a local file named `.gas-snapshot`.
 
-::image{src='/formal-verification-1/70-huff-yul-and-solidity-gas-comparison/huff-yul-and-solidity-gas-comparison1.png' style='width: 100%; height: auto;'}
+![huff-yul-and-solidity-gas-comparison1](/formal-verification-1/70-huff-yul-and-solidity-gas-comparison/huff-yul-and-solidity-gas-comparison1.png)
 
 This output file lets us compare the gas costs of each test performed for each of our implementations. We can see things like:
 

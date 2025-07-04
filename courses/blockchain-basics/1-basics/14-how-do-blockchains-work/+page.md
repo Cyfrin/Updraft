@@ -12,7 +12,7 @@ In this lesson, we're going to break down blockchains, the process and the techn
 
 At its simplest, a hash is a unique, fixed-length string that serves to identify any piece of data. When you input any kind of data into a hash function, it produces a hash. In this demo, the hash algorithm we'll focus on is SHA-256.
 
-::image{src='/blockchain-basics/07-how-do-blockchains-work/how-do-blockchains-work1.png' style='width: 100%; height: auto;' alt='hash function'}
+![hash function](/blockchain-basics/07-how-do-blockchains-work/how-do-blockchains-work1.png)
 
 If I add `Patrick Collins` to our `SHA-256` algorithm, it will:
 
@@ -31,7 +31,7 @@ In the application, whatever data you enter into the data section, undergoes pro
 
 Now that we've grasped the concept of hashing and fixed-length string, let's inspect the structure of a blockchain. A collection of "blocks."
 
-::image{src='/blockchain-basics/07-how-do-blockchains-work/how-do-blockchains-work2.png' style='width: 100%; height: auto;' alt='blockchain'}
+![blockchain](/blockchain-basics/07-how-do-blockchains-work/how-do-blockchains-work2.png)
 
 A block takes the same data input, but instead of a singular data field, a block is divided into 'block', 'nonce', and 'data.' All three are then run through the hash algorithm, producing the hash for that block. As a result, even a minor change in the data leads to an entirely different hash, hence, invalidating the block.
 
@@ -43,7 +43,7 @@ The problem or criteria a miner has to solve will vary from blockchain to blockc
 
 In a blockchain, which is essentially a sequence of blocks, each block is comprised of the previous elements - a block number, a nonce and data - as well as `the hash of the previous block`
 
-::image{src='/blockchain-basics/07-how-do-blockchains-work/how-do-blockchains-work3.png' style='width: 100%; height: auto;' alt='blockchain'}
+![blockchain](/blockchain-basics/07-how-do-blockchains-work/how-do-blockchains-work3.png)
 
 What this means in practice is that any changes to data, in any block of the chain, will invalidate every proceeding block, until they are recalculated, or re-mined.
 
@@ -55,7 +55,7 @@ Now, if a single entity were to control the blockchain, they could conceivably c
 
 _Enter Decentralized Distribution._
 
-::image{src='/blockchain-basics/07-how-do-blockchains-work/how-do-blockchains-work4.png' style='width: 100%; height: auto;' alt='blockchain'}
+![blockchain](/blockchain-basics/07-how-do-blockchains-work/how-do-blockchains-work4.png)
 
 The crux of blockchain's power lies in its decentralization or distributed nature. Under this system, multiple entities or "peers" run the blockchain technology, each holding equal weight and power. In the event of disparity between the blockchains run by different peers (due to tampering or otherwise), the majority hash wins, as the majority of the network agrees on it.
 
@@ -65,7 +65,7 @@ Nodes that don't agree with the majority effectively fork the network, continuin
 
 Until now we've been considering the data passed in a block to be a random string of text, but the reality is - this data can be anything. In the token and coinbase sections of this demo you can see how each block is comprised of a number of transactions that all get hashed together. Any edits to any of these transactions is going to invalidate the chain!
 
-::image{src='/blockchain-basics/07-how-do-blockchains-work/how-do-blockchains-work5.png' style='width: 100%; height: auto;' alt='blockchain'}
+![blockchain](/blockchain-basics/07-how-do-blockchains-work/how-do-blockchains-work5.png)
 
 ### Wrap Up
 

@@ -9,7 +9,7 @@ Ok, we've delved pretty thoroughly into the importance of initialization, but we
 <details>
 <summary>OracleUpgradeable.sol</summary>
 
-```js
+```solidity
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity 0.8.20;
 
@@ -98,4 +98,4 @@ Awesome! We've finished our recon of `OracleUpgradeable.sol`! That's one more co
 
 Let's mark this first pass done for now and move on to `AssetToken.sol` in the next lesson!
 
-::image{src='/security-section-6/23-oracle-upgradeable-continued/oracle-upgradeable-continued1.png' style='width: 100%; height: auto;'}
+![oracle-upgradeable-continued1](/security-section-6/23-oracle-upgradeable-continued/oracle-upgradeable-continued1.png)

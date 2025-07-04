@@ -44,6 +44,6 @@ What the line `#define constant NUMBER_OF_HORSES_STORAGE_SLOT = FREE_STORAGE_POI
 
 This is exactly how Solidity handles things as well!
 
-::image{src='/formal-verification-1/29-free-storage-pointer/free-storage-pointer-1.png' style='width: 50%; height: auto;'}
+![free-storage-pointer-1](/formal-verification-1/29-free-storage-pointer/free-storage-pointer-1.png)
 
 With our above implementation, any time somebody looks at storage slot 0, that's where numberOfHorses will be found. Great work!

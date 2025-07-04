@@ -21,4 +21,4 @@ The first step is to stake the 32 ETH. Alice can send a transaction to a deposit
 
 The validator key is used by the validator to sign blocks and attest to transactions. Alice will need to take the validator key and include it inside the server that runs the validator software. This provides an overview of how ETH staking works.
 
-Now we can see that for Alice to become an ETH staker, she first needs 32 ETH. Assuming one ETH is $3,000, then 32 ETH is $96,000. Additionally, she needs the technical skills to run a validator and secure the validator keys, along with her withdrawal key.
+Now we can see that for Alice to become an ETH staker, she first needs 32 ETH. Assuming one ETH is \$3,000, then 32 ETH is \$96,000. Additionally, she needs the technical skills to run a validator and secure the validator keys, along with her withdrawal key.
