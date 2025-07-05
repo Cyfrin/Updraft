@@ -168,7 +168,7 @@ The two major functions we're going to want the DSCEngine to control are of cour
 We can start by writing our burn function.
 
 ```solidity
-function burn(uint256 _amount) external override onlyOwner{}
+function burn(uint256 _amount) public override onlyOwner{}
 ```
 
 We're going to want to check for two things when this function is called.
@@ -185,7 +185,7 @@ contract DecentralizedStableCoin is ERC20Burnable, Ownable {
 
     constructor() ERC20("DecentralizedStableCoin", "DSC"){}
 
-    function burn(uint256 _amount) external override onlyOwner{
+    function burn(uint256 _amount) public override onlyOwner{
         uint256 balance = balanceOf(msg.sender);
         if(_amount <= 0){
             revert DecentralizedStableCoin__MustBeMoreThanZero();
@@ -200,7 +200,7 @@ contract DecentralizedStableCoin is ERC20Burnable, Ownable {
 The last thing we're going to do, assuming these checks pass, is burn the passed amount of tokens. We're going to do this by using the `super` keyword. This tells solidity to use the burn function of the parent class.
 
 ```solidity
-function burn(uint256 _amount) external override onlyOwner{
+function burn(uint256 _amount) public override onlyOwner{
     uint256 balance = balanceOf(msg.sender);
     if(_amount <= 0){
         revert DecentralizedStableCoin__MustBeMoreThanZero();
@@ -217,7 +217,7 @@ function burn(uint256 _amount) external override onlyOwner{
 The second function we'll need to override to configure access control on is going to be our mint function.
 
 ```solidity
-function mint(address _to, uint256 _amount) external overrides onlyOwner returns(bool){
+function mint(address _to, uint256 _amount) external onlyOwner returns(bool){
 }
 ```
 
