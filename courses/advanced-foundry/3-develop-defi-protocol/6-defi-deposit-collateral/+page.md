@@ -56,6 +56,7 @@ contract DSCEngine {
     modifier moreThanZero(uint256 amount){
         if(amount <=0){
             revert DSCEngine__NeedsMoreThanZero();
+            _;
         }
     }
 
@@ -139,7 +140,7 @@ We're going to be doing lots with our `dscEngine`. We should declare this as an 
 
 
 ```solidity
-import {DecentralizedStableCoin} from "DecentralizedStableCoin.sol";
+import {DecentralizedStableCoin} from "./DecentralizedStableCoin.sol";
 
 ...
 
