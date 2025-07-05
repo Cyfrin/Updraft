@@ -12,7 +12,7 @@ Alright! It's time to build out the engine to this car. `DSCEngine` will be the 
 
 We're going to build this a little differently than usual, as we'll likely be writing tests as we go. As a codebase becomes more and more complex, it's often important to perform sanity checks along the way to assure you're still on track.
 
-Begin with creating a new file, `src/DSCEngine.sol`. I'll bring over my contract and function layout reference and we can se up our boilerplate.
+Begin with creating a new file, `src/DSCEngine.sol`. I'll bring over my contract and function layout reference and we can setup our boilerplate.
 
 ```solidity
 // SPDX-License-Identifier: MIT
