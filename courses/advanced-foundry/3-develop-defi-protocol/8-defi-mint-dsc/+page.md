@@ -188,7 +188,7 @@ import { AggregatorV3Interface } from "@chainlink/contracts/src/v0.8/shared/inte
 If you haven't installed the `Chainlink` contract kit yet, let's do that now.
 
 ```bash
-forge install smartcontractkit/chainlink-brownie-contracts@0.6.1 --no-commit
+forge install smartcontractkit/chainlink-brownie-contracts@0.6.1
 ```
 
 And of course, we'll append this to our remappings within `foundry.toml`.
