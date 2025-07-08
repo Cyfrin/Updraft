@@ -84,7 +84,7 @@ The Verification Key (VK) is a crucial piece of data required by the verifier (i
 
 The command to generate the VK is:
 ```bash
-bb write_vk --oracle-hash keccak -b ./target/zk_panagram.json -o ./target
+bb write_vk --oracle_hash keccak -b ./target/zk_panagram.json -o ./target
 ```
 Let's break down this command:
 *   `write_vk`: This is the `bb` subcommand to generate a verification key.

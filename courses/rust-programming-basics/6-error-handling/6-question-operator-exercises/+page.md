@@ -2,7 +2,7 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/question.rs`](./solutions/examples/question.rs)
+Execute the following command to run [`./solutions/examples/question.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/question/solutions/examples/question.rs)
 
 ```shell
 cargo run --example question
@@ -10,7 +10,7 @@ cargo run --example question
 
 ## Exercises
 
-Exercises are in [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Exercises are in [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/question/exercises/src/lib.rs)
 
 ### Exercise 1
 

@@ -2,7 +2,7 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/ownership.rs`](./solutions/examples/ownership.rs)
+Execute the following command to run [`./solutions/examples/ownership.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/ownership/solutions/examples/ownership.rs)
 
 ```shell
 cargo run --example ownership
@@ -10,7 +10,7 @@ cargo run --example ownership
 
 ## Exercises
 
-Exercises are in [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Exercises are in [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/ownership/exercises/src/lib.rs)
 
 ### Exercise 1
 

@@ -132,7 +132,7 @@ With the Noir circuit modified, we need to recompile it and regenerate the Solid
     This warning confirms that, from the perspective of the Noir circuit's explicit logic, the `recipient` variable is indeed unused. This is key to our investigation.
 3.  **Generate Verification Key (VK):**
     ```bash
-    bb write_vk --oracle-hash keccak -b ./target/circuits.json -o ./target/vk
+    bb write_vk --oracle_hash keccak -b ./target/circuits.json -o ./target/vk
     ```
 4.  **Generate Solidity Verifier:**
     ```bash

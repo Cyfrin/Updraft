@@ -21,7 +21,7 @@ The `mintDsc` function is likely going to be surprisingly complex. There are a n
 
 /*
     * @param amountDscToMint: The amount of DSC you want to mint
-    * You can only mint DSC if you hav enough collateral
+    * You can only mint DSC if you have  enough collateral
     */
 function mintDsc(uint256 amountDscToMint) public moreThanZero(amountDscToMint) nonReentrant {}
 ```
@@ -51,7 +51,7 @@ function mintDsc(uint256 amountDscToMint) public moreThanZero(amountDscToMint) n
 }
 ```
 
-Our next step is something that will warrant it's own function, this is going to be something we check in a few placed in our protocol. We'll name the function `_revertIfHealthFactorIsBroken`. The purpose of this will be to assure that changes in a user's DSC or collateral balances don't result in the user's position being `under-collateralized`.
+Our next step is something that will warrant it's own function, this is going to be something we check in a few places in our protocol. We'll name the function `_revertIfHealthFactorIsBroken`. The purpose of this will be to assure that changes in a user's DSC or collateral balances don't result in the user's position being `under-collateralized`.
 
 We'll need a new section for this function, according to our contract layout guideline, so let's jump to it.
 
@@ -150,7 +150,7 @@ constructor(address[] memory tokenAddresses, address[] memory priceFeedAddresses
 }
 ```
 
-With this array set up, we can now loop through this in our `getAccountCollateral` function to calculate it's total value in USD.
+With this array set up, we can now loop through this in our `getAccountCollateralValue` function to calculate it's total value in USD.
 
 ```solidity
 //////////////////////////////////////////
@@ -188,7 +188,7 @@ import { AggregatorV3Interface } from "@chainlink/contracts/src/v0.8/shared/inte
 If you haven't installed the `Chainlink` contract kit yet, let's do that now.
 
 ```bash
-forge install smartcontractkit/chainlink-brownie-contracts@0.6.1 --no-commit
+forge install smartcontractkit/chainlink-brownie-contracts@0.6.1
 ```
 
 And of course, we'll append this to our remappings within `foundry.toml`.

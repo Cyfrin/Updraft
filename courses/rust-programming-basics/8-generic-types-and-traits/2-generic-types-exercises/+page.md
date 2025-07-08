@@ -2,7 +2,7 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/generic.rs`](./solutions/examples/generic.rs)
+Execute the following command to run [`./solutions/examples/generic.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/generic_type/solutions/examples/generic.rs)
 
 ```shell
 cargo run --example generic
@@ -10,7 +10,7 @@ cargo run --example generic
 
 ## Exercises
 
-Exercises are in [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Exercises are in [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/generic_type/exercises/src/lib.rs)
 
 ### Exercise 1
 

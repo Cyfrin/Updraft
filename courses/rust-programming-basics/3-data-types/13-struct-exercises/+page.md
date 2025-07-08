@@ -2,7 +2,7 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/struct.rs`](./solutions/examples/struct.rs)
+Execute the following command to run [`./solutions/examples/struct.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/struct_type/solutions/examples/struct.rs)
 
 ```shell
 cargo run --example struct
@@ -10,7 +10,7 @@ cargo run --example struct
 
 ## Exercises
 
-Exercises are in [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Exercises are in [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/struct_type/exercises/src/lib.rs)
 
 ### Exercise 1
 
