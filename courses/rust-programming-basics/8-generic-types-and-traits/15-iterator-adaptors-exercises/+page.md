@@ -2,7 +2,7 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/iter_adaptors.rs`](./solutions/examples/iter_adaptors.rs)
+Execute the following command to run [`./solutions/examples/iter_adaptors.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/iterator_adaptors/solutions/examples/iter_adaptors.rs)
 
 ```shell
 cargo run --example iter_adaptors
@@ -10,7 +10,7 @@ cargo run --example iter_adaptors
 
 ## Exercises
 
-Exercises are in [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Exercises are in [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/iterator_adaptors/exercises/src/lib.rs)
 
 ### Exercise 1
 
