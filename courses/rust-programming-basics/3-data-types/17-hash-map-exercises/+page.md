@@ -2,7 +2,7 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/hash_map.rs`](./solutions/examples/hash_map.rs)
+Execute the following command to run [`./solutions/examples/hash_map.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/hash_map/solutions/examples/hash_map.rs)
 
 ```shell
 cargo run --example hash_map
@@ -10,7 +10,7 @@ cargo run --example hash_map
 
 ## Exercises
 
-Exercises are in [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Exercises are in [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/hash_map/exercises/src/lib.rs)
 
 ### Exercise 1
 
