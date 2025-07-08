@@ -2,7 +2,7 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/if_let.rs`](./solutions/examples/if_let.rs)
+Execute the following command to run [`./solutions/examples/if_let.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/if_let/solutions/examples/if_let.rs)
 
 ```shell
 cargo run --example if_let
@@ -10,7 +10,7 @@ cargo run --example if_let
 
 ## Exercises
 
-Exercises are in [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Exercises are in [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/if_let/exercises/src/lib.rs)
 
 ### Exercise 1
 
