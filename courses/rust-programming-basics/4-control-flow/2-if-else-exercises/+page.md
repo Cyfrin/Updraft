@@ -2,7 +2,7 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/if_else.rs`](./solutions/examples/if_else.rs)
+Execute the following command to run [`./solutions/examples/if_else.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/if_else/solutions/examples/if_else.rs)
 
 ```shell
 cargo run --example if_else
@@ -10,7 +10,7 @@ cargo run --example if_else
 
 ## Exercises
 
-Exercises are in [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Exercises are in [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/if_else/exercises/src/lib.rs)
 
 ### Exercise 1
 
