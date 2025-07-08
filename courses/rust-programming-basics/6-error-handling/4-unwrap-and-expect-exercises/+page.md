@@ -2,7 +2,7 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/unwrap.rs`](./solutions/examples/unwrap.rs)
+Execute the following command to run [`./solutions/examples/unwrap.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/unwrap/solutions/examples/unwrap.rs)
 
 ```shell
 cargo run --example unwrap
@@ -10,7 +10,7 @@ cargo run --example unwrap
 
 ## Exercises
 
-Exercises are in [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Exercises are in [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/unwrap/exercises/src/lib.rs)
 
 ### Exercise 1
 
