@@ -2,7 +2,7 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/select.rs`](./solutions/examples/select.rs)
+Execute the following command to run [`./solutions/examples/select.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/join_select/solutions/examples/select.rs)
 
 ```shell
 cargo run --example select
@@ -10,7 +10,7 @@ cargo run --example select
 
 ## Exercises
 
-Exercises are in [`./exercises/src/main.rs`](./exercises/src/main.rs)
+Exercises are in [`./exercises/src/main.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/join_select/exercises/src/main.rs)
 
 ### Exercise 1
 
