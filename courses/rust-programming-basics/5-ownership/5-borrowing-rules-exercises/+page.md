@@ -2,13 +2,13 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/borrow.rs`](./solutions/examples/borrow.rs)
+Execute the following command to run [`./solutions/examples/borrow.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/borrowing_rules/solutions/examples/borrow.rs)
 
 ```shell
 cargo run --example borrow
 ```
 
-Execute the following command to run [`./solutions/examples/borrow_func.rs`](./solutions/examples/borrow_func.rs)
+Execute the following command to run [`./solutions/examples/borrow_func.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/borrowing_rules/solutions/examples/borrow_func.rs)
 
 ```shell
 cargo run --example borrow_func
@@ -16,7 +16,7 @@ cargo run --example borrow_func
 
 ## Exercises
 
-Exercises are in [`./exercises/src/main.rs`](./exercises/src/main.rs)
+Exercises are in [`./exercises/src/main.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/borrowing_rules/exercises/src/main.rs)
 
 ### Exercise 1
 
