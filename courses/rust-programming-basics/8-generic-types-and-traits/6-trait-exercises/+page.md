@@ -2,7 +2,7 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/trait.rs`](./solutions/examples/trait.rs)
+Execute the following command to run [`./solutions/examples/trait.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/trait_basic/solutions/examples/trait.rs)
 
 ```shell
 cargo run --example trait
@@ -10,7 +10,7 @@ cargo run --example trait
 
 ## Exercises
 
-Exercises are in [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Exercises are in [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/trait_basic/exercises/src/lib.rs)
 
 ### Exercise 1
 
