@@ -2,7 +2,7 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/scalar.rs`](./solutions/examples/scalar.rs)
+Execute the following command to run [`./solutions/examples/scalar.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/scalar/solutions/examples/scalar.rs)
 
 ```shell
 cargo run --example scalar --release
@@ -10,7 +10,7 @@ cargo run --example scalar --release
 
 ## Exercises
 
-Exercises are in [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Exercises are in [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/scalar/exercises/src/lib.rs)
 
 ### Exercise 1
 
@@ -20,7 +20,7 @@ pub fn eq() {
 }
 ```
 
-Fix the function `eq` inside [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Fix the function `eq` inside [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/scalar/exercises/src/lib.rs)
 
 Compare 2 inputs of the type `char` for equality and return a `bool`
 
@@ -32,7 +32,7 @@ pub fn add() {
 }
 ```
 
-Fix the function `add` inside [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Fix the function `add` inside [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/scalar/exercises/src/lib.rs)
 
 Add 3 inputs of the type `f32` and return the sum
 
@@ -44,7 +44,7 @@ pub fn cast(x: u8, y: i8, z: f32) -> f32 {
 }
 ```
 
-Fix the function `cast` inside [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Fix the function `cast` inside [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/scalar/exercises/src/lib.rs)
 
 Add the 3 inputs, casting all of them into `f32`
 
