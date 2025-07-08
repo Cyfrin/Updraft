@@ -2,7 +2,7 @@
 
 ## Example
 
-Execute the following command to run [`./solutions/examples/tuple.rs`](./solutions/examples/tuple.rs)
+Execute the following command to run [`./solutions/examples/tuple.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/tuple/solutions/examples/tuple.rs)
 
 ```shell
 cargo run --example tuple
@@ -10,7 +10,7 @@ cargo run --example tuple
 
 ## Exercises
 
-Exercises are in [`./exercises/src/lib.rs`](./exercises/src/lib.rs)
+Exercises are in [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/tuple/exercises/src/lib.rs)
 
 ### Exercise 1
 
