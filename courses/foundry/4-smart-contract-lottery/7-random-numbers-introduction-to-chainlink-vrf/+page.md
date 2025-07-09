@@ -66,7 +66,7 @@ This is the way the contract keeps track of the requests, their status and the `
 
 We will also store the `subscriptionId` as a state variable, this will be checked inside the `requestRandomWords` by the `VRFCoordinatorV2_5Mock`. If we don't have a valid subscription or we don't have enough funds our request will revert. 
 
-The next important piece is the `VRFCoordinatorV2Interface` which is one of the dependencies we import, this [contract](https://github.com/smartcontractkit/chainlink/blob/develop/contracts/src/v0.8/vrf/interfaces/VRFCoordinatorV2Interface.sol) has a lot of methods related to subscription management and requests, but the one we are interested in right now is `requestRandomWords`, this is the function that we need to call to trigger the process of receiving the random words, that we'll use as a source of randomness in our application.
+The next important piece is the `VRFCoordinatorV2Interface` which is one of the dependencies we import, this contract has a lot of methods related to subscription management and requests, but the one we are interested in right now is `requestRandomWords`, this is the function that we need to call to trigger the process of receiving the random words, that we'll use as a source of randomness in our application.
 
 ```solidity
 // Assumes the subscription is funded sufficiently.
