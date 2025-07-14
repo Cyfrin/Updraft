@@ -1,5 +1,9 @@
 import os
 
+# Threshold values for validation
+MIN_CAPTION_COUNT = 13
+MIN_LESSON_COUNT = 1
+
 def audit(courses):
 
     for course in courses:
@@ -28,13 +32,13 @@ def audit(courses):
             
             if depth == 2:
             # Print directory and caption_count if they are less than the threshold
-                if caption_count < 13:
+                if caption_count < MIN_CAPTION_COUNT:
                     count_line = f"{dirpath} Captions: {caption_count}"
                     with open("audit.txt", "a") as file:
                         file.write(count_line + "\n")
                     missing.append(dirpath)
                     print(f"{dirpath} Captions: {caption_count}")
-                if lesson_count < 1:
+                if lesson_count < MIN_LESSON_COUNT:
                     count_line = f"{dirpath} Lessons: {lesson_count}"
                     with open("audit.txt", "a") as file:
                         file.write(count_line + "\n")
