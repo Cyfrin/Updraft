@@ -15,34 +15,22 @@ Exercises are in [`./exercises/src/lib.rs`](https://github.com/Cyfrin/rust-crash
 ### Exercise 1
 
 ```rust
-pub fn min(x: i32, y: i32) -> i32 {
+pub fn sum(nums: Vec<i32>) -> i32 {
     todo!();
 }
 ```
 
-Return the minimum of `x` and `y`.
+Return the sum of all integers in the `nums` vector.
 
 ### Exercise 2
 
 ```rust
-pub fn max(x: i32, y: i32) -> i32 {
+pub fn fill(i: u32, n: usize) -> Vec<u32> {
     todo!();
 }
 ```
 
-Return the maximum of `x` and `y`.
-
-### Exercise 3
-
-```rust
-pub fn sign(x: i32) -> i32 {
-    todo!();
-}
-```
-
-Return the sign of `x`.
-
-If `x` is negative, return -1, otherwise return 1.
+Return a vector of length `n`, filled with the value `i`.
 
 ## Test
 
