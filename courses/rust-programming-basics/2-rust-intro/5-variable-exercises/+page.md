@@ -10,7 +10,7 @@ cargo run --example var
 
 ## Exercises
 
-Exercises are in [`./exercises/src/main.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/variable/solutions/src/main.rs)
+Exercises are in [`./exercises/src/main.rs`](https://github.com/Cyfrin/rust-crash-course/blob/main/topics/variable/exercises/src/main.rs)
 
 ### Exercise 1
 

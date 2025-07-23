@@ -34,9 +34,9 @@ Let's begin by setting up our Foundry project and creating the initial `RebaseTo
 First, we need to install the Chainlink CCIP contracts as a dependency in our Foundry project. Open your terminal and run:
 
 ```bash
-forge install smartcontractkit/ccip@v2.17.0-ccip1.5.12 --no-commit
+forge install smartcontractkit/ccip@v2.17.0-ccip1.5.16 --no-commit
 ```
-*Note: It's crucial to use the correct version tag. The tag `v2.17.0-ccip1.5.12` is confirmed to work for this implementation.*
+*Note: It's crucial to use the correct version tag. The tag `v2.17.0-ccip1.5.16` is confirmed to work for this implementation.*
 
 ### Configuring Remappings
 

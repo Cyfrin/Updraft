@@ -70,12 +70,13 @@ fn main() {
         // This arm matches if x is 1, 2, OR 3.
         1 | 2 | 3 => println!("1, 2, or 3"),
         // This arm matches any number from 4 to 10, inclusive.
-        4..=10 => println!("4 to 10"),
+        4..=10 => println!("4 to 9"),
         _ => println!("others"),
     }
 }
 ```
-In this example, since `x` is `7`, it falls into the `4..=10` range, and the program will print "4 to 10".
+
+In this example, since `x` is `7`, it falls into the `4..=10` range, and the program will print "4 to 9".
 
 #### Binding Matched Values with `@`
 
@@ -91,6 +92,7 @@ fn main() {
     }
 }
 ```
+
 Here, `x` matches the range `1..=10`. The value of `x` (which is 10) is bound to the variable `i`, which we can then use in our `println!` macro. The output will be: `1 to 10: found 10`.
 
 ### Common Use Cases: Handling `Option` and `Result`
@@ -98,6 +100,7 @@ Here, `x` matches the range `1..=10`. The value of `x` (which is 10) is bound to
 The most idiomatic and powerful use of `match` is for handling enums, especially the standard library's `Option<T>` and `Result<T, E>` types. `match` forces you to handle every variant of the enum, making your code safer.
 
 #### Matching `Option<T>`
+
 An `Option` can either be `Some(value)`, containing a value, or `None`, indicating the absence of a value. `match` is the perfect tool for safely unwrapping it.
 
 ```rust
@@ -117,6 +120,7 @@ fn main() {
 ```
 
 #### Matching `Result<T, E>`
+
 Similarly, a `Result` represents either success, `Ok(value)`, or failure, `Err(error)`. Using `match` is the canonical way to handle both outcomes explicitly.
 
 ```rust
@@ -155,4 +159,5 @@ fn main() {
     println!("The value of z is: {z}");
 }
 ```
+
 If `x` is `Some(9)`, the first arm executes, and the expression `val` (which is 9) is returned and assigned to `z`. If `x` were `None`, the second arm would execute, returning `0`. This pattern provides a clean and safe way to get a value out of an `Option`, with a fallback for the `None` case.
