@@ -56,7 +56,7 @@ Our initial setup will involve installing two main components:
     *   Once Noir (via Nargo) is installed, you'll need a proving backend to actually work with your Noir programs.
     *   Proving backends are what enable the generation of proofs, the verification of those proofs, and often, the generation of verifier smart contracts.
     *   This course will utilize **Barretenberg**, a proving backend developed by Aztec Labs.
-    *   The installation for Barretenberg is usually done using `bbup`, another script (e.g., `curl -L https://raw.githubusercontent.com/AztecProtocol/aztec-packages/refs/heads/master/barretenberg/cpp/scripts/bbup.sh | bash; bbup`).
+    *   The installation for Barretenberg is usually done using `bbup`, another script (e.g., `curl -L https://raw.githubusercontent.com/AztecProtocol/aztec-packages/refs/heads/master/barretenberg/bbup/install | bash; bbup`).
 
 Following these installations, our subsequent lessons will guide you through:
 
