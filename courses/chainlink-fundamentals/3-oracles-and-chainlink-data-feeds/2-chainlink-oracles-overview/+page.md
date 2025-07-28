@@ -64,7 +64,7 @@ Chainlink has become the most widely used DON because it addresses the key chall
 **Real-world use**: Complex calculations that would be too expensive to run directly on the blockchain.
 
 **Note**: This is _completely_ separate from the functions on a smart contract. Chainlink Functions is a Chainlink service. To avoid confusion:
-- Ff you see the word "Functions" with a capital "F", we are usually referring to the Chainlink service (unless it's the start of a sentance). 
+- If you see the word "Functions" with a capital "F", we are usually referring to the Chainlink service (unless it's the start of a sentance). 
 - Additionally, where possible, it will be prepended with "Chainlink" if we are refferring to the service. 
 
 ### Verifiable Random Function (VRF)
