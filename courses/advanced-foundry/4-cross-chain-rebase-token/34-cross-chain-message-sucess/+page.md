@@ -58,7 +58,7 @@ This successful cross-chain transfer highlights several important concepts and f
 
 The process demonstrated for transferring RBT from Ethereum Sepolia to ZKsync Sepolia is not limited to these two chains. The same principles and CCIP functionalities can be employed to enable token bridging and message passing to other CCIP-supported blockchains, such as Arbitrum, Optimism, Scroll, and more.
 
-A key resource for exploring CCIP's reach is the **CCIP Directory**, available at `docs.chain.link/ccip/directory/`.
+A key resource for exploring CCIP's reach is the **CCIP Directory**, available at `docs.chain.link/ccip/directory/mainnet`.
 
 This directory is an essential reference, providing a comprehensive list of:
 *   All networks (both mainnets and testnets) that have integrated CCIP.
