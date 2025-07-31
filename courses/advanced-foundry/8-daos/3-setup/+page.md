@@ -56,7 +56,7 @@ The start of our contract should look very familiar.
 > For version 5 of OpenZeppelin's Ownable contract, we need to pass an address
 > in the constructor. We have to modify our code to account for this when
 > running `forge build` so that our project will not error. Like this:
-> `contract Box is Ownable(initialOwner) {}`
+> `constructor(address initialOwner) Ownable(initialOwner) {}`
 
 ```solidity
 // SPDX-License-Identifier: MIT
