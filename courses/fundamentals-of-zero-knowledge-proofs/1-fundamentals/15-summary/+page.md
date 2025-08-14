@@ -73,6 +73,6 @@ As you continue your exploration of zero-knowledge, remember that support and re
     *   The "Helpful zero-knowledge proofs blog post."
     *   Further details on "Interactive vs non-interactive ZKPs" and "The Ali Baba cave" example.
     *   "Vitalik's blog post on the trusted setup."
-*   **Share Your Progress:** We'd love to hear about your learning journey and any projects you embark on! Feel free to share your course completion or subsequent achievements by tagging `@KieranNightingale` and `@CyfrinUpdraft` on Twitter.
+*   **Share Your Progress:** We'd love to hear about your learning journey and any projects you embark on! Feel free to share your course completion or subsequent achievements by tagging `@CiaraNightingal` and `@CyfrinUpdraft` on Twitter.
 
 Thank you for your dedication throughout this course. We hope you've found it valuable and that you're excited to continue exploring the powerful world of zero-knowledge proofs. Stay tuned for more learning opportunities!
