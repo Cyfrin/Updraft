@@ -12,13 +12,26 @@ While there are several excellent extensions available for Solidity, this guide 
 
 **Popular Solidity Extensions:**
 
-*   **Solidity by Nomic Foundation (Hardhat):** This is the extension we will install and configure. Despite its name, it works perfectly for any Solidity project, including those built with Foundry. Upon installation, it immediately provides rich syntax highlighting, coloring your code to make it instantly more readable.
-*   **Solidity by Juan Blanco:** A long-standing and highly popular choice in the community.
-*   **Solidity Visual Developer by tintinweb:** Another powerful alternative with a strong feature set.
+*   [Solidity by Nomic Foundation (Hardhat)](https://marketplace.visualstudio.com/items?itemName=NomicFoundation.hardhat-solidity): This is the extension we will install and configure. Despite its name, it works perfectly for any Solidity project, including those built with Foundry. Upon installation, it immediately provides rich syntax highlighting, coloring your code to make it instantly more readable.
+*   [Solidity by Juan Blanco](https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity): A long-standing and highly popular choice in the community.
+*   [Solidity Visual Developer by tintinweb](https://marketplace.visualstudio.com/items?itemName=tintinweb.solidity-visual-auditor): Another powerful alternative with a strong feature set.
 
 To get started, open the Extensions view in VS Code (click the icon on the sidebar or press `Ctrl+Shift+X`), search for "Solidity by Nomic Foundation," and click "Install." You will see your `.sol` files immediately render with colors and highlighting.
 
 As a bonus tip, if you are working with Foundry, your project includes a `foundry.toml` configuration file. To get syntax highlighting for it, install the **Better TOML** extension.
+
+### Important: Make sure you download the correct extension!
+
+Be sure to either:
+- Use the links from here
+- Use the links from the resources page
+- Or, verify that you're using the correct extensions
+
+There have been attacks where a malicious extension was uploaded to the marketplace with a similar name. Always double-check the publisher and the extension's description to ensure you're installing the right one.
+
+Here are two examples of such an attack:
+- [https://x.com/0xZodomo/status/1953993474468110550](https://x.com/0xZodomo/status/1953993474468110550)
+- [https://x.com/PatrickAlphaC/status/1955657679214608776](https://x.com/PatrickAlphaC/status/1955657679214608776)
 
 ### Configuring Your Default Formatter
 
