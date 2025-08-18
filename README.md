@@ -147,7 +147,7 @@ This project exists thanks to all the people who contribute.<br>
 
 ## License
 
-Cyfrin Updraft content is open-sourced [licensed as GPLv3](https://github.com/cyfrin/updraft/blob/main/LICENSE).
+Cyfrin Updraft content is open-sourced [licensed as AGPLv3](https://github.com/cyfrin/updraft/blob/main/LICENSE).
 
 
 [![Cyfrin Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/cyfrinupdraft)
