@@ -37,7 +37,7 @@ The most crucial file within this repository is `README.md`. Think of it as your
     *   Rare skills article
     *   Artem Chystiakov's article
     *   Smart Contract Programmer's video
-    *   `https://www.researchgate.net/figure/Example-of-the-Tornado-Cash-1-ETH-pool-addresses-A-through-F-deposit-to-and-withdraw_fig1_357925531`
+    *   `https://www.researchgate.net/figure/Example-of-the-Tornado-Cash-1-ETH-pool-addresses-A-through-F-deposit-to-and-withdraw_fig1_357925591`
     *   Krishang's Tornado Cash Rebuilt Repo
     *   The Tornado Cash codebase
     *   Cat Mcgee's Private Peace Hackathon Project
