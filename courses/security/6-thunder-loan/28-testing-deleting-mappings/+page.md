@@ -24,7 +24,7 @@ Alright, so what happens if the owner passed False and is looking to disallow a 
     return assetToken;
     ```
 
-What's we're ultimately doing above is removing an allowed token mapping. Something to keep in mind at this point is that many of our conditional checks so far have been dependent on this mapping returning `address(0)` if a token is _not_ allowed.
+What we're ultimately doing above is removing an allowed token mapping. Something to keep in mind at this point is that many of our conditional checks so far have been dependent on this mapping returning `address(0)` if a token is _not_ allowed.
 
 We should definitely verify that this is the case.
 
