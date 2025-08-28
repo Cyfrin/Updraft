@@ -28,7 +28,7 @@ What we're ultimately doing above is removing an allowed token mapping. Somethin
 
 We should definitely verify that this is the case.
 
-> **Note:** I wish I could tell you that chisel is a great way to quickly check this, but currently chisel doesn't delete mappings properly! Regrettably, this doesn't work. There's currently an open issue on their GitHub you can view [**here**](https://github.com/foundry-rs/foundry/issues/7318).
+> **Note:** I wish I could tell you that chisel is a great way to quickly check this, but currently chisel doesn't delete mappings properly! Regrettably, this doesn't work. There's currently an open issue on their GitHub you can view [**here**](https://github.com/foundry-rs/foundry/issues/7318). Current work-around is to add `;` to the end of `delete` statements.
 
 Fortunately we can check this pretty quickly in Remix.
 
