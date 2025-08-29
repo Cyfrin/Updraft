@@ -50,9 +50,9 @@ function getPriceInWeth(address token) public view returns (uint256) {
 
 This function is where TSwap comes into play! We're using `TSwap` to determine what the price of a given token is in WETH. This also tells us that the fees being calculated in `getCalculatedFee` are actually based on the value or price, not the number of tokens.
 
-> **Remember:** `s_flashLoanFee` is an initialized constant set to 3e15 aka 3%. `s_feePrecision` is another constant, set to 1e18.
+> **Remember:** `s_flashLoanFee` is an initialized constant set to 3e15 aka 0.3%. `s_feePrecision` is another constant, set to 1e18.
 
-At this point, I'll say it's really beneficial for us as security researches to perhaps go a little out of scope to better understand `TSwap` and how it handles requests like these. Fom `TSwap` we can see:
+At this point, I'll say it's really beneficial for us as security researches to perhaps go a little out of scope to better understand `TSwap` and how it handles requests like these. From `TSwap` we can see:
 
 ```js
 function getPriceOfOnePoolTokenInWeth() external view returns(uint256){
