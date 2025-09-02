@@ -112,7 +112,7 @@ def flip_mood(token_id: uint256):
         image_uri = HAPPY_SVG_URI
 ```
 
-Make it sad. Now let's try one more time. Great. Let's grab this. Boom, paste it in. Grab the image. Boom, and outside. So in the final bit that we should do in this in here as well is we should really update our our NFT here so that it exports all the functions of an ERC721.
+Make it sad. Now let's try one more time. Great. Let's grab this. Boom, paste it in. Grab the image. Boom, and outside. So in the final bit that we should do in this in here as well is we should really update our NFT here so that it exports all the functions of an ERC721.
 
 But remember, we cannot export tokenURI, because we have created one ourselves. What we can do is we can just cheat a little bit. Typically AIs work great at that.  We're going to come in here. Go to SRC, mood NFT. Scroll down. There's also some nicer syntax in here and just grab this whole `exports`. 
 
