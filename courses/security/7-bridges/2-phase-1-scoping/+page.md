@@ -39,7 +39,7 @@ We've 4 contracts within `src`, but let's start with the [**README**](https://gi
         - L1Token.sol
         - L1Vault.sol
         - TokenFactory.sol
-    - ZKSync Era:
+    - ZKsync Era:
         - TokenFactory.sol
     - Tokens:
         - L1Token.sol (And copies, with different names & initial supplies)
@@ -53,7 +53,7 @@ Looks like all 4 contracts are within scope of this review, great! The protocol 
 The provided solc version looks great, fairly current. We're also provided a number of chains to deploy to and which contracts will be deployed to each respective chain.
 
 - Ethereum Mainnet: - L1BossBridge.sol - L1Token.sol - L1Vault.sol - TokenFactory.sol
-- ZKSync Era:
+- ZKsync Era:
   - TokenFactory.sol
 
 It looks like only a single ERC20 token is supported, `L1Token`, so it should be easy enough to check it for oddities.

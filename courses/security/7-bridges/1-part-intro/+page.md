@@ -32,7 +32,7 @@ At points we'll be introduced to new tools to assist us in security reviews. Too
 
 **Case Studies**
 
-We'll touch briefly into exploit case studies such as a [**Precompile issue that was faced by Polygon**](https://youtu.be/QdIG7TfjUiM) as well as a [**problem that arose on zkSync**](https://medium.com/coinmonks/gemstoneido-contract-stuck-with-921-eth-an-analysis-of-why-transfer-does-not-work-on-zksync-era-d5a01807227d) due to different opcode support between blockchains.
+We'll touch briefly into exploit case studies such as a [**Precompile issue that was faced by Polygon**](https://youtu.be/QdIG7TfjUiM) as well as a [**problem that arose on ZKsync**](https://medium.com/coinmonks/gemstoneido-contract-stuck-with-921-eth-an-analysis-of-why-transfer-does-not-work-on-zksync-era-d5a01807227d) due to different opcode support between blockchains.
 
 **New Attack Vectors**
 

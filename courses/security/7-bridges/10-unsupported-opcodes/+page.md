@@ -136,6 +136,6 @@ assembly {
 
 We found a `High`! This really demonstrates the potential power of The Hans Checklist. The Checklist is huge, no doubt, but if it's run through at the end of an audit, you'll find lots of the strange intricacies as you check things off.
 
-This may seem like a silly bug to some, an obvious thing to overlook, but I assure you these things happen. There's a famous casestudy in which 921 ETH were locked because the transfer function would fail at the time on zkSync.
+This may seem like a silly bug to some, an obvious thing to overlook, but I assure you these things happen. There's a famous case study in which 921 ETH were locked because the transfer function would fail at the time on zkSync.
 
 Read more about it [**here**](https://medium.com/coinmonks/gemstoneido-contract-stuck-with-921-eth-an-analysis-of-why-transfer-does-not-work-on-zksync-era-d5a01807227d). When you're done, I'll see you in the next one!
