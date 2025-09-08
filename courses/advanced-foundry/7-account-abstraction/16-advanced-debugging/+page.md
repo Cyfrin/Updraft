@@ -34,8 +34,8 @@ This tells us the `handleOps` call to the `EntryPoint` contract is the source of
 
 Knowing where the revert happened is useful, but to understand *why*, we often need to inspect the state and execution path leading up to it. The debugger allows us to step backward through the execution trace.
 
-*   **Keyboard Shortcut:** `J` (repeatedly press to step to the previous EVM opcode)
-    *   The on-screen help often shows `[k/j]: prev/next op`, where `k` steps forward (next opcode) and `j` steps backward (previous opcode).
+*   **Keyboard Shortcut:** `k` (repeatedly press to step to the previous EVM opcode)
+    *   The on-screen help often shows `[k/j]: prev/next op`, where `k` steps backward (previous opcode) and `j` steps forward (next opcode).
 
 As you step backward, particularly when entering external contract calls like `handleOps`, you might encounter messages like "No source map for contract EntryPoint." This means the debugger doesn't have the source code mapping for that specific part of the dependency. However, by continuing to step back, you will eventually land on a relevant Solidity line within the `EntryPoint.sol` contract itself, if its source is available in your project's dependencies (e.g., in `lib/`).
 
