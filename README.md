@@ -50,7 +50,7 @@ Please refer to this for an in depth explanation of the content:
 -   [LinkedIn](https://www.linkedin.com/school/cyfrin-updraft/) - Add Updraft to your learning experiences
 -   [Discord](https://discord.gg/cyfrin) - Join a community of 3000+ developers and auditors
 -   [Newsletter](https://www.cyfrin.io/newsletter) - Weekly security research tips and resources to level up your career
--   [CodeHawks](https://www.codehawks.com/) - Smart contracts auditing competitions to help securing web3
+-   [CodeHawks](https://www.codehawks.com/) - Smart contracts auditing competitions to help secure web3
 
 </br>
 
