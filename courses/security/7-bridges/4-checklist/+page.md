@@ -26,4 +26,4 @@ If that wasn't enough, in addition to the conveniences above, this is a living d
 
 This tool is incredibly valuable and I encourage you to get acquainted. We'll be putting it to good use throughout Boss Bridge.
 
-In the next lesson, we'll gain a bit more context from the protocol docs, let's go!.
+In the next lesson, we'll gain a bit more context from the protocol docs, let's go!

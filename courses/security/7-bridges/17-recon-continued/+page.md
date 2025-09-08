@@ -121,7 +121,7 @@ Importantly, we see the constructor approving `L1BossBridge` to move tokens from
 
 We know that this protocol is `pausable`, so we would expect to see the `pause` and `unpause` functions somewhere. Here they are, note that they are crucially modified by `onlyOwner` as they should be.
 
-THe next function is setSigner. This is what allows the protocol owner to authorize addresses to moderate the cross chain interaction of the protocol. I find myself thinking adversarially here and wondering..
+The next function is setSigner. This is what allows the protocol owner to authorize addresses to moderate the cross chain interaction of the protocol. I find myself thinking adversarially here and wondering..
 
 ```js
 // @Audit-Question: What would happen if a signer was disabled mid-flight?

@@ -54,10 +54,10 @@ token.safeTransferFrom(from, address(vault), amount);
 emit Deposit(from, l2Recipient, amount);
 ```
 
-This event is **_very_** important as it effectively triggers the minting of tokens on the L2. Absolutely verify the parameters and the order which they are being passed (they're good here.).
+This event is **_very_** important as it effectively triggers the minting of tokens on the L2. Absolutely verify the parameters and the order which they are being passed (they're good here).
 
 ### Wrap Up
 
-This critical function, `depositTokensToL2` seems fairly simple, it _seems_ secure. There's an issue here.. do you know what it is?
+This critical function, `depositTokensToL2` seems fairly simple, it _seems_ secure. There's an issue here. Do you know what it is?
 
 Challenge yourself to identify the vulnerability in the `depositTokensToL2` function, and we'll go over it together, in the next lesson!
