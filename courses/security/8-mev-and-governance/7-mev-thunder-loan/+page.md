@@ -18,7 +18,7 @@ By closely monitoring the `mempool`, a malicious actor would be able to see a pe
 
 The malicious actor can then **swap back** (this is called `back running`) before the loan's repayment checks TSwap again! This would drastically impact the flash loan experience in Thunder Loan and may cause several of them to fail, or worse - cost victims a tonne in unexpected fees.
 
-::image{src='/security-section-8/7-thunder-loan-mev/mev-thunder-loan1.png'}
+![thunder-loan](/security-section-8/7-thunder-loan-mev/mev-thunder-loan1.png)
 
 ### Wrap Up
 
