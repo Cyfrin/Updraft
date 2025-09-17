@@ -1,4 +1,0 @@
-|
-                        ---
-                        title: Exercise Read Data
-                        ---
