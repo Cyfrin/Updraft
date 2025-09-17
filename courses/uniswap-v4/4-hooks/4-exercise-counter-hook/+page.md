@@ -1,4 +1,0 @@
-|
-                        ---
-                        title: Exercise Counter Hook
-                        ---
