@@ -1,0 +1,4 @@
+|
+                        ---
+                        title: Encode Hook Flags
+                        ---
