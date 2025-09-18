@@ -45,7 +45,7 @@ How does Solidity determine how these variables are handled? Let's reformat our 
    2. How does the EVM know how to interpret/interact with data?
 2. How does Remix know to update the number of horses with this data?
 
-As developers, we usually let Solidity handle these complexities automatically. It silently allocates call data, governs memory usage during execution, and seamlessly switches between variable types. But here's the twist: when coding in low-level bytecode, _we_ are responsible for managing memory allocation.
+As developers, we usually let Solidity handle these complexities automatically. It silently allocates calldata, governs memory usage during execution, and seamlessly switches between variable types. But here's the twist: when coding in low-level bytecode, _we_ are responsible for managing memory allocation.
 
 Let's examine this brilliant visual that prominent developer Pascal shared on Twitter:
 
@@ -57,7 +57,7 @@ For our purposes, our focus will be the areas **Stack**, **Memory**, and **Stora
 
 When we want to perform computations on data, we have to consider where the data will be stored and the order of our computations. Of all the spaces in the image above, the cheapest location for this (from the perspective of gas) is going to be on `the stack`.
 
-If we take a look at the `ADD` op code in [**evm.codes**](https://www.evm.codes/?fork=shanghai) we can see how this addition operation actually works.
+If we take a look at the `ADD` opcode in [**evm.codes**](https://www.evm.codes/?fork=shanghai) we can see how this addition operation actually works.
 
 ![evm-the-stack-2](/formal-verification-1/9-evm-the-stack/evm-the-stack-2.png)
 

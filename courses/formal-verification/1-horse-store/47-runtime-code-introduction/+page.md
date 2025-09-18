@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Runtime Code
 
-With `contract creation` understood, we move onto the runtime section of our op codes. Remember, Solidity conveniently will break each of theses sections up by adding an `INVALID` op code between them.
+With `contract creation` understood, we move onto the runtime section of our opcodes. Remember, Solidity conveniently will break each of theses sections up by adding an `INVALID` opcode between them.
 
 <details>
 <Summary> Op Codes </summary>
@@ -181,6 +181,6 @@ What's happening above?
 
 The first three codes are Solidity's `free memory pointer` again! We'll get used to seeing this. From there we see another chunk we've seen before - the msg.value check.
 
-The Solidity compiler is smart enough to check all the functions within a contract and determine if any of them are payable. If none of a contract's functions are payable, any call data sent to the contract's runtime code will be checked for value and the transaction will revert if any is found!
+The Solidity compiler is smart enough to check all the functions within a contract and determine if any of them are payable. If none of a contract's functions are payable, any calldata sent to the contract's runtime code will be checked for value and the transaction will revert if any is found!
 
 We'll continue from the `JUMPDEST` in the next lesson to see how a call is handled when `msg.value == 0`.

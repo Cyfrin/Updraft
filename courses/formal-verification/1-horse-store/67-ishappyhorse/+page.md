@@ -75,7 +75,7 @@ function isHappyHorse(uint256 horseId) external view returns (bool) {
 
 There are conditionals and comparisons galore! We're going to have to go through each of these to determine what will be returned by our macro.
 
-The start shouldn't be too complicated, we're going to need the parameter being passed (our horseId from `call data`), and we use this to load the horseFedTimestamp, just like we did in the `GET_HORSE_FED_TIMESTAMP()` macro. We also need the current timestamp to calculate the value we're comparing.
+The start shouldn't be too complicated, we're going to need the parameter being passed (our horseId from `calldata`), and we use this to load the horseFedTimestamp, just like we did in the `GET_HORSE_FED_TIMESTAMP()` macro. We also need the current timestamp to calculate the value we're comparing.
 
 ```js
 #define macro IS_HAPPY_HORSE() = takes (0) returns (0) {
@@ -109,7 +109,7 @@ Let's define this in our Huff contract. For convenience, `1 days` in hex is `0x0
 #define constant HORSE_HAPPY_IF_FED_WITHIN_CONST = 0x0000000000000000000000000000000000000000000000000000000000015180
 ```
 
-Let's add this constant to our stack, in our macro and finally compare our previous calculation to it using the `gt` op code. This will perform a greater than comparison taking our top two items on the stack as inputs.
+Let's add this constant to our stack, in our macro and finally compare our previous calculation to it using the `gt` opcode. This will perform a greater than comparison taking our top two items on the stack as inputs.
 
 ```js
 #define macro IS_HAPPY_HORSE() = takes (0) returns (0) {
@@ -144,7 +144,7 @@ This is a little confusing at first glance, but let's step through it together.
 
 We start with the bool `horse_has_been_fed_within_1_day` on the top of our stack, if this is true, we jump to `start_return_true` and push `0x01` to our stack (this is ultimately our return value saying `IS_HAPPY_HORSE == True`). Execution then continues by storing `0x01` in memory and returning this as our function's result.
 
-If the bool `horse_has_been_fed_within_1_day` is false (or 0) we know the horse hasn't been bed in less than 1 day, we then check to see if the horse was fed at exactly 1 day with the `eq` op code. When then do a hard jump to `start_return`.
+If the bool `horse_has_been_fed_within_1_day` is false (or 0) we know the horse hasn't been bed in less than 1 day, we then check to see if the horse was fed at exactly 1 day with the `eq` opcode. When then do a hard jump to `start_return`.
 
 The `start_return` jump destination continues execution by storing the top item of our stack into memory and returning 32 bytes of that item. The item returned is going to be `0x01` or `0x00` depending on if the horse was fed at exactly 1 day.
 

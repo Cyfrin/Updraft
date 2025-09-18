@@ -56,11 +56,11 @@ function feedHorse(uint256 horseId) external {
 
 This is going to one of the most important functions we learn about in this section as we'll be touching on `timestamps` _and_ `mappings`!
 
-We're going to need to access the block's timestamp, fortunately there's an op code that does just this `TIMESTAMP`.
+We're going to need to access the block's timestamp, fortunately there's an opcode that does just this `TIMESTAMP`.
 
 ![feedhorse_macro1](/formal-verification-1/64-feedhorse-macro/feedhorse_macro1.png)
 
-So, our function takes a `uint256 horseId`, we're going to want to add this to our stack as well. We know how to do this with the op code `calldataload`, which takes an offset, then adds 32 bytes of call data from the offset to our stack.
+So, our function takes a `uint256 horseId`, we're going to want to add this to our stack as well. We know how to do this with the opcode `calldataload`, which takes an offset, then adds 32 bytes of calldata from the offset to our stack.
 
 ```js
 #define macro FEED_HORSE() = takes(0) returns (0) {

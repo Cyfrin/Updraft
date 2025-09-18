@@ -41,7 +41,7 @@ And our stack should look like this:
 
 ![shr-calldata-1](/formal-verification-1/16-shr-calldata/shr-calldata-1.png)
 
-Our final step to isolate the `function selector` from our received `call data` is going to be executing the `shr` operation, exciting!
+Our final step to isolate the `function selector` from our received `calldata` is going to be executing the `shr` operation, exciting!
 
 ```js
 #define macro MAIN() = takes(0) returns(0) {

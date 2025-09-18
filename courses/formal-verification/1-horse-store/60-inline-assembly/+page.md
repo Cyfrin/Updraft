@@ -31,7 +31,7 @@ contract HorseStore {
 }
 ```
 
-In order to access Yul, we just need to wrap our operations in an `assembly` object, as shown above. From here we can access op codes almost like functions, with the stack layer of consideration abstracted away for us.
+In order to access Yul, we just need to wrap our operations in an `assembly` object, as shown above. From here we can access opcodes almost like functions, with the stack layer of consideration abstracted away for us.
 
 ```js
 function updateHorseNumber(uint256 newNumberOfHorses) external {
@@ -41,7 +41,7 @@ function updateHorseNumber(uint256 newNumberOfHorses) external {
 }
 ```
 
-In this example we see `sstore()` being used like our SSTORE op code, with the stack inputs being passed as parameters. The first input is the storage slot we're storing our data to, and the second input is the data we're storing. That's all it takes to `updateHorseNumber`!
+In this example we see `sstore()` being used like our SSTORE opcode, with the stack inputs being passed as parameters. The first input is the storage slot we're storing our data to, and the second input is the data we're storing. That's all it takes to `updateHorseNumber`!
 
 ```js
 function readNumberOfHorses() external view returns (uint256) {

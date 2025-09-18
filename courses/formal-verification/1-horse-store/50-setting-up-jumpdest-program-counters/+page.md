@@ -192,6 +192,6 @@ DUP1
 REVERT
 ```
 
-This is our `updateNumberOfHorses()` jump dest 2. A great way to determine these jump destinations would be to copy your op codes into the [evm.codes playground](https://www.evm.codes/playground) and reference the locations jumped when stepping through the execution.
+This is our `updateNumberOfHorses()` jump dest 2. A great way to determine these jump destinations would be to copy your opcodes into the [evm.codes playground](https://www.evm.codes/playground) and reference the locations jumped when stepping through the execution.
 
 Let's see what this `JUMPDEST` does in the next lesson!

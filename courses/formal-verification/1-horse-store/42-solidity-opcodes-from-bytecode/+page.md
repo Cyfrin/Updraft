@@ -8,21 +8,21 @@ _Follow along with this video:_
 
 ### Breaking Down Solidity
 
-In this lesson we're going to breakdown Solidity into it's component bytecode and directly compare the op codes in Solidity with those of Huff.
+In this lesson we're going to breakdown Solidity into it's component bytecode and directly compare the opcodes in Solidity with those of Huff.
 
-Start by creating a new folder named `breakdowns`, we'll be compiling our op code breakdowns in here.
+Start by creating a new folder named `breakdowns`, we'll be compiling our opcode breakdowns in here.
 
-Navigate to `out/horseStoreV1/HorseStore.sol/HorseStore.json`. This is the ABI of our deployed HorseStore contract. Within this file you'll find a `bytecode` object with an `object` property. This represents our op codes for the contract in bytecode!
+Navigate to `out/horseStoreV1/HorseStore.sol/HorseStore.json`. This is the ABI of our deployed HorseStore contract. Within this file you'll find a `bytecode` object with an `object` property. This represents our opcodes for the contract in bytecode!
 
 ![solidity-opcodes-from-bytecode1](/formal-verification-1/42-solidity-opcodes-from-bytecode/solidity-opcodes-from-bytecode1.png)
 
 Create a new file named `solc-breakdowns.c++`. This won't actually be a C++ file, but some of the syntax highlighting for C++ will make things easier on us. You can paste your bytecode to the top of this file as a comment for reference.
 
-As we know, every 2 digits in this bytecode represents an op code. For example, the very first pair `60` is `PUSH1`. We could absolutely go through the bytecode, pair by pair and break things down that way.
+As we know, every 2 digits in this bytecode represents an opcode. For example, the very first pair `60` is `PUSH1`. We could absolutely go through the bytecode, pair by pair and break things down that way.
 
 But that's a lot of work.
 
-Let's take our bytecode and paste it into the **[evm.codes playground](https://www.evm.codes/playground)**. By switching the left panel to `mneumonic` via the drop down we'll be given a list of the op codes for this contract! It should look something like this:
+Let's take our bytecode and paste it into the **[evm.codes playground](https://www.evm.codes/playground)**. By switching the left panel to `mneumonic` via the drop down we'll be given a list of the opcodes for this contract! It should look something like this:
 
 <details>
 <Summary> Op Codes </summary>
