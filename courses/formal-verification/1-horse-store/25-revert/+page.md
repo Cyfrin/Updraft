@@ -10,13 +10,13 @@ _Follow along with this video:_
 
 Now that we've accounted for each of our contract's function in our function dispatcher, we're done, right? Not exactly. Our code won't just stop executing if no valid `JUMPDEST` is found, it'll continue to the next operation (which in our case happens to be a `JUMPDEST`).
 
-We could easily imagine a scenario where `call data` is sent to our contract, no `function selector` matches are found, and arbitrary code is executed when we don't intend!
+We could easily imagine a scenario where `calldata` is sent to our contract, no `function selector` matches are found, and arbitrary code is executed when we don't intend!
 
-We should protect against this by terminating the execution when no matches are found by our dispatcher. We can leverage the `REVERT` op code to do this.
+We should protect against this by terminating the execution when no matches are found by our dispatcher. We can leverage the `REVERT` opcode to do this.
 
 ![revert-1](/formal-verification-1/25-revert/revert-1.png)
 
-The revert op code takes two stack inputs, the **byte offset** and **byte size**. Both of these are used to return data from memory (like an error code) when the REVERT operation is executed. We haven't dealt with memory and have no errors so we won't worry about this, we'll simply pass 0s.
+The revert opcode takes two stack inputs, the **byte offset** and **byte size**. Both of these are used to return data from memory (like an error code) when the REVERT operation is executed. We haven't dealt with memory and have no errors so we won't worry about this, we'll simply pass 0s.
 
 Our Huff contract with REVERT implemented should look something like this.
 
@@ -53,7 +53,7 @@ Our Huff contract with REVERT implemented should look something like this.
 #define macro GET_NUMBER_OF_HORSES() = takes(0) returns(0){}
 ```
 
-Now, if we head back to the [**evm.codes playground**](https://www.evm.codes/playground) with our new runtime bytecode (`huffc src/horseStoreV1/HorseStore.huff --bin-runtime`), we can send some garbage `call data` and step through the operations to see how the contract responds.
+Now, if we head back to the [**evm.codes playground**](https://www.evm.codes/playground) with our new runtime bytecode (`huffc src/horseStoreV1/HorseStore.huff --bin-runtime`), we can send some garbage `calldata` and step through the operations to see how the contract responds.
 
 ![revert-2](/formal-verification-1/25-revert/revert-2.png)
 

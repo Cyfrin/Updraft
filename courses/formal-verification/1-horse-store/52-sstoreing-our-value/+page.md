@@ -171,11 +171,11 @@ JUMP;
 
 The first thing we do at jump dest 3 is execute `POP`. This just removes the top item of our stack `0x00`. We then perform `CALLDATALOAD`, which we've seen before.
 
-`CALLDATALOAD` takes a bytes offset as a stack input, and outputs 32 Bytes of data from our call data, starting at the bytes offset.
+`CALLDATALOAD` takes a bytes offset as a stack input, and outputs 32 Bytes of data from our calldata, starting at the bytes offset.
 
-In our example, we're providing `0x04` (the size of our `function selector`) and adding our call data, less this `function selector`, to the top of our stack.
+In our example, we're providing `0x04` (the size of our `function selector`) and adding our calldata, less this `function selector`, to the top of our stack.
 
-Now we see a new op code, `SWAP2`!
+Now we see a new opcode, `SWAP2`!
 
 ![sstoreing-our-value1](/formal-verification-1/52-sstoreing-our-value/sstoreing-our-value1.png)
 
@@ -200,9 +200,9 @@ JUMP; // [CALLDATA[4:], 0x43, func_selector]
 
 And, given what we've seen with `SWAP2`, I'm sure we can speculate what `SWAP1` is going to do! That's right, it will swap the top item of our stack with the second from the top (or first index) item.
 
-Next we `POP` our `calldata_size` off of our stack and then call `JUMP`. The `JUMPDEST` is going to be what's at the top of our stack currently, which is `0x3f`, and we're bringing our `call data` with us!
+Next we `POP` our `calldata_size` off of our stack and then call `JUMP`. The `JUMPDEST` is going to be what's at the top of our stack currently, which is `0x3f`, and we're bringing our `calldata` with us!
 
-Look at our updated op code list to see where we've jumped to now, we're about to finally call `SSTORE` to save our new horse number to storage!
+Look at our updated opcode list to see where we've jumped to now, we're about to finally call `SSTORE` to save our new horse number to storage!
 
 <details>
 <Summary> Op Codes </summary>
@@ -360,8 +360,8 @@ From jump dest 4, we're able to finally save our value to storage, but we've onl
 
 1. Our `function selector` matched and our function was dispatched
 2. We passed the `msg.value check`
-3. Our `call data` was long enough to possibly include a valid value for storage (32 bytes)
-4. we've isolated our passed parameter data from our total `call data`
+3. Our `calldata` was long enough to possibly include a valid value for storage (32 bytes)
+4. we've isolated our passed parameter data from our total `calldata`
 
 ```js
 JUMPDEST; // [CALLDATA[4:], 0x43, func_selector]
@@ -382,4 +382,4 @@ JUMPDEST; // [func_selector]
 STOP; // []
 ```
 
-This final chunk of this transaction simply ends execution. This is great! We've walk through every op code, end to end when calling the `updateNumberOfHorses()` function!
+This final chunk of this transaction simply ends execution. This is great! We've walk through every opcode, end to end when calling the `updateNumberOfHorses()` function!

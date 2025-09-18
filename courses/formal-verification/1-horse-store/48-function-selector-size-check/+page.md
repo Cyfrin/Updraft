@@ -160,25 +160,25 @@ CALLDATASIZE   // [calldata_size, 0x04]
 LT             //
 ```
 
-Continuing from our `JUMPDEST` (this is if `msg.value == 0`), we are then clearing our stack with `POP`. Next we push `0x04` to our stack with `PUSH1`, we'll see why soon. Then we execute an op code we haven't seen before. `CALLDATASIZE`.
+Continuing from our `JUMPDEST` (this is if `msg.value == 0`), we are then clearing our stack with `POP`. Next we push `0x04` to our stack with `PUSH1`, we'll see why soon. Then we execute an opcode we haven't seen before. `CALLDATASIZE`.
 
 ![function-selector-size-check1](/formal-verification-1/48-function-selector-size-check/function-selector-size-check1.png)
 
-We can see that this op code takes no stack input, but the stack output is the `byte size of the call data`. A couple examples:
+We can see that this opcode takes no stack input, but the stack output is the `byte size of the calldata`. A couple examples:
 
-If call data = 0x04
+If calldata = 0x04
 
 - CALLDATASIZE = 0x01
 
-if call data = 0x05284a06
+if calldata = 0x05284a06
 
 - CALLDATASIZE = 0x04
 
-We then hit another new op code `LT` this stands for `less than`.
+We then hit another new opcode `LT` this stands for `less than`.
 
 ![function-selector-size-check2](/formal-verification-1/48-function-selector-size-check/function-selector-size-check2.png)
 
-The LT op code will return 1 if the top item of the stack is less than the second from top item in the stack. Functionally this is checking the the call data being received is long enough to satisfy the required length of a contracts function selector (4 bytes).
+The LT opcode will return 1 if the top item of the stack is less than the second from top item in the stack. Functionally this is checking the the calldata being received is long enough to satisfy the required length of a contracts function selector (4 bytes).
 
 ```js
 JUMPDEST       // [msg.value]
@@ -224,6 +224,6 @@ REVERT            // []
 
 The summarize all this, we're checking our `CALLDATASIZE`, if it is less than the size of a `function selector` we are jumping our execution to the `0x30` offset and reverting the transaction.
 
-The Solidity compiler again is smart enough to know if a contract possesses a `fallback` function and how to handle `call data` that can't be processed by a contract's functions by reverting the call when the `call data` passed is less then 4 bytes long.
+The Solidity compiler again is smart enough to know if a contract possesses a `fallback` function and how to handle `calldata` that can't be processed by a contract's functions by reverting the call when the `calldata` passed is less then 4 bytes long.
 
-In the next lesson we'll see how `call data` is handled when it passes this `CALLDATASIZE` check!
+In the next lesson we'll see how `calldata` is handled when it passes this `CALLDATASIZE` check!

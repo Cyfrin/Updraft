@@ -188,7 +188,7 @@ PUSH1 0x45         // [0x45, 0xe026c017 == func_selector, func_selector]
 JUMPI              // [func_selector]
 ```
 
-`PUSH1 0x45` is pushing a `JUMPDEST` to the top of our stack, and finally `JUMPI` is jumping if the `call data` `function selector` is found to be equal to the known `function selector`.
+`PUSH1 0x45` is pushing a `JUMPDEST` to the top of our stack, and finally `JUMPI` is jumping if the `calldata` `function selector` is found to be equal to the known `function selector`.
 
 There's just one `JUMPDEST` for `readNumberOfHorses`, but it's a lot.
 
@@ -283,7 +283,7 @@ This seems like a lot but it makes sense when broken down a bit. We first `PUSH1
 
 ### Wrap Up
 
-With that we have walked through every single op code in this contract's creation and runtime bytecode! We noticed that our Huff implementation can definitely be more efficient than Solidity because we by pass a few checks (for better or worse) and don't have to manage a `free memory pointer`!
+With that we have walked through every single opcode in this contract's creation and runtime bytecode! We noticed that our Huff implementation can definitely be more efficient than Solidity because we by pass a few checks (for better or worse) and don't have to manage a `free memory pointer`!
 
 Here's where we've come so far:
 

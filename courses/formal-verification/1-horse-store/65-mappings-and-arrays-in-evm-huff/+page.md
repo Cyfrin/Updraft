@@ -134,4 +134,4 @@ We can just call this `STORE_ELEMENT_FROM_KEYS()` macro within our `FEED_HORSE()
 }
 ```
 
-And that's all there is for our `FEED_HORSE()` macro! `Hashmap.huff` made things pretty painless for us, but if you find yourself not quite understanding how things were calculated, I encourage you to go into the macros of `Hashmap.huff` and walk yourself through the op codes to gain a deeper understanding of what they're doing before continuing.
+And that's all there is for our `FEED_HORSE()` macro! `Hashmap.huff` made things pretty painless for us, but if you find yourself not quite understanding how things were calculated, I encourage you to go into the macros of `Hashmap.huff` and walk yourself through the opcodes to gain a deeper understanding of what they're doing before continuing.

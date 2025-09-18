@@ -46,4 +46,4 @@ Huff wins again! Let's look at one comparison from HorseStoreV2:
 
 Wow! It's nearly 10,000 more gas in raw Solidity than it is in raw Huff. When looking at comparisons like this, it's easy to begin to see the advantages of coding in low level languages like Huff and Yul.
 
-Always remember the trade-offs that are made to save this gas however. This saved gas we see is a product of all the checks we skipped the implementation of in Huff, checks meant to keep people safe. We skipped checking for msg.value and call data length for example. These checks exist for a reason and we should be confident and conscientious when we choose to omit them.
+Always remember the trade-offs that are made to save this gas however. This saved gas we see is a product of all the checks we skipped the implementation of in Huff, checks meant to keep people safe. We skipped checking for msg.value and calldata length for example. These checks exist for a reason and we should be confident and conscientious when we choose to omit them.

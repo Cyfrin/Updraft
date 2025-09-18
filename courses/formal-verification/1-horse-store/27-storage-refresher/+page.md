@@ -23,8 +23,8 @@ So, in order to update storage, there are a few things we need to do.
 ```js
 #define macro SET_NUMBER_OF_HORSES() = takes(0) returns(0){
     // 1. Give numberOfHorses a storage slot
-    // 2. Get the value to store from call data
-    // 3. Execute the SSTORE op code
+    // 2. Get the value to store from calldata
+    // 3. Execute the SSTORE opcode
 }
 ```
 

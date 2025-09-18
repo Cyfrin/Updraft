@@ -22,7 +22,7 @@ The important distinctions to keep in mind when considering `memory` and `storag
 - Memory is temporary and data will be cleared when an operation completes.
 - Storage is persistent and data will remain accessible when an operation completes.
 
-In addition to these, accessing data in `storage` is _much_ more expensive than that of data in `memory`. This can be seen clearly when comparing the appropriate op codes at [**evm.codes**](https://www.evm.codes/?fork=shanghai) (we'll be referencing this a lot, you might want to book mark it!).
+In addition to these, accessing data in `storage` is _much_ more expensive than that of data in `memory`. This can be seen clearly when comparing the appropriate opcodes at [**evm.codes**](https://www.evm.codes/?fork=shanghai) (we'll be referencing this a lot, you might want to book mark it!).
 
 I'll draw your attention to the SSTORE and MSTORE
 
@@ -30,4 +30,4 @@ I'll draw your attention to the SSTORE and MSTORE
 
 We can see clearly to what extent I mean _"more expensive"_. The difference in gas when accessing data in `storage` is **massive.**
 
-In the next lesson, I'll introduce you to two more op codes you're likely to see quite often, `PUSH` and `ADD`.
+In the next lesson, I'll introduce you to two more opcodes you're likely to see quite often, `PUSH` and `ADD`.

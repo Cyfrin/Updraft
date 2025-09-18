@@ -16,9 +16,9 @@ Now that we've been through this once before, we should be a little more familia
 }
 ```
 
-> **Protip:**With a little deeper understanding of op codes now, I can further highlight what `takes (0) returns (0)` is doing.  These values are what we are taking off the stack and returning to the stack if we wanted our contract to do anything like this, this is where it would happen!
+> **Protip:**With a little deeper understanding of opcodes now, I can further highlight what `takes (0) returns (0)` is doing.  These values are what we are taking off the stack and returning to the stack if we wanted our contract to do anything like this, this is where it would happen!
 
-Now let's consider what we need to set up our function dispatcher in Huff for this contract. We know that getting the function selector from call data is going to be the exact same as we did before:
+Now let's consider what we need to set up our function dispatcher in Huff for this contract. We know that getting the function selector from calldata is going to be the exact same as we did before:
 
 ```js
 #define macro MAIN() = takes (0) returns (0){
@@ -28,7 +28,7 @@ Now let's consider what we need to set up our function dispatcher in Huff for th
 
 What else do we need?
 
-Well, we're going to need the function selectors of each of the functions in our contract to which we will compare the call data received to. These should be:
+Well, we're going to need the function selectors of each of the functions in our contract to which we will compare the calldata received to. These should be:
 
 - `mintHorse()`
 - `feedHorse()`
@@ -74,7 +74,7 @@ Let's add these to our function dispatcher, just like we did before. We could us
 }
 ```
 
-As you can see, this is all the same as we've done in our simple `HorseStoreV1` contract, it's just dialed up a bit. We've created an interface which references all of our functions and added the checks for each of their `function signatures` vs the received `call data` of our `MAIN macro`.
+As you can see, this is all the same as we've done in our simple `HorseStoreV1` contract, it's just dialed up a bit. We've created an interface which references all of our functions and added the checks for each of their `function signatures` vs the received `calldata` of our `MAIN macro`.
 
 Finally, we've set up jump destinations which will be jumped to when a match is found with one of our `function selectors`!  Each of these jump destinations pertains to a specific `macro`, which we have yet to write.  
 

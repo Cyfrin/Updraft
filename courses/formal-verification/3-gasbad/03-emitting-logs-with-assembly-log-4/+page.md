@@ -50,7 +50,7 @@ In the listItem function, our Assembly block is being used to emit an event, or 
 
 ![emitting-logs-with-assembly-log-41](/formal-verification-3/3-emitting-logs-with-assembly/emitting-logs-with-assembly-log-41.png)
 
-This op code will append our log record with 4 topics and takes 6 stack input elements. Let's consider how this is being used in our contract.
+This opcode will append our log record with 4 topics and takes 6 stack input elements. Let's consider how this is being used in our contract.
 
 ```js
 mstore(0x00, price); // This is storing our price parameter in memory

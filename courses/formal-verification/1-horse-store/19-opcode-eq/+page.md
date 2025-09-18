@@ -6,7 +6,7 @@ _Follow along with this video:_
 
 ---
 
-In this lesson we're going to take the next step in routing our `call data` to the appropriate function! Previously we'd isolated our function selector and we'd said:
+In this lesson we're going to take the next step in routing our `calldata` to the appropriate function! Previously we'd isolated our function selector and we'd said:
 
 ```
 If f_select == updateHorseNumber -> jump to that data in the contract
@@ -20,11 +20,11 @@ updateHorseNumber = 0xcdfead2e
 readNumberOfHorses = 0xe026c017
 ```
 
-These selectors can be determines by running `cast sig "updateHorseNumber(uint256)"` and `cast sig readNumberOfHorses()` respectfully. Once we have these signatures, there's an op code we can use to check equality, the `EQ` op code! Let's review how it works in [**evm.codes**](https://www.evm.codes/?fork=shanghai)
+These selectors can be determines by running `cast sig "updateHorseNumber(uint256)"` and `cast sig readNumberOfHorses()` respectfully. Once we have these signatures, there's an opcode we can use to check equality, the `EQ` opcode! Let's review how it works in [**evm.codes**](https://www.evm.codes/?fork=shanghai)
 
 ![opcode-eq-1](/formal-verification-1/19-opcode-eq/opcode-eq-1.png)
 
-As we can see, the `EQ` op code takes the top item on our stack and compares it to the next item in the stack. This op code will return `1` if the values compared are equal and `0` if they are not equal.
+As we can see, the `EQ` opcode takes the top item on our stack and compares it to the next item in the stack. This opcode will return `1` if the values compared are equal and `0` if they are not equal.
 
 Let's remind ourselves of our current contract state:
 

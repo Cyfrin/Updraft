@@ -144,7 +144,7 @@ _Follow along with this video:_
 
 ### Non-Payable Constructor Check
 
-When going through op codes, I like to repeatedly ask myself _What does this chunk do?_. Let's look at the next check and walk through is execution.
+When going through opcodes, I like to repeatedly ask myself _What does this chunk do?_. Let's look at the next check and walk through is execution.
 
 I'll typically look out for 'break points', things like `Revert` and `Return` to determine where a "chunk" starts and stops.
 
@@ -159,9 +159,9 @@ DUP1         // [0, 0, msg.value]
 REVERT       // [msg.value]
 ```
 
-I've added our comment notation to our op code list to keep track of what's on our stack. So, what's happening here?
+I've added our comment notation to our opcode list to keep track of what's on our stack. So, what's happening here?
 
-We've seen many of these op codes before, but some of them are new. Each time a new op code is mentioned, I'll include a screenshot of it's details from [evm.codes](https://www.evm.codes/#34?fork=cancun). I encourage you to use this website like a dictionary as we attempt to define what's being executed. `CALLVALUE` adds to the stack, the value included with the current call.
+We've seen many of these opcodes before, but some of them are new. Each time a new opcode is mentioned, I'll include a screenshot of it's details from [evm.codes](https://www.evm.codes/#34?fork=cancun). I encourage you to use this website like a dictionary as we attempt to define what's being executed. `CALLVALUE` adds to the stack, the value included with the current call.
 
 ![msg_value-check1](/formal-verification-1/44-msg.value-check/msg_value-check1.png)
 

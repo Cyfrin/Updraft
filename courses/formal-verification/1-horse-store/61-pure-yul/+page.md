@@ -43,7 +43,7 @@ Datacopy, dataoffset and datasize might seem unfamiliar, but these are function 
 
 ![pure-yul1](/formal-verification-1/61-pure-yul/pure-yul1.png)
 
-We can see that in our circumstances the `datacopy` function is being used as equivalent to the `codecopy` op code, and what does `codecopy` do? Well, it's taking the size and offset of our `runtime code` (we haven't written the `runtime` yet!) and returning it to be copied to the blockchain!
+We can see that in our circumstances the `datacopy` function is being used as equivalent to the `codecopy` opcode, and what does `codecopy` do? Well, it's taking the size and offset of our `runtime code` (we haven't written the `runtime` yet!) and returning it to be copied to the blockchain!
 
 ```js
 object "HorseStoreYul" {
@@ -139,13 +139,13 @@ Let's breakdown `selector()` a bit because it is wild.
 
 Basically, when this function is called it returns a variable `s`. Return, in Yul, is denoted by `->`, so `return s` == `-> s`.
 
-Then, within the `selector()` function we're dividing our `call data` (accessed via `calldataload(0)`), by `0x10000000000000000000000000000000000000000000000000000000` and assigning the value to our `s` variable.
+Then, within the `selector()` function we're dividing our `calldata` (accessed via `calldataload(0)`), by `0x10000000000000000000000000000000000000000000000000000000` and assigning the value to our `s` variable.
 
-> **Note:** the number `0x10000000000000000000000000000000000000000000000000000000` is effectively removing 28 bytes from our call data, leaving us with the first 4 bytes - or our `function selector` to compare to our `switch` cases!
+> **Note:** the number `0x10000000000000000000000000000000000000000000000000000000` is effectively removing 28 bytes from our calldata, leaving us with the first 4 bytes - or our `function selector` to compare to our `switch` cases!
 
 ### Switch Case Logic
 
-Now that we've isolated our `function selector` from our `call data`, we should have some logic for it to get routed to base on which `switch case` triggers. Let's start with `updateHorseNumber`
+Now that we've isolated our `function selector` from our `calldata`, we should have some logic for it to get routed to base on which `switch case` triggers. Let's start with `updateHorseNumber`
 
 ```js
 case 0xcdfead2e {
@@ -177,7 +177,7 @@ Our `decodeAsUint()` function is taking an `offset` as a parameter (we've passed
 
 Because our `offset` is 0, our positionInCallData is going to be starting at 4 bytes, or immediately following our function selector.
 
-We then assign a value to our return value, v. `calldataload()` will load 32 bytes of `call data` starting from a passed `offset`, which in our case is immediately following our `function selector` and hopefully this will be the value that we're updating!
+We then assign a value to our return value, v. `calldataload()` will load 32 bytes of `calldata` starting from a passed `offset`, which in our case is immediately following our `function selector` and hopefully this will be the value that we're updating!
 
 ### storeNumber
 
@@ -350,7 +350,7 @@ object "HorseStoreYul" {
 
 There's also a `runtime` object, which contains our contracts `runtime` logic within _its_ `code` section.
 
-We learnt that the first thing we do, just like in Huff and Solidity is employ a `function dispatcher` and that the Yul `function dispatcher` uses `switch `cases to route logic to the case which matches our `call data`'s `function selector`.
+We learnt that the first thing we do, just like in Huff and Solidity is employ a `function dispatcher` and that the Yul `function dispatcher` uses `switch `cases to route logic to the case which matches our `calldata`'s `function selector`.
 
 And finally, we learnt the value of leveraging helper functions like decodeAsUint and returnUint to load the necessary data for our functions in and out of storage and memory.
 

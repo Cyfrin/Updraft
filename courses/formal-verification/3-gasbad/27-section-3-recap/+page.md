@@ -89,7 +89,7 @@ HAVOCing is an integral part of Certora proofs. If the prover is able to find a 
 
 ### Hooks
 
-We also learnt that any time our protocol executes any number of op codes, we can configure Certora hooks to perform custom actions when executed. We demonstrated this by hooking SSTORE and LOG4 opcodes and used them to increment our ghost variables to be compared!
+We also learnt that any time our protocol executes any number of opcodes, we can configure Certora hooks to perform custom actions when executed. We demonstrated this by hooking SSTORE and LOG4 opcodes and used them to increment our ghost variables to be compared!
 
 ```js
 hook Sstore s_listings[KEY address nftAddress][KEY uint256 tokenId].price uint256 price {

@@ -24,7 +24,7 @@ The trickiest part of the debugger could easily be navigation to the correct pie
 
 Utilize the commands along the bottom of the screen to navigate, you're looking for our `calldataload` or our `function selector` checks. These are clear indicators that we're looking at our contracts implementation.
 
-Foundry's debugger allows us to step through execution op code by op code very similarly to how the evm.codes playground works! We've seen this a few times before in our experiments learning about op codes, but I encourage you to play with this debugger until you're familiar with it. Trying things out is the best way to learn.
+Foundry's debugger allows us to step through execution opcode by opcode very similarly to how the evm.codes playground works! We've seen this a few times before in our experiments learning about opcodes, but I encourage you to play with this debugger until you're familiar with it. Trying things out is the best way to learn.
 
 With the read functionality tested, we can move on to the write functionality, the ability to set a number of horses through `SET_NUMBER_OF_HORSES()`. Putting things together, I'll remind you how our `Base_TestV1.t.sol` should look.
 
@@ -58,15 +58,15 @@ abstract contract Base_TestV1 is Test{
 
 Our test looks great! It's very simple, we're assigning 777 to a variable, updating the number of courses in horseStore, then our assert reads from the contract to verify that the updating number was in fact stored!
 
-Let's run `forge test --debug testWriteValue` and see how it looks in the debugger. Before hand, it's good to get an idea of what you're looking out for amidst all the debugger op codes so as not to get lost.
+Let's run `forge test --debug testWriteValue` and see how it looks in the debugger. Before hand, it's good to get an idea of what you're looking out for amidst all the debugger opcodes so as not to get lost.
 
 ```bash
 cast to-base 777 hex
 0x309
 ```
 
-With the above, we can see that 0x309 should be expected to pop up as we walk through the op code execution in our debugger, and indeed it does.
+With the above, we can see that 0x309 should be expected to pop up as we walk through the opcode execution in our debugger, and indeed it does.
 
 ![foundry-opcode-debugger1](/formal-verification-1/39-foundry-opcode-debugger/foundry-opcode-debugger1.png)
 
-I can't encourage you enough to practice and experiment with this debugger. Being able to read through op code executions will be an invaluable low level skill for those serious about a deep understanding of the EVM.
+I can't encourage you enough to practice and experiment with this debugger. Being able to read through opcode executions will be an invaluable low level skill for those serious about a deep understanding of the EVM.

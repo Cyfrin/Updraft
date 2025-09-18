@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Metadata
 
-Alright! We've gone through all of the contract's `creation code` and `runtime code`. All that's left is the `metadata` ...it kinda looks like a mess at the end of our contract's op codes.
+Alright! We've gone through all of the contract's `creation code` and `runtime code`. All that's left is the `metadata` ...it kinda looks like a mess at the end of our contract's opcodes.
 
 ```js
 LOG2

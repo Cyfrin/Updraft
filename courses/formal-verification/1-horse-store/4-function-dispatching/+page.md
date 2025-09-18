@@ -41,7 +41,7 @@ We're most interested in the `input` data.
 
 ## How Call Data Works
 
-At first glance this input data may seem like a "jumble of numbers". This input is called the **call data**, and it is crucial because it tells the smart contract what task to perform.
+At first glance this input data may seem like a "jumble of numbers". This input is called the **calldata**, and it is crucial because it tells the smart contract what task to perform.
 
 So, we're left with a few questions
 
@@ -56,9 +56,9 @@ _Where did this data come from?_
 
 For those who have taken the Foundry Advance course, you know what a function selector is (for those who haven't go do that [**HERE**](https://updraft.cyfrin.io/courses/advanced-foundry)!)
 
-In short, every function in Solidity has a **signature** - a unique identifier formed by hashing its name and input types. The first 4 bytes of the call data correspond to the function selector.
+In short, every function in Solidity has a **signature** - a unique identifier formed by hashing its name and input types. The first 4 bytes of the calldata correspond to the function selector.
 
-So when you call `updateNumberOfHorses`, Remix sends the selector `0xe026c017` at the start of the call data. This acts like an address, telling Solidity which specific function you want to call.
+So when you call `updateNumberOfHorses`, Remix sends the selector `0xe026c017` at the start of the calldata. This acts like an address, telling Solidity which specific function you want to call.
 
 You can confirm this function selector in Foundry with the command:
 
@@ -71,7 +71,7 @@ cast sig "updateHorseNumber(uint256)"
 
 Behind the scenes, Solidity has a **function dispatcher** that matches the selector to the intended function and routes the call accordingly. This dispatching is handled natively when the solidity is compiled.
 
-However, if writing in a lower-level language like Huff, you have to manually set up the dispatcher yourself to connect call data to functions. This gives more control but requires extra work.
+However, if writing in a lower-level language like Huff, you have to manually set up the dispatcher yourself to connect calldata to functions. This gives more control but requires extra work.
 
 ![function-dispatching-2](/formal-verification-1/4-function-dispatching/function-dispatching-2.png)
 
@@ -79,22 +79,22 @@ However, if writing in a lower-level language like Huff, you have to manually se
 
 In summary, here is the full process when calling a function:
 
-1. Your call data is sent to the smart contract
+1. Your calldata is sent to the smart contract
 2. Smart contract sees the function selector in the first 4 bytes
 3. Dispatcher uses selector to route call to correct function
-4. Function executes based on the call data
+4. Function executes based on the calldata
 
 So while calling functions may seem magical, there are underlying mechanisms that enable this to work.
 
 ## Huff vs Solidity
 
-The core concepts around call data and dispatching apply whether using Huff or Solidity. The key difference is Huff operates at a lower level so you manage more of these details directly.
+The core concepts around calldata and dispatching apply whether using Huff or Solidity. The key difference is Huff operates at a lower level so you manage more of these details directly.
 
 Remix and Solidity handle a lot of this complexity behind the scenes. But understanding what's happening underneath is valuable for any blockchain developer.
 
 ## Conclusion
 
-Through exploring call data, function selectors, and dispatching, the "magic" of interacting with smart contracts is demystified. These crucial pieces enable our function calls to execute properly.
+Through exploring calldata, function selectors, and dispatching, the "magic" of interacting with smart contracts is demystified. These crucial pieces enable our function calls to execute properly.
 
 While Remix and Solidity simplify things, seeing the lower-level mechanics gives deeper insight into blockchain development. This knowledge empowers you to build more advanced smart contract systems.
 

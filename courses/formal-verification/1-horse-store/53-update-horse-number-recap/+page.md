@@ -168,7 +168,7 @@ We just went through the entire execution of the `updateHorseNumber` function, S
 
 ### Function Dispatch
 
-The first thing our contract does is perform a `function dispatch` to determine where our `call data` should be appropriately sent.
+The first thing our contract does is perform a `function dispatch` to determine where our `calldata` should be appropriately sent.
 
 ```js
 DUP1 ✅
@@ -189,7 +189,7 @@ DUP1 ✅
 REVERT ✅
 ```
 
-If call data doesn't include a function selector which matches the transaction will revert.
+If calldata doesn't include a function selector which matches the transaction will revert.
 
 ### Program Counters
 
@@ -224,7 +224,7 @@ JUMPI ✅
 
 ### Isolating Passed Data
 
-If the `call data` passes this size check, we next jump and isolate the parameter from the `call data` by loading 32 bytes of `call data` starting at `0x04`:
+If the `calldata` passes this size check, we next jump and isolate the parameter from the `calldata` by loading 32 bytes of `calldata` starting at `0x04`:
 
 ```js
 JUMPDEST ✅

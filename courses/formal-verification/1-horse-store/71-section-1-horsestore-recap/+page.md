@@ -27,8 +27,8 @@ MSTORE      // []  // Memory: 0x40:0x80
 
 ### Breaking Down Solidity
 
-Something else we covered was the process of breaking down a Solidity smart contract into it's op codes and we walked through exactly how one of these contracts functions, code by code and learnt what every single op code it contained does. [evm.codes](https://www.evm.codes) as a reference point for op codes is an _invaluable_ resource, use it well.
-In learning about op codes we also introduced Huff as a low level programming language that allows developers the potential save a great deal of gas by optimizing the op codes a smart contract uses.
+Something else we covered was the process of breaking down a Solidity smart contract into it's opcodes and we walked through exactly how one of these contracts functions, code by code and learnt what every single opcode it contained does. [evm.codes](https://www.evm.codes) as a reference point for opcodes is an _invaluable_ resource, use it well.
+In learning about opcodes we also introduced Huff as a low level programming language that allows developers the potential save a great deal of gas by optimizing the opcodes a smart contract uses.
 In addition to Huff we touched briefly on Yul and how we can leverage Yul for inline assembly to allow granular control over smart contract functionality and gas costs directly in our Solidity smart contracts. While investigating Yul, we even wrote an entire smart contract in Yul! This isn't normal, but it sure was fun.
 
 ### Testing
@@ -40,7 +40,7 @@ This also allowed us to directly compare gas costs of each of these implementati
 
 Briefly we experimented with Foundry's Debugger which is accessed with
 `forge --debug <testName>`
-This will allow us to step through our test's execution, op code by op code, much like the [evm.codes playground](https://www.evm.codes/playground).
+This will allow us to step through our test's execution, opcode by opcode, much like the [evm.codes playground](https://www.evm.codes/playground).
 
 ### Complex, Low Level Contracts
 
@@ -49,7 +49,7 @@ One of the biggest things we did in this section was write a complex contract al
 - imports
 - ERC721s
 - Mappings
-  These are not simple concepts when working directly with op codes and having mastered them here you'll be well prepared.
+  These are not simple concepts when working directly with opcodes and having mastered them here you'll be well prepared.
   During this process we learnt the value of libraries like `Huffmate` to do the heavy lifting when programming in low level code.
 
 ### Bytecode
@@ -59,12 +59,12 @@ We learnt that smart contracts when compiled can be broken into 3 distinct secti
 1. Contract Creation Code
 2. Runtime Code
 3. Metadata
-   We now have the ability to translate these sections of bytecode into op codes and derive what a smart contract is doing - whether or not it's been verified! This is an incredibly powerful skill in security research.
+   We now have the ability to translate these sections of bytecode into opcodes and derive what a smart contract is doing - whether or not it's been verified! This is an incredibly powerful skill in security research.
 
 ### Wrap Up
 
 In closing, I'll say: if you still don't quite get this, or it's not clicking. That's ok. There aren't a lot of smart contracts written in Huff. There _are_ a lot of smart contracts which are written in assembly or leverage inline assemble, which is something we'll cover in more detail in Section 2 of this course.
-However, in order to really understand the assembly, you really have to understand the op codes and I think one of the best ways to become familiar with op codes is to code in Huff. I encourage you to practice this!
+However, in order to really understand the assembly, you really have to understand the opcodes and I think one of the best ways to become familiar with opcodes is to code in Huff. I encourage you to practice this!
 With this, you've completed Section 1 of the EVM/Formal Verification Course! Go take a break, you've earned it!
 
 🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴🐴
