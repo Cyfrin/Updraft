@@ -25,7 +25,7 @@ The playground has the following fields:
 
 - **Source code**: This is where you put the JavaScript source code you want to test to send in your Chainlink Functions request.
 - **Argument(s)**: Argument(s) to your JavaScript code. Arguments are variables in your JavaScript code, the values in your code you want to change, e.g., the city to retrieve a temperature for or some on-chain data.
-- **Secret(s)**: private arguments, e.g., API keys, credentials, etc. This is the sensitive data you don't want to be publically visible. Chainlink Functions "injects" these values into your JavaScript at "runtime" (when the JavaScript is run).
+- **Secret(s)**: private arguments, e.g., API keys, credentials, etc. This is the sensitive data you don't want to be publicly visible. Chainlink Functions "injects" these values into your JavaScript at "runtime" (when the JavaScript is run).
 
 To run the code:
 

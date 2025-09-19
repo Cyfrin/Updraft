@@ -91,7 +91,7 @@ contract StorageExample {
 }
 ```
 
-When you see a variable defined at the contract level like this, it's a state variable that will be stored on the blockchain permenantly. Sometimes, for clarity, we label variables as stored in storage using the `s_` prefix e.g. `s_balance` or `s_owner`.
+When you see a variable defined at the contract level like this, it's a state variable that will be stored on the blockchain permanently. Sometimes, for clarity, we label variables as stored in storage using the `s_` prefix e.g. `s_balance` or `s_owner`.
 
 #### State Variable Visibility
 
@@ -838,7 +838,7 @@ Think of the ABI as a contract's "API documentation" but in a machine-readable f
 
 ### ABI Format
 
-The ABI is a JSON array that describes everything publically visible on a contract.
+The ABI is a JSON array that describes everything publicly visible on a contract.
 
 Let's take a simple example. Take a simple smart contract `Simple Math` that has one function `add` that adds two numbers together:
 

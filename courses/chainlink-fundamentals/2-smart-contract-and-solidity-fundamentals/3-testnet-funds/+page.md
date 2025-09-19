@@ -16,7 +16,7 @@ Let's walk through how to get some testnet LINK, how to add LINK to MetaMask and
 
 - Head to the [Chainlink documentation](https://docs.chain.link/resources/link-token-contracts) and scroll down to the chain you want to use LINK on. E.g. [Sepolia Testnet](https://docs.chain.link/resources/link-token-contracts#sepolia-testnet)
 
-- Click the **Add to wallet** button to import the LINK token to NetaMask. Note that this will only add the token for that secific network. This will need to be repeated for all networks you intend to use LINK tokens.
+- Click the **Add to wallet** button to import the LINK token to NetaMask. Note that this will only add the token for that specific network. This will need to be repeated for all networks you intend to use LINK tokens.
 
 ![add-to-wallet](/chainlink-fundamentals/2-smart-contract-and-solidity-fundamentals/assets/add-to-wallet.png)
 
