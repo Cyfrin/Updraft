@@ -85,7 +85,7 @@ forge test --mt testCanMoveApprovedTokensOfOtherUsers -vvv
 
 ### Wrap Up
 
-Boom! A proof of code demonstrating that anyone can call this function on someone elses approved tokens, stealing them on L2.
+Boom! A proof of code demonstrating that anyone can call this function on someone else's approved tokens, stealing them on L2.
 
 Our first `High`, we found it pretty quick and `Slither` was a huge help, thanks `Slither`!
 

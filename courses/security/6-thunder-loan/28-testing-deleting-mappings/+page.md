@@ -24,11 +24,11 @@ Alright, so what happens if the owner passed False and is looking to disallow a 
     return assetToken;
     ```
 
-What's we're ultimately doing above is removing an allowed token mapping. Something to keep in mind at this point is that many of our conditional checks so far have been dependent on this mapping returning `address(0)` if a token is _not_ allowed.
+What we're ultimately doing above is removing an allowed token mapping. Something to keep in mind at this point is that many of our conditional checks so far have been dependent on this mapping returning `address(0)` if a token is _not_ allowed.
 
 We should definitely verify that this is the case.
 
-> **Note:** I wish I could tell you that chisel is a great way to quickly check this, but currently chisel doesn't delete mappings properly! Regrettably, this doesn't work. There's currently an open issue on their GitHub you can view [**here**](https://github.com/foundry-rs/foundry/issues/7318).
+> **Note:** I wish I could tell you that chisel is a great way to quickly check this, but currently chisel doesn't delete mappings properly! Regrettably, this doesn't work. There's currently an open issue on their GitHub you can view [**here**](https://github.com/foundry-rs/foundry/issues/7318). Current work-around is to add `;` to the end of `delete` statements.
 
 Fortunately we can check this pretty quickly in Remix.
 

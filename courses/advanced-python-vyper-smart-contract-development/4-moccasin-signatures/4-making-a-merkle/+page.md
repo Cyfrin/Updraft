@@ -82,7 +82,7 @@ DEFAULT_INPUT = {
 }
 ```
 
-So, this is our our list, right? And, we could put this on chain into our contract, but again, that's going to be huge waste of gas, so what do we do instead? Well, if we run this How do you run Mox? Run make merkle. 
+So, this is our list, right? And, we could put this on chain into our contract, but again, that's going to be huge waste of gas, so what do we do instead? Well, if we run this How do you run Mox? Run make merkle. 
 
 ```bash
 mox make_merkle
