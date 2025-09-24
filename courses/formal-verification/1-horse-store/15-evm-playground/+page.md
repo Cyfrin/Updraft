@@ -16,11 +16,11 @@ We'll consider again our original value `0x0102`. If we `shr` by 4 we expect a h
 
 Let's see how this works in the evm.codes playground!
 
-Recall what's required on our stack for our `shr` op code to function. `shr` takes `number of bits to shift` and the `32 bytes to shift`. These items need to be in our stack, in this order (top down). Our order of operations in the playground should look like this:
+Recall what's required on our stack for our `shr` opcode to function. `shr` takes `number of bits to shift` and the `32 bytes to shift`. These items need to be in our stack, in this order (top down). Our order of operations in the playground should look like this:
 
 ![evm-playground-1](/formal-verification-1/15-evm-playground/evm-playground-1.png)
 
-By clicking `Run` in the playground we can then step through each op code and see how it affects our **memory**, **stack**, **storage** and **return values**.
+By clicking `Run` in the playground we can then step through each opcode and see how it affects our **memory**, **stack**, **storage** and **return values**.
 
 Stepping through our first operation, we can see that 102 is added to our stack.
 
@@ -38,7 +38,7 @@ This is a hex value which we know we can convert using `cast --to-base 0x10 dec`
 
 ### A Note On calldataload
 
-It's important to note that `calldataload` will only place **32 bytes** on the stack. This means, in our previous `calldata` example, **_the last 8 digits of our call data will not be included_**
+It's important to note that `calldataload` will only place **32 bytes** on the stack. This means, in our previous `calldata` example, **_the last 8 digits of our calldata will not be included_**
 
 ```
 0xe026c0170000000000000000000000000000000000000000000000000000000000000001

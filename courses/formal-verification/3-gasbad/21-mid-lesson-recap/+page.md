@@ -26,7 +26,7 @@ persistent ghost mathint listingUpdatesCount{
 
 ### Hooks
 
-We learnt about Hooks! Hooks are used to configure logic which is executed based on particular op codes being executed at run time.
+We learnt about Hooks! Hooks are used to configure logic which is executed based on particular opcodes being executed at run time.
 
 ```js
 hook Sstore s_listings[KEY address nftAddress][KEY uint256 tokenId].price uint256 price {
@@ -34,7 +34,7 @@ hook Sstore s_listings[KEY address nftAddress][KEY uint256 tokenId].price uint25
 }
 ```
 
-We define an op code and the storage variable we want to watch for interaction with. When the prover detects this relationship being manipulated, the defined logic in the hook will be executed. In the above example, we increment our listingUpdatesCount variable.
+We define an opcode and the storage variable we want to watch for interaction with. When the prover detects this relationship being manipulated, the defined logic in the hook will be executed. In the above example, we increment our listingUpdatesCount variable.
 
 It's through the combined used of Hooks and Ghost Variables that we were able to define the invariant we wanted to verify:
 

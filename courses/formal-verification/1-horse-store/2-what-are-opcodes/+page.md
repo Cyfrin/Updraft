@@ -6,7 +6,7 @@ _Follow along with this video:_
 
 ---
 
-In the previous lesson we got a glimpse of a contract's `bytecode`. When interacting with any smart contract, whether during its creation or subsequent transactions, there's an essential component at play—`call data`. It's the raw bytes or raw data that you're sending to the blockchain.
+In the previous lesson we got a glimpse of a contract's `bytecode`. When interacting with any smart contract, whether during its creation or subsequent transactions, there's an essential component at play—`calldata`. It's the raw bytes or raw data that you're sending to the blockchain.
 
 ### What Exactly Is Call Data?
 
@@ -20,19 +20,19 @@ Each byte, which corresponds to two hex characters, essentially represents an op
 
 As humans, we're not wired to effortlessly comprehend machine-code or binary. Manually instructing thousands of transistors is just not something we're good at. Because of this, we turn to higher-level programming languages like Solidity that are easier for humans to understand!
 
-However, it's crucial to remember that the EVM doesn't understand Solidity; it operates at the lowest level of code. It's a machine that needs explicit instructions to work with data, whether storing it, memorizing it, or stacking it. These instructions are the aforementioned op codes.
+However, it's crucial to remember that the EVM doesn't understand Solidity; it operates at the lowest level of code. It's a machine that needs explicit instructions to work with data, whether storing it, memorizing it, or stacking it. These instructions are the aforementioned opcodes.
 
 ### The Ethereum Virtual Machine
 
-The Ethereum Virtual Machine is, put simply, a state machine that emulates the computational environment of the Ethereum network on your own computer. When you hear about sending data to the blockchain or transacting Ethereum, picture the EVM diligently converting those tasks into smaller, machine-executable instructions—op codes.
+The Ethereum Virtual Machine is, put simply, a state machine that emulates the computational environment of the Ethereum network on your own computer. When you hear about sending data to the blockchain or transacting Ethereum, picture the EVM diligently converting those tasks into smaller, machine-executable instructions—opcodes.
 
-For example, if we're instructing our contract to store the number seven at a particular storage location, a specific sequence of op codes will facilitate that operation. It's this collection of op codes that embodies the EVM—a universally accepted set of commands that carry out predefined activities.
+For example, if we're instructing our contract to store the number seven at a particular storage location, a specific sequence of opcodes will facilitate that operation. It's this collection of opcodes that embodies the EVM—a universally accepted set of commands that carry out predefined activities.
 
 > _Don't stress too much about not grasping it straight away, it is complex stuff._
 
 ### Diving Into Code Examples
 
-To illustrate further, each pair of hex digits in the smart contract reflects a single opcode. But there are instances, such as when larger values are 'pushed' onto the stack, that the pattern alters a bit. Regardless, the crux is that these opcodes—whether signifying `PUSH1` or `MSTORE` (for memory storage)—orchestrate the execution of call data instructions.
+To illustrate further, each pair of hex digits in the smart contract reflects a single opcode. But there are instances, such as when larger values are 'pushed' onto the stack, that the pattern alters a bit. Regardless, the crux is that these opcodes—whether signifying `PUSH1` or `MSTORE` (for memory storage)—orchestrate the execution of calldata instructions.
 
 ### The Evolution of Opcodes
 
