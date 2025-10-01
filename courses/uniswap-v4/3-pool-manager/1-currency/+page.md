@@ -98,15 +98,15 @@ So, where is this abstraction put to use? One of its most critical applications 
 
 ```solidity
 struct PoolKey {
-    /// @notice The lower currency of the pool, sorted numerically
+    // @notice The lower currency of the pool, sorted numerically
     Currency currency0;
-    /// @notice The higher currency of the pool, sorted numerically
+    // @notice The higher currency of the pool, sorted numerically
     Currency currency1;
-    /// @notice The pool LP fee
+    // @notice The pool LP fee
     uint24 fee;
-    /// @notice The tick spacing for the pool
+    // @notice The tick spacing for the pool
     int24 tickSpacing;
-    /// @notice The hooks contract for the pool
+    // @notice The hooks contract for the pool
     IHooks hooks;
 }
 ```
