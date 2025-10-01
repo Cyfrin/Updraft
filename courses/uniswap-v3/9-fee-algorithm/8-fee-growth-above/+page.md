@@ -35,9 +35,9 @@ For the time interval between `t_5` and `t_6`, the fee growth is over here. The 
 
 Lastly, for time interval between `t_6` and `t_7`, the fee growth is over here, and it can be expressed as `f_g6` minus `f_g5` +  `f_g4` minus `f_g3` + `f_g2` minus `f_g1`.
 
-Now we will calculate fee growth outside, by first using the initilization algorithm. This is `f_o,i` =  `f_g` if current tick i is less than or equal to `i_c`. Otherwise, if it is less than i, we initilize it to 0.
+Now we will calculate fee growth outside, by first using the initilization algorithm. This is `f_o,i` =  `f_g` if current tick i is less than or equal to `i_c`. Otherwise, if it is less than i, we initialize it to 0.
 
-When looking at our graph and our example at time `t_0`, we see that the current tick is less than tick i, which means we intialize `f_o,i` to 0.
+When looking at our graph and our example at time `t_0`, we see that the current tick is less than tick i, which means we initialize `f_o,i` to 0.
 When the fee growth crosses tick i at time t1, we apply our update rule `f_o,i` = `f_g` - `f_o,i`. In this case we get `f_g1` minus 0 which is equal to `f_g1`.
 
 We continue this process for the rest of the table.
