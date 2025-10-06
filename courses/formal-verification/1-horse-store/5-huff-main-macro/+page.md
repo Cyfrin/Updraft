@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 In a way, sending our `calldata` to the blockchain is like executing a Python or JavaScript script. We need to begin with an `entry point` in order for our `calldata` to be processed.
 
-In Huff, this entry point is called `MAIN`. Essentially, `MAIN` in the binary becomes the recipient of your call data and orchestrates its execution. We'll go into this in more detail later.
+In Huff, this entry point is called `MAIN`. Essentially, `MAIN` in the binary becomes the recipient of your calldata and orchestrates its execution. We'll go into this in more detail later.
 
 Now, if you feel a bit overwhelmed by the barrage of terminology, hang in there with me. I promise it'll all start making a lot more sense as we delve deeper.
 

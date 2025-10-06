@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Starting the Op Code Breakdown
 
-Let's start breaking down what all the op codes in our `solc-breakdowns.c++` file do.
+Let's start breaking down what all the opcodes in our `solc-breakdowns.c++` file do.
 
 I'll update this reference as we go through each section of bytecode:
 
@@ -164,7 +164,7 @@ PUSH1 0x40
 MSTORE
 ```
 
-This section of bytecode is going to be seen in almost every contract you work with and represents the first part of the `Contract Creation Code`. Any time we send a transaction on chain, the entry point of our transaction will be the first couple op codes.
+This section of bytecode is going to be seen in almost every contract you work with and represents the first part of the `Contract Creation Code`. Any time we send a transaction on chain, the entry point of our transaction will be the first couple opcodes.
 
 ```
 PUSH1 0x80
@@ -172,7 +172,7 @@ PUSH1 0x40
 MSTORE
 ```
 
-These op codes represent Solidity's `Free Memory Pointer`. Their execution, in order will:
+These opcodes represent Solidity's `Free Memory Pointer`. Their execution, in order will:
 
 1. Push 0x80 to the stack
 2. Push 0x40 to the stack
@@ -182,7 +182,7 @@ Previously I'd described memory as an array with slots demarked with indexes. Th
 
 A part of memory management is keeping track of where in this memory "array" we have free memory available (to avoid overwriting previously stored data!). This is where the `free memory pointer` comes in.
 
-What these op codes are doing, is making a note of where our free memory is located, at 0x40. The idea being that every time we want to write to memory, we'll do 3 things:
+What these opcodes are doing, is making a note of where our free memory is located, at 0x40. The idea being that every time we want to write to memory, we'll do 3 things:
 
 1. Check the value stored at 0x40 to determine where free memory is available
 2. write our data to the free memory location
@@ -190,4 +190,4 @@ What these op codes are doing, is making a note of where our free memory is loca
 
 In Solidity `0x40` is special and exists as this `free memory pointer`. Not all languages share this feature however, Vyper and Huff being notable examples of not having a `free memory pointer`
 
-As we walk through the solidity op codes, we'll see the free memory pointer being referenced and updated many times. We'll become very familiar with it's use!
+As we walk through the solidity opcodes, we'll see the free memory pointer being referenced and updated many times. We'll become very familiar with it's use!

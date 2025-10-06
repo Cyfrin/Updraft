@@ -24,7 +24,7 @@ We know now that when we call our `updateHorseNumber()` function, we're sending 
 
 Our next step is going to be finding the function selector in this data and routing it to the code that updates horses.
 
-I'll mention here, so you're aware moving forward, Huff is smart enough to infer `PUSH` op codes from the data being passed.
+I'll mention here, so you're aware moving forward, Huff is smart enough to infer `PUSH` opcodes from the data being passed.
 
 What this means is, in Huff, these two methods are effectively equal:
 

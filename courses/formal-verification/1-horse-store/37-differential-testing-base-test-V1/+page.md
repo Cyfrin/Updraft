@@ -8,11 +8,11 @@ _Follow along with this video:_
 
 ### Where We're At
 
-Let's take a moment to consider where exactly we're at right now.  We've written our Huff contract, and we have our Solidity contract on which it was based. Looking at these two languages, it's clear to see we'd never want to write a whole contract op code by op code. It's incredibly tedious, sure you may be a little more gas efficient, but you're looking at 5x the effort to accomplish something a higher level language can achieve much more easily.
+Let's take a moment to consider where exactly we're at right now.  We've written our Huff contract, and we have our Solidity contract on which it was based. Looking at these two languages, it's clear to see we'd never want to write a whole contract opcode by opcode. It's incredibly tedious, sure you may be a little more gas efficient, but you're looking at 5x the effort to accomplish something a higher level language can achieve much more easily.
 
 ### Differential Testing
 
-If we did decide the write it Huff however, we should be certain that our code is doing the same as we'd expect in Solidity. There's a great way to examine the accuracy of our Huff implementation via the use of `Differential Tests/Differential Fuzzing`. Once we've done that we'll break down what's happening in the Solidity code, op code by op code.
+If we did decide the write it Huff however, we should be certain that our code is doing the same as we'd expect in Solidity. There's a great way to examine the accuracy of our Huff implementation via the use of `Differential Tests/Differential Fuzzing`. Once we've done that we'll break down what's happening in the Solidity code, opcode by opcode.
 
 We can start by creating a new folder within our project's `test` directory. Name it `V1` and create a file within named `Base_TestV1.t.sol`. This test file will actually house all the tests for *both* our Huff and Solidity implementations.
 We accomplish this by having our Huff and Solidity versions of our tests inherit Base_TestV1. This will assure that both versions of our tests are exactly the same.

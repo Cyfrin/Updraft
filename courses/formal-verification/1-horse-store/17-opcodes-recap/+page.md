@@ -26,13 +26,13 @@ Most of the time we're manipulating data, it's going to be on the stack and we'l
 
 ### Op Codes
 
-We also learnt that the EVM is effectively comprised of `op codes` which denote the operations we want executed. [**evm.codes**](https://www.evm.codes/?fork=shanghai) has been incredibly useful for us in our learning about the specifics of each `op code`!
+We also learnt that the EVM is effectively comprised of `opcodes` which denote the operations we want executed. [**evm.codes**](https://www.evm.codes/?fork=shanghai) has been incredibly useful for us in our learning about the specifics of each `opcode`!
 
-When sending data to a smart contract, we introduced the concept of `calldata`. When Solidity compiles, through it's use op codes it's able to understand the provided `calldata`, and one of the first things it attempts to determine is **_"What am I supposed to do with this data?"_**. The EVM accomplishes this through referencing a `calldata's` `function selector` and a process called `function dispatching` in which case the rest of the `call data` is routed to the function associated with this `function selector`.
+When sending data to a smart contract, we introduced the concept of `calldata`. When Solidity compiles, through it's use opcodes it's able to understand the provided `calldata`, and one of the first things it attempts to determine is **_"What am I supposed to do with this data?"_**. The EVM accomplishes this through referencing a `calldata's` `function selector` and a process called `function dispatching` in which case the rest of the `calldata` is routed to the function associated with this `function selector`.
 
 ### Huff
 
-What's really exciting is we accomplished the above (sans dispatching, that's coming next!), using Huff and raw `op codes`.
+What's really exciting is we accomplished the above (sans dispatching, that's coming next!), using Huff and raw `opcodes`.
 
 ```js
 #define macro MAIN() = takes(0) returns(0){
@@ -53,8 +53,8 @@ We can check how the byte code of our contract is doing so far with `huffc src/h
 60058060093d393df35f3560e01c
 ```
 
-We were also introduced to the evm.codes playground, wherein we can experiment with byte code and op code inputs to walk through each operation being executed. In the screenshot below, I've included the runtime byte code and we can see that it is indeed exactly what we've coded in our Huff contract!
+We were also introduced to the evm.codes playground, wherein we can experiment with byte code and opcode inputs to walk through each operation being executed. In the screenshot below, I've included the runtime byte code and we can see that it is indeed exactly what we've coded in our Huff contract!
 
 ![opcodes-recap-1](/formal-verification-1/17-opcodes-recap/opcodes-recap-1.png)
 
-In the next lesson we'll try our luck at function dispatching and routing the `call data` to where it needs to be. Let's go!
+In the next lesson we'll try our luck at function dispatching and routing the `calldata` to where it needs to be. Let's go!

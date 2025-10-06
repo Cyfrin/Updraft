@@ -41,4 +41,4 @@ constructor() payable {}
 
 >**Note:** Just because it saves gas, doesn't mean it's the best choice. The msg.value check brings some valuable security functionality such as not accidentally locking a bunch of funds on contract creation. Consider your optimizations carefully!
 
-There are all sorts of optimizations that will spring to mind the more familiar you become with the deeper workings of the EVM and op codes. In the next lesson we'll introduce `runtime code` in more detail!
+There are all sorts of optimizations that will spring to mind the more familiar you become with the deeper workings of the EVM and opcodes. In the next lesson we'll introduce `runtime code` in more detail!

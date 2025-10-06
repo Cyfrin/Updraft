@@ -79,7 +79,7 @@ Now let's define this macro!
 
 So, what's this macro doing?
 
-We're first getting the `horseId` from our call data via `calldataload` at the `0x04` offset.  We then add the `HORSE_FED_TIMESTAMP_LOCATION` storage slot onto our stack.
+We're first getting the `horseId` from our calldata via `calldataload` at the `0x04` offset.  We then add the `HORSE_FED_TIMESTAMP_LOCATION` storage slot onto our stack.
 
 We next use another `Hashmap.huff` macro `LOAD_ELEMENT_FROM_KEYS`. This functions much like the reverse of our previous `STORE_ELEMENT_FROM_KEYS` in that we are taking the location of the mapping (`HORSE_FED_TIMESTAMP_LOCATION`) and passing it our horseId key. The macro is then returning to our stack the appropriate data mapped to that key - `horseFedTimestamp`.
 

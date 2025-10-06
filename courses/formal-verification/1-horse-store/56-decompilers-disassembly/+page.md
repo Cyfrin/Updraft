@@ -6,7 +6,7 @@ _Follow along with this video:_
 
 ---
 
-Alright! We've gone op code by op code and break down our Solidity contract's bytecode. At this point we could maybe even decompile our contract back into some semblence of Solidity code by following through the execution!
+Alright! We've gone opcode by opcode and break down our Solidity contract's bytecode. At this point we could maybe even decompile our contract back into some semblence of Solidity code by following through the execution!
 
 This isn't something we necessarily have to do ourselves though. There exist tool such as [Dedaub](https://app.dedaub.com/decompile) that can try to decompile byte code for us!
 

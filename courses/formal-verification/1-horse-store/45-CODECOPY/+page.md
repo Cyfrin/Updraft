@@ -161,7 +161,7 @@ RETURN
 INVALID
 ```
 
-The first several op codes are examples of things we've seen before. Without getting into the specifics of what the data being added to the stack is, we can easily follow along with how the stack is being manipulated.
+The first several opcodes are examples of things we've seen before. Without getting into the specifics of what the data being added to the stack is, we can easily follow along with how the stack is being manipulated.
 
 This continues until we reach the `CODECOPY` operation. We'd mentioned it briefly before, but now we're going to see it in action. Let see what it does.
 
@@ -179,9 +179,9 @@ cast to-base 0x001b dec
 27
 ```
 
-This is literally saying 'start my copy at the 27th op code of the code being copied'.
+This is literally saying 'start my copy at the 27th opcode of the code being copied'.
 
-I can tell you from experience - this is where our `runtime` bytecode begins and it is omitting the `creation code` seen at the start of our deployment! The copy will begin immediately after the `INVALID` op code coming up.
+I can tell you from experience - this is where our `runtime` bytecode begins and it is omitting the `creation code` seen at the start of our deployment! The copy will begin immediately after the `INVALID` opcode coming up.
 
 - `size`: byte size to copy - how much of the code to copy into memory. The value in our stack is 0xa5.
 
@@ -190,7 +190,7 @@ cast to-base 0xa5 dec
 165
 ```
 
-What we're passing turns out to bed 165 bytes of data, which represents the rest of our contract. Once that's copied into memory we can continue along with our next op codes...
+What we're passing turns out to bed 165 bytes of data, which represents the rest of our contract. Once that's copied into memory we can continue along with our next opcodes...
 
 ```
 JUMPDEST      // [msg.value]
@@ -211,7 +211,7 @@ After copying our `runtime code` to memory we `PUSH0` and call `RETURN`.
 
 `RETURN` takes a bytes offset and a size to be returned from memory. We're passing `0x00` and `0xa5` which represents the whole size of the `runtime code` we've copied into memory. This is what our transaction is returning and is being copied to the blockchain!
 
-The astute among you may be asking - **_What about the `CREATE` and `CREATE2` op codes? Shouldn't they be called to save a contract on chain?_** - The short answer is, there are a few ways to save a contract to the blockchain.
+The astute among you may be asking - **_What about the `CREATE` and `CREATE2` opcodes? Shouldn't they be called to save a contract on chain?_** - The short answer is, there are a few ways to save a contract to the blockchain.
 
 `CREATE`/`CREATE2` are used by contracts to create other contracts. Another way to create a contract on chain is by passing `nil` in the `to` field of a transaction, which is what's done through the `RETURN` method we're leveraging here.
 

@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Solidity's Function Dispatcher
 
-The next chunk of op codes we come across is going to represent Solidity's `function dispatcher`. Let's go through how it works together. As always, here's a reference of the op codes we've covered so far and where we are in the execution:
+The next chunk of opcodes we come across is going to represent Solidity's `function dispatcher`. Let's go through how it works together. As always, here's a reference of the opcodes we've covered so far and where we are in the execution:
 
 <details>
 <Summary> Op Codes </summary>
@@ -164,9 +164,9 @@ PUSH1 0x34        // [0x34, 0xcdfead2e == func_selector, func_selector]
 JUMPI             // [func_selector]
 ```
 
-So what's this doing?  We're pushing `0x00` to the stack and executing `CALLDATALOAD`, we've seen this one before. It takes a bytes offset from the top of our stack (`0x00`) and adds to our stack 32 Bytes of call data beginning at the offset.
+So what's this doing?  We're pushing `0x00` to the stack and executing `CALLDATALOAD`, we've seen this one before. It takes a bytes offset from the top of our stack (`0x00`) and adds to our stack 32 Bytes of calldata beginning at the offset.
 
-We next execute a right shift with `SHR`. If we recall, it takes an amount to shift and the data to be shifted. `cast to-base 0xe0 dec` will tell us we're shifting our `CALLDATA_32BYTES` 224 bits (28 Bytes) to the right. This is going to leave the first 4 bytes of our `call data`, on the stack - our `function selector`.
+We next execute a right shift with `SHR`. If we recall, it takes an amount to shift and the data to be shifted. `cast to-base 0xe0 dec` will tell us we're shifting our `CALLDATA_32BYTES` 224 bits (28 Bytes) to the right. This is going to leave the first 4 bytes of our `calldata`, on the stack - our `function selector`.
 
 What remains will look something like this:
 ```
@@ -186,7 +186,7 @@ PUSH1 0x34        // [0x34, 0xcdfead2e == func_selector, func_selector]
 JUMPI             // [func_selector]
 // if func_selector == 0xcdfead2e jump to set_number_of_horses
 ```
-We're pushing  our known function selector to the stack (this is our `updateNumberOfHorses()` function!), and then comparing it to the `call data` `function selector` to see if there's a match.
+We're pushing  our known function selector to the stack (this is our `updateNumberOfHorses()` function!), and then comparing it to the `calldata` `function selector` to see if there's a match.
 
 We then push a program counter/`JUMPDEST` to the stack and execute `JUMPI`, jumping to that function's logic if `0xcdfead2e == func_selector`.
 
@@ -207,11 +207,11 @@ JUMPI             // [func_selector]
 
 Basically the same process is being followed for the second function of our Solidity contract.
 
-- Duplicate the `function selector` from `call data`
+- Duplicate the `function selector` from `calldata`
 - Push our known `function selector` (0xe026c017 `readNumberOfHorses()`)
 - Use `EQ` to determine if they are equal
 - Push a program counter/`JUMPDEST` to the stack
-- `JUMPI` to the `JUMPDEST` if the `call data` function selector and the known `function selector` are equal.
+- `JUMPI` to the `JUMPDEST` if the `calldata` function selector and the known `function selector` are equal.
 
 Something to note here - In the `function dispatcher` we wrote in Huff, we recognized that our second check wouldn't require duplicating the `func_selector` again. Solidity however *does* still perform this duplication! This is a potential gas optimization we've found already!
 
@@ -225,4 +225,4 @@ REVERT
 
 This will prevent calls to our contract from executing arbitrary code if a `function selector` match isn't found.
 
-We're already through over half the op codes of our contract and you're doing phenomenally. Let's keep going!
+We're already through over half the opcodes of our contract and you're doing phenomenally. Let's keep going!

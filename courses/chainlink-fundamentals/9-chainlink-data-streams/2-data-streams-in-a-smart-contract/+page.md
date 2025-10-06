@@ -139,7 +139,7 @@ A simple structure to hold token addresses for fee quotes
 
 - There are a few constant variables we need:
     - `DATASTREAMS_FEEDLABEL`: This is the first parameter passed to the `StreamsLookup` custom error revert. We will explain the custom error shortly, but  `DATASTREAMS_FEEDLABEL` is a string that specifies the feed IDs that will be provided. The only allowed value is **`"feedIDs"`**
-    - `DATASTREAMS_QUERYLABEL`: This is the third parameter passed to the `StreamsLookup` custom error called `timeParamKey`. The only allpwed value is **`“timestamp”`.**
+    - `DATASTREAMS_QUERYLABEL`: This is the third parameter passed to the `StreamsLookup` custom error called `timeParamKey`. The only allowed value is **`“timestamp”`.**
     - `VERIFIER`: the address of the [Chainlink verifier](https://docs.chain.link/data-streams/crypto-streams?page=1#streams-verifier-network-addresses)(there is one verifier contract deployed on all available chains) on the specific chain you are working on.
 - Additionally, we need to save the `feedIds` in a string array state variable. This is the ID for the specific stream (e.g., for `ETH/USD` the ID is `"0x000359843a543ee2fe414dc14c7e7920ef10f4372990b79d6361cdc0dd1ba782"` on testnet).
 - The full list of verifier addresses and feed IDs can be found in the Chainlink documentation:

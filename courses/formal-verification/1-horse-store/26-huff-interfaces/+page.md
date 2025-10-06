@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Cleaning Up Our Code
 
-Great! At this point we've written our very own function dispatcher, and when we start breaking down Solidity bytecode, later in the course, you'll see that Solidity is going through this exact same process (with a few extra op codes we'll explain).
+Great! At this point we've written our very own function dispatcher, and when we start breaking down Solidity bytecode, later in the course, you'll see that Solidity is going through this exact same process (with a few extra opcodes we'll explain).
 
 ```js
 #define macro MAIN() = takes(0) returns(0){
