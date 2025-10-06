@@ -42,7 +42,7 @@ And, in the process we identified a bunch of new vulnerabilities like `gas bombs
 
 One thing we didn't cover with as much depth was the actual writing of the findings. This is very much intentional. I'm trying to wean you off the hand holding so that you're able to perform reviews solo, confident in your ability to spot all these new exploits in your repertoire.
 
-Another thing we actually didn't cover is the myriad of specific example of bridge hacks that have occured. Hacks like `Ronin`, `Poly Network`, `Nomad`, `Wormhole` - these are $100 Million + hacks. I highly encourage you to familiarize yourself with them, though to be frank - most of them boil down to: **_Centralization is bad_**.
+Another thing we actually didn't cover is the myriad of specific example of bridge hacks that have occurred. Hacks like `Ronin`, `Poly Network`, `Nomad`, `Wormhole` - these are $100 Million + hacks. I highly encourage you to familiarize yourself with them, though to be frank - most of them boil down to: **_Centralization is bad_**.
 
 ### Wrap Up
 
