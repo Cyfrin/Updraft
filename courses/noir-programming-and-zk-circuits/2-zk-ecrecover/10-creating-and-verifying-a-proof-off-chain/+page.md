@@ -181,7 +181,7 @@ If the inputs correctly satisfy the new circuit logic, the proof will still veri
 
 ## Sharing Your Success and Advancing Your Noir Journey
 
-Successfully creating and verifying your first ZK proof off-chain is a significant milestone. You are encouraged to share your experience and progress, for example, on platforms like Twitter/X. For those following structured courses, resources such as associated GitHub repositories (e.g., `github.com/0xparc/develop-zk-circuits-with-noir-cu` under a section like "Creating and Verifying a Proof Off-chain") may provide links or guidance for sharing.
+Successfully creating and verifying your first ZK proof off-chain is a significant milestone. You are encouraged to share your experience and progress, for example, on platforms like Twitter/X. For those following structured courses, resources such as associated GitHub repositories (e.g., [`github.com/Cyfrin/develop-zk-circuits-with-noir-cu`](https://github.com/Cyfrin/noir-programming-and-zk-circuits-cu) under a section like "Creating and Verifying a Proof Off-chain") may provide links or guidance for sharing.
 
 **Next Steps:**
 This comprehensive off-chain process provides a robust development and testing environment. Future lessons will build upon this foundation, exploring topics such as:
