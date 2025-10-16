@@ -6,9 +6,9 @@ Welcome to Cyfrin Updraft! We are thrilled to have you begin your journey into W
 
 Hello, and welcome. My name is Patrick Collins, and I will be your lead instructor for the majority of this course. As your primary guide, I am here to help you navigate the complex but exciting world of blockchain technology and smart contract security. I look forward to leading you through the curriculum. First, I'd like to introduce you to my co-lead instructor.
 
-### Kyara Nightingale, Co-Lead Instructor
+### Ciara Nightingale, Co-Lead Instructor
 
-Hi everyone, I'm Kyara Nightingale, your co-lead instructor. I am incredibly passionate about helping you learn and succeed. My goal is to help you become one of the best Web3 professionals in the world. I was once a student of Patrick’s myself, and I hope to impart knowledge to you in the same effective way.
+Hi everyone, I'm Ciara Nightingale, your co-lead instructor. I am incredibly passionate about helping you learn and succeed. My goal is to help you become one of the best Web3 professionals in the world. I was once a student of Patrick’s myself, and I hope to impart knowledge to you in the same effective way.
 
 My background is in Physics, and my professional expertise lies in coding, blockchain engineering, and security. I have a particular passion for cryptography and mathematics, and I'm excited to share that with you throughout the course.
 
