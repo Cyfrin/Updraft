@@ -56,7 +56,7 @@ In a normal raw call, it would kind of look like this. Somebody would call the E
 
 But, with delegate call, what it's going to do instead, you can almost think of it as it kind of going over to Counter one, saying Hey, do you have this function that they are asking for, and then take it for itself?
 
-I know that that sounds kind of bizarre, but you can almost think of this delegate call as a borrowing feature. So, let's say Counter one has a function that looks like this. 
+I know that sounds kind of bizarre, but you can almost think of this delegate call as a borrowing feature. So, let's say Counter one has a function that looks like this. 
 
 ```javascript
 def set_number(new_number):
