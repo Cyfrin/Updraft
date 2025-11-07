@@ -1,4 +1,4 @@
-# Welcome to Chainlink Fundamentals!
+## Welcome to Chainlink Fundamentals!
 
 Hi! My name is Ciara Nightingale and I am a lead instructor here at Cyfrin Updraft. 
 
