@@ -11,7 +11,8 @@ To build this initial project, we utilized a specific set of tools and technolog
 *   **Wallet:** MetaMask browser extension
 *   **Local Blockchain:** Anvil (from the Foundry toolset), running with a pre-loaded state (`fundme-anvil.json`)
 *   **Development Environment:** VS Code with the Live Server extension and the integrated terminal
-*   **AI Assistance (Optional):** Tools like DeepSeek, Claude, Cursor, or GitHub Copilot can aid development.
+*   **AI Assistance (Optional):** Tools like DeepSeek, Claude, or GitHub Copilot can aid development.
+*   **Note:** Given the frequency of exploits through extensions etc. through Cursor, we **do not** recommend using it at this time.
 
 ## Core Functionality Walkthrough
 
