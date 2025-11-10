@@ -49,8 +49,8 @@ To maximize your learning and align with industry practices, we highly recommend
     *   This course incorporates the use of AI tools to aid learning and development.
     *   Recommended tools (which you can find listed under "Resources For This Course" -> "AI Frens" in the main repo's README) include:
         *   `claude.ai`
-        *   `cursor IDE`
         *   `ChatGPT` (used frequently in course examples)
     *   Familiarizing yourself with these tools can significantly enhance your development workflow.
+    *   Note: Due to the frequency of exploits seen through extensions on Cursor IDE, we cannot recommend it at this time.
 
 By following these best practices for accessing resources, asking questions, and utilizing key tools, you'll set yourself up for a more productive and engaging learning journey through the Vyper & Moccasin course. Remember to use the main repository's Discussions tab for all your questions!
