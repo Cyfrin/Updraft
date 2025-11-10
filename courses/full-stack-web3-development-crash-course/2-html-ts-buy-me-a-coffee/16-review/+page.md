@@ -167,7 +167,7 @@ While we focused on Vanilla JavaScript for simplicity in this review, you also s
 
 ## Using AI Assistants in Development
 
-Tools like DeepSeek (shown in the video), Claude, Cursor, and GitHub Copilot can be powerful allies. Use them to:
+Tools like DeepSeek (shown in the video), Claude, and GitHub Copilot can be powerful allies. Use them to:
 *   Generate boilerplate code.
 *   Explain complex concepts or library functions (like Viem's).
 *   Help debug errors.
