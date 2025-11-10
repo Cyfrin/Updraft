@@ -28,7 +28,7 @@ How do we truly learn and remember? We subscribe to the principle often summariz
 
 Encountering errors, debugging code, and getting stuck are not obstacles; they are essential parts of the learning process. When you face a challenge, your first step should be to analyze it, try to understand the potential causes, and formulate potential solutions. This active cognitive effort is what cements knowledge in your memory.
 
-This philosophy influences our tool choices. While powerful AI-assisted code editors like Cursor (`cursor.com/en`) exist, they often provide suggestions or solutions proactively, sometimes before you've even had a chance to fully process the problem or articulate a specific question. While useful for experienced developers, this can hinder learning by short-circuiting the crucial thinking process.
+This philosophy influences our tool choices. While powerful AI-assisted code editors exist, they often provide suggestions or solutions proactively, sometimes before you've even had a chance to fully process the problem or articulate a specific question. While useful for experienced developers, this can hinder learning by short-circuiting the crucial thinking process.
 
 Therefore, for this course, we will primarily use Visual Studio Code (VS Code). It provides excellent features without preempting your thought process. This encourages you to:
 1.  Encounter and analyze problems independently.
@@ -43,7 +43,7 @@ To ensure you can follow along smoothly, it's crucial to set up your development
 
 **Code Editor:**
 *   **Recommended:** Visual Studio Code (VS Code). As discussed, this is the editor used in the course videos and encourages active problem-solving.
-*   **Alternative:** Cursor is a powerful AI-integrated editor you might explore outside the course context, but we recommend sticking with VS Code while learning the fundamentals here.
+*   **Note:** Given the swath of extension exploits we've seen, we **cannot** recommend using Cursor at this time, we recommend sticking with VS Code while learning the fundamentals here.
 
 **Operating System Considerations (Critical for Windows Users):**
 *   If you are using Windows, it is **essential** that you use the **Windows Subsystem for Linux (WSL)**.
