@@ -178,7 +178,7 @@ We then hit another new opcode `LT` this stands for `less than`.
 
 ![function-selector-size-check2](/formal-verification-1/48-function-selector-size-check/function-selector-size-check2.png)
 
-The LT opcode will return 1 if the top item of the stack is less than the second from top item in the stack. Functionally this is checking the the calldata being received is long enough to satisfy the required length of a contracts function selector (4 bytes).
+The LT opcode will return 1 if the top item of the stack is less than the second from top item in the stack. Functionally, this is checking the calldata being received is long enough to satisfy the required length of a contracts function selector (4 bytes).
 
 ```js
 JUMPDEST       // [msg.value]
@@ -226,4 +226,4 @@ The summarize all this, we're checking our `CALLDATASIZE`, if it is less than th
 
 The Solidity compiler again is smart enough to know if a contract possesses a `fallback` function and how to handle `calldata` that can't be processed by a contract's functions by reverting the call when the `calldata` passed is less then 4 bytes long.
 
-In the next lesson we'll see how `calldata` is handled when it passes this `CALLDATASIZE` check!
+In the next lesson, we'll see how `calldata` is handled when it passes this `CALLDATASIZE` check!
