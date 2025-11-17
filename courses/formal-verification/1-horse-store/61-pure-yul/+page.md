@@ -8,7 +8,7 @@ _Follow along with this video:_
 
 ### Pure Yul Disclaimer
 
-I'm going to start this lesson by saying, out of the gate, basically no body codes in raw Yul. This is entirely optional, and I don't recommend using raw Yul in production unless you have some esoteric reason to.
+I'm going to start this lesson by saying, out of the gate, basically nobody codes in raw Yul. This is entirely optional, and I don't recommend using raw Yul in production unless you have some esoteric reason to.
 
 I personally feel you'd be more successful getting really good at Huff than spending a lot of time on raw Yul and Yul's abstraction sometimes feels like you're fighting with the EVM - this is just my opinion.
 
@@ -26,7 +26,7 @@ object "HorseStoreYul" {
 }
 ```
 
-> **Note:** If you'd like to take advantage of Yul syntax highlighting you can install the vs code extension [Solodity + Yul Semantic Syntax](https://marketplace.visualstudio.com/items?itemName=ContractShark.solidity-lang)
+> **Note:** If you'd like to take advantage of Yul syntax highlighting you can install the VS Code extension [Solodity + Yul Semantic Syntax](https://marketplace.visualstudio.com/items?itemName=ContractShark.solidity-lang)
 
 Alright, unlike Huff, in Yul we have to set up our contract deployment ourselves. The code for this deployment is going to look like:
 

@@ -16,7 +16,7 @@ Now that we've been through this once before, we should be a little more familia
 }
 ```
 
-> **Protip:**With a little deeper understanding of opcodes now, I can further highlight what `takes (0) returns (0)` is doing.  These values are what we are taking off the stack and returning to the stack if we wanted our contract to do anything like this, this is where it would happen!
+> **Protip:** With a little deeper understanding of opcodes now, I can further highlight what `takes (0) returns (0)` is doing.  These values are what we are taking off the stack and returning to the stack if we wanted our contract to do anything like this, this is where it would happen!
 
 Now let's consider what we need to set up our function dispatcher in Huff for this contract. We know that getting the function selector from calldata is going to be the exact same as we did before:
 
