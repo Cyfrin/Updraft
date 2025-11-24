@@ -6,7 +6,7 @@ _Follow along with this video:_
 
 ---
 
-Alright! We've gone opcode by opcode and break down our Solidity contract's bytecode. At this point we could maybe even decompile our contract back into some semblence of Solidity code by following through the execution!
+Alright! We've gone opcode by opcode and break down our Solidity contract's bytecode. At this point we could maybe even decompile our contract back into some semblance of Solidity code by following through the execution!
 
 This isn't something we necessarily have to do ourselves though. There exist tool such as [Dedaub](https://app.dedaub.com/decompile) that can try to decompile byte code for us!
 
@@ -76,4 +76,4 @@ So it's .. not great, but we can definitely see the flavour of what our Solidity
 
 We can also see the `0xe026c017` function returning a value from storage slot 0, this is of course our `readNumberOfHorses` function.
 
-You can also check out [Heimdal-RS](https://github.com/Jon-Becker/heimdall-rs) as another option for decompiling bytecode!
+You can also check out [Heimdall-RS](https://github.com/Jon-Becker/heimdall-rs) as another option for decompiling bytecode!
