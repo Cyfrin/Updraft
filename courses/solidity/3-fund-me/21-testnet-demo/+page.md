@@ -31,7 +31,7 @@ The `fund` function allows us to send ETH to the contract (minimum 5 USD). The `
 
 ### Successful Transaction
 
-If you set the amount to `0.1 ETH` and confirm it in MetaMask, you can then track the successful transaction on Etherscan. In the Etherscan transaction log, you will see that the `fundMe` balance has increased by `0.1 ETH`. The `funders` array will register your address, and the mapping `addressToAmountFunded` will record the amount of ETH sent.
+If you set the amount to `0.1 ETH` and confirm it in MetaMask, you can then track the successful transaction on a block explorer like Etherscan or Blockscout. In the transaction log, you will see that the `fundMe` balance has increased by `0.1 ETH`. The `funders` array will register your address, and the mapping `addressToAmountFunded` will record the amount of ETH sent.
 
 ### Withdraw Function and Errors
 

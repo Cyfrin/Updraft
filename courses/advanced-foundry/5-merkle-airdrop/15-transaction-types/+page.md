@@ -30,7 +30,7 @@ Consequently, Type 2 transactions include new parameters:
 *   `maxPriorityFeePerGas`: The maximum tip the sender is willing to pay per unit of gas.
 *   `maxFeePerGas`: The absolute maximum total fee (baseFee + priorityFee) the sender is willing to pay per unit of gas.
 
-Block explorers like Etherscan often display these as "Txn Type: 2 (EIP-1559)".
+Block explorers often display these as "Txn Type: 2 (EIP-1559)".
 
 **zkSync Note:** While zkSync supports Type 2 transactions, its handling of the fee parameters differs from Ethereum L1. Currently, zkSync *does not* actively use the `maxPriorityFeePerGas` and `maxFeePerGas` parameters to prioritize or price transactions in the same way as Ethereum, due to its distinct gas mechanism and fee structure.
 

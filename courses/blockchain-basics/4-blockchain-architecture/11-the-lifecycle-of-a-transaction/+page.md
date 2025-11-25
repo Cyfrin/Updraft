@@ -33,7 +33,7 @@ When you initiate an action in a wallet like MetaMask, the software automaticall
 Once the transaction object is assembled, it must be authorized. This is where your private key comes into play. The process is a cornerstone of blockchain security:
 
 1.  The transaction data is serialized into a standard, structured format.
-2.  This data is then cryptographically hashed, producing a unique, fixed-length string of characters known as the **Transaction Hash**. This hash serves as the transaction's unique identifier, which you can use to track it on a block explorer like Etherscan.
+2.  This data is then cryptographically hashed, producing a unique, fixed-length string of characters known as the **Transaction Hash**. This hash serves as the transaction's unique identifier, which you can use to track it on a block explorer.
 3.  You then use your **private key** to cryptographically sign this transaction hash. This produces a digital signature, which is irrefutable proof that you, the owner of the account, have approved this exact transaction.
 
 ## Step 3: Broadcasting the Transaction

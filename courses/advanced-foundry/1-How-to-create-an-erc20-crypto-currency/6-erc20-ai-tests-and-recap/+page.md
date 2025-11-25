@@ -116,7 +116,7 @@ Approvals, naturally, are handled through the `approve` and allowance functional
 
 Through these methods a user is able to approve another address to spend, or otherwise interact with, a limited (or often unlimited) number of tokens.
 
-The security risks associated with this are pretty clear, which is why we've seen services like Etherscan's Token Approval Checker pop up. These allow you to see at a glance which addresses possess approvals for tokens in your wallet.
+The security risks associated with this are pretty clear, which is why block explorers like Etherscan and Blockscout offer Token Approval Checker tools. These allow you to see at a glance which addresses possess approvals for tokens in your wallet.
 
 ![erc20-ai-tests-and-recap4](/foundry-erc20s/5-erc20-ai-tests-and-recap/erc20-ai-tests-and-recap4.png)
 
