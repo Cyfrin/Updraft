@@ -1,6 +1,6 @@
 ## A Step-by-Step Guide to Sending Your First Public Testnet Transaction
 
-This lesson will guide you through the fundamental process of interacting with a public blockchain. You will learn how to acquire free test currency from a public faucet, use it to send a transaction between two wallets, and verify your activity on a public block explorer. We will use the Sepolia testnet, the MetaMask wallet, and the Etherscan block explorer.
+This lesson will guide you through the fundamental process of interacting with a public blockchain. You will learn how to acquire free test currency from a public faucet, use it to send a transaction between two wallets, and verify your activity on a public block explorer. We will use the Sepolia testnet, the MetaMask wallet, and a block explorer (Etherscan in this demonstration).
 
 ### Step 1: Acquiring Testnet ETH from a Faucet
 
@@ -15,9 +15,9 @@ Before you can send a transaction, you need currency to pay for it. On a testnet
 3.  **Faucet Requirements**: Please note that this specific Google Cloud faucet requires you to be logged into a Google account. If you prefer not to, the GitHub repository lists several other faucets with different requirements.
 4.  **Confirm Receipt**: After the faucet processes your request, you will see a confirmation message like "Drip complete." To see the funds in your wallet, return to MetaMask, click the network dropdown (which may default to "Ethereum Mainnet"), and switch to the **"Sepolia"** network. Your balance for Account 1 should now reflect the **0.05 SepoliaETH** you just received.
 
-### Step 2: Verifying the Faucet Transaction on Etherscan
+### Step 2: Verifying the Faucet Transaction on a Block Explorer
 
-Every transaction on a public blockchain is recorded on an immutable, public ledger. We can view this ledger using a **block explorer**, which is a web application that allows anyone to search and view all blockchain data, including transactions, addresses, and blocks. For Ethereum and its testnets, the most popular block explorer is Etherscan.
+Every transaction on a public blockchain is recorded on an immutable, public ledger. We can view this ledger using a **block explorer**, which is a web application that allows anyone to search and view all blockchain data, including transactions, addresses, and blocks. For Ethereum and its testnets, the most popular explorers are Etherscan and Blockscout. This demonstration uses Etherscan.
 
 1.  **Navigate to Etherscan**: Go to the Etherscan website specifically for the Sepolia testnet: `sepolia.etherscan.io`.
 2.  **Search Your Address**: Copy your "Account 1" wallet address from MetaMask again. Paste this address into the main search bar on the Etherscan homepage and press Enter.

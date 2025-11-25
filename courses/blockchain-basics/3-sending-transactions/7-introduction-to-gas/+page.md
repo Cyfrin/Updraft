@@ -1,6 +1,6 @@
 ## Understanding Gas: The Fuel of the Ethereum Network
 
-If you’ve ever sent a transaction on a blockchain like Ethereum, you’ve likely encountered terms like "Transaction Fee" and "Gas Price" on block explorers like Etherscan. These elements are fundamental to how the network operates, determining how quickly your transaction is processed and how much it costs. This lesson will break down what Gas is, how it’s priced, and how it all comes together to form your final transaction fee.
+If you've ever sent a transaction on a blockchain like Ethereum, you've likely encountered terms like "Transaction Fee" and "Gas Price" on block explorers. These elements are fundamental to how the network operates, determining how quickly your transaction is processed and how much it costs. This lesson will break down what Gas is, how it's priced, and how it all comes together to form your final transaction fee.
 
 ## What is Gas? A Measure of Computational Effort
 
@@ -41,14 +41,14 @@ The total cost you pay for your transaction is called the **Transaction Fee**. T
 
 This formula multiplies the total computational effort required (Gas Used) by the price you agree to pay for each unit of that effort (Gas Price). The result is the total fee, paid in the network's native currency, needed to have your transaction included on the blockchain.
 
-## Setting Your Gas Fees in Wallets and Etherscan
+## Setting Your Gas Fees in Wallets and Block Explorers
 
-This theory becomes practical when you look at a transaction on Etherscan or prepare a new one in a wallet like MetaMask.
+This theory becomes practical when you look at a transaction on a block explorer or prepare a new one in a wallet like MetaMask.
 
-On an Etherscan transaction page, you will see a field like `Gas Limit & Usage by Txn`, which might show `21,000 / 21,000 (100%)`.
+On a block explorer transaction page, you will see a field like `Gas Limit & Usage by Txn`, which might show `21,000 / 21,000 (100%)`.
 *   **Gas Used by Transaction (21,000):** This is the actual amount of computational effort the transaction consumed. For a standard ETH transfer, this is fixed.
 *   **Gas Limit (21,000):** This is the maximum amount of Gas you authorized the transaction to use. It acts as a safety mechanism to prevent a faulty smart contract from draining all the ETH from your wallet.
-*   **Gas Price:** Etherscan also shows the specific Gas Price you paid, for example, `1.5 Gwei`.
+*   **Gas Price:** The explorer also shows the specific Gas Price you paid, for example, `1.5 Gwei`.
 
 The total **Transaction Fee** shown on the page is the result of multiplying these two values.
 

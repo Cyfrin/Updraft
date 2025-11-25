@@ -46,10 +46,10 @@ Let's break down the information presented in the MetaMask transaction request p
 *   **What it is:** MetaMask shows the address of the smart contract your transaction is being sent to (e.g., `0xd01607c3c5eCABA394D8be377a08590149325722`). This is the actual recipient of your funds and instructions on the blockchain.
 *   **Why it's crucial:** You must ensure you are interacting with the genuine, official smart contract of the protocol. Sending funds or authorizing operations with a malicious or incorrect contract address will almost certainly result in loss.
 *   **Verification Methods:**
-    1.  **Etherscan (`etherscan.io`):**
+    1.  **Block Explorer (Etherscan or Blockscout):**
         *   Copy the contract address from MetaMask.
-        *   Navigate to Etherscan.io (the leading Ethereum block explorer) and paste the address into the search bar.
-        *   Examine the contract's page on Etherscan. Look for official labels or tags. For well-known protocols like Aave, Etherscan often displays verified tags (e.g., "Aave: ETH Staking Contract" or "Aave: WrappedTokenGatewayV3"). These tags provide a strong indication of legitimacy.
+        *   Navigate to a block explorer - either Etherscan.io (the most widely used) or Blockscout (an open-source alternative at `eth.blockscout.com`) - and paste the address into the search bar.
+        *   Examine the contract's page. Look for official labels or tags. For well-known protocols like Aave, explorers often display verified tags (e.g., "Aave: ETH Staking Contract" or "Aave: WrappedTokenGatewayV3"). These tags provide a strong indication of legitimacy.
     2.  **Official Protocol Documentation:**
         *   The most reliable source is the protocol's official documentation (e.g., `docs.aave.com` for Aave).
         *   Search the documentation for sections like "Contract Addresses," "Deployed Contracts," or similar terms.
@@ -65,7 +65,7 @@ Let's break down the information presented in the MetaMask transaction request p
 ### Critical Check 3: The Transaction Data (Function Parameters)
 
 *   **The "Data" Tab:** This is arguably the most important section for detailed verification. MetaMask usually has a "Data" tab or an option to view/edit the transaction data.
-*   **Raw vs. Decoded Data:** The raw transaction data is a long string of hexadecimal characters (e.g., `0x474cf53d000...`). This is what your wallet cryptographically signs. Fortunately, MetaMask (and block explorers like Etherscan) attempt to decode this raw data into a more human-readable format, showing the function and its parameters.
+*   **Raw vs. Decoded Data:** The raw transaction data is a long string of hexadecimal characters (e.g., `0x474cf53d000...`). This is what your wallet cryptographically signs. Fortunately, MetaMask (and block explorers) attempt to decode this raw data into a more human-readable format, showing the function and its parameters.
 *   **Understanding Decoded Parameters:** For our Aave ETH supply example, the decoded data might look like this:
     *   `Function: depositETH`
     *   `Param #1 (_pool): [some address]` (e.g., `0x87870ca3f3fd6335c3f4ce8392d69350b4fa4e2` - this is often the Aave pool address)
@@ -92,14 +92,14 @@ Once you have meticulously performed all the verification steps above and are co
 1.  Click "Confirm" in the MetaMask pop-up.
 2.  MetaMask will indicate that "Your transaction was submitted." The status will typically change from "Pending" to "Confirmed" once the transaction is mined and included in a block on the Ethereum blockchain.
 3.  The DApp's user interface (Aave, in this case) should update to reflect the successful transaction (e.g., showing your supplied ETH balance).
-4.  You can further observe the transaction details on a block explorer like Etherscan. MetaMask usually provides a link to "View transaction" or "View on block explorer." On Etherscan, you can re-verify:
+4.  You can further observe the transaction details on a block explorer. MetaMask usually provides a link to "View transaction" or "View on block explorer." On the explorer, you can re-verify:
     *   **Transaction Hash:** The unique identifier for your transaction.
     *   **Status:** Should show "Success."
     *   **Block:** The block number in which your transaction was included.
     *   **From:** Your wallet address.
     *   **To (Interacted With):** The Aave smart contract address you verified earlier.
     *   **Internal Transactions / Token Transfers:** For a supply transaction, you'll likely see the ETH (e.g., 0.001 ETH) being transferred from your address to the Aave contract, and corresponding aTokens (e.g., AWETH) being minted and transferred to your address.
-    *   **Input Data:** Etherscan will also show the decoded input data, including the function called (e.g., `depositETH`) and the parameters. This should match precisely what you verified in MetaMask against the official documentation.
+    *   **Input Data:** The explorer will also show the decoded input data, including the function called (e.g., `depositETH`) and the parameters. This should match precisely what you verified in MetaMask against the official documentation.
 
 ## Key Takeaways for Secure Transaction Practices
 
@@ -108,7 +108,7 @@ This walkthrough of supplying ETH to Aave, with a deep focus on transaction veri
 *   **Never Sign Blindly:** This is the cardinal rule. Always take the time to verify.
 *   **MetaMask Estimates are Guides:** While helpful, features like "Estimated Changes" are not definitive proof of safety. The raw data and contract interactions are what matter.
 *   **Documentation is Your Friend:** Official protocol documentation is the ultimate source of truth for smart contract addresses, function signatures, and parameter meanings.
-*   **Block Explorers for Transparency:** Tools like Etherscan provide an immutable, transparent record of all blockchain activity and are invaluable for verification.
+*   **Block Explorers for Transparency:** Block explorers provide an immutable, transparent record of all blockchain activity and are invaluable for verification.
 *   **Verify Recipient Addresses:** For any transaction involving deposits, transfers, or actions that should benefit you, ensure parameters like `onBehalfOf` or other recipient fields are correctly set to *your* address.
 *   **Be Wary of Unsolicited Requests:** Be extremely cautious if a DApp or website unexpectedly prompts your wallet for a transaction you didn't initiate.
 

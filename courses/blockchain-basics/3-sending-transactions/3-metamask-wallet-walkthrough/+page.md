@@ -65,7 +65,7 @@ Your wallet address is your public identifier on the blockchain. Think of it as 
 
 The address is a long string of characters starting with `0x...` and is displayed directly under your account name (e.g., "Account 1"). You can click on the address to instantly copy it to your clipboard.
 
-To view the activity of any wallet address, you can use a block explorer like **Etherscan.io**. By pasting a wallet address into the search bar on Etherscan, you can transparently view its balance and complete transaction history. For a brand-new wallet, Etherscan will correctly show a balance of `0 ETH` and no transactions.
+To view the activity of any wallet address, you can use a **block explorer** - a public tool that lets you search and view blockchain data transparently. The most popular options are **Etherscan** (`etherscan.io`) and **Blockscout** (`eth.blockscout.com`), an open-source alternative. By pasting a wallet address into the search bar on either explorer, you can view its balance and complete transaction history. For a brand-new wallet, the explorer will correctly show a balance of `0 ETH` and no transactions.
 
 ### Creating and Managing Multiple Accounts
 

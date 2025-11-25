@@ -61,12 +61,12 @@ The introduction of blob transactions has streamlined how L2 rollups interact wi
 5.  The precompile verifies the proof against the commitment. A successful verification confirms that the blob data referenced by the commitment was indeed available and unaltered when the transaction was included in a block.
 6.  After the data availability window expires, the blob data itself is pruned by L1 nodes, while the record of its commitment and successful verification remains permanent.
 
-**Etherscan Example: Witnessing Blobs in the Wild**
-Block explorers like Etherscan provide visibility into these new transaction types. For instance, examining a transaction from a rollup like ZK Sync that utilizes EIP-4844 would reveal:
+**Block Explorer Example: Witnessing Blobs in the Wild**
+Block explorers like Etherscan and Blockscout provide visibility into these new transaction types. For instance, examining a transaction from a rollup like ZK Sync that utilizes EIP-4844 would reveal:
 *   `Txn Type: 3 (EIP-4844)` clearly indicated.
 *   A "Blobs" tab or section, listing the KZG commitments (often displayed as hashes) of the blobs associated with the transaction.
 *   Viewing the raw data of a blob would show a large hexadecimal string, representing the 128 KiB of data.
-*   Crucially, Etherscan often provides a gas cost comparison, showing `Blob Gas Used` versus what the cost *would have been* if the same data had been posted as `Calldata Gas`. This frequently demonstrates massive cost savings, potentially reducing data posting costs by orders of magnitude compared to the old calldata method.
+*   Crucially, explorers often provide a gas cost comparison, showing `Blob Gas Used` versus what the cost *would have been* if the same data had been posted as `Calldata Gas`. This frequently demonstrates massive cost savings, potentially reducing data posting costs by orders of magnitude compared to the old calldata method.
 
 Transaction debugging tools like Tenderly can offer even deeper insights, showing internal function calls within the L1 contracts, such as those interacting with the `BLOBHASH` opcode and the Point Evaluation Precompile.
 
