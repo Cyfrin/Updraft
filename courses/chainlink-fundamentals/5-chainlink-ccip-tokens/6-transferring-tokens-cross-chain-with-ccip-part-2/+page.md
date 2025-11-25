@@ -31,7 +31,7 @@ This is a recap of what you learned in Section 2, Lesson 3, so we are going to g
 
 ### Check the contract balance
 
-Let's check the LINK tokens successfully transferred to the `CCIPTokenSender` contract by checking its LINK balance.
+Let's check the LINK tokens successfully transferred to the `CCIPTokenSender` contract by checking its LINK balance. This tutorial uses Etherscan, but you can also use Blockscout or other block explorers.
 
 - Navigate to [Etherscan Sepolia](https://sepolia.etherscan.io/) and search the LINK token address on Sepolia: `0x779877A7B0D9E8603169DdbD7836e478b4624789`.
 - Clic **Connect to Web3** and connect MetaMask to Etherscan.

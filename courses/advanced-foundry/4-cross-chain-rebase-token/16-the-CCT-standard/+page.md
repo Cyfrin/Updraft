@@ -105,13 +105,14 @@ This demonstration is based on the official Chainlink CCT tutorials, specificall
 
 5.  **Environment Variables:**
     *   Rename `.env.example` to `.env`.
-    *   Populate `.env` with your RPC URLs for the Sepolia and Arbitrum Sepolia testnets. Optionally, add Etherscan and Arbiscan API keys for contract verification.
+    *   Populate `.env` with your RPC URLs for the Sepolia and Arbitrum Sepolia testnets. Optionally, add block explorer API keys for contract verification.
         ```env
         SEPOLIA_RPC_URL=<your_sepolia_rpc_url>
         ARBITRUM_SEPOLIA_RPC_URL=<your_arbitrum_sepolia_rpc_url>
         PRIVATE_KEY=<your_deployer_private_key>
-        # ETHERSCAN_API_KEY=<your_etherscan_api_key> # Optional
-        # ARBISCAN_API_KEY=<your_arbiscan_api_key>   # Optional
+        # ETHERSCAN_API_KEY=<your_etherscan_api_key>     # Optional - for Etherscan
+        # ARBISCAN_API_KEY=<your_arbiscan_api_key>       # Optional - for Arbiscan
+        # BLOCKSCOUT_API_KEY=<your_blockscout_api_key>   # Optional - for Blockscout
         ```
     *   Load the environment variables into your current shell session:
         ```bash
