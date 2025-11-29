@@ -6,7 +6,7 @@ title: Scoping
 
 ---
 
-Welcome back, are you ready to actually get stated for this section? let's start with Scoping and setting this project out. 
+Welcome back, are you ready to actually get stated for this section? Let's start with Scoping and setting this project out. 
 
 ## Cloning and Setting Up
 

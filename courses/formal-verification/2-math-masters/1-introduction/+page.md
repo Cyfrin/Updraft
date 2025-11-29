@@ -33,4 +33,4 @@ We'll introduce you to formal verification tools like Halmos and Certora, essent
 
 As the course progresses, your skills in formal verification will deepen. This isn’t just about learning; it’s about becoming part of a select group with advanced knowledge in smart contract security and auditing.
 
-So we you hope you are ready, because we are just getting stated!
+So we you hope you are ready, because we are just getting started!
