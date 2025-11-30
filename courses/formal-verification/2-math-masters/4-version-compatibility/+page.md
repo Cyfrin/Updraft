@@ -21,6 +21,5 @@ title: Checking version Compatibility
 #### Implications for Audit Reporting
 
 - **Documentation of Findings**: This issue would be documented as a "low finding" in the audit report, noting the inappropriate version of Solidity used in relation to the features implemented in the contract.
-- 
 - **Recommendation**: Suggest upgrading to a newer version of Solidity that supports custom errors, ensuring that all functionalities of the contract can be utilized without limitations.
 
