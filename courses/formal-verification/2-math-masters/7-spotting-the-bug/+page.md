@@ -20,7 +20,7 @@ title: Spotting the bug with a memory demonstration
 - **Actual Behavior**: Contrary to expectations, `mstore` pads the value, filling from `0x40` to `0x60` with the value, using zero-padding for the bytes leading up to the last four bytes.
 
 ### Practical Implications of mstore Padding:
-- **Test Function**: A function `testMoleRevert` is used to ensure the code reverts under certain conditions by testing overflows with `type uint256 max`.
+- **Test Function**: A function `testMulRevert` is used to ensure the code reverts under certain conditions by testing overflows with `type uint256 max`.
 - **Debugging**: Debugging tools such as Forge are employed to step through the execution and examine the memory and opcodes directly.
 - **Memory Overwriting Concern**: It’s revealed that `mstore` might be overwriting the free memory pointer at `0x40`, which is a critical error in memory management within Solidity contracts.
 
