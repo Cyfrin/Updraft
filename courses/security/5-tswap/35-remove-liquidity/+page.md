@@ -180,7 +180,7 @@ function getInputAmountBasedOnOutput(
 </details>
 
 
-Alright, there's only only line, a return calculation, but something should stick out to you here. Rather than using 1,000 in the fee calculation, the protocol has used 10,000!
+Alright, there's only one line, a return calculation, but something should stick out to you here. Rather than using 1,000 in the fee calculation, the protocol has used 10,000!
 
 ```
 997/1000 = 0.997 * 100 = 99.7% tokens transferred -> 0.3% fee
