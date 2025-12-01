@@ -12,13 +12,13 @@ This is the most well-known application of blockchain. At its core, blockchain t
 
 This concept extends far beyond simple digital cash into the world of Decentralized Finance (DeFi). A critical innovation within DeFi is the **stablecoin**.
 
-*   **Stablecoins:** These are digital currencies designed to maintain a stable value, often by being pegged to a real-world asset like the US dollar. For example, **USDC (USD Coin)** is a digital dollar where 1 USDC is designed to always equal $1. This provides a life-changing solution for people in countries experiencing hyperinflation, allowing them to protect their savings from the rapid devaluation of their local currency by holding a stable digital asset.
+- **Stablecoins:** These are digital currencies designed to maintain a stable value, often by being pegged to a real-world asset like the US dollar. For example, **USDC (USD Coin)** is a digital dollar where 1 USDC is designed to always equal $1. This provides a life-changing solution for people in countries experiencing hyperinflation, allowing them to protect their savings from the rapid devaluation of their local currency by holding a stable digital asset.
 
 ### Decentralized Agreements with Smart Contracts
 
-Blockchains enable the creation of self-executing, tamper-proof agreements known as smart contracts. Think of them as traditional legal contracts, but with their terms written in code and stored on the blockchain. These contracts automatically execute when their predefined conditions are met, making them transparent, immutable, and highly efficient.
+Blockchains enable the creation of deterministic, tamper-proof agreements known as smart contracts. Think of them as traditional legal contracts, but with their terms written in code and stored on the blockchain. These contracts automatically execute when their predefined conditions are met, making them transparent, immutable, and highly efficient.
 
-*   **Example: Automated Insurance:** An insurance policy can be written as a smart contract. If a verifiable event, such as a major flood reported by a trusted data source, occurs, the smart contract can automatically execute the payout to the policyholder. This deterministic process eliminates administrative overhead, the need to file a claim, and the reliance on an insurance company's approval, ensuring a fast and fair settlement.
+- **Example: Automated Insurance:** An insurance policy can be written as a smart contract. If a verifiable event, such as a major flood reported by a trusted data source, occurs, the smart contract can automatically execute the payout to the policyholder. This deterministic process eliminates administrative overhead, the need to file a claim, and the reliance on an insurance company's approval, ensuring a fast and fair settlement.
 
 ### Solving Cross-Border Payments
 
@@ -32,10 +32,10 @@ Blockchain provides a revolutionary way to prove ownership of both digital and p
 
 This has profound implications for a wide range of assets:
 
-*   **Digital Art & Music:** Creators can sell their work directly to fans, bypassing traditional gatekeepers like galleries or record labels that take a significant cut.
-*   **In-Game Items:** Gamers can gain true ownership of the items they earn or purchase in video games, allowing them to trade or sell them on open marketplaces.
-*   **Educational Certificates:** Academic and professional credentials can be issued on-chain, making them instantly verifiable and fraud-proof.
-*   **Real-World Assets:** Physical assets, like real estate, can be "tokenized" and recorded on the blockchain, enabling new models like fractional ownership where multiple people can invest in a single property.
+- **Digital Art & Music:** Creators can sell their work directly to fans, bypassing traditional gatekeepers like galleries or record labels that take a significant cut.
+- **In-Game Items:** Gamers can gain true ownership of the items they earn or purchase in video games, allowing them to trade or sell them on open marketplaces.
+- **Educational Certificates:** Academic and professional credentials can be issued on-chain, making them instantly verifiable and fraud-proof.
+- **Real-World Assets:** Physical assets, like real estate, can be "tokenized" and recorded on the blockchain, enabling new models like fractional ownership where multiple people can invest in a single property.
 
 ### Democratizing Access to Financial Services
 
@@ -53,11 +53,11 @@ The entire process—from proposal to vote to execution—is transparently recor
 
 To navigate this space, it's essential to understand a few core concepts that define the technological shift underway.
 
-*   **DApp (Decentralized Application):** A DApp is an application (like a website or mobile app) whose backend logic runs on a decentralized blockchain network instead of on centralized servers owned by a single company. If a service like Google ran its backend on a blockchain, it would be considered a DApp.
-*   **The Evolution of the Web:**
-    *   **Web1:** The initial phase of the internet, characterized by static, "read-only" websites.
-    *   **Web2:** The "read-write" internet we use today. It's interactive and social, but our data and content are controlled by the large corporations that own the platforms.
-    *   **Web3:** The next evolution of the internet, built on blockchain technology. It introduces smart contracts and digital ownership, creating an open internet where users have true control over their data and digital assets.
+- **DApp (Decentralized Application):** A DApp is an application (like a website or mobile app) whose backend logic runs on a decentralized blockchain network instead of on centralized servers owned by a single company. If a service like Google ran its backend on a blockchain, it would be considered a DApp.
+- **The Evolution of the Web:**
+  - **Web1:** The initial phase of the internet, characterized by static, "read-only" websites.
+  - **Web2:** The "read-write" internet we use today. It's interactive and social, but our data and content are controlled by the large corporations that own the platforms.
+  - **Web3:** The next evolution of the internet, built on blockchain technology. It introduces smart contracts and digital ownership, creating an open internet where users have true control over their data and digital assets.
 
 ## Addressing Common Criticisms of Blockchain
 

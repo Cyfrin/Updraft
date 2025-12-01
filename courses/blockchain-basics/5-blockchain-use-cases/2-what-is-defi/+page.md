@@ -18,7 +18,7 @@ The risks of a centralized and opaque system were made clear during the **2008 f
 
 ### How DeFi Works: Smart Contracts and "Money Legos"
 
-DeFi applications are, at their core, smart contracts—or systems of smart contracts—deployed on a blockchain. These self-executing contracts have the terms of an agreement written directly into their code.
+DeFi applications are, at their core, smart contracts—or systems of smart contracts—deployed on a blockchain. These deterministic contracts have the terms of an agreement written directly into their code.
 
 This foundation provides two key properties:
 
