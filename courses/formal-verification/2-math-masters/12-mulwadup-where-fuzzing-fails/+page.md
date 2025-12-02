@@ -22,13 +22,13 @@ In essence, with these computation tapes unfurling, we nod to the idea that the 
 
 ### The Litmus Test - Fuzzing To The Rescue?
 
-With a need to validate this setup, I resorted to fuzz tests. They’re the gatekeepers, designed to put this logic through its paces. A meticulously constructed `TestMolUpFuzz` swears by its validation until pushed against the wall by extensive trial runs.
+With a need to validate this setup, I resorted to fuzz tests. They’re the gatekeepers, designed to put this logic through its paces. A meticulously constructed `TestMulUpFuzz` swears by its validation until pushed against the wall by extensive trial runs.
 
 The climax of countless executions hinted at something amiss. A particular set of values, should they cross paths with our calculation, would defiantly scribe an incorrect result. And that, dear reader, fueled our next chapter.
 
 ## Precision in Testing: Unraveling the Mystery Value
 
-We dedicated a test to the suspicious duo of values. Crafting a `testMolUpUnit()` where `x` and `y` adopted these precise attributes, we anticipated the outcome. Through the magnifying lens of meticulous calculation, an unexpected figure surfaced - something far denser than our anticipation.
+We dedicated a test to the suspicious duo of values. Crafting a `testMulUpUnit()` where `x` and `y` adopted these precise attributes, we anticipated the outcome. Through the magnifying lens of meticulous calculation, an unexpected figure surfaced - something far denser than our anticipation.
 
 In disbelief of this incongruity, we conducted the test again, this time after erasing the seemingly redundant line of code. The result echoed back, this time harmonious with our expectation. The piece of the puzzle had been found, ousted for its redundancy.
 
