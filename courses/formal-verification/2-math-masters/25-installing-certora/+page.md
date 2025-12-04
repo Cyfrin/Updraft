@@ -38,13 +38,13 @@ title: Installing Certora and solc-select
 4. **Utilizing Certora CLI**:
    - Confirm the CLI is correctly installed by running commands like `certora run help` or `certora run version` to get detailed outputs and version information.
 
-### Managing Solidity Versions with Solc-Selects
+### Managing Solidity Versions with solc-select
 
 **Installation and Configuration**
-- Install `Solc-Selects` via `pipx` to manage different versions of the Solidity compiler.
-- Use commands like `Solc-Selects use 0.8.7` to switch between installed versions as needed.
-- If a version is not installed, install it using `Solc-Selects install <version>`.
+- Install `solc-select` via `pipx` to manage different versions of the Solidity compiler.
+- Use commands like `solc-select use 0.8.7` to switch between installed versions as needed.
+- If a version is not installed, install it using `solc-select install <version>`.
 
 **Operational Tips**
-- Running `Solc-Selects help` provides guidance and confirms the current setup.
+- Running `solc-select help` provides guidance and confirms the current setup.
 - Always ensure the appropriate Solidity version is active for your projects by checking with `solc version`.
