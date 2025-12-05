@@ -47,7 +47,7 @@ Here, `lastReverted` acts as a keyword in Certora, a tool we are using. It updat
 
 #### Ensuring No Reverts
 
-Given our invariant—that `hellFunc` must never revert—we structure our testing to confirm this behavior reliably. By monitoring the `lastReverted` keyword after invoking the function, we can assure that our condition is met.ß
+Given our invariant—that `hellFunc` must never revert—we structure our testing to confirm this behavior reliably. By monitoring the `lastReverted` keyword after invoking the function, we can assure that our condition is met.
 
 
 Now, it's time for Certora to perform its analysis and transform our invariant checking into a rigorous mathematical verification.

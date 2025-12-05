@@ -10,7 +10,7 @@ title: Analyzing a failed Certora Run
 
 When you initiate the execution of make Certora, it requires some patience as the output generation and processing might take a little time. The UI displays the progress, and you can track the status through various indicators.
 
-####Understanding the Output
+#### Understanding the Output
 
 Once the process concludes, you'll notice specific indicators like:
 - A checkmark next to envfree funk status check," signifying that no environmental variables (`env`) were used in the function, aligning with the constraints set by using the keyword `envfree`.
