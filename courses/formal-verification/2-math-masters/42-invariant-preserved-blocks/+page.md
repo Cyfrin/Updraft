@@ -37,7 +37,6 @@ Inside the preserved block, we specify the preconditions that need to be true fo
 #### Running and Testing the Invariant
 Once the invariant and its preconditions are defined, we proceed to test it alongside our original rule. Both are executed in the context of proving their validity:
 
-s
 We anticipate that both might fail under certain conditions, providing valuable counterexamples that reveal the limitations or errors in our assumptions or logic.
 
 ### Analyzing Results
