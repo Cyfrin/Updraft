@@ -57,7 +57,7 @@ So, we know that liquidity providers are provided LP tokens in exchange for the 
 
 In order to remove liquidity from the pool then, a liquidity provider must burn some number of LP Tokens they hold.
 
-We can see see how the `withdraw` function calculates the amounts of `weth` and `poolToken` to withdraw based on the submitted `liquidityTokensToBurn`.
+We can see how the `withdraw` function calculates the amounts of `weth` and `poolToken` to withdraw based on the submitted `liquidityTokensToBurn`.
 
 ```js
 uint256 wethToWithdraw =
