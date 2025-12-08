@@ -23,16 +23,16 @@ First, we attempt to identify issues using fuzzing:
 - A test is set up to make a static call to `hellFunc`, asserting it does not revert.
 - Despite multiple test runs with increased iterations, fuzzing fails to detect any issues, demonstrating its limitations in this context.
 
-### Formal Verification with Halmos, Control, and Certora
+### Formal Verification with Halmos, Kontrol, and Certora
 
 #### Halmos
 
 - We take the same test used in fuzzing and apply Halmos for formal verification.
 - After running the test, Halmos successfully identifies a problem where the variable `number` set to 99 causes an issue, showcasing the effectiveness of converting the test into a mathematical problem and solving it.
 
-#### Control
+#### Kontrol
 
-- The setup for Control is similar to that for Halmos, with the addition of the `KVM infinite gas cheat code` to handle complex computations.
+- The setup for Kontrol is similar to that for Halmos, with the addition of the `KVM infinite gas cheat code` to handle complex computations.
 - The process is time-consuming, requiring potential breaks, but once completed, it allows for detailed inspection of where the test fails or passes.
 
 #### Certora

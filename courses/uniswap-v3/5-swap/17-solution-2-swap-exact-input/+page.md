@@ -34,7 +34,7 @@ recipient: address(this),
 amountIn: 1000 * 1e18,
 amountOutMinimum: 1
 ```
-Let's try executing the test. Inside my terminal, I'll first set the environment variable for URL:
+Let's try executing the test. Inside my terminal, I'll first set the environment variable for fork URL:
 ```bash
 forge test --fork-url $FORK_URL --match-path test/uniswap-v3/exercises/UniswapV3Swap.test.sol -vvv
 ```
