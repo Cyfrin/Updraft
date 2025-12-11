@@ -13,7 +13,7 @@ With the previous lesson's foundation laid, lets look at what encoding is like w
 We know the EVM is looking for this encoded information, this binary _stuff_. And since transactions sent to the blockchain are ultimately compiled down to this binary, what this allows us to do is populate the `Data` property of a transaction with this binary ourselves.
 
 
-::image{src='/security-section-1/11-encoding-function/encoding-function2.png' style='width: 95%; height: auto;' alt='block fee' caption='Remember the properties of a Transaction' captionStyle='font-size: 10px' figureStyle='display: flex; flex-direction: column; align-items: center;'}
+![block fee](/security-section-1/11-encoding-function/encoding-function2.png)
 
 ### ABI Encoding and Transactions
 
