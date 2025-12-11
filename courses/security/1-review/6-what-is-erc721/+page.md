@@ -21,9 +21,9 @@ As a more relatable analogy, consider an NFT as a distinct piece of art, trading
 Although NFTs are mostly associated with art, they extend beyond that. They can be assigned any property, or manipulated in any way you like, thanks to the underlying smart contract technology.
 
 
-::image{src='/security-section-1/6-erc721s/erc721s1.png' style='width: 20%; height: auto;' alt='block fee' caption='An NFT example from OpenSea' captionSyle='font-size: 10px' figureStyle='display: flex; flex-direction: column; align-items: center;'}
+![block fee](/security-section-1/6-erc721s/erc721s1.png)
 
-::image{src='/security-section-1/6-erc721s/erc721s2.png' style='width: 21.7%; height: auto;' alt='block fee' caption='An NFT example from OpenSea' captionSyle='font-size: 10px' figureStyle='display: flex; flex-direction: column; align-items: center;'}
+![block fee](/security-section-1/6-erc721s/erc721s2.png)
 
 These unique tokens are deployed on a smart contract platform and can be traded on numerous NFT platforms such as [OpenSea](https://opensea.io/) or [Rarible](https://rarible.com/). While these decentralized marketplaces provide user-friendly interfaces for trading NFTs, one could just as easily buy and sell outside of them.
 

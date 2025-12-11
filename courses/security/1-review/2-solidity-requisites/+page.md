@@ -18,7 +18,7 @@ All of the basic Solidity, variable types, contract structure etc should be seco
 
 You should also be familiar with the working environments of Foundry, or your framework of choice. You should understand how to initialize a project in your framework and navigate it's working tree.
 
-::image{src='/security-section-1/2-solidity-req/solidity-prerequisites1.PNG' style='width: 40%; height: auto;' alt='block fee' figureStyle='display: flex; justify-content: center;'}
+![block fee](/security-section-1/2-solidity-req/solidity-prerequisites1.PNG)
 
 Commands like these should ring lots of bells.
 
