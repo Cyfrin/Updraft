@@ -14,7 +14,7 @@ These two specific functions - `fallback` and `receive` - enable a contract to a
 
 So, how do they function? Here's the core logic to give you a better understanding:
 
-::image{src='/security-section-1/9-fallback-receive/fallback-receive1.png' style='width: 30%; height: auto;' alt='block fee' figureStyle='display: flex; justify-content: center;'}
+![block fee](/security-section-1/9-fallback-receive/fallback-receive1.png)
 
 To put it simply, consider the case of sending ETH to a smart contract without any data. In such an instance, the `receive` function would be called, resorting to `fallback` if the `receive` function does not exist.
 

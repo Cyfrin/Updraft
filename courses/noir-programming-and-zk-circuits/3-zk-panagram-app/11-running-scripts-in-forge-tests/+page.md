@@ -21,7 +21,7 @@ contract PanagramTest is Test {
     // ... (setUp function)
 
     // The goal is to test this scenario:
-    // // 1. Test someone recieves NFT 0 if they guess correctly first
+    // // 1. Test someone receives NFT 0 if they guess correctly first
     function testCorrectGuessPasses() public {
         // vm.prank to simulate the call from the 'user'
         vm.prank(user);

@@ -4,9 +4,7 @@ title: Your first Certora Invariant
 
 ---
 
-ß
-
-###s Writing Invariants in Certora
+### Writing Invariants in Certora
 
 A rule we previously discussed can serve as an example of what might be a good invariant. Essentially, this involves ensuring a consistent condition across the smart contract, such as ensuring a function always returns a specific value. To demonstrate this, you can transform a rule into an invariant by simply using the `invariant` keyword.
 

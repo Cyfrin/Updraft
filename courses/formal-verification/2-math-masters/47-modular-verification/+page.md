@@ -25,7 +25,7 @@ We split the MathMaster's square root function into two halves:
 - **Bottom half** (shared with the soulmate square root)
 
 Next, we implement these halves in a compact code base:
-- **`function soulmateTopHalf(uint256 x) external pure returns (uint256)`**
+- **`function solmateTopHalf(uint256 x) external pure returns (uint256)`**
 - **`function mathMastersTopHalf(uint256 x) external pure returns (uint256)`**
 
 #### Transition to Fuzz Testing
@@ -33,12 +33,12 @@ Considering the modular approach, an idea arises to utilize fuzz testing for the
 
 #### Final Verification Steps
 Incorporating the functions into our square root specification, we attempt another round of verification:
-- **`function soulmateTopHalf(uint256 x) external returns (uint256)`**
+- **`function solmateTopHalf(uint256 x) external returns (uint256)`**
 - **`function mathMastersTopHalf(uint256 x) external returns (uint256)`**
 
 We assert that the outputs of both functions should match, focusing solely on the top halves to avoid the complexity of the bottom halves.
 
 #### Conclusion of the Modular Verification
-Our efforts reveal that the top halves of the functions do not consistently yield the same results, indicating potential issues within the Mathmaster's implementation. Although this modular verification does not fully confirm the correctness of the entire square root function, it effectively identifies a significant discrepancy that warrants further investigation and correction.
+Our efforts reveal that the top halves of the functions do not consistently yield the same results, indicating potential issues within the MathMaster's implementation. Although this modular verification does not fully confirm the correctness of the entire square root function, it effectively identifies a significant discrepancy that warrants further investigation and correction.
 
 This modular approach not only simplifies the verification process but also highlights the importance of dissecting complex problems to focus on critical components, enhancing the overall efficiency of the verification efforts.

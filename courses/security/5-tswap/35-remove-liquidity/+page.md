@@ -57,7 +57,7 @@ So, we know that liquidity providers are provided LP tokens in exchange for the 
 
 In order to remove liquidity from the pool then, a liquidity provider must burn some number of LP Tokens they hold.
 
-We can see see how the `withdraw` function calculates the amounts of `weth` and `poolToken` to withdraw based on the submitted `liquidityTokensToBurn`.
+We can see how the `withdraw` function calculates the amounts of `weth` and `poolToken` to withdraw based on the submitted `liquidityTokensToBurn`.
 
 ```js
 uint256 wethToWithdraw =
@@ -180,7 +180,7 @@ function getInputAmountBasedOnOutput(
 </details>
 
 
-Alright, there's only only line, a return calculation, but something should stick out to you here. Rather than using 1,000 in the fee calculation, the protocol has used 10,000!
+Alright, there's only one line, a return calculation, but something should stick out to you here. Rather than using 1,000 in the fee calculation, the protocol has used 10,000!
 
 ```
 997/1000 = 0.997 * 100 = 99.7% tokens transferred -> 0.3% fee

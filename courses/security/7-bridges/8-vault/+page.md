@@ -77,7 +77,7 @@ contract L1BossBridge is Ownable, Pausable, ReentrancyGuard {
     }
 ```
 
-We can see the the `vault` variable is declared as immutable and that it's initialized within L1BossBridge's constructor. There's probably no `failure-to-initialize` vulnerability here, but it was absolutely worth checking.
+We can see the `vault` variable is declared as immutable and that it's initialized within L1BossBridge's constructor. There's probably no `failure-to-initialize` vulnerability here, but it was absolutely worth checking.
 
 ### Continuing Down L1Vault.sol
 
