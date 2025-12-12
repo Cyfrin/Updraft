@@ -15,8 +15,8 @@ In this session, we conducted a thorough security review of the `MathMasters.sol
    - Highlighted the crucial role of compiler knowledge in securing codebases.
 
 #### 2. **Analysis of MathMasters SOL Functions**
-   - **MulWad**: Functionality involves multiplication followed by rounding down.
-   - **MulwadUp**: Similar to MulWad but implements rounding up.
+   - **mulWad**: Functionality involves multiplication followed by rounding down.
+   - **mulWadUp**: Similar to mulWad but implements rounding up.
    - **Square Root**: Explored various testing approaches, including fuzzing and formal verification.
 
 
@@ -36,4 +36,4 @@ We delved deep into assembly language to understand how operations at the lower 
    - Developed a test harness to compare two halves of the function to ensure correctness, which was crucial in identifying and fixing a subtle bug.
 
 
-We hope you've enjoyed this course so far, we'll see you on the next occasion, kep learning and Happy Coding!
+We hope you've enjoyed this course so far, we'll see you on the next occasion, keep learning and Happy Coding!
