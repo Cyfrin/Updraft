@@ -87,7 +87,7 @@ We can set the `rule_sanity` property to `none` to avoid this warning for the ti
 
 ### Wrap Up
 
-Ok, things seem more or less set up, and we've testing that our configs and specs are working, we've tested that we can send jobs to Certore - great.
+Ok, things seem more or less set up, and we've testing that our configs and specs are working, we've tested that we can send jobs to Certora - great.
 
 In the next lesson let's actually set up a rule to test that our totalSupply is never negative.
 

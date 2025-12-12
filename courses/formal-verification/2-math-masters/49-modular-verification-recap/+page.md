@@ -14,16 +14,16 @@ We started with the question: Is this square root function correct? The challeng
 Instead of directly dissecting the assembly code line by line, which likely would have exposed the error in the "two a" (lffff) section, we opted for a more comprehensive testing approach. We believed this would allow us to catch more bugs effectively.
 
 #### Implementation of Fuzz Testing
-Our first strategy was fuzz testing. We leveraged existing functions known as "soulmate" and "uniswap square root," which had undergone extensive testing previously. By running the test suites `test square root fuzz uni` and `test square root fuzz soulmate`, both functions passed, indicating no immediate errors under standard conditions.
+Our first strategy was fuzz testing. We leveraged existing functions known as "solmate" and "uniswap square root," which had undergone extensive testing previously. By running the test suites `test square root fuzz uni` and `test square root fuzz solmate`, both functions passed, indicating no immediate errors under standard conditions.
 
 #### Advancing to Formal Verification
 Not fully satisfied with fuzz testing, we advanced to formal verification to uncover any potential hidden edge cases. We utilized the Certora tool to set up a verification process, initially trying to replicate the fuzz test in a formal environment. However, we faced limitations with the solver, encountering the "path explosion problem" due to the complexity of the function, pushing us to reconsider our approach.
 
 #### Modular Verification of Function Segments
-Our next step involved a more segmented approach to verification. We compared equivalent segments of the MathMasters and soulmate functions, focusing on the top halves of each. This comparison revealed discrepancies leading to the discovery of a bug in the MathMasters function.
+Our next step involved a more segmented approach to verification. We compared equivalent segments of the MathMasters and solmate functions, focusing on the top halves of each. This comparison revealed discrepancies leading to the discovery of a bug in the MathMasters function.
 
 #### Correcting and Re-verifying the Function
-Upon correcting the identified issues and re-running the formal verification, Certora confirmed that the revised MathMasters function aligned perfectly with the soulmate function, validating our corrections.
+Upon correcting the identified issues and re-running the formal verification, Certora confirmed that the revised MathMasters function aligned perfectly with the solmate function, validating our corrections.
 
 ### Learning Outcomes and Tools Utilized
 
