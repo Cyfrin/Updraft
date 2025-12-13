@@ -231,7 +231,7 @@ With the HelperConfig complete, we can return to DeployDSC.s.sol. Please referen
 
 ### Back to DeployDSC
 
-Returning to `DeployDSC.s.sol`, we can now import our HelperConfig and use it to acquire the the parameters for our deployments.
+Returning to `DeployDSC.s.sol`, we can now import our HelperConfig and use it to acquire the parameters for our deployments.
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED

@@ -73,7 +73,7 @@ Now if you type `cat`, you should get a kinda crazy output that's representing t
 
 ![basic-nft-tests2](/foundry-nfts/7-basic-nft-tests/basic-nft-tests2.png)
 
-We'll leverage abi.encodePacked to convert this to bytes, then finally we can use keccak256 to hash the value into bytes32, which we can can use in our value comparison.
+We'll leverage abi.encodePacked to convert this to bytes, then finally we can use keccak256 to hash the value into bytes32, which we can use in our value comparison.
 
 ![basic-nft-tests3](/foundry-nfts/7-basic-nft-tests/basic-nft-tests3.png)
 
