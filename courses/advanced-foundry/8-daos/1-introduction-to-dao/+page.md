@@ -116,7 +116,7 @@ What if I told you, you could sign a transaction and vote in a decentralized way
 
 Transactions can actually be signed without being sent to the blockchain. What this means is a protocol could take a bunch of signed transactions, uploaded to a decentralized database (like IPFS), calculate the votes and then batch submit them to the blockchain, maybe even leveraging an oracle to ensure decentrality. This can reduce voting costs by up to 99%!
 
-It's important to be careful the the implementation of any off-chain features, if you introduce a centralized component, the decentrality of your DECENTRALIZED autonomous organization goes away.
+It's important to be careful with the implementation of any off-chain features, if you introduce a centralized component, the decentrality of your DECENTRALIZED autonomous organization goes away.
 
 ### Tools
 
