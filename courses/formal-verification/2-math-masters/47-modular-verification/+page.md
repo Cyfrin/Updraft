@@ -14,15 +14,15 @@ Our focus is on two implementations of the square root function:
 1. **Uniswap Square Root**
 2. **Soulmate Square Root**
 
-The soulmate square root function, which we haven't focused on extensively, reveals an interesting aspect when compared side-by-side with the Uniswap version. Upon cleaning up the code for better readability, it's evident that while the first halves of these functions differ, their second halves are identical—both perform similar operations like right shifts, additions, and divisions.
+The solmate square root function, which we haven't focused on extensively, reveals an interesting aspect when compared side-by-side with the Uniswap version. Upon cleaning up the code for better readability, it's evident that while the first halves of these functions differ, their second halves are identical—both perform similar operations like right shifts, additions, and divisions.
 
 #### Hypothesis for Simplification
-The identical lower halves of these functions suggest that if the soulmate square root is accurate, then the top halves should, theoretically, produce the same results. This assumption allows us to hypothesize that difficulties in full verification might stem from the complex operations in the lower half, potentially leading to path explosion issues. Simplifying the verification to just the upper halves might offer a more manageable solution.
+The identical lower halves of these functions suggest that if the solmate square root is accurate, then the top halves should, theoretically, produce the same results. This assumption allows us to hypothesize that difficulties in full verification might stem from the complex operations in the lower half, potentially leading to path explosion issues. Simplifying the verification to just the upper halves might offer a more manageable solution.
 
 #### Implementation of Modular Verification
 We split the MathMaster's square root function into two halves:
 - **Top half**
-- **Bottom half** (shared with the soulmate square root)
+- **Bottom half** (shared with the solmate square root)
 
 Next, we implement these halves in a compact code base:
 - **`function solmateTopHalf(uint256 x) external pure returns (uint256)`**
