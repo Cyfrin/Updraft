@@ -30,7 +30,7 @@ rule calling_any_function_should_result_in_each_contract_having_the_same_state(m
 > ❗ **NOTE**
 > Adding the rule parameters within the declaration brackets, or within the rule body will function the same way. The only exception is when applying `filters`, which we'll cover later.
 
-We need to consider what our goals are for this verification. Out methodology will be something like:
+We need to consider what our goals are for this verification. Our methodology will be something like:
 
 1. Call the same function on both `NftMarketplace.sol` and `GasBadNftMarketplace.sol`
 2. Compare the getter function results of both contracts to verify they are the same.
