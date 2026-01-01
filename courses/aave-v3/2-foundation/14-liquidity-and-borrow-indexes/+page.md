@@ -17,7 +17,7 @@ The process begins when a user decides to supply assets to an Aave V3 market. Th
 function supply(
   address asset,
   uint256 amount,
-  address onBehalfOf, // Corrected from 'традиці onBehalfOf'
+  address onBehalfOf,
   uint16 referralCode
 ) public virtual override {
   SupplyLogic.executeSupply(
