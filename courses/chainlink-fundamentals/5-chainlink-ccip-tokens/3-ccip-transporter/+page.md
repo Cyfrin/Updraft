@@ -16,7 +16,7 @@ In this lesson, we will use Transported to bridge USDC from Sepolia to Base Sepo
 
 - You have LINK funds on Sepolia. 
 - You've added the LINK token to MetaMask on Sepolia and Base Sepolia.
-- You've added the USDC token to MetaMask on Sepolia and Base Sepolia. A list of the addresses on different chains can be found in the [Circle documentation](https://developers.circle.com/stablecoins/usdc-on-test-networks).
+- You've added the USDC token to MetaMask on Sepolia and Base Sepolia. A list of the addresses on different chains can be found in the [Circle documentation](https://developers.circle.com/stablecoins/usdc-contract-addresses#testnet).
 - You have test USDC on Sepolia., Use the [Circle USDC faucet](https://faucet.circle.com/) to do this.
 
 Visit Section 2 if you need a reminder of how to do this.

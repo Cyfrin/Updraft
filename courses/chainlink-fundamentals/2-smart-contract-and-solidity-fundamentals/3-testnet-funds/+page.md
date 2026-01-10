@@ -42,7 +42,7 @@ Click the **Link** button at the top right, select the network(s) you want to ge
 
 LINK was easy to add to MetaMask since Chainlink included that cheeky **Add to wallet** button. But how do we add other tokens, such as USDC to MetaMask?
 
-- Find the token address. For USDC, for example, we can head to the [Circle documentation](https://developers.circle.com/stablecoins/usdc-on-test-networks) to find the address of the USDC contract on different chains. Copy the address for the USDC token on the chain you are working on.
+- Find the token address. For USDC, for example, we can head to the [Circle documentation](https://developers.circle.com/stablecoins/usdc-contract-addresses#testnet) to find the address of the USDC contract on different chains. Copy the address for the USDC token on the chain you are working on.
 
 - Open MetaMask and check you are on the same chain as the token address you just copied by clicking on the network button on the top left corner in MetMask
 
