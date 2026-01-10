@@ -28,7 +28,7 @@ When you open Remix, you will see a few important sections:
 
 ## Creating Workspaces, Folders, and Files
 
-Remix allows you to create different **workspaces** to organize your projects. This allows you to keep related files grouped together. A bit like a GitHub repository or a project folder on your comoputer.
+Remix allows you to create different **workspaces** to organize your projects. This allows you to keep related files grouped together. A bit like a GitHub repository or a project folder on your computer.
 
 1. Create a new **Workspace** in Remix: 
     - At the top of the **File Explorer** panel, click on the **Workspaces** actions button (the burger icon)

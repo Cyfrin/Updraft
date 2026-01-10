@@ -91,7 +91,7 @@ Where:
         - **Warning**: unspent gas is NOT refunded, so be sure to carefully estimate the `gasLimit` that you set for your destination contract so CCIP can have sufficient gas to execute `ccipReceive`.
 - `destination gas overhead`: Fixed gas cost incurred on the destination blockchain by CCIP DONs.
 - `destination gas per payload`: This depends on the length of the data being sent cross-chain in the CCIP message. If there is no payload (CCIP is used to transfer tokens and no data), the value is `0`.
-    `gas for token transfers`: Cost for transferring tokens to the destination blockchain. If there are no token transfers, the value is `0`.
+- `gas for token transfers`: Cost for transferring tokens to the destination blockchain. If there are no token transfers, the value is `0`.
 - `gas multiplier`: Scaling factor for _Smart Execution_. _Smart Execution_ is a multiplier that ensures the reliable execution of transactions regardless of gas spikes on the destination chain. This means you can simply pay on the source blockchain and CCIP will take care of execution on the destination blockchain.
 
 **Data Availability Cost**: Relevant if the destination chain is an L2 rollup. Some L2s charge fees for data availability. This is because many rollups process the transactions off-chain and post the transaction data to the L1 as `calldata`, which costs additional gas.

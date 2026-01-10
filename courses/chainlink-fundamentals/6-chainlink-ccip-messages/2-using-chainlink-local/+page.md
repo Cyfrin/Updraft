@@ -99,7 +99,7 @@ function _ccipReceive(
 }
 ```
 
-- This funciton is defined on `CCIPReceiver` but not implemented. 
+- This function is defined on `CCIPReceiver` but not implemented. 
 - Called automatically when a CCIP message is received.
 - Updates state variables with the message details. 
 - Decodes the message data into a string using `abi.decode`.
