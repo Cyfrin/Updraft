@@ -2,6 +2,13 @@
 
 This project uses the **Streams Trade** implementation of Chainlink Data Streams. This implementation uses Chainlink Automation **Log Trigger** to monitor for an event emission, signaling that data needs to be fetched off-chain.
 
+### Please Note:
+This section follows a guide in the Chainlink Docs [Access Data Streams Using Automation](https://docs.chain.link/chainlink-automation/guides/streams-lookup).
+
+This service is restricted to those who [gain access](https://chainlinkcommunity.typeform.com/datastreams?typeform-source=docs.chain.link#ref_id=docs) to Data Streams from the Chainlink team.
+
+Therefore, it is unlikely that you will be able to reproduce this section of the course, but you can still read our guide and see how Data Streams are used!
+
 ## How does the Streams Trade implementation work?
 
 1. An event is emitted from an emitter smart contract, which we will write and name `LogEmitter`. 
