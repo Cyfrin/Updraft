@@ -1,0 +1,5 @@
+Exchange Overview
+
+To swap tokens on Curve V2 AMM, the user will call the `exchange` function. For example, we can use the usdc / wbtc / eth pool, and if the user wants to swap eth to usdc, they will call the `exchange` function and also send eth to the Curve V2 pool contract. The Curve V2 pool contract will calculate the amount of usdc to send back to the user, and then transfer this from the pool to the user.
+
+The user also has the option to swap weth instead of eth on the `CurveTricryptoOptimizedWETH` contract. For example, if instead of swapping eth for usdc, the user wants to swap weth for usdc, in the first step, the user will send weth to the pool contract. The pool contract will then convert this weth back into eth. To do this, the pool contract will call the `withdraw` function on the weth contract. Weth is sent from the pool contract back to the weth contract, and in return the weth contract will return eth back to the pool contract. Once the pool contract has eth, it will calculate the amount of usdc to send back to the user, and then transfer this from the pool to the user.
