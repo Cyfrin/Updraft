@@ -1,9 +1,0 @@
-## Eigen Layer Solution
-
-Eigen Layer can solve the problem of fragmentation of economic security, and the difficulty of bootstrapping economic security for new protocols by using stake ETH or its derivatives, LSTs, as a staking token to secure services and protocols. The way it works is that if a staker has capital, the first step is to acquire either Ethereum or any of the LSTs such as Rocket Pool rETH and Lido stETH. In the case that a staker acquires an LST, they simply deposit the LST into the Eigen Layer Protocol. On the other hand, if the user buys ETH, then they’ll have to run a validator and then stake ETH through the Eigen Layer. In this case, the withdrawal address will be managed by Eigen Layer.
-
-What this means is that when this validator is run by a staker, if they decide to exit the ETH out of Ethereum staking, the Ethereum will be sent to an address that is managed by Eigen Layer. Once a staker has some representation of staking ETH, the next step is that Eigen Layer will be able to use either the staked ETH or the LST to secure the protocol. Eigen Layer is going to use the staked ETH or some representation of the staked ETH to secure services. Hence, it is called restake. It’s reusing staked ETH to secure these protocols. In return, services and protocols will issue staking rewards.
-
-The staking reward for the staker will be ETH for staking into ETH, and it’s reusing the staked ETH to secure protocols. So, the staker will also earn the rewards from Service 1, Service 2, and Service 3. The staker will receive a higher reward, but also faces a higher risk of either losing his staked ETH, or their LST.
-
-Since his staked ETH or his LSTs are being used to secure services one, two, and three, if any of them fail, then he will be penalized. He has a higher chance of losing his tokens compared to simply staking into the Ethereum Protocol.
