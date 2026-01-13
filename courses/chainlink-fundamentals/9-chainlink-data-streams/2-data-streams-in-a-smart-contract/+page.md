@@ -2,10 +2,17 @@
 
 This project uses the **Streams Trade** implementation of Chainlink Data Streams. This implementation uses Chainlink Automation **Log Trigger** to monitor for an event emission, signaling that data needs to be fetched off-chain.
 
+### Please Note:
+This section follows a guide in the Chainlink Docs [Access Data Streams Using Automation](https://docs.chain.link/chainlink-automation/guides/streams-lookup).
+
+This service is restricted to those who [gain access](https://chainlinkcommunity.typeform.com/datastreams?typeform-source=docs.chain.link#ref_id=docs) to Data Streams from the Chainlink team.
+
+Therefore, it is unlikely that you will be able to reproduce this section of the course, but you can still read our guide and see how Data Streams are used!
+
 ## How does the Streams Trade implementation work?
 
 1. An event is emitted from an emitter smart contract, which we will write and name `LogEmitter`. 
-2. We will tell Automation to call a second contract when this even is emitted. When Automation detects the event has been emitted, it runs the **`checkLog`** function implemented on the second smart contract which we will write and name `StreamsUpkeep`. `checkLog` and will return a [StreamsLookup custom error](https://docs.chain.link/chainlink-automation/reference/automation-interfaces#streamslookup-revert). Don't worry too much about this right now, we will go through this again as we write the code.
+2. We will tell Automation to call a second contract when this event is emitted. When Automation detects the event has been emitted, it runs the **`checkLog`** function implemented on the second smart contract which we will write and name `StreamsUpkeep`. `checkLog` and will return a [StreamsLookup custom error](https://docs.chain.link/chainlink-automation/reference/automation-interfaces#streamslookup-revert). Don't worry too much about this right now, we will go through this again as we write the code.
 3. Chainlink Automation uses the **`StreamsLookup`** custom error to retrieve a signed report from the Data Streams Aggregation Network and return the data in a callback to the `performUpkeep` function.
 4. The **`performUpkeep`** function verifies the data by calling the **`verify`** function on the Chainlink Verifier contract.
 

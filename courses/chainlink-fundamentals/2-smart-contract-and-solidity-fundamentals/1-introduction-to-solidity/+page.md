@@ -880,7 +880,7 @@ The ABI tells you that there is a function named `add` which takes two numbers (
 
 When you deploy a contract, you'll need its ABI to interact with it later. 
 
-Frontend applications use the ABI to format calls to your contract correctly. The following JavaScript example demonstratess how you wpuld use the ABI to interact with a smart contract (using the ethers.js library):
+Frontend applications use the ABI to format calls to your contract correctly. The following JavaScript example demonstrates how you would use the ABI to interact with a smart contract (using the ethers.js library):
 
 ```javascript
 // JavaScript example using ethers.js

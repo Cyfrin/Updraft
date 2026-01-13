@@ -12,7 +12,7 @@ In this section, we will learn how to send arbitrary messages cross-chain using 
 
 Cross-chain messages are arbitrary data sent cross-chain as `bytes`. For example:
 - A string message, e.g., `"Hey there"`
-- An encoded function to call on a target contract on the detination chain, e.g., `abi.encodeWithSelector("mint(uint256)", 25)`.
+- An encoded function to call on a target contract on the destination chain, e.g., `abi.encodeWithSelector("mint(uint256)", 25)`.
 - A `uint256` representing a balance or exchange rate.
 
 ## Architecture and the Vault

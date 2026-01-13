@@ -226,7 +226,7 @@ With this adjustment in place, we can run the prover again.
 
 ![finishing-the-rule3](/formal-verification-3/25-finishing-the-rule/finishing-the-rule3.png)
 
-It looks like it found a bunch of violations, but the CLI output doesn't provide many details, we should dig deeper into the calls and investigate. If we turn the the `Certora` UI, we can see that a huge number of our function calls failed their `sanity` check!
+It looks like it found a bunch of violations, but the CLI output doesn't provide many details, we should dig deeper into the calls and investigate. If we turn to the `Certora` UI, we can see that a huge number of our function calls failed their `sanity` check!
 
 ![finishing-the-rule4](/formal-verification-3/25-finishing-the-rule/finishing-the-rule4.png)
 

@@ -36,7 +36,7 @@ ERC-20 contracts are required to have _either_ a token owner or CCIP admin.
 
 ### Token Administrator
 
-A role assigned to manage cross-chain operations of a token. The token administrator is responsible for mapping a token to a token pool in the `TokenAdminRegistry`. The token administrator can be the token owner, the CCIP amin (depending on the function implemented on the token contract), or another designated entity assigned by a token owner.
+A role assigned to manage cross-chain operations of a token. The token administrator is responsible for mapping a token to a token pool in the `TokenAdminRegistry`. The token administrator can be the token owner, the CCIP admin (depending on the function implemented on the token contract), or another designated entity assigned by a token owner.
 
 ### Token Pools
 

@@ -14,7 +14,7 @@ Before we dive into what we can expect to cover in this section, I'm going to dr
 
 ### Gas Bad NFT Marketplace
 
-For this section we'll be focusing on [**this code base**](https://github.com/Cyfrin/3-gas-bad-nft-marketplace-audit), and we'll be approaching things a little bit differently and primarily writing the certora formal verification tests for this protocol.
+For this section we'll be focusing on [**this code base**](https://github.com/Cyfrin/3-gas-bad-nft-marketplace-audit), and we'll be approaching things a little bit differently and primarily writing the Certora formal verification tests for this protocol.
 
 At first glance, this seems like a fairly standard foundry code base. The Gas Bad NFT Marketplace is based off the [**Seaport code base**](https://github.com/ProjectOpenSea/seaport) (with a personal touch 😉). Seaport is an open source NFT marketplace which powers OpenSea!
 
@@ -78,10 +78,10 @@ A major challenge of ours in this section will be assuring that these two code b
 
 I see this methodology as being a great way for protocols to be gas optimized in the future. A contract is written in solidity, and then written again in a more gas efficient way. The two contracts can be compared to assure they are behaving identically and that the cheaper execution is valid.
 
-The Gas Bad NFT Marketplace code base contains certora configuration and spec files already, but this is what we're going to be trying to replicate together. You can use these files as an answer key to check your work, or if you get stuck.
+The Gas Bad NFT Marketplace code base contains Certora configuration and spec files already, but this is what we're going to be trying to replicate together. You can use these files as an answer key to check your work, or if you get stuck.
 
 ### Wrap Up
 
-Ok, let's get warmed up and learn some new certora tricks with the NFTMock.spec. Once we're done there we'll move into GasBadNFT.spec and put our formal verification skills to the test by verifying these two code bases work the same.
+Ok, let's get warmed up and learn some new Certora tricks with the NFTMock.spec. Once we're done there we'll move into GasBadNFT.spec and put our formal verification skills to the test by verifying these two code bases work the same.
 
 We'll get things set up, in the next lesson. See you there!
