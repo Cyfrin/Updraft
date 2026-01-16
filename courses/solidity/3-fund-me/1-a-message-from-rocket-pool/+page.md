@@ -1,3 +1,0 @@
----
-A MESSAGE FROM ROCKET POOL
----
