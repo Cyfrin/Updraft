@@ -1,3 +1,0 @@
----
-title: Stateful Fuzz
----
