@@ -1,0 +1,21 @@
+## Visualizing Multiple Positions on a Liquidity Price Graph
+
+In this lesson, we'll explore how to visualize multiple positions on the liquidity price graph. Previously, we covered how to visualize a single position.  Let's start by reviewing the coordinate system; the horizontal axis represents the price or tick, and the vertical axis represents liquidity. On the left, we observe a constant product curve of the concentrated liquidity for several positions.  For each position, we’ve used a unique color.  Take the constant product curve for the lower liquidity as an example.  Liquidity is available within these price ranges only; the purple highlighted portion indicates the price range where this liquidity is positioned.
+
+The same logic applies to other positions shown such as, light blue, orange, and lime green. Let's review what a single position looks like on the liquidity price graph. We will focus on a single position. This particular position provides liquidity between these two price ranges.  On the liquidity price graph, this position is shown in orange. As the price increases, observe how the current tick moves to the right. When the current tick overlaps the lower price range, the liquidity becomes active. This active liquidity is highlighted in bright purple. As we move the price along this position, the orange position remains active. When the price increases to the point where the current price goes outside this position, there is no longer any active liquidity. So, that was a recap of a constant product curve for a single position with active liquidity.
+
+Now we’ll consider the case of multiple positions. What does the curve of active liquidity look like and what does the liquidity price graph look like when multiple positions are present? To begin, let’s identify the positions on this liquidity price graph.  Here's the position for the concentrated liquidity curve in purple. Next, we have the one in light blue. We've already observed the orange one, and lastly, here’s the lime green one. When all positions are combined, the result is this. Since the liquidity for each of these individual positions is overlapping, to correctly show them on the liquidity price graph we need to stack them. Here is the result of stacking all the liquidity. 
+
+Over here, the green position is stacked on top of the purple one. Furthermore, all three positions are overlapping, the purple, the blue, and the green. Now, we'll increase the price and observe how the tick swings from left to right.
+```javascript
+   t = -6700;
+   t = -6400;
+   t = -6000;
+```
+As we increase liquidity, we see that the first position in pink becomes active. The active liquidity is only this position. The curve of the active liquidity corresponds to the curve of the concentrated liquidity for this purple position. When the price increases further, we notice that two positions become active, the purple and the green. Active, in this case, means the current price is within a price range defined by a position. We have the active purple position, and the active green position. The total liquidity usable at the current price is the sum of the purple and green positions’ liquidity and the resulting constant product curve is displayed in bright purple. This bright purple curve is greater than both the curve for the purple and green positions individually.
+For this narrow price range with three active positions, tokens from the green, blue, and purple positions are all utilized for a swap. By increasing the price, the purple position becomes inactive and the total active liquidity is decreased. As the price increases further, the tick swings to the right. Now the green position is inactive.
+
+To the right of the current tick, liquidity is all in token Y and to the left of the current tick, liquidity is all in token X.
+We'll remove the highlight for the individual positions. Now you can see that liquidity to the right of the current tick is all in token Y. As the price decreases and the current tick shifts to the left, more of the liquidity gets converted into token X.
+
+When the current tick falls below all the positions’ price range, this liquidity will all be in token X.
