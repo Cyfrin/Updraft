@@ -10,7 +10,7 @@ _Follow along the course with this video._
 
 We've done a lot, so far and it's getting really complex. Now's a great time to perform a sanity check and write some tests.
 
-_I have no idea if what I'm doing makes any sort of sense. I want to make sure I write some tests here._
+_I have no ideart if what I'm doing makes any sort of sense. I want to make sure I write some tests here._
 
 Testing is crucial to ensure that our code is functioning as intended. Start by creating a new folder, `test/unit`. The tests we write are going to be integration tests, so lets prepare a deploy script. Create the file `script/DeployDSC.s.sol` as well. We should be well versed in setting up a deploy script at this point!
 
