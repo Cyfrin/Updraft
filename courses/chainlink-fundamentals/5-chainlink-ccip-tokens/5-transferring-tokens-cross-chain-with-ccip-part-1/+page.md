@@ -100,7 +100,7 @@ We define the following constant variables (that have been hard-coded for clarit
 IRouterClient private constant CCIP_ROUTER = IRouterClient(0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59);
 // https://docs.chain.link/resources/link-token-contracts#ethereum-testnet-sepolia
 IERC20 private constant LINK_TOKEN = IERC20(0x779877A7B0D9E8603169DdbD7836e478b4624789);
-// https://developers.circle.com/stablecoins/docs/usdc-on-test-networks
+// https://developers.circle.com/stablecoins/usdc-contract-addresses#testnet
 IERC20 private constant USDC_TOKEN = IERC20(0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238);
 // https://docs.chain.link/ccip/directory/testnet/chain/ethereum-testnet-sepolia-base-1
 uint64 private constant DESTINATION_CHAIN_SELECTOR = 10344971235874465080;
