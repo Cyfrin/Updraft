@@ -23,7 +23,7 @@ Solidity can store data in **six** different locations. In this lesson, we will 
 
 In Solidity, `calldata` and `memory` are temporary storage locations for variables during function execution. `calldata` is read-only, used for function inputs that can't be modified. In contrast, `memory` allows for read-write access, letting variables be changed within the function. To modify `calldata` variables, they must first be loaded into `memory`.
 
-> 🚧 **WARNING**:br
+> 🚧 **WARNING**
 > Most variable types default to a non-storage location automatically (like memory, the stack, etc). However, for strings, you must specify either memory, calldata, or storage due to the way arrays are handled in memory.
 
 ```solidity
