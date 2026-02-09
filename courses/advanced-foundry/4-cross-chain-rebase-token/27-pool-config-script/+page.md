@@ -43,8 +43,8 @@ Next, import the required modules: `Script` from `forge-std`, `TokenPool` and it
 
 ```solidity
 import {Script} from "forge-std/Script.sol";
-import {TokenPool} from "@ccip/contracts/src/v0.8/ccip/pools/TokenPool.sol";
-import {RateLimiter} from "@ccip/contracts/src/v0.8/ccip/libraries/RateLimiter.sol";
+import {TokenPool} from "@ccip/contracts/pools/TokenPool.sol";
+import {RateLimiter} from "@ccip/contracts/libraries/RateLimiter.sol"
 ```
 
 **3. Defining the Script Contract and `run` Function**
