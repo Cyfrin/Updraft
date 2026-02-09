@@ -60,9 +60,9 @@ The keys used here (`sepolia`, `arb-sepolia`) will serve as the aliases in our `
 Use Foundry's `forge install` command to add Chainlink Local to your project. It's often recommended to specify a particular commit hash for stability, which can be found in the official Chainlink Local documentation.
 
 The command used in the reference video was:
-`forge install smartcontractkit/chainlink-local@cd3bfb8c42716cfb791174314eba2c8d178551b9 --no-commit`
+`forge install smartcontractkit/chainlink-local`
 
-The `--no-commit` flag prevents Foundry from automatically committing the submodule update if your project uses Git. *Note: Always refer to the official Chainlink Local documentation for the latest recommended installation instructions and commit hash, as this may change.*
+*Note: Always refer to the official Chainlink Local documentation for the latest recommended installation instructions and commit hash, as this may change.*
 
 **3. Add Remappings:**
 
