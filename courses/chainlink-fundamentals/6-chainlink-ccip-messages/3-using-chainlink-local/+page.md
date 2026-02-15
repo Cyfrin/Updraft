@@ -38,7 +38,7 @@ Client.EVM2AnyMessage memory evm2AnyMessage = Client.EVM2AnyMessage({
             allowOutOfOrderExecution: true // Allows the message to be executed out of order relative to other messages from the same sender
         })
     ),
-    // Set the feeToken  address, indicating LINK will be used for fees
+    // Set the feeToken address, indicating LINK will be used for fees
     feeToken: address(s_linkToken)
 });
 ```
