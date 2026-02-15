@@ -34,7 +34,7 @@ abstract contract Base_TestV1 is Test {
         horseStore = new HorseStore();
     }
 
-    function  testReadValue() public {
+    function testReadValue() public {
         uint256 initialValue = horseStore.readNumberOfHorses();
         assertEq(initialValue, 0);
     }
