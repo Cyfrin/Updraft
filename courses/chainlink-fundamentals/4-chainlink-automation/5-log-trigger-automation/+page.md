@@ -54,7 +54,7 @@ We now need verify the contract on Etherscan. We will first need to flatten the 
 
 Now that we’ve deployed our smart contract let’s head to the Chainlink Automation app and create the upkeep to increment our counter using Automation when our event is emitted.
 
-Select **Register new Upkeep** and  select the trigger mechanism as **Log trigger**.
+Select **Register new Upkeep** and select the trigger mechanism as **Log trigger**.
 
 ![log-trigger-mechanism](/chainlink-fundamentals/4-chainlink-automation/assets/log-trigger-mechanism.png)
 
