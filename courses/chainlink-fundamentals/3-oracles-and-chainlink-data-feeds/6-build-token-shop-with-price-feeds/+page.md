@@ -3,7 +3,7 @@
 ## Token Shop: Using Chainlink Data Feeds to calculate the price
 
 In this lesson, we'll build  a "TokenShop" smart contract that enables users to purchase tokens.  It will use the ETH/USD price feed to calculate how many tokens to issue to a purchaser, based on the amount of ETH they pay.
-Our shop will leverage Chainlink Data Feeds to establish accurate token pricing in USD. 
+Our shop will leverage Chainlink Data Feeds to establish accurate token pricing in USD.
 
 When users send ETH to the contract, it will:
 
@@ -14,7 +14,7 @@ When users send ETH to the contract, it will:
 
 The `TokenShop` contract will integrate with our custom ERC-20 token contract from Section 2.
 
-## Writing the TokenShop smart contract 
+## Writing the TokenShop smart contract
 
 1. First, open [Remix IDE](https://remix.ethereum.org).
 
@@ -25,11 +25,11 @@ The `TokenShop` contract will integrate with our custom ERC-20 token contract fr
 3. Copy the code from the [course code repo on GitHub](https://github.com/ciaranightingale/chainlink-fundamentals-code/blob/main/data-feeds/TokenShop.sol) and paste it into your `TokenShop.sol` file.
 When pasting into Remix, you may get an alert that you’re pasting code—just click **Close**.
 
-Feel free to copy and paste the code and get a feel for using Data Feeds without understanding the ins and outs of the code. This lesson is focused on ensuring you understand what Price and Data Feeds are and what they can be used for. If so, skip to the **deployment section**. However, we have included a code breakdown if you want to understand the code. This is confusing and challenging, so do not worry if you don't understand it since this course aims to explain the Chainlink services rather than how to become a Solidity developer. If you want a deeper understanding, the [Solidity course](https://updraft.cyfrin.io/courses/solidity) provides more detailed explanations. 
+Feel free to copy and paste the code and get a feel for using Data Feeds without understanding the ins and outs of the code. This lesson is focused on ensuring you understand what Price and Data Feeds are and what they can be used for. If so, skip to the **deployment section**. However, we have included a code breakdown if you want to understand the code. This is confusing and challenging, so do not worry if you don't understand it since this course aims to explain the Chainlink services rather than how to become a Solidity developer. If you want a deeper understanding, the [Solidity course](https://updraft.cyfrin.io/courses/solidity) provides more detailed explanations.
 
 ### Understanding the code
 
-Let's quickly walk through this smart contract to understand what's happening. Note that the Solidity Smart contract developer course discusses how to use price feeds in more depth in the [FundMe Section](https://updraft.cyfrin.io/courses/solidity/fund-me/fund-me-intro). 
+Let's quickly walk through this smart contract to understand what's happening. Note that the Solidity Smart contract developer course discusses how to use price feeds in more depth in the [FundMe Section](https://updraft.cyfrin.io/courses/solidity/fund-me/fund-me-intro).
 
 #### Imports
 
@@ -45,7 +45,7 @@ Let's now explain that extra `Ownable` import.
 
 #### Ownable
 
-We need our contract to have an owner. To do this, we will inherit a smart contract from OpenZeppelin that sets the address passed tp the Ownable constructor to an `internal` state variable called `_owner`. This owner address is accessible using the external `owner` function. Let's import and inherit the contract and then invoke the constructor:
+We need our contract to have an owner. To do this, we will inherit a smart contract from OpenZeppelin that sets the address passed to the Ownable constructor to an `internal` state variable called `_owner`. This owner address is accessible using the external `owner` function. Let's import and inherit the contract and then invoke the constructor:
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -68,7 +68,7 @@ In the constructor, we will set two immutable variables:
 
 - `i_priceFeed`: The ETH/USD price feed contract must follow the `AggregatorV3Interface`; therefore, we cast the feed address to the required contract type.
 - `i_token`: The `MyERC20` contract needs to follow `MyERC20`, so we cast it to that contract type.
-  
+
 We also define the following constant state variables:
 
 - `TOKEN_DECIMALS`: The number of decimals for the `MyERC20` token (which we set before as 18 decimals)
@@ -101,9 +101,9 @@ constructor(address tokenAddress) Ownable(msg.sender) {
 
 #### Receive function
 
-We need to give users a way to send the contract ETH and `receive` tokens from the `MyERC20` contract. To do this, we use a `receive` function. 
+We need to give users a way to send the contract ETH and `receive` tokens from the `MyERC20` contract. To do this, we use a `receive` function.
 
-`receive` functions are special functions in Solidity that are automatically executed when someone sends ETH directly to the contract address without specifying any function to call. They don't take any arguments and don't return any values. 
+`receive` functions are special functions in Solidity that are automatically executed when someone sends ETH directly to the contract address without specifying any function to call. They don't take any arguments and don't return any values.
 
 When a user sends ETH to our contract, the `receive` function will capture that ETH, calculate how many tokens they should get based on the current exchange rate, and then mint those tokens to the sender's address. This creates a simple way for users to swap their ETH for our custom token without needing to call a specific function - they can send ETH directly to the contract address using a standard transaction.
 
@@ -163,7 +163,7 @@ Finally, let's create a way for the owner of the smart contract to withdraw the 
 
 ```solidity
 function withdraw() external onlyOwner {
-    // low level calls can be done on payable addresses 
+    // low level calls can be done on payable addresses
     (bool success, ) = payable(owner()).call{value: address(this).balance}("");
     if (!success) {
         revert TokenShop__CouldNotWithdraw();
@@ -188,7 +188,7 @@ For more information on low-level calls and sending ETH within a smart contract,
 After it’s deployed to Sepolia, you will see the transaction details in Remix’s console sub-window.
 
 6. Copy your `TokenShop` contract address from the **Deployed Contracts** section in Remix.
-7. It’s a good idea to “pin” the `TokenShop` contract in this workspace so you can still access it if you end up closing Remix and returning later. 
+7. It’s a good idea to “pin” the `TokenShop` contract in this workspace so you can still access it if you end up closing Remix and returning later.
 
 Ideally, at this point, both your `MyERC20` and `TokenShop` contracts should be pinned to your active Remix Workspace.
 
@@ -198,7 +198,7 @@ Ideally, at this point, both your `MyERC20` and `TokenShop` contracts should be 
 
 Now let's give your `TokenShop` contract the ability to “mint” your tokens from the `MyERC20` contract! We need to give the `TokenShop` contract the `MINTER_ROLE`.
 
-1. In the **Deployed contracts** section, find your `MyERC20` contract dropdown. Look for the `MINTER_ROLE` function. Since it is a public state variable, it will have an automatic getter function to "get" it's value. 
+1. In the **Deployed contracts** section, find your `MyERC20` contract dropdown. Look for the `MINTER_ROLE` function. Since it is a public state variable, it will have an automatic getter function to "get" it's value.
 
 ![minter-role](/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/minter-role.png)
 
@@ -216,10 +216,10 @@ Before we continue, let’s double-check and confirm that your `TokenShop` has i
 
 ### Check roles
 
-1. In your `Token` contract dropdown menu, find the `hasRole` function. 
-2. Expand the function and note that it requires two parameters: 
+1. In your `Token` contract dropdown menu, find the `hasRole` function.
+2. Expand the function and note that it requires two parameters:
     - `role`: We are interested in the `MINTER_ROLE`, which as a `bytes32` value is `0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6`. This is the **keccak256 hash** of the string `"MINTER_ROLE"`. We will refer to those bytes as the **hash** from now.
-    - `account`: This function will tell us what role a given account has—in our case, the `account` we are checking the role for the `TokenShop` contract address. 
+    - `account`: This function will tell us what role a given account has—in our case, the `account` we are checking the role for the `TokenShop` contract address.
 
 The function will return a boolean (`true` or `false`) indicating whether that address has that particular role assigned to it.
 
@@ -231,7 +231,7 @@ The function will return a boolean (`true` or `false`) indicating whether that a
 
 We will now use the Chainlink USD/ETH Price Feed that we referenced inside our `TokenShop` contract.
 
-- Go to your `TokenShop` contract dropdown and find the `getChainlinkDataFeedLatestAnswer` function. You can hover your mouse over the buttons to see the full function name. 
+- Go to your `TokenShop` contract dropdown and find the `getChainlinkDataFeedLatestAnswer` function. You can hover your mouse over the buttons to see the full function name.
 - Click on the **transact** to call that function and send a transaction. It will return the price with 8 decimal places.
 
 ![get-chain-price](/chainlink-fundamentals/3-oracles-and-chainlink-data-feeds/assets/get-chainlink-price.png)
