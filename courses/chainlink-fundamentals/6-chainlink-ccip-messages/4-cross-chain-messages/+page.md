@@ -73,7 +73,7 @@ The first thing that has changed is the contents of the cross-chain `Any2EVMMess
 
 **`tranferUSDC` arguments**:
 - `receiver`: Rather than hard-coding the `receiver` to be the `msg.sender`, we have made it dynamic. We need the `receiver` to be a `Receiver` contract deployed on the destination chain. This is because cross-chain messages that include `data` need to be a smart contract as **EOAs can only receive tokens**. We want to perform a function call using the data therefore, we need the `receiver` to be a smart contract.
-- `_amount`: As before, this is the number fo tokens to transfer cross-chain.
+- `_amount`: As before, this is the number of tokens to transfer cross-chain.
 - `_target`: This is the contract that the we will encode in the data, that is sent cross-chain, to call a function on. Our `_target` contract will be the `Vault` contract which has a function called `deposit` that the `Receiver` contract will call using the data.
 
 ```solidity
