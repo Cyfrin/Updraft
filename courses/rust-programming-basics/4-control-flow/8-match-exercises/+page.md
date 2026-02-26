@@ -20,7 +20,7 @@ pub fn num_to_string(num: u32) -> String {
 }
 ```
 
-Convert `num` into `String`, `"one"` to `"three"`.
+Convert `num` into `String`, `"zero"` to `"three"`.
 
 Return `"other"` if `num` is greater than 3.
 

@@ -54,7 +54,15 @@ If the code's looking alien, it's your cue to brush up on the skills taught in t
 
 As you can see, our smart contract is very simple. There's a storage variable, `numberOfHorses`, and function to update it, `updateHorseNumber()` and a view function to read the number `readNumberOfHorses()`
 
-We should be able to...
+Before we build, lets make sure we are all using the same compiler settings. So head over to your `foundry.toml` file, and add:
+
+```toml
+evm_version = 'london'
+optimizer = true
+optimizer_runs = 200
+```
+
+We should then be able to...
 
 ```bash
 forge build

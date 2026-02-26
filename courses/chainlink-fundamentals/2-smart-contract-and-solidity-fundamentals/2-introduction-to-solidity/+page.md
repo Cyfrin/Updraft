@@ -6,14 +6,6 @@ You've learned about blockchain, smart contracts, and how Solidity fits into the
 
 [Solidity](https://soliditylang.org/?color=light) is a high-level, object-oriented programming language for writing smart contracts. It is a curly-bracket language similar to C++, Python, and JavaScript. Solidity is specifically built to run on the Ethereum Virtual Machine (EVM), making it the primary language for developing decentralized applications (dApps) and blockchain-based protocols.
 
-Solidity provides features such as:
-
-- **Static typing** – Variable types are determined at compile time.
-- **Inheritance** – Contracts can inherit properties and methods from other contracts.
-- **Complex user-defined types** – Structs, mappings, and enums allow for custom data structures.
-- **Library support** – Enables reusable, modular code.
-- **Low-level EVM access** – Developers can use inline assembly (assembly) for optimized performance.
-
 ### Key Features of Solidity
 
 Solidity is designed specifically for EVM-based blockchains and offers several powerful features:
@@ -138,15 +130,15 @@ Key characteristics of `constant` variables:
 - Do not take up storage slots (saving gas).
 - Only value types and strings can be constants.
 - Usually, `constant` variables are capitalized.
-
+<br><br>
 - **Immutable Variables**: Variables marked as immutable can be assigned only once, but this assignment can happen in the constructor:
 
-```solidity 
+```solidity
 contract TokenContract {
     // Declared but not assigned yet
     address public immutable deployer;
     uint256 public immutable deploymentTime;
-    
+
     constructor() {
         // Assigned once in the constructor
         deployer = msg.sender;
@@ -609,33 +601,33 @@ Here's how these variables might work together in a realistic scenario:
 contract TimeLockedWallet {
     address public owner;
     uint256 public unlockTime;
-    
+
     event Deposit(address indexed sender, uint256 amount, uint256 timestamp);
     event Withdrawal(uint256 amount, uint256 timestamp);
-    
+
     constructor(uint256 _unlockDuration) {
         owner = msg.sender;
         unlockTime = block.timestamp + _unlockDuration;
     }
-    
+
     // Accept deposits from anyone
     function deposit() public payable {
         require(msg.value > 0, "Must deposit some ETH");
         emit Deposit(msg.sender, msg.value, block.timestamp);
     }
-    
+
     // Only allow the owner to withdraw after the unlock time
     function withdraw() public {
         require(msg.sender == owner, "You are not the owner");
         require(block.timestamp >= unlockTime, "Funds are still locked");
         require(address(this).balance > 0, "No funds to withdraw");
-        
+
         uint256 balance = address(this).balance;
         payable(owner).transfer(balance);
-        
+
         emit Withdrawal(balance, block.timestamp);
     }
-    
+
     // Check if withdrawal is possible yet
     function withdrawalStatus() public view returns (bool canWithdraw, uint256 remainingTime) {
         if (block.timestamp >= unlockTime) {
@@ -674,11 +666,11 @@ These global variables are critical for many smart contract operations, especial
     ```solidity
     function sumArray(uint256[] memory numbers) public pure returns (uint256) {
         uint256 total = 0;
-        
+
         for (uint i = 0; i < numbers.length; i++) {
             total += numbers[i];
         }
-        
+
         return total;
     }
     ```
@@ -724,15 +716,15 @@ Events in Solidity are like announcements that your contract makes when somethin
 ```solidity
 contract Token {
     event Transfer(address indexed from, address indexed to, uint256 amount);
-    
+
     mapping(address => uint256) public balances;
-    
+
     function transfer(address to, uint256 amount) public {
         require(balances[msg.sender] >= amount, "Insufficient balance");
-        
+
         balances[msg.sender] -= amount;
         balances[to] += amount;
-        
+
         emit Transfer(msg.sender, to, amount);
     }
 }
@@ -747,23 +739,23 @@ Modifiers are a way to create reusable logic for your functions:
 ```solidity
 contract Owned {
     address public owner;
-    
+
     constructor() {
         owner = msg.sender;
     }
-    
+
     modifier onlyOwner() {
         require(msg.sender == owner, "Not the owner");
         _; // This placeholder is replaced with the function code
     }
-    
+
     function setOwner(address newOwner) public onlyOwner {
         owner = newOwner;
     }
 }
 ```
 
-The `_` in the modifier represents where the function code will be executed. For example, if the `_` is before the modifier logic, the function will be executed before the modifier logic. 
+The `_` in the modifier represents where the function code will be executed. For example, if the `_` is before the modifier logic, the function will be executed before the modifier logic.
 
 ### Interfaces
 
@@ -783,21 +775,21 @@ Any contract that implements this interface must include these exact functions:
 ```solidity
 contract PaymentProcessor is IPayable {
     mapping(address => uint256) private balances;
-    
+
     function pay(address recipient, uint256 amount) external override returns (bool) {
         require(balances[msg.sender] >= amount, "Insufficient balance");
         balances[msg.sender] -= amount;
         balances[recipient] += amount;
         return true;
     }
-    
+
     function getBalance(address account) external view override returns (uint256) {
         return balances[account];
     }
 }
 ```
 
-This standardization makes interfaces particularly useful for interacting with unknown contracts—you only need to know what functions you can call, not how they're implemented, enabling different contracts to communicate consistently and predictably. It tells calling contracts what functions are available on another contract and how to call those functions. 
+This standardization makes interfaces particularly useful for interacting with unknown contracts—you only need to know what functions you can call, not how they're implemented, enabling different contracts to communicate consistently and predictably. It tells calling contracts what functions are available on another contract and how to call those functions.
 
 ## Programming Best Practices for Solidity
 
@@ -815,7 +807,7 @@ This standardization makes interfaces particularly useful for interacting with u
 
 The ABI is like a smart contract's instruction manual that tells applications exactly how to talk to your contract on the blockchain.
 
-It describes, using structured data,  exactly what functions and data types are available for use in the contract and how to “call” or use them. 
+It describes, using structured data,  exactly what functions and data types are available for use in the contract and how to “call” or use them.
 
 ### Why do we need ABIs?
 
@@ -878,7 +870,7 @@ The ABI tells you that there is a function named `add` which takes two numbers (
 
 ### Using ABI in Practice
 
-When you deploy a contract, you'll need its ABI to interact with it later. 
+When you deploy a contract, you'll need its ABI to interact with it later.
 
 Frontend applications use the ABI to format calls to your contract correctly. The following JavaScript example demonstrates how you would use the ABI to interact with a smart contract (using the ethers.js library):
 

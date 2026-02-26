@@ -78,7 +78,7 @@ arbSepoliaNetworkDetails = ccipLocalSimulatorFork.getNetworkDetails(block.chaini
 Finally, we can deploy the token pools. We'll need to import `IERC20` from OpenZeppelin to correctly cast our token contract addresses to the `IERC20` interface type expected by the `RebaseTokenPool` constructor:
 
 ```solidity
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {IERC20} from "@openzeppelin/contracts@4.8.3/token/ERC20/IERC20.sol";
 ```
 
 Now, we deploy the pools using the retrieved network details and our token instances:
@@ -144,7 +144,7 @@ First, the owner of the token (our EOA in this test setup) needs to nominate the
 We'll need to import the `RegistryModuleOwnerCustom` interface:
 
 ```solidity
-import {RegistryModuleOwnerCustom} from "@ccip/contracts/src/v0.8/ccip/TokenAdminRegistry/RegistryModuleOwnerCustom.sol";
+import {RegistryModuleOwnerCustom} from "@ccip/contracts/tokenAdminRegistry/RegistryModuleOwnerCustom.sol";
 ```
 
 Then, in `setup()`, we make the calls:
@@ -174,7 +174,7 @@ After registering as a pending admin, the nominated address (our owner EOA) must
 Import the `TokenAdminRegistry` interface:
 
 ```solidity
-import {TokenAdminRegistry} from "@ccip/contracts/src/v0.8/ccip/TokenAdminRegistry/TokenAdminRegistry.sol";
+import {TokenAdminRegistry} from "@ccip/contracts/tokenAdminRegistry/TokenAdminRegistry.sol";
 ```
 
 And implement the calls in `setup()`:

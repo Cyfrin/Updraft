@@ -43,8 +43,8 @@ This function will encapsulate the logic for calling `applyChainUpdates` on a sp
 
 ```solidity
 // Import necessary contracts and libraries
-// import {TokenPool} from "@ccip/contracts/src/v0.8/ccip/pools/TokenPool.sol"; // Assuming RebaseTokenPool inherits TokenPool
-import {RateLimiter} from "@ccip/contracts/src/v0.8/ccip/libraries/RateLimiter.sol";
+// import {TokenPool} from "@ccip/contracts/pools/TokenPool.sol"; // Assuming RebaseTokenPool inherits TokenPool
+import {RateLimiter} from "@ccip/contracts/libraries/RateLimiter.sol";
 
 // ... inside your test contract ...
 

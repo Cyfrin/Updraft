@@ -226,10 +226,10 @@ Several Foundry features and development practices are key when testing CCIP int
 
 **Required Imports:**
 To implement this test, you'll typically need the following imports:
-*   `Client.sol`: From `@chainlink/contracts-ccip/src/v0.8/ccip/libraries/Client.sol` (for `EVM2AnyMessage`, `EVMTokenAmount`, `EVMExtraArgsV1`).
-*   `IRouterClient.sol`: From `@chainlink/contracts-ccip/src/v0.8/ccip/interfaces/IRouterClient.sol` (for `getFee`, `ccipSend`).
-*   `IERC20.sol`: From a standard library like OpenZeppelin (`@openzeppelin/contracts/token/ERC20/IERC20.sol`).
-*   `CCIPLocalSimulatorFork.sol` and `Register.sol`: Project-specific helper contracts for the local testing setup. `Register.sol` likely contains the `NetworkDetails` struct.
+*   `Client.sol`: From `@ccip/contracts/libraries/Client.sol` (for `EVM2AnyMessage`, `EVMTokenAmount`, `EVMExtraArgsV1`).
+*   `IRouterClient.sol`: From `@ccip/contracts/interfaces/IRouterClient.sol` (for `getFee`, `ccipSend`).
+*   `IERC20.sol`: From a standard library like OpenZeppelin (`@openzeppelin/contracts@4.8.3/token/ERC20/IERC20.sol`).
+*   `CCIPLocalSimulatorFork.sol` and `Register.sol`: Project-specific helper contracts for the local testing setup. `Register.sol` likely contains the `NetworkDetails` struct. (`@chainlink-local/src/ccip/CCIPLocalSimulatorFork.sol`)
 *   `RebaseToken.sol`: The custom token contract being bridged and tested.
 
 By following these steps and utilizing the described tools and techniques, you can effectively test cross-chain token transfers involving Chainlink CCIP within your Foundry development environment. Remember to consult the official Chainlink CCIP Documentation for comprehensive guidance on `docs.chain.link/ccip`.

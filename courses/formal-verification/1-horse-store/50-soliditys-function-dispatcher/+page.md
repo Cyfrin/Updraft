@@ -186,7 +186,7 @@ PUSH1 0x34        // [0x34, 0xcdfead2e == func_selector, func_selector]
 JUMPI             // [func_selector]
 // if func_selector == 0xcdfead2e jump to set_number_of_horses
 ```
-We're pushing  our known function selector to the stack (this is our `updateNumberOfHorses()` function!), and then comparing it to the `calldata` `function selector` to see if there's a match.
+We're pushing our known function selector to the stack (this is our `updateNumberOfHorses()` function!), and then comparing it to the `calldata` `function selector` to see if there's a match.
 
 We then push a program counter/`JUMPDEST` to the stack and execute `JUMPI`, jumping to that function's logic if `0xcdfead2e == func_selector`.
 

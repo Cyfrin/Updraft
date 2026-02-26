@@ -17,7 +17,7 @@ The `Ownable` contract from OpenZeppelin provides a straightforward way to assig
 1.  **Import:**
     Begin by importing the `Ownable` contract into your `RebaseToken.sol` file:
     ```solidity
-    import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+    import {Ownable} from "@openzeppelin/contracts@5.0.2/access/Ownable.sol";
     ```
 
 2.  **Inheritance:**
@@ -65,7 +65,7 @@ While `Ownable` is useful, sometimes you need a more flexible system where diffe
 1.  **Import:**
     Import the `AccessControl` contract:
     ```solidity
-    import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol";
+    import {AccessControl} from "@openzeppelin/contracts@5.0.2/access/AccessControl.sol";
     ```
 
 2.  **Inheritance:**

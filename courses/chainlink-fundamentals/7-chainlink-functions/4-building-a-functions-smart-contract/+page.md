@@ -67,7 +67,7 @@ bytes32 constant DON_ID =
 uint32 constant GAS_LIMIT = 300000;
 
 // JavaScript source code
-string public  constant SOURCE =
+string public constant SOURCE =
     "const city = args[0];"
     "const apiResponse = await Functions.makeHttpRequest({"
     "url: `https://wttr.in/${city}?format=3&m`,"

@@ -31,12 +31,12 @@ Let's begin by setting up our Foundry project and creating the initial `RebaseTo
 
 ### Dependency Installation
 
-First, we need to install the Chainlink CCIP contracts as a dependency in our Foundry project. Open your terminal and run:
+First, we need to install the Chainlink CCIP contracts as a dependency in our Foundry project, as well as an earlier version of openzeppelin contracts to match those imported by some of the ccip contracts. Open your terminal and run:
 
 ```bash
-forge install smartcontractkit/ccip@8c94ed47c5a437cd51921b42b907cb6364882023 
+forge install smartcontractkit/chainlink-ccip
+forge install openzeppelin-contracts-4.8.3=openzeppelin/openzeppelin-contracts@v4.8.3
 ```
-*Note: It's crucial to use the correct version tag. The tag `@8c94ed4` is confirmed to work for this implementation.*
 
 ### Configuring Remappings
 
@@ -46,16 +46,17 @@ In your `foundry.toml` file, add or update the `remappings` section:
 ```toml
 // foundry.toml
 remappings = [
-    '@openzeppelin/=lib/openzeppelin-contracts/',
-    '@ccip/=lib/ccip/'
+    '@openzeppelin/contracts@5.0.2/=lib/openzeppelin-contracts-5.0.2/contracts/',
+    '@ccip/contracts/=lib/chainlink-ccip/chains/evm/contracts/',
+    '@openzeppelin/contracts@4.8.3/=lib/openzeppelin-contracts-4.8.3/contracts/'
 ]
 ```
 
 Ensure your `remappings.txt` file (or create it if it doesn't exist) contains:
 ```
 // remappings.txt
-@openzeppelin/=lib/openzeppelin-contracts/
-@ccip/=lib/ccip/
+@openzeppelin/contracts@5.0.2/=lib/openzeppelin-contracts-5.0.2/contracts/
+@ccip/contracts/=lib/chainlink-ccip/chains/evm/contracts/
 ```
 
 ### Initial Contract Code (`RebaseTokenPool.sol`)
@@ -66,10 +67,10 @@ Now, create a new file named `RebaseTokenPool.sol` (e.g., in your `src` director
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import {TokenPool} from "@ccip/contracts/src/v0.8/ccip/pools/TokenPool.sol";
-import {IERC20} from "@ccip/contracts/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/IERC20.sol";
+import {TokenPool} from "@ccip/contracts/pools/TokenPool.sol";
+import {IERC20} from "@openzeppelin/contracts@4.8.3/token/ERC20/IERC20.sol";
 import {IRebaseToken} from "../../interfaces/IRebaseToken.sol"; // Adjust path if your interface is elsewhere
-import {Pool} from "@ccip/contracts/src/v0.8/ccip/libraries/Pool.sol"; // For CCIP structs
+import {Pool} from "@ccip/contracts/libraries/Pool.sol"; // For CCIP structs
 
 contract RebaseTokenPool is TokenPool {
     constructor(
@@ -105,7 +106,7 @@ Add the following `lockOrBurn` function to your `RebaseTokenPool.sol` contract:
 ```solidity
     function lockOrBurn(
         Pool.LockOrBurnInV1 calldata lockOrBurnIn
-    ) external override returns (Pool.LockOrBurnOutV1 memory lockOrBurnOut) {
+    ) public override returns (Pool.LockOrBurnOutV1 memory lockOrBurnOut) {
         _validateLockOrBurn(lockOrBurnIn);
 
         // Decode the original sender's address
@@ -146,8 +147,8 @@ Add the following `releaseOrMint` function to your `RebaseTokenPool.sol` contrac
 ```solidity
     function releaseOrMint(
         Pool.ReleaseOrMintInV1 calldata releaseOrMintIn
-    ) external override returns (Pool.ReleaseOrMintOutV1 memory /* releaseOrMintOut */) { // Named return optional
-        _validateReleaseOrMint(releaseOrMintIn);
+    ) public override returns (Pool.ReleaseOrMintOutV1 memory /* releaseOrMintOut */) { // Named return optional
+        _validateReleaseOrMint(releaseOrMintIn, releaseOrMintIn.sourceDenominatedAmount);
 
         // Decode the user interest rate sent from the source pool
         uint256 userInterestRate = abi.decode(releaseOrMintIn.sourcePoolData, (uint256));
@@ -158,12 +159,12 @@ Add the following `releaseOrMint` function to your `RebaseTokenPool.sol` contrac
         // Mint tokens to the receiver, applying the propagated interest rate
         IRebaseToken(address(i_token)).mint(
             receiver,
-            releaseOrMintIn.amount,
+            releaseOrMintIn.sourceDenominatedAmount,
             userInterestRate // Pass the interest rate to the rebase token's mint function
         );
 
         return Pool.ReleaseOrMintOutV1({
-            destinationAmount: releaseOrMintIn.amount
+            destinationAmount: releaseOrMintIn.sourceDenominatedAmount
         });
     }
 ```
@@ -172,9 +173,9 @@ Key aspects of `releaseOrMint`:
 1.  **Validation:** `_validateReleaseOrMint(releaseOrMintIn)`: Similar to its counterpart in `lockOrBurn`, this internal function from `TokenPool` performs necessary security and configuration checks for incoming messages.
 2.  **Get User Interest Rate:** `userInterestRate` is retrieved by `abi.decode`ing `releaseOrMintIn.sourcePoolData`. This `sourcePoolData` is the `destPoolData` that was encoded and sent by the `lockOrBurn` function on the source chain.
 3.  **Get Receiver:** `releaseOrMintIn.receiver` directly provides the `address` of the intended recipient of the tokens on this destination chain.
-4.  **Mint Tokens:** `IRebaseToken(address(i_token)).mint(receiver, releaseOrMintIn.amount, userInterestRate)`:
+4.  **Mint Tokens:** `IRebaseToken(address(i_token)).mint(receiver, releaseOrMintIn.sourceDenominatedAmount, userInterestRate)`:
     *   New tokens are minted for the `receiver`.
-    *   The `releaseOrMintIn.amount` dictates how many tokens are minted.
+    *   The `releaseOrMintIn.sourceDenominatedAmount` dictates how many tokens are minted.
     *   Crucially, the `userInterestRate` received from the source chain is passed to the `mint` function of our `IRebaseToken`. This presumes your rebase token's `mint` function has been modified to accept this `_userInterestRate` parameter, allowing it to correctly initialize or update the user's rebase-specific state. This ensures the user's rebase benefits are maintained cross-chain.
 5.  **Return Data:** The function returns a `Pool.ReleaseOrMintOutV1` struct, primarily indicating the `destinationAmount` (the amount of tokens minted).
 
