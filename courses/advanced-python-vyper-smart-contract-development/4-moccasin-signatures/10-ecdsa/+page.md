@@ -2,7 +2,7 @@
 
 We are going to continue our exploration of digital signatures with something called ECDSA recover, which was mentioned in the last video. This is a process that will be incredibly important to what we are doing here with our Merkle airdrop. Let's dive in.
 
-###  What are ECDSA Signatures?
+### What are ECDSA Signatures?
 
 ECDSA stands for Elliptic Curve Digital Signature Algorithm. It's a mouthful, but it's based on Elliptic Curve Cryptography. Don't worry, we'll get into what that means in a second. ECDSA is used to:
 - generate key pairs
@@ -40,7 +40,7 @@ Public and private keys are generated using a process that involves two importan
 
 We only really need to remember that these constants are, in fact, constants.  They will be used in subsequent calculations.
 
-###  What is a Signature in ECDSA?
+### What is a Signature in ECDSA?
 
 ECDSA signatures are made up of three integers:
 - V
@@ -60,7 +60,7 @@ The ECDSA verification algorithm takes the signed message, the signature from th
 
 The EVM pre-compiler does this verification for us. It checks to see if the signature is valid. If it is not valid, the pre-compiler will return the zero address, and the smart contract will revert.
 
-###  ECDSA Recover
+### ECDSA Recover
 
 ECDSA recover is a function used in smart contracts. It retrieves the signer's address of a message that has been signed using a private key with ECDSA.  It uses the signature to do this.
 
@@ -74,7 +74,7 @@ We should always use the OpenZeppelin ECDSA library to verify signatures. This l
 
 We also discussed another issue with using ECDSA recover directly. If the signature is invalid, the ECDSA recover function will return the zero address. The smart contract should have a check in place to ensure it reverts if the zero address is returned from the ECDSA recover function.  Again, the OpenZeppelin ECDSA library already has this check in place.
 
-###  Conclusion
+### Conclusion
 
 Well done, we covered a lot of information, and it can be overwhelming. You should be proud of yourself for making it through.  If anything was confusing, or you need to go over this again, you can always read some other articles, or dive into the math. It's very complex stuff and it's unlikely you'll get your head around it the first time. 
 

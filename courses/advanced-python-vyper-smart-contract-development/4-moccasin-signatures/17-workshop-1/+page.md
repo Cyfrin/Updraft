@@ -6,7 +6,7 @@ Merkle trees are like a hierarchical data structure that allows for efficient an
 
 Let's dive into the world of Merkle Trees and understand the key concepts behind them.
 
-##  What are Merkle Trees?
+## What are Merkle Trees?
 
 Merkle trees essentially help us to efficiently verify a large amount of data using a small, compact hash value. They are like a hierarchical data structure that holds data and its hash values.
 
@@ -27,7 +27,7 @@ We can build a Merkle Tree by:
 2. **Pairing and hashing hash values:**  We pair up the hash values, creating a new hash by combining the two hash values. The new hash can be created by sorting the hashes and then combining them using a cryptographic hash function.
 3. **Continuing the process:** The newly generated hash values from step 2 are then paired up and hashed again, creating a new level in the tree. This process continues until we reach the root node.
 
-##  Example
+## Example
 
 We are going to go over a simple Merkle Tree with four leaf nodes.
 
@@ -66,7 +66,7 @@ patrick@kcu:mox-signatures-cu % mox run make_merkle
 
 This will output a `JSON` file that contains the Merkle Tree data.
 
-##  Workshop 
+## Workshop
 
 We are now going to complete a workshop. We will build a Merkle Tree with eight leaf nodes. We will be using the code we've created above as a starting point. 
 

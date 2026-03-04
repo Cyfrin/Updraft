@@ -31,7 +31,7 @@ def audit(courses):
             depth = len(dirpath.split(os.sep)) - len(root_directory.split(os.sep))
             
             if depth == 2:
-            # Print directory and caption_count if they are less than the threshold
+                # Print directory and caption_count if they are less than the threshold
                 if caption_count < MIN_CAPTION_COUNT:
                     count_line = f"{dirpath} Captions: {caption_count}"
                     with open("audit.txt", "a") as file:
