@@ -1,4 +1,4 @@
-##  Removing Liquidity 
+## Removing Liquidity
 
 We can call a function to remove liquidity from the pool. If we want to remove liquidity in one coin, then we can call the `remove_liquidity_one_coin()` function. 
 
