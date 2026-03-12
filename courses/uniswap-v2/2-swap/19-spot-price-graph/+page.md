@@ -12,7 +12,7 @@ The slope of this line is dY / dX. We can see that as dX gets smaller, the slope
 
 So, the price of token X in terms of token Y is given by the slope of the tangent line to the curve at the point (X,Y).
 
-##  Diagram
+## Diagram
 
 ```mermaid
 graph LR

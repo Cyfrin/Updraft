@@ -14,7 +14,7 @@ The code snippet below is the section of the `update` function we'll be focused 
     price1CumulativeLast += uint(uq112x112.encode(reserve0).uqdiv(reserve1)) * timeElapsed;
 ```
 
-##  Understanding Time-Weighted Average Price (TWAP)
+## Understanding Time-Weighted Average Price (TWAP)
 
 TWAP is a mechanism used to calculate the average price of a token over a certain period.  It's used to help mitigate price manipulation by preventing large, sudden trades from impacting the price too significantly.  
 

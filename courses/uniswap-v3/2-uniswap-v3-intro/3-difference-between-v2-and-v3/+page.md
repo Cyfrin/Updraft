@@ -1,4 +1,4 @@
-###  Difference between Uniswap V2 and V3
+### Difference between Uniswap V2 and V3
 
 In this lesson, we will discuss the differences between Uniswap V2 and V3.
 

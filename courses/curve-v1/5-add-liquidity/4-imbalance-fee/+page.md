@@ -68,10 +68,10 @@ b = [100, 90, 110]
 # Adding 300 DAI
 b1 = [b[0] + 300, b[1], b[2]]
 
-# Initial liquidity 
+# Initial liquidity
 D0 = calc_D(b[0], b[1], b[2], A, [0, 0, 0])
 
-#  Liquidity after adding liquidity 
+# Liquidity after adding liquidity
 D1 = calc_D(b1[0], b1[1], b1[2], A, D0)
 
 # Imbalance fee
