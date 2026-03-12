@@ -22,22 +22,4 @@ I am aware that even if I hit add account on my metamask (or other ETH wallet) I
 
 **How to Take the Pledge**
 
-We'll go over how to take the pledge now. You'll need to open your browser, we'll go over to x.com, you can just type in x.com or Twitter. Then, you can go ahead and copy this link, and we'll go over to our browser and we'll paste the link in here. You can either write a reply or you can comment. Whatever works better for you.
-
-**Taking the Pledge**
-
-We'll go over how to take the pledge now. You'll need to open your browser, we'll go over to x.com, you can just type in x.com or Twitter. Then, you can go ahead and copy this link, and we'll go over to our browser and we'll paste the link in here. You can either write a reply or you can comment. Whatever works better for you.
-
-```bash
-https://x.com/
-```
-
-You can type in "I will be safe" either as a reply or a comment.
-
-```bash
-I WILL BE SAFE
-```
-
-And then, we highly recommend if you've taken this fund, I would love it if you you know were to copy the link, go to x.com, or Twitter, or whatever, post a little tweet saying "I will be safe, I have decided to take the .env pledge" and then, you know, tag me at PatrickAlphaC, and then, you know, maybe tag Cyfrinauts or whatever you want to do here. 
-
-So anyways, now you know once we move on to moccasin, we will probably come back to this again, very briefly, just to again reiterate this .gitignore stuff, and make sure we understand the new pieces. But anyways, thank you for taking this pledge, and thank you for taking yourself seriously. All right, I'm going to go ahead and delete my terminal. 
+Please take a look at the ["THE .ENV PLEDGE"](envpledge.cyfrin.io). This began as a simple commitment on GitHub, but is now a permanent oath on-chain. Please read through the pledge and mint your own personalized soul-bound NFT to show people your commitment to safe practices. Stay safe!

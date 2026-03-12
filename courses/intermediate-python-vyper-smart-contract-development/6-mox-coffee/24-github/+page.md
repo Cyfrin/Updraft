@@ -1,28 +1,144 @@
-## Push to GitHub
+## Why Pushing Your Web3 Code to GitHub is Essential
 
-We have one thing left to do here, it's finally time for your GitHub repos, for your GitHub profiles to start to develop. And also your Cyfrn profiles as well. People always ask me, Patrick, how do I get hired? What do I do after I take your curriculum? And the answer is you do a lot of stuff, and you gotta show off all the cool stuff that you're doing. So pushing your projects to GitHub and then also signing up for Cyfrn profiles is going to be how you start showing off.
+When transitioning from learning to actively seeking opportunities in the Web3 space, the most common question is: *"How do I get hired?"* The answer lies in the final, crucial step of your development workflow: sharing your project with the world.
 
-So, I'm going to have a link to Cyfrn profiles, of course, in the GitHub repo associated with this course. But now we're going to do what I think is arguably one of the most important things for us to do in this entire course. And this is push our codebase up to GitHub. I've mentioned this a couple of times, but GitHub is how a lot of the entire blockchain industry works. For example, if I look up geth GitHub. That's, that's for the go implementation of Ethereum. It's got 20,000 forks. Almost 50,000 stars. 2000 people watching it. This is one of the most popular repositories in all of the EVM and the blockchain ecosystem. The go Ethereum is the code that runs one of the most popular ways to run an Ethereum node. If you were to look up Mocassin Cyfrn Mocassin, that we've shown you before. This is the GitHub repo of the tool we're working with. If we look up Vyper, we look up Vyper in here. Vyper lang/Vyper. 5000 stars. Almost 1000 forks. This is the language that we're learning in here. And if you go into issues, you can see countless issues. You can see countless pull requests. This is how developers interact with each other. This is how developers in the open source community contribute and work with each other. And, guess what I do sometimes? I might go to repo, I might go hmm, okay, who is working on this? Who are the cool people here? I might click someone's profile and go Whoa, this person is working on some really cool stuff. And especially, if you're a hiring manager, this is often how you're going to do a lot of your hiring is looking at people's profiles and saying what is this person about? What does this person do? What have they done? What have they shown success in? And the Cyfrn profiles, as well, they do the same thing, especially when it comes to competitive audits and security, which is something that you can get in much, much later after finishing the Updraft curriculum. And, the profiles are growing more and more with more and more interesting features coming out to show off to potential hiring managers.
+Hiring managers do not just want to see a resume; they want to see a public portfolio of your work. The entire blockchain industry is heavily decentralized and relies on open-source collaboration. Industry-standard projects like **go-ethereum (Geth)** (the Go implementation of Ethereum), **Vyper** (the Pythonic smart contract language), and **Moccasin** (the smart contract development framework) all live on GitHub. 
 
-So, the first step, though, is for us to push our code up to GitHub and sign up for Cyfrn profiles. So, let's go ahead. Let's get started pushing up to GitHub. You have done a ton in this project, and this is the final step. This is a bad-ass project that you're going to push up. Now, the first thing that you should check finally is that in the .gitignore, the .env is in here. So way, way back when I was like, hey, the pledge, the .env pledge blah, blah, blah. If we go back to the GitHub repo associated with this course. Let's scroll way up to the top. Let's go to discussions here. The .env pledge. In here, we said, "I am aware". If I forget a .gitignore and push my key/phrase up to GitHub even for a split-second, or show my key/phrase to the internet for a split-second, it should be considered compromised and I should move all my funds immediately. If I am unsure if my account has real funds in it, I will assume it has real funds in it. I will assume it has real funds in it, I will not use it for developing purposes. I am aware that even if I hit add account on my Metamask (or other ETH wallet), I will get a new private key, but it will share the same secret phrase/mnemonic of the other accounts generated in that Metamask (or other ETH wallet). Pledge Additions. For this course, I will only use funds associated with a brand new never-before-used Metamask (or other ETH wallet). I am aware that my account associated with my private key is the same on testnets that it is on mainnets. If I must use a private key associated with real funds in the future, until I am 100% sure what I am doing, I will always either: 1. Encrypt the private key MYSELF in such a way as Patrick taught me. 2. Use the built-in functionality of Mocassin to encrypt my private keys. 3. Use the command line way to pass private keys, and delete my command line history right after ONLY AS A LAST OPTION. If I never actually deploy anything to mainnet myself or work with a private key with real funds, I do not need to be concerned. This .gitignore is a file that says hey, when we're pushing stuff up to GitHub ignore these files. So, we do not want to push these up to GitHub. If there's anything else sensitive that you don't want to push up to GitHub it's a good idea to put it in this file. We will, we will still be able to check what we're about to push up to GitHub before we push it up. That's how, that's why this line in the pledge is so important. And then, additionally down here, now this sentence makes sense, use the built-in functionality of Mocassin to encrypt my private keys. Now, you understand how that works. Now, you understand you never, ever, ever need to really deal with your private keys ever again. So, now this is the GitHub repo that I'm going to be deploying to and it's a newer GitHub repo because I wanted to show you what a blank GitHub repo looks like. It's got this sick neon sign as the avatar. So to get started here, we first need to make sure we have git installed. git --version per usual. This is one of the things we installed way, way, way at the beginning of this whole course. So, you should have git installed. If you don't have git installed there's a ton there are links in the GitHub repo associated with this course. As well as AIs are very helpful at this. Google is very helpful at this. There's a lot of places where you can install git. Now, GitHub is a centralized company and there are decentralized versions of GitHub being worked on but, as of today, GitHub is what we have. As of today, GitHub is still the dominant player to the point where we kind of have to use it. So with that being said, if we go to the GitHub docs, we should go to the get started. And, in here, it says get started with GitHub documentation. We'll go to the quickstart, as well. And, you should have already created an account on GitHub, right? So, you should already have an account here. So, you don't have to do that one. You don't have to set up your profile, downloading files. Now, we could follow along with this uploading a project to GitHub, but this is going to show you kind of the manual way to upload everything. And, that's cool, but like, I don't want to have to go onto a website every single time I want to upload my code. I want to work incredibly hard to be incredibly lazy. So, what I'm going to do instead is I am going to first come to repositories. I'm going to select new, and I am going to create a new repository, but I'm going to upload all the stuff from it from the command line. So, we're going to call this our Mox Buy Me a Coffee Cyfrn Updraft. And we are going to make sure this is public so other people can see how cool we are for finishing this project. We're going to go ahead and click Create repository. And, boom. Now, this is created. There are some notes down here. It says quick setup if you've done this kind of thing before or create a new repository on the command line. And, this will show you how to get set up here as well, but this assumes you're already signed in. We are not signed in. We want to do this the hardcore way, so we're going to look up load locally hosted files, adding locally hosted code to GitHub and this is what we're going to follow. And, since Windows users are using WSL you should be following the Mac or the Linux stuff here. I'm going to follow along with the Linux pieces. This link will be in the GitHub repo associated with this course. So, the first thing that we're going to need to do here is do git init. And, this will say Initialized an empty Git repository in. At this location, right? At your pwd wherever you're working with. You might even see some colors light up in your VS code as well. And, that's actually our first step in the docs as well. Initialize a Git repository. It says git init -b main. You can do that, as well. Or, just git init like what we did. Don't do this one. Then, what we want to do is we want to decide which one of these files we want to put into what's called version control or source control. You also might see something like this pop up. This tells us what branch we're on. You can learn about branches another day. But, we want to say which files we want to push up to GitHub. Which files do we want to share with the world? Now, if we do a little git status what we can see is a list of all the different potential files that we could push up to GitHub. All the different files that we've recently made changes on that we need to update. And, all these look pretty good. So, this is a coverage file for coverage, git attributes, gitignore. These all look fine. I don't see any I don't see the .env in here. This is great. If you want to test it. If you go into your .gitignore delete the line that says .env. Then run, you know clear, git status again. Now, in here, oh, looks like we still don't see it. Oh, it's cuz there's more .envs, there's a whole bunch of .envs. If we delete all the .envs and then we do git status we now see .env is in our list of untracked files. That's very bad. So, I'm going to undo all of that that we just did. I'm going to do git status again. And, now, it's no longer in there. Now, we can override the .gitignore, but having the .env and any sensitive stuff in the .gitignore is going to be helpful to not push it up to GitHub. So, this is the list of stuff that we're going to push up to GitHub. You might notice on the left hand side, if you're using VS code, depending on how your formatting is, some of these are green, and some of these are grayed out. So, Mocassin comes default with this .gitignore, and it automatically grays out a bunch of stuff, like build out, lib, DS store, etc. So, some of these are great out because you don't really need to push a lot of these to GitHub. You definitely don't need to push the deployments database. You don't need to push your .env, the era test node, the compiled out folder, lib, there's a bunch of stuff that's not really important that you share with the world. So, we don't push it up. So, once we have it initialized, we can choose which files we want to add by we can do git add uh SRC like this. Now, if we do git status. We see oh, everything in the SRC folder is in this other section called changes to be committed. And then down here is untracked files. So, this is like a staging ground for, it's like hey it's almost committed, it's almost pushed up to GitHub. These are the and these are the files that we've changed, but we haven't like we haven't staged them to be committed. So just stage everything, we can do git add . This period stands for everything in this current directory. Do clear, I do a git status again. Now, we see README.md is once again untracked, and these ones are staged. I want to add it back, so I'll just do get add . like this. Run another git status, and now I see once again, everything is in here. Now, to commit this to our local Git history, we do git commit -m which stands for message, and then some message like "our first commit!" little exclamation mark there. Enter. Oops, uh sorry, it's uh single quotes, not double quotes. Oh what a new mistake by me. Now, you'll see this create mode for all this stuff, and it's entering all these files into our git history. Now, if we do a little git log, we can actually see a log of all the commits that have ever been done and we can see we just have one, our first commit. Now, if I do git status it'll look like it's blank. There's nothing to commit. This has been committed to our locally running commit history. But, if we go back to GitHub, we do a little refresh on our repo here. It's still blank. Uh, what the heck? Patrick, your GitHub repos have like so much code. What's going on? Well, we we need to push our git changes to GitHub. So, this is, this git commit is only on our machine. We gotta push it over to GitHub. Then, we have to do what I think is arguably the hardest part. Importing a Git repository with the command line. After you've initialized a Git repository, you can push the repository to GitHub using either GitHub's CLI or git. You can download the GitHub application, as well, if that's going to make your life easier. You can 100% download the GitHub CLI and, to be honest, that'll probably make your life a little bit easier if you're struggling. But, I want to do it raw with the git command because it's going to allow you to use more than just GitHub as your remote provider. And if that doesn't make sense, don't worry, the more you do this, eventually that will make sense. So we're going to follow this adding a local repository to GitHub using git. It's important to note that GitHub and git are different, right? When I type git --version this is a tool for doing version control management, and git hub is a place to push code. It's like like a cloud provider or like a Google Drive for code if you will. So git is a tool. GitHub is a company, they are different. So, for us to do this we're going to need to create a new repository on GitHub. We've actually already done this. Well done, us. To avoid errors, do not initialize the new repository with README, license, or gitignore files. You can add these files after your project has been pushed to GitHub. For more information, see "Creating a new repository." At the top of your repository on GitHub's Quick Setup page, click the copy button to copy the remote repository URL. Okay? So that's going to be this button, right here. Okay, clicked it. And then what we're going to do is we're going to open our terminal and run a couple of commands here. So, we're going to run this command here. We're going to run git remote add origin. And then paste that in there. And, what this is going to do is it's going to when we type git remote -v, it's going to say whenever we push or pull code from a remote Git repository, it's This one that we just set up. It's the one that we're going to use. And then, finally you can just run get push -u origin, origin, main like this. And, I'm getting an error because I'm logged in as a different user. Oops. So to make my life easier, I'm just going to give access to Patrick. All right. So, I've gone and added my other account to this one. I'm just going to rerun that command and what's going to happen now, Now, if I do a little refresh here. Now I see all the code that we just created in here. Now, we have a terrible readme, and if you've been following along with the GitHub repo associated with this course, Of course, you know that in most of our readmes, you know, let's look at uh yeah, let's look at this one, for example. If you go to the code base associated with this one it has a really nice readme, where it says here's how you get started, here's how you can install, here's how you can work with all the code in this code base. But now, I will tell you right now there's a good chance that you'll run into an error here and working with AIs, AIs are phenomenal at triaging GitHub issues. So, if you run into an issue please work with an AI, be sure to Google around because getting this up here getting this project up here, like I said, is incredibly important for your career, because guess what, if you go build a bunch of amazing awesome, really cool projects, and really cool things, people want to see that. So, you kind of have to show it off. You have to have a place to show it off.
+By pushing your smart contract code to a public repository, you allow the global developer community to view your work, review your code, and potentially collaborate. This builds your credibility and serves as the foundation of your Web3 developer profile.
+
+## Understanding the Difference: Git vs. GitHub
+
+Before executing any commands, it is vital to understand the distinction between the two primary tools you will be using:
+
+*   **Git:** This is a command-line tool installed directly on your local machine. It acts as a Version Control Management (VCM) system, meticulously tracking the history and changes of your local files.
+*   **GitHub:** This is a centralized, cloud-based hosting platform. It acts as the destination where you push your local Git repositories so your code can be viewed, shared, and managed securely on the internet.
+
+## Security First: The .env Pledge and .gitignore
+
+Before you even consider pushing code to GitHub, you must secure your sensitive data. Pushing private keys or mnemonic phrases to a public repository—even for a fraction of a second—guarantees that your wallet will be compromised. Automated bots continuously scrape GitHub for exposed keys and will drain real funds instantly. 
+
+To protect your data, you will use a `.gitignore` file. This file explicitly tells Git which files and directories to completely ignore. These ignored files will never be tracked, staged, or pushed to GitHub.
+
+*   **Framework Automation:** Modern frameworks like Moccasin automatically generate a `.gitignore` file for you, effectively graying out unnecessary or sensitive folders (such as `out/`, `build/`, `lib/`, and `broadcast/`).
+*   **The .env Pledge:** Please take a look at the ["THE .ENV PLEDGE"](envpledge.cyfrin.io). This began as a simple commitment on GitHub, but is now a permanent oath on-chain. Please read through the pledge and mint your own personalized soul-bound NFT to show people your commitment to safe practices. Stay safe!
+
+*Pro-Tip: As a Web3 best practice, avoid putting raw private keys in a `.env` file altogether. Instead, use built-in keystores (like those provided by Moccasin) to encrypt your private keys via the command line.*
+
+## Prerequisites and GitHub Repository Setup
+
+First, ensure that Git is properly installed on your local machine by running the following command in your terminal:
 
 ```bash
-git config --global user.name "Your Name"
+git --version
 ```
+
+If a version number is returned, you are ready to proceed. If not, you will need to install Git before moving forward.
+
+Next, you need to prepare the remote destination for your code:
+1. Navigate to **GitHub.com** and log in to your account.
+2. Click the **New Repository** button.
+3. Provide a clear repository name (e.g., `mox-buy-me-a-coffee-cu`).
+4. Set the repository visibility to **Public** so hiring managers and collaborators can view it.
+5. **Important:** Do not check the boxes to add a README, `.gitignore`, or License. You already have these files configured in your local Web3 project.
+6. Click **Create Repository**.
+
+## Initializing Your Local Git Repository
+
+Open your terminal, navigate to the root directory of your Web3 project, and initialize an empty local Git repository.
 
 ```bash
-git config --global user.email "youremail@example.com"
+git init
 ```
 
-To verify your settings:
+This command creates a hidden `.git` folder inside your project directory. This hidden folder is the engine that tracks your project's entire commit history locally.
+
+## Staging Your Files for Commit
+
+Git needs to know exactly which files you want to include in your next save state. To see what Git currently sees, check the status of your directory:
 
 ```bash
-git config --list
+git status
 ```
 
-If you need to update credentials for authentication:
+You will likely see a list of red "Untracked files." To tell Git to track and stage all valid files—while strictly respecting the rules in your `.gitignore`—use the "add dot" command:
 
-- For HTTPS: Use a Personal Access Token (PAT) as your password when prompted.
-- For SSH: You'll need to create and add an SSH key to your Git account.
+```bash
+git add .
+```
 
-Would you like me to explain more about any of these methods?
+Running `git status` again will now display these files in green, categorized under "Changes to be committed." 
+
+*Tip: If you accidentally stage a file you realize you do not want to commit just yet (such as an unfinished README), you can safely unstage it without deleting the file by running:*
+
+```bash
+git rm --cached README.md
+```
+
+## Committing Your Web3 Code
+
+A commit functions as a permanent snapshot of your code at a specific point in time. To save this snapshot to your local history, run:
+
+```bash
+git commit -m "our first commit"
+```
+
+*   `git commit`: The core command instructing Git to save the staged snapshot.
+*   `-m`: The message flag, allowing you to attach a human-readable note to the commit.
+*   `"our first commit"`: The descriptive message explaining the purpose of this snapshot.
+
+To verify that your commit was successfully recorded, you can view your project's historical timeline:
+
+```bash
+git log
+```
+
+This command outputs your commit history, detailing the unique commit hash, the author, the exact timestamp, and your commit message.
+
+## Linking Your Local Repository to GitHub
+
+At this stage, your local machine has a properly tracked Git history, but it has no connection to the internet. You must explicitly link your local repository to the empty GitHub repository you created earlier.
+
+Go back to your GitHub repository page, copy the provided repository URL, and run the following command in your terminal:
+
+```bash
+git remote add origin https://github.com/your-username/mox-buy-me-a-coffee-cu.git
+```
+
+To ensure the link was established correctly, check your remote configurations:
+
+```bash
+git remote -v
+```
+
+This will display the specific URLs designated for "fetch" and "push" operations, confirming exactly where your code will be routed.
+
+## Pushing Your Code to the Cloud
+
+The final technical step is to push your locally committed history up to the remote GitHub server. 
+
+```bash
+git push -u origin main
+```
+
+*   `push`: The command that transmits your local code to the remote cloud server.
+*   `-u`: The upstream flag. This sets "origin main" as your default destination, meaning for future updates, you only need to type `git push`.
+*   `origin`: The standard alias for your remote repository URL.
+*   `main`: The primary branch containing your committed code.
+
+Once the terminal finishes processing the upload, refresh your GitHub repository page in your browser. Your smart contract code is now live on the internet!
+
+## Troubleshooting Git Authentication Errors with AI
+
+It is common to run into authentication errors when pushing code for the first time, such as a `403 fatal: unable to access` error. This typically stems from outdated password authentications, as GitHub now requires modern security measures.
+
+If you encounter Git configuration, authentication, or SSH key errors, the most efficient troubleshooting method is to utilize AI tools like Claude or ChatGPT. AI is exceptional at triaging environment-specific terminal issues. 
+
+**Example AI Prompt:** *"How do I sign into my Git config on my command line?"*
+
+The AI will provide step-by-step instructions tailored to your operating system, guiding you through generating Personal Access Tokens (PATs) or creating SSH keys to securely authenticate your terminal with GitHub.
+
+## Next Steps for Your Web3 Developer Portfolio
+
+Now that your code is successfully hosted on GitHub, you must make it presentable. It is highly recommended to write a clean, well-structured `README.md` file. Frameworks like Moccasin provide excellent templates for this. A strong README ensures that visiting developers and hiring managers understand what your project does, how to install it, and how to interact with your smart contracts.
+
+Finally, take the link to your newly populated GitHub repository and connect it to a **Cyfrin Profile**. This bridges the gap between your raw code and your professional Web3 resume, allowing you to start participating in competitive smart contract audits and officially launching your Web3 career.
