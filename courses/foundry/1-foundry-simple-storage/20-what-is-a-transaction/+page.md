@@ -10,7 +10,7 @@ _Follow along with this video:_
 
 In the previous lesson we kept talking about transactions, but we never explained what a transaction is. In simple terms, a transaction captures details of an activity that has taken place on a blockchain.
 
-On the left side of your screen, in the Explorer tab, you'll find a folder called `broadcast`. Foundry saves all your blockchain interactions here. The `dry-run` folder is used for interactions you made when you didn't have a blockchain running (remember that time when we deployed our contract without specifying an `--rpc-url`). Moreover, the recordings here are separated by `chainId`.
+On the left side of your screen, in the Explorer tab, you'll find a folder called `broadcast`. Foundry saves all your blockchain interactions here. The `dry-run` folder is used for interactions you made when you didn't have a blockchain running. Moreover, the recordings here are separated by `chainId`.
 
 **Note**: The `chainId` is a unique identifier assigned to a specific blockchain network. It is used to distinguish one blockchain from another and is a crucial parameter for ensuring the security and integrity of transactions and interactions on the blockchain.
 
