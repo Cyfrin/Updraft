@@ -52,7 +52,7 @@ counts[key.toId()]["beforeSwap"]
 1. Find the value of `salt` needed to deploy the hooks contract at a valid address.
 
 ```shell
-forge test --match-path test/FindHookAddr.sol -vvv
+forge test --match-path test/FindHookSalt.test.sol -vvv
 ```
 
 2. Export the salt printed to your terminal from executing the command in the previous step.
